@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hello Kitty Jump!</title>
+  <style>
+    /* ── Reset & base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #ffe4f0 0%, #ffd6e8 50%, #ffb3d1 100%);
+      font-family: 'Comic Sans MS', 'Chalkboard SE', cursive;
+      overflow: hidden;
+    }
+
+    /* ── Decorative dots background ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        radial-gradient(circle, #ff69b4 1.5px, transparent 1.5px);
+      background-size: 32px 32px;
+      opacity: 0.18;
+      pointer-events: none;
+    }
+
+    /* ── Title ── */
+    h1 {
+      color: #d63384;
+      font-size: clamp(1.6rem, 5vw, 2.8rem);
+      letter-spacing: 2px;
+      text-shadow: 2px 2px 0 #ffb3d1, 4px 4px 0 #ff69b455;
+      margin-bottom: 2rem;
+      user-select: none;
+    }
+
+    /* ── Stage: grass strip at bottom ── */
+    .stage {
+      position: relative;
+      width: min(340px, 90vw);
+      height: 280px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .grass {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 48px;
+      background: linear-gradient(180deg, #a8e063 0%, #56ab2f 100%);
+      border-radius: 0 0 18px 18px;
+      box-shadow: 0 4px 12px #56ab2f55;
+    }
+
+    /* ── Character wrapper (click target) ── */
+    .character {
+      position: relative;
+      bottom: 44px;          /* sit on the grass */
+      cursor: pointer;
+      width: 160px;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+      transition: filter 0.15s;
+    }
+    .character:hover { filter: drop-shadow(0 0 10px #ff69b4aa); }
+
+    /* ── Jump keyframes ── */
+    @keyframes jump {
+      0%   { transform: translateY(0)    scaleX(1)    scaleY(1); }
+      15%  { transform: translateY(0)    scaleX(1.12) scaleY(0.85); } /* squash */
+      35%  { transform: translateY(-90px) scaleX(0.92) scaleY(1.08); } /* rise  */
+      55%  { transform: translateY(-100px) scaleX(1)   scaleY(1); }   /* apex  */
+      75%  { transform: translateY(-40px) scaleX(0.95) scaleY(1.05); } /* fall  */
+      90%  { transform: translateY(0)    scaleX(1.15) scaleY(0.82); } /* land squash */
+      100% { transform: translateY(0)    scaleX(1)    scaleY(1); }
+    }
+
+    .character.jumping {
+      animation: jump 0.55s cubic-bezier(0.36, 0.07, 0.19, 0.97) forwards;
+    }
+
+    /* ── Shadow under character ── */
+    .shadow {
+      position: absolute;
+      bottom: 44px;
+      width: 80px;
+      height: 18px;
+      background: radial-gradient(ellipse, #d6336c44 0%, transparent 70%);
+      border-radius: 50%;
+      transition: transform 0.1s;
+    }
+
+    /* ── Hint text ── */
+    .hint {
+      margin-top: 1.5rem;
+      color: #d63384cc;
+      font-size: 1rem;
+      letter-spacing: 1px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.45; }
+    }
+
+    /* ── Stars that pop on click ── */
+    .star {
+      position: fixed;
+      pointer-events: none;
+      font-size: 1.4rem;
+      animation: starPop 0.7s ease-out forwards;
+    }
+
+    @keyframes starPop {
+      0%   { transform: scale(0) translateY(0);   opacity: 1; }
+      60%  { transform: scale(1.3) translateY(-30px); opacity: 1; }
+      100% { transform: scale(0.8) translateY(-55px); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>✨ Hello Kitty! ✨</h1>
+
+  <div class="stage">
+    <div class="shadow" id="shadow"></div>
+
+    <!-- Hello Kitty SVG character -->
+    <div class="character" id="character" role="button" aria-label="Hello Kitty – click to jump" tabindex="0">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 220" aria-hidden="true">
+
+        <!-- Body -->
+        <ellipse cx="100" cy="170" rx="52" ry="48" fill="#fff" stroke="#f9a8d4" stroke-width="2"/>
+
+        <!-- Dress / Outfit detail -->
+        <ellipse cx="100" cy="185" rx="48" ry="34" fill="#ff9ec4"/>
+        <ellipse cx="100" cy="185" rx="42" ry="28" fill="#ffb3d1"/>
+
+        <!-- Arms -->
+        <ellipse cx="52"  cy="163" rx="14" ry="9" fill="#fff" stroke="#f9a8d4" stroke-width="2" transform="rotate(-30 52 163)"/>
+        <ellipse cx="148" cy="163" rx="14" ry="9" fill="#fff" stroke="#f9a8d4" stroke-width="2" transform="rotate(30 148 163)"/>
+
+        <!-- Legs -->
+        <rect x="80"  y="208" width="16" height="20" rx="8" fill="#fff" stroke="#f9a8d4" stroke-width="2"/>
+        <rect x="104" y="208" width="16" height="20" rx="8" fill="#fff" stroke="#f9a8d4" stroke-width="2"/>
+
+        <!-- Head -->
+        <ellipse cx="100" cy="95" rx="62" ry="58" fill="#fff" stroke="#f9a8d4" stroke-width="2"/>
+
+        <!-- Ears -->
+        <ellipse cx="55"  cy="48" rx="18" ry="20" fill="#fff" stroke="#f9a8d4" stroke-width="2"/>
+        <ellipse cx="145" cy="48" rx="18" ry="20" fill="#fff" stroke="#f9a8d4" stroke-width="2"/>
+        <!-- Inner ear colour -->
+        <ellipse cx="55"  cy="48" rx="10" ry="12" fill="#ffb3d1"/>
+        <ellipse cx="145" cy="48" rx="10" ry="12" fill="#ffb3d1"/>
+
+        <!-- Eyes -->
+        <ellipse cx="82"  cy="93" rx="7" ry="8" fill="#1a1a2e"/>
+        <ellipse cx="118" cy="93" rx="7" ry="8" fill="#1a1a2e"/>
+        <!-- Eye shine -->
+        <circle cx="85"  cy="89" r="2.5" fill="#fff"/>
+        <circle cx="121" cy="89" r="2.5" fill="#fff"/>
+
+        <!-- Nose -->
+        <ellipse cx="100" cy="106" rx="5" ry="4" fill="#ff9ec4"/>
+
+        <!-- Whiskers -->
+        <line x1="38"  y1="100" x2="88"  y2="104" stroke="#aaa" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="38"  y1="108" x2="88"  y2="108" stroke="#aaa" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="112" y1="104" x2="162" y2="100" stroke="#aaa" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="112" y1="108" x2="162" y2="108" stroke="#aaa" stroke-width="1.5" stroke-linecap="round"/>
+
+        <!-- Bow (right ear area) -->
+        <g transform="translate(127, 30)">
+          <!-- Left wing -->
+          <path d="M0,0 C-12,-14 -22,-6 -14,4 C-8,10 0,6 0,0Z" fill="#ff4d94"/>
+          <!-- Right wing -->
+          <path d="M0,0 C12,-14 22,-6 14,4 C8,10 0,6 0,0Z" fill="#ff4d94"/>
+          <!-- Centre knot -->
+          <circle cx="0" cy="2" r="5" fill="#ff1a75"/>
+          <!-- Shine -->
+          <circle cx="-2" cy="0" r="1.8" fill="#ffaacc" opacity="0.7"/>
+        </g>
+
+      </svg>
+    </div>
+  </div>
+
+  <p class="hint">👆 Click Hello Kitty to jump! 👆</p>
+
+  <script>
+    const character = document.getElementById('character');
+    const shadow    = document.getElementById('shadow');
+    const STARS     = ['⭐','✨','💖','🌸','💕','🎀','🌟'];
+
+    function spawnStars(x, y) {
+      for (let i = 0; i < 5; i++) {
+        const s = document.createElement('span');
+        s.className = 'star';
+        s.textContent = STARS[Math.floor(Math.random() * STARS.length)];
+        s.style.left = (x + (Math.random() - 0.5) * 80) + 'px';
+        s.style.top  = (y + (Math.random() - 0.5) * 40) + 'px';
+        document.body.appendChild(s);
+        s.addEventListener('animationend', () => s.remove());
+      }
+    }
+
+    function doJump(e) {
+      // 1. Remove the class if already present so the animation can restart
+      character.classList.remove('jumping');
+
+      // 2. Force a reflow — this flushes the style recalc so the browser
+      //    registers the removal before we re-add the class
+      void character.offsetWidth;
+
+      // 3. Re-add → animation plays from frame 0 every time
+      character.classList.add('jumping');
+
+      // 4. Remove the class once the animation finishes so the next click
+      //    still triggers a fresh remove→reflow→add cycle
+      character.addEventListener('animationend', () => {
+        character.classList.remove('jumping');
+      }, { once: true });
+
+      // 5. Star burst at click/tap location
+      const cx = e.clientX ?? e.touches?.[0]?.clientX ?? window.innerWidth  / 2;
+      const cy = e.clientY ?? e.touches?.[0]?.clientY ?? window.innerHeight / 2;
+      spawnStars(cx, cy);
+    }
+
+    character.addEventListener('click',      doJump);
+    character.addEventListener('touchstart', doJump, { passive: true });
+
+    // Keyboard: Space / Enter for accessibility
+    character.addEventListener('keydown', e => {
+      if (e.key === ' ' || e.key === 'Enter') {
+        e.preventDefault();
+        doJump({ clientX: window.innerWidth / 2, clientY: window.innerHeight / 2 });
+      }
+    });
+  </script>
+</body>
+</html>
