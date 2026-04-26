@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fox vs Bear - XO Game</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --candy1: #ff6b9d;
+      --candy2: #ffd93d;
+      --candy3: #6bcb77;
+      --candy4: #4d96ff;
+      --x-color: #ff6b9d;
+      --o-color: #4d96ff;
+      --bg: #1a0533;
+      --card: rgba(255,255,255,0.08);
+      --card-border: rgba(255,255,255,0.15);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Animated gradient bg */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: linear-gradient(135deg, #1a0533, #0d1b6e, #1a0533, #3d0a5a);
+      background-size: 400% 400%;
+      animation: gradShift 8s ease infinite;
+      z-index: 0;
+    }
+
+    @keyframes gradShift {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Floating decorations */
+    .floater {
+      position: fixed;
+      font-size: 2rem;
+      opacity: 0.15;
+      animation: float linear infinite;
+      pointer-events: none;
+      z-index: 0;
+    }
+    @keyframes float {
+      from { transform: translateY(110vh) rotate(0deg); }
+      to   { transform: translateY(-10vh) rotate(360deg); }
+    }
+
+    /* Screens */
+    .screen {
+      display: none;
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 480px;
+      padding: 1.5rem;
+    }
+    .screen.active { display: flex; flex-direction: column; align-items: center; }
+
+    /* Title */
+    h1.game-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: 2.6rem;
+      text-align: center;
+      background: linear-gradient(90deg, var(--candy1), var(--candy2), var(--candy3), var(--candy4));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.2rem;
+      filter: drop-shadow(0 0 12px rgba(255,107,157,0.5));
+    }
+
+    .subtitle {
+      color: rgba(255,255,255,0.5);
+      font-size: 0.9rem;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    /* Name entry card */
+    .name-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 2rem;
+      width: 100%;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 8px 40px rgba(0,0,0,0.4);
+    }
+
+    .player-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .player-emoji {
+      font-size: 2.5rem;
+      flex-shrink: 0;
+    }
+
+    .player-row input {
+      flex: 1;
+      background: rgba(255,255,255,0.1);
+      border: 2px solid rgba(255,255,255,0.2);
+      border-radius: 12px;
+      padding: 0.7rem 1rem;
+      font-size: 1rem;
+      font-family: 'Nunito', sans-serif;
+      font-weight: 700;
+      color: #fff;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .player-row input:focus { border-color: var(--candy2); }
+    .player-row input::placeholder { color: rgba(255,255,255,0.3); }
+
+    .vs-divider {
+      text-align: center;
+      color: rgba(255,255,255,0.4);
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin: 0.5rem 0 1.5rem;
+      letter-spacing: 2px;
+    }
+
+    /* Buttons */
+    .btn {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 50px;
+      padding: 0.8rem 2.5rem;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+      letter-spacing: 0.5px;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.3); }
+    .btn:active { transform: translateY(0); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--candy1), #c0392b);
+      color: #fff;
+      width: 100%;
+      margin-top: 0.5rem;
+      box-shadow: 0 4px 20px rgba(255,107,157,0.4);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.8);
+      border: 1px solid rgba(255,255,255,0.2);
+      font-family: 'Nunito', sans-serif;
+      font-weight: 800;
+    }
+
+    /* Game screen */
+    #gameScreen {
+      gap: 1rem;
+    }
+
+    /* Scoreboard */
+    .scoreboard {
+      display: flex;
+      gap: 0.75rem;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .score-card {
+      flex: 1;
+      background: var(--card);
+      border: 2px solid var(--card-border);
+      border-radius: 16px;
+      padding: 0.8rem;
+      text-align: center;
+      transition: border-color 0.3s, box-shadow 0.3s;
+      backdrop-filter: blur(12px);
+    }
+
+    .score-card.active-x {
+      border-color: var(--x-color);
+      box-shadow: 0 0 20px rgba(255,107,157,0.3);
+    }
+    .score-card.active-o {
+      border-color: var(--o-color);
+      box-shadow: 0 0 20px rgba(77,150,255,0.3);
+    }
+
+    .score-emoji { font-size: 1.8rem; }
+    .score-name {
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: rgba(255,255,255,0.7);
+      margin: 0.2rem 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .score-value {
+      font-family: 'Fredoka One', cursive;
+      font-size: 2rem;
+      color: #fff;
+      line-height: 1;
+    }
+    .score-card.x-card .score-value { color: var(--x-color); }
+    .score-card.o-card .score-value { color: var(--o-color); }
+
+    .tie-card {
+      background: var(--card);
+      border: 2px solid var(--card-border);
+      border-radius: 16px;
+      padding: 0.8rem;
+      text-align: center;
+      backdrop-filter: blur(12px);
+      min-width: 70px;
+    }
+    .tie-card .score-name { color: rgba(255,255,255,0.4); }
+    .tie-card .score-value { font-family: 'Fredoka One', cursive; font-size: 2rem; color: rgba(255,255,255,0.5); }
+
+    /* Status bar */
+    .status-bar {
+      font-family: 'Fredoka One', cursive;
+      font-size: 1.3rem;
+      color: #fff;
+      text-align: center;
+      padding: 0.6rem 1.5rem;
+      border-radius: 50px;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      width: 100%;
+    }
+
+    /* Board */
+    .board {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      width: 100%;
+      max-width: 340px;
+    }
+
+    .cell {
+      aspect-ratio: 1;
+      background: var(--card);
+      border: 2px solid var(--card-border);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, transform 0.1s;
+      backdrop-filter: blur(8px);
+      user-select: none;
+    }
+
+    .cell:hover:not(.taken) {
+      background: rgba(255,255,255,0.12);
+      border-color: rgba(255,255,255,0.3);
+      transform: scale(1.03);
+    }
+
+    .cell.taken { cursor: default; }
+
+    .cell.x-cell {
+      border-color: var(--x-color);
+      background: rgba(255,107,157,0.1);
+      animation: popIn 0.2s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .cell.o-cell {
+      border-color: var(--o-color);
+      background: rgba(77,150,255,0.1);
+      animation: popIn 0.2s cubic-bezier(0.34,1.56,0.64,1);
+    }
+
+    .cell.winning-cell {
+      animation: winPulse 0.6s ease infinite alternate;
+    }
+    @keyframes winPulse {
+      from { transform: scale(1); }
+      to   { transform: scale(1.08); box-shadow: 0 0 30px rgba(255,211,61,0.6); border-color: var(--candy2); }
+    }
+
+    @keyframes popIn {
+      from { transform: scale(0.5); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+
+    .board-controls {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    /* Result overlay */
+    #resultOverlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(4px);
+    }
+
+    .result-card {
+      background: linear-gradient(135deg, #1a0533, #2a0a5e);
+      border: 2px solid rgba(255,255,255,0.15);
+      border-radius: 24px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      max-width: 360px;
+      width: 90%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+      animation: slideUp 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(40px) scale(0.9); opacity: 0; }
+      to   { transform: translateY(0) scale(1); opacity: 1; }
+    }
+
+    .result-emoji { font-size: 4rem; display: block; margin-bottom: 0.5rem; }
+    .result-title {
+      font-family: 'Fredoka One', cursive;
+      font-size: 2rem;
+      background: linear-gradient(90deg, var(--candy1), var(--candy2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+    .result-sub {
+      color: rgba(255,255,255,0.6);
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .result-buttons { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+
+  <!-- Floating decorations -->
+  <script>
+    const icons = ['⭐','🌟','✨','🎈','🍭','🎀','💫','🌈','🎊'];
+    for (let i = 0; i < 14; i++) {
+      const el = document.createElement('div');
+      el.className = 'floater';
+      el.textContent = icons[Math.floor(Math.random() * icons.length)];
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.animationDuration = (6 + Math.random() * 12) + 's';
+      el.style.animationDelay = (Math.random() * 10) + 's';
+      el.style.fontSize = (1.2 + Math.random() * 1.5) + 'rem';
+      document.body.appendChild(el);
+    }
+  </script>
+
+  <!-- Name Entry Screen -->
+  <div id="nameScreen" class="screen active">
+    <h1 class="game-title">Fox vs Bear</h1>
+    <p class="subtitle">A cute XO showdown!</p>
+    <div class="name-card">
+      <div class="player-row">
+        <span class="player-emoji">🦊</span>
+        <input id="p1Input" type="text" maxlength="16" placeholder="Player 1 name (X)" />
+      </div>
+      <div class="vs-divider">— VS —</div>
+      <div class="player-row">
+        <span class="player-emoji">🐻</span>
+        <input id="p2Input" type="text" maxlength="16" placeholder="Player 2 name (O)" />
+      </div>
+      <button class="btn btn-primary" onclick="startGame()">Let's Play! 🎮</button>
+    </div>
+  </div>
+
+  <!-- Game Screen -->
+  <div id="gameScreen" class="screen">
+    <h1 class="game-title">Fox vs Bear</h1>
+
+    <div class="scoreboard">
+      <div class="score-card x-card" id="p1-score-card">
+        <div class="score-emoji">🦊</div>
+        <div class="score-name" id="p1Label">Player 1</div>
+        <div class="score-value" id="p1Score">0</div>
+      </div>
+      <div class="tie-card">
+        <div class="score-emoji">🤝</div>
+        <div class="score-name">Ties</div>
+        <div class="score-value" id="tieScore">0</div>
+      </div>
+      <div class="score-card o-card" id="p2-score-card">
+        <div class="score-emoji">🐻</div>
+        <div class="score-name" id="p2Label">Player 2</div>
+        <div class="score-value" id="p2Score">0</div>
+      </div>
+    </div>
+
+    <div class="status-bar" id="status-bar">🦊 Player 1's turn!</div>
+
+    <div class="board" id="board">
+      <div class="cell" onclick="handleCell(0)"></div>
+      <div class="cell" onclick="handleCell(1)"></div>
+      <div class="cell" onclick="handleCell(2)"></div>
+      <div class="cell" onclick="handleCell(3)"></div>
+      <div class="cell" onclick="handleCell(4)"></div>
+      <div class="cell" onclick="handleCell(5)"></div>
+      <div class="cell" onclick="handleCell(6)"></div>
+      <div class="cell" onclick="handleCell(7)"></div>
+      <div class="cell" onclick="handleCell(8)"></div>
+    </div>
+
+    <div class="board-controls">
+      <button class="btn btn-secondary" onclick="resetBoard()">New Round</button>
+      <button class="btn btn-secondary" onclick="backToNames()">Change Names</button>
+    </div>
+  </div>
+
+  <!-- Result Overlay -->
+  <div id="resultOverlay">
+    <div class="result-card">
+      <span class="result-emoji" id="resultEmoji">🏆</span>
+      <div class="result-title" id="resultTitle">Player 1 Wins!</div>
+      <div class="result-sub" id="resultSub">Amazing move!</div>
+      <div class="result-buttons">
+        <button class="btn btn-primary" onclick="nextRound()">Next Round 🎮</button>
+        <button class="btn btn-secondary" onclick="backToNames()">Change Players</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const WINNING_COMBOS = [
+      [0,1,2],[3,4,5],[6,7,8],
+      [0,3,6],[1,4,7],[2,5,8],
+      [0,4,8],[2,4,6]
+    ];
+
+    const SYMBOLS = { X: '🦊', O: '🐻' };
+
+    let board = Array(9).fill(null);
+    let currentPlayer = 'X';
+    let gameOver = false;
+    let p1Name = 'Player 1';
+    let p2Name = 'Player 2';
+    let scores = { X: 0, O: 0, T: 0 };
+
+    function startGame() {
+      const p1 = document.getElementById('p1Input').value.trim();
+      const p2 = document.getElementById('p2Input').value.trim();
+      p1Name = p1 || 'Fox';
+      p2Name = p2 || 'Bear';
+      document.getElementById('p1Label').textContent = p1Name;
+      document.getElementById('p2Label').textContent = p2Name;
+      scores = { X: 0, O: 0, T: 0 };
+      updateScoreDisplay();
+      document.getElementById('nameScreen').classList.remove('active');
+      document.getElementById('gameScreen').classList.add('active');
+      resetBoard();
+    }
+
+    function resetBoard() {
+      board = Array(9).fill(null);
+      currentPlayer = 'X';
+      gameOver = false;
+      document.getElementById('resultOverlay').style.display = 'none';
+      const cells = document.querySelectorAll('.cell');
+      cells.forEach(c => {
+        c.textContent = '';
+        c.className = 'cell';
+      });
+      updateStatus();
+      updateActivePlayer();
+    }
+
+    function handleCell(idx) {
+      if (gameOver || board[idx]) return;
+      board[idx] = currentPlayer;
+      const cell = document.querySelectorAll('.cell')[idx];
+      cell.textContent = SYMBOLS[currentPlayer];
+      cell.classList.add('taken', currentPlayer === 'X' ? 'x-cell' : 'o-cell');
+
+      const result = checkWinner();
+      if (result) {
+        highlightWinner(result.combo);
+        gameOver = true;
+        scores[currentPlayer]++;
+        updateScoreDisplay();
+        setTimeout(() => showResult('win', currentPlayer), 500);
+        return;
+      }
+
+      if (board.every(Boolean)) {
+        gameOver = true;
+        scores.T++;
+        updateScoreDisplay();
+        setTimeout(() => showResult('tie'), 400);
+        return;
+      }
+
+      currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+      updateStatus();
+      updateActivePlayer();
+    }
+
+    function checkWinner() {
+      for (const combo of WINNING_COMBOS) {
+        const [a, b, c] = combo;
+        if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+          return { player: board[a], combo };
+        }
+      }
+      return null;
+    }
+
+    function highlightWinner(combo) {
+      const cells = document.querySelectorAll('.cell');
+      combo.forEach(i => cells[i].classList.add('winning-cell'));
+    }
+
+    function updateStatus() {
+      const name = currentPlayer === 'X' ? p1Name : p2Name;
+      const sym = SYMBOLS[currentPlayer];
+      document.getElementById('status-bar').textContent = `${sym} ${name}'s turn!`;
+    }
+
+    function updateActivePlayer() {
+      document.getElementById('p1-score-card').className =
+        'score-card x-card' + (currentPlayer === 'X' ? ' active-x' : '');
+      document.getElementById('p2-score-card').className =
+        'score-card o-card' + (currentPlayer === 'O' ? ' active-o' : '');
+    }
+
+    function updateScoreDisplay() {
+      document.getElementById('p1Score').textContent = scores.X;
+      document.getElementById('p2Score').textContent = scores.O;
+      document.getElementById('tieScore').textContent = scores.T;
+    }
+
+    const WIN_MSGS = ['Amazing!', 'Incredible!', 'You nailed it!', 'Unbeatable!', 'Brilliant!'];
+    const TIE_MSGS = ['So close!', 'Great match!', 'Perfectly balanced!', 'Play again?'];
+
+    function showResult(type, player) {
+      const overlay = document.getElementById('resultOverlay');
+      if (type === 'win') {
+        const name = player === 'X' ? p1Name : p2Name;
+        const emoji = SYMBOLS[player];
+        document.getElementById('resultEmoji').textContent = '🏆';
+        document.getElementById('resultTitle').textContent = `${emoji} ${name} Wins!`;
+        document.getElementById('resultSub').textContent =
+          WIN_MSGS[Math.floor(Math.random() * WIN_MSGS.length)];
+      } else {
+        document.getElementById('resultEmoji').textContent = '🤝';
+        document.getElementById('resultTitle').textContent = "It's a Tie!";
+        document.getElementById('resultSub').textContent =
+          TIE_MSGS[Math.floor(Math.random() * TIE_MSGS.length)] + ' 🌟';
+      }
+      overlay.style.display = 'flex';
+    }
+
+    function nextRound() { resetBoard(); }
+
+    function backToNames() {
+      document.getElementById('gameScreen').classList.remove('active');
+      document.getElementById('nameScreen').classList.add('active');
+      document.getElementById('resultOverlay').style.display = 'none';
+    }
+
+    // Allow pressing Enter to start
+    document.addEventListener('DOMContentLoaded', () => {
+      ['p1Input','p2Input'].forEach(id => {
+        document.getElementById(id).addEventListener('keydown', e => {
+          if (e.key === 'Enter') startGame();
+        });
+      });
+    });
+  </script>
+</body>
+</html>
