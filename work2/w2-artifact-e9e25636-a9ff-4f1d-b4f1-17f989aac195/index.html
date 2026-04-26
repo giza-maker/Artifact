@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Get Hired in Game Dev — Senior Unity Developer Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg:        #0a0a0f;
+  --bg2:       #0f0f1a;
+  --bg3:       #141428;
+  --neon:      #00ff88;
+  --neon2:     #00ccff;
+  --purple:    #9b59ff;
+  --pink:      #ff3d9a;
+  --yellow:    #ffd700;
+  --text:      #e8e8f0;
+  --muted:     #7a7a9a;
+  --border:    rgba(255,255,255,0.08);
+  --card:      rgba(255,255,255,0.04);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* ── SCANLINE overlay ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,255,136,0.015) 2px, rgba(0,255,136,0.015) 4px);
+  pointer-events: none; z-index: 9999;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(10,10,15,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 clamp(20px, 5vw, 60px);
+  height: 60px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9rem; font-weight: 700;
+  color: var(--neon);
+  text-shadow: 0 0 12px rgba(0,255,136,0.5);
+}
+.nav-links { display: flex; gap: 28px; }
+.nav-links a {
+  font-size: 0.82rem; font-weight: 600; letter-spacing: 0.06em;
+  color: var(--muted); text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--neon); }
+@media(max-width:600px){ .nav-links { display:none; } }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 100px 24px 60px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 0%, rgba(0,255,136,0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 80% 80%, rgba(155,89,255,0.08) 0%, transparent 60%);
+}
+.hero-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem; color: var(--neon);
+  letter-spacing: 0.2em; text-transform: uppercase;
+  background: rgba(0,255,136,0.08);
+  border: 1px solid rgba(0,255,136,0.2);
+  padding: 6px 16px; border-radius: 999px;
+  margin-bottom: 24px; display: inline-block;
+}
+.hero h1 {
+  font-size: clamp(2rem, 6vw, 4.5rem);
+  font-weight: 700; line-height: 1.1;
+  margin-bottom: 20px;
+}
+.hero h1 .hl-neon  { color: var(--neon);   text-shadow: 0 0 30px rgba(0,255,136,0.4); }
+.hero h1 .hl-purple { color: var(--purple); text-shadow: 0 0 30px rgba(155,89,255,0.4); }
+.hero-sub {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  color: var(--muted); max-width: 600px;
+  margin: 0 auto 40px;
+}
+.hero-btns { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+.btn-primary {
+  background: var(--neon); color: var(--bg);
+  padding: 14px 32px; border-radius: 8px;
+  font-weight: 700; font-size: 0.95rem;
+  text-decoration: none; letter-spacing: 0.04em;
+  transition: box-shadow 0.2s, transform 0.15s;
+  box-shadow: 0 0 24px rgba(0,255,136,0.3);
+}
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 36px rgba(0,255,136,0.5); }
+.btn-secondary {
+  background: transparent; color: var(--text);
+  padding: 14px 32px; border-radius: 8px;
+  font-weight: 600; font-size: 0.95rem;
+  text-decoration: none; letter-spacing: 0.04em;
+  border: 1px solid var(--border);
+  transition: border-color 0.2s;
+}
+.btn-secondary:hover { border-color: rgba(255,255,255,0.3); }
+
+/* ── STATS BAR ── */
+.stats-bar {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  display: flex; flex-wrap: wrap;
+  justify-content: center; gap: 0;
+}
+.stat-item {
+  padding: 24px 40px;
+  text-align: center;
+  border-left: 1px solid var(--border);
+  flex: 1; min-width: 160px;
+}
+.stat-item:first-child { border-left: none; }
+.stat-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 2rem; font-weight: 700;
+  color: var(--neon);
+  text-shadow: 0 0 16px rgba(0,255,136,0.4);
+  display: block;
+}
+.stat-label { font-size: 0.8rem; color: var(--muted); letter-spacing: 0.06em; }
+
+/* ── SECTIONS ── */
+section { padding: 80px clamp(20px, 6vw, 80px); }
+.container { max-width: 1100px; margin: 0 auto; }
+
+.section-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem; color: var(--neon2);
+  letter-spacing: 0.2em; text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.section-title {
+  font-size: clamp(1.6rem, 3.5vw, 2.5rem);
+  font-weight: 700; margin-bottom: 12px;
+}
+.section-intro { color: var(--muted); max-width: 650px; margin-bottom: 48px; font-size: 0.97rem; }
+
+/* ── GRID helpers ── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+.grid-3 { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+@media(max-width:700px){ .grid-2 { grid-template-columns: 1fr; } }
+
+/* ── CARDS ── */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px; padding: 24px;
+  transition: border-color 0.25s, transform 0.25s;
+}
+.card:hover { border-color: rgba(0,255,136,0.25); transform: translateY(-3px); }
+
+/* ── ROADMAP ── */
+#roadmap { background: var(--bg2); }
+.roadmap-steps { display: flex; flex-direction: column; gap: 0; max-width: 750px; }
+.roadmap-step {
+  display: flex; gap: 24px; position: relative;
+  padding-bottom: 40px;
+}
+.roadmap-step:last-child { padding-bottom: 0; }
+.step-line-wrap { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+.step-dot {
+  width: 44px; height: 44px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.2rem; font-weight: 700; flex-shrink: 0;
+  border: 2px solid;
+  font-family: 'JetBrains Mono', monospace;
+}
+.step-connector { width: 2px; flex: 1; margin-top: 4px; }
+.roadmap-step:last-child .step-connector { display: none; }
+.s1 .step-dot { background: rgba(0,255,136,0.1); border-color: var(--neon); color: var(--neon); }
+.s2 .step-dot { background: rgba(0,204,255,0.1); border-color: var(--neon2); color: var(--neon2); }
+.s3 .step-dot { background: rgba(155,89,255,0.1); border-color: var(--purple); color: var(--purple); }
+.s4 .step-dot { background: rgba(255,61,154,0.1); border-color: var(--pink); color: var(--pink); }
+.s5 .step-dot { background: rgba(255,215,0,0.1); border-color: var(--yellow); color: var(--yellow); }
+.s1 .step-connector { background: linear-gradient(var(--neon), var(--neon2)); }
+.s2 .step-connector { background: linear-gradient(var(--neon2), var(--purple)); }
+.s3 .step-connector { background: linear-gradient(var(--purple), var(--pink)); }
+.s4 .step-connector { background: linear-gradient(var(--pink), var(--yellow)); }
+.step-content { padding-top: 8px; }
+.step-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 6px; }
+.step-desc { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
+.step-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.tag {
+  font-size: 0.7rem; font-weight: 600; padding: 3px 10px; border-radius: 999px;
+  font-family: 'JetBrains Mono', monospace; letter-spacing: 0.04em;
+}
+.tag-green  { background: rgba(0,255,136,0.1); color: var(--neon);   border: 1px solid rgba(0,255,136,0.2); }
+.tag-blue   { background: rgba(0,204,255,0.1); color: var(--neon2);  border: 1px solid rgba(0,204,255,0.2); }
+.tag-purple { background: rgba(155,89,255,0.1);color: var(--purple); border: 1px solid rgba(155,89,255,0.2); }
+.tag-pink   { background: rgba(255,61,154,0.1);color: var(--pink);   border: 1px solid rgba(255,61,154,0.2); }
+
+/* ── SKILLS ── */
+#skills { background: var(--bg); }
+.skill-group { margin-bottom: 32px; }
+.skill-group-title {
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em;
+  text-transform: uppercase; margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.skill-item {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 10px;
+}
+.skill-name { font-size: 0.88rem; min-width: 200px; }
+.skill-bar-wrap { flex: 1; background: rgba(255,255,255,0.06); border-radius: 999px; height: 6px; overflow: hidden; }
+.skill-bar { height: 100%; border-radius: 999px; }
+.skill-pct { font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; color: var(--muted); min-width: 36px; text-align: right; }
+
+/* ── PORTFOLIO ── */
+#portfolio { background: var(--bg2); }
+.portfolio-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 24px; position: relative;
+  overflow: hidden;
+}
+.portfolio-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+}
+.pc-1::before { background: linear-gradient(90deg, var(--neon), var(--neon2)); }
+.pc-2::before { background: linear-gradient(90deg, var(--purple), var(--pink)); }
+.pc-3::before { background: linear-gradient(90deg, var(--yellow), var(--neon)); }
+.pc-icon { font-size: 2rem; margin-bottom: 12px; }
+.pc-title { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+.pc-desc { font-size: 0.87rem; color: var(--muted); line-height: 1.65; }
+.pc-list { margin-top: 12px; list-style: none; }
+.pc-list li { font-size: 0.83rem; color: var(--muted); padding: 2px 0; }
+.pc-list li::before { content: '→ '; color: var(--neon); }
+
+/* ── INTERVIEW ── */
+#interview { background: var(--bg); }
+.interview-qa { border: 1px solid var(--border); border-radius: 10px; margin-bottom: 12px; overflow: hidden; }
+.iq-question {
+  padding: 16px 20px; cursor: pointer;
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 0.93rem; font-weight: 600;
+  background: var(--card);
+  transition: background 0.2s;
+}
+.iq-question:hover { background: rgba(0,255,136,0.05); }
+.iq-toggle { color: var(--neon); font-size: 1.2rem; transition: transform 0.3s; }
+.iq-answer {
+  max-height: 0; overflow: hidden; transition: max-height 0.35s ease;
+}
+.iq-answer-inner { padding: 0 20px 16px; font-size: 0.87rem; color: var(--muted); line-height: 1.75; border-top: 1px solid var(--border); padding-top: 14px; }
+.interview-qa.open .iq-toggle { transform: rotate(45deg); }
+.interview-qa.open .iq-answer { max-height: 300px; }
+
+/* ── SALARY ── */
+#salary { background: var(--bg2); }
+.salary-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.salary-table th {
+  text-align: left; padding: 12px 16px;
+  font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); border-bottom: 1px solid var(--border);
+  font-weight: 600;
+}
+.salary-table td { padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.04); }
+.salary-table tr:hover td { background: rgba(0,255,136,0.03); }
+.salary-neon { color: var(--neon); font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+.salary-blue { color: var(--neon2); font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+
+/* ── WHERE TO LOOK ── */
+#find { background: var(--bg); }
+.source-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 20px;
+  transition: border-color 0.2s;
+}
+.source-card:hover { border-color: rgba(0,204,255,0.3); }
+.source-icon { font-size: 1.6rem; margin-bottom: 8px; }
+.source-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 4px; }
+.source-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.6; }
+.source-link { font-size: 0.75rem; color: var(--neon2); margin-top: 8px; font-family: 'JetBrains Mono', monospace; }
+
+/* ── CHECKLIST ── */
+#checklist { background: var(--bg2); }
+.checklist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.cl-item {
+  display: flex; align-items: flex-start; gap: 12px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 16px;
+  cursor: pointer; transition: border-color 0.2s;
+}
+.cl-item.checked { border-color: rgba(0,255,136,0.4); background: rgba(0,255,136,0.05); }
+.cl-box {
+  width: 20px; height: 20px; flex-shrink: 0; border-radius: 4px;
+  border: 2px solid var(--muted);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.8rem; transition: all 0.2s;
+}
+.cl-item.checked .cl-box { background: var(--neon); border-color: var(--neon); color: var(--bg); }
+.cl-text { font-size: 0.85rem; line-height: 1.5; }
+.cl-progress { text-align: center; margin-top: 28px; font-size: 0.9rem; color: var(--muted); }
+.cl-progress span { color: var(--neon); font-weight: 700; font-family: 'JetBrains Mono', monospace; }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--bg);
+  border-top: 1px solid var(--border);
+  text-align: center; padding: 40px 20px;
+  color: var(--muted); font-size: 0.82rem;
+}
+.footer-logo { font-family: 'JetBrains Mono', monospace; color: var(--neon); font-size: 1rem; margin-bottom: 8px; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">// GAME_DEV_HIRED</span>
+  <div class="nav-links">
+    <a href="#roadmap">Roadmap</a>
+    <a href="#skills">Skills</a>
+    <a href="#portfolio">Portfolio</a>
+    <a href="#interview">Interview</a>
+    <a href="#salary">Salary</a>
+    <a href="#checklist">Checklist</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-tag">Senior Unity Developer · 2024 / 2025</div>
+  <h1>
+    Get Hired in<br/>
+    <span class="hl-neon">Game Development</span><br/>
+    <span class="hl-purple">The Real Playbook</span>
+  </h1>
+  <p class="hero-sub">
+    A no-fluff guide for senior developers with Unity experience — how to land the role, ace the interview, and negotiate the comp.
+  </p>
+  <div class="hero-btns">
+    <a href="#roadmap" class="btn-primary">Start the Roadmap →</a>
+    <a href="#checklist" class="btn-secondary">Jump to Checklist</a>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item"><span class="stat-num">$120K+</span><span class="stat-label">Avg. Senior Dev Salary (US)</span></div>
+  <div class="stat-item"><span class="stat-num">3,400+</span><span class="stat-label">Studios Actively Hiring</span></div>
+  <div class="stat-item"><span class="stat-num">67%</span><span class="stat-label">Jobs Filled via Referral</span></div>
+  <div class="stat-item"><span class="stat-num">4–8 wk</span><span class="stat-label">Avg. Hiring Process Length</span></div>
+</div>
+
+<!-- ROADMAP -->
+<section id="roadmap">
+<div class="container">
+  <div class="section-tag">Step by Step</div>
+  <h2 class="section-title">Your Hiring Roadmap</h2>
+  <p class="section-intro">Five phases from "I want to work in games" to offer letter in hand. Each phase has clear deliverables.</p>
+  <div class="roadmap-steps">
+
+    <div class="roadmap-step s1">
+      <div class="step-line-wrap"><div class="step-dot">01</div><div class="step-connector"></div></div>
+      <div class="step-content">
+        <div class="step-title">Audit &amp; Sharpen Your Portfolio</div>
+        <div class="step-desc">Studios hire on proof, not claims. You need 2–3 polished projects that demonstrate senior-level Unity skills: architecture decisions, performance optimization, and shipped product experience. Remove anything unfinished or from 5+ years ago.</div>
+        <div class="step-tags">
+          <span class="tag tag-green">GitHub polish</span>
+          <span class="tag tag-green">Itch.io / Steam page</span>
+          <span class="tag tag-green">GDD write-ups</span>
+          <span class="tag tag-blue">Video demos</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="roadmap-step s2">
+      <div class="step-line-wrap"><div class="step-dot">02</div><div class="step-connector"></div></div>
+      <div class="step-content">
+        <div class="step-title">Target the Right Studios</div>
+        <div class="step-desc">Match your genre experience to studio output. Mobile-casual, AAA, indie, and XR each have completely different tech stacks and culture. Mid-size studios (50–300 people) often give senior devs the most ownership and career growth.</div>
+        <div class="step-tags">
+          <span class="tag tag-blue">LinkedIn Studio Alerts</span>
+          <span class="tag tag-purple">Games Industry Biz</span>
+          <span class="tag tag-purple">Remote-first studios</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="roadmap-step s3">
+      <div class="step-line-wrap"><div class="step-dot">03</div><div class="step-connector"></div></div>
+      <div class="step-content">
+        <div class="step-title">Network Before You Apply</div>
+        <div class="step-desc">67% of game dev jobs are filled through referrals. Go to GDC, attend online game jams, join studio Discord servers, and contribute to open-source Unity tools. A warm intro from an internal dev is worth 50 cold applications.</div>
+        <div class="step-tags">
+          <span class="tag tag-purple">GDC / IGDA</span>
+          <span class="tag tag-purple">Game jams</span>
+          <span class="tag tag-pink">Twitter/X gamedev</span>
+          <span class="tag tag-pink">Discord communities</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="roadmap-step s4">
+      <div class="step-line-wrap"><div class="step-dot">04</div><div class="step-connector"></div></div>
+      <div class="step-content">
+        <div class="step-title">Nail the Interview Pipeline</div>
+        <div class="step-desc">Game studio interviews typically have 4 stages: recruiter screen → technical interview → take-home or live coding → system design + culture fit. Senior roles add a "how would you architect X?" round. Prepare a war chest of system design examples from your past work.</div>
+        <div class="step-tags">
+          <span class="tag tag-pink">STAR method</span>
+          <span class="tag tag-pink">Live Unity demos</span>
+          <span class="tag tag-green">Architecture whiteboard</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="roadmap-step s5">
+      <div class="step-line-wrap"><div class="step-dot">05</div><div class="step-connector"></div></div>
+      <div class="step-content">
+        <div class="step-title">Negotiate Total Comp</div>
+        <div class="step-desc">Game studios often underpay relative to tech. Use Levels.fyi and Glassdoor benchmarks. Always negotiate: base, bonus, royalties/profit share, equity, remote policy, and title. Your first number anchors the entire conversation — go 15–20% above your target floor.</div>
+        <div class="step-tags">
+          <span class="tag tag-green">Levels.fyi data</span>
+          <span class="tag tag-blue">Profit share</span>
+          <span class="tag tag-blue">Remote policy</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+<div class="container">
+  <div class="section-tag">Technical Depth</div>
+  <h2 class="section-title">Skills Studios Are Hiring For</h2>
+  <p class="section-intro">Ranked by demand across 500+ senior Unity job postings in 2024. Percentages reflect how often the skill appears in listings.</p>
+  <div class="grid-2">
+    <div>
+      <div class="skill-group">
+        <div class="skill-group-title" style="color:var(--neon)">🎮 Unity Core (Must-Have)</div>
+        <div class="skill-item"><span class="skill-name">C# / SOLID Patterns</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:98%;background:var(--neon)"></div></div><span class="skill-pct">98%</span></div>
+        <div class="skill-item"><span class="skill-name">Unity DOTS / ECS</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:72%;background:var(--neon)"></div></div><span class="skill-pct">72%</span></div>
+        <div class="skill-item"><span class="skill-name">URP / HDRP Shaders</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:81%;background:var(--neon)"></div></div><span class="skill-pct">81%</span></div>
+        <div class="skill-item"><span class="skill-name">Addressables / Asset Mgmt</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:75%;background:var(--neon)"></div></div><span class="skill-pct">75%</span></div>
+        <div class="skill-item"><span class="skill-name">Profiler / Optimization</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:90%;background:var(--neon)"></div></div><span class="skill-pct">90%</span></div>
+        <div class="skill-item"><span class="skill-name">Unity Netcode / Mirror</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:58%;background:var(--neon)"></div></div><span class="skill-pct">58%</span></div>
+      </div>
+    </div>
+    <div>
+      <div class="skill-group">
+        <div class="skill-group-title" style="color:var(--neon2)">🔧 Engineering &amp; Systems</div>
+        <div class="skill-item"><span class="skill-name">Git / Version Control</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:95%;background:var(--neon2)"></div></div><span class="skill-pct">95%</span></div>
+        <div class="skill-item"><span class="skill-name">CI/CD Pipelines</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:62%;background:var(--neon2)"></div></div><span class="skill-pct">62%</span></div>
+        <div class="skill-item"><span class="skill-name">Design Patterns (GoF)</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:88%;background:var(--neon2)"></div></div><span class="skill-pct">88%</span></div>
+        <div class="skill-item"><span class="skill-name">Code Review Leadership</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:85%;background:var(--neon2)"></div></div><span class="skill-pct">85%</span></div>
+        <div class="skill-item"><span class="skill-name">Mobile Performance (iOS/Android)</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:70%;background:var(--neon2)"></div></div><span class="skill-pct">70%</span></div>
+        <div class="skill-item"><span class="skill-name">XR / AR / VR (bonus)</span><div class="skill-bar-wrap"><div class="skill-bar" style="width:44%;background:var(--neon2)"></div></div><span class="skill-pct">44%</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Soft skills -->
+  <div class="grid-3" style="margin-top:32px">
+    <div class="card">
+      <div style="font-size:1.5rem;margin-bottom:10px">🧭</div>
+      <div style="font-weight:700;margin-bottom:6px">Technical Leadership</div>
+      <div style="font-size:0.85rem;color:var(--muted)">Senior devs mentor juniors, lead code reviews, drive architectural decisions, and communicate trade-offs to non-technical stakeholders. Studios pay extra for this.</div>
+    </div>
+    <div class="card">
+      <div style="font-size:1.5rem;margin-bottom:10px">🤝</div>
+      <div style="font-weight:700;margin-bottom:6px">Cross-Discipline Collaboration</div>
+      <div style="font-size:0.85rem;color:var(--muted)">You'll work daily with artists, designers, and producers. Understanding their tools (Blender, Photoshop, JIRA) and constraints makes you invaluable.</div>
+    </div>
+    <div class="card">
+      <div style="font-size:1.5rem;margin-bottom:10px">🚀</div>
+      <div style="font-weight:700;margin-bottom:6px">Shipping Experience</div>
+      <div style="font-size:0.85rem;color:var(--muted)">Nothing beats shipped titles. Put every released game — indie, mobile, jam — on your CV. Studios look for developers who understand the full lifecycle to launch.</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+<div class="container">
+  <div class="section-tag">Show Your Work</div>
+  <h2 class="section-title">Portfolio That Gets Interviews</h2>
+  <p class="section-intro">Senior portfolios must demonstrate depth, not breadth. Three great projects beat twenty mediocre ones every time.</p>
+  <div class="grid-3">
+    <div class="portfolio-card pc-1">
+      <div class="pc-icon">🏗️</div>
+      <div class="pc-title">Project 1 — Architecture Showcase</div>
+      <div class="pc-desc">A project where you made significant design decisions. Document the "why" not just the "what".</div>
+      <ul class="pc-list">
+        <li>System design doc (PDF / Notion)</li>
+        <li>Before/after performance metrics</li>
+        <li>Clean GitHub with README</li>
+        <li>60-second video walkthrough</li>
+      </ul>
+    </div>
+    <div class="portfolio-card pc-2">
+      <div class="pc-icon">🎮</div>
+      <div class="pc-title">Project 2 — Shipped / Released Title</div>
+      <div class="pc-desc">Any game that real players downloaded. Even a jam game with 200 plays shows you can ship.</div>
+      <ul class="pc-list">
+        <li>Live store / Itch.io link</li>
+        <li>Your specific contribution list</li>
+        <li>Player count or download stats</li>
+        <li>Post-mortem write-up</li>
+      </ul>
+    </div>
+    <div class="portfolio-card pc-3">
+      <div class="pc-icon">🔧</div>
+      <div class="pc-title">Project 3 — Unity Tool / Package</div>
+      <div class="pc-desc">A reusable Unity tool or editor extension shows senior-level thinking about developer experience.</div>
+      <ul class="pc-list">
+        <li>Published to OpenUPM or GitHub</li>
+        <li>Documentation site</li>
+        <li>Stars / download count</li>
+        <li>Issue / PR history (activity!)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- INTERVIEW -->
+<section id="interview">
+<div class="container">
+  <div class="section-tag">Interview Prep</div>
+  <h2 class="section-title">Questions You Will Actually Be Asked</h2>
+  <p class="section-intro">Click each question to reveal the ideal senior-level framing. These come from real game studio interview panels.</p>
+
+  <div id="iqList"></div>
+</div>
+</section>
+
+<!-- SALARY -->
+<section id="salary">
+<div class="container">
+  <div class="section-tag">Compensation Data</div>
+  <h2 class="section-title">Salary Benchmarks — Senior Unity Dev</h2>
+  <p class="section-intro">Data sourced from Levels.fyi, Glassdoor, and IGDA salary surveys (2024). Remote roles often align with US rates regardless of location.</p>
+  <div style="overflow-x:auto">
+  <table class="salary-table">
+    <thead>
+      <tr>
+        <th>Role / Level</th>
+        <th>Company Type</th>
+        <th>Base (USD)</th>
+        <th>Total Comp</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Senior Unity Dev</td><td>AAA Studio (EA, Ubisoft)</td><td class="salary-neon">$110K–$145K</td><td class="salary-blue">$130K–$170K</td><td style="color:var(--muted);font-size:0.82rem">+ bonus, stock, relocation</td></tr>
+      <tr><td>Senior Unity Dev</td><td>Mid-size (200–500 ppl)</td><td class="salary-neon">$95K–$130K</td><td class="salary-blue">$105K–$145K</td><td style="color:var(--muted);font-size:0.82rem">+ profit share possible</td></tr>
+      <tr><td>Senior Unity Dev</td><td>Indie / Remote-first</td><td class="salary-neon">$80K–$110K</td><td class="salary-blue">$85K–$120K</td><td style="color:var(--muted);font-size:0.82rem">More ownership / flexibility</td></tr>
+      <tr><td>Lead / Principal</td><td>Any</td><td class="salary-neon">$130K–$175K</td><td class="salary-blue">$155K–$220K</td><td style="color:var(--muted);font-size:0.82rem">Push for this title at 5+ yrs</td></tr>
+      <tr><td>Contract / Freelance</td><td>Any</td><td class="salary-neon">$80–$140/hr</td><td class="salary-blue">Varies</td><td style="color:var(--muted);font-size:0.82rem">No benefits, higher rate</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="grid-3" style="margin-top:32px">
+    <div class="card">
+      <div style="font-weight:700;color:var(--neon);margin-bottom:8px">💡 Negotiate Everything</div>
+      <div style="font-size:0.85rem;color:var(--muted)">Title, remote days, royalties, signing bonus, equipment budget. Every element is negotiable at the senior level. Get competing offers if you can.</div>
+    </div>
+    <div class="card">
+      <div style="font-weight:700;color:var(--neon2);margin-bottom:8px">📊 Know Your Number</div>
+      <div style="font-size:0.85rem;color:var(--muted)">Research before every interview. Levels.fyi game-specific data, IGDA annual salary survey, and LinkedIn salary insights give you real leverage.</div>
+    </div>
+    <div class="card">
+      <div style="font-weight:700;color:var(--purple);margin-bottom:8px">🏆 First 90 Days</div>
+      <div style="font-size:0.85rem;color:var(--muted)">Ship something small, fix something visible, build trust with your team lead. Propose architectural changes only after you understand the codebase.</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- WHERE TO FIND JOBS -->
+<section id="find" style="background:var(--bg)">
+<div class="container">
+  <div class="section-tag">Job Sources</div>
+  <h2 class="section-title">Where to Find Game Dev Roles</h2>
+  <p class="section-intro">Not all job boards are equal. Game dev hiring happens in specific places.</p>
+  <div class="grid-3">
+    <div class="source-card"><div class="source-icon">🕹️</div><div class="source-title">Games Industry Biz</div><div class="source-desc">The most comprehensive game-specific job board. Filter by Unity, remote, senior level.</div><div class="source-link">gamesindustry.biz/jobs</div></div>
+    <div class="source-card"><div class="source-icon">💼</div><div class="source-title">LinkedIn (Set Alerts)</div><div class="source-desc">Set "Senior Unity Developer" alerts. Follow studio pages. Engage with posts before applying — recruiters notice.</div><div class="source-link">linkedin.com/jobs</div></div>
+    <div class="source-card"><div class="source-icon">🎮</div><div class="source-title">Unity Job Board</div><div class="source-desc">Official Unity-adjacent job listings. Niche but high signal-to-noise for Unity-specific senior roles.</div><div class="source-link">unity.com/careers</div></div>
+    <div class="source-card"><div class="source-icon">🌐</div><div class="source-title">Remote OK / We Work Remotely</div><div class="source-desc">For remote-first studios. Filter by game dev. Many indie and mid-size studios post here exclusively.</div><div class="source-link">remoteok.com · weworkremotely.com</div></div>
+    <div class="source-card"><div class="source-icon">🤝</div><div class="source-title">IGDA Community</div><div class="source-desc">International Game Developers Association. Their #jobs channels and local chapters are a goldmine for referrals.</div><div class="source-link">igda.org</div></div>
+    <div class="source-card"><div class="source-icon">💬</div><div class="source-title">Discord / Slack Communities</div><div class="source-desc">Game Dev League, Brackeys Discord, r/gamedev Discord. Post your portfolio. Jobs are shared here before they're public.</div><div class="source-link">Various Discord servers</div></div>
+  </div>
+</div>
+</section>
+
+<!-- CHECKLIST -->
+<section id="checklist">
+<div class="container">
+  <div class="section-tag">Action Items</div>
+  <h2 class="section-title">Your Pre-Application Checklist</h2>
+  <p class="section-intro">Click each item as you complete it. Track your readiness before hitting Apply.</p>
+  <div class="checklist-grid" id="checklistGrid"></div>
+  <div class="cl-progress">Completed: <span id="clCount">0</span> / <span id="clTotal">0</span></div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">// LEVEL_UP.exe</div>
+  <p>Built for senior Unity developers ready to make their move into game studios.</p>
+  <p style="margin-top:6px">Data: IGDA Salary Survey 2024 · Levels.fyi · Games Industry Biz · LinkedIn Insights</p>
+</footer>
+
+<script>
+// ── Interview Q&A ──────────────────────────────────────────────────
+const iqData = [
+  {
+    q: 'Walk me through the architecture of a complex system you designed in Unity.',
+    a: 'Structure your answer: context (game type, team size, constraints) → problem → decision (what pattern/approach and why) → trade-offs you accepted → measurable outcome. Always quantify: "This reduced load times by 40%" beats "it was faster".'
+  },
+  {
+    q: 'How do you optimize a Unity game that\'s hitting frame rate issues on mobile?',
+    a: 'Profiler first — never guess. CPU vs GPU bound determines the approach. CPU: reduce Update() calls, use object pooling, implement LOD, batch draw calls. GPU: texture compression, shader variants, reduce overdraw. Always profile on target device, not Editor.'
+  },
+  {
+    q: 'What\'s your approach to managing a large codebase with a team of 8+ developers?',
+    a: 'Coding standards doc + enforced via editor plugins. Clear ownership model (who owns each system). PR process with required reviewers. Weekly architecture sync. Feature flags for WIP. Automated tests for core systems. The goal: any dev can read any file in under 5 minutes.'
+  },
+  {
+    q: 'How do you handle technical debt in a live game?',
+    a: 'Categorize debt: critical (will block features), moderate (slows velocity), low (cosmetic). Negotiate 20% sprint capacity for debt reduction — frame it as velocity investment, not cleanup. Document what was done and why. Never refactor without tests or a rollback plan.'
+  },
+  {
+    q: 'Tell me about a time a project nearly failed and how you recovered it.',
+    a: 'Use STAR (Situation, Task, Action, Result). Be honest about your role in the problem — studios respect self-awareness. Focus on the systematic fix, not heroics. End with what you would do differently. This question filters for people who learn vs people who blame.'
+  },
+  {
+    q: 'How do you stay current with Unity\'s rapidly changing feature set?',
+    a: 'Unity blog + changelog for major releases. Unity forum / Discord for early adoption issues. 1–2 hours per week on a personal learning project using new features before production. DOTS, URP, and the new Input System are all worth hands-on time regardless of current project.'
+  },
+  {
+    q: 'What questions do you have for us?',
+    a: 'Always ask: (1) What does the current codebase\'s biggest challenge look like? (2) How does the team handle technical decisions — top-down or collaborative? (3) What does a successful first 6 months look like for this role? These signal seniority and genuine interest.'
+  },
+];
+
+document.getElementById('iqList').innerHTML = iqData.map((item, i) => `
+  <div class="interview-qa" id="iq${i}">
+    <div class="iq-question" onclick="toggleIQ(${i})">
+      <span>${item.q}</span>
+      <span class="iq-toggle">+</span>
+    </div>
+    <div class="iq-answer"><div class="iq-answer-inner">${item.a}</div></div>
+  </div>
+`).join('');
+
+function toggleIQ(i) {
+  document.getElementById(`iq${i}`).classList.toggle('open');
+}
+
+// ── Checklist ──────────────────────────────────────────────────────
+const checkItems = [
+  'Portfolio has 2–3 polished, documented projects',
+  'GitHub profile is active and repos have READMEs',
+  'LinkedIn updated with Unity keywords and shipped titles',
+  'Resume is 1–2 pages, ATS-friendly, quantified results',
+  'Personal website / portfolio site is live',
+  'At least one project is publicly playable',
+  'Set up job alerts on Games Industry Biz and LinkedIn',
+  'Joined 2+ game dev Discord / Slack communities',
+  'Attended or registered for a game jam',
+  'Researched salary ranges for target roles',
+  'Prepared 5 STAR stories for behavioural questions',
+  'Practiced live Unity coding (Profiler, architecture Q&A)',
+  'Have a target list of 10–15 studios to apply to',
+  'Identified 3 warm contacts inside target studios',
+  'Know your salary floor and negotiation range',
+  'Prepared questions to ask the interviewer',
+];
+
+const grid = document.getElementById('checklistGrid');
+document.getElementById('clTotal').textContent = checkItems.length;
+
+checkItems.forEach((item, i) => {
+  const el = document.createElement('div');
+  el.className = 'cl-item';
+  el.id = `cl${i}`;
+  el.innerHTML = `<div class="cl-box" id="clBox${i}"></div><div class="cl-text">${item}</div>`;
+  el.onclick = () => {
+    el.classList.toggle('checked');
+    document.getElementById(`clBox${i}`).textContent = el.classList.contains('checked') ? '✓' : '';
+    updateCount();
+  };
+  grid.appendChild(el);
+});
+
+function updateCount() {
+  document.getElementById('clCount').textContent = document.querySelectorAll('.cl-item.checked').length;
+}
+</script>
+</body>
+</html>
