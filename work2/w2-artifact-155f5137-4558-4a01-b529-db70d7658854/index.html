@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>@PULSE — The Twitter Growth Playbook</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #080808;
+      --bg2: #0F0F0F;
+      --card: #141414;
+      --card2: #1A1A1A;
+      --border: rgba(255,255,255,0.08);
+      --orange: #FF6B35;
+      --orange2: #FF8C5A;
+      --purple: #9333EA;
+      --purple2: #A855F7;
+      --blue: #1D9BF0;
+      --green: #00BA7C;
+      --text: #F5F5F5;
+      --muted: #888;
+      --dim: #444;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 5%;
+      background: rgba(8,8,8,0.9);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.3rem; font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .nav-logo span { color: var(--orange); }
+    .nav-handle {
+      font-size: 0.8rem; color: var(--muted);
+      font-family: 'Inter', monospace;
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 0.3rem 0.8rem;
+      border-radius: 100px;
+    }
+    .nav-cta {
+      padding: 0.5rem 1.2rem;
+      background: var(--orange);
+      color: #fff;
+      border: none; border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem; font-weight: 600;
+      cursor: pointer; text-decoration: none;
+      transition: all 0.2s;
+    }
+    .nav-cta:hover { background: var(--orange2); transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 8rem 5% 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,107,53,0.08), transparent 70%),
+                  radial-gradient(ellipse 60% 40% at 80% 80%, rgba(147,51,234,0.06), transparent 60%);
+    }
+    .hero-grid-lines {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+    .hero-content { position: relative; z-index: 2; max-width: 900px; }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(255,107,53,0.12);
+      border: 1px solid rgba(255,107,53,0.3);
+      border-radius: 100px;
+      padding: 0.4rem 1rem;
+      font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--orange); margin-bottom: 2rem;
+    }
+    .pulse-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--orange); animation: blink 1s infinite; }
+    @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+
+    .hero-avatar {
+      width: 96px; height: 96px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--orange), var(--purple));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.5rem; margin: 0 auto 1.5rem;
+      box-shadow: 0 0 40px rgba(255,107,53,0.3);
+    }
+    .hero-handle {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.5rem, 7vw, 5rem);
+      font-weight: 800; letter-spacing: -0.04em;
+      line-height: 1; margin-bottom: 0.8rem;
+    }
+    .hero-handle .at { color: var(--orange); }
+    .hero-title {
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      color: var(--muted); margin-bottom: 1.5rem;
+      font-weight: 400;
+    }
+    .hero-bio {
+      font-size: 1.1rem; color: var(--text);
+      max-width: 560px; margin: 0 auto 2.5rem;
+      line-height: 1.6;
+    }
+    .hero-stats {
+      display: flex; gap: 3rem; justify-content: center;
+      margin-bottom: 3rem; flex-wrap: wrap;
+    }
+    .h-stat .num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.2rem; font-weight: 800;
+      color: var(--orange);
+    }
+    .h-stat .lbl { font-size: 0.75rem; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; }
+    .hero-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn-fire {
+      padding: 0.85rem 2rem;
+      background: var(--orange);
+      color: #fff; border: none; border-radius: 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem; font-weight: 700;
+      cursor: pointer; text-decoration: none;
+      transition: all 0.2s;
+      box-shadow: 0 0 30px rgba(255,107,53,0.35);
+    }
+    .btn-fire:hover { background: var(--orange2); transform: translateY(-2px); box-shadow: 0 0 50px rgba(255,107,53,0.5); }
+    .btn-outline {
+      padding: 0.85rem 2rem;
+      background: transparent; color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: 1rem; font-weight: 500;
+      cursor: pointer; text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-outline:hover { border-color: rgba(255,107,53,0.4); background: rgba(255,107,53,0.06); }
+
+    /* ── SECTION COMMON ── */
+    section { padding: 6rem 5%; }
+    .s-tag {
+      display: inline-block;
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--orange); margin-bottom: 0.8rem;
+    }
+    .s-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800; letter-spacing: -0.02em;
+      line-height: 1.1; margin-bottom: 1rem;
+    }
+    .s-sub { font-size: 1rem; color: var(--muted); max-width: 560px; line-height: 1.7; }
+
+    /* ── IDENTITY CARD ── */
+    #identity { background: var(--bg2); }
+    .identity-grid {
+      display: grid; grid-template-columns: 1fr 1.6fr; gap: 4rem; align-items: start;
+    }
+    .profile-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px; overflow: hidden;
+    }
+    .profile-banner {
+      height: 100px;
+      background: linear-gradient(135deg, #1a0a00, #3d1500, #4a0e2e);
+    }
+    .profile-info { padding: 0 1.5rem 1.5rem; }
+    .profile-ava {
+      width: 70px; height: 70px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--orange), var(--purple));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem;
+      border: 3px solid var(--bg);
+      margin-top: -35px; margin-bottom: 0.8rem;
+    }
+    .profile-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.2rem; font-weight: 800;
+      margin-bottom: 0.1rem;
+    }
+    .profile-at { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.8rem; }
+    .profile-bioline { font-size: 0.875rem; line-height: 1.5; margin-bottom: 1rem; }
+    .profile-meta { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1rem; }
+    .profile-meta span { font-size: 0.8rem; color: var(--muted); display: flex; align-items: center; gap: 0.5rem; }
+    .profile-numbers {
+      display: flex; gap: 1.5rem;
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+    }
+    .pnum .n { font-weight: 700; font-size: 0.95rem; }
+    .pnum .l { font-size: 0.75rem; color: var(--muted); }
+
+    .identity-details { display: flex; flex-direction: column; gap: 1.5rem; }
+    .id-block {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.5rem;
+    }
+    .id-block h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 0.85rem; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--orange); margin-bottom: 1rem;
+    }
+    .formula {
+      font-size: 0.9rem; line-height: 1.8; color: var(--text);
+    }
+    .formula .hi { color: var(--orange); font-weight: 600; }
+    .formula .hl2 { color: var(--purple2); font-weight: 600; }
+    .pillars-row { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .pillar-chip {
+      padding: 0.3rem 0.75rem;
+      background: rgba(255,107,53,0.1);
+      border: 1px solid rgba(255,107,53,0.25);
+      border-radius: 100px;
+      font-size: 0.78rem; font-weight: 600; color: var(--orange);
+    }
+    .pillar-chip.purple {
+      background: rgba(147,51,234,0.1);
+      border-color: rgba(147,51,234,0.25);
+      color: var(--purple2);
+    }
+    .pillar-chip.blue {
+      background: rgba(29,155,240,0.1);
+      border-color: rgba(29,155,240,0.25);
+      color: var(--blue);
+    }
+    .posting-table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
+    .posting-table td { padding: 0.5rem 0.3rem; border-bottom: 1px solid var(--border); }
+    .posting-table td:first-child { color: var(--muted); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; }
+    .posting-table td:last-child { color: var(--text); font-weight: 500; }
+
+    /* ── CONTENT PILLARS (TABS) ── */
+    #content { background: var(--bg); }
+    .tabs {
+      display: flex; gap: 0.5rem; flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+    .tab-btn {
+      padding: 0.6rem 1.2rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px; color: var(--muted);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem; font-weight: 600;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .tab-btn.active, .tab-btn:hover {
+      background: var(--orange); border-color: var(--orange);
+      color: #fff;
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+    .content-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+    }
+    .tweet-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.2rem;
+      transition: border-color 0.2s;
+    }
+    .tweet-card:hover { border-color: rgba(255,107,53,0.3); }
+    .tweet-header { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 0.8rem; }
+    .tweet-ava {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--orange), var(--purple));
+      display: flex; align-items: center; justify-content: center; font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .tweet-meta .t-name { font-weight: 700; font-size: 0.875rem; }
+    .tweet-meta .t-at { font-size: 0.78rem; color: var(--muted); }
+    .tweet-body { font-size: 0.9rem; line-height: 1.6; margin-bottom: 1rem; }
+    .tweet-actions { display: flex; gap: 1.5rem; }
+    .ta { font-size: 0.78rem; color: var(--dim); display: flex; align-items: center; gap: 0.3rem; }
+    .ta.engaged { color: var(--orange); }
+    .tweet-note {
+      margin-top: 0.8rem; padding-top: 0.8rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.75rem; color: var(--muted);
+      font-style: italic;
+    }
+    .content-tip {
+      background: linear-gradient(135deg, rgba(255,107,53,0.08), rgba(147,51,234,0.08));
+      border: 1px solid rgba(255,107,53,0.2);
+      border-radius: 14px; padding: 1.5rem;
+      grid-column: span 2;
+    }
+    .content-tip h4 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem; font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+    .content-tip p { font-size: 0.875rem; color: var(--muted); line-height: 1.6; }
+
+    /* ── 90-DAY PLAYBOOK ── */
+    #playbook {
+      background: linear-gradient(180deg, var(--bg2), var(--bg));
+    }
+    .phases { display: flex; flex-direction: column; gap: 2rem; margin-top: 2.5rem; }
+    .phase-block {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px; overflow: hidden;
+    }
+    .phase-header {
+      display: flex; align-items: center; gap: 1.5rem;
+      padding: 1.5rem 2rem;
+      cursor: pointer; user-select: none;
+      transition: background 0.2s;
+    }
+    .phase-header:hover { background: var(--card2); }
+    .phase-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.5rem; font-weight: 800;
+      color: rgba(255,107,53,0.2); line-height: 1;
+      flex-shrink: 0;
+    }
+    .phase-info h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.2rem; font-weight: 800;
+      margin-bottom: 0.2rem;
+    }
+    .phase-info p { font-size: 0.85rem; color: var(--muted); }
+    .phase-days {
+      margin-left: auto;
+      font-size: 0.75rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--orange);
+      background: rgba(255,107,53,0.1);
+      border: 1px solid rgba(255,107,53,0.25);
+      padding: 0.35rem 0.75rem;
+      border-radius: 100px; flex-shrink: 0;
+    }
+    .phase-toggle { color: var(--muted); font-size: 1.2rem; flex-shrink: 0; transition: transform 0.3s; }
+    .phase-block.open .phase-toggle { transform: rotate(180deg); }
+    .phase-content {
+      display: none;
+      padding: 0 2rem 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .phase-block.open .phase-content { display: block; }
+    .checklist { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; padding-top: 1.2rem; }
+    .checklist li {
+      display: flex; align-items: flex-start; gap: 0.8rem;
+      font-size: 0.875rem;
+    }
+    .check-box {
+      width: 18px; height: 18px; border-radius: 4px;
+      border: 2px solid var(--dim);
+      flex-shrink: 0; margin-top: 2px;
+      cursor: pointer; transition: all 0.15s;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem;
+    }
+    .check-box.checked {
+      background: var(--orange); border-color: var(--orange);
+      color: #fff;
+    }
+
+    /* ── VIRAL MECHANICS ── */
+    #viral { background: var(--bg); }
+    .viral-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2.5rem;
+    }
+    .viral-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px; padding: 2rem;
+      position: relative; overflow: hidden;
+    }
+    .viral-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    }
+    .viral-card.vc-orange::before { background: linear-gradient(90deg, var(--orange), transparent); }
+    .viral-card.vc-purple::before { background: linear-gradient(90deg, var(--purple), transparent); }
+    .viral-card.vc-blue::before { background: linear-gradient(90deg, var(--blue), transparent); }
+    .viral-card.vc-green::before { background: linear-gradient(90deg, var(--green), transparent); }
+    .vc-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .vc-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem; font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+    .vc-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; margin-bottom: 1.2rem; }
+    .formula-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px; padding: 0.8rem 1rem;
+      font-size: 0.8rem; font-family: 'Inter', monospace;
+      color: var(--orange); line-height: 1.5;
+    }
+
+    /* ── MONETIZATION ── */
+    #money { background: var(--bg2); }
+    .money-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin-top: 2.5rem;
+    }
+    .money-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.8rem;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .money-card:hover { transform: translateY(-3px); border-color: rgba(255,107,53,0.3); }
+    .money-icon { font-size: 2rem; margin-bottom: 0.8rem; }
+    .money-title { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .money-range {
+      font-size: 1.1rem; font-weight: 700;
+      color: var(--green); margin-bottom: 0.6rem;
+    }
+    .money-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.5; }
+    .money-timeline {
+      margin-top: 0.8rem; font-size: 0.72rem;
+      color: var(--muted); display: flex; align-items: center; gap: 0.4rem;
+    }
+    .money-timeline .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--orange); flex-shrink: 0; }
+
+    /* ── TOOLS ── */
+    #tools { background: var(--bg); }
+    .tools-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 2rem; }
+    .tool-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.2rem;
+      text-align: center; transition: transform 0.2s;
+    }
+    .tool-card:hover { transform: translateY(-2px); border-color: rgba(255,107,53,0.25); }
+    .tool-icon { font-size: 1.5rem; margin-bottom: 0.6rem; }
+    .tool-name { font-size: 0.85rem; font-weight: 700; margin-bottom: 0.2rem; }
+    .tool-use { font-size: 0.75rem; color: var(--muted); }
+
+    /* ── CTA ── */
+    #cta {
+      background: linear-gradient(135deg, #120500 0%, #1a0530 50%, #050510 100%);
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+    .cta-inner { max-width: 600px; margin: 0 auto; }
+    .cta-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800; letter-spacing: -0.03em;
+      margin-bottom: 1rem; line-height: 1.1;
+    }
+    .cta-sub { font-size: 1rem; color: var(--muted); margin-bottom: 2.5rem; }
+    .input-row { display: flex; gap: 0.8rem; margin-bottom: 1rem; }
+    .cta-input {
+      flex: 1;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 10px; padding: 0.9rem 1rem;
+      color: var(--text); font-family: 'Inter', sans-serif; font-size: 0.95rem;
+      outline: none; transition: border-color 0.2s;
+    }
+    .cta-input:focus { border-color: var(--orange); }
+    .cta-submit {
+      padding: 0.9rem 1.8rem;
+      background: var(--orange); color: #fff;
+      border: none; border-radius: 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem; font-weight: 700;
+      cursor: pointer; transition: all 0.2s;
+      white-space: nowrap;
+      box-shadow: 0 0 30px rgba(255,107,53,0.35);
+    }
+    .cta-submit:hover { background: var(--orange2); box-shadow: 0 0 50px rgba(255,107,53,0.5); }
+    .cta-note { font-size: 0.75rem; color: var(--dim); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #050505; border-top: 1px solid var(--border);
+      padding: 2.5rem 5%;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+    }
+    .f-logo { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 800; }
+    .f-logo span { color: var(--orange); }
+    .f-note { font-size: 0.78rem; color: var(--dim); }
+    .f-live {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.78rem; color: var(--green);
+    }
+    .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: blink 1s infinite; }
+
+    @media (max-width: 860px) {
+      .identity-grid { grid-template-columns: 1fr; }
+      .content-grid { grid-template-columns: 1fr; }
+      .content-tip { grid-column: span 1; }
+      .viral-grid { grid-template-columns: 1fr; }
+      .money-grid { grid-template-columns: 1fr 1fr; }
+      .tools-grid { grid-template-columns: 1fr 1fr; }
+      .input-row { flex-direction: column; }
+    }
+    @media (max-width: 560px) {
+      .money-grid { grid-template-columns: 1fr; }
+      .hero-stats { gap: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo"><span>@</span>PULSE</div>
+  <div class="nav-handle">@thepulsex &nbsp;·&nbsp; The Internet's Heartbeat</div>
+  <a href="#cta" class="nav-cta">Get the Playbook</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid-lines"></div>
+  <div class="hero-content">
+    <div class="hero-tag"><span class="pulse-dot"></span>New Twitter Personality Reveal</div>
+    <div class="hero-avatar">⚡</div>
+    <div class="hero-handle"><span class="at">@</span>PULSE</div>
+    <div class="hero-title">The Internet's Heartbeat — Full Growth Playbook</div>
+    <p class="hero-bio">The step-by-step blueprint to build a viral Twitter personality from 0 to 100K+. Mario Nawfal-level presence, engineered from scratch. Catchy, viby, and built to monetize.</p>
+    <div class="hero-stats">
+      <div class="h-stat"><div class="num">90</div><div class="lbl">Day Blueprint</div></div>
+      <div class="h-stat"><div class="num">6</div><div class="lbl">Revenue Streams</div></div>
+      <div class="h-stat"><div class="num">5</div><div class="lbl">Content Pillars</div></div>
+      <div class="h-stat"><div class="num">∞</div><div class="lbl">Upside</div></div>
+    </div>
+    <div class="hero-actions">
+      <a href="#playbook" class="btn-fire">Start the Playbook ↓</a>
+      <a href="#identity" class="btn-outline">Meet @PULSE</a>
+    </div>
+  </div>
+</section>
+
+<!-- IDENTITY -->
+<section id="identity">
+  <div class="identity-grid">
+    <div>
+      <div class="s-tag">// The Persona</div>
+      <h2 class="s-title">Meet @PULSE</h2>
+      <p class="s-sub">PULSE is the internet's most watchable debate host and hot-take machine. Built for the age of Twitter Spaces, real-time discourse, and AI-speed news cycles.</p>
+      <br>
+      <div class="profile-card">
+        <div class="profile-banner"></div>
+        <div class="profile-info">
+          <div class="profile-ava">⚡</div>
+          <div class="profile-name">PULSE</div>
+          <div class="profile-at">@thepulsex</div>
+          <div class="profile-bioline">Tracking the signal. Cutting the noise. 🔥 Tech | Geopolitics | Founders | Markets | What they won't say on TV</div>
+          <div class="profile-meta">
+            <span>📍 The Internet</span>
+            <span>🔗 pulse.xyz</span>
+            <span>📅 Joined April 2024</span>
+          </div>
+          <div class="profile-numbers">
+            <div class="pnum"><div class="n">0</div><div class="l">Following</div></div>
+            <div class="pnum"><div class="n" id="followerCount">0</div><div class="l">Followers</div></div>
+            <div class="pnum"><div class="n">1.2M</div><div class="l">Views/mo</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="identity-details">
+      <div class="id-block">
+        <h3>🧬 Bio Formula (Copy This)</h3>
+        <div class="formula">
+          <span class="hi">[Power emotion word]</span> +
+          <span class="hl2">[3 topic pillars]</span> +
+          <span class="hi">[credibility signal]</span> +
+          <span class="hl2">[CTA emoji]</span><br><br>
+          <strong>Example:</strong><br>
+          "Tracking the signal. Cutting the noise. 🔥<br>
+          Tech | Geopolitics | Founders | Markets<br>
+          Host of <span class="hi">PULSE SPACES</span> · Daily at 9PM ET 🎙️"
+        </div>
+      </div>
+      <div class="id-block">
+        <h3>🎯 Content Pillars</h3>
+        <div class="pillars-row">
+          <span class="pillar-chip">🤖 AI & Tech</span>
+          <span class="pillar-chip">🌍 Geopolitics</span>
+          <span class="pillar-chip purple">💰 Markets & Crypto</span>
+          <span class="pillar-chip blue">🎙️ Founder Stories</span>
+          <span class="pillar-chip">🔥 Hot Takes</span>
+          <span class="pillar-chip purple">🚀 Startup Drama</span>
+          <span class="pillar-chip blue">📡 Breaking News</span>
+        </div>
+      </div>
+      <div class="id-block">
+        <h3>📅 Posting Schedule</h3>
+        <table class="posting-table">
+          <tr><td>Morning (7–9 AM)</td><td>1 hot take thread or news reaction</td></tr>
+          <tr><td>Midday (12–1 PM)</td><td>1 engagement reply loop + poll</td></tr>
+          <tr><td>Afternoon (4–6 PM)</td><td>1 long-form thread or Spaces announcement</td></tr>
+          <tr><td>Evening (9 PM)</td><td>PULSE SPACES — live debate (3x/week)</td></tr>
+          <tr><td>Weekend</td><td>Recap thread + viral repost curation</td></tr>
+        </table>
+      </div>
+      <div class="id-block">
+        <h3>🎨 Aesthetic & Voice</h3>
+        <div class="formula">
+          Voice: <span class="hi">Urgent · Confident · Never boring</span><br>
+          Format: Short → Medium → Boom. No walls of text.<br>
+          Controversy: <span class="hl2">Provocative but not stupid.</span><br>
+          Tone: Think Mario Nawfal meets Paul Graham meets breaking news anchor.<br>
+          Emoji: Minimal. Only 🔥⚡🎙️📡 — your signature set.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTENT PILLARS -->
+<section id="content">
+  <div class="s-tag">// Content Engine</div>
+  <h2 class="s-title">5 Content Pillars<br>That Drive Viral Growth</h2>
+  <p class="s-sub">Every piece of content fits one of these five categories. Mix them daily. Each one serves a different growth function.</p>
+  <br>
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('takes')">🔥 Hot Takes</button>
+    <button class="tab-btn" onclick="switchTab('spaces')">🎙️ Spaces</button>
+    <button class="tab-btn" onclick="switchTab('threads')">📜 Threads</button>
+    <button class="tab-btn" onclick="switchTab('news')">📡 Breaking</button>
+    <button class="tab-btn" onclick="switchTab('replies')">💬 Reply Game</button>
+  </div>
+
+  <div id="tab-takes" class="tab-panel active">
+    <div class="content-grid">
+      <div class="tweet-card">
+        <div class="tweet-header">
+          <div class="tweet-ava">⚡</div>
+          <div class="tweet-meta"><div class="t-name">PULSE</div><div class="t-at">@thepulsex</div></div>
+        </div>
+        <div class="tweet-body">
+          The era of "raising a Series A" as a flex is over.<br><br>
+          The new flex is generating $5M ARR with 3 people and no VC.<br><br>
+          Founding teams are realizing the VCs needed them more than they needed the VCs.
+        </div>
+        <div class="tweet-actions">
+          <span class="ta engaged">🔁 4.2K</span>
+          <span class="ta engaged">❤️ 18K</span>
+          <span class="ta">💬 892</span>
+          <span class="ta">👁️ 2.1M</span>
+        </div>
+        <div class="tweet-note">Formula: Contrast old vs new. Challenge consensus. End with an implication, not a conclusion.</div>
+      </div>
+      <div class="tweet-card">
+        <div class="tweet-header">
+          <div class="tweet-ava">⚡</div>
+          <div class="tweet-meta"><div class="t-name">PULSE</div><div class="t-at">@thepulsex</div></div>
+        </div>
+        <div class="tweet-body">
+          ChatGPT is not the product.<br><br>
+          The automation of 40% of white-collar work is the product.<br><br>
+          Most people are debating the wrapper. Nobody's preparing for the earthquake.
+        </div>
+        <div class="tweet-actions">
+          <span class="ta engaged">🔁 8.1K</span>
+          <span class="ta engaged">❤️ 31K</span>
+          <span class="ta">💬 1.4K</span>
+          <span class="ta">👁️ 4.7M</span>
+        </div>
+        <div class="tweet-note">Formula: Reframe the popular narrative. Show the bigger picture most miss. Urgency wins.</div>
+      </div>
+      <div class="content-tip">
+        <h4>🎯 Hot Take Formula</h4>
+        <p><strong>Line 1:</strong> Bold contrarian claim (1 sentence, no hedging)<br>
+        <strong>Line 2:</strong> Empty line (creates curiosity gap, more clicks)<br>
+        <strong>Line 3:</strong> Reframe or context (2-3 sentences)<br>
+        <strong>Line 4:</strong> The implication they haven't thought about<br><br>
+        Post between 7-9 AM. Never apologize. Never hedge. If you were wrong, post a better take.</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-spaces" class="tab-panel">
+    <div class="content-grid">
+      <div class="tweet-card">
+        <div class="tweet-header">
+          <div class="tweet-ava">⚡</div>
+          <div class="tweet-meta"><div class="t-name">PULSE</div><div class="t-at">@thepulsex</div></div>
+        </div>
+        <div class="tweet-body">
+          🎙️ PULSE SPACES — Tonight 9PM ET<br><br>
+          Topic: "Is OpenAI's moat real or manufactured hype?"<br><br>
+          Speakers: @founder1 @vcinvestor @airesearcher<br><br>
+          Set a reminder ↓
+        </div>
+        <div class="tweet-actions">
+          <span class="ta engaged">🔔 6.2K reminders</span>
+          <span class="ta engaged">❤️ 12K</span>
+        </div>
+        <div class="tweet-note">Post 4 hours before. Tag 3 speakers. One controversial topic question. The title IS the hook.</div>
+      </div>
+      <div class="tweet-card">
+        <div class="tweet-header">
+          <div class="tweet-ava">⚡</div>
+          <div class="tweet-meta"><div class="t-name">PULSE</div><div class="t-at">@thepulsex</div></div>
+        </div>
+        <div class="tweet-body">
+          🔴 LIVE NOW — PULSE SPACES<br><br>
+          "The Fed just blinked" — what actually happened today and what it means for your portfolio<br><br>
+          Join: 12,400 listening → [link]
+        </div>
+        <div class="tweet-actions">
+          <span class="ta engaged">🔁 3.8K</span>
+          <span class="ta engaged">❤️ 9.2K</span>
+          <span class="ta">💬 540</span>
+        </div>
+        <div class="tweet-note">During Spaces: post live updates every 20 min. Quote the most controversial thing said. Builds FOMO.</div>
+      </div>
+      <div class="content-tip">
+        <h4>🎙️ Spaces Playbook</h4>
+        <p><strong>Cadence:</strong> 3x per week minimum. Tuesday / Thursday / Sunday 9PM ET<br>
+        <strong>Format:</strong> 60-90 min debate. 3-5 guests. Rotating topics.<br>
+        <strong>Topics that work:</strong> "Is X dead?", "Who wins: A or B?", "The truth about [hot topic]"<br>
+        <strong>Growth hack:</strong> Record and clip to Twitter video. Best 90-second clip = separate post = 10x the views.<br>
+        <strong>Monetization:</strong> After 5K monthly Spaces listeners, sell Spaces sponsorships ($500-$5K per slot).</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-threads" class="tab-panel">
+    <div class="content-grid">
+      <div class="tweet-card">
+        <div class="tweet-header">
+          <div class="tweet-ava">⚡</div>
+          <div class="tweet-meta"><div class="t-name">PULSE</div><div class="t-at">@thepulsex</div></div>
+        </div>
+        <div class="tweet-body">
+          The 10 things nobody is saying about the AI jobs crisis (thread)🧵<br><br>
+          (1/10) Every major company is quietly preparing 30-50% headcount reductions in knowledge work roles. They won't say it publicly. Here's the evidence...
+        </div>
+        <div class="tweet-actions">
+          <span class="ta engaged">🔁 12K</span>
+          <span class="ta engaged">❤️ 44K</span>
+          <span class="ta">💬 2.8K</span>
+          <span class="ta">👁️ 8M</span>
+        </div>
+        <div class="tweet-note">Thread opener formula: "The [number] things nobody says about [hot topic] (thread) 🧵"</div>
+      </div>
+      <div class="tweet-card">
+        <div class="tweet-header">
+          <div class="tweet-ava">⚡</div>
+          <div class="tweet-meta"><div class="t-name">PULSE</div><div class="t-at">@thepulsex</div></div>
+        </div>
+        <div class="tweet-body">
+          I spent 48 hours talking to 12 VCs about what's really happening in AI funding.<br><br>
+          What they told me off the record is shocking. Here's everything: 🧵
+        </div>
+        <div class="tweet-actions">
+          <span class="ta engaged">🔁 9.4K</span>
+          <span class="ta engaged">❤️ 38K</span>
+          <span class="ta">💬 2.1K</span>
+          <span class="ta">👁️ 6.2M</span>
+        </div>
+        <div class="tweet-note">Credibility signal + time investment + "off the record" = guaranteed curiosity gap clicks.</div>
+      </div>
+      <div class="content-tip">
+        <h4>📜 Thread Framework</h4>
+        <p><strong>Hook tweet:</strong> Curiosity gap. Make them NEED to click. Number + topic + "thread" + emoji.<br>
+        <strong>Tweet 2:</strong> Context. Why should they care RIGHT NOW?<br>
+        <strong>Tweets 3-9:</strong> Numbered insights. Each one standalone shareable.<br>
+        <strong>Final tweet:</strong> "If this was useful, retweet tweet 1. I post threads like this daily."<br>
+        <strong>Pro tip:</strong> End with a question that drives replies → "Which of these surprised you most?"</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-news" class="tab-panel">
+    <div class="content-grid">
+      <div class="tweet-card">
+        <div class="tweet-header">
+          <div class="tweet-ava">⚡</div>
+          <div class="tweet-meta"><div class="t-name">PULSE</div><div class="t-at">@thepulsex</div></div>
+        </div>
+        <div class="tweet-body">
+          🚨 BREAKING: OpenAI just raised $40B at $300B valuation.<br><br>
+          This makes it the most valuable private company in history.<br><br>
+          What this means for every tech company, every VC, and every developer →
+        </div>
+        <div class="tweet-actions">
+          <span class="ta engaged">🔁 15K</span>
+          <span class="ta engaged">❤️ 52K</span>
+          <span class="ta">💬 4.1K</span>
+          <span class="ta">👁️ 11M</span>
+        </div>
+        <div class="tweet-note">Be first OR be the best analysis. Never just repost. Always add: "What this means →"</div>
+      </div>
+      <div class="tweet-card">
+        <div class="tweet-header">
+          <div class="tweet-ava">⚡</div>
+          <div class="tweet-meta"><div class="t-name">PULSE</div><div class="t-at">@thepulsex</div></div>
+        </div>
+        <div class="tweet-body">
+          Everyone's covering the headline.<br><br>
+          Nobody's covering the $14B secondary market that just quietly emerged as a result of it.<br><br>
+          That's the real story.
+        </div>
+        <div class="tweet-actions">
+          <span class="ta engaged">🔁 7.2K</span>
+          <span class="ta engaged">❤️ 29K</span>
+          <span class="ta">💬 1.6K</span>
+          <span class="ta">👁️ 5.4M</span>
+        </div>
+        <div class="tweet-note">The contrarian angle on a big story always outperforms the original story. Find the angle nobody has.</div>
+      </div>
+      <div class="content-tip">
+        <h4>📡 Breaking News Strategy</h4>
+        <p><strong>Speed matters:</strong> Set up Google Alerts + follow 50 journalists. Post within 10 min of a major story breaking.<br>
+        <strong>The formula:</strong> "🚨 BREAKING: [fact]. This means [implication]. Here's what nobody is saying →"<br>
+        <strong>Add value:</strong> Always add your POV. Never just repost. Your analysis is the product.<br>
+        <strong>Tools:</strong> Feedly Pro, Bloomberg alerts, CoinGecko, Polymarket for prediction markets.</p>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-replies" class="tab-panel">
+    <div class="content-grid">
+      <div class="tweet-card" style="grid-column: span 2;">
+        <div style="margin-bottom:1.2rem;">
+          <strong>The Reply Game System</strong>
+          <p style="font-size:0.85rem; color:var(--muted); margin-top:0.4rem;">
+            80% of early follower growth comes from replies, not original posts. Here's the PULSE reply formula:
+          </p>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:1rem;">
+          <div style="background:var(--bg); border-radius:10px; padding:1rem; border: 1px solid var(--border);">
+            <div style="font-size:0.75rem; color:var(--muted); margin-bottom:0.4rem;">Target: @elonmusk tweets something polarizing</div>
+            <div style="font-size:0.875rem;"><strong>PULSE:</strong> "The framing here is doing a lot of work. What's actually happening is [contrarian 2-sentence analysis]. Most people will miss this."</div>
+            <div style="font-size:0.72rem; color:var(--orange); margin-top:0.5rem;">📊 Average: 200-2000 profile visits per reply on large accounts</div>
+          </div>
+          <div style="background:var(--bg); border-radius:10px; padding:1rem; border: 1px solid var(--border);">
+            <div style="font-size:0.75rem; color:var(--muted); margin-bottom:0.4rem;">Target: Viral tweet about AI / crypto / geopolitics</div>
+            <div style="font-size:0.875rem;"><strong>PULSE:</strong> "Thread incoming on exactly this. The situation is more nuanced than the headline — here's the full picture 🧵 [link your thread]"</div>
+            <div style="font-size:0.72rem; color:var(--orange); margin-top:0.5rem;">📊 Cross-promotes your threads via the top of big conversation</div>
+          </div>
+        </div>
+      </div>
+      <div class="content-tip">
+        <h4>💬 Reply Targets List</h4>
+        <p>Build a list of 30-50 accounts to reply to daily. Mix: <br>
+        10x mega accounts (Elon, Sam Altman, Naval) → visibility<br>
+        20x mid-tier (50K-500K) in your niches → relevance<br>
+        10x peers (5K-50K rising accounts) → network building<br>
+        <br>Schedule 30 min AM + 30 min PM for reply loops. Never lurk. Always add value. Never sycophantic. Always provocative-but-smart.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 90-DAY PLAYBOOK -->
+<section id="playbook">
+  <div class="s-tag">// The Playbook</div>
+  <h2 class="s-title">90-Day Blueprint</h2>
+  <p class="s-sub">Three phases. Each one builds the foundation for the next. Check off tasks as you complete them.</p>
+  <div class="phases">
+    <div class="phase-block open">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-num">01</div>
+        <div class="phase-info">
+          <h3>Foundation Phase — Build the Base</h3>
+          <p>Profile optimization, first 100 posts, reply grind, first 1K followers</p>
+        </div>
+        <div class="phase-days">Days 1–30</div>
+        <div class="phase-toggle">▾</div>
+      </div>
+      <div class="phase-content">
+        <ul class="checklist">
+          <li><div class="check-box" onclick="toggleCheck(this)"></div>Create @thepulsex account with the exact bio formula above</li>
+          <li><div class="check-box" onclick="toggleCheck(this)"></div>Set profile photo: high-quality headshot OR branded avatar (electric/orange aesthetic)</li>
+          <li><div class="check-box" onclick="toggleCheck(this)"></div>Set banner: "⚡ Tracking the Signal" with your top 3 content areas</li>
+          <li><div class="check-box" onclick="toggleCheck(this)"></div>Pin tweet: your best introductory thread or most provocative take</li>
+          <li><div class="check-box" onclick="toggleCheck(this)"></div>Build your "follow list" of 50 target accounts across your niches</li>
+          <li><div class="check-box" onclick="toggleCheck(this)"></div>Post 3 times per day minimum for the first 30 days — no exceptions</li>
+          <li><div class="check-box" onclick="toggleCheck(this)"></div>Reply to 20 accounts per day (use the reply game system)</li>
+          <li><div class="check-box" onclick="toggleCheck(this)"></div>Write and post your first 5-tweet thread (use the thread framework)</li>
+          <li><div class="check-box" onclick="toggleCheck(this)"></div>Host your first Twitter Space (even with 5 listeners — it doesn't matter yet)</li>
+          <li><div class="check-box" onclick="toggleCheck(this)"></div>Reach 500 followers before day 30 — if not, increase reply volume to 40/day</li>
+          <li><div class="check-box" onclick="toggleCheck(this)"></div>Post your first viral hot take attempt — topic: something everyone has a strong opinion on</li>
+          <li><div class="check-box" onclick="toggleCheck(this)"></div>DM 10 accounts in your niche. Intro yourself. No ask yet. Just connect.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="phase-block">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-num">02</div>
+        <div class="phase-info">
+          <h3>Amplification Phase — Break Out</h3>
+          <p>First viral post, Spaces with guests, cross-platform seeding, 5K–25K followers</p>
+        </div>
+        <div class="phase-days">Days 31–60</div>
+        <div class="phase-toggle">▾</div>
+      </div>
+      <div class="phase-content">
+        <ul class="checklist">
+          <li><div class="check-box" onclick="toggleCheck(this)"></div>Launch "PULSE SPACES" as a weekly brand — pick your day/time and stick to it</li>
+          <li><div class="check-box" onclick="toggleCheck(this)"></div>Invite 3 guests per Space who have 10K+ followers (they bring their audience)</li>
+          <li><div class="check-box" onclick="toggleCheck(this)"></div>Record every Space and clip the 90-second best moment → repost as video</li>
+          <li><div class="check-box" onclick="toggleCheck(this)"></div>Start a Substack newsletter as a secondary channel (repurpose best threads)</li>
+          <li><div class="check-box" onclick="toggleCheck(this)"></div>Get quoted/mentioned by 1 account with 100K+ followers (reply+add value until they notice you)</li>
+          <li><div class="check-box" onclick="toggleCheck(this)"></div>Post your first "This Week in [Your Niche]" recap thread — build the curator brand</li>
+          <li><div class="check-box" onclick="toggleCheck(this)"></div>Reach 5,000 followers before day 60</li>
+          <li><div class="check-box" onclick="toggleCheck(this)"></div>Collab post with 2 peers in your niche (quote each other's threads)</li>
+          <li><div class="check-box" onclick="toggleCheck(this)"></div>Launch a poll 2x per week — engagement booster + content idea mining</li>
+          <li><div class="check-box" onclick="toggleCheck(this)"></div>Get your first inbound DM from a brand or sponsor (at 5K, it starts happening)</li>
+          <li><div class="check-box" onclick="toggleCheck(this)"></div>Set up your link-in-bio (Beacons or Linktree) with newsletter + future products</li>
+        </ul>
+      </div>
+    </div>
+    <div class="phase-block">
+      <div class="phase-header" onclick="togglePhase(this)">
+        <div class="phase-num">03</div>
+        <div class="phase-info">
+          <h3>Monetization Phase — Get Paid</h3>
+          <p>First paid deals, community launch, 25K–100K followers, income activated</p>
+        </div>
+        <div class="phase-days">Days 61–90</div>
+        <div class="phase-toggle">▾</div>
+      </div>
+      <div class="phase-content">
+        <ul class="checklist">
+          <li><div class="check-box" onclick="toggleCheck(this)"></div>Launch a paid newsletter tier ($10/mo minimum) — target 200 paid subs = $2K/mo baseline</li>
+          <li><div class="check-box" onclick="toggleCheck(this)"></div>Close first brand partnership deal ($500+ for a post/mention)</li>
+          <li><div class="check-box" onclick="toggleCheck(this)"></div>Apply for X's Creator Revenue Sharing program (requires 500+ followers + 5M impressions/3mo)</li>
+          <li><div class="check-box" onclick="toggleCheck(this)"></div>Launch a Discord or Telegram community ("PULSE Community" — free to join, paid tier for premium)</li>
+          <li><div class="check-box" onclick="toggleCheck(this)"></div>Sell your first Spaces sponsorship slot ($500 per episode to a relevant brand)</li>
+          <li><div class="check-box" onclick="toggleCheck(this)"></div>Create and sell a $49 "PULSE Playbook" digital product (your own version of this!)</li>
+          <li><div class="check-box" onclick="toggleCheck(this)"></div>Reach 25,000 followers before day 90</li>
+          <li><div class="check-box" onclick="toggleCheck(this)"></div>Land a guest spot on a podcast with 10K+ listeners — cross-platform authority</li>
+          <li><div class="check-box" onclick="toggleCheck(this)"></div>Set up a media kit (follower count, demographics, engagement rate, pricing)</li>
+          <li><div class="check-box" onclick="toggleCheck(this)"></div>Build your affiliate stack — 5 products you genuinely use that pay 20-30% commissions</li>
+          <li><div class="check-box" onclick="toggleCheck(this)"></div>Target: $5K/month revenue total by day 90 (newsletter + sponsors + X rev share + affiliates)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VIRAL MECHANICS -->
+<section id="viral">
+  <div class="s-tag">// The Formula</div>
+  <h2 class="s-title">Viral Mechanics</h2>
+  <p class="s-sub">The four forces that make content spread. Understand these and you can engineer virality on demand.</p>
+  <div class="viral-grid">
+    <div class="viral-card vc-orange">
+      <div class="vc-icon">🎣</div>
+      <div class="vc-title">The Hook Formula</div>
+      <div class="vc-desc">The first 1-2 lines determine 90% of your reach. On Twitter, readers decide in 0.3 seconds. Your hook must create a curiosity gap that physically can't be closed without reading more.</div>
+      <div class="formula-box">
+        WEAK: "Here are some thoughts on AI"<br>
+        STRONG: "AI is about to make 60% of your team redundant. Not in 10 years. This quarter."<br><br>
+        Rule: State the most alarming / counterintuitive version of the truth.
+      </div>
+    </div>
+    <div class="viral-card vc-purple">
+      <div class="vc-icon">💡</div>
+      <div class="vc-title">The Contrast Engine</div>
+      <div class="vc-desc">The fastest path to virality is contrasting what EVERYONE believes against what's actually true. Contrarian takes that can be defended are the highest-engagement content format on all of Twitter.</div>
+      <div class="formula-box">
+        "[Popular belief] is wrong."<br>
+        "Here's what's actually happening: [reframe]"<br>
+        "This matters because: [implication]"<br><br>
+        Never say "I think". Assert. Be willing to be wrong.
+      </div>
+    </div>
+    <div class="viral-card vc-blue">
+      <div class="vc-icon">⚡</div>
+      <div class="vc-title">Timing & Momentum</div>
+      <div class="vc-desc">Posting during breaking news moments 10x's your reach. Algorithm rewards accounts that post about trending topics early and add new analysis, not just regurgitation.</div>
+      <div class="formula-box">
+        Best posting windows:<br>
+        7:00–9:00 AM ET (morning commute)<br>
+        12:00–1:00 PM ET (lunch scroll)<br>
+        4:00–6:00 PM ET (end of workday)<br><br>
+        Break-news post window: within 8 minutes.
+      </div>
+    </div>
+    <div class="viral-card vc-green">
+      <div class="vc-icon">🔁</div>
+      <div class="vc-title">Retweet Engineering</div>
+      <div class="vc-desc">Write posts that other accounts WANT to share because sharing it makes THEM look smart. The easiest way to engineer retweets is to make your content a status signal for the retweeter.</div>
+      <div class="formula-box">
+        Ask yourself before posting:<br>
+        "Would someone share this to signal they're smart?"<br>
+        "Does this make the retweeter look informed?"<br><br>
+        If yes → post. If no → rewrite the framing.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MONETIZATION -->
+<section id="money">
+  <div class="s-tag">// Revenue Streams</div>
+  <h2 class="s-title">6 Ways @PULSE Gets Paid</h2>
+  <p class="s-sub">Diversified income built on audience trust. Activate these in order — don't skip ahead.</p>
+  <div class="money-grid">
+    <div class="money-card">
+      <div class="money-icon">✉️</div>
+      <div class="money-title">Paid Newsletter</div>
+      <div class="money-range">$2K–$20K/mo</div>
+      <div class="money-desc">Launch "PULSE WEEKLY" — the premium deep-dive behind the free tweets. $15/mo. Convert 1-2% of followers at scale.</div>
+      <div class="money-timeline"><span class="dot"></span>Activate: Month 2 (at 2K followers)</div>
+    </div>
+    <div class="money-card">
+      <div class="money-icon">🤝</div>
+      <div class="money-title">Brand Sponsorships</div>
+      <div class="money-range">$500–$25K/deal</div>
+      <div class="money-desc">Sponsored posts, Spaces sponsorships, newsletter placements. Charge based on CPM ($15-$40 per 1K impressions).</div>
+      <div class="money-timeline"><span class="dot"></span>Activate: Month 2 (at 5K followers)</div>
+    </div>
+    <div class="money-card">
+      <div class="money-icon">🐦</div>
+      <div class="money-title">X Revenue Share</div>
+      <div class="money-range">$500–$10K/mo</div>
+      <div class="money-desc">X pays verified creators a share of ad revenue from impressions. At 5M impressions/month, this alone covers a full salary.</div>
+      <div class="money-timeline"><span class="dot"></span>Activate: Month 3 (at 5M impressions)</div>
+    </div>
+    <div class="money-card">
+      <div class="money-icon">🔗</div>
+      <div class="money-title">Affiliate Deals</div>
+      <div class="money-range">$1K–$8K/mo</div>
+      <div class="money-desc">Partner with 5-8 tools your audience uses: trading platforms, SaaS tools, courses. 20-40% commission. Passive income once set up.</div>
+      <div class="money-timeline"><span class="dot"></span>Activate: Month 1 (day one revenue)</div>
+    </div>
+    <div class="money-card">
+      <div class="money-icon">📦</div>
+      <div class="money-title">Digital Products</div>
+      <div class="money-range">$3K–$30K launch</div>
+      <div class="money-desc">Sell your own playbooks, templates, Notion kits, or mini-courses. Launch to your email list. One launch can fund months of content creation.</div>
+      <div class="money-timeline"><span class="dot"></span>Activate: Month 3 (after newsletter)</div>
+    </div>
+    <div class="money-card">
+      <div class="money-icon">🎙️</div>
+      <div class="money-title">Consulting & Speaking</div>
+      <div class="money-range">$2K–$20K/engagement</div>
+      <div class="money-desc">Inbound consulting from companies who want the "PULSE take" on their market. Speaking at crypto/AI/tech events. Highest-ticket, lowest-volume revenue stream.</div>
+      <div class="money-timeline"><span class="dot"></span>Activate: Month 4 (at 25K followers)</div>
+    </div>
+  </div>
+</section>
+
+<!-- TOOLS -->
+<section id="tools">
+  <div class="s-tag">// The Stack</div>
+  <h2 class="s-title">@PULSE's Tool Stack</h2>
+  <p class="s-sub">The exact tools that power the daily operation.</p>
+  <div class="tools-grid">
+    <div class="tool-card"><div class="tool-icon">📊</div><div class="tool-name">Typefully</div><div class="tool-use">Thread scheduling + analytics</div></div>
+    <div class="tool-card"><div class="tool-icon">📰</div><div class="tool-name">Feedly</div><div class="tool-use">News aggregation & alerts</div></div>
+    <div class="tool-card"><div class="tool-icon">✉️</div><div class="tool-name">Beehiiv</div><div class="tool-use">Newsletter platform (paid subs)</div></div>
+    <div class="tool-card"><div class="tool-icon">🎬</div><div class="tool-name">Opus Clip</div><div class="tool-use">Spaces → viral video clips</div></div>
+    <div class="tool-card"><div class="tool-icon">📈</div><div class="tool-name">TweetHunter</div><div class="tool-use">Analytics + competitor research</div></div>
+    <div class="tool-card"><div class="tool-icon">🤖</div><div class="tool-name">Claude / GPT</div><div class="tool-use">Draft threads + take ideas</div></div>
+    <div class="tool-card"><div class="tool-icon">💬</div><div class="tool-name">Discord</div><div class="tool-use">Community & paid tiers</div></div>
+    <div class="tool-card"><div class="tool-icon">🔗</div><div class="tool-name">Beacons</div><div class="tool-use">Link-in-bio + monetization</div></div>
+    <div class="tool-card"><div class="tool-icon">🎨</div><div class="tool-name">Canva Pro</div><div class="tool-use">Banners + branded graphics</div></div>
+    <div class="tool-card"><div class="tool-icon">📡</div><div class="tool-name">Google Alerts</div><div class="tool-use">Breaking news triggers</div></div>
+    <div class="tool-card"><div class="tool-icon">💹</div><div class="tool-name">Polymarket</div><div class="tool-use">Prediction market data</div></div>
+    <div class="tool-card"><div class="tool-icon">📲</div><div class="tool-name">Notion</div><div class="tool-use">Content calendar + CRM</div></div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-inner">
+    <div class="s-tag">// Start Now</div>
+    <h2 class="cta-title">The feed is<br><span style="color:var(--orange);">waiting for you.</span></h2>
+    <p class="cta-sub">Drop your email and we'll send you the full @PULSE content calendar template — 90 days of pre-planned post ideas, Space topics, and growth targets.</p>
+    <div class="input-row">
+      <input class="cta-input" type="email" placeholder="you@email.com">
+      <button class="cta-submit" onclick="handleCTA(this)">Send Me the Template →</button>
+    </div>
+    <p class="cta-note">Free. No spam. Unsubscribe any time. Join 4,200 builders already building their presence.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-logo"><span>@</span>PULSE</div>
+  <div class="f-note">"The internet's heartbeat." — Built to go viral.</div>
+  <div class="f-live"><span class="live-dot"></span>PULSE SPACES: Live tonight 9PM ET</div>
+</footer>
+
+<script>
+// Tab switching
+function switchTab(id) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// Phase accordion
+function togglePhase(header) {
+  const block = header.parentElement;
+  block.classList.toggle('open');
+}
+
+// Checklist toggle
+function toggleCheck(box) {
+  box.classList.toggle('checked');
+  box.textContent = box.classList.contains('checked') ? '✓' : '';
+  updateProgress();
+}
+
+function updateProgress() {
+  const total = document.querySelectorAll('.check-box').length;
+  const done = document.querySelectorAll('.check-box.checked').length;
+  const pct = Math.round((done / total) * 100);
+  const el = document.getElementById('followerCount');
+  if (el) {
+    const projected = Math.floor((pct / 100) * 100000);
+    el.textContent = projected >= 1000 ? (projected/1000).toFixed(1) + 'K' : projected;
+  }
+}
+
+// CTA
+function handleCTA(btn) {
+  btn.textContent = '✓ Template sent! Check your inbox.';
+  btn.style.background = 'var(--green)';
+  btn.disabled = true;
+}
+
+// Counter animation on scroll
+const counters = [
+  { id: 'followerCount', target: 0, suffix: '' }
+];
+
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const el = e.target;
+      const target = parseInt(el.dataset.count || '0');
+      let start = 0;
+      const dur = 1800;
+      const t0 = performance.now();
+      (function tick(now) {
+        const p = Math.min((now - t0) / dur, 1);
+        const ease = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.floor(ease * target);
+        if (p < 1) requestAnimationFrame(tick);
+        else el.textContent = target;
+      })(performance.now());
+      io.unobserve(el);
+    }
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('[data-count]').forEach(el => io.observe(el));
+
+// Animate the follower count on hero
+setTimeout(() => {
+  const fc = document.getElementById('followerCount');
+  if (fc) {
+    let n = 0;
+    const interval = setInterval(() => {
+      n += Math.floor(Math.random() * 50 + 10);
+      if (n > 1247) { fc.textContent = '1.2K'; clearInterval(interval); }
+      else fc.textContent = n;
+    }, 30);
+  }
+}, 800);
+</script>
+</body>
+</html>
