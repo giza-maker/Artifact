@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IP Building — Influence & Presence Building</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:   #0A0F1E;
+      --navy2:  #0e1428;
+      --navy3:  #131929;
+      --violet: #7C3AED;
+      --violet2: #9B5CF6;
+      --violet3: #5B21B6;
+      --gold:   #F0A500;
+      --gold2:  #FFB830;
+      --white:  #FFFFFF;
+      --text:   #F8F9FC;
+      --muted:  #8892A4;
+      --dim:    #4A5568;
+      --glass:  rgba(255,255,255,0.04);
+      --glass-border: rgba(255,255,255,0.08);
+      --violet-glow: rgba(124,58,237,0.25);
+      --gold-glow:   rgba(240,165,0,0.2);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
+      background: var(--navy);
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: var(--navy); }
+    ::-webkit-scrollbar-thumb { background: var(--violet3); border-radius: 99px; }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0; opacity: 0.4;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.1rem 5%;
+      background: rgba(10,15,30,0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--glass-border);
+    }
+    .logo {
+      display: flex; align-items: center; gap: 0.6rem;
+      text-decoration: none;
+    }
+    .logo-mark {
+      width: 36px; height: 36px;
+      background: linear-gradient(135deg, var(--violet), var(--gold));
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem; font-weight: 800; color: white;
+      letter-spacing: -1px;
+    }
+    .logo-text {
+      font-size: 1.2rem; font-weight: 800;
+      background: linear-gradient(90deg, var(--white), var(--violet2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.02em;
+    }
+    .nav-links {
+      display: flex; gap: 2rem; align-items: center;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--muted); font-size: 0.88rem; font-weight: 500;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .btn-nav {
+      background: linear-gradient(135deg, var(--violet), var(--violet3));
+      color: white; font-weight: 700; font-size: 0.85rem;
+      padding: 0.55rem 1.4rem; border-radius: 7px; border: none;
+      cursor: pointer; transition: opacity 0.2s, transform 0.15s;
+      box-shadow: 0 0 20px var(--violet-glow);
+      text-decoration: none;
+    }
+    .btn-nav:hover { opacity: 0.88; transform: translateY(-1px); }
+    @media (max-width: 640px) { .nav-links { display: none; } }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 9rem 5% 6rem;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+    }
+    .hero-orb {
+      position: absolute; border-radius: 50%;
+      filter: blur(80px); opacity: 0.35;
+    }
+    .orb1 {
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, var(--violet), transparent 70%);
+      top: -150px; left: -100px;
+      animation: orb-drift 12s ease-in-out infinite alternate;
+    }
+    .orb2 {
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, var(--gold), transparent 70%);
+      bottom: -100px; right: -80px;
+      animation: orb-drift 15s ease-in-out infinite alternate-reverse;
+    }
+    .orb3 {
+      width: 400px; height: 400px;
+      background: radial-gradient(circle, #1e3a8a, transparent 70%);
+      top: 30%; right: 20%;
+      animation: orb-drift 18s ease-in-out infinite alternate;
+    }
+    @keyframes orb-drift {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(40px, 30px) scale(1.1); }
+    }
+    .hero-canvas {
+      position: absolute; inset: 0;
+      opacity: 0.25;
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 860px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(124,58,237,0.12);
+      border: 1px solid rgba(124,58,237,0.3);
+      color: var(--violet2); font-size: 0.78rem; font-weight: 600;
+      padding: 0.4rem 1rem; border-radius: 99px;
+      margin-bottom: 1.8rem;
+      letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .hero-badge::before { content: '◆'; font-size: 0.6rem; }
+    h1.hero-title {
+      font-size: clamp(2.8rem, 7vw, 5.2rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.4rem;
+    }
+    h1.hero-title .grad {
+      background: linear-gradient(135deg, var(--gold) 0%, #FF6B35 40%, var(--violet2) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--muted); max-width: 580px; margin: 0 auto 2.5rem;
+      line-height: 1.75; font-weight: 400;
+    }
+    .hero-actions {
+      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+      margin-bottom: 3rem;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--violet), var(--violet3));
+      color: white; font-weight: 700; font-size: 1rem;
+      padding: 0.9rem 2.2rem; border-radius: 10px; border: none;
+      cursor: pointer; transition: transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 0 30px var(--violet-glow), 0 4px 20px rgba(0,0,0,0.3);
+      text-decoration: none; display: inline-block;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 0 50px var(--violet-glow), 0 8px 30px rgba(0,0,0,0.4); }
+    .btn-outline {
+      background: transparent;
+      color: var(--text); font-weight: 600; font-size: 1rem;
+      padding: 0.9rem 2.2rem; border-radius: 10px;
+      border: 1px solid var(--glass-border);
+      cursor: pointer; transition: border-color 0.2s, background 0.2s;
+      text-decoration: none; display: inline-block;
+    }
+    .btn-outline:hover { border-color: var(--violet2); background: rgba(124,58,237,0.08); }
+    .hero-stats {
+      display: flex; gap: 3rem; justify-content: center; flex-wrap: wrap;
+    }
+    .hero-stat .num {
+      font-size: 1.6rem; font-weight: 800; line-height: 1;
+      background: linear-gradient(90deg, var(--gold), var(--gold2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .hero-stat .lbl { font-size: 0.8rem; color: var(--muted); margin-top: 0.2rem; font-weight: 500; }
+
+    /* ── SECTION COMMON ── */
+    .section {
+      padding: 7rem 5%;
+      position: relative; z-index: 1;
+    }
+    .section-inner { max-width: 1180px; margin: 0 auto; }
+    .section-eyebrow {
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--violet2); margin-bottom: 0.8rem;
+    }
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800; line-height: 1.1;
+      letter-spacing: -0.025em; margin-bottom: 1rem;
+    }
+    .section-sub {
+      color: var(--muted); font-size: 1.05rem;
+      max-width: 580px; line-height: 1.75;
+      margin-bottom: 3.5rem;
+    }
+    .gold-word {
+      background: linear-gradient(90deg, var(--gold), var(--gold2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    /* ── DIVIDER ── */
+    hr.divider {
+      border: none; border-top: 1px solid var(--glass-border);
+      max-width: 1180px; margin: 0 auto;
+    }
+
+    /* ── WHAT WE DO ── */
+    .pillars { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .pillar-card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px; padding: 2rem;
+      position: relative; overflow: hidden;
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .pillar-card:hover { border-color: rgba(124,58,237,0.4); transform: translateY(-4px); }
+    .pillar-card::after {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--violet), var(--gold));
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .pillar-card:hover::after { opacity: 1; }
+    .pillar-icon {
+      width: 52px; height: 52px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; margin-bottom: 1.2rem;
+    }
+    .pillar-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 0.6rem; }
+    .pillar-desc { color: var(--muted); font-size: 0.9rem; line-height: 1.65; }
+    .pillar-list {
+      margin-top: 1rem; list-style: none;
+      display: flex; flex-direction: column; gap: 0.4rem;
+    }
+    .pillar-list li {
+      font-size: 0.82rem; color: var(--muted);
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .pillar-list li::before { content: '→'; color: var(--violet2); font-size: 0.75rem; }
+
+    /* ── PLATFORMS ── */
+    .platforms-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1rem; max-width: 680px;
+    }
+    @media (max-width: 480px) { .platforms-grid { grid-template-columns: repeat(2, 1fr); } }
+    .platform-card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 14px; padding: 1.5rem 1rem;
+      display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+      cursor: default;
+    }
+    .platform-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255,255,255,0.15);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+    }
+    .platform-icon { font-size: 2rem; }
+    .platform-name { font-size: 0.82rem; font-weight: 600; color: var(--muted); }
+
+    /* ── PRICING ── */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.2rem; align-items: start;
+    }
+    .pricing-card {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px; padding: 2rem 1.6rem;
+      position: relative; overflow: hidden;
+      transition: transform 0.2s;
+    }
+    .pricing-card:hover { transform: translateY(-4px); }
+    .pricing-card.popular {
+      background: linear-gradient(160deg, rgba(124,58,237,0.18), rgba(240,165,0,0.06));
+      border-color: rgba(124,58,237,0.45);
+      box-shadow: 0 0 60px rgba(124,58,237,0.15), 0 4px 40px rgba(0,0,0,0.4);
+      transform: scale(1.03);
+    }
+    .pricing-card.popular:hover { transform: scale(1.03) translateY(-4px); }
+    .popular-tag {
+      position: absolute; top: 1.2rem; right: 1.2rem;
+      background: linear-gradient(135deg, var(--violet), var(--gold));
+      color: white; font-size: 0.68rem; font-weight: 700;
+      padding: 0.25rem 0.7rem; border-radius: 99px;
+      letter-spacing: 0.07em; text-transform: uppercase;
+    }
+    .tier-name { font-size: 0.75rem; font-weight: 700; color: var(--muted); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .tier-price {
+      font-size: 2.4rem; font-weight: 800; line-height: 1; margin-bottom: 0.3rem;
+      letter-spacing: -0.03em;
+    }
+    .pricing-card.popular .tier-price {
+      background: linear-gradient(90deg, var(--white), var(--violet2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .tier-period { font-size: 0.8rem; color: var(--muted); margin-bottom: 1.2rem; }
+    .tier-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.6; margin-bottom: 1.4rem; }
+    .tier-features { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1.6rem; }
+    .tier-features li {
+      font-size: 0.85rem; display: flex; align-items: flex-start; gap: 0.5rem; line-height: 1.4;
+    }
+    .tier-features li .check { color: var(--gold); font-size: 0.85rem; flex-shrink: 0; margin-top: 0.1rem; }
+    .btn-tier {
+      width: 100%; padding: 0.75rem; border-radius: 10px;
+      font-weight: 700; font-size: 0.9rem;
+      cursor: pointer; border: none; transition: all 0.2s;
+    }
+    .btn-tier-ghost {
+      background: transparent; color: var(--text);
+      border: 1px solid var(--glass-border);
+    }
+    .btn-tier-ghost:hover { border-color: var(--violet2); background: rgba(124,58,237,0.1); }
+    .btn-tier-filled {
+      background: linear-gradient(135deg, var(--violet), var(--violet3));
+      color: white; box-shadow: 0 4px 20px rgba(124,58,237,0.3);
+    }
+    .btn-tier-filled:hover { box-shadow: 0 8px 40px rgba(124,58,237,0.5); transform: translateY(-1px); }
+
+    /* ── PROCESS ── */
+    .process-steps {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem; position: relative;
+    }
+    .process-step {
+      background: var(--glass);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px; padding: 2rem 1.6rem;
+      position: relative;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .process-step:hover { border-color: rgba(124,58,237,0.35); transform: translateY(-3px); }
+    .step-number {
+      font-size: 3rem; font-weight: 800; line-height: 1;
+      color: rgba(124,58,237,0.15);
+      position: absolute; top: 1rem; right: 1.2rem;
+      font-variant-numeric: tabular-nums;
+    }
+    .step-icon { font-size: 1.8rem; margin-bottom: 0.8rem; }
+    .step-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
+    .step-desc { font-size: 0.87rem; color: var(--muted); line-height: 1.65; }
+    .step-arrow {
+      position: absolute; top: 50%; right: -1rem;
+      transform: translateY(-50%);
+      color: var(--violet2); font-size: 1.2rem; z-index: 1;
+    }
+
+    /* ── METRICS ── */
+    #results {
+      background: linear-gradient(135deg, rgba(124,58,237,0.08), rgba(240,165,0,0.04));
+      border-top: 1px solid var(--glass-border);
+      border-bottom: 1px solid var(--glass-border);
+    }
+    .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; text-align: center; }
+    .metric-num {
+      font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800;
+      line-height: 1; letter-spacing: -0.03em;
+      background: linear-gradient(135deg, var(--gold), var(--gold2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+    .metric-label { font-size: 0.95rem; color: var(--muted); margin-top: 0.5rem; font-weight: 500; line-height: 1.5; }
+
+    /* ── TEAM ── */
+    .team-bar {
+      background: linear-gradient(135deg, rgba(124,58,237,0.1), rgba(10,15,30,0));
+      border: 1px solid rgba(124,58,237,0.2);
+      border-radius: 20px; padding: 3rem;
+      display: grid; grid-template-columns: 1fr auto;
+      gap: 2rem; align-items: center;
+    }
+    @media (max-width: 640px) { .team-bar { grid-template-columns: 1fr; } }
+    .team-headline { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 700; line-height: 1.3; margin-bottom: 0.8rem; }
+    .team-sub { color: var(--muted); font-size: 0.95rem; line-height: 1.7; max-width: 480px; }
+    .team-roles {
+      display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.2rem;
+    }
+    .role-chip {
+      background: rgba(124,58,237,0.12); border: 1px solid rgba(124,58,237,0.25);
+      color: var(--violet2); font-size: 0.75rem; font-weight: 600;
+      padding: 0.3rem 0.8rem; border-radius: 99px;
+    }
+    .team-stat-big {
+      text-align: center; min-width: 160px;
+    }
+    .team-stat-big .n {
+      font-size: 5rem; font-weight: 800; line-height: 1;
+      background: linear-gradient(135deg, var(--violet2), var(--gold));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      letter-spacing: -0.04em;
+    }
+    .team-stat-big .u { font-size: 0.9rem; color: var(--muted); margin-top: 0.3rem; font-weight: 500; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--glass-border);
+      padding: 3rem 5%;
+    }
+    .footer-inner {
+      max-width: 1180px; margin: 0 auto;
+      display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 2rem;
+    }
+    @media (max-width: 768px) { .footer-inner { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 480px) { .footer-inner { grid-template-columns: 1fr; } }
+    .footer-brand .tagline { color: var(--muted); font-size: 0.88rem; line-height: 1.6; margin-top: 0.7rem; max-width: 240px; }
+    .footer-social { display: flex; gap: 0.6rem; margin-top: 1.2rem; }
+    .social-btn {
+      width: 34px; height: 34px;
+      background: var(--glass); border: 1px solid var(--glass-border);
+      border-radius: 8px; display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem; cursor: pointer; transition: border-color 0.2s, background 0.2s;
+      text-decoration: none; color: var(--muted);
+    }
+    .social-btn:hover { border-color: var(--violet2); background: rgba(124,58,237,0.1); color: var(--text); }
+    .footer-col h4 { font-size: 0.85rem; font-weight: 700; margin-bottom: 1rem; color: var(--text); }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .footer-col ul a { color: var(--muted); font-size: 0.85rem; text-decoration: none; transition: color 0.2s; }
+    .footer-col ul a:hover { color: var(--text); }
+    .footer-bottom {
+      max-width: 1180px; margin: 2rem auto 0;
+      padding-top: 1.5rem; border-top: 1px solid var(--glass-border);
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.78rem; color: var(--dim); flex-wrap: wrap; gap: 0.5rem;
+    }
+
+    /* ── BOTTOM CTA BANNER ── */
+    .cta-banner {
+      background: linear-gradient(135deg, var(--violet3), var(--navy2));
+      border: 1px solid rgba(124,58,237,0.3);
+      border-radius: 24px; padding: 4rem 3rem; text-align: center;
+      position: relative; overflow: hidden;
+      max-width: 1180px; margin: 0 auto 6rem;
+    }
+    .cta-banner::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 100%, rgba(240,165,0,0.1), transparent 60%);
+    }
+    .cta-banner-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800; line-height: 1.1; letter-spacing: -0.025em;
+      margin-bottom: 0.8rem; position: relative;
+    }
+    .cta-banner-sub {
+      color: rgba(255,255,255,0.65); font-size: 1rem;
+      margin-bottom: 2rem; position: relative;
+    }
+    .cta-email-row {
+      display: flex; gap: 0.75rem; max-width: 420px; margin: 0 auto;
+      position: relative;
+    }
+    .cta-input {
+      flex: 1; background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 10px; padding: 0.85rem 1.1rem;
+      color: white; font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.92rem; outline: none;
+      transition: border-color 0.2s;
+    }
+    .cta-input:focus { border-color: var(--gold); }
+    .cta-input::placeholder { color: rgba(255,255,255,0.35); }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">
+    <div class="logo-mark">IP</div>
+    <span class="logo-text">IP Building</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#platforms">Platforms</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#process">Process</a></li>
+  </ul>
+  <a href="#contact" class="btn-nav">Book a Call</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg">
+    <div class="hero-orb orb1"></div>
+    <div class="hero-orb orb2"></div>
+    <div class="hero-orb orb3"></div>
+    <canvas id="heroCanvas" class="hero-canvas"></canvas>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">Influence &amp; Presence Building</div>
+    <h1 class="hero-title">
+      We build the brands<br/>
+      people can't stop<br/>
+      <span class="grad">scrolling.</span>
+    </h1>
+    <p class="hero-sub">
+      Full-service social media management for brands that refuse to be boring.
+      Strategy, design, and growth — all under one roof, across every platform that matters.
+    </p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Book a Strategy Call →</a>
+      <a href="#pricing" class="btn-outline">View Packages</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="num" data-target="200">0</div><div class="lbl">Brands Scaled</div></div>
+      <div class="hero-stat"><div class="num" data-target="1.2" data-suffix="B">0</div><div class="lbl">Impressions Delivered</div></div>
+      <div class="hero-stat"><div class="num" data-target="98" data-suffix="%">0</div><div class="lbl">Client Retention</div></div>
+      <div class="hero-stat"><div class="num" data-target="60" data-suffix="+">0</div><div class="lbl">Specialists On Team</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT WE DO -->
+<section class="section" id="services">
+  <div class="section-inner">
+    <p class="section-eyebrow">What We Do</p>
+    <h2 class="section-title">Three pillars.<br/><span class="gold-word">One unstoppable brand.</span></h2>
+    <p class="section-sub">We don't offer generic social media management. We architect influence — from first post to viral moment.</p>
+    <div class="pillars">
+      <div class="pillar-card">
+        <div class="pillar-icon" style="background:rgba(124,58,237,0.15)">🧭</div>
+        <div class="pillar-title">Strategy</div>
+        <p class="pillar-desc">Every post has a purpose. We build data-backed content strategies that turn your brand into a category leader.</p>
+        <ul class="pillar-list">
+          <li>Brand voice &amp; positioning audit</li>
+          <li>Monthly content calendars</li>
+          <li>Competitive intelligence reports</li>
+          <li>Platform-specific growth roadmaps</li>
+        </ul>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon" style="background:rgba(240,165,0,0.12)">✦</div>
+        <div class="pillar-title">Design</div>
+        <p class="pillar-desc">Scroll-stopping visuals that convert. From Reels to carousels, every pixel is crafted to hold attention and drive action.</p>
+        <ul class="pillar-list">
+          <li>Custom visual identity per platform</li>
+          <li>Short-form video production</li>
+          <li>Story &amp; highlight templates</li>
+          <li>Motion graphics &amp; animated posts</li>
+        </ul>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-icon" style="background:rgba(16,185,129,0.12)">↗</div>
+        <div class="pillar-title">Growth</div>
+        <p class="pillar-desc">We turn followers into customers. Systematic engagement, paid amplification, and influencer networks that compound results.</p>
+        <ul class="pillar-list">
+          <li>Community management &amp; engagement</li>
+          <li>Paid social campaign management</li>
+          <li>Influencer outreach &amp; partnerships</li>
+          <li>Weekly analytics &amp; performance reports</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- PLATFORMS -->
+<section class="section" id="platforms">
+  <div class="section-inner">
+    <p class="section-eyebrow">Platforms</p>
+    <h2 class="section-title">Every platform.<br/><span class="gold-word">Every audience.</span></h2>
+    <p class="section-sub">We don't dabble. We dominate each platform with specialists who live and breathe the algorithm.</p>
+    <div class="platforms-grid">
+      <div class="platform-card"><div class="platform-icon">📸</div><div class="platform-name">Instagram</div></div>
+      <div class="platform-card"><div class="platform-icon">🎵</div><div class="platform-name">TikTok</div></div>
+      <div class="platform-card"><div class="platform-icon">💼</div><div class="platform-name">LinkedIn</div></div>
+      <div class="platform-card"><div class="platform-icon">𝕏</div><div class="platform-name">X / Twitter</div></div>
+      <div class="platform-card"><div class="platform-icon">👥</div><div class="platform-name">Facebook</div></div>
+      <div class="platform-card"><div class="platform-icon">▶</div><div class="platform-name">YouTube Shorts</div></div>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- PRICING -->
+<section class="section" id="pricing">
+  <div class="section-inner">
+    <p class="section-eyebrow">Service Packages</p>
+    <h2 class="section-title">Transparent pricing.<br/><span class="gold-word">Extraordinary results.</span></h2>
+    <p class="section-sub">Choose the package that matches where you are — and where you're going. Every tier includes dedicated account management and monthly strategy reviews.</p>
+    <div class="pricing-grid">
+
+      <!-- Starter -->
+      <div class="pricing-card">
+        <div class="tier-name">Starter</div>
+        <div class="tier-price">$1,500</div>
+        <div class="tier-period">per month</div>
+        <div class="tier-desc">Perfect for brands ready to establish a consistent social presence on their primary platform.</div>
+        <ul class="tier-features">
+          <li><span class="check">◆</span>1 platform managed</li>
+          <li><span class="check">◆</span>12 posts per month</li>
+          <li><span class="check">◆</span>Basic analytics report</li>
+          <li><span class="check">◆</span>Caption copywriting</li>
+          <li><span class="check">◆</span>Monthly strategy call</li>
+        </ul>
+        <button class="btn-tier btn-tier-ghost">Get Started</button>
+      </div>
+
+      <!-- Growth -->
+      <div class="pricing-card">
+        <div class="tier-name">Growth</div>
+        <div class="tier-price">$3,500</div>
+        <div class="tier-period">per month</div>
+        <div class="tier-desc">For brands scaling across multiple platforms with a high-frequency content strategy.</div>
+        <ul class="tier-features">
+          <li><span class="check">◆</span>3 platforms managed</li>
+          <li><span class="check">◆</span>30 posts per month</li>
+          <li><span class="check">◆</span>Stories &amp; interactive content</li>
+          <li><span class="check">◆</span>Advanced analytics dashboard</li>
+          <li><span class="check">◆</span>Community management</li>
+        </ul>
+        <button class="btn-tier btn-tier-ghost">Get Started</button>
+      </div>
+
+      <!-- Elite — POPULAR -->
+      <div class="pricing-card popular">
+        <span class="popular-tag">Most Popular</span>
+        <div class="tier-name" style="color:var(--gold)">Elite</div>
+        <div class="tier-price">$6,500</div>
+        <div class="tier-period">per month</div>
+        <div class="tier-desc">Full-scale dominance across 5 platforms with daily content, video production, and influencer activation.</div>
+        <ul class="tier-features">
+          <li><span class="check">◆</span>5 platforms managed</li>
+          <li><span class="check">◆</span>Daily content publishing</li>
+          <li><span class="check">◆</span>Reels &amp; YouTube Shorts production</li>
+          <li><span class="check">◆</span>Influencer outreach &amp; management</li>
+          <li><span class="check">◆</span>Paid social campaign management</li>
+        </ul>
+        <button class="btn-tier btn-tier-filled">Get Started →</button>
+      </div>
+
+      <!-- Enterprise -->
+      <div class="pricing-card">
+        <div class="tier-name">Enterprise</div>
+        <div class="tier-price">Custom</div>
+        <div class="tier-period">tailored to your org</div>
+        <div class="tier-desc">Full-suite management with a dedicated team, white-label options, and bespoke SLAs for agencies and large brands.</div>
+        <ul class="tier-features">
+          <li><span class="check">◆</span>All platforms + custom channels</li>
+          <li><span class="check">◆</span>Dedicated brand team</li>
+          <li><span class="check">◆</span>White-label delivery option</li>
+          <li><span class="check">◆</span>Priority response &amp; custom SLA</li>
+          <li><span class="check">◆</span>Quarterly brand audits</li>
+        </ul>
+        <button class="btn-tier btn-tier-ghost" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Talk to Sales</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- PROCESS -->
+<section class="section" id="process">
+  <div class="section-inner">
+    <p class="section-eyebrow">Our Process</p>
+    <h2 class="section-title">From day one to<br/><span class="gold-word">category leader.</span></h2>
+    <p class="section-sub">A proven four-step system that turns brand potential into platform dominance — fast.</p>
+    <div class="process-steps">
+      <div class="process-step">
+        <span class="step-number">01</span>
+        <div class="step-icon">🔍</div>
+        <div class="step-title">Audit</div>
+        <p class="step-desc">We dissect your current presence, competitors, and audience to identify every gap and opportunity across platforms.</p>
+      </div>
+      <div class="process-step">
+        <span class="step-number">02</span>
+        <div class="step-icon">🧭</div>
+        <div class="step-title">Strategy</div>
+        <p class="step-desc">We build a 90-day content roadmap tailored to your goals — with platform-specific tactics, posting cadence, and KPIs.</p>
+      </div>
+      <div class="process-step">
+        <span class="step-number">03</span>
+        <div class="step-icon">⚡</div>
+        <div class="step-title">Execute</div>
+        <p class="step-desc">Our creative and production team takes over. Visuals, copy, scheduling, community management — all handled.</p>
+      </div>
+      <div class="process-step">
+        <span class="step-number">04</span>
+        <div class="step-icon">↗</div>
+        <div class="step-title">Scale</div>
+        <p class="step-desc">We analyze performance weekly, double down on what works, and layer in paid amplification and influencer partnerships to accelerate growth.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section class="section" id="results">
+  <div class="section-inner">
+    <p class="section-eyebrow">Proven Results</p>
+    <h2 class="section-title" style="text-align:center;max-width:100%;margin-bottom:3rem">Numbers that<br/><span class="gold-word">don't lie.</span></h2>
+    <div class="metrics-grid">
+      <div>
+        <div class="metric-num" data-count="200" data-suffix="+">200+</div>
+        <div class="metric-label">Brands successfully scaled across global markets</div>
+      </div>
+      <div>
+        <div class="metric-num">1.2B</div>
+        <div class="metric-label">Impressions delivered for clients in the last 12 months</div>
+      </div>
+      <div>
+        <div class="metric-num" data-count="98" data-suffix="%">98%</div>
+        <div class="metric-label">Client retention rate — the industry average is 72%</div>
+      </div>
+      <div>
+        <div class="metric-num" data-count="340" data-suffix="%">340%</div>
+        <div class="metric-label">Average follower growth in the first 6 months</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section class="section" id="team">
+  <div class="section-inner">
+    <p class="section-eyebrow">The Team</p>
+    <div class="team-bar">
+      <div>
+        <div class="team-headline">Powered by specialists.<br/><span class="gold-word">Not generalists.</span></div>
+        <p class="team-sub">Every account is managed by a dedicated pod of experts — not one overextended account manager. Your brand deserves a full team in its corner.</p>
+        <div class="team-roles">
+          <span class="role-chip">Brand Strategists</span>
+          <span class="role-chip">Creative Directors</span>
+          <span class="role-chip">Motion Designers</span>
+          <span class="role-chip">Copywriters</span>
+          <span class="role-chip">Data Analysts</span>
+          <span class="role-chip">Influencer Managers</span>
+          <span class="role-chip">Paid Media Buyers</span>
+          <span class="role-chip">Community Managers</span>
+        </div>
+      </div>
+      <div class="team-stat-big">
+        <div class="n">60+</div>
+        <div class="u">specialists on the IP Building roster</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<div id="contact" style="padding:0 5%">
+  <div class="cta-banner">
+    <h2 class="cta-banner-title">Ready to become<br/>the brand they can't ignore?</h2>
+    <p class="cta-banner-sub">Book a free 30-minute strategy call. No fluff — just a clear plan for your growth.</p>
+    <div class="cta-email-row">
+      <input class="cta-input" type="email" placeholder="your@brand.com" id="ctaEmail" />
+      <button class="btn-primary" style="white-space:nowrap" onclick="handleCTA()">Book a Call →</button>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="logo">
+        <div class="logo-mark">IP</div>
+        <span class="logo-text">IP Building</span>
+      </div>
+      <p class="tagline">We build the brands people can't stop scrolling. Influence &amp; Presence, amplified.</p>
+      <div class="footer-social">
+        <a href="#" class="social-btn" title="Instagram">📸</a>
+        <a href="#" class="social-btn" title="TikTok">🎵</a>
+        <a href="#" class="social-btn" title="LinkedIn">💼</a>
+        <a href="#" class="social-btn" title="X">𝕏</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#">Social Strategy</a></li>
+        <li><a href="#">Content Design</a></li>
+        <li><a href="#">Growth &amp; Paid</a></li>
+        <li><a href="#">Influencer Marketing</a></li>
+        <li><a href="#">Analytics &amp; Reporting</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Platforms</h4>
+      <ul>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">TikTok</a></li>
+        <li><a href="#">LinkedIn</a></li>
+        <li><a href="#">X / Twitter</a></li>
+        <li><a href="#">YouTube Shorts</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#">About IP Building</a></li>
+        <li><a href="#">Case Studies</a></li>
+        <li><a href="#">The Team</a></li>
+        <li><a href="#">Careers</a></li>
+        <li><a href="#contact">Book a Call</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 IP Building — Influence &amp; Presence Building. All rights reserved.</span>
+    <span>Privacy · Terms · Cookie Policy</span>
+  </div>
+</footer>
+
+<script>
+// ── HERO CANVAS PARTICLE NETWORK ─────────────────────────────────────────────
+(function() {
+  const canvas = document.getElementById('heroCanvas');
+  const ctx = canvas.getContext('2d');
+
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const COUNT = 60;
+  const particles = Array.from({ length: COUNT }, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    vx: (Math.random() - 0.5) * 0.4,
+    vy: (Math.random() - 0.5) * 0.4,
+    r: 1.5 + Math.random() * 2,
+  }));
+
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = canvas.width;
+      if (p.x > canvas.width) p.x = 0;
+      if (p.y < 0) p.y = canvas.height;
+      if (p.y > canvas.height) p.y = 0;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(124,58,237,0.6)';
+      ctx.fill();
+    });
+
+    // Draw connections
+    for (let i = 0; i < COUNT; i++) {
+      for (let j = i + 1; j < COUNT; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < 140) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(124,58,237,${0.18 * (1 - dist / 140)})`;
+          ctx.lineWidth = 0.7;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ── COUNTER ANIMATION ─────────────────────────────────────────────────────────
+function animateCounters() {
+  document.querySelectorAll('.num[data-target], .metric-num[data-count]').forEach(el => {
+    const target = parseFloat(el.dataset.target || el.dataset.count);
+    const suffix = el.dataset.suffix || (el.dataset.target ? (el.dataset.target < 100 ? '' : '+') : '+');
+    const isFloat = el.dataset.target && !Number.isInteger(parseFloat(el.dataset.target));
+    let start = null;
+    const duration = 1800;
+
+    function step(ts) {
+      if (!start) start = ts;
+      const prog = Math.min((ts - start) / duration, 1);
+      const ease = 1 - Math.pow(1 - prog, 3);
+      const val = isFloat ? (target * ease).toFixed(1) : Math.floor(target * ease);
+      el.textContent = val + suffix;
+      if (prog < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  });
+}
+
+const counterObserver = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { animateCounters(); counterObserver.disconnect(); } });
+}, { threshold: 0.4 });
+counterObserver.observe(document.getElementById('results'));
+
+// ── CTA ──────────────────────────────────────────────────────────────────────
+function handleCTA() {
+  const el = document.getElementById('ctaEmail');
+  if (!el.value.includes('@')) {
+    el.style.borderColor = '#ef4444'; setTimeout(() => el.style.borderColor = '', 1200); return;
+  }
+  const btn = el.nextElementSibling;
+  btn.textContent = 'Booked ✓'; btn.style.background = '#10b981'; el.disabled = true;
+}
+
+// ── NAV SCROLL SHADOW ────────────────────────────────────────────────────────
+window.addEventListener('scroll', () => {
+  document.querySelector('nav').style.boxShadow =
+    window.scrollY > 40 ? '0 4px 40px rgba(0,0,0,0.5)' : 'none';
+});
+</script>
+</body>
+</html>
