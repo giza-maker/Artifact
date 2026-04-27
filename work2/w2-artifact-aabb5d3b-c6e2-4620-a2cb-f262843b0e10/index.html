@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VECTOR — AI-Native Brand Growth Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #030714;
+      --bg2: #06091A;
+      --card: #080F22;
+      --card2: #0D1530;
+      --border: rgba(79,70,229,0.2);
+      --primary: #4F46E5;
+      --primary-bright: #6366F1;
+      --cyan: #06B6D4;
+      --amber: #F59E0B;
+      --green: #10B981;
+      --text: #F0F4FF;
+      --muted: #8892B0;
+      --dim: #4A5568;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 5%;
+      background: rgba(3,7,20,0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.4rem; font-weight: 700;
+      letter-spacing: 0.08em;
+      background: linear-gradient(135deg, #4F46E5, #06B6D4);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .nav-links { display: flex; gap: 2.5rem; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none; font-size: 0.875rem;
+      letter-spacing: 0.05em; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      padding: 0.55rem 1.4rem;
+      background: var(--primary); color: #fff;
+      border: none; border-radius: 6px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.875rem; font-weight: 600;
+      cursor: pointer; text-decoration: none;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .nav-cta:hover { background: var(--primary-bright); transform: translateY(-1px); }
+
+    /* ── HERO ── */
+    #hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      text-align: center;
+      padding: 7rem 5% 5rem;
+      overflow: hidden;
+    }
+    #heroCanvas {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(79,70,229,0.15);
+      border: 1px solid rgba(79,70,229,0.4);
+      border-radius: 100px;
+      padding: 0.4rem 1rem;
+      font-size: 0.8rem; font-weight: 600;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--primary-bright);
+      margin-bottom: 1.5rem;
+    }
+    .badge-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--cyan);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity:1; transform:scale(1); }
+      50% { opacity:0.5; transform:scale(1.4); }
+    }
+    .hero-title {
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 700; line-height: 1.08;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.5rem;
+      position: relative;
+    }
+    .hero-title .gradient-word {
+      background: linear-gradient(135deg, #4F46E5 0%, #06B6D4 50%, #10B981 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-sub {
+      max-width: 600px;
+      font-size: 1.15rem; color: var(--muted);
+      line-height: 1.7; margin-bottom: 2.5rem;
+    }
+    .hero-actions {
+      display: flex; gap: 1rem; justify-content: center;
+      flex-wrap: wrap; margin-bottom: 4rem;
+    }
+    .btn-primary {
+      padding: 0.85rem 2rem;
+      background: var(--primary);
+      color: #fff; border: none;
+      border-radius: 8px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem; font-weight: 600;
+      cursor: pointer; text-decoration: none;
+      transition: all 0.2s;
+      box-shadow: 0 0 30px rgba(79,70,229,0.4);
+    }
+    .btn-primary:hover {
+      background: var(--primary-bright);
+      transform: translateY(-2px);
+      box-shadow: 0 0 40px rgba(79,70,229,0.6);
+    }
+    .btn-ghost {
+      padding: 0.85rem 2rem;
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem; font-weight: 500;
+      cursor: pointer; text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-ghost:hover {
+      border-color: rgba(79,70,229,0.6);
+      background: rgba(79,70,229,0.08);
+    }
+    .hero-stats {
+      display: flex; gap: 3rem; justify-content: center; flex-wrap: wrap;
+      position: relative;
+    }
+    .hero-stat { text-align: center; }
+    .hero-stat .num {
+      font-size: 2rem; font-weight: 700;
+      font-family: 'Space Mono', monospace;
+      background: linear-gradient(135deg, var(--cyan), var(--primary));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-stat .label {
+      font-size: 0.78rem; color: var(--muted);
+      letter-spacing: 0.06em; text-transform: uppercase;
+      margin-top: 0.2rem;
+    }
+
+    /* ── TICKER ── */
+    .ticker-wrap {
+      overflow: hidden;
+      background: var(--card);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 0.9rem 0;
+    }
+    .ticker-track {
+      display: flex; gap: 0;
+      animation: ticker 28s linear infinite;
+      width: max-content;
+    }
+    @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    .ticker-item {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 0 2.5rem;
+      font-size: 0.8rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .ticker-item .t-dot { color: var(--cyan); font-size: 0.6rem; }
+
+    /* ── SECTION COMMON ── */
+    section { padding: 6rem 5%; }
+    .section-tag {
+      display: inline-block;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 1rem;
+    }
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700; line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+    .section-sub {
+      font-size: 1.05rem; color: var(--muted);
+      max-width: 580px; line-height: 1.7;
+    }
+
+    /* ── MANIFESTO ── */
+    #manifesto {
+      background: linear-gradient(135deg, #06091A 0%, #0A0F2E 100%);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .manifesto-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem; align-items: center;
+    }
+    .manifesto-text .manifesto-body {
+      font-size: 1.1rem; color: var(--muted);
+      line-height: 1.8; margin-top: 1.5rem;
+    }
+    .manifesto-text .highlight {
+      color: var(--text);
+      font-weight: 600;
+    }
+    .manifesto-pillars { display: flex; flex-direction: column; gap: 1.2rem; }
+    .pillar {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .pillar:hover {
+      border-color: rgba(79,70,229,0.5);
+      transform: translateX(6px);
+    }
+    .pillar-header {
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .pillar-icon {
+      width: 36px; height: 36px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .pillar-icon.indigo { background: rgba(79,70,229,0.2); }
+    .pillar-icon.cyan { background: rgba(6,182,212,0.2); }
+    .pillar-icon.amber { background: rgba(245,158,11,0.2); }
+    .pillar-icon.green { background: rgba(16,185,129,0.2); }
+    .pillar-title { font-weight: 700; font-size: 0.95rem; }
+    .pillar-desc { font-size: 0.85rem; color: var(--muted); }
+
+    /* ── SERVICES ── */
+    #services { background: var(--bg); }
+    .services-header { max-width: 700px; margin-bottom: 3.5rem; }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    .service-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s, transform 0.2s, box-shadow 0.3s;
+      cursor: default;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--card-accent, #4F46E5), transparent);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .service-card:hover {
+      border-color: rgba(79,70,229,0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    }
+    .service-card:hover::before { opacity: 1; }
+    .service-card.accent-cyan { --card-accent: #06B6D4; }
+    .service-card.accent-amber { --card-accent: #F59E0B; }
+    .service-card.accent-green { --card-accent: #10B981; }
+    .service-card.accent-rose { --card-accent: #F43F5E; }
+    .service-card.accent-violet { --card-accent: #8B5CF6; }
+    .service-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem; font-weight: 700;
+      color: var(--dim); letter-spacing: 0.1em;
+      margin-bottom: 1.2rem;
+    }
+    .service-icon { font-size: 2rem; margin-bottom: 1rem; }
+    .service-title {
+      font-size: 1.1rem; font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+    .service-desc {
+      font-size: 0.875rem; color: var(--muted);
+      line-height: 1.6;
+    }
+    .service-tags {
+      display: flex; flex-wrap: wrap; gap: 0.4rem;
+      margin-top: 1.2rem;
+    }
+    .stag {
+      font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.05em;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      background: rgba(79,70,229,0.12);
+      color: var(--primary-bright);
+    }
+
+    /* ── STATS BAND ── */
+    #stats {
+      background: linear-gradient(135deg, #0A0F2E, #0D1530);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 4rem 5%;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem; text-align: center;
+    }
+    .stat-item { padding: 1.5rem; }
+    .stat-num {
+      font-size: 3rem; font-weight: 700;
+      font-family: 'Space Mono', monospace;
+      background: linear-gradient(135deg, var(--primary-bright), var(--cyan));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .stat-label {
+      font-size: 0.8rem; color: var(--muted);
+      letter-spacing: 0.06em; text-transform: uppercase;
+      margin-top: 0.5rem;
+    }
+
+    /* ── PROCESS ── */
+    #process { background: var(--bg); }
+    .process-steps {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      margin-top: 3rem;
+    }
+    .process-step {
+      background: var(--card);
+      padding: 2.5rem 2rem;
+      position: relative;
+      transition: background 0.3s;
+    }
+    .process-step:hover { background: var(--card2); }
+    .step-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 3rem; font-weight: 700;
+      color: rgba(79,70,229,0.15);
+      line-height: 1; margin-bottom: 1rem;
+    }
+    .step-phase {
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 0.6rem;
+    }
+    .step-title {
+      font-size: 1.2rem; font-weight: 700;
+      margin-bottom: 0.8rem;
+    }
+    .step-desc {
+      font-size: 0.85rem; color: var(--muted);
+      line-height: 1.6;
+    }
+    .step-details {
+      list-style: none;
+      margin-top: 1rem;
+      display: flex; flex-direction: column; gap: 0.4rem;
+    }
+    .step-details li {
+      font-size: 0.8rem; color: var(--dim);
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .step-details li::before {
+      content: '→'; color: var(--primary-bright); font-size: 0.7rem;
+    }
+
+    /* ── PORTFOLIO ── */
+    #portfolio {
+      background: linear-gradient(180deg, var(--bg) 0%, #050820 100%);
+    }
+    .portfolio-header {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      margin-bottom: 3rem; flex-wrap: wrap; gap: 1rem;
+    }
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .portfolio-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+    .portfolio-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 48px rgba(0,0,0,0.5);
+    }
+    .portfolio-card.featured {
+      grid-row: span 2;
+    }
+    .portfolio-visual {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .portfolio-card.featured .portfolio-visual { height: 280px; }
+    .pv-bg {
+      position: absolute; inset: 0;
+    }
+    .pv-content {
+      position: relative; z-index: 2;
+      text-align: center;
+    }
+    .pv-logo {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.6rem; font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+    .pv-sector {
+      font-size: 0.7rem; font-weight: 600;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      opacity: 0.7; margin-top: 0.3rem;
+    }
+    .portfolio-body { padding: 1.8rem; }
+    .portfolio-company { font-size: 1rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .portfolio-brief { font-size: 0.85rem; color: var(--muted); margin-bottom: 1.2rem; line-height: 1.5; }
+    .portfolio-metrics {
+      display: flex; gap: 1.5rem; flex-wrap: wrap;
+    }
+    .pm { }
+    .pm-val {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.3rem; font-weight: 700;
+      color: var(--green);
+    }
+    .pm-label { font-size: 0.72rem; color: var(--dim); }
+
+    /* ── TEAM ── */
+    #team { background: var(--bg2); }
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .team-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      transition: transform 0.2s, border-color 0.3s;
+    }
+    .team-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(79,70,229,0.4);
+    }
+    .team-avatar {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      margin: 0 auto 1rem;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.8rem;
+      position: relative;
+    }
+    .team-avatar::after {
+      content: ''; position: absolute;
+      inset: -2px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--cyan));
+      z-index: -1;
+    }
+    .team-name { font-weight: 700; font-size: 1rem; margin-bottom: 0.2rem; }
+    .team-role { font-size: 0.78rem; color: var(--cyan); letter-spacing: 0.05em; margin-bottom: 0.8rem; }
+    .team-bio { font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+    .team-skills {
+      display: flex; flex-wrap: wrap; gap: 0.4rem;
+      margin-top: 1rem; justify-content: center;
+    }
+    .tskill {
+      font-size: 0.68rem; font-weight: 600;
+      padding: 0.2rem 0.55rem;
+      border-radius: 4px;
+      background: rgba(6,182,212,0.1);
+      color: var(--cyan);
+      letter-spacing: 0.04em;
+    }
+
+    /* ── PRICING ── */
+    #pricing { background: var(--bg); }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .pricing-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem 2rem;
+      position: relative;
+      transition: transform 0.2s, box-shadow 0.3s;
+    }
+    .pricing-card.featured {
+      border-color: var(--primary);
+      background: linear-gradient(180deg, rgba(79,70,229,0.1), var(--card));
+      box-shadow: 0 0 40px rgba(79,70,229,0.2);
+    }
+    .pricing-card:hover { transform: translateY(-4px); box-shadow: 0 24px 48px rgba(0,0,0,0.4); }
+    .pricing-badge {
+      position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+      background: var(--primary);
+      color: #fff; font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 0.3rem 1rem; border-radius: 100px;
+      white-space: nowrap;
+    }
+    .pricing-tier {
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 0.5rem;
+    }
+    .pricing-name { font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem; }
+    .pricing-price {
+      font-family: 'Space Mono', monospace;
+      font-size: 2.8rem; font-weight: 700;
+      line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+    .pricing-price .currency { font-size: 1.2rem; vertical-align: top; margin-top: 0.5rem; display: inline-block; }
+    .pricing-price .period { font-size: 0.85rem; font-weight: 400; color: var(--muted); }
+    .pricing-desc { font-size: 0.85rem; color: var(--muted); margin-bottom: 2rem; line-height: 1.5; }
+    .pricing-divider { height: 1px; background: var(--border); margin-bottom: 1.5rem; }
+    .pricing-features { list-style: none; display: flex; flex-direction: column; gap: 0.8rem; margin-bottom: 2rem; }
+    .pricing-features li {
+      font-size: 0.875rem; display: flex; align-items: flex-start; gap: 0.6rem;
+    }
+    .pf-check { color: var(--green); flex-shrink: 0; font-size: 0.9rem; }
+    .pf-x { color: var(--dim); flex-shrink: 0; font-size: 0.9rem; }
+    .pf-disabled { color: var(--dim); }
+    .pricing-cta {
+      display: block; width: 100%;
+      padding: 0.9rem;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.95rem; font-weight: 600;
+      cursor: pointer; text-align: center;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .pricing-card.featured .pricing-cta {
+      background: var(--primary);
+      border-color: var(--primary);
+      box-shadow: 0 0 20px rgba(79,70,229,0.4);
+    }
+    .pricing-cta:hover { background: var(--primary); border-color: var(--primary); }
+    .pricing-card.featured .pricing-cta:hover { background: var(--primary-bright); }
+
+    /* ── CTA ── */
+    #cta {
+      background: linear-gradient(135deg, #0A0F2E 0%, #0D0520 100%);
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+    .cta-inner { max-width: 680px; margin: 0 auto; }
+    .cta-title { font-size: clamp(2rem,4vw,3rem); font-weight: 700; letter-spacing: -0.02em; margin-bottom: 1rem; }
+    .cta-sub { font-size: 1.05rem; color: var(--muted); margin-bottom: 3rem; }
+    .cta-form {
+      display: flex; flex-direction: column; gap: 1rem;
+    }
+    .form-row { display: flex; gap: 1rem; }
+    .form-group { flex: 1; }
+    .form-group label {
+      display: block; font-size: 0.78rem; font-weight: 600;
+      color: var(--muted); letter-spacing: 0.05em;
+      text-transform: uppercase; margin-bottom: 0.5rem;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.85rem 1rem;
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus { border-color: var(--primary); }
+    .form-group select option { background: #0A0D18; }
+    .form-group textarea { resize: vertical; min-height: 110px; }
+    .form-submit {
+      width: 100%;
+      padding: 1rem;
+      background: var(--primary);
+      color: #fff;
+      border: none; border-radius: 8px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1rem; font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 0 30px rgba(79,70,229,0.4);
+      letter-spacing: 0.04em;
+    }
+    .form-submit:hover {
+      background: var(--primary-bright);
+      transform: translateY(-2px);
+      box-shadow: 0 0 50px rgba(79,70,229,0.6);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      padding: 3rem 5% 2rem;
+    }
+    .footer-top {
+      display: flex; justify-content: space-between;
+      align-items: flex-start; flex-wrap: wrap; gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    .footer-brand .f-logo {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.3rem; font-weight: 700;
+      background: linear-gradient(135deg, #4F46E5, #06B6D4);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      margin-bottom: 0.5rem;
+    }
+    .footer-brand .f-tagline { font-size: 0.82rem; color: var(--dim); }
+    .footer-links { display: flex; gap: 4rem; flex-wrap: wrap; }
+    .footer-col h4 {
+      font-size: 0.72rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 1rem;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-col ul li a {
+      color: var(--dim); text-decoration: none;
+      font-size: 0.875rem; transition: color 0.2s;
+    }
+    .footer-col ul li a:hover { color: var(--text); }
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-copy { font-size: 0.78rem; color: var(--dim); }
+    .footer-status {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-size: 0.78rem; color: var(--green);
+      font-family: 'Space Mono', monospace;
+    }
+    .status-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--green);
+      animation: pulse 2s infinite;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .manifesto-grid { grid-template-columns: 1fr; }
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+      .process-steps { grid-template-columns: 1fr 1fr; }
+      .portfolio-grid { grid-template-columns: 1fr; }
+      .portfolio-card.featured { grid-row: auto; }
+      .team-grid { grid-template-columns: 1fr 1fr; }
+      .pricing-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .services-grid { grid-template-columns: 1fr; }
+      .process-steps { grid-template-columns: 1fr; }
+      .team-grid { grid-template-columns: 1fr 1fr; }
+      .form-row { flex-direction: column; }
+      .hero-stats { gap: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">VECTOR</div>
+  <div class="nav-links">
+    <a href="#manifesto">About</a>
+    <a href="#services">Services</a>
+    <a href="#portfolio">Work</a>
+    <a href="#pricing">Pricing</a>
+  </div>
+  <a href="#cta" class="nav-cta">Start Growing</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="heroCanvas"></canvas>
+  <div class="hero-badge"><span class="badge-dot"></span>AI-Native Growth Studio</div>
+  <h1 class="hero-title">
+    We build brands<br>for the <span class="gradient-word">post-human web</span>
+  </h1>
+  <p class="hero-sub">VECTOR is the only studio built exclusively for AI-native companies. We architect brand identities, seed user farms, and engineer growth for apps that think differently.</p>
+  <div class="hero-actions">
+    <a href="#cta" class="btn-primary">Start Growing &rarr;</a>
+    <a href="#portfolio" class="btn-ghost">See Our Work</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <div class="num" data-count="240">0</div>
+      <div class="label">Apps Launched</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num" data-count="80">0</div>
+      <div class="label">Million Users Seeded</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num" data-count="3.8">0</div>
+      <div class="label">Avg Growth Multiplier</div>
+    </div>
+    <div class="hero-stat">
+      <div class="num" data-count="98">0</div>
+      <div class="label">Client NPS</div>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <div class="ticker-item"><span class="t-dot">●</span>Brand Architecture</div>
+    <div class="ticker-item"><span class="t-dot">●</span>User Farm Seeding</div>
+    <div class="ticker-item"><span class="t-dot">●</span>AI Identity Design</div>
+    <div class="ticker-item"><span class="t-dot">●</span>App Store Domination</div>
+    <div class="ticker-item"><span class="t-dot">●</span>Growth Engineering</div>
+    <div class="ticker-item"><span class="t-dot">●</span>Visibility Operations</div>
+    <div class="ticker-item"><span class="t-dot">●</span>Network Amplification</div>
+    <div class="ticker-item"><span class="t-dot">●</span>AI-Native Positioning</div>
+    <div class="ticker-item"><span class="t-dot">●</span>Viral Loop Design</div>
+    <div class="ticker-item"><span class="t-dot">●</span>Brand Architecture</div>
+    <div class="ticker-item"><span class="t-dot">●</span>User Farm Seeding</div>
+    <div class="ticker-item"><span class="t-dot">●</span>AI Identity Design</div>
+    <div class="ticker-item"><span class="t-dot">●</span>App Store Domination</div>
+    <div class="ticker-item"><span class="t-dot">●</span>Growth Engineering</div>
+    <div class="ticker-item"><span class="t-dot">●</span>Visibility Operations</div>
+    <div class="ticker-item"><span class="t-dot">●</span>Network Amplification</div>
+    <div class="ticker-item"><span class="t-dot">●</span>AI-Native Positioning</div>
+    <div class="ticker-item"><span class="t-dot">●</span>Viral Loop Design</div>
+  </div>
+</div>
+
+<!-- MANIFESTO -->
+<section id="manifesto">
+  <div class="manifesto-grid">
+    <div class="manifesto-text">
+      <div class="section-tag">// Manifesto</div>
+      <h2 class="section-title">The old playbook is obsolete</h2>
+      <p class="manifesto-body">
+        Traditional brand agencies were built for the pre-AI web — <span class="highlight">static identities, slow campaigns, spray-and-pray distribution.</span> AI-native companies move at a different velocity. They need brands that learn, grow strategies that adapt, and user acquisition that operates at machine scale.
+      </p>
+      <p class="manifesto-body" style="margin-top:1rem;">
+        VECTOR was founded to close that gap. <span class="highlight">We don't just design logos — we architect growth systems.</span> Every identity we build is engineered for virality, every campaign is seeded into the networks where your users already live.
+      </p>
+    </div>
+    <div class="manifesto-pillars">
+      <div class="pillar">
+        <div class="pillar-header">
+          <div class="pillar-icon indigo">🧬</div>
+          <div class="pillar-title">AI-Native by Design</div>
+        </div>
+        <div class="pillar-desc">Brands built to evolve — identity systems that adapt across AI interfaces, generative surfaces, and agentic contexts.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-header">
+          <div class="pillar-icon cyan">🌐</div>
+          <div class="pillar-title">User Farm Intelligence</div>
+        </div>
+        <div class="pillar-desc">Deep access to distributed user networks. We seed apps into real communities and fan ecosystems across every platform.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-header">
+          <div class="pillar-icon amber">⚡</div>
+          <div class="pillar-title">Velocity Over Vanity</div>
+        </div>
+        <div class="pillar-desc">Measurable growth metrics from day one. Every creative decision is validated against user acquisition data in real time.</div>
+      </div>
+      <div class="pillar">
+        <div class="pillar-header">
+          <div class="pillar-icon green">🔁</div>
+          <div class="pillar-title">Viral Loop Architecture</div>
+        </div>
+        <div class="pillar-desc">We engineer word-of-mouth into the product experience so growth compounds on itself — referral, share, embed, repeat.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="services-header">
+    <div class="section-tag">// Services</div>
+    <h2 class="section-title">Everything a growing<br>AI company needs</h2>
+    <p class="section-sub">Six integrated service lines, all designed to work together as a unified growth system.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-num">01</div>
+      <div class="service-icon">🏗️</div>
+      <div class="service-title">Brand Architecture</div>
+      <div class="service-desc">Complete brand identity systems for AI-native companies: naming, logo, visual language, voice, and positioning. Built for the post-AGI era.</div>
+      <div class="service-tags">
+        <span class="stag">Naming</span>
+        <span class="stag">Visual ID</span>
+        <span class="stag">Voice & Tone</span>
+      </div>
+    </div>
+    <div class="service-card accent-cyan">
+      <div class="service-num">02</div>
+      <div class="service-icon">🌾</div>
+      <div class="service-title">User Farm Seeding</div>
+      <div class="service-desc">Coordinated launch campaigns across distributed user networks — Reddit ecosystems, Discord servers, TikTok creator farms, and app-review communities.</div>
+      <div class="service-tags">
+        <span class="stag">Seeding</span>
+        <span class="stag">Network Ops</span>
+        <span class="stag">Launch Blitz</span>
+      </div>
+    </div>
+    <div class="service-card accent-amber">
+      <div class="service-num">03</div>
+      <div class="service-icon">📱</div>
+      <div class="service-title">App Store Domination</div>
+      <div class="service-desc">Full ASO stack: keyword architecture, screenshot design, A/B tested creatives, review velocity programs, and category ranking acceleration.</div>
+      <div class="service-tags">
+        <span class="stag">ASO</span>
+        <span class="stag">Creatives</span>
+        <span class="stag">Rankings</span>
+      </div>
+    </div>
+    <div class="service-card accent-green">
+      <div class="service-num">04</div>
+      <div class="service-icon">🤖</div>
+      <div class="service-title">AI Identity Design</div>
+      <div class="service-desc">Brand systems purpose-built for AI products — agent personas, conversational UX design, multi-modal asset libraries, and AI-generated content frameworks.</div>
+      <div class="service-tags">
+        <span class="stag">AI Persona</span>
+        <span class="stag">UX Voice</span>
+        <span class="stag">Generative</span>
+      </div>
+    </div>
+    <div class="service-card accent-rose">
+      <div class="service-num">05</div>
+      <div class="service-icon">📡</div>
+      <div class="service-title">Visibility Operations</div>
+      <div class="service-desc">Programmatic PR, influencer seeding, and media placement engineered around AI-adjacent publications, newsletters, and thought leader networks.</div>
+      <div class="service-tags">
+        <span class="stag">PR</span>
+        <span class="stag">Influencers</span>
+        <span class="stag">Media</span>
+      </div>
+    </div>
+    <div class="service-card accent-violet">
+      <div class="service-num">06</div>
+      <div class="service-icon">🔁</div>
+      <div class="service-title">Growth Engineering</div>
+      <div class="service-desc">Viral loop design, referral system architecture, onboarding funnel optimization, and retention mechanics built directly into product and brand touchpoints.</div>
+      <div class="service-tags">
+        <span class="stag">Viral Loops</span>
+        <span class="stag">Retention</span>
+        <span class="stag">Funnels</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section id="stats">
+  <div class="stats-grid">
+    <div class="stat-item">
+      <div class="stat-num" data-count="240">0</div>
+      <div class="stat-label">Apps Launched</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num" data-count="80">0</div>
+      <div class="stat-label">Million Users Seeded</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num" data-count="156">0</div>
+      <div class="stat-label">Brand Systems Built</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num" data-count="94">0</div>
+      <div class="stat-label">% Client Retention</div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div style="max-width:700px;">
+    <div class="section-tag">// Process</div>
+    <h2 class="section-title">From zero to orbit<br>in four phases</h2>
+    <p class="section-sub">A repeatable system that takes an AI company from pre-brand to viral growth engine.</p>
+  </div>
+  <div class="process-steps">
+    <div class="process-step">
+      <div class="step-num">01</div>
+      <div class="step-phase">Phase One</div>
+      <div class="step-title">Audit</div>
+      <div class="step-desc">Deep discovery of your product, competitive landscape, target user segments, and existing brand signals.</div>
+      <ul class="step-details">
+        <li>Competitive mapping</li>
+        <li>User persona development</li>
+        <li>Platform opportunity scan</li>
+        <li>Brand signal audit</li>
+      </ul>
+    </div>
+    <div class="process-step">
+      <div class="step-num">02</div>
+      <div class="step-phase">Phase Two</div>
+      <div class="step-title">Architect</div>
+      <div class="step-desc">Full brand system design plus growth strategy. Identity, messaging, channel mix, and seeding plan locked in before launch.</div>
+      <ul class="step-details">
+        <li>Identity system design</li>
+        <li>Positioning & messaging</li>
+        <li>Channel strategy</li>
+        <li>Content architecture</li>
+      </ul>
+    </div>
+    <div class="process-step">
+      <div class="step-num">03</div>
+      <div class="step-phase">Phase Three</div>
+      <div class="step-title">Seed</div>
+      <div class="step-desc">Coordinated launch across user farm networks, app stores, and media channels — simultaneous signal amplification at scale.</div>
+      <ul class="step-details">
+        <li>User farm activation</li>
+        <li>App store push</li>
+        <li>Influencer seeding</li>
+        <li>PR blitz</li>
+      </ul>
+    </div>
+    <div class="process-step">
+      <div class="step-num">04</div>
+      <div class="step-phase">Phase Four</div>
+      <div class="step-title">Scale</div>
+      <div class="step-desc">Optimize based on real performance data. Double down on winning channels, kill what's not working, engineer viral loops for compounding growth.</div>
+      <ul class="step-details">
+        <li>Performance analysis</li>
+        <li>Viral loop activation</li>
+        <li>Channel optimization</li>
+        <li>Retention engineering</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <div class="portfolio-header">
+    <div>
+      <div class="section-tag">// Selected Work</div>
+      <h2 class="section-title">Results speak<br>for themselves</h2>
+    </div>
+    <p class="section-sub" style="max-width:340px;">Three AI-native brands we took from zero to traction.</p>
+  </div>
+  <div class="portfolio-grid">
+    <div class="portfolio-card featured">
+      <div class="portfolio-visual">
+        <div class="pv-bg" style="background: linear-gradient(135deg, #1a0533 0%, #2d1060 50%, #0f0329 100%);"></div>
+        <div class="pv-content">
+          <div class="pv-logo" style="color: #C084FC;">OMNIMIND</div>
+          <div class="pv-sector" style="color: #C084FC;">AI Productivity</div>
+        </div>
+      </div>
+      <div class="portfolio-body">
+        <div class="portfolio-company">OmniMind AI</div>
+        <div class="portfolio-brief">Full brand overhaul + user farm launch for an AI productivity suite targeting knowledge workers. 60-day blitz from rebrand to #1 in category.</div>
+        <div class="portfolio-metrics">
+          <div class="pm"><div class="pm-val">2.3M</div><div class="pm-label">Downloads in 90 days</div></div>
+          <div class="pm"><div class="pm-val">4.8★</div><div class="pm-label">App Store Rating</div></div>
+          <div class="pm"><div class="pm-val">#1</div><div class="pm-label">Productivity Category</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="portfolio-card">
+      <div class="portfolio-visual" style="height:160px;">
+        <div class="pv-bg" style="background: linear-gradient(135deg, #052e1c, #0f4f32);"></div>
+        <div class="pv-content">
+          <div class="pv-logo" style="color: #34D399;">VERDEX</div>
+          <div class="pv-sector" style="color: #34D399;">AI Finance</div>
+        </div>
+      </div>
+      <div class="portfolio-body">
+        <div class="portfolio-company">Verdex Finance AI</div>
+        <div class="portfolio-brief">Brand architecture + ASO for an AI-powered personal finance app. Ranked top-3 in Finance within 45 days.</div>
+        <div class="portfolio-metrics">
+          <div class="pm"><div class="pm-val">640K</div><div class="pm-label">Installs</div></div>
+          <div class="pm"><div class="pm-val">5.4x</div><div class="pm-label">Growth Multiplier</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="portfolio-card">
+      <div class="portfolio-visual" style="height:160px;">
+        <div class="pv-bg" style="background: linear-gradient(135deg, #1a1505, #3d2e0a);"></div>
+        <div class="pv-content">
+          <div class="pv-logo" style="color: #FCD34D;">AXON</div>
+          <div class="pv-sector" style="color: #FCD34D;">AI Education</div>
+        </div>
+      </div>
+      <div class="portfolio-body">
+        <div class="portfolio-company">Axon Learn AI</div>
+        <div class="portfolio-brief">Complete identity + viral loop engineering for an AI tutoring platform. Referral program drove 38% of all new users.</div>
+        <div class="portfolio-metrics">
+          <div class="pm"><div class="pm-val">1.1M</div><div class="pm-label">Active Users</div></div>
+          <div class="pm"><div class="pm-val">38%</div><div class="pm-label">Referral-Driven Growth</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="section-tag">// The Agents</div>
+  <h2 class="section-title">Built by humans.<br>Powered by AI.</h2>
+  <p class="section-sub">VECTOR's founding team brings together brand strategy, growth engineering, and AI systems expertise.</p>
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="team-avatar" style="background: linear-gradient(135deg, #2d1b69, #4c1d95);">🧠</div>
+      <div class="team-name">Dax Mercer</div>
+      <div class="team-role">Brand Architect</div>
+      <div class="team-bio">Former creative director at three unicorn SaaS companies. Specializes in AI-native positioning and identity systems that scale.</div>
+      <div class="team-skills">
+        <span class="tskill">Identity</span>
+        <span class="tskill">Positioning</span>
+        <span class="tskill">AI UX</span>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar" style="background: linear-gradient(135deg, #0c4a6e, #0e7490);">📡</div>
+      <div class="team-name">Lyra Voss</div>
+      <div class="team-role">Growth Director</div>
+      <div class="team-bio">Ex-growth lead at two top-10 App Store apps. Manages VECTOR's network of user farm partnerships and distribution channels.</div>
+      <div class="team-skills">
+        <span class="tskill">ASO</span>
+        <span class="tskill">Networks</span>
+        <span class="tskill">Funnels</span>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar" style="background: linear-gradient(135deg, #451a03, #92400e);">⚡</div>
+      <div class="team-name">Cael Thorne</div>
+      <div class="team-role">Systems Engineer</div>
+      <div class="team-bio">Viral loop architect who has engineered referral systems for 40+ apps. Builds growth mechanics that compound over time.</div>
+      <div class="team-skills">
+        <span class="tskill">Viral Loops</span>
+        <span class="tskill">Referrals</span>
+        <span class="tskill">Retention</span>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar" style="background: linear-gradient(135deg, #052e16, #065f46);">🌐</div>
+      <div class="team-name">Sable Nori</div>
+      <div class="team-role">Visibility Lead</div>
+      <div class="team-bio">Runs VECTOR's PR and influencer operations. Deep relationships across AI media, tech newsletters, and creator ecosystems.</div>
+      <div class="team-skills">
+        <span class="tskill">PR</span>
+        <span class="tskill">Influencers</span>
+        <span class="tskill">Media</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div style="text-align:center; max-width:600px; margin: 0 auto 3rem;">
+    <div class="section-tag">// Pricing</div>
+    <h2 class="section-title">Clear pricing.<br>No surprises.</h2>
+    <p class="section-sub">Three tiers designed for different stages of AI-native company growth.</p>
+  </div>
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <div class="pricing-tier">Starter</div>
+      <div class="pricing-name">Orbit</div>
+      <div class="pricing-price">
+        <span class="currency">$</span>9,500<span class="period">/mo</span>
+      </div>
+      <div class="pricing-desc">Brand identity + initial user farm seeding. Ideal for pre-launch or early-stage AI companies.</div>
+      <div class="pricing-divider"></div>
+      <ul class="pricing-features">
+        <li><span class="pf-check">✓</span>Full brand identity system</li>
+        <li><span class="pf-check">✓</span>App Store visual package</li>
+        <li><span class="pf-check">✓</span>1 user farm launch blitz</li>
+        <li><span class="pf-check">✓</span>Monthly reporting</li>
+        <li><span class="pf-check">✓</span>Dedicated account manager</li>
+        <li><span class="pf-x">✗</span><span class="pf-disabled">Growth engineering</span></li>
+        <li><span class="pf-x">✗</span><span class="pf-disabled">PR & influencer ops</span></li>
+        <li><span class="pf-x">✗</span><span class="pf-disabled">Viral loop design</span></li>
+      </ul>
+      <a href="#cta" class="pricing-cta">Get Started</a>
+    </div>
+    <div class="pricing-card featured">
+      <div class="pricing-badge">Most Popular</div>
+      <div class="pricing-tier">Growth</div>
+      <div class="pricing-name">Gravity</div>
+      <div class="pricing-price">
+        <span class="currency">$</span>24,000<span class="period">/mo</span>
+      </div>
+      <div class="pricing-desc">Full-stack brand + growth system. The complete VECTOR playbook for companies ready to scale fast.</div>
+      <div class="pricing-divider"></div>
+      <ul class="pricing-features">
+        <li><span class="pf-check">✓</span>Everything in Orbit</li>
+        <li><span class="pf-check">✓</span>AI identity design system</li>
+        <li><span class="pf-check">✓</span>3 user farm launch blitzes</li>
+        <li><span class="pf-check">✓</span>Growth engineering sprint</li>
+        <li><span class="pf-check">✓</span>PR & influencer seeding</li>
+        <li><span class="pf-check">✓</span>Viral loop architecture</li>
+        <li><span class="pf-check">✓</span>Bi-weekly strategy calls</li>
+        <li><span class="pf-x">✗</span><span class="pf-disabled">Embedded team member</span></li>
+      </ul>
+      <a href="#cta" class="pricing-cta">Get Started</a>
+    </div>
+    <div class="pricing-card">
+      <div class="pricing-tier">Enterprise</div>
+      <div class="pricing-name">Singularity</div>
+      <div class="pricing-price" style="font-size:2rem;">
+        Custom
+      </div>
+      <div class="pricing-desc">Full VECTOR team embedded as your in-house brand + growth function. Built for funded AI companies targeting breakout growth.</div>
+      <div class="pricing-divider"></div>
+      <ul class="pricing-features">
+        <li><span class="pf-check">✓</span>Everything in Gravity</li>
+        <li><span class="pf-check">✓</span>Embedded VECTOR strategist</li>
+        <li><span class="pf-check">✓</span>Unlimited user farm activations</li>
+        <li><span class="pf-check">✓</span>Custom AI identity tooling</li>
+        <li><span class="pf-check">✓</span>Executive brand advisory</li>
+        <li><span class="pf-check">✓</span>Co-branded press & launches</li>
+        <li><span class="pf-check">✓</span>Dedicated growth engineer</li>
+        <li><span class="pf-check">✓</span>Board-level reporting</li>
+      </ul>
+      <a href="#cta" class="pricing-cta">Talk to Us</a>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-inner">
+    <div class="section-tag">// Get Started</div>
+    <h2 class="cta-title">Ready to put your app in orbit?</h2>
+    <p class="cta-sub">Tell us about your company. We'll build a custom growth plan in 48 hours.</p>
+    <form class="cta-form" onsubmit="handleSubmit(event)">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" placeholder="Dax Mercer">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" placeholder="dax@yourai.com">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Company / App Name</label>
+          <input type="text" placeholder="OmniMind AI">
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select>
+            <option value="">Select category...</option>
+            <option>AI Productivity</option>
+            <option>AI Finance</option>
+            <option>AI Health</option>
+            <option>AI Education</option>
+            <option>AI Creative</option>
+            <option>AI Developer Tools</option>
+            <option>AI Social / Consumer</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>What's your biggest growth challenge?</label>
+        <textarea placeholder="Tell us about your current stage, what's working, and where you're stuck..."></textarea>
+      </div>
+      <button type="submit" class="form-submit">Send Brief — We'll Respond in 24h &rarr;</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="f-logo">VECTOR</div>
+      <div class="f-tagline">AI-Native Brand Growth Studio</div>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#">Brand Architecture</a></li>
+          <li><a href="#">User Farm Seeding</a></li>
+          <li><a href="#">App Store Domination</a></li>
+          <li><a href="#">AI Identity Design</a></li>
+          <li><a href="#">Growth Engineering</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Work</a></li>
+          <li><a href="#">Team</a></li>
+          <li><a href="#">Pricing</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Follow</h4>
+        <ul>
+          <li><a href="#">Twitter / X</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">Substack</a></li>
+          <li><a href="#">GitHub</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">&copy; 2026 VECTOR Studio. All rights reserved.</div>
+    <div class="footer-status"><span class="status-dot"></span>All systems operational</div>
+  </div>
+</footer>
+
+<script>
+// ── CANVAS ANIMATION ──
+const canvas = document.getElementById('heroCanvas');
+const ctx = canvas.getContext('2d');
+let W, H, nodes = [], animId;
+
+function resize() {
+  W = canvas.width = canvas.offsetWidth;
+  H = canvas.height = canvas.offsetHeight;
+}
+
+function initNodes() {
+  nodes = [];
+  const count = Math.floor((W * H) / 14000);
+  for (let i = 0; i < count; i++) {
+    nodes.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: (Math.random() - 0.5) * 0.4,
+      r: Math.random() * 2.5 + 0.8,
+      color: ['#4F46E5','#06B6D4','#10B981','#8B5CF6'][Math.floor(Math.random() * 4)],
+      pulse: Math.random() * Math.PI * 2
+    });
+  }
+}
+
+function drawFrame() {
+  ctx.clearRect(0, 0, W, H);
+
+  nodes.forEach(n => {
+    n.x += n.vx; n.y += n.vy;
+    n.pulse += 0.02;
+    if (n.x < 0 || n.x > W) n.vx *= -1;
+    if (n.y < 0 || n.y > H) n.vy *= -1;
+  });
+
+  const maxDist = 130;
+  for (let i = 0; i < nodes.length; i++) {
+    for (let j = i + 1; j < nodes.length; j++) {
+      const dx = nodes[i].x - nodes[j].x;
+      const dy = nodes[i].y - nodes[j].y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < maxDist) {
+        const alpha = (1 - dist / maxDist) * 0.18;
+        ctx.beginPath();
+        ctx.moveTo(nodes[i].x, nodes[i].y);
+        ctx.lineTo(nodes[j].x, nodes[j].y);
+        ctx.strokeStyle = `rgba(79,70,229,${alpha})`;
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
+      }
+    }
+  }
+
+  nodes.forEach(n => {
+    const pulseR = n.r + Math.sin(n.pulse) * 0.5;
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, pulseR, 0, Math.PI * 2);
+    ctx.fillStyle = n.color;
+    ctx.globalAlpha = 0.7;
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  });
+
+  animId = requestAnimationFrame(drawFrame);
+}
+
+window.addEventListener('resize', () => { resize(); initNodes(); });
+resize();
+initNodes();
+drawFrame();
+
+// ── COUNTER ANIMATION ──
+function animateCounter(el) {
+  const target = parseFloat(el.dataset.count);
+  const isDecimal = target % 1 !== 0;
+  const duration = 2000;
+  const start = performance.now();
+
+  function update(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const current = target * eased;
+    el.textContent = isDecimal ? current.toFixed(1) : Math.floor(current);
+    if (progress < 1) requestAnimationFrame(update);
+    else el.textContent = isDecimal ? target.toFixed(1) : target;
+  }
+  requestAnimationFrame(update);
+}
+
+const counterObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      animateCounter(entry.target);
+      counterObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('[data-count]').forEach(el => counterObserver.observe(el));
+
+// ── FORM SUBMIT ──
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('.form-submit');
+  btn.textContent = 'Brief received — we\'ll be in touch shortly!';
+  btn.style.background = 'var(--green)';
+  btn.disabled = true;
+}
+
+// ── NAV SCROLL ──
+window.addEventListener('scroll', () => {
+  const nav = document.querySelector('nav');
+  nav.style.background = window.scrollY > 40
+    ? 'rgba(3,7,20,0.98)'
+    : 'rgba(3,7,20,0.85)';
+});
+</script>
+</body>
+</html>
