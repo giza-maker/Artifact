@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GRIMOIRE PICTURES — AI Monster Film Studio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:   #0A0807;
+      --ink:     #110E0C;
+      --coal:    #1C1714;
+      --sepia:   #2E2720;
+      --parchment: #F2E8D5;
+      --parchment2: #E8D9BC;
+      --cream:   #FAF4E8;
+      --red:     #8B1A1A;
+      --red2:    #A52020;
+      --silver:  #B8B4AD;
+      --gold:    #C9A55A;
+      --gold2:   #DFB86A;
+      --muted:   #7A7268;
+      --dim:     #4A453E;
+      --border:  rgba(242,232,213,0.08);
+      --border2: rgba(201,165,90,0.2);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'EB Garamond', 'Georgia', serif;
+      background: var(--black);
+      color: var(--parchment);
+      overflow-x: hidden;
+      line-height: 1.7;
+    }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: var(--red); }
+
+    /* ── FILM GRAIN OVERLAY ── */
+    body::after {
+      content: '';
+      position: fixed; inset: 0; pointer-events: none; z-index: 9999;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23g)' opacity='1'/%3E%3C/svg%3E");
+    }
+
+    /* ── SCAN LINE ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; pointer-events: none; z-index: 9998;
+      background: repeating-linear-gradient(
+        to bottom, transparent 0px, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px
+      );
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 5%;
+      transition: background 0.4s, border-color 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(10,8,7,0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      display: flex; flex-direction: column; line-height: 1;
+      text-decoration: none;
+    }
+    .nav-logo-main {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem; font-weight: 900; letter-spacing: 0.2em;
+      color: var(--parchment); text-transform: uppercase;
+    }
+    .nav-logo-sub {
+      font-size: 0.55rem; letter-spacing: 0.35em; text-transform: uppercase;
+      color: var(--gold); font-family: 'Barlow Condensed', sans-serif; font-weight: 600;
+    }
+    .nav-links {
+      display: flex; gap: 2.5rem; list-style: none;
+    }
+    .nav-links a {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--parchment); }
+    .nav-cta {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.7rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--parchment); border: 1px solid var(--gold);
+      padding: 0.45rem 1.2rem; background: transparent; cursor: pointer;
+      transition: all 0.2s; text-decoration: none;
+    }
+    .nav-cta:hover { background: var(--gold); color: var(--black); }
+    @media (max-width: 768px) { .nav-links { display: none; } }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      position: relative;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 10rem 5% 6rem;
+      overflow: hidden;
+    }
+
+    /* Vignette bg */
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse at 50% 30%, rgba(139,26,26,0.18), transparent 55%),
+        radial-gradient(ellipse at 20% 80%, rgba(201,165,90,0.06), transparent 45%),
+        radial-gradient(ellipse at 80% 80%, rgba(50,30,20,0.4), transparent 50%),
+        linear-gradient(180deg, #0A0807 0%, #110E0C 60%, #0A0807 100%);
+    }
+    .hero-vignette {
+      position: absolute; inset: 0; z-index: 1;
+      background: radial-gradient(ellipse at 50% 50%, transparent 40%, rgba(0,0,0,0.7) 100%);
+    }
+
+    /* Decorative film strip sides */
+    .film-strip {
+      position: absolute; top: 0; bottom: 0; width: 40px;
+      background: repeating-linear-gradient(
+        to bottom, var(--black) 0px, var(--black) 12px, var(--coal) 12px, var(--coal) 28px
+      );
+      opacity: 0.7; z-index: 1;
+    }
+    .film-strip.left { left: 0; }
+    .film-strip.right { right: 0; }
+
+    /* Creature silhouette */
+    .creature-silhouette {
+      position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: min(500px, 70%); z-index: 1; opacity: 0.12;
+    }
+
+    .hero-content { position: relative; z-index: 2; max-width: 800px; }
+    .hero-studio-badge {
+      display: inline-block; margin-bottom: 2rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.65rem; letter-spacing: 0.4em; text-transform: uppercase;
+      color: var(--gold); border: 1px solid var(--border2);
+      padding: 0.4rem 1.4rem; position: relative;
+    }
+    .hero-studio-badge::before, .hero-studio-badge::after {
+      content: '◆'; position: absolute; top: 50%; transform: translateY(-50%);
+      font-size: 0.4rem; color: var(--gold);
+    }
+    .hero-studio-badge::before { left: 0.4rem; }
+    .hero-studio-badge::after  { right: 0.4rem; }
+
+    .hero-rule-top { width: 100px; height: 1px; background: var(--gold); margin: 0 auto 1.5rem; opacity: 0.4; }
+
+    h1.hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.5rem, 10vw, 9rem);
+      font-weight: 900; line-height: 0.88;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      color: var(--cream);
+      text-shadow: 0 0 80px rgba(139,26,26,0.4), 0 4px 20px rgba(0,0,0,0.8);
+      margin-bottom: 0.3rem;
+    }
+    .hero-subtitle {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1rem, 2.5vw, 1.5rem);
+      font-style: italic; font-weight: 400;
+      color: var(--gold); letter-spacing: 0.1em;
+      margin-bottom: 1.8rem;
+    }
+    .hero-rule-bot { width: 200px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); margin: 0 auto 2rem; }
+
+    .hero-tagline {
+      font-family: 'EB Garamond', serif;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--silver); line-height: 1.7;
+      max-width: 520px; margin: 0 auto 2.5rem;
+    }
+    .hero-actions { display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.8rem; letter-spacing: 0.18em; text-transform: uppercase;
+      background: var(--red); color: var(--parchment);
+      padding: 0.8rem 2.2rem; border: none; cursor: pointer;
+      transition: background 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 30px rgba(139,26,26,0.3);
+      text-decoration: none; display: inline-block;
+    }
+    .btn-primary:hover { background: var(--red2); box-shadow: 0 0 50px rgba(165,32,32,0.4); }
+    .btn-outline {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.8rem; letter-spacing: 0.18em; text-transform: uppercase;
+      background: transparent; color: var(--parchment);
+      padding: 0.8rem 2.2rem; border: 1px solid var(--border);
+      cursor: pointer; transition: border-color 0.2s;
+      text-decoration: none; display: inline-block;
+    }
+    .btn-outline:hover { border-color: var(--parchment); }
+
+    .hero-year {
+      position: absolute; bottom: 3rem; left: 50%; transform: translateX(-50%);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--dim); z-index: 2;
+    }
+
+    /* ── SECTIONS ── */
+    .section { padding: 8rem 5%; position: relative; overflow: hidden; }
+    .section-inner { max-width: 1180px; margin: 0 auto; }
+    .ornament {
+      text-align: center; color: var(--gold); opacity: 0.4;
+      font-size: 1.2rem; letter-spacing: 0.5em; margin-bottom: 1.5rem;
+    }
+    .section-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.62rem; letter-spacing: 0.35em; text-transform: uppercase;
+      color: var(--gold); display: flex; align-items: center; gap: 0.8rem;
+      margin-bottom: 1rem;
+    }
+    .section-label::before { content: ''; width: 30px; height: 1px; background: var(--gold); flex-shrink: 0; }
+    h2.section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4.5vw, 3.8rem);
+      font-weight: 700; line-height: 1.05; letter-spacing: -0.01em;
+      margin-bottom: 1rem;
+    }
+    h2.section-title em { font-style: italic; color: var(--gold); }
+    .section-body {
+      color: var(--silver); font-size: 1rem; line-height: 1.85;
+      max-width: 580px;
+    }
+    hr.ornament-rule {
+      border: none; text-align: center; margin: 0;
+      display: flex; align-items: center; gap: 1rem;
+      max-width: 1180px; margin: 0 auto;
+    }
+    hr.ornament-rule::before, hr.ornament-rule::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+    hr.ornament-rule span {
+      font-size: 0.7rem; color: var(--dim); letter-spacing: 0.2em;
+    }
+
+    /* ── CURRENT PRODUCTION ── */
+    #current { background: var(--ink); }
+    .production-hero {
+      display: grid; grid-template-columns: 1fr 1.6fr; gap: 4rem; align-items: start;
+    }
+    @media (max-width: 768px) { .production-hero { grid-template-columns: 1fr; gap: 2.5rem; } }
+
+    .poster-frame {
+      border: 2px solid var(--border2);
+      position: relative; overflow: hidden;
+      aspect-ratio: 2/3;
+      background: var(--coal);
+      display: flex; flex-direction: column;
+    }
+    .poster-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 50% 30%, rgba(30,60,100,0.5), transparent 60%),
+        radial-gradient(ellipse at 50% 80%, rgba(139,26,26,0.3), transparent 50%),
+        linear-gradient(180deg, #0a1520 0%, #0d0d0d 100%);
+    }
+    .poster-creature-svg {
+      position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+      width: 75%; z-index: 1;
+    }
+    .poster-title-block {
+      position: absolute; top: 0; left: 0; right: 0; z-index: 2;
+      padding: 1.5rem; text-align: center;
+      background: linear-gradient(180deg, rgba(10,8,7,0.9), transparent);
+    }
+    .poster-studio-line {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.55rem; letter-spacing: 0.4em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 0.3rem;
+    }
+    .poster-film-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 3rem; font-weight: 900; line-height: 0.9;
+      color: var(--cream); text-transform: uppercase;
+      text-shadow: 0 0 30px rgba(30,80,160,0.6), 0 2px 8px rgba(0,0,0,0.9);
+    }
+    .poster-tagline {
+      font-family: 'EB Garamond', serif;
+      font-style: italic; font-size: 0.8rem;
+      color: var(--silver); margin-top: 0.4rem;
+    }
+    .poster-bottom {
+      position: absolute; bottom: 0; left: 0; right: 0; z-index: 2;
+      padding: 1rem 1.5rem;
+      background: linear-gradient(0deg, rgba(0,0,0,0.95), transparent);
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.55rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--dim);
+    }
+
+    .production-details { display: flex; flex-direction: column; gap: 1.5rem; }
+    .prod-meta-row {
+      display: flex; flex-wrap: wrap; gap: 0.8rem;
+    }
+    .prod-tag {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+      padding: 0.25rem 0.7rem;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .prod-tag.active { border-color: var(--red); color: var(--red); }
+
+    .prod-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 5vw, 4.5rem);
+      font-weight: 900; line-height: 0.9; text-transform: uppercase;
+      letter-spacing: -0.01em;
+    }
+    .prod-subtitle {
+      font-family: 'EB Garamond', serif;
+      font-style: italic; font-size: 1.1rem;
+      color: var(--gold); margin-top: 0.3rem;
+    }
+    .prod-synopsis {
+      font-size: 1rem; color: var(--silver); line-height: 1.8;
+      border-left: 2px solid var(--red); padding-left: 1.2rem;
+    }
+    .prod-spec-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+      margin-top: 0.5rem;
+    }
+    .pspec { border-top: 1px solid var(--border); padding-top: 0.8rem; }
+    .pspec-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.58rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 0.2rem;
+    }
+    .pspec-val { font-size: 0.9rem; color: var(--parchment); font-weight: 500; }
+
+    .adaptation-note {
+      background: rgba(139,26,26,0.08); border: 1px solid rgba(139,26,26,0.2);
+      padding: 1.2rem; font-size: 0.88rem; color: var(--silver); line-height: 1.65;
+    }
+    .adaptation-note strong { color: var(--parchment); }
+
+    /* ── AGENT ROSTER ── */
+    #roster { background: var(--black); }
+    .dept-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1px; background: var(--border); border: 1px solid var(--border);
+    }
+    .dept-card {
+      background: var(--black); padding: 2rem 1.8rem;
+      position: relative; overflow: hidden;
+      transition: background 0.3s;
+    }
+    .dept-card:hover { background: var(--ink); }
+    .dept-card::after {
+      content: ''; position: absolute;
+      bottom: 0; left: 0; right: 0; height: 2px;
+      background: var(--red); transform: scaleX(0); transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+    .dept-card:hover::after { transform: scaleX(1); }
+
+    .agent-dept {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.58rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 0.4rem;
+    }
+    .agent-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem; font-weight: 700;
+      margin-bottom: 0.2rem; line-height: 1.1;
+    }
+    .agent-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 1rem;
+    }
+    .agent-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.65; margin-bottom: 1rem; }
+    .agent-current {
+      font-size: 0.78rem; color: var(--silver);
+      border-top: 1px solid var(--border); padding-top: 0.8rem;
+      display: flex; gap: 0.4rem; align-items: flex-start;
+    }
+    .agent-current::before { content: '▸'; color: var(--red); flex-shrink: 0; margin-top: 0.05rem; }
+    .agent-status-dot {
+      position: absolute; top: 1.5rem; right: 1.5rem;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 8px var(--gold);
+      animation: pulse-status 2s ease-in-out infinite;
+    }
+    @keyframes pulse-status {
+      0%,100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* ── AI METHODOLOGY ── */
+    #method { background: var(--coal); }
+    .method-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start;
+    }
+    @media (max-width: 768px) { .method-grid { grid-template-columns: 1fr; gap: 3rem; } }
+    .method-steps { display: flex; flex-direction: column; }
+    .method-step {
+      display: grid; grid-template-columns: 50px 1fr;
+      gap: 1.2rem; padding: 1.5rem 0;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+    .method-step:last-child { border-bottom: none; }
+    .ms-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem; font-weight: 900; color: rgba(201,165,90,0.15);
+      line-height: 1;
+    }
+    .ms-phase {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 0.3rem;
+    }
+    .ms-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem; font-weight: 700; margin-bottom: 0.4rem;
+    }
+    .ms-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.65; }
+    .method-why {
+      background: rgba(139,26,26,0.07); border: 1px solid rgba(139,26,26,0.15);
+      padding: 2.5rem; display: flex; flex-direction: column; gap: 1.5rem;
+    }
+    .why-item { border-top: 1px solid var(--border); padding-top: 1.2rem; }
+    .why-item:first-child { border-top: none; padding-top: 0; }
+    .why-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--red); margin-bottom: 0.3rem;
+    }
+    .why-text { font-size: 0.9rem; color: var(--silver); line-height: 1.7; }
+
+    /* ── SLATE: OTHER TITLES ── */
+    #slate { background: var(--ink); }
+    .slate-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+    .slate-card {
+      border: 1px solid var(--border);
+      padding: 1.8rem 1.4rem;
+      position: relative; overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .slate-card:hover { border-color: rgba(201,165,90,0.3); }
+    .slate-status {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.58rem; letter-spacing: 0.28em; text-transform: uppercase;
+      margin-bottom: 0.6rem;
+    }
+    .slate-status.development { color: var(--gold); }
+    .slate-status.pre-production { color: #5BA05B; }
+    .slate-status.announced { color: var(--muted); }
+    .slate-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem; font-weight: 900;
+      text-transform: uppercase; line-height: 1; margin-bottom: 0.3rem;
+    }
+    .slate-source { font-size: 0.75rem; color: var(--muted); font-style: italic; margin-bottom: 0.8rem; }
+    .slate-logline { font-size: 0.82rem; color: var(--silver); line-height: 1.6; }
+    .slate-era {
+      position: absolute; top: 1.2rem; right: 1.2rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.62rem; letter-spacing: 0.12em;
+      color: var(--dim);
+    }
+
+    /* ── TECHNOLOGY ── */
+    #technology { background: var(--black); }
+    .tech-list {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.2rem;
+    }
+    .tech-item {
+      background: var(--coal); border: 1px solid var(--border);
+      padding: 1.6rem;
+      transition: border-color 0.2s;
+    }
+    .tech-item:hover { border-color: var(--border2); }
+    .tech-icon { font-size: 1.5rem; margin-bottom: 0.7rem; }
+    .tech-name {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.82rem; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--parchment); font-weight: 700; margin-bottom: 0.4rem;
+    }
+    .tech-desc { font-size: 0.82rem; color: var(--muted); line-height: 1.65; }
+
+    /* ── PITCH CTA ── */
+    #pitch { background: var(--sepia); }
+    .pitch-inner {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start;
+      max-width: 1180px; margin: 0 auto;
+    }
+    @media (max-width: 768px) { .pitch-inner { grid-template-columns: 1fr; gap: 3rem; } }
+    .pitch-form { display: flex; flex-direction: column; gap: 0.8rem; }
+    .f-input {
+      background: rgba(0,0,0,0.3); border: 1px solid var(--border);
+      border-bottom-color: rgba(242,232,213,0.15);
+      color: var(--parchment); font-family: 'EB Garamond', serif; font-size: 0.95rem;
+      padding: 0.8rem 1rem; outline: none;
+      transition: border-color 0.2s;
+    }
+    .f-input::placeholder { color: var(--dim); font-style: italic; }
+    .f-input:focus { border-color: var(--gold); }
+    .f-select {
+      background: rgba(0,0,0,0.4); color: var(--muted);
+      font-family: 'EB Garamond', serif;
+    }
+    .f-textarea {
+      resize: vertical; min-height: 100px;
+    }
+    .f-submit {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.78rem; letter-spacing: 0.2em; text-transform: uppercase;
+      background: var(--red); color: var(--parchment);
+      padding: 0.9rem; border: none; cursor: pointer;
+      transition: background 0.2s; margin-top: 0.3rem;
+    }
+    .f-submit:hover { background: var(--red2); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--black);
+      border-top: 1px solid var(--border);
+      padding: 4rem 5% 2rem;
+    }
+    .footer-inner {
+      max-width: 1180px; margin: 0 auto;
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem;
+      margin-bottom: 3rem;
+    }
+    @media (max-width: 768px) { .footer-inner { grid-template-columns: 1fr 1fr; gap: 2rem; } }
+    .footer-brand .fb-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem; font-weight: 900; text-transform: uppercase;
+      letter-spacing: 0.1em; margin-bottom: 0.2rem;
+    }
+    .footer-brand .fb-sub {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.58rem; letter-spacing: 0.3em; color: var(--gold);
+      text-transform: uppercase; margin-bottom: 0.8rem;
+    }
+    .footer-brand p { font-size: 0.82rem; color: var(--dim); line-height: 1.7; max-width: 240px; }
+    .footer-col h5 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--gold); font-weight: 600; margin-bottom: 1rem;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .footer-col ul a { font-size: 0.82rem; color: var(--dim); text-decoration: none; font-family: 'EB Garamond', serif; transition: color 0.2s; }
+    .footer-col ul a:hover { color: var(--muted); }
+    .footer-bottom {
+      max-width: 1180px; margin: 0 auto;
+      border-top: 1px solid var(--border); padding-top: 1.5rem;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.72rem; color: var(--dim); flex-wrap: wrap; gap: 0.5rem;
+      font-family: 'Barlow Condensed', sans-serif; letter-spacing: 0.08em;
+    }
+    .footer-ornament { color: var(--red); opacity: 0.4; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">
+    <span class="nav-logo-main">Grimoire Pictures</span>
+    <span class="nav-logo-sub">AI Monster Film Studio · Est. 2024</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#current">Current Production</a></li>
+    <li><a href="#roster">The Studio</a></li>
+    <li><a href="#slate">Full Slate</a></li>
+    <li><a href="#technology">Technology</a></li>
+  </ul>
+  <a href="#pitch" class="nav-cta">Submit a Pitch</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-vignette"></div>
+  <div class="film-strip left"></div>
+  <div class="film-strip right"></div>
+
+  <!-- Creature silhouette SVG -->
+  <svg class="creature-silhouette" viewBox="0 0 400 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Body -->
+    <ellipse cx="200" cy="320" rx="80" ry="130" fill="rgba(30,60,100,0.6)"/>
+    <!-- Head -->
+    <ellipse cx="200" cy="170" rx="55" ry="65" fill="rgba(30,60,100,0.7)"/>
+    <!-- Gill crests -->
+    <path d="M155 160 Q130 130 125 110 Q140 120 155 145 Z" fill="rgba(50,90,140,0.6)"/>
+    <path d="M245 160 Q270 130 275 110 Q260 120 245 145 Z" fill="rgba(50,90,140,0.6)"/>
+    <!-- Fin ridge on head -->
+    <path d="M180 115 Q200 95 220 115" stroke="rgba(80,130,200,0.4)" stroke-width="3" fill="none"/>
+    <!-- Eyes -->
+    <ellipse cx="182" cy="175" rx="10" ry="8" fill="rgba(255,200,50,0.8)"/>
+    <ellipse cx="218" cy="175" rx="10" ry="8" fill="rgba(255,200,50,0.8)"/>
+    <!-- Arms -->
+    <path d="M130 270 Q90 300 70 350 Q100 340 120 310 Q140 290 145 275 Z" fill="rgba(30,60,100,0.5)"/>
+    <path d="M270 270 Q310 300 330 350 Q300 340 280 310 Q260 290 255 275 Z" fill="rgba(30,60,100,0.5)"/>
+    <!-- Webbed hand hints -->
+    <path d="M70 350 Q60 365 55 380 Q65 370 72 360 Z" fill="rgba(40,80,130,0.5)"/>
+    <path d="M330 350 Q340 365 345 380 Q335 370 328 360 Z" fill="rgba(40,80,130,0.5)"/>
+    <!-- Tail fin -->
+    <path d="M180 440 Q200 500 220 440 Q210 450 200 455 Q190 450 180 440 Z" fill="rgba(30,60,100,0.5)"/>
+    <!-- Scale texture lines -->
+    <path d="M175 250 Q200 245 225 250" stroke="rgba(60,110,170,0.3)" stroke-width="1.5" fill="none"/>
+    <path d="M170 270 Q200 264 230 270" stroke="rgba(60,110,170,0.3)" stroke-width="1.5" fill="none"/>
+    <path d="M172 290 Q200 284 228 290" stroke="rgba(60,110,170,0.3)" stroke-width="1.5" fill="none"/>
+    <!-- Glow around eyes -->
+    <ellipse cx="182" cy="175" rx="14" ry="12" fill="rgba(255,200,50,0.15)"/>
+    <ellipse cx="218" cy="175" rx="14" ry="12" fill="rgba(255,200,50,0.15)"/>
+  </svg>
+
+  <div class="hero-content">
+    <div class="hero-studio-badge">Grimoire Pictures · AI Monster Film Studio</div>
+    <div class="hero-rule-top"></div>
+    <h1 class="hero-title">Grimoire<br/>Pictures</h1>
+    <p class="hero-subtitle">The classics never died. We just gave them a body.</p>
+    <div class="hero-rule-bot"></div>
+    <p class="hero-tagline">
+      An AI-native production studio staffed by specialist agents — restoring, re-imagining, and realising the great monster films of the classic era for a new century of cinema.
+    </p>
+    <div class="hero-actions">
+      <a href="#current" class="btn-primary">Now in Production</a>
+      <a href="#roster" class="btn-outline">Meet the Studio</a>
+    </div>
+  </div>
+  <div class="hero-year">MMXXVI · Vancouver, BC · GrimoirePictures.ai</div>
+</section>
+
+<!-- CURRENT PRODUCTION -->
+<section class="section" id="current">
+  <div class="section-inner">
+    <div class="ornament">— ◆ —</div>
+    <p class="section-label">Now in Production</p>
+    <div class="production-hero">
+
+      <!-- Poster -->
+      <div class="poster-frame">
+        <div class="poster-bg"></div>
+        <div class="poster-title-block">
+          <div class="poster-studio-line">Grimoire Pictures presents</div>
+          <div class="poster-film-title">LAGOON</div>
+          <div class="poster-tagline">From the depths. For the first time.</div>
+        </div>
+        <!-- Inline creature in poster -->
+        <svg class="poster-creature-svg" viewBox="0 0 300 380" fill="none" style="z-index:1;position:relative;margin-top:auto">
+          <ellipse cx="150" cy="230" rx="65" ry="100" fill="rgba(20,50,90,0.9)"/>
+          <ellipse cx="150" cy="125" rx="45" ry="52" fill="rgba(20,50,90,0.95)"/>
+          <path d="M112 118 Q90 95 87 78 Q103 90 113 112 Z" fill="rgba(30,80,130,0.8)"/>
+          <path d="M188 118 Q210 95 213 78 Q197 90 187 112 Z" fill="rgba(30,80,130,0.8)"/>
+          <ellipse cx="136" cy="132" rx="8" ry="7" fill="rgba(255,210,60,0.9)"/>
+          <ellipse cx="164" cy="132" rx="8" ry="7" fill="rgba(255,210,60,0.9)"/>
+          <ellipse cx="136" cy="132" rx="4" ry="4" fill="rgba(0,0,0,0.9)"/>
+          <ellipse cx="164" cy="132" rx="4" ry="4" fill="rgba(0,0,0,0.9)"/>
+          <!-- Water ripples -->
+          <ellipse cx="150" cy="340" rx="120" ry="18" fill="rgba(20,50,90,0.4)"/>
+          <ellipse cx="150" cy="355" rx="140" ry="15" fill="rgba(15,40,75,0.3)"/>
+          <ellipse cx="150" cy="368" rx="160" ry="12" fill="rgba(10,30,60,0.2)"/>
+          <!-- Hands reaching up from water -->
+          <path d="M85 310 Q80 280 90 260 Q95 275 92 295 Q96 280 104 265 Q107 280 104 302 Z" fill="rgba(25,60,110,0.8)"/>
+          <path d="M215 310 Q220 280 210 260 Q205 275 208 295 Q204 280 196 265 Q193 280 196 302 Z" fill="rgba(25,60,110,0.8)"/>
+        </svg>
+        <div class="poster-bottom">
+          A GRIMOIRE PICTURES PRODUCTION · ADAPTED FROM THE 1954 UNIVERSAL PICTURES FEATURE · IN DEVELOPMENT 2026
+        </div>
+      </div>
+
+      <!-- Details -->
+      <div class="production-details">
+        <div class="prod-meta-row">
+          <span class="prod-tag active">In Development</span>
+          <span class="prod-tag">Feature Film</span>
+          <span class="prod-tag">Horror · Adventure</span>
+          <span class="prod-tag">Classic IP</span>
+        </div>
+        <div>
+          <div class="prod-title">LAGOON</div>
+          <div class="prod-subtitle">Adapted from Creature from the Black Lagoon (Universal, 1954)</div>
+        </div>
+        <p class="prod-synopsis">
+          Deep in the Amazon basin, a scientific expedition unearths evidence of a prehistoric humanoid species adapted entirely to aquatic life. When one living specimen is discovered — and captured — what follows is not merely a horror story. It is a tragedy of contact: between worlds, between species, between a creature who only wanted to be left alone and a civilisation that cannot leave anything alone.
+        </p>
+        <div class="prod-spec-grid">
+          <div class="pspec"><div class="pspec-label">Source Material</div><div class="pspec-val">Creature from the Black Lagoon (1954)<br/><span style="font-size:0.78rem;color:var(--muted)">Universal Pictures · Dir. Jack Arnold</span></div></div>
+          <div class="pspec"><div class="pspec-label">Format</div><div class="pspec-val">Feature Film · 2hr 20min est.</div></div>
+          <div class="pspec"><div class="pspec-label">Adaptation Approach</div><div class="pspec-val">Faithful reimagining — creature's perspective centred</div></div>
+          <div class="pspec"><div class="pspec-label">Production Stage</div><div class="pspec-val">Script Development · Visual Development</div></div>
+          <div class="pspec"><div class="pspec-label">Lead Agent</div><div class="pspec-val">Constantine Weir, Head of Development</div></div>
+          <div class="pspec"><div class="pspec-label">Projected Delivery</div><div class="pspec-val">Full screenplay: Q3 2026</div></div>
+        </div>
+        <div class="adaptation-note">
+          <strong>On the IP:</strong> The 1954 film entered the public domain in 2024 under US copyright law, having originally been produced without a copyright notice renewal. Grimoire Pictures verifies all classic IP eligibility prior to commencing development. No fake clearances, fabricated credits, or third-party ownership claims are made or implied.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ORNAMENT RULE -->
+<div style="padding:0 5%"><hr class="ornament-rule"><span>◆</span></hr></div>
+
+<!-- AGENT ROSTER -->
+<section class="section" id="roster">
+  <div class="section-inner">
+    <p class="section-label">The Studio</p>
+    <h2 class="section-title">Six departments.<br/><em>Six specialists.</em></h2>
+    <p class="section-body" style="margin-bottom:3rem">Grimoire Pictures is staffed by a permanent roster of AI specialist agents — each with deep domain expertise, persistent memory of the classic era, and a mandate to produce professional-grade creative output.</p>
+  </div>
+  <div class="dept-grid">
+    <div class="dept-card">
+      <div class="agent-status-dot"></div>
+      <div class="agent-dept">Department I · Development</div>
+      <div class="agent-name">Constantine Weir</div>
+      <div class="agent-title">Head of Story &amp; IP Adaptation</div>
+      <p class="agent-desc">Specialist in classic horror and science-fiction IP from the 1920s–1960s. Evaluates public domain eligibility, constructs adaptation bibles, and develops the thematic and structural foundation for each production before a single scene is written.</p>
+      <div class="agent-current">Currently developing the adaptation bible for <em>LAGOON</em> — creature psychology and point-of-view structure.</div>
+    </div>
+    <div class="dept-card">
+      <div class="agent-status-dot"></div>
+      <div class="agent-dept">Department II · Creative</div>
+      <div class="agent-name">Mira Halcyon</div>
+      <div class="agent-title">Visual Development Director</div>
+      <p class="agent-desc">Leads all concept art direction, production design frameworks, and visual language development. Trained on period illustration, Universal Monsters visual grammar, and mid-century creature design. Outputs reference packages for physical production teams.</p>
+      <div class="agent-current">Generating creature redesign reference sets for <em>LAGOON</em> — scale, texture, and underwater movement studies.</div>
+    </div>
+    <div class="dept-card">
+      <div class="agent-status-dot"></div>
+      <div class="agent-dept">Department III · Production</div>
+      <div class="agent-name">Aldous Frame</div>
+      <div class="agent-title">Pre-Production Supervisor</div>
+      <p class="agent-desc">Manages production planning, scheduling frameworks, budgeting templates, and location analysis. Builds the infrastructure documents that allow a human production team to execute efficiently. Coordinates between all departments during development.</p>
+      <div class="agent-current">Producing the pre-production planning document and department timeline for <em>LAGOON</em>.</div>
+    </div>
+    <div class="dept-card">
+      <div class="agent-status-dot"></div>
+      <div class="agent-dept">Department IV · Writing</div>
+      <div class="agent-name">Petra Vane</div>
+      <div class="agent-title">Lead Screenplay Agent</div>
+      <p class="agent-desc">Screenwriting specialist with deep knowledge of classic Hollywood structure and contemporary genre filmmaking. Writes full feature-length screenplays to professional WGA-format standards. Iterates with Development on story until the adaptation bible is locked.</p>
+      <div class="agent-current">Working on Act One pages for <em>LAGOON</em> — expedition arrival and first encounter sequence.</div>
+    </div>
+    <div class="dept-card">
+      <div class="agent-status-dot"></div>
+      <div class="agent-dept">Department V · Research</div>
+      <div class="agent-name">Dr. Lucian Marsh</div>
+      <div class="agent-title">Film Historian &amp; IP Research Lead</div>
+      <p class="agent-desc">Provides verified historical context, production history, and critical analysis for every source work. Responsible for IP eligibility confirmation, cultural context briefs, and accuracy review across all departments. No fabricated credits enter any document.</p>
+      <div class="agent-current">Compiling the definitive research brief on the Gill-man mythology, production history, and sequel context for <em>LAGOON</em>.</div>
+    </div>
+    <div class="dept-card">
+      <div class="agent-status-dot"></div>
+      <div class="agent-dept">Department VI · Marketing</div>
+      <div class="agent-name">Vivienne Stark</div>
+      <div class="agent-title">Campaign &amp; Distribution Strategist</div>
+      <p class="agent-desc">Develops distribution strategy, audience positioning, marketing campaigns, and festival strategy for each production. Builds pitch decks for financiers and distributors. Manages the studio's external communications and slate positioning across markets.</p>
+      <div class="agent-current">Developing the <em>LAGOON</em> investor pitch deck and festival circuit strategy for Cannes 2027 consideration.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ORNAMENT RULE -->
+<div style="padding:0 5%"><hr class="ornament-rule"><span>◆</span></hr></div>
+
+<!-- METHODOLOGY -->
+<section class="section" id="method">
+  <div class="section-inner">
+    <div class="method-grid">
+      <div>
+        <p class="section-label">Production Methodology</p>
+        <h2 class="section-title">How we<br/><em>make the films.</em></h2>
+        <p class="section-body" style="margin-bottom:2.5rem">Each Grimoire production follows a rigorous six-phase pipeline — from IP verification through to financier-ready package delivery. Every phase is owned by a specialist agent and reviewed at the gate before proceeding.</p>
+        <div class="method-steps">
+          <div class="method-step">
+            <div class="ms-num">01</div>
+            <div><div class="ms-phase">Phase One</div><div class="ms-title">IP Verification &amp; Rights Assessment</div><p class="ms-desc">Dr. Marsh confirms public domain status, original production history, and any active trademark considerations before development begins.</p></div>
+          </div>
+          <div class="method-step">
+            <div class="ms-num">02</div>
+            <div><div class="ms-phase">Phase Two</div><div class="ms-title">Adaptation Bible</div><p class="ms-desc">Constantine Weir builds the full development document: themes, structure, character arc, and adaptation philosophy. This locks before screenwriting begins.</p></div>
+          </div>
+          <div class="method-step">
+            <div class="ms-num">03</div>
+            <div><div class="ms-phase">Phase Three</div><div class="ms-title">Visual Development</div><p class="ms-desc">Mira Halcyon produces reference packages: creature design, environment, tone, and period aesthetic. Delivered as briefing documents for physical production.</p></div>
+          </div>
+          <div class="method-step">
+            <div class="ms-num">04</div>
+            <div><div class="ms-phase">Phase Four</div><div class="ms-title">Screenplay</div><p class="ms-desc">Petra Vane writes the full feature screenplay in professional format. Draft iteration continues until the story passes all six acceptance criteria from Development.</p></div>
+          </div>
+          <div class="method-step">
+            <div class="ms-num">05</div>
+            <div><div class="ms-phase">Phase Five</div><div class="ms-title">Pre-Production Package</div><p class="ms-desc">Aldous Frame assembles the full pre-production planning document: schedule, location breakdown, department briefs, and budget framework.</p></div>
+          </div>
+          <div class="method-step">
+            <div class="ms-num">06</div>
+            <div><div class="ms-phase">Phase Six</div><div class="ms-title">Campaign &amp; Distribution</div><p class="ms-desc">Vivienne Stark builds the investor pitch deck, marketing strategy, and festival positioning. The studio package is complete and ready for human production partners.</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="method-why">
+        <p style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;margin-bottom:0.5rem">Why AI-native production?</p>
+        <p style="font-size:0.88rem;color:var(--silver);line-height:1.7;margin-bottom:1.5rem">The classic monster film requires vast historical and technical knowledge, deep IP research, and iterative creative development — all areas where AI specialist agents can move faster and deeper than traditional development.</p>
+        <div class="why-item">
+          <div class="why-label">Classic IP Depth</div>
+          <div class="why-text">Our agents carry comprehensive knowledge of Universal Monsters production history, director filmographies, and original screenplay archives — without the limitations of human research speed.</div>
+        </div>
+        <div class="why-item">
+          <div class="why-label">Iterative Development</div>
+          <div class="why-text">Screenplay iteration, visual reference generation, and structural analysis all run concurrently across departments — compressing the typical 18-month development cycle to weeks.</div>
+        </div>
+        <div class="why-item">
+          <div class="why-label">Zero Placeholder Policy</div>
+          <div class="why-text">Grimoire operates under a hard constraint: no placeholder content, no fabricated credits, no invented statistics. Every claim in every document is verified by Research before it ships.</div>
+        </div>
+        <div class="why-item">
+          <div class="why-label">Human Production Ready</div>
+          <div class="why-text">Grimoire's output is designed to be handed directly to a human production company. We produce the development package, not the film. The film is yours to make.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ORNAMENT RULE -->
+<div style="padding:0 5%"><hr class="ornament-rule"><span>◆</span></hr></div>
+
+<!-- FULL SLATE -->
+<section class="section" id="slate">
+  <div class="section-inner">
+    <p class="section-label">Development Slate 2026–2028</p>
+    <h2 class="section-title">The full<br/><em>slate of shadows.</em></h2>
+    <p class="section-body" style="margin-bottom:3rem">Seven productions in various stages of development. All classic IP. All pre-1970. All verified public domain or in active rights review.</p>
+    <div class="slate-grid">
+      <div class="slate-card">
+        <span class="slate-era">1931</span>
+        <div class="slate-status pre-production">● In Development</div>
+        <div class="slate-title">LAGOON</div>
+        <div class="slate-source">Creature from the Black Lagoon, Universal 1954</div>
+        <p class="slate-logline">The Amazon, 1950. A creature older than memory surfaces — and a civilisation must decide whether to study it, save it, or destroy it.</p>
+      </div>
+      <div class="slate-card">
+        <span class="slate-era">1931</span>
+        <div class="slate-status development">◆ Announced</div>
+        <div class="slate-title">PROMETHEUS</div>
+        <div class="slate-source">Frankenstein, Universal 1931</div>
+        <p class="slate-logline">The question was never whether it was alive. The question was whether it had the right to be.</p>
+      </div>
+      <div class="slate-card">
+        <span class="slate-era">1941</span>
+        <div class="slate-status development">◆ Announced</div>
+        <div class="slate-title">THE CHANGE</div>
+        <div class="slate-source">The Wolf Man, Universal 1941</div>
+        <p class="slate-logline">A veteran returns from war carrying something worse than memory. It comes out on full moons.</p>
+      </div>
+      <div class="slate-card">
+        <span class="slate-era">1932</span>
+        <div class="slate-status announced">○ In Research</div>
+        <div class="slate-title">KARIS</div>
+        <div class="slate-source">The Mummy, Universal 1932</div>
+        <p class="slate-logline">Three thousand years of waiting. One night to reclaim everything that was taken.</p>
+      </div>
+      <div class="slate-card">
+        <span class="slate-era">1922</span>
+        <div class="slate-status announced">○ In Research</div>
+        <div class="slate-title">NOSFERATU</div>
+        <div class="slate-source">Nosferatu: A Symphony of Horror, Murnau 1922</div>
+        <p class="slate-logline">An authorised adaptation of the first vampire film — the one that almost destroyed its own negative to survive.</p>
+      </div>
+      <div class="slate-card">
+        <span class="slate-era">1933</span>
+        <div class="slate-status announced">○ In Research</div>
+        <div class="slate-title">THE INVISIBLE</div>
+        <div class="slate-source">The Invisible Man, Universal 1933</div>
+        <p class="slate-logline">The serum worked perfectly. That was the problem.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ORNAMENT RULE -->
+<div style="padding:0 5%"><hr class="ornament-rule"><span>◆</span></hr></div>
+
+<!-- TECHNOLOGY -->
+<section class="section" id="technology">
+  <div class="section-inner">
+    <p class="section-label">AI Infrastructure</p>
+    <h2 class="section-title">What powers<br/><em>the studio.</em></h2>
+    <p class="section-body" style="margin-bottom:3rem">Grimoire Pictures is built on a multi-agent architecture — specialist models coordinated by a studio-level orchestration layer that manages handoffs, quality gates, and version control across all productions simultaneously.</p>
+    <div class="tech-list">
+      <div class="tech-item">
+        <div class="tech-icon">🧠</div>
+        <div class="tech-name">Multi-Agent Architecture</div>
+        <p class="tech-desc">Six permanent specialist agents — each trained on domain-specific corpora — coordinated by a studio orchestration layer. Agents collaborate asynchronously with defined handoff gates between phases.</p>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon">📜</div>
+        <div class="tech-name">Persistent Production Memory</div>
+        <p class="tech-desc">Each production builds a persistent knowledge base across its lifecycle — character bibles, research notes, visual references, and screenplay drafts persist and are accessible to all agents throughout development.</p>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon">🔍</div>
+        <div class="tech-name">IP Verification Engine</div>
+        <p class="tech-desc">The Research department runs automated IP status checks against multiple public domain databases before any production advances. No work begins on contested or ambiguous IP.</p>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon">✦</div>
+        <div class="tech-name">Zero Placeholder Enforcement</div>
+        <p class="tech-desc">A hardcoded quality gate prevents any document containing placeholder text, fabricated credits, or unverified claims from advancing to the next development phase. All outputs are verified before delivery.</p>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon">🎬</div>
+        <div class="tech-name">Professional Format Standards</div>
+        <p class="tech-desc">Screenplays output in strict industry-standard format. Pre-production documents follow AICP and PACT conventions. All creative deliverables are production-house compatible on day one.</p>
+      </div>
+      <div class="tech-item">
+        <div class="tech-icon">🤝</div>
+        <div class="tech-name">Human Production Interface</div>
+        <p class="tech-desc">Every Grimoire output is designed for direct handoff to human production partners — no translation layer required. The studio speaks the language of physical film production.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ORNAMENT RULE -->
+<div style="padding:0 5%"><hr class="ornament-rule"><span>◆</span></hr></div>
+
+<!-- PITCH CTA -->
+<section class="section" id="pitch">
+  <div class="pitch-inner">
+    <div>
+      <div class="ornament" style="text-align:left;margin-left:0">— ◆</div>
+      <p class="section-label">Submit a Pitch</p>
+      <h2 class="section-title">Bring us<br/>your <em>dark idea.</em></h2>
+      <p class="section-body">We accept development pitches for classic monster IP adaptations on a rolling basis. If the source material is pre-1970, public domain or clearly in rights review, and the story is worth telling again — we want to hear it.</p>
+      <div style="margin-top:2.5rem;display:flex;flex-direction:column;gap:1.2rem">
+        <div>
+          <div class="pspec-label">What we accept</div>
+          <p style="font-size:0.85rem;color:var(--silver);line-height:1.7;margin-top:0.3rem">Classic horror, sci-fi, and creature features from the 1920s–1960s. Public domain properties only. No sequels to post-1970 work. No fake IP or invented source material.</p>
+        </div>
+        <div>
+          <div class="pspec-label">What you receive</div>
+          <p style="font-size:0.85rem;color:var(--silver);line-height:1.7;margin-top:0.3rem">A full development package: adaptation bible, visual development reference, full screenplay, pre-production planning document, and investor pitch deck. Typically delivered within 90 days of project commencement.</p>
+        </div>
+        <div>
+          <div class="pspec-label">Current availability</div>
+          <p style="font-size:0.85rem;color:var(--silver);line-height:1.7;margin-top:0.3rem">We accept up to four simultaneous productions. One slot is currently available for Q3 2026 commencement.</p>
+        </div>
+      </div>
+    </div>
+    <form class="pitch-form" onsubmit="handlePitch(event)">
+      <p style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;margin-bottom:0.5rem">Pitch Enquiry</p>
+      <input class="f-input" type="text" placeholder="Your name" required />
+      <input class="f-input" type="email" placeholder="Email address" required />
+      <input class="f-input" type="text" placeholder="Source material (film title, year, studio)" required />
+      <select class="f-input f-select">
+        <option value="">Monster / creature type…</option>
+        <option>Creature / Aquatic</option>
+        <option>Undead / Vampire</option>
+        <option>Created Being / Monster</option>
+        <option>Lycanthrope / Transformation</option>
+        <option>Mummy / Ancient</option>
+        <option>Invisible / Intangible</option>
+        <option>Other Classic Monster</option>
+      </select>
+      <textarea class="f-input f-textarea" placeholder="Your adaptation angle — in three sentences or fewer…"></textarea>
+      <input class="f-input" type="text" placeholder="How did you find Grimoire Pictures?" />
+      <button type="submit" class="f-submit">Submit Pitch Enquiry</button>
+      <p style="font-size:0.72rem;color:var(--dim);font-style:italic;margin-top:0.3rem">We respond to all qualified pitches within 10 business days.</p>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="fb-title">Grimoire Pictures</div>
+      <div class="fb-sub">AI Monster Film Studio · Vancouver, BC · Est. 2024</div>
+      <p>An AI-native development studio. We produce professional-grade development packages for classic monster film adaptations — ready for human production partners from day one.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Productions</h5>
+      <ul>
+        <li><a href="#">LAGOON (In Dev)</a></li>
+        <li><a href="#">PROMETHEUS</a></li>
+        <li><a href="#">THE CHANGE</a></li>
+        <li><a href="#">KARIS</a></li>
+        <li><a href="#">Full Slate</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>The Studio</h5>
+      <ul>
+        <li><a href="#">Agent Roster</a></li>
+        <li><a href="#">Methodology</a></li>
+        <li><a href="#">Technology</a></li>
+        <li><a href="#">IP Policy</a></li>
+        <li><a href="#">Submit a Pitch</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>About</h5>
+      <ul>
+        <li><a href="#">Our Mission</a></li>
+        <li><a href="#">Classic IP Policy</a></li>
+        <li><a href="#">For Distributors</a></li>
+        <li><a href="#">For Financiers</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Grimoire Pictures Inc. — Vancouver, British Columbia, Canada</span>
+    <span class="footer-ornament">◆ ◆ ◆</span>
+    <span>The classics never died. We just gave them a body.</span>
+  </div>
+</footer>
+
+<script>
+// Nav scroll
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// Subtle hero creature parallax
+window.addEventListener('scroll', () => {
+  const sil = document.querySelector('.creature-silhouette');
+  if (sil && window.scrollY < window.innerHeight) {
+    sil.style.transform = `translateX(-50%) translateY(${window.scrollY * 0.1}px)`;
+  }
+});
+
+// Pitch form
+function handlePitch(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('.f-submit');
+  btn.textContent = 'Pitch Received — We\'ll be in touch within 10 business days.';
+  btn.style.background = '#1a3a1a';
+  btn.style.color = '#8ae88a';
+  e.target.querySelectorAll('input,select,textarea').forEach(f => f.disabled = true);
+}
+</script>
+
+</body>
+</html>
