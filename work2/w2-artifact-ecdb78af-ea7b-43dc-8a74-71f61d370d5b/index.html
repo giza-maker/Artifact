@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TIDEWATCH — Pacific Northwest Marine Conservation Institute</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --deep: #020C18;
+      --ocean: #041E35;
+      --mid: #073554;
+      --teal: #0E7490;
+      --teal2: #06B6D4;
+      --cyan: #22D3EE;
+      --green: #10B981;
+      --kelp: #2D6A4F;
+      --kelp2: #40916C;
+      --amber: #D97706;
+      --coral: #E74C3C;
+      --text: #E8F4F8;
+      --muted: #7BAEBF;
+      --dim: #3A5A6A;
+      --border: rgba(34,211,238,0.12);
+      --glow: rgba(34,211,238,0.08);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--deep);
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 5%;
+      background: rgba(2,12,24,0.9);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-brand {
+      display: flex; align-items: center; gap: 0.8rem;
+    }
+    .nav-icon { font-size: 1.4rem; }
+    .nav-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem; font-weight: 700;
+      letter-spacing: 0.04em;
+      color: var(--cyan);
+    }
+    .nav-links { display: flex; gap: 2rem; }
+    .nav-links a {
+      color: var(--muted); text-decoration: none;
+      font-size: 0.85rem; letter-spacing: 0.04em;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-donate {
+      padding: 0.5rem 1.2rem;
+      background: var(--teal);
+      color: #fff; border: none; border-radius: 6px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.85rem; font-weight: 600;
+      cursor: pointer; text-decoration: none;
+      transition: all 0.2s;
+    }
+    .nav-donate:hover { background: var(--teal2); }
+
+    /* ── HERO ── */
+    #hero {
+      position: relative; min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 7rem 5% 5rem;
+      overflow: hidden;
+    }
+    #heroCanvas {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(2,12,24,0.3) 0%, rgba(2,12,24,0.1) 50%, rgba(2,12,24,0.7) 100%);
+    }
+    .hero-content { position: relative; z-index: 2; max-width: 860px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(14,116,144,0.2);
+      border: 1px solid rgba(34,211,238,0.3);
+      border-radius: 100px; padding: 0.4rem 1rem;
+      font-size: 0.75rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--cyan); margin-bottom: 1.5rem;
+    }
+    .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); animation: pulse-dot 2s infinite; }
+    @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.4;transform:scale(1.5);} }
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 700; line-height: 1.08;
+      letter-spacing: -0.02em; margin-bottom: 1.2rem;
+    }
+    .hero-title .italic { font-style: italic; color: var(--cyan); }
+    .hero-subtitle {
+      font-size: 1.15rem; color: var(--muted);
+      max-width: 600px; margin: 0 auto 2rem;
+      line-height: 1.7;
+    }
+    .hero-depth {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.8rem; color: var(--dim);
+      letter-spacing: 0.08em; margin-bottom: 2.5rem;
+    }
+    .hero-ctas { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+    .btn-ocean {
+      padding: 0.85rem 2rem;
+      background: var(--teal); color: #fff;
+      border: none; border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem; font-weight: 600;
+      cursor: pointer; text-decoration: none;
+      transition: all 0.2s;
+      box-shadow: 0 0 30px rgba(14,116,144,0.4);
+    }
+    .btn-ocean:hover { background: var(--teal2); box-shadow: 0 0 50px rgba(6,182,212,0.5); transform: translateY(-2px); }
+    .btn-outline {
+      padding: 0.85rem 2rem;
+      background: transparent; color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem; font-weight: 500;
+      cursor: pointer; text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--cyan); background: var(--glow); }
+    .scroll-indicator {
+      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+      color: var(--dim); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+    }
+    .scroll-line {
+      width: 1px; height: 40px;
+      background: linear-gradient(180deg, var(--dim), transparent);
+      animation: scroll-anim 2s ease-in-out infinite;
+    }
+    @keyframes scroll-anim { 0%{opacity:0;transform:scaleY(0);} 50%{opacity:1;transform:scaleY(1);} 100%{opacity:0;transform:scaleY(0) translateY(20px);} }
+
+    /* ── SECTIONS ── */
+    section { padding: 6rem 5%; }
+    .s-tag {
+      display: inline-block;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--cyan); margin-bottom: 0.8rem;
+    }
+    .s-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700; line-height: 1.15;
+      margin-bottom: 1rem;
+    }
+    .s-title em { font-style: italic; color: var(--cyan); }
+    .s-sub { font-size: 1rem; color: var(--muted); max-width: 560px; line-height: 1.7; }
+
+    /* ── DATA DASHBOARD ── */
+    #data { background: var(--ocean); }
+    .data-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem; }
+    .data-live {
+      display: flex; align-items: center; gap: 0.5rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem; color: var(--green);
+    }
+    .data-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; margin-bottom: 2rem; }
+    .data-card {
+      background: var(--deep);
+      border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.5rem;
+      position: relative; overflow: hidden;
+      transition: border-color 0.3s;
+    }
+    .data-card:hover { border-color: rgba(34,211,238,0.3); }
+    .data-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: var(--card-color, var(--cyan));
+    }
+    .data-card.warn::before { background: var(--amber); }
+    .data-card.alert::before { background: var(--coral); }
+    .data-card.good::before { background: var(--green); }
+    .dc-label {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem;
+    }
+    .dc-value {
+      font-family: 'Space Mono', monospace;
+      font-size: 2.2rem; font-weight: 700; line-height: 1;
+      color: var(--cyan); margin-bottom: 0.3rem;
+    }
+    .data-card.warn .dc-value { color: var(--amber); }
+    .data-card.alert .dc-value { color: var(--coral); }
+    .data-card.good .dc-value { color: var(--green); }
+    .dc-unit { font-size: 0.75rem; color: var(--dim); margin-bottom: 0.8rem; }
+    .dc-trend {
+      font-size: 0.72rem; color: var(--muted);
+      display: flex; align-items: center; gap: 0.3rem;
+    }
+    .trend-down { color: var(--coral); }
+    .trend-up { color: var(--green); }
+    .trend-flat { color: var(--amber); }
+    .dc-sparkline { height: 30px; margin-top: 0.6rem; }
+
+    .data-wide {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem;
+    }
+    .data-chart {
+      background: var(--deep);
+      border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.5rem;
+    }
+    .chart-title {
+      font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 1.2rem;
+    }
+    .bar-chart { display: flex; flex-direction: column; gap: 0.8rem; }
+    .bar-row { display: flex; align-items: center; gap: 0.8rem; }
+    .bar-label { font-size: 0.78rem; color: var(--muted); width: 110px; flex-shrink: 0; }
+    .bar-track { flex: 1; height: 8px; background: rgba(255,255,255,0.05); border-radius: 100px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 100px; transition: width 1.5s cubic-bezier(0.4,0,0.2,1); width: 0; }
+    .bar-val { font-family: 'Space Mono', monospace; font-size: 0.75rem; color: var(--text); width: 40px; text-align: right; flex-shrink: 0; }
+
+    .trend-chart { position: relative; height: 120px; }
+    .trend-canvas { width: 100%; height: 100%; }
+
+    /* ── CRISIS ── */
+    #crisis { background: var(--deep); }
+    .crisis-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .crisis-visual {
+      position: relative;
+      aspect-ratio: 1;
+      max-width: 440px;
+    }
+    .depth-diagram {
+      width: 100%; height: 100%;
+      border-radius: 16px; overflow: hidden;
+      background: linear-gradient(180deg, #0A1E35 0%, #041425 30%, #020C18 70%, #010810 100%);
+      border: 1px solid var(--border);
+      position: relative;
+    }
+    .depth-layer {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid rgba(34,211,238,0.08);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .dl-name { font-size: 0.8rem; color: var(--muted); }
+    .dl-depth { font-family: 'Space Mono', monospace; font-size: 0.72rem; color: var(--dim); }
+    .dl-species { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .species-dot { font-size: 1rem; }
+    .depth-glow {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 200px;
+      background: radial-gradient(ellipse at 50% 100%, rgba(34,211,238,0.06), transparent 70%);
+    }
+
+    .crisis-facts { display: flex; flex-direction: column; gap: 1.5rem; }
+    .fact-card {
+      background: var(--ocean);
+      border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.5rem;
+      border-left: 3px solid;
+      transition: transform 0.2s;
+    }
+    .fact-card:hover { transform: translateX(4px); }
+    .fact-card.fc-warn { border-left-color: var(--amber); }
+    .fact-card.fc-alert { border-left-color: var(--coral); }
+    .fact-card.fc-ok { border-left-color: var(--green); }
+    .fact-card.fc-cyan { border-left-color: var(--cyan); }
+    .fc-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 2rem; font-weight: 700; line-height: 1;
+      margin-bottom: 0.3rem;
+    }
+    .fact-card.fc-warn .fc-num { color: var(--amber); }
+    .fact-card.fc-alert .fc-num { color: var(--coral); }
+    .fact-card.fc-ok .fc-num { color: var(--green); }
+    .fact-card.fc-cyan .fc-num { color: var(--cyan); }
+    .fc-text { font-size: 0.875rem; color: var(--muted); line-height: 1.5; }
+
+    /* ── SPECIES ── */
+    #species { background: var(--ocean); }
+    .species-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; margin-top: 3rem; }
+    .species-card {
+      background: var(--deep);
+      border: 1px solid var(--border);
+      border-radius: 16px; overflow: hidden;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .species-card:hover { transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+    .species-art {
+      height: 160px; display: flex; align-items: center; justify-content: center;
+      font-size: 5rem; position: relative; overflow: hidden;
+    }
+    .species-art::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(180deg, transparent 40%, var(--deep));
+    }
+    .species-body { padding: 1.2rem; }
+    .species-status {
+      display: inline-block; font-size: 0.65rem; font-weight: 700;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.2rem 0.6rem; border-radius: 4px;
+      margin-bottom: 0.6rem;
+    }
+    .status-critical { background: rgba(231,76,60,0.15); color: var(--coral); border: 1px solid rgba(231,76,60,0.3); }
+    .status-threatened { background: rgba(217,119,6,0.15); color: var(--amber); border: 1px solid rgba(217,119,6,0.3); }
+    .status-concern { background: rgba(34,211,238,0.1); color: var(--cyan); border: 1px solid rgba(34,211,238,0.2); }
+    .species-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem; font-weight: 700; margin-bottom: 0.3rem;
+    }
+    .species-sci { font-size: 0.72rem; color: var(--dim); font-style: italic; margin-bottom: 0.6rem; }
+    .species-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+    .species-pop {
+      margin-top: 0.8rem; padding-top: 0.8rem;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between;
+    }
+    .sp-item .sp-val { font-family: 'Space Mono', monospace; font-size: 0.9rem; font-weight: 700; }
+    .sp-item .sp-label { font-size: 0.65rem; color: var(--dim); text-transform: uppercase; letter-spacing: 0.06em; }
+
+    /* ── INITIATIVES ── */
+    #initiatives { background: var(--deep); }
+    .init-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 3rem; }
+    .init-card {
+      background: var(--ocean);
+      border: 1px solid var(--border);
+      border-radius: 16px; padding: 2rem;
+      position: relative; overflow: hidden;
+      transition: border-color 0.3s, transform 0.2s;
+    }
+    .init-card:hover { border-color: rgba(34,211,238,0.3); transform: translateY(-3px); }
+    .init-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 3rem; font-weight: 700;
+      color: rgba(34,211,238,0.08); position: absolute; top: 1rem; right: 1.5rem;
+      line-height: 1;
+    }
+    .init-icon { font-size: 2.2rem; margin-bottom: 1rem; }
+    .init-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem; font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .init-sub { font-size: 0.85rem; color: var(--cyan); font-weight: 600; margin-bottom: 0.8rem; letter-spacing: 0.04em; }
+    .init-desc { font-size: 0.875rem; color: var(--muted); line-height: 1.6; margin-bottom: 1.2rem; }
+    .init-metrics { display: flex; gap: 2rem; }
+    .im .im-val {
+      font-family: 'Space Mono', monospace;
+      font-size: 1.2rem; font-weight: 700; color: var(--green);
+    }
+    .im .im-lbl { font-size: 0.68rem; color: var(--dim); text-transform: uppercase; letter-spacing: 0.06em; }
+
+    /* ── TEAM ── */
+    #team { background: var(--ocean); }
+    .team-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; margin-top: 3rem; }
+    .team-card {
+      background: var(--deep);
+      border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.5rem;
+      text-align: center; transition: transform 0.2s, border-color 0.3s;
+    }
+    .team-card:hover { transform: translateY(-3px); border-color: rgba(34,211,238,0.3); }
+    .team-ava {
+      width: 72px; height: 72px; border-radius: 50%;
+      margin: 0 auto 1rem;
+      display: flex; align-items: center; justify-content: center; font-size: 1.8rem;
+      background: linear-gradient(135deg, var(--mid), var(--teal));
+      border: 2px solid rgba(34,211,238,0.2);
+    }
+    .team-name { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; margin-bottom: 0.2rem; }
+    .team-role { font-size: 0.75rem; color: var(--cyan); letter-spacing: 0.05em; margin-bottom: 0.8rem; }
+    .team-bio { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+    .team-focus { margin-top: 0.8rem; display: flex; flex-wrap: wrap; gap: 0.35rem; justify-content: center; }
+    .tf { font-size: 0.65rem; font-weight: 600; padding: 0.2rem 0.55rem; border-radius: 4px;
+      background: rgba(14,116,144,0.15); color: var(--teal2); border: 1px solid rgba(14,116,144,0.25); }
+
+    /* ── CTA ── */
+    #cta {
+      background: linear-gradient(135deg, var(--deep) 0%, var(--ocean) 50%, #031A2A 100%);
+      border-top: 1px solid var(--border);
+    }
+    .cta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .cta-text .cta-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 700; line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+    .cta-sub { font-size: 1rem; color: var(--muted); line-height: 1.7; margin-bottom: 2rem; }
+    .cta-ways { display: flex; flex-direction: column; gap: 1rem; }
+    .cta-way {
+      display: flex; align-items: center; gap: 1rem;
+      background: var(--ocean); border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.2rem 1.5rem;
+      text-decoration: none; color: inherit;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .cta-way:hover { border-color: rgba(34,211,238,0.3); transform: translateX(4px); }
+    .cw-icon { font-size: 1.5rem; flex-shrink: 0; }
+    .cw-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 0.2rem; }
+    .cw-desc { font-size: 0.8rem; color: var(--muted); }
+    .cta-form { display: flex; flex-direction: column; gap: 1rem; }
+    .form-group label { display: block; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.4rem; }
+    .form-group input, .form-group select, .form-group textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 8px; padding: 0.8rem 1rem;
+      color: var(--text); font-family: 'Inter', sans-serif; font-size: 0.9rem;
+      outline: none; transition: border-color 0.2s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--cyan); }
+    .form-group select option { background: #041E35; }
+    .form-row { display: flex; gap: 0.8rem; }
+    .form-row .form-group { flex: 1; }
+    .form-submit {
+      width: 100%; padding: 0.9rem;
+      background: var(--teal); color: #fff;
+      border: none; border-radius: 8px;
+      font-family: 'Inter', sans-serif; font-size: 0.95rem; font-weight: 700;
+      cursor: pointer; transition: all 0.2s;
+      box-shadow: 0 0 30px rgba(14,116,144,0.4);
+    }
+    .form-submit:hover { background: var(--teal2); transform: translateY(-1px); box-shadow: 0 0 50px rgba(6,182,212,0.5); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--deep); border-top: 1px solid var(--border);
+      padding: 3rem 5% 2rem;
+    }
+    .footer-top { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 2rem; margin-bottom: 2rem; }
+    .footer-brand .fb-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem; font-weight: 700; color: var(--cyan); margin-bottom: 0.4rem;
+    }
+    .footer-brand .fb-tag { font-size: 0.8rem; color: var(--dim); }
+    .footer-links { display: flex; gap: 4rem; flex-wrap: wrap; }
+    .fc h4 { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.8rem; }
+    .fc ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .fc ul li a { color: var(--dim); text-decoration: none; font-size: 0.84rem; transition: color 0.2s; }
+    .fc ul li a:hover { color: var(--text); }
+    .footer-bottom { border-top: 1px solid var(--border); padding-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .f-copy { font-size: 0.75rem; color: var(--dim); }
+    .f-reg { font-size: 0.72rem; color: var(--dim); }
+
+    @media (max-width:900px) {
+      .data-grid { grid-template-columns: 1fr 1fr; }
+      .crisis-grid { grid-template-columns: 1fr; }
+      .crisis-visual { max-width: 100%; }
+      .species-grid { grid-template-columns: 1fr 1fr; }
+      .init-grid { grid-template-columns: 1fr; }
+      .team-grid { grid-template-columns: 1fr 1fr; }
+      .cta-grid { grid-template-columns: 1fr; }
+      .data-wide { grid-template-columns: 1fr; }
+    }
+    @media (max-width:560px) {
+      .nav-links { display: none; }
+      .data-grid { grid-template-columns: 1fr 1fr; }
+      .species-grid { grid-template-columns: 1fr 1fr; }
+      .form-row { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <div class="nav-icon">🌊</div>
+    <div class="nav-logo">TIDEWATCH</div>
+  </div>
+  <div class="nav-links">
+    <a href="#data">Live Data</a>
+    <a href="#crisis">The Crisis</a>
+    <a href="#initiatives">Research</a>
+    <a href="#team">Team</a>
+  </div>
+  <a href="#cta" class="nav-donate">Donate Now</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <canvas id="heroCanvas"></canvas>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-badge"><span class="live-dot"></span>Live Monitoring: Salish Sea &amp; Pacific Northwest Waters</div>
+    <h1 class="hero-title">
+      Cold waters.<br><em>Deep urgency.</em>
+    </h1>
+    <p class="hero-subtitle">
+      While the world focuses on tropical reefs, the nutrient-rich cold waters of the Pacific Northwest are silently declining. TIDEWATCH exists to change that.
+    </p>
+    <div class="hero-depth">47.6°N — Salish Sea &nbsp;·&nbsp; Depth: 620m &nbsp;·&nbsp; SST: 9.4°C &nbsp;·&nbsp; pH: 7.92 ↓</div>
+    <div class="hero-ctas">
+      <a href="#data" class="btn-ocean">View Live Data</a>
+      <a href="#cta" class="btn-outline">Support Our Work</a>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- DATA DASHBOARD -->
+<section id="data">
+  <div class="data-header">
+    <div>
+      <div class="s-tag">// Live Research Data</div>
+      <h2 class="s-title">Pacific Northwest<br><em>Ocean Health Monitor</em></h2>
+    </div>
+    <div class="data-live"><span class="live-dot"></span>Updated 4 minutes ago · Salish Sea buoy network</div>
+  </div>
+  <div class="data-grid">
+    <div class="data-card warn">
+      <div class="dc-label">Sea Surface Temperature</div>
+      <div class="dc-value" id="sst">9.4</div>
+      <div class="dc-unit">°C · 2.1°C above 1980–2000 baseline</div>
+      <div class="dc-trend"><span class="trend-down">↑ +0.08°C this month</span></div>
+    </div>
+    <div class="data-card alert">
+      <div class="dc-label">Ocean pH Level</div>
+      <div class="dc-value" id="ph">7.92</div>
+      <div class="dc-unit">pH · Pre-industrial baseline: 8.18</div>
+      <div class="dc-trend"><span class="trend-down">↓ Acidification accelerating</span></div>
+    </div>
+    <div class="data-card alert">
+      <div class="dc-label">Southern Resident Orca</div>
+      <div class="dc-value" id="orcas">73</div>
+      <div class="dc-unit">individuals remaining in J, K, L pods</div>
+      <div class="dc-trend"><span class="trend-down">↓ Down from 98 in 1995</span></div>
+    </div>
+    <div class="data-card good">
+      <div class="dc-label">Bull Kelp Canopy Recovery</div>
+      <div class="dc-value" id="kelp">34</div>
+      <div class="dc-unit">% recovery in monitored restoration sites</div>
+      <div class="dc-trend"><span class="trend-up">↑ +12% since 2022 intervention</span></div>
+    </div>
+    <div class="data-card">
+      <div class="dc-label">Dissolved Oxygen</div>
+      <div class="dc-value">4.2</div>
+      <div class="dc-unit">mg/L · Hypoxic threshold: 2.0 mg/L</div>
+      <div class="dc-trend"><span class="trend-flat">→ Stable, monitoring required</span></div>
+    </div>
+    <div class="data-card warn">
+      <div class="dc-label">Chinook Salmon Returns</div>
+      <div class="dc-value">41K</div>
+      <div class="dc-unit">fish · 68% decline vs 40-yr average</div>
+      <div class="dc-trend"><span class="trend-down">↓ Critical orca food supply</span></div>
+    </div>
+    <div class="data-card good">
+      <div class="dc-label">Eelgrass Meadow Coverage</div>
+      <div class="dc-value">2.8K</div>
+      <div class="dc-unit">hectares monitored across PNW shoreline</div>
+      <div class="dc-trend"><span class="trend-up">↑ Restoration sites expanding</span></div>
+    </div>
+    <div class="data-card alert">
+      <div class="dc-label">Microplastic Density</div>
+      <div class="dc-value">1,247</div>
+      <div class="dc-unit">particles/m³ · Surface samples, Puget Sound</div>
+      <div class="dc-trend"><span class="trend-down">↑ +18% year over year</span></div>
+    </div>
+  </div>
+  <div class="data-wide">
+    <div class="data-chart">
+      <div class="chart-title">Salish Sea Species Index — Population Trend (Last 30 Years)</div>
+      <div class="bar-chart">
+        <div class="bar-row">
+          <div class="bar-label">Chinook Salmon</div>
+          <div class="bar-track"><div class="bar-fill" style="background:#E74C3C" data-width="32"></div></div>
+          <div class="bar-val">−68%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Southern Orca</div>
+          <div class="bar-track"><div class="bar-fill" style="background:#D97706" data-width="46"></div></div>
+          <div class="bar-val">−25%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Bull Kelp Forest</div>
+          <div class="bar-track"><div class="bar-fill" style="background:#D97706" data-width="44"></div></div>
+          <div class="bar-val">−56%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Dungeness Crab</div>
+          <div class="bar-track"><div class="bar-fill" style="background:#22D3EE" data-width="62"></div></div>
+          <div class="bar-val">Stable</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Pacific Herring</div>
+          <div class="bar-track"><div class="bar-fill" style="background:#E74C3C" data-width="28"></div></div>
+          <div class="bar-val">−72%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Bull Trout (restored)</div>
+          <div class="bar-track"><div class="bar-fill" style="background:#10B981" data-width="78"></div></div>
+          <div class="bar-val">+34%</div>
+        </div>
+      </div>
+    </div>
+    <div class="data-chart">
+      <div class="chart-title">Research Funding Gap: Cold-Water vs Tropical Marine Conservation</div>
+      <div class="bar-chart" style="margin-top: 0.5rem;">
+        <div class="bar-row">
+          <div class="bar-label">Tropical Reefs (global)</div>
+          <div class="bar-track"><div class="bar-fill" style="background:#06B6D4" data-width="90"></div></div>
+          <div class="bar-val">$4.2B</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">PNW Cold Waters</div>
+          <div class="bar-track"><div class="bar-fill" style="background:#D97706" data-width="6"></div></div>
+          <div class="bar-val">$0.3B</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Arctic/Sub-Arctic</div>
+          <div class="bar-track"><div class="bar-fill" style="background:#8B5CF6" data-width="14"></div></div>
+          <div class="bar-val">$0.6B</div>
+        </div>
+      </div>
+      <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(217,119,6,0.08); border-radius: 8px; border: 1px solid rgba(217,119,6,0.2);">
+        <div style="font-size:0.8rem; color:var(--amber); font-weight:700; margin-bottom:0.3rem;">⚠ Critical Funding Gap</div>
+        <div style="font-size:0.78rem; color:var(--muted); line-height:1.5;">
+          Pacific Northwest cold waters support 40% of global wild salmon populations, the entire Southern Resident Orca food web, and vast kelp ecosystems. Yet they receive just 7% of global marine conservation funding.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CRISIS -->
+<section id="crisis">
+  <div class="crisis-grid">
+    <div class="crisis-visual">
+      <div class="depth-diagram">
+        <div style="padding: 1.2rem 1.5rem; border-bottom: 1px solid rgba(34,211,238,0.08); background: rgba(34,211,238,0.04);">
+          <div style="font-size:0.7rem; font-weight:700; color:var(--cyan); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:0.3rem;">Pacific Northwest Water Column</div>
+          <div style="font-size:0.78rem; color:var(--muted);">Salish Sea · Depths 0–3,000m</div>
+        </div>
+        <div class="depth-layer" style="background: rgba(6,182,212,0.04);">
+          <div>
+            <div class="dl-name">Sunlit Zone</div>
+            <div class="dl-depth">0–200m</div>
+          </div>
+          <div class="dl-species">
+            <span class="species-dot">🐋</span><span class="species-dot">🦭</span><span class="species-dot">🐦</span><span class="species-dot">🐟</span>
+          </div>
+        </div>
+        <div class="depth-layer" style="background: rgba(14,116,144,0.04);">
+          <div>
+            <div class="dl-name">Twilight Zone</div>
+            <div class="dl-depth">200–1,000m</div>
+          </div>
+          <div class="dl-species">
+            <span class="species-dot">🦑</span><span class="species-dot">🐡</span><span class="species-dot">🦐</span>
+          </div>
+        </div>
+        <div class="depth-layer" style="background: rgba(4,30,53,0.5);">
+          <div>
+            <div class="dl-name">Midnight Zone</div>
+            <div class="dl-depth">1,000–3,000m</div>
+          </div>
+          <div class="dl-species">
+            <span class="species-dot">🐙</span><span class="species-dot">🦀</span>
+          </div>
+        </div>
+        <div class="depth-layer" style="border-bottom: none; background: rgba(2,12,24,0.8);">
+          <div>
+            <div class="dl-name">Abyssal Zone</div>
+            <div class="dl-depth">3,000m+</div>
+          </div>
+          <div class="dl-species">
+            <span style="font-size:0.8rem; color:var(--dim);">largely unexplored</span>
+          </div>
+        </div>
+        <div class="depth-glow"></div>
+        <div style="padding: 1rem 1.5rem; border-top: 1px solid rgba(34,211,238,0.08);">
+          <div style="font-size:0.72rem; color:var(--dim);">Each layer is a complete ecosystem — deeply interconnected and <span style="color:var(--amber);">increasingly unstable</span>.</div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="s-tag">// The Crisis</div>
+      <h2 class="s-title">The overlooked<br><em>cold-water crisis</em></h2>
+      <p class="s-sub" style="margin-bottom:2rem;">
+        The Pacific Northwest hosts some of Earth's most productive marine ecosystems — yet they receive a fraction of global conservation attention. While the world watches coral bleach in the tropics, these cold, nutrient-dense waters are undergoing their own quiet collapse.
+      </p>
+      <div class="crisis-facts">
+        <div class="fact-card fc-alert">
+          <div class="fc-num">−79%</div>
+          <div class="fc-text">Bull kelp forest coverage lost in Northern California and parts of Oregon since 2014, driven by sea urchin barrens and warming seas.</div>
+        </div>
+        <div class="fact-card fc-warn">
+          <div class="fc-num">73</div>
+          <div class="fc-text">Southern Resident Orca remain — the lowest count since monitoring began. Primary cause: insufficient Chinook salmon, their primary food source.</div>
+        </div>
+        <div class="fact-card fc-cyan">
+          <div class="fc-num">0.26</div>
+          <div class="fc-text">pH units dropped since pre-industrial times. The Pacific Northwest is acidifying 3× faster than the global average due to cold-water CO₂ absorption.</div>
+        </div>
+        <div class="fact-card fc-ok">
+          <div class="fc-num">+34%</div>
+          <div class="fc-text">Kelp canopy recovery at TIDEWATCH intervention sites — proof that targeted cold-water restoration works when adequately funded.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SPECIES AT RISK -->
+<section id="species">
+  <div class="s-tag">// Species at Risk</div>
+  <h2 class="s-title">Who depends on<br><em>these cold waters</em></h2>
+  <p class="s-sub">Four keystone species whose survival defines the health of the entire Pacific Northwest marine ecosystem.</p>
+  <div class="species-grid">
+    <div class="species-card">
+      <div class="species-art" style="background: linear-gradient(180deg, #051525, #031018);">🐋</div>
+      <div class="species-body">
+        <div class="species-status status-critical">Critically Endangered</div>
+        <div class="species-name">Southern Resident Orca</div>
+        <div class="species-sci">Orcinus orca (J, K, L pods)</div>
+        <div class="species-desc">Unique fish-eating ecotype found only in PNW waters. Unlike transient orcas, they depend almost entirely on Chinook salmon for survival.</div>
+        <div class="species-pop">
+          <div class="sp-item"><div class="sp-val" style="color:var(--coral);">73</div><div class="sp-label">Remaining</div></div>
+          <div class="sp-item"><div class="sp-val" style="color:var(--amber);">−25%</div><div class="sp-label">Since 1995</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="species-card">
+      <div class="species-art" style="background: linear-gradient(180deg, #071A10, #031408);">🌿</div>
+      <div class="species-body">
+        <div class="species-status status-threatened">Threatened</div>
+        <div class="species-name">Bull Kelp Forest</div>
+        <div class="species-sci">Nereocystis luetkeana</div>
+        <div class="species-desc">The Amazon of the ocean. A single kelp frond can grow 30cm per day and support 800+ species. Warming seas and urchin barrens have devastated 70%+ of historic range.</div>
+        <div class="species-pop">
+          <div class="sp-item"><div class="sp-val" style="color:var(--amber);">−79%</div><div class="sp-label">Range loss (CA/OR)</div></div>
+          <div class="sp-item"><div class="sp-val" style="color:var(--green);">+34%</div><div class="sp-label">Restored sites</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="species-card">
+      <div class="species-art" style="background: linear-gradient(180deg, #0D1A05, #081205);">🐟</div>
+      <div class="species-body">
+        <div class="species-status status-critical">Critical</div>
+        <div class="species-name">Chinook Salmon</div>
+        <div class="species-sci">Oncorhynchus tshawytscha</div>
+        <div class="species-desc">The "King Salmon" is the linchpin of the PNW food web — feeding orcas, bears, eagles, and fertilizing old-growth forests with marine nutrients through their spawning migrations.</div>
+        <div class="species-pop">
+          <div class="sp-item"><div class="sp-val" style="color:var(--coral);">41K</div><div class="sp-label">Annual returns</div></div>
+          <div class="sp-item"><div class="sp-val" style="color:var(--coral);">−68%</div><div class="sp-label">40-yr decline</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="species-card">
+      <div class="species-art" style="background: linear-gradient(180deg, #0A1520, #041020);">🦀</div>
+      <div class="species-body">
+        <div class="species-status status-concern">Under Observation</div>
+        <div class="species-name">Dungeness Crab</div>
+        <div class="species-sci">Metacarcinus magister</div>
+        <div class="species-desc">The PNW's most commercially valuable species is now threatened by ocean acidification. Juvenile crabs exposed to lower pH develop corroded shells and weakened nervous systems — a harbinger of wider collapse.</div>
+        <div class="species-pop">
+          <div class="sp-item"><div class="sp-val" style="color:var(--cyan);">Stable</div><div class="sp-label">Current pop.</div></div>
+          <div class="sp-item"><div class="sp-val" style="color:var(--amber);">+OA risk</div><div class="sp-label">Acidification</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INITIATIVES -->
+<section id="initiatives">
+  <div class="s-tag">// Active Research</div>
+  <h2 class="s-title">What TIDEWATCH<br><em>is doing about it</em></h2>
+  <p class="s-sub">Four active programs targeting the most critical pressure points in Pacific Northwest marine ecosystems.</p>
+  <div class="init-grid">
+    <div class="init-card">
+      <div class="init-num">01</div>
+      <div class="init-icon">🌿</div>
+      <div class="init-title">Salish Sea Kelp Restoration</div>
+      <div class="init-sub">Active · 14 restoration sites</div>
+      <div class="init-desc">Sea urchin removal combined with bull kelp outplanting at 14 sites across the Salish Sea. Each restored hectare of kelp absorbs 3.5 tonnes of CO₂/year and supports 800+ species. We're scaling from pilot to systemic recovery.</div>
+      <div class="init-metrics">
+        <div class="im"><div class="im-val">148 ha</div><div class="im-lbl">Restored</div></div>
+        <div class="im"><div class="im-val">520T</div><div class="im-lbl">CO₂/year sequestered</div></div>
+        <div class="im"><div class="im-val">+34%</div><div class="im-lbl">Canopy recovery</div></div>
+      </div>
+    </div>
+    <div class="init-card">
+      <div class="init-num">02</div>
+      <div class="init-icon">🐋</div>
+      <div class="init-title">Orca Food Chain Recovery</div>
+      <div class="init-sub">Active · Chinook salmon focus</div>
+      <div class="init-desc">Southern Resident Orca survival depends entirely on Chinook salmon. We're working with tribal nations and government agencies to remove migration barriers, restore spawning habitat, and rebuild salmon runs that directly feed the pods.</div>
+      <div class="init-metrics">
+        <div class="im"><div class="im-val">4</div><div class="im-lbl">Dams assessed</div></div>
+        <div class="im"><div class="im-val">12</div><div class="im-lbl">Streams restored</div></div>
+        <div class="im"><div class="im-val">+22%</div><div class="im-lbl">Chinook return rate</div></div>
+      </div>
+    </div>
+    <div class="init-card">
+      <div class="init-num">03</div>
+      <div class="init-icon">🧪</div>
+      <div class="init-title">Cold-Water Acidification Study</div>
+      <div class="init-sub">Research · 3-year longitudinal study</div>
+      <div class="init-desc">The Pacific Northwest is a global hotspot for ocean acidification. Our buoy network across the Salish Sea, Georgia Strait, and Puget Sound provides real-time pH, aragonite saturation, and carbonate chemistry data for policy and adaptive management.</div>
+      <div class="init-metrics">
+        <div class="im"><div class="im-val">24</div><div class="im-lbl">Monitoring buoys</div></div>
+        <div class="im"><div class="im-val">1.4M</div><div class="im-lbl">Data points/year</div></div>
+        <div class="im"><div class="im-val">6</div><div class="im-lbl">Partner universities</div></div>
+      </div>
+    </div>
+    <div class="init-card">
+      <div class="init-num">04</div>
+      <div class="init-icon">🤝</div>
+      <div class="init-title">First Nations Co-Stewardship</div>
+      <div class="init-sub">Active · 8 tribal partnerships</div>
+      <div class="init-desc">Indigenous communities have stewarded these waters for 10,000+ years. We partner with Coast Salish, Lummi, Makah, and other nations to integrate traditional ecological knowledge with modern science — creating conservation approaches neither could develop alone.</div>
+      <div class="init-metrics">
+        <div class="im"><div class="im-val">8</div><div class="im-lbl">Tribal partners</div></div>
+        <div class="im"><div class="im-val">120K ha</div><div class="im-lbl">Co-managed waters</div></div>
+        <div class="im"><div class="im-val">4</div><div class="im-lbl">Published studies</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="s-tag">// Science Team</div>
+  <h2 class="s-title">The researchers<br><em>in the water</em></h2>
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="team-ava">🔬</div>
+      <div class="team-name">Dr. Maren Solberg</div>
+      <div class="team-role">Executive Director & Marine Ecologist</div>
+      <div class="team-bio">Former NOAA researcher with 18 years in cold-water ecosystem dynamics. Pioneer of bull kelp outplanting methodology used across 6 PNW restoration programs.</div>
+      <div class="team-focus">
+        <span class="tf">Kelp Ecology</span><span class="tf">Policy</span><span class="tf">Restoration</span>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-ava">🐋</div>
+      <div class="team-name">Dr. Cole Ravenscroft</div>
+      <div class="team-role">Cetacean Research Lead</div>
+      <div class="team-bio">Spent 12 years tracking Southern Resident Orca pods. Identified the direct relationship between Chinook salmon depletion and reproductive failure in J pod that changed federal conservation policy.</div>
+      <div class="team-focus">
+        <span class="tf">Orca Behavior</span><span class="tf">Acoustics</span><span class="tf">Salmon</span>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-ava">🧪</div>
+      <div class="team-name">Dr. Lena Watanabe</div>
+      <div class="team-role">Ocean Chemistry Lead</div>
+      <div class="team-bio">Designs and maintains the 24-buoy acidification monitoring network spanning the Salish Sea. Research cited in 3 IPCC reports. Expert in carbonate system dynamics in cold upwelling zones.</div>
+      <div class="team-focus">
+        <span class="tf">Ocean pH</span><span class="tf">Carbonate</span><span class="tf">Sensors</span>
+      </div>
+    </div>
+    <div class="team-card">
+      <div class="team-ava">🤝</div>
+      <div class="team-name">Siya Tla'amin</div>
+      <div class="team-role">Indigenous Knowledge Director</div>
+      <div class="team-bio">Coast Salish marine ecologist bridging traditional ecological knowledge with contemporary conservation science. Leads the co-stewardship program across 8 First Nations partner communities.</div>
+      <div class="team-focus">
+        <span class="tf">TEK</span><span class="tf">Co-governance</span><span class="tf">Salmon</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-grid">
+    <div class="cta-text">
+      <div class="s-tag">// Get Involved</div>
+      <h2 class="cta-title">The Pacific Northwest <em>needs you</em> in the water</h2>
+      <p class="cta-sub">These ecosystems sustained Indigenous nations for ten thousand years. They can sustain the next ten thousand — but only if we act now. Every contribution funds field research, restoration fieldwork, and the policy changes these waters need.</p>
+      <div class="cta-ways">
+        <a href="#" class="cta-way">
+          <div class="cw-icon">💧</div>
+          <div><div class="cw-title">Donate</div><div class="cw-desc">Fund field research, restoration crews, and monitoring infrastructure</div></div>
+        </a>
+        <a href="#" class="cta-way">
+          <div class="cw-icon">🔬</div>
+          <div><div class="cw-title">Volunteer in the Field</div><div class="cw-desc">Join restoration dives, kelp surveys, and data collection expeditions</div></div>
+        </a>
+        <a href="#" class="cta-way">
+          <div class="cw-icon">🏫</div>
+          <div><div class="cw-title">Partner with Us</div><div class="cw-desc">Universities, agencies, and companies working on shared conservation goals</div></div>
+        </a>
+      </div>
+    </div>
+    <div>
+      <form class="cta-form" onsubmit="handleSubmit(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" placeholder="Maren">
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" placeholder="Solberg">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" placeholder="you@example.com">
+        </div>
+        <div class="form-group">
+          <label>How would you like to help?</label>
+          <select>
+            <option value="">Select...</option>
+            <option>Make a donation</option>
+            <option>Volunteer in the field</option>
+            <option>Scientific partnership</option>
+            <option>Corporate/foundation partnership</option>
+            <option>Media / communications</option>
+            <option>Policy advocacy</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Tell us more</label>
+          <textarea rows="3" placeholder="Any background, questions, or specific areas of interest..."></textarea>
+        </div>
+        <button type="submit" class="form-submit">Join the TIDEWATCH Network →</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="fb-logo">🌊 TIDEWATCH</div>
+      <div class="fb-tag">Pacific Northwest Marine Conservation Institute<br>501(c)(3) Registered Non-Profit · EIN: 84-XXXXXXX</div>
+    </div>
+    <div class="footer-links">
+      <div class="fc">
+        <h4>Research</h4>
+        <ul>
+          <li><a href="#">Live Data Dashboard</a></li>
+          <li><a href="#">Kelp Restoration</a></li>
+          <li><a href="#">Orca Monitoring</a></li>
+          <li><a href="#">Publications</a></li>
+        </ul>
+      </div>
+      <div class="fc">
+        <h4>Organization</h4>
+        <ul>
+          <li><a href="#">About TIDEWATCH</a></li>
+          <li><a href="#">Science Team</a></li>
+          <li><a href="#">Annual Reports</a></li>
+          <li><a href="#">Press</a></li>
+        </ul>
+      </div>
+      <div class="fc">
+        <h4>Get Involved</h4>
+        <ul>
+          <li><a href="#">Donate</a></li>
+          <li><a href="#">Field Volunteer</a></li>
+          <li><a href="#">Partnerships</a></li>
+          <li><a href="#">Newsletter</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="f-copy">&copy; 2026 TIDEWATCH — Pacific Northwest Marine Conservation Institute</div>
+    <div class="f-reg">Cold waters. Deep urgency. 47.6°N — Salish Sea</div>
+  </div>
+</footer>
+
+<script>
+// ── HERO CANVAS (bioluminescent plankton) ──
+const canvas = document.getElementById('heroCanvas');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+
+function resize() {
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+
+function initParticles() {
+  particles = [];
+  const count = Math.floor(W * H / 8000);
+  for (let i = 0; i < count; i++) {
+    particles.push({
+      x: Math.random() * W,
+      y: Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: Math.random() * -0.5 - 0.1,
+      r: Math.random() * 1.5 + 0.3,
+      alpha: Math.random() * 0.6 + 0.1,
+      life: Math.random() * 200 + 100,
+      maxLife: 0,
+      twinkle: Math.random() * Math.PI * 2,
+    });
+    particles[particles.length-1].maxLife = particles[particles.length-1].life;
+  }
+}
+
+const colors = ['rgba(34,211,238', 'rgba(6,182,212', 'rgba(16,185,129', 'rgba(14,116,144'];
+
+function drawFrame() {
+  ctx.clearRect(0, 0, W, H);
+
+  // Deep ocean gradient bg
+  const grad = ctx.createLinearGradient(0, 0, 0, H);
+  grad.addColorStop(0, '#020C18');
+  grad.addColorStop(0.4, '#041E35');
+  grad.addColorStop(1, '#020C18');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+
+  // Draw plankton particles
+  particles.forEach((p, i) => {
+    p.x += p.vx;
+    p.y += p.vy;
+    p.life--;
+    p.twinkle += 0.04;
+
+    if (p.life <= 0) {
+      // respawn
+      p.x = Math.random() * W;
+      p.y = H + 10;
+      p.life = p.maxLife = Math.random() * 200 + 100;
+      p.vx = (Math.random() - 0.5) * 0.3;
+      p.vy = Math.random() * -0.5 - 0.1;
+    }
+
+    const lifeRatio = p.life / p.maxLife;
+    const glow = (Math.sin(p.twinkle) + 1) / 2;
+    const baseAlpha = Math.min(lifeRatio * 4, 1) * Math.min((1 - lifeRatio) * 4, 1);
+    const a = baseAlpha * (0.4 + glow * 0.5);
+
+    const color = colors[i % colors.length];
+
+    // Glow
+    ctx.shadowBlur = p.r * 8;
+    ctx.shadowColor = `${color},${a * 0.5})`;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r * (1 + glow * 0.4), 0, Math.PI * 2);
+    ctx.fillStyle = `${color},${a})`;
+    ctx.fill();
+    ctx.shadowBlur = 0;
+  });
+
+  // Subtle wave lines at bottom
+  ctx.strokeStyle = 'rgba(34,211,238,0.04)';
+  ctx.lineWidth = 1;
+  for (let w = 0; w < 3; w++) {
+    ctx.beginPath();
+    const yBase = H * 0.75 + w * 40;
+    const phase = Date.now() / 2000 + w * 1.2;
+    for (let x = 0; x <= W; x += 4) {
+      const y = yBase + Math.sin(x / 180 + phase) * 12 + Math.sin(x / 80 + phase * 1.3) * 6;
+      x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.stroke();
+  }
+
+  requestAnimationFrame(drawFrame);
+}
+
+window.addEventListener('resize', () => { resize(); initParticles(); });
+resize();
+initParticles();
+drawFrame();
+
+// ── ANIMATED NUMBERS ──
+function animNum(el) {
+  const target = el.id === 'ph' ? 7.92 : parseFloat(el.dataset.target || el.textContent.replace(/[^0-9.]/g, ''));
+  const isFloat = String(target).includes('.');
+  const decimals = isFloat ? String(target).split('.')[1].length : 0;
+  const dur = 2200;
+  const t0 = performance.now();
+  (function tick(now) {
+    const p = Math.min((now - t0) / dur, 1);
+    const e = 1 - Math.pow(1 - p, 3);
+    el.textContent = (target * e).toFixed(decimals);
+    if (p < 1) requestAnimationFrame(tick);
+    else el.textContent = target.toFixed(decimals);
+  })(performance.now());
+}
+
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = e.target.id;
+      if (id === 'sst') { e.target.dataset.target = '9.4'; animNum(e.target); }
+      else if (id === 'ph') { e.target.dataset.target = '7.92'; animNum(e.target); }
+      else if (id === 'orcas') { e.target.dataset.target = '73'; animNum(e.target); }
+      else if (id === 'kelp') { e.target.dataset.target = '34'; animNum(e.target); }
+      io.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.5 });
+['sst','ph','orcas','kelp'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) { el.textContent = '0'; io.observe(el); }
+});
+
+// ── BAR CHART ANIMATION ──
+const barIO = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      document.querySelectorAll('.bar-fill').forEach(b => {
+        const w = b.dataset.width || '50';
+        b.style.width = w + '%';
+      });
+      barIO.disconnect();
+    }
+  });
+}, { threshold: 0.2 });
+const firstBar = document.querySelector('.bar-chart');
+if (firstBar) barIO.observe(firstBar);
+
+// ── FORM ──
+function handleSubmit(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('.form-submit');
+  btn.textContent = "Welcome to the TIDEWATCH Network — we'll be in touch soon.";
+  btn.style.background = 'var(--green)';
+  btn.disabled = true;
+}
+
+// ── NAV SCROLL ──
+window.addEventListener('scroll', () => {
+  document.querySelector('nav').style.background =
+    window.scrollY > 40 ? 'rgba(2,12,24,0.98)' : 'rgba(2,12,24,0.9)';
+});
+</script>
+</body>
+</html>
