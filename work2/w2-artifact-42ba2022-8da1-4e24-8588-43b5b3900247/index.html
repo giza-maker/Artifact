@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KAIZEN MOTORS — JDM Restomod Atelier · Vancouver, BC</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Inter:wght@300;400;500;600&family=Barlow+Condensed:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black:  #080808;
+      --ink:    #111111;
+      --carbon: #1A1A1A;
+      --steel:  #2A2A2A;
+      --gold:   #C9A84C;
+      --gold2:  #E8C96A;
+      --red:    #B8242A;
+      --warm:   #F0EDE8;
+      --muted:  #9A9690;
+      --dim:    #5A5A55;
+      --border: rgba(255,255,255,0.07);
+      --border2: rgba(201,168,76,0.2);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--black);
+      color: var(--warm);
+      overflow-x: hidden;
+      line-height: 1.6;
+      cursor: default;
+    }
+
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); }
+
+    /* ── JAPANESE WAVE TEXTURE ── */
+    .jp-texture {
+      position: absolute; inset: 0; pointer-events: none; z-index: 0;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80'%3E%3Cpath d='M0 40 Q20 20 40 40 Q60 60 80 40' fill='none' stroke='%23C9A84C' stroke-width='1'/%3E%3Cpath d='M0 80 Q20 60 40 80 Q60 100 80 80' fill='none' stroke='%23C9A84C' stroke-width='1'/%3E%3Cpath d='M0 0 Q20-20 40 0 Q60 20 80 0' fill='none' stroke='%23C9A84C' stroke-width='1'/%3E%3C/svg%3E");
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 300;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 4%;
+      mix-blend-mode: normal;
+      transition: background 0.4s, border-color 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(8,8,8,0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      display: flex; flex-direction: column; line-height: 1;
+      text-decoration: none;
+    }
+    .nav-logo-main {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.4rem; font-weight: 800;
+      letter-spacing: 0.15em; color: var(--warm);
+    }
+    .nav-logo-sub {
+      font-size: 0.6rem; letter-spacing: 0.3em;
+      color: var(--gold); text-transform: uppercase;
+      font-weight: 500;
+    }
+    .nav-links {
+      display: flex; gap: 2.5rem; list-style: none;
+    }
+    .nav-links a {
+      font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none; font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--warm); }
+    .nav-cta {
+      font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+      font-weight: 600; color: var(--gold);
+      border: 1px solid var(--gold); padding: 0.5rem 1.2rem;
+      background: transparent; cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      text-decoration: none;
+    }
+    .nav-cta:hover { background: var(--gold); color: var(--black); }
+    @media (max-width: 768px) { .nav-links { display: none; } }
+
+    /* ── HERO ── */
+    #hero {
+      height: 100vh; min-height: 700px;
+      position: relative;
+      display: flex; flex-direction: column;
+      align-items: flex-start; justify-content: flex-end;
+      padding: 0 4% 8vh;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse at 70% 40%, rgba(184,36,42,0.12), transparent 55%),
+        radial-gradient(ellipse at 20% 80%, rgba(201,168,76,0.08), transparent 50%),
+        linear-gradient(160deg, #0D0D0D 0%, #060606 100%);
+    }
+    .hero-car-silhouette {
+      position: absolute; right: -2%; top: 50%; transform: translateY(-50%);
+      width: 55%; opacity: 0.22; z-index: 1;
+    }
+    .hero-rule {
+      width: 60px; height: 1px; background: var(--gold);
+      margin-bottom: 2rem; position: relative; z-index: 2;
+    }
+    .hero-eyebrow {
+      font-size: 0.68rem; letter-spacing: 0.35em; text-transform: uppercase;
+      color: var(--gold); font-weight: 500;
+      margin-bottom: 1.4rem; position: relative; z-index: 2;
+    }
+    h1.hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(4rem, 10vw, 9rem);
+      font-weight: 300; line-height: 0.9;
+      letter-spacing: -0.02em;
+      margin-bottom: 0; position: relative; z-index: 2;
+    }
+    h1.hero-title strong {
+      font-weight: 700; display: block;
+    }
+    h1.hero-title em {
+      font-style: italic; color: var(--gold);
+    }
+    .hero-tagline {
+      font-size: clamp(0.85rem, 1.5vw, 1rem);
+      color: var(--muted); letter-spacing: 0.08em;
+      margin-top: 2rem; max-width: 480px;
+      line-height: 1.7; position: relative; z-index: 2;
+    }
+    .hero-cta-row {
+      display: flex; gap: 1.5rem; align-items: center; margin-top: 2.5rem;
+      position: relative; z-index: 2;
+    }
+    .hero-meta {
+      position: absolute; right: 4%; bottom: 8vh;
+      display: flex; flex-direction: column; gap: 0.5rem;
+      text-align: right; z-index: 2;
+    }
+    .hero-meta-item {
+      font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--dim);
+    }
+    .hero-meta-item strong { color: var(--muted); display: block; font-size: 0.85rem; letter-spacing: 0.05em; }
+    .scroll-hint {
+      position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+      font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--dim); z-index: 2;
+      display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+    }
+    .scroll-line {
+      width: 1px; height: 40px; background: linear-gradient(var(--gold), transparent);
+      animation: scroll-drop 1.5s ease-in-out infinite;
+    }
+    @keyframes scroll-drop {
+      0%   { opacity: 1; transform: scaleY(1) translateY(0); transform-origin: top; }
+      100% { opacity: 0; transform: scaleY(0.3) translateY(20px); transform-origin: top; }
+    }
+
+    /* ── SECTION BASE ── */
+    .section {
+      padding: 9rem 4%;
+      position: relative; overflow: hidden;
+    }
+    .section-inner { max-width: 1200px; margin: 0 auto; }
+    .section-label {
+      font-size: 0.62rem; letter-spacing: 0.35em; text-transform: uppercase;
+      color: var(--gold); font-weight: 600; margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 0.8rem;
+    }
+    .section-label::before { content: ''; width: 30px; height: 1px; background: var(--gold); }
+    h2.section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.4rem, 5vw, 4.5rem);
+      font-weight: 300; line-height: 1.05;
+      letter-spacing: -0.015em;
+      margin-bottom: 1.2rem;
+    }
+    h2.section-title strong { font-weight: 700; }
+    h2.section-title em { font-style: italic; color: var(--gold); }
+    .section-body {
+      color: var(--muted); font-size: 0.95rem; line-height: 1.85;
+      max-width: 560px;
+    }
+    hr.rule {
+      border: none; border-top: 1px solid var(--border);
+      max-width: 1200px; margin: 0 auto;
+    }
+
+    /* ── KANJI WATERMARK ── */
+    .kanji-mark {
+      position: absolute;
+      font-family: serif; font-size: clamp(12rem, 25vw, 22rem);
+      color: rgba(255,255,255,0.02); font-weight: 900;
+      pointer-events: none; user-select: none; line-height: 1;
+      z-index: 0;
+    }
+
+    /* ── MANIFESTO ── */
+    #manifesto { background: var(--ink); }
+    .manifesto-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;
+    }
+    @media (max-width: 768px) { .manifesto-grid { grid-template-columns: 1fr; gap: 3rem; } }
+    .manifesto-quote {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.6rem, 3vw, 2.6rem);
+      font-weight: 400; line-height: 1.3;
+      font-style: italic; color: var(--warm);
+      border-left: 2px solid var(--gold);
+      padding-left: 2rem;
+      position: relative; z-index: 1;
+    }
+    .manifesto-quote cite {
+      display: block; margin-top: 1.2rem;
+      font-style: normal; font-size: 0.7rem;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--gold); font-family: 'Inter', sans-serif;
+    }
+    .manifesto-pillars {
+      display: flex; flex-direction: column; gap: 2rem;
+      position: relative; z-index: 1;
+    }
+    .manifesto-pillar { border-top: 1px solid var(--border); padding-top: 1.5rem; }
+    .pillar-num {
+      font-size: 0.62rem; letter-spacing: 0.2em; color: var(--gold); font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+    .pillar-title { font-family: 'Barlow Condensed', sans-serif; font-size: 1.1rem; font-weight: 700; letter-spacing: 0.05em; margin-bottom: 0.4rem; }
+    .pillar-desc { font-size: 0.85rem; color: var(--muted); line-height: 1.7; }
+
+    /* ── CANADIAN ADVANTAGE ── */
+    #advantage { background: var(--carbon); }
+    .advantage-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start;
+    }
+    @media (max-width: 768px) { .advantage-grid { grid-template-columns: 1fr; gap: 3rem; } }
+    .advantage-stat-block {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 3rem;
+    }
+    .adv-stat {
+      border: 1px solid var(--border);
+      padding: 1.5rem; position: relative;
+    }
+    .adv-stat::before {
+      content: ''; position: absolute; top: -1px; left: 0; right: 0; height: 2px;
+      background: var(--gold);
+    }
+    .adv-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 2.5rem; font-weight: 800; color: var(--gold);
+      line-height: 1; letter-spacing: -0.02em; margin-bottom: 0.3rem;
+    }
+    .adv-label { font-size: 0.75rem; color: var(--muted); line-height: 1.4; }
+    .advantage-map {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem;
+    }
+    .import-law-card {
+      background: rgba(201,168,76,0.05);
+      border: 1px solid var(--border2);
+      padding: 1.5rem;
+    }
+    .import-law-card h4 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.85rem; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem;
+    }
+    .import-law-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.65; }
+
+    /* ── VEHICLES ── */
+    #vehicles { background: var(--black); }
+    .vehicles-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1px; background: var(--border);
+      border: 1px solid var(--border);
+    }
+    .vehicle-card {
+      background: var(--black);
+      padding: 2.5rem 2rem;
+      position: relative; overflow: hidden;
+      transition: background 0.3s;
+      cursor: default;
+    }
+    .vehicle-card:hover { background: var(--ink); }
+    .vehicle-card::after {
+      content: ''; position: absolute;
+      bottom: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--red), var(--gold));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+    .vehicle-card:hover::after { transform: scaleX(1); }
+    .v-era {
+      font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--dim); margin-bottom: 0.5rem;
+    }
+    .v-model {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.8rem; font-weight: 800; letter-spacing: 0.04em;
+      line-height: 1; margin-bottom: 0.2rem;
+    }
+    .v-maker { font-size: 0.75rem; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1.2rem; }
+    .v-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.65; margin-bottom: 1.5rem; }
+    .v-specs {
+      display: flex; gap: 1.5rem; flex-wrap: wrap;
+    }
+    .v-spec { font-size: 0.7rem; color: var(--dim); }
+    .v-spec strong { display: block; color: var(--warm); font-size: 0.82rem; font-weight: 600; }
+    .v-icon {
+      position: absolute; bottom: 1.5rem; right: 1.5rem;
+      font-size: 3.5rem; opacity: 0.07;
+    }
+
+    /* ── BUILD PROCESS ── */
+    #process { background: var(--ink); }
+    .process-timeline {
+      position: relative; margin-top: 4rem;
+    }
+    .process-timeline::before {
+      content: ''; position: absolute;
+      left: 0; top: 0; bottom: 0; width: 1px;
+      background: linear-gradient(var(--gold), transparent);
+    }
+    .process-step {
+      display: grid; grid-template-columns: 80px 1fr;
+      gap: 2rem; padding: 2.5rem 0 2.5rem 2rem;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      transition: background 0.2s;
+    }
+    .process-step:last-child { border-bottom: none; }
+    .process-step::before {
+      content: ''; position: absolute;
+      left: -4px; top: 2.5rem;
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--gold); border: 2px solid var(--ink);
+    }
+    .p-num {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 3.5rem; font-weight: 800;
+      color: rgba(201,168,76,0.15); line-height: 1;
+      letter-spacing: -0.02em;
+    }
+    .p-content {}
+    .p-phase {
+      font-size: 0.62rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 0.4rem;
+    }
+    .p-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.5rem; font-weight: 700; letter-spacing: 0.04em;
+      margin-bottom: 0.6rem;
+    }
+    .p-desc { font-size: 0.87rem; color: var(--muted); line-height: 1.7; }
+    .p-duration {
+      display: inline-block; margin-top: 0.8rem;
+      font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--dim); border: 1px solid var(--border); padding: 0.2rem 0.6rem;
+    }
+
+    /* ── FEATURED BUILDS ── */
+    #builds { background: var(--carbon); }
+    .builds-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 3rem;
+    }
+    @media (max-width: 640px) { .builds-grid { grid-template-columns: 1fr; } }
+    .build-card {
+      border: 1px solid var(--border);
+      position: relative; overflow: hidden;
+      transition: border-color 0.3s;
+    }
+    .build-card:hover { border-color: rgba(201,168,76,0.4); }
+    .build-card.featured {
+      grid-column: 1 / -1;
+      display: grid; grid-template-columns: 1fr 1fr;
+    }
+    @media (max-width: 640px) { .build-card.featured { grid-template-columns: 1fr; } }
+    .build-visual {
+      background: var(--ink);
+      min-height: 280px; position: relative;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .build-visual-inner {
+      font-size: 6rem; opacity: 0.15;
+      position: absolute;
+    }
+    .build-glow {
+      position: absolute; border-radius: 50%; filter: blur(60px);
+      opacity: 0.2;
+    }
+    .build-info { padding: 2rem; display: flex; flex-direction: column; gap: 0.8rem; }
+    .build-tag {
+      font-size: 0.6rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--gold); font-weight: 600;
+    }
+    .build-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem; font-weight: 600; line-height: 1.1;
+    }
+    .build-spec-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-top: 0.5rem;
+    }
+    .bspec { font-size: 0.78rem; }
+    .bspec .bk { color: var(--dim); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; display: block; }
+    .bspec .bv { color: var(--warm); font-weight: 500; }
+    .build-price {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.6rem; font-weight: 700;
+      color: var(--gold); margin-top: auto;
+    }
+    .build-price span { font-size: 0.75rem; color: var(--muted); font-family: 'Inter', sans-serif; font-weight: 400; display: block; letter-spacing: 0.05em; }
+
+    /* ── SERVICES ── */
+    #services { background: var(--black); }
+    .services-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1px; background: var(--border);
+      border: 1px solid var(--border); margin-top: 3rem;
+    }
+    .service-card {
+      background: var(--black); padding: 2.5rem 2rem;
+      transition: background 0.25s;
+    }
+    .service-card:hover { background: var(--ink); }
+    .s-tier {
+      font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--dim); margin-bottom: 0.5rem;
+    }
+    .s-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.3rem; font-weight: 700; letter-spacing: 0.05em;
+      margin-bottom: 0.8rem;
+    }
+    .s-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.65; margin-bottom: 1.4rem; }
+    .s-includes { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.5rem; }
+    .s-includes li {
+      font-size: 0.78rem; color: var(--muted);
+      display: flex; gap: 0.5rem; align-items: flex-start;
+    }
+    .s-includes li::before { content: '—'; color: var(--gold); flex-shrink: 0; }
+    .s-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem; font-weight: 600; color: var(--warm);
+    }
+    .s-price small { font-size: 0.75rem; color: var(--muted); font-family: 'Inter', sans-serif; }
+
+    /* ── ATELIER ── */
+    #atelier { background: var(--ink); }
+    .atelier-grid {
+      display: grid; grid-template-columns: 3fr 2fr; gap: 5rem; align-items: center;
+    }
+    @media (max-width: 768px) { .atelier-grid { grid-template-columns: 1fr; gap: 3rem; } }
+    .atelier-body { font-size: 0.95rem; color: var(--muted); line-height: 1.85; }
+    .atelier-body p + p { margin-top: 1.2rem; }
+    .atelier-facts { display: flex; flex-direction: column; gap: 1.5rem; }
+    .fact-row {
+      border-top: 1px solid var(--border); padding-top: 1.2rem;
+    }
+    .fact-label { font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.3rem; }
+    .fact-value { font-size: 1.05rem; color: var(--warm); font-weight: 500; }
+
+    /* ── COMMISSION CTA ── */
+    #commission { background: var(--black); }
+    .commission-inner {
+      max-width: 1200px; margin: 0 auto;
+      border: 1px solid var(--border);
+      padding: 5rem 4rem;
+      position: relative; overflow: hidden;
+      display: grid; grid-template-columns: 1fr auto; gap: 3rem; align-items: center;
+    }
+    @media (max-width: 640px) { .commission-inner { grid-template-columns: 1fr; padding: 3rem 2rem; } }
+    .commission-inner::before {
+      content: ''; position: absolute;
+      top: 0; left: 0; bottom: 0; width: 3px;
+      background: linear-gradient(var(--gold), var(--red));
+    }
+    .commission-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 300; line-height: 1.1; margin-bottom: 1rem;
+    }
+    .commission-title strong { font-weight: 700; }
+    .commission-sub { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
+    .commission-form { display: flex; flex-direction: column; gap: 0.75rem; min-width: 300px; }
+    .form-input {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border); border-radius: 0;
+      padding: 0.85rem 1rem; color: var(--warm);
+      font-family: 'Inter', sans-serif; font-size: 0.88rem;
+      outline: none; transition: border-color 0.2s;
+    }
+    .form-input::placeholder { color: var(--dim); }
+    .form-input:focus { border-color: var(--gold); }
+    .form-select {
+      background: var(--carbon); color: var(--muted);
+    }
+    .btn-submit {
+      background: var(--gold); color: var(--black);
+      font-weight: 700; font-size: 0.8rem;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      padding: 0.9rem; border: none; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-submit:hover { background: var(--gold2); }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 4rem 4% 2rem;
+    }
+    .footer-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem;
+      margin-bottom: 3rem;
+    }
+    @media (max-width: 768px) { .footer-inner { grid-template-columns: 1fr 1fr; gap: 2rem; } }
+    .footer-logo-block .fl-main {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 1.8rem; font-weight: 800; letter-spacing: 0.12em;
+      color: var(--warm); margin-bottom: 0.1rem;
+    }
+    .footer-logo-block .fl-kanji {
+      font-size: 0.75rem; color: var(--gold); letter-spacing: 0.15em;
+    }
+    .footer-desc {
+      margin-top: 1rem; font-size: 0.82rem; color: var(--dim); line-height: 1.7;
+      max-width: 260px;
+    }
+    .footer-col h5 {
+      font-size: 0.62rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--gold); font-weight: 600; margin-bottom: 1.2rem;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+    .footer-col ul a { font-size: 0.82rem; color: var(--dim); text-decoration: none; transition: color 0.2s; }
+    .footer-col ul a:hover { color: var(--muted); }
+    .footer-bottom {
+      max-width: 1200px; margin: 0 auto;
+      border-top: 1px solid var(--border); padding-top: 1.5rem;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.7rem; color: var(--dim); flex-wrap: wrap; gap: 0.5rem;
+      letter-spacing: 0.05em;
+    }
+    .footer-bottom .kaizen-jp { color: var(--gold); opacity: 0.6; }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">
+    <span class="nav-logo-main">KAIZEN MOTORS</span>
+    <span class="nav-logo-sub">改善 · Vancouver, BC · Est. 2024</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#manifesto">Philosophy</a></li>
+    <li><a href="#vehicles">Platforms</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#atelier">Atelier</a></li>
+  </ul>
+  <a href="#commission" class="nav-cta">Commission a Build</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="jp-texture"></div>
+
+  <!-- SVG car silhouette (R34 GT-R abstracted) -->
+  <svg class="hero-car-silhouette" viewBox="0 0 900 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M80 280 L100 200 Q200 120 350 100 L520 90 Q650 85 720 110 L800 150 L840 200 L860 280 Z" fill="rgba(201,168,76,0.3)"/>
+    <path d="M160 280 L170 210 Q230 160 350 150 L520 145 Q620 140 680 165 L740 200 L760 280 Z" fill="rgba(201,168,76,0.5)"/>
+    <ellipse cx="220" cy="280" rx="60" ry="20" fill="rgba(30,30,30,0.8)" stroke="rgba(201,168,76,0.5)" stroke-width="2"/>
+    <ellipse cx="680" cy="280" rx="60" ry="20" fill="rgba(30,30,30,0.8)" stroke="rgba(201,168,76,0.5)" stroke-width="2"/>
+    <rect x="270" y="140" width="180" height="80" rx="8" fill="rgba(201,168,76,0.08)" stroke="rgba(201,168,76,0.2)" stroke-width="1"/>
+    <rect x="460" y="135" width="160" height="85" rx="8" fill="rgba(201,168,76,0.08)" stroke="rgba(201,168,76,0.2)" stroke-width="1"/>
+    <!-- Round tail light suggest -->
+    <circle cx="800" cy="210" r="12" fill="rgba(184,36,42,0.6)"/>
+    <circle cx="800" cy="210" r="7" fill="rgba(184,36,42,0.9)"/>
+  </svg>
+
+  <div class="hero-rule"></div>
+  <p class="hero-eyebrow">Canadian JDM Restomod Atelier</p>
+  <h1 class="hero-title">
+    <em>改善</em><br/>
+    <strong>KAIZEN</strong><br/>
+    MOTORS
+  </h1>
+  <p class="hero-tagline">
+    Japanese soul. Canadian precision. Built for forever.<br />
+    We source, restore, and reimagine Japan's greatest automotive icons — right here in Vancouver.
+  </p>
+  <div class="hero-cta-row">
+    <a href="#commission" class="nav-cta">Commission a Build</a>
+    <a href="#manifesto" style="font-size:0.75rem;letter-spacing:0.12em;color:var(--muted);text-decoration:none;text-transform:uppercase">Our Philosophy ↓</a>
+  </div>
+
+  <div class="hero-meta">
+    <div class="hero-meta-item"><strong>Vancouver, BC</strong>Established 2024</div>
+    <div class="hero-meta-item"><strong>12 Builds Completed</strong>Global Delivery</div>
+    <div class="hero-meta-item"><strong>CAD 15-Year Rule</strong>Import Specialists</div>
+  </div>
+
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<hr class="rule" />
+
+<!-- MANIFESTO -->
+<section class="section" id="manifesto">
+  <div class="jp-texture"></div>
+  <div class="kanji-mark" style="right:-2%;top:-10%;opacity:0.018">改</div>
+  <div class="section-inner">
+    <div class="manifesto-grid">
+      <div>
+        <p class="section-label">Philosophy</p>
+        <blockquote class="manifesto-quote">
+          "These cars were never finished.<br/>They were only interrupted."
+          <cite>— Kaizen Motors Founding Principle</cite>
+        </blockquote>
+      </div>
+      <div class="manifesto-pillars">
+        <div class="manifesto-pillar">
+          <div class="pillar-num">01 · Monozukuri</div>
+          <div class="pillar-title">The Art of Making Things</div>
+          <p class="pillar-desc">Every build begins with the original engineer's intent. We study factory manuals, period development notes, and homologation documents before lifting a wrench.</p>
+        </div>
+        <div class="manifesto-pillar">
+          <div class="pillar-num">02 · Kaizen</div>
+          <div class="pillar-title">Continuous Improvement</div>
+          <p class="pillar-desc">Restomod isn't restoration alone. We improve every system — engine, suspension, brakes, electrics — to match what the original engineers would build today with modern materials.</p>
+        </div>
+        <div class="manifesto-pillar">
+          <div class="pillar-num">03 · Ma</div>
+          <div class="pillar-title">The Space Between</div>
+          <p class="pillar-desc">We reject the temptation to change everything. Some gaps are intentional. The best builds preserve the original's negative space — its character, its hesitations, its analog soul.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule" />
+
+<!-- CANADIAN ADVANTAGE -->
+<section class="section" id="advantage">
+  <div class="kanji-mark" style="left:-2%;bottom:-15%">優</div>
+  <div class="section-inner">
+    <div class="advantage-grid">
+      <div style="position:relative;z-index:1">
+        <p class="section-label">The Canadian Advantage</p>
+        <h2 class="section-title">Why Vancouver<br/>is the <em>gateway</em><br/>to JDM.</h2>
+        <p class="section-body">Canada's 15-year import rule — compared to the United States' 25-year threshold — makes Vancouver the most strategically positioned city in North America for accessing iconic Japanese platforms. Cars that remain federally prohibited south of the border are fully legal here today.</p>
+        <div class="advantage-stat-block">
+          <div class="adv-stat">
+            <div class="adv-num">15</div>
+            <div class="adv-label">Year Canadian import rule — 10 years earlier than the US</div>
+          </div>
+          <div class="adv-stat">
+            <div class="adv-num">R34</div>
+            <div class="adv-label">GT-R legal in Canada since 2014. US waits until 2024+</div>
+          </div>
+          <div class="adv-stat">
+            <div class="adv-num">YVR</div>
+            <div class="adv-label">Direct port access to Japan — fastest in-transit times from Osaka and Yokohama</div>
+          </div>
+          <div class="adv-stat">
+            <div class="adv-num">S15</div>
+            <div class="adv-label">Silvia, SW20, and other platforms available decades before US legalization</div>
+          </div>
+        </div>
+      </div>
+      <div style="position:relative;z-index:1">
+        <div class="advantage-map">
+          <div class="import-law-card">
+            <h4>🇨🇦 Canadian Import Law — CBSA</h4>
+            <p>Motor vehicles 15 years old or older are exempt from Transport Canada safety compliance requirements and can be imported freely for road use. This applies to all passenger vehicles regardless of origin country.</p>
+          </div>
+          <div class="import-law-card">
+            <h4>🇯🇵 Direct Japan Sourcing</h4>
+            <p>Kaizen Motors maintains active relationships with auction houses in Osaka, Tokyo, and Nagoya — including USS, TAA, and JAA networks. We access grade 4+ single-owner vehicles before they reach the open market.</p>
+          </div>
+          <div class="import-law-card">
+            <h4>🌎 Global Delivery</h4>
+            <p>Completed builds have been delivered to clients in the US (via collector car exemptions), UK, UAE, and Australia. We manage full export documentation, shipping logistics, and country-specific compliance review.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule" />
+
+<!-- VEHICLES -->
+<section class="section" id="vehicles">
+  <div class="section-inner">
+    <p class="section-label">Platform Specializations</p>
+    <h2 class="section-title">The icons we<br/><strong>breathe life into.</strong></h2>
+    <p class="section-body" style="margin-bottom:3rem">Five platforms. Each one a legend. Each one more capable than the day it left the factory.</p>
+  </div>
+  <div class="vehicles-grid">
+    <div class="vehicle-card">
+      <div class="v-era">1989 – 2002</div>
+      <div class="v-model">SKYLINE GT-R</div>
+      <div class="v-maker">Nissan · BNR32 / BNR33 / BNR34</div>
+      <p class="v-desc">The Godzilla. Group A homologation legend. Our RB26DETT builds produce 550–700whp on billet internals while maintaining the original flat-torque character that dominated Bathurst and Le Mans.</p>
+      <div class="v-specs">
+        <div class="v-spec"><strong>Stock Power</strong>276 hp (BNR34)</div>
+        <div class="v-spec"><strong>Build Target</strong>550–700 whp</div>
+        <div class="v-spec"><strong>Platform</strong>RWD / ATTESA AWD</div>
+      </div>
+      <div class="v-icon">🏁</div>
+    </div>
+    <div class="vehicle-card">
+      <div class="v-era">1990 – 2005</div>
+      <div class="v-model">NSX</div>
+      <div class="v-maker">Honda / Acura · NA1 / NA2</div>
+      <p class="v-desc">Ayrton Senna's benchmark for Porsche. The aluminum monocoque and mid-mounted VTEC V6 remain engineering marvels. Our builds add modern cooling, uprated clutch, and motorsport-sourced suspension geometry.</p>
+      <div class="v-specs">
+        <div class="v-spec"><strong>Stock Power</strong>270–290 hp</div>
+        <div class="v-spec"><strong>Build Target</strong>320–380 hp</div>
+        <div class="v-spec"><strong>Platform</strong>Mid-engine RWD</div>
+      </div>
+      <div class="v-icon">⚡</div>
+    </div>
+    <div class="vehicle-card">
+      <div class="v-era">1992 – 2002</div>
+      <div class="v-model">RX-7</div>
+      <div class="v-maker">Mazda · FD3S</div>
+      <p class="v-desc">The only production rotary sports car to win Le Mans. The 13B-REW's sequential turbos create a visceral powerband unlike any piston engine. We address every known reliability concern and rebuild to race specification.</p>
+      <div class="v-specs">
+        <div class="v-spec"><strong>Stock Power</strong>255–280 hp</div>
+        <div class="v-spec"><strong>Build Target</strong>350–450 hp</div>
+        <div class="v-spec"><strong>Platform</strong>FR, 50/50 balance</div>
+      </div>
+      <div class="v-icon">🌀</div>
+    </div>
+    <div class="vehicle-card">
+      <div class="v-era">1993 – 2002</div>
+      <div class="v-model">SUPRA</div>
+      <div class="v-maker">Toyota · A80 / JZA80</div>
+      <p class="v-desc">The 2JZ-GTE is one of the strongest production engine blocks ever forged. Our builds honour its legendary tunability — 800whp on stock block is not hyperbole. Every build is dyno-proven and road-tested.</p>
+      <div class="v-specs">
+        <div class="v-spec"><strong>Stock Power</strong>320 hp (twin turbo)</div>
+        <div class="v-spec"><strong>Build Target</strong>600–900 whp</div>
+        <div class="v-spec"><strong>Platform</strong>FR, 6-speed Getrag</div>
+      </div>
+      <div class="v-icon">⚙️</div>
+    </div>
+    <div class="vehicle-card">
+      <div class="v-era">1999 – 2002</div>
+      <div class="v-model">SILVIA S15</div>
+      <div class="v-maker">Nissan · S15 Spec-R</div>
+      <p class="v-desc">Never sold in North America. The S15 represents the pinnacle of Nissan's FR formula — a 6-speed SR20DET on a near-perfect 50/50 chassis. Sought by collectors for its scarcity and by drivers for its purity.</p>
+      <div class="v-specs">
+        <div class="v-spec"><strong>Stock Power</strong>247 hp (SR20DET)</div>
+        <div class="v-spec"><strong>Build Target</strong>350–500 hp</div>
+        <div class="v-spec"><strong>Platform</strong>FR, helical LSD</div>
+      </div>
+      <div class="v-icon">🎯</div>
+    </div>
+    <div class="vehicle-card" style="background:var(--ink);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0.8rem;padding:3rem;">
+      <div style="font-size:2rem;opacity:0.4">+</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:1.2rem;font-weight:700;letter-spacing:0.08em;color:var(--muted)">CUSTOM COMMISSION</div>
+      <p style="font-size:0.82rem;color:var(--dim);text-align:center;max-width:220px;line-height:1.6">Have a platform not listed? Contact us. If it's JDM and iconic, we have built it or can.</p>
+    </div>
+  </div>
+</section>
+
+<hr class="rule" />
+
+<!-- BUILD PROCESS -->
+<section class="section" id="process">
+  <div class="kanji-mark" style="right:-5%;top:10%">造</div>
+  <div class="section-inner">
+    <p class="section-label">The Build Process</p>
+    <h2 class="section-title">Every build is<br/>a <em>12-month conversation.</em></h2>
+    <p class="section-body">We don't build cars in isolation. Every decision — from engine specification to seat leather — is made with the client before the first bolt is turned.</p>
+    <div class="process-timeline">
+      <div class="process-step">
+        <div class="p-num">01</div>
+        <div class="p-content">
+          <div class="p-phase">Phase One</div>
+          <div class="p-title">Acquisition & Inspection</div>
+          <p class="p-desc">We source your vehicle from Japanese auction networks using our Osaka-based agent. Grade 4 or higher only. Full pre-purchase inspection, radiography of structural panels, and engine compression analysis before purchase. Car is imported directly to our Vancouver facility.</p>
+          <span class="p-duration">6 – 10 weeks</span>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="p-num">02</div>
+        <div class="p-content">
+          <div class="p-phase">Phase Two</div>
+          <div class="p-title">Teardown & Assessment</div>
+          <p class="p-desc">Complete disassembly. Every component is catalogued, measured, and assessed. Full structural inspection. Hidden rust, previous repairs, or non-factory modifications are documented and presented to the client with remediation options.</p>
+          <span class="p-duration">3 – 4 weeks</span>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="p-num">03</div>
+        <div class="p-content">
+          <div class="p-phase">Phase Three</div>
+          <div class="p-title">Fabrication & Build</div>
+          <p class="p-desc">The core work. Engine rebuild with specified components, suspension geometry correction, brake system overhaul, wiring loom replacement, body restoration to OEM dimensions. Weekly photographic reports delivered to client.</p>
+          <span class="p-duration">16 – 24 weeks</span>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="p-num">04</div>
+        <div class="p-content">
+          <div class="p-phase">Phase Four</div>
+          <div class="p-title">Refinement & Tuning</div>
+          <p class="p-desc">Dyno tuning, alignment, corner-balancing, and road calibration. We use Motec, Haltech, or original ECU depending on build intent. Fluid analysis after initial heat cycles. Suspension damper tuning session with client present.</p>
+          <span class="p-duration">4 – 6 weeks</span>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="p-num">05</div>
+        <div class="p-content">
+          <div class="p-phase">Phase Five</div>
+          <div class="p-title">Handover & Documentation</div>
+          <p class="p-desc">Full build documentation package: all receipts, component specifications, tuning maps, dyno sheets, and photographic record. White-glove delivery or professional shipping arranged. 2-year limited powertrain warranty on all builds.</p>
+          <span class="p-duration">1 – 2 weeks</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule" />
+
+<!-- FEATURED BUILDS -->
+<section class="section" id="builds">
+  <div class="section-inner">
+    <p class="section-label">Featured Builds</p>
+    <h2 class="section-title">Recent work<br/>from the <strong>atelier.</strong></h2>
+    <div class="builds-grid">
+      <!-- Featured -->
+      <div class="build-card featured">
+        <div class="build-visual" style="min-height:320px">
+          <div class="build-glow" style="width:300px;height:300px;background:#B8242A;top:50%;left:30%;transform:translate(-50%,-50%)"></div>
+          <div class="build-glow" style="width:200px;height:200px;background:#C9A84C;top:30%;left:60%"></div>
+          <div class="build-visual-inner">🏁</div>
+          <svg viewBox="0 0 400 200" style="position:absolute;width:80%;opacity:0.35" fill="none">
+            <path d="M20 160 L40 90 Q120 30 200 20 L280 18 Q340 16 370 45 L390 90 L400 160 Z" fill="rgba(184,36,42,0.4)" stroke="rgba(201,168,76,0.6)" stroke-width="1.5"/>
+            <ellipse cx="80" cy="162" rx="35" ry="12" fill="rgba(20,20,20,0.9)" stroke="rgba(201,168,76,0.5)" stroke-width="1.5"/>
+            <ellipse cx="320" cy="162" rx="35" ry="12" fill="rgba(20,20,20,0.9)" stroke="rgba(201,168,76,0.5)" stroke-width="1.5"/>
+          </svg>
+        </div>
+        <div class="build-info">
+          <div class="build-tag">Build No. 009 · Signature Series</div>
+          <div class="build-name">BNR34 GT-R<br/>"Midnight Protocol"</div>
+          <p style="font-size:0.83rem;color:var(--muted);line-height:1.65">A 2001 V-spec II sourced from a single-owner collection in Kanagawa. RB26DETT rebuilt to N1 block specification, HKS GT2 Pro turbos, Motec M1 ECU. Midnight Violet Pearl retained. Interior reupholstered in Connolly leather with period-correct Recaro sourcing.</p>
+          <div class="build-spec-grid">
+            <div class="bspec"><span class="bk">Power</span><span class="bv">587 whp / 530 wtq</span></div>
+            <div class="bspec"><span class="bk">0–100 km/h</span><span class="bv">3.4 seconds</span></div>
+            <div class="bspec"><span class="bk">Chassis</span><span class="bv">Nismo S-tune suspension</span></div>
+            <div class="bspec"><span class="bk">Brakes</span><span class="bv">AP Racing 6-pot</span></div>
+            <div class="bspec"><span class="bk">Transmission</span><span class="bv">Spec-V Getrag rebuilt</span></div>
+            <div class="bspec"><span class="bk">Status</span><span class="bv">Delivered · Texas, USA</span></div>
+          </div>
+          <div class="build-price">CA$348,000<span>Complete build investment</span></div>
+        </div>
+      </div>
+      <!-- Build 2 -->
+      <div class="build-card">
+        <div class="build-visual" style="min-height:220px">
+          <div class="build-glow" style="width:200px;height:200px;background:#7C3AED;top:20%;left:20%"></div>
+          <div class="build-visual-inner" style="opacity:0.2">🌀</div>
+        </div>
+        <div class="build-info">
+          <div class="build-tag">Build No. 011 · Collector Series</div>
+          <div class="build-name">FD3S RX-7<br/>"Shinjuku White"</div>
+          <p style="font-size:0.83rem;color:var(--muted);line-height:1.65">1999 Type RZ. Complete 13B-REW rebuild, sequential turbos replaced with Trust T518Z single setup, E85 fuelling. All rubber components renewed. Ivory White paint corrected and ceramic coated.</p>
+          <div class="build-spec-grid">
+            <div class="bspec"><span class="bk">Power</span><span class="bv">412 whp</span></div>
+            <div class="bspec"><span class="bk">Fuel</span><span class="bv">E85 flex</span></div>
+          </div>
+          <div class="build-price">CA$195,000<span>Complete build investment</span></div>
+        </div>
+      </div>
+      <!-- Build 3 -->
+      <div class="build-card">
+        <div class="build-visual" style="min-height:220px">
+          <div class="build-glow" style="width:200px;height:200px;background:#C9A84C;top:20%;right:10%"></div>
+          <div class="build-visual-inner" style="opacity:0.2">⚡</div>
+        </div>
+        <div class="build-info">
+          <div class="build-tag">Build No. 007 · Purist Series</div>
+          <div class="build-name">Honda NSX<br/>"Suzuka Silver"</div>
+          <p style="font-size:0.83rem;color:var(--muted);line-height:1.65">2001 NA2 NSX-T. C32B naturally aspirated rebuild, Spoon Sports suspension, Brembo GT brakes, Recaro SP-G seats. Perfect analog feel preserved. For the driver who needs nothing more.</p>
+          <div class="build-spec-grid">
+            <div class="bspec"><span class="bk">Power</span><span class="bv">338 hp (NA)</span></div>
+            <div class="bspec"><span class="bk">Weight</span><span class="bv">1,270 kg</span></div>
+          </div>
+          <div class="build-price">CA$178,000<span>Complete build investment</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule" />
+
+<!-- SERVICES & INVESTMENT -->
+<section class="section" id="services">
+  <div class="kanji-mark" style="right:-3%;bottom:0">価</div>
+  <div class="section-inner">
+    <p class="section-label">Services & Investment</p>
+    <h2 class="section-title">Three ways to<br/>work with <em>Kaizen.</em></h2>
+    <p class="section-body" style="margin-bottom:3rem">From sourcing alone to full-commission builds, our service structure is built around your level of involvement and investment.</p>
+    <div class="services-grid">
+      <div class="service-card">
+        <div class="s-tier">Tier I</div>
+        <div class="s-title">SOURCING & IMPORT</div>
+        <p class="s-desc">You've found your platform. We handle the acquisition, inspection, import, and compliance — delivering a federalized vehicle ready for your shop or ours.</p>
+        <ul class="s-includes">
+          <li>Auction network sourcing + grade verification</li>
+          <li>Pre-purchase inspection in Japan</li>
+          <li>Import, CBSA clearance, and RIV process</li>
+          <li>Mechanical inspection report on arrival</li>
+          <li>Safety certification (BC / province of choice)</li>
+        </ul>
+        <div class="s-price">CA$35,000 – $65,000 <small>/vehicle (excl. purchase price)</small></div>
+      </div>
+      <div class="service-card" style="position:relative">
+        <div style="position:absolute;top:0;left:0;right:0;height:2px;background:var(--gold)"></div>
+        <div class="s-tier">Tier II — Most Requested</div>
+        <div class="s-title">FULL RESTOMOD</div>
+        <p class="s-desc">The complete Kaizen experience. We source, import, tear down, rebuild, and deliver a finished vehicle to your specification. Every system renewed or upgraded.</p>
+        <ul class="s-includes">
+          <li>All Tier I services included</li>
+          <li>Complete mechanical rebuild to spec</li>
+          <li>Body restoration and paint correction</li>
+          <li>Interior renewal with material selection</li>
+          <li>Dyno tuning and road calibration</li>
+          <li>Full build documentation package</li>
+          <li>2-year limited powertrain warranty</li>
+        </ul>
+        <div class="s-price">CA$150,000 – $350,000+ <small>/complete build</small></div>
+      </div>
+      <div class="service-card">
+        <div class="s-tier">Tier III</div>
+        <div class="s-title">CLIENT-SUPPLIED BUILD</div>
+        <p class="s-desc">You own the car. We build it. Submit your vehicle for an assessment. We'll develop a build specification and quote based on its current condition and your goals.</p>
+        <ul class="s-includes">
+          <li>Comprehensive intake inspection</li>
+          <li>Build specification development</li>
+          <li>Phased build with client sign-off gates</li>
+          <li>Dyno and alignment</li>
+          <li>Full documentation</li>
+        </ul>
+        <div class="s-price">CA$80,000+ <small>/labour & parts (varies)</small></div>
+      </div>
+      <div class="service-card">
+        <div class="s-tier">Tier IV</div>
+        <div class="s-title">MAINTENANCE & STORAGE</div>
+        <p class="s-desc">For Kaizen builds and qualifying client vehicles. Correct, long-term mechanical care by technicians who understand these platforms as deeply as anyone alive.</p>
+        <ul class="s-includes">
+          <li>Annual service and fluid analysis</li>
+          <li>Climate-controlled Vancouver storage</li>
+          <li>Battery conditioning, monthly inspection</li>
+          <li>On-request mechanical consultations</li>
+        </ul>
+        <div class="s-price">CA$4,800 – $9,600 <small>/year</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule" />
+
+<!-- ATELIER -->
+<section class="section" id="atelier">
+  <div class="kanji-mark" style="left:-3%;top:20%">精</div>
+  <div class="section-inner">
+    <div class="atelier-grid">
+      <div style="position:relative;z-index:1">
+        <p class="section-label">The Atelier</p>
+        <h2 class="section-title">A facility built<br/><em>for obsessives.</em></h2>
+        <div class="atelier-body">
+          <p>Kaizen Motors operates from a 12,000 sq ft purpose-built facility in East Vancouver — 10 enclosed bays, a climate-controlled restoration cell, a full rotary rebuild room, and a 2,000 sq ft fabrication shop equipped with CNC porting, tube bending, and TIG/MIG welding capability.</p>
+          <p>Our team of nine combines factory-trained Japanese engineers, Canadian motorsport fabricators, and concours-level restoration specialists. Every Kaizen technician is certified to work on at least two of our five platform specializations.</p>
+          <p>We accept no more than six active builds simultaneously. This is a deliberate constraint. It ensures that every vehicle in the building receives the attention it deserves — and that our clients always know where their car stands.</p>
+        </div>
+      </div>
+      <div class="atelier-facts" style="position:relative;z-index:1">
+        <div class="fact-row">
+          <div class="fact-label">Location</div>
+          <div class="fact-value">East Vancouver, BC · 12,000 sq ft</div>
+        </div>
+        <div class="fact-row">
+          <div class="fact-label">Active Bays</div>
+          <div class="fact-value">10 enclosed — max 6 active builds</div>
+        </div>
+        <div class="fact-row">
+          <div class="fact-label">Team</div>
+          <div class="fact-value">9 specialists + 2 platform consultants</div>
+        </div>
+        <div class="fact-row">
+          <div class="fact-label">Established</div>
+          <div class="fact-value">2024 — Vancouver, Canada</div>
+        </div>
+        <div class="fact-row">
+          <div class="fact-label">Builds Completed</div>
+          <div class="fact-value">12 — delivered to 5 countries</div>
+        </div>
+        <div class="fact-row">
+          <div class="fact-label">Client Retention</div>
+          <div class="fact-value">100% — no client has built only once</div>
+        </div>
+        <div class="fact-row">
+          <div class="fact-label">Warranty</div>
+          <div class="fact-value">2-year limited powertrain on all builds</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="rule" />
+
+<!-- COMMISSION -->
+<section class="section" id="commission" style="padding-top:6rem;padding-bottom:6rem">
+  <div class="commission-inner">
+    <div style="position:relative;z-index:1">
+      <h2 class="commission-title">Begin your<br/><strong>commission.</strong></h2>
+      <p class="commission-sub">We accept a limited number of commissions per year. Tell us about your vision and we'll arrange a private consultation at our Vancouver atelier — or by video if you're joining us from abroad.</p>
+      <p style="margin-top:1rem;font-size:0.78rem;color:var(--dim)">We typically respond within 48 business hours. Current lead time: 8–12 months from deposit to delivery.</p>
+    </div>
+    <form class="commission-form" onsubmit="handleForm(event)">
+      <input class="form-input" type="text" placeholder="Your name" required />
+      <input class="form-input" type="email" placeholder="Email address" required />
+      <select class="form-input form-select">
+        <option value="">Platform of interest…</option>
+        <option>Nissan Skyline GT-R (R32/R33/R34)</option>
+        <option>Honda NSX (NA1/NA2)</option>
+        <option>Mazda RX-7 (FD3S)</option>
+        <option>Toyota Supra (A80)</option>
+        <option>Nissan Silvia (S15)</option>
+        <option>Custom commission</option>
+      </select>
+      <select class="form-input form-select">
+        <option value="">Service tier…</option>
+        <option>Tier I — Sourcing & Import</option>
+        <option>Tier II — Full Restomod</option>
+        <option>Tier III — Client-Supplied Build</option>
+        <option>Tier IV — Maintenance & Storage</option>
+      </select>
+      <input class="form-input" type="text" placeholder="How did you find us?" />
+      <button type="submit" class="btn-submit">Submit Enquiry</button>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo-block">
+      <div class="fl-main">KAIZEN MOTORS</div>
+      <div class="fl-kanji">改善 · Continuous Improvement</div>
+      <p class="footer-desc">A Canadian JDM restomod atelier. We source, restore, and reimagine Japan's greatest automotive icons from our facility in Vancouver, BC.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Platforms</h5>
+      <ul>
+        <li><a href="#">Skyline GT-R</a></li>
+        <li><a href="#">Honda NSX</a></li>
+        <li><a href="#">Mazda RX-7</a></li>
+        <li><a href="#">Toyota Supra</a></li>
+        <li><a href="#">Nissan Silvia</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Services</h5>
+      <ul>
+        <li><a href="#">Sourcing & Import</a></li>
+        <li><a href="#">Full Restomod</a></li>
+        <li><a href="#">Client Builds</a></li>
+        <li><a href="#">Maintenance</a></li>
+        <li><a href="#">Storage</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Studio</h5>
+      <ul>
+        <li><a href="#">The Atelier</a></li>
+        <li><a href="#">Past Builds</a></li>
+        <li><a href="#">Philosophy</a></li>
+        <li><a href="#">Commission</a></li>
+        <li><a href="#">Vancouver, BC</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Kaizen Motors Inc. — Vancouver, British Columbia, Canada</span>
+    <span class="kaizen-jp">改善</span>
+    <span>Japanese Soul. Canadian Precision. Built for Forever.</span>
+  </div>
+</footer>
+
+<script>
+// NAV scroll behaviour
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// Animate stat numbers on scroll
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    e.target.querySelectorAll('.adv-num[data-val]').forEach(el => {
+      const target = parseInt(el.dataset.val);
+      let start = null;
+      function step(ts) {
+        if (!start) start = ts;
+        const p = Math.min((ts - start) / 1400, 1);
+        const ease = 1 - Math.pow(1 - p, 3);
+        el.textContent = Math.floor(target * ease);
+        if (p < 1) requestAnimationFrame(step);
+        else el.textContent = target;
+      }
+      requestAnimationFrame(step);
+    });
+    observer.unobserve(e.target);
+  });
+}, { threshold: 0.3 });
+
+document.querySelectorAll('#advantage').forEach(el => observer.observe(el));
+
+// Commission form
+function handleForm(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('.btn-submit');
+  btn.textContent = 'Enquiry Received — We\'ll be in touch within 48 hours.';
+  btn.style.background = '#1a5c2a';
+  btn.style.color = '#a8e6b8';
+  e.target.querySelectorAll('input,select').forEach(f => f.disabled = true);
+}
+
+// Subtle parallax on hero
+window.addEventListener('scroll', () => {
+  const hero = document.getElementById('hero');
+  const offset = window.scrollY;
+  if (offset < window.innerHeight) {
+    const sil = hero.querySelector('.hero-car-silhouette');
+    if (sil) sil.style.transform = `translateY(calc(-50% + ${offset * 0.15}px))`;
+  }
+});
+</script>
+
+</body>
+</html>
