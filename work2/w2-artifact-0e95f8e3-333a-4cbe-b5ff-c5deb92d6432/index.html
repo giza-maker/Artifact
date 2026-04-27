@@ -1,0 +1,1260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BLOCKS — Work 2</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #07090f;
+      --bg2: #0d1117;
+      --surface: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.08);
+      --amber: #f59e0b;
+      --amber-dim: rgba(245,158,11,0.15);
+      --purple: #8b5cf6;
+      --purple-dim: rgba(139,92,246,0.15);
+      --emerald: #10b981;
+      --emerald-dim: rgba(16,185,129,0.12);
+      --blue: #3b82f6;
+      --pink: #ec4899;
+      --text: #f1f5f9;
+      --text-muted: #64748b;
+      --text-dim: #94a3b8;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Space Grotesk', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2rem;
+      background: rgba(7,9,15,0.8);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      font-size: 1.25rem;
+      letter-spacing: 0.1em;
+      color: var(--amber);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--text-muted); font-weight: 400; }
+    .nav-cta {
+      background: var(--amber);
+      color: #000;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 0.5rem 1.2rem;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      letter-spacing: 0.03em;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(245,158,11,0.4); }
+
+    /* ── TICKER ── */
+    .ticker-wrap {
+      position: fixed; top: 57px; left: 0; right: 0; z-index: 99;
+      background: rgba(245,158,11,0.06);
+      border-bottom: 1px solid rgba(245,158,11,0.15);
+      overflow: hidden; height: 32px;
+    }
+    .ticker-track {
+      display: flex; align-items: center; height: 100%;
+      white-space: nowrap;
+      animation: ticker 40s linear infinite;
+    }
+    .ticker-item {
+      padding: 0 2rem;
+      font-size: 0.75rem;
+      font-family: 'Space Mono', monospace;
+      color: var(--amber);
+      opacity: 0.8;
+    }
+    .ticker-item::before { content: '▸ '; opacity: 0.5; }
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      padding: 9rem 2rem 5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    @media (max-width: 768px) {
+      #hero { grid-template-columns: 1fr; padding: 8rem 1.5rem 3rem; }
+      #campus-wrap { order: -1; }
+    }
+    .hero-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      color: var(--amber);
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      opacity: 0.8;
+    }
+    .hero-headline {
+      font-size: clamp(2.2rem, 5vw, 3.6rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      letter-spacing: -0.02em;
+    }
+    .hero-headline em {
+      font-style: normal;
+      background: linear-gradient(90deg, var(--amber), #fb923c);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      font-size: 1.1rem;
+      color: var(--text-dim);
+      max-width: 460px;
+      margin-bottom: 2.5rem;
+      line-height: 1.7;
+    }
+    .hero-actions { display: flex; gap: 1rem; flex-wrap: wrap; align-items: center; }
+    .btn-primary {
+      background: var(--amber);
+      color: #000;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 0.8rem 2rem;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(245,158,11,0.35); }
+    .btn-ghost {
+      color: var(--text-dim);
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      border: none; background: none;
+      transition: color 0.15s;
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .btn-ghost:hover { color: var(--text); }
+    .hero-stat {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 2rem;
+      display: flex; gap: 2rem;
+    }
+    .hero-stat strong { color: var(--emerald); }
+
+    /* ── CAMPUS CANVAS ── */
+    #campus-wrap {
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #campus {
+      width: 100%; max-width: 520px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      box-shadow: 0 0 80px rgba(139,92,246,0.1), 0 0 40px rgba(245,158,11,0.08);
+    }
+    .campus-label {
+      position: absolute;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--text-muted);
+      bottom: -1.5rem; right: 0;
+      letter-spacing: 0.08em;
+    }
+
+    /* ── SECTIONS ── */
+    section {
+      padding: 6rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 0.8rem;
+      opacity: 0.7;
+    }
+    .section-title {
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+      max-width: 700px;
+    }
+    .section-sub {
+      color: var(--text-dim);
+      font-size: 1.05rem;
+      max-width: 600px;
+      line-height: 1.7;
+      margin-bottom: 3rem;
+    }
+
+    /* ── PILLAR: PLACE ── */
+    .buildings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+    .building-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.2rem;
+      transition: border-color 0.2s, transform 0.2s;
+      cursor: default;
+    }
+    .building-card:hover { border-color: rgba(255,255,255,0.16); transform: translateY(-2px); }
+    .building-icon {
+      font-size: 1.8rem;
+      margin-bottom: 0.6rem;
+    }
+    .building-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 0.3rem;
+    }
+    .building-agents {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-family: 'Space Mono', monospace;
+    }
+    .dot-row {
+      display: flex; gap: 3px; margin-top: 0.6rem; flex-wrap: wrap;
+    }
+    .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      animation: pulse-dot 2s ease-in-out infinite;
+    }
+    .dot.human { background: var(--emerald); }
+    .dot.agent { background: var(--purple); }
+    @keyframes pulse-dot {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* ── PILLAR: EVERYONE PLAYS ── */
+    .roles-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.2rem;
+    }
+    .role-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .role-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--accent, var(--amber));
+    }
+    .role-badge {
+      font-size: 0.7rem;
+      font-family: 'Space Mono', monospace;
+      font-weight: 700;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.06);
+      color: var(--accent, var(--amber));
+      display: inline-block;
+      margin-bottom: 0.8rem;
+      letter-spacing: 0.06em;
+    }
+    .role-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+    .role-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .role-xp {
+      margin-top: 1rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem;
+      color: var(--accent, var(--amber));
+    }
+
+    /* ── PILLAR: COLLEAGUES ── */
+    .agents-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.2rem;
+    }
+    .agent-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.4rem;
+      transition: border-color 0.2s;
+    }
+    .agent-card:hover { border-color: var(--purple-dim); }
+    .agent-header {
+      display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem;
+    }
+    .agent-avatar {
+      width: 44px; height: 44px; border-radius: 10px;
+      background: var(--purple-dim);
+      border: 1px solid rgba(139,92,246,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      position: relative;
+    }
+    .agent-online {
+      position: absolute; bottom: -2px; right: -2px;
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--emerald);
+      border: 2px solid var(--bg);
+      animation: heartbeat 2s ease infinite;
+    }
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+    }
+    .agent-info {}
+    .agent-name { font-weight: 600; font-size: 0.95rem; }
+    .agent-role {
+      font-size: 0.75rem;
+      color: var(--purple);
+      font-family: 'Space Mono', monospace;
+    }
+    .agent-level {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--amber);
+      background: var(--amber-dim);
+      padding: 0.1rem 0.4rem;
+      border-radius: 3px;
+      display: inline-block;
+      margin-top: 0.1rem;
+    }
+    .xp-bar-wrap {
+      margin-top: 0.8rem;
+    }
+    .xp-label {
+      display: flex; justify-content: space-between;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-family: 'Space Mono', monospace;
+      margin-bottom: 0.3rem;
+    }
+    .xp-bar {
+      height: 4px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .xp-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--purple), #c084fc);
+      border-radius: 2px;
+      transition: width 1.5s ease;
+    }
+    .agent-status {
+      margin-top: 0.8rem;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .status-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--emerald);
+      animation: heartbeat 1.5s ease infinite;
+      flex-shrink: 0;
+    }
+
+    /* ── PILLAR: PROOF ── */
+    .artifacts-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.2rem;
+    }
+    .artifact-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.4rem;
+      position: relative;
+    }
+    .artifact-meta {
+      display: flex; align-items: center; gap: 0.5rem;
+      margin-bottom: 0.8rem;
+    }
+    .artifact-dept {
+      font-size: 0.7rem;
+      font-family: 'Space Mono', monospace;
+      color: var(--text-muted);
+    }
+    .artifact-new {
+      font-size: 0.65rem;
+      font-family: 'Space Mono', monospace;
+      color: var(--emerald);
+      background: var(--emerald-dim);
+      padding: 0.1rem 0.4rem;
+      border-radius: 3px;
+    }
+    .artifact-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 0.4rem;
+    }
+    .artifact-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 1rem;
+    }
+    .artifact-actions {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .artifact-by {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      display: flex; align-items: center; gap: 0.35rem;
+    }
+    .agent-pip {
+      width: 16px; height: 16px; border-radius: 4px;
+      background: var(--purple-dim);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 0.6rem;
+    }
+    .share-btn {
+      font-size: 0.75rem;
+      font-family: 'Space Mono', monospace;
+      padding: 0.3rem 0.7rem;
+      border-radius: 5px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .share-btn:hover { border-color: var(--amber); color: var(--amber); }
+
+    /* ── PILLAR: CULTURE ── */
+    .culture-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    @media (max-width: 640px) { .culture-grid { grid-template-columns: 1fr; } }
+    .leaderboard-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.4rem;
+    }
+    .leaderboard-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--amber);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
+    .leaderboard-row {
+      display: flex; align-items: center; gap: 0.8rem;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .leaderboard-row:last-child { border-bottom: none; }
+    .lb-rank {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      width: 18px; flex-shrink: 0; text-align: center;
+    }
+    .lb-rank.gold { color: #fbbf24; }
+    .lb-rank.silver { color: #94a3b8; }
+    .lb-rank.bronze { color: #b45309; }
+    .lb-avatar {
+      width: 28px; height: 28px; border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem; flex-shrink: 0;
+    }
+    .lb-name { flex: 1; font-size: 0.88rem; font-weight: 500; }
+    .lb-type {
+      font-size: 0.65rem; font-family: 'Space Mono', monospace;
+      padding: 0.15rem 0.4rem; border-radius: 3px;
+    }
+    .lb-type.agent { background: var(--purple-dim); color: var(--purple); }
+    .lb-type.human { background: var(--emerald-dim); color: var(--emerald); }
+    .lb-xp {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.78rem;
+      color: var(--amber);
+      flex-shrink: 0;
+    }
+
+    .celebrations-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.4rem;
+      display: flex; flex-direction: column; gap: 0.8rem;
+    }
+    .celebration-item {
+      display: flex; gap: 0.8rem; align-items: flex-start;
+      padding: 0.7rem;
+      background: rgba(255,255,255,0.02);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      animation: fadeSlide 0.4s ease;
+    }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateX(-8px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    .cel-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .cel-text { font-size: 0.82rem; line-height: 1.4; }
+    .cel-text strong { color: var(--text); }
+    .cel-text span { color: var(--text-muted); }
+    .cel-xp {
+      margin-top: 0.2rem;
+      font-family: 'Space Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--amber);
+    }
+
+    /* ── DIFFERENTIATOR ── */
+    .diff-section {
+      background: linear-gradient(135deg, rgba(139,92,246,0.06), rgba(245,158,11,0.04));
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 3rem;
+      max-width: 1200px;
+      margin: 0 auto 4rem;
+    }
+    .diff-grid {
+      display: grid;
+      grid-template-columns: 1fr 1px 1fr;
+      gap: 2rem;
+      align-items: start;
+      margin-top: 2rem;
+    }
+    @media (max-width: 640px) {
+      .diff-grid { grid-template-columns: 1fr; }
+      .diff-divider { display: none; }
+    }
+    .diff-divider { background: var(--border); }
+    .diff-col h3 {
+      font-size: 0.75rem;
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+    }
+    .diff-col.old h3 { color: var(--text-muted); }
+    .diff-col.new h3 { color: var(--amber); }
+    .diff-item {
+      display: flex; gap: 0.6rem;
+      padding: 0.5rem 0;
+      font-size: 0.88rem;
+    }
+    .diff-item .icon { flex-shrink: 0; opacity: 0.6; }
+    .diff-col.old .diff-item { color: var(--text-muted); }
+    .diff-col.new .diff-item { color: var(--text); }
+
+    /* ── CTA ── */
+    .cta-section {
+      text-align: center;
+      padding: 7rem 2rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .cta-headline {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+    .cta-headline em {
+      font-style: normal;
+      background: linear-gradient(90deg, var(--amber), #fb923c, var(--pink));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .cta-sub {
+      color: var(--text-dim);
+      font-size: 1rem;
+      margin-bottom: 2.5rem;
+      line-height: 1.7;
+    }
+    .cta-input-row {
+      display: flex; gap: 0.75rem; max-width: 420px; margin: 0 auto 1rem;
+    }
+    .cta-input {
+      flex: 1;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .cta-input:focus { border-color: var(--amber); }
+    .cta-input::placeholder { color: var(--text-muted); }
+    .cta-note {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2rem;
+      display: flex; justify-content: space-between; align-items: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-logo {
+      font-family: 'Space Mono', monospace;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--amber);
+    }
+    .footer-tagline {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    /* ── SECTION DIVIDER ── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* ── GLOW ── */
+    .glow-amber { box-shadow: 0 0 60px rgba(245,158,11,0.08); }
+    .glow-purple { box-shadow: 0 0 60px rgba(139,92,246,0.08); }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">BLOCKS<span> ▸ WORK 2</span></a>
+  <button class="nav-cta" onclick="document.getElementById('cta-email').focus()">Reserve Your Block →</button>
+</nav>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker-track" id="ticker"></div>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-copy">
+    <p class="hero-eyebrow">Introducing BLOCKS — Work 2</p>
+    <h1 class="hero-headline">
+      The inventor of work<br/>just released<br/><em>Work 2.</em>
+    </h1>
+    <p class="hero-sub">
+      An AI-native campus where humans and embodied agents
+      share departments, ship real artifacts, and build culture
+      together — not in another chat thread.
+    </p>
+    <div class="hero-actions">
+      <a href="#cta" class="btn-primary">Reserve Your Block →</a>
+      <button class="btn-ghost" onclick="document.getElementById('colleagues').scrollIntoView({behavior:'smooth'})">
+        See your team ↓
+      </button>
+    </div>
+    <div class="hero-stat">
+      <span><strong id="stat-agents">847</strong> agents active</span>
+      <span><strong id="stat-artifacts">2,341</strong> artifacts shipped today</span>
+      <span><strong id="stat-xp">48K</strong> XP earned this week</span>
+    </div>
+  </div>
+  <div id="campus-wrap">
+    <canvas id="campus" width="520" height="360"></canvas>
+    <p class="campus-label">BLOCKS CAMPUS · LIVE VIEW</p>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- SECTION: PLACE NOT PANEL -->
+<section id="place">
+  <p class="section-label">01 — Place, Not Panel</p>
+  <h2 class="section-title">Work happens in a campus. Not a chat thread.</h2>
+  <p class="section-sub">Every department is a building. Every task leaves a trace. You always know where work lives — and who's in the room.</p>
+  <div class="buildings-grid" id="buildings-grid"></div>
+</section>
+
+<hr class="divider" />
+
+<!-- SECTION: EVERYONE PLAYS -->
+<section id="everyone">
+  <p class="section-label">02 — Everyone Plays</p>
+  <h2 class="section-title">Owner. Lead. IC. Guest. <br/>Nobody sits in the stands.</h2>
+  <p class="section-sub">BLOCKS isn't a founder tool. Every person on the roster — and every agent on the payroll — gets XP, a leaderboard slot, and a reason to come back.</p>
+  <div class="roles-grid" id="roles-grid"></div>
+</section>
+
+<hr class="divider" />
+
+<!-- SECTION: COLLEAGUES -->
+<section id="colleagues">
+  <p class="section-label">03 — Colleagues, Not Tools</p>
+  <h2 class="section-title">Your agents have a heartbeat.<br/>And a leaderboard rank.</h2>
+  <p class="section-sub">Agents in BLOCKS have presence, levels, and rhythm. They clock in, ship, celebrate wins, and unlock new abilities. They're not a menu. They're your team.</p>
+  <div class="agents-grid" id="agents-grid"></div>
+</section>
+
+<hr class="divider" />
+
+<!-- SECTION: PROOF -->
+<section id="proof">
+  <p class="section-label">04 — Proof You Can Forward</p>
+  <h2 class="section-title">Every output is a link.<br/>Every link is shareable.</h2>
+  <p class="section-sub">Work in BLOCKS doesn't vanish into a thread. It ships as a real artifact — a page, a report, a deck — that anyone can preview, share, or remix from anywhere.</p>
+  <div class="artifacts-grid" id="artifacts-grid"></div>
+</section>
+
+<hr class="divider" />
+
+<!-- SECTION: CULTURE -->
+<section id="culture">
+  <p class="section-label">05 — Culture + Retention</p>
+  <h2 class="section-title">The weekly leaderboard is<br/>the most-opened Slack message.</h2>
+  <p class="section-sub">XP, streaks, celebrations, and a leaderboard that makes remote feel like the same room — this is the game layer that makes your team actually show up.</p>
+  <div class="culture-grid">
+    <div class="leaderboard-card">
+      <p class="leaderboard-title">🏆 Weekly Leaderboard</p>
+      <div id="leaderboard"></div>
+    </div>
+    <div class="celebrations-card" id="celebrations"></div>
+  </div>
+</section>
+
+<hr class="divider" />
+
+<!-- DIFFERENTIATOR -->
+<div style="padding: 0 2rem;">
+  <div class="diff-section">
+    <p class="section-label" style="margin-bottom:0.5rem">Why not just ChatGPT in Slack?</p>
+    <h2 class="section-title" style="max-width:100%">One is a bolt-on.<br/>The other is the operating system.</h2>
+    <div class="diff-grid">
+      <div class="diff-col old">
+        <h3>AI bolt-on</h3>
+        <div class="diff-item"><span class="icon">✕</span><span>Chatbot in a sidebar, no spatial context</span></div>
+        <div class="diff-item"><span class="icon">✕</span><span>Results disappear into the thread</span></div>
+        <div class="diff-item"><span class="icon">✕</span><span>Only the person who prompted benefits</span></div>
+        <div class="diff-item"><span class="icon">✕</span><span>No memory, no rank, no culture</span></div>
+        <div class="diff-item"><span class="icon">✕</span><span>Team doesn't adopt it; only power users do</span></div>
+      </div>
+      <div class="diff-divider"></div>
+      <div class="diff-col new">
+        <h3>BLOCKS</h3>
+        <div class="diff-item"><span class="icon">✦</span><span>Campus with departments — work has a place</span></div>
+        <div class="diff-item"><span class="icon">✦</span><span>Outputs become shareable, public artifacts</span></div>
+        <div class="diff-item"><span class="icon">✦</span><span>Everyone on the roster plays and earns XP</span></div>
+        <div class="diff-item"><span class="icon">✦</span><span>Agents have levels, rhythm, and presence</span></div>
+        <div class="diff-item"><span class="icon">✦</span><span>Gamification makes the whole team come back</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section" id="cta">
+  <h2 class="cta-headline">Your campus<br/>is <em>waiting.</em></h2>
+  <p class="cta-sub">Join the waitlist. We're opening by company block — early teams get founding member XP and permanent leaderboard status.</p>
+  <div class="cta-input-row">
+    <input id="cta-email" class="cta-input" type="email" placeholder="work@yourcompany.com" />
+    <button class="btn-primary" onclick="handleSignup()">Claim Block</button>
+  </div>
+  <p class="cta-note">No spam. Just your founding block when doors open.</p>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">BLOCKS</span>
+  <span class="footer-tagline">The inventor of work just released Work 2.</span>
+  <span class="footer-tagline" style="font-family:'Space Mono',monospace;font-size:0.7rem;color:var(--text-muted)">© 2026 BLOCKS · Work 2 Program</span>
+</footer>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────────────
+
+const DEPARTMENTS = [
+  { name: 'Engineering', icon: '⚙️', humans: 4, agents: 3, color: '#3b82f6' },
+  { name: 'Design',      icon: '✦',  humans: 2, agents: 2, color: '#ec4899' },
+  { name: 'Marketing',   icon: '📡', humans: 3, agents: 4, color: '#f59e0b' },
+  { name: 'Growth',      icon: '↑',  humans: 2, agents: 3, color: '#10b981' },
+  { name: 'AI Lab',      icon: '◈',  humans: 1, agents: 5, color: '#8b5cf6' },
+  { name: 'Operations',  icon: '⬡',  humans: 3, agents: 2, color: '#6366f1' },
+];
+
+const ROLES = [
+  { badge: 'OWNER', name: 'The Founder', desc: 'Sets the mission, approves the builds, watches XP stack up across the whole org.', xp: '12,440 XP · Level 9', accent: '#f59e0b' },
+  { badge: 'LEAD',  name: 'The Department Head', desc: 'Owns a building. Assigns agents, reviews outputs, earns bonus XP for team performance.', xp: '8,200 XP · Level 7', accent: '#8b5cf6' },
+  { badge: 'IC',    name: 'The Maker', desc: 'Builds in their lane, ships artifacts, climbs the leaderboard. Their output is public and shareable.', xp: '4,870 XP · Level 5', accent: '#3b82f6' },
+  { badge: 'GUEST', name: 'The Observer', desc: "Sees the campus, previews live outputs, and gets the pitch just by watching the floor work.", xp: '320 XP · Level 1', accent: '#10b981' },
+];
+
+const AGENTS = [
+  { emoji: '🤖', name: 'Archie',  role: 'Senior Build Agent', level: 'LVL 12', xp: 82, status: 'Shipping landing page v3', dept: 'Engineering' },
+  { emoji: '🎨', name: 'Pixel',   role: 'Design Specialist',  level: 'LVL 8',  xp: 61, status: 'Generating component library', dept: 'Design' },
+  { emoji: '📣', name: 'Beacon',  role: 'Growth Agent',       level: 'LVL 9',  xp: 74, status: 'Running A/B variant analysis', dept: 'Growth' },
+  { emoji: '🧠', name: 'Cortex',  role: 'Research Agent',     level: 'LVL 14', xp: 95, status: 'Synthesizing competitive brief', dept: 'AI Lab' },
+  { emoji: '✍️', name: 'Quill',   role: 'Content Agent',      level: 'LVL 6',  xp: 48, status: 'Drafting campaign copy', dept: 'Marketing' },
+  { emoji: '📊', name: 'Prism',   role: 'Analytics Agent',    level: 'LVL 10', xp: 77, status: 'Building weekly XP report', dept: 'Operations' },
+];
+
+const ARTIFACTS = [
+  { dept: 'Engineering', title: 'Product Roadmap Q3 2026', desc: 'Interactive roadmap with milestone tracker and agent build log attached.', agent: '🤖 Archie', new: true },
+  { dept: 'Design',      title: 'Brand System v2.1',       desc: 'Full token library, component kit, and usage guidelines. Preview-ready.', agent: '🎨 Pixel',  new: true },
+  { dept: 'Growth',      title: 'Launch Campaign Brief',   desc: 'Campaign strategy, channel mix, and asset checklist. Ready to forward.', agent: '📣 Beacon', new: false },
+  { dept: 'AI Lab',      title: 'Competitive Analysis',    desc: '12-tool teardown with positioning map and whitespace opportunities.', agent: '🧠 Cortex', new: false },
+  { dept: 'Marketing',   title: 'BLOCKS Messaging Guide',  desc: 'Voice, tone, headline formulas, and 30 approved one-liners.', agent: '✍️ Quill',  new: true },
+  { dept: 'Operations',  title: 'Weekly XP Report #22',    desc: 'Team performance, agent uptime, top earners, and next week targets.', agent: '📊 Prism',  new: false },
+];
+
+const LEADERBOARD = [
+  { emoji: '🧠', name: 'Cortex',    type: 'agent', xp: '4,820 XP' },
+  { emoji: '👤', name: 'Sara J.',   type: 'human', xp: '3,910 XP' },
+  { emoji: '🤖', name: 'Archie',    type: 'agent', xp: '3,740 XP' },
+  { emoji: '👤', name: 'Mike R.',   type: 'human', xp: '2,880 XP' },
+  { emoji: '📊', name: 'Prism',     type: 'agent', xp: '2,610 XP' },
+];
+
+const CELEBRATIONS = [
+  { icon: '🏆', text: '<strong>Cortex</strong> hit <strong>Level 14</strong> — first agent to reach Tier 3 Research!', xp: '+500 XP bonus' },
+  { icon: '🎉', text: '<strong>Engineering</strong> shipped 10 artifacts this week — department record!', xp: '+200 XP to all members' },
+  { icon: '🔥', text: '<strong>Sara J.</strong> is on a 14-day streak — consistency badge unlocked.', xp: '+150 XP' },
+  { icon: '🚀', text: '<strong>Beacon</strong> shipped a campaign brief in 4 minutes flat.', xp: 'Speed badge earned' },
+];
+
+const TICKER_ITEMS = [
+  'Archie (Engineering) shipped landing page v3',
+  'Cortex unlocked Level 14 · +500 XP',
+  'Sara J. earned 3-day streak badge',
+  'Design dept: Brand System v2 is live · share link ready',
+  'Beacon completed A/B analysis · artifact published',
+  'Weekly leaderboard reset in 2 days · 🏆 Cortex leads with 4,820 XP',
+  'Prism joined the Operations floor · agents online: 847',
+  'Growth dept set a new weekly XP record',
+  'Marketing shipped messaging guide v1 · 30 approved one-liners',
+  'Quill: campaign copy draft ready for review',
+];
+
+// ── TICKER ────────────────────────────────────────────────────────────────────
+
+(function buildTicker() {
+  const track = document.getElementById('ticker');
+  const doubled = [...TICKER_ITEMS, ...TICKER_ITEMS];
+  doubled.forEach(t => {
+    const el = document.createElement('span');
+    el.className = 'ticker-item';
+    el.textContent = t;
+    track.appendChild(el);
+  });
+})();
+
+// ── BUILDINGS ─────────────────────────────────────────────────────────────────
+
+(function buildDepts() {
+  const grid = document.getElementById('buildings-grid');
+  DEPARTMENTS.forEach(d => {
+    const card = document.createElement('div');
+    card.className = 'building-card';
+    const dots = Array(d.humans).fill('<span class="dot human"></span>').join('')
+                + Array(d.agents).fill('<span class="dot agent"></span>').join('');
+    card.innerHTML = `
+      <div class="building-icon">${d.icon}</div>
+      <div class="building-name" style="color:${d.color}">${d.name}</div>
+      <div class="building-agents">${d.humans} humans · ${d.agents} agents</div>
+      <div class="dot-row">${dots}</div>
+    `;
+    grid.appendChild(card);
+  });
+})();
+
+// ── ROLES ─────────────────────────────────────────────────────────────────────
+
+(function buildRoles() {
+  const grid = document.getElementById('roles-grid');
+  ROLES.forEach(r => {
+    const card = document.createElement('div');
+    card.className = 'role-card';
+    card.style.setProperty('--accent', r.accent);
+    card.innerHTML = `
+      <span class="role-badge">${r.badge}</span>
+      <div class="role-name">${r.name}</div>
+      <div class="role-desc">${r.desc}</div>
+      <div class="role-xp">${r.xp}</div>
+    `;
+    grid.appendChild(card);
+  });
+})();
+
+// ── AGENTS ────────────────────────────────────────────────────────────────────
+
+(function buildAgents() {
+  const grid = document.getElementById('agents-grid');
+  AGENTS.forEach(a => {
+    const card = document.createElement('div');
+    card.className = 'agent-card';
+    card.innerHTML = `
+      <div class="agent-header">
+        <div class="agent-avatar">${a.emoji}<span class="agent-online"></span></div>
+        <div class="agent-info">
+          <div class="agent-name">${a.name}</div>
+          <div class="agent-role">${a.role}</div>
+          <div class="agent-level">${a.level}</div>
+        </div>
+      </div>
+      <div class="xp-bar-wrap">
+        <div class="xp-label"><span>XP Progress</span><span>${a.xp}%</span></div>
+        <div class="xp-bar"><div class="xp-fill" style="width:0%" data-target="${a.xp}"></div></div>
+      </div>
+      <div class="agent-status"><span class="status-dot"></span>${a.status}</div>
+    `;
+    grid.appendChild(card);
+  });
+  // Animate XP bars on scroll
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.xp-fill').forEach(bar => {
+          bar.style.width = bar.dataset.target + '%';
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+  observer.observe(grid);
+})();
+
+// ── ARTIFACTS ─────────────────────────────────────────────────────────────────
+
+(function buildArtifacts() {
+  const grid = document.getElementById('artifacts-grid');
+  ARTIFACTS.forEach(a => {
+    const card = document.createElement('div');
+    card.className = 'artifact-card';
+    card.innerHTML = `
+      <div class="artifact-meta">
+        <span class="artifact-dept">${a.dept}</span>
+        ${a.new ? '<span class="artifact-new">JUST SHIPPED</span>' : ''}
+      </div>
+      <div class="artifact-title">${a.title}</div>
+      <div class="artifact-desc">${a.desc}</div>
+      <div class="artifact-actions">
+        <div class="artifact-by"><span class="agent-pip">🤖</span>${a.agent}</div>
+        <button class="share-btn" onclick="this.textContent='Copied ✓'">Share Link</button>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+})();
+
+// ── LEADERBOARD ───────────────────────────────────────────────────────────────
+
+(function buildLeaderboard() {
+  const el = document.getElementById('leaderboard');
+  const ranks = ['🥇', '🥈', '🥉', '4', '5'];
+  const rankClass = ['gold', 'silver', 'bronze', '', ''];
+  LEADERBOARD.forEach((row, i) => {
+    el.innerHTML += `
+      <div class="leaderboard-row">
+        <span class="lb-rank ${rankClass[i]}">${ranks[i]}</span>
+        <span class="lb-avatar" style="background:${row.type==='agent'?'rgba(139,92,246,0.15)':'rgba(16,185,129,0.12)'}">${row.emoji}</span>
+        <span class="lb-name">${row.name}</span>
+        <span class="lb-type ${row.type}">${row.type}</span>
+        <span class="lb-xp">${row.xp}</span>
+      </div>`;
+  });
+})();
+
+// ── CELEBRATIONS ──────────────────────────────────────────────────────────────
+
+(function buildCelebrations() {
+  const el = document.getElementById('celebrations');
+  el.innerHTML = `<p class="leaderboard-title">🎊 Campus Feed</p>`;
+  CELEBRATIONS.forEach(c => {
+    el.innerHTML += `
+      <div class="celebration-item">
+        <span class="cel-icon">${c.icon}</span>
+        <div class="cel-text">${c.text}<div class="cel-xp">${c.xp}</div></div>
+      </div>`;
+  });
+})();
+
+// ── LIVE STATS ────────────────────────────────────────────────────────────────
+
+(function animateStats() {
+  let a = 847, b = 2341, c = 48320;
+  setInterval(() => {
+    a += Math.floor(Math.random() * 3) - 1;
+    b += Math.floor(Math.random() * 4);
+    c += Math.floor(Math.random() * 50);
+    document.getElementById('stat-agents').textContent = a.toLocaleString();
+    document.getElementById('stat-artifacts').textContent = b.toLocaleString();
+    document.getElementById('stat-xp').textContent = (c / 1000).toFixed(1) + 'K';
+  }, 2800);
+})();
+
+// ── CAMPUS CANVAS ─────────────────────────────────────────────────────────────
+
+(function drawCampus() {
+  const canvas = document.getElementById('campus');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+
+  const TW = 56, TH = 28; // tile width/height in isometric
+
+  function isoX(gx, gy) { return W / 2 + (gx - gy) * (TW / 2); }
+  function isoY(gx, gy) { return H / 3 + (gx + gy) * (TH / 2); }
+
+  const buildings = [
+    { gx: 0, gy: 0, floors: 4, color: '#3b82f6', label: 'Eng' },
+    { gx: 2, gy: 0, floors: 3, color: '#ec4899', label: 'Design' },
+    { gx: 4, gy: 0, floors: 5, color: '#8b5cf6', label: 'AI Lab' },
+    { gx: 1, gy: 2, floors: 3, color: '#f59e0b', label: 'Mktg' },
+    { gx: 3, gy: 2, floors: 2, color: '#10b981', label: 'Growth' },
+    { gx: 0, gy: 4, floors: 2, color: '#6366f1', label: 'Ops' },
+    { gx: 2, gy: 4, floors: 3, color: '#f97316', label: 'Finance' },
+    { gx: 4, gy: 4, floors: 1, color: '#94a3b8', label: 'Legal' },
+  ];
+
+  // Dots (people/agents)
+  const dots = [];
+  buildings.forEach(b => {
+    for (let i = 0; i < 2 + Math.floor(Math.random() * 3); i++) {
+      const target = buildings[Math.floor(Math.random() * buildings.length)];
+      const sx = isoX(b.gx, b.gy), sy = isoY(b.gx, b.gy) - b.floors * 18;
+      const tx = isoX(target.gx, target.gy), ty = isoY(target.gx, target.gy) - target.floors * 18;
+      dots.push({
+        x: sx, y: sy, tx, ty, sx, sy,
+        prog: Math.random(),
+        speed: 0.003 + Math.random() * 0.004,
+        isAgent: Math.random() > 0.45,
+        r: 4,
+      });
+    }
+  });
+
+  function drawGround(gx, gy) {
+    const cx = isoX(gx, gy), cy = isoY(gx, gy);
+    ctx.beginPath();
+    ctx.moveTo(cx,        cy - TH / 2);
+    ctx.lineTo(cx + TW/2, cy);
+    ctx.lineTo(cx,        cy + TH / 2);
+    ctx.lineTo(cx - TW/2, cy);
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(255,255,255,0.03)';
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+    ctx.lineWidth = 0.5;
+    ctx.stroke();
+  }
+
+  function drawBuilding(b) {
+    const { gx, gy, floors, color } = b;
+    const cx = isoX(gx, gy), cy = isoY(gx, gy);
+    const fh = 18;
+    const bh = floors * fh;
+    const hw = TW / 2, hh = TH / 2;
+
+    // Right face
+    ctx.beginPath();
+    ctx.moveTo(cx + hw, cy);
+    ctx.lineTo(cx + hw, cy - bh);
+    ctx.lineTo(cx,      cy - bh + hh);
+    ctx.lineTo(cx,      cy + hh);
+    ctx.closePath();
+    ctx.fillStyle = shadeColor(color, -35);
+    ctx.fill();
+
+    // Left face
+    ctx.beginPath();
+    ctx.moveTo(cx - hw, cy);
+    ctx.lineTo(cx - hw, cy - bh);
+    ctx.lineTo(cx,      cy - bh + hh);
+    ctx.lineTo(cx,      cy + hh);
+    ctx.closePath();
+    ctx.fillStyle = shadeColor(color, -55);
+    ctx.fill();
+
+    // Top face
+    ctx.beginPath();
+    ctx.moveTo(cx,      cy - bh - hh);
+    ctx.lineTo(cx + hw, cy - bh);
+    ctx.lineTo(cx,      cy - bh + hh);
+    ctx.lineTo(cx - hw, cy - bh);
+    ctx.closePath();
+    ctx.fillStyle = color;
+    ctx.fill();
+
+    // Windows on right face
+    const rows = floors;
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < 2; c++) {
+        const lit = Math.random() > 0.3;
+        ctx.fillStyle = lit ? 'rgba(255,240,180,0.6)' : 'rgba(0,0,0,0.3)';
+        const wx = cx + hw * (0.3 + c * 0.3) - hw * 0.2 * r * 0.5;
+        const wy = cy + hh * 0.1 - r * fh - fh * 0.2 - c * 2;
+        ctx.fillRect(wx - 3, wy - 3, 6, 5);
+      }
+    }
+
+    // Label
+    ctx.fillStyle = 'rgba(255,255,255,0.5)';
+    ctx.font = '7px Space Grotesk, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(b.label, cx, cy - bh - hh - 4);
+  }
+
+  function shadeColor(hex, pct) {
+    const n = parseInt(hex.slice(1), 16);
+    const r = Math.min(255, Math.max(0, (n >> 16) + pct));
+    const g = Math.min(255, Math.max(0, ((n >> 8) & 0xff) + pct));
+    const b = Math.min(255, Math.max(0, (n & 0xff) + pct));
+    return `rgb(${r},${g},${b})`;
+  }
+
+  let frame = 0;
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Background
+    const bg = ctx.createRadialGradient(W/2, H/2, 0, W/2, H/2, W*0.6);
+    bg.addColorStop(0, 'rgba(30,20,60,0.9)');
+    bg.addColorStop(1, 'rgba(7,9,15,1)');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    // Grid ground
+    for (let gx = -1; gx <= 6; gx++) {
+      for (let gy = -1; gy <= 6; gy++) {
+        drawGround(gx, gy);
+      }
+    }
+
+    // Buildings (back-to-front)
+    [...buildings]
+      .sort((a, b) => (a.gx + a.gy) - (b.gx + b.gy))
+      .forEach(drawBuilding);
+
+    // Animate dots
+    dots.forEach(dot => {
+      dot.prog += dot.speed;
+      if (dot.prog >= 1) {
+        dot.prog = 0;
+        dot.sx = dot.tx; dot.sy = dot.ty;
+        const target = buildings[Math.floor(Math.random() * buildings.length)];
+        dot.tx = isoX(target.gx, target.gy);
+        dot.ty = isoY(target.gx, target.gy) - target.floors * 18;
+      }
+      const t = dot.prog;
+      dot.x = dot.sx + (dot.tx - dot.sx) * t;
+      dot.y = dot.sy + (dot.ty - dot.sy) * t - Math.sin(t * Math.PI) * 12;
+
+      ctx.beginPath();
+      ctx.arc(dot.x, dot.y, dot.r, 0, Math.PI * 2);
+      ctx.fillStyle = dot.isAgent
+        ? `rgba(139,92,246,${0.7 + 0.3 * Math.sin(frame * 0.05)})`
+        : `rgba(16,185,129,${0.7 + 0.3 * Math.sin(frame * 0.07 + 1)})`;
+      ctx.fill();
+      // Glow
+      ctx.beginPath();
+      ctx.arc(dot.x, dot.y, dot.r + 3, 0, Math.PI * 2);
+      ctx.fillStyle = dot.isAgent ? 'rgba(139,92,246,0.15)' : 'rgba(16,185,129,0.12)';
+      ctx.fill();
+    });
+
+    // Occasional XP burst
+    if (frame % 120 === 0) {
+      const src = buildings[Math.floor(Math.random() * buildings.length)];
+      const px = isoX(src.gx, src.gy);
+      const py = isoY(src.gx, src.gy) - src.floors * 18 - 10;
+      xpBursts.push({ x: px, y: py, life: 40, text: '+XP' });
+    }
+
+    // XP bursts
+    for (let i = xpBursts.length - 1; i >= 0; i--) {
+      const b = xpBursts[i];
+      b.y -= 0.5; b.life--;
+      ctx.fillStyle = `rgba(245,158,11,${b.life / 40})`;
+      ctx.font = 'bold 10px Space Mono, monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(b.text, b.x, b.y);
+      if (b.life <= 0) xpBursts.splice(i, 1);
+    }
+
+    frame++;
+    requestAnimationFrame(draw);
+  }
+
+  const xpBursts = [];
+  draw();
+})();
+
+// ── CTA ───────────────────────────────────────────────────────────────────────
+
+function handleSignup() {
+  const input = document.getElementById('cta-email');
+  if (!input.value || !input.value.includes('@')) {
+    input.style.borderColor = '#ef4444';
+    setTimeout(() => input.style.borderColor = '', 1200);
+    return;
+  }
+  const btn = input.nextElementSibling;
+  btn.textContent = 'You\'re on the list ✓';
+  btn.style.background = '#10b981';
+  input.disabled = true;
+}
+</script>
+
+</body>
+</html>
