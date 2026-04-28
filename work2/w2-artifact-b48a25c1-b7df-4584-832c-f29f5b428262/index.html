@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>@PULSE — Twitter Profile Brand Kit</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #0A0A0A;
+      --surface: #141414;
+      --surface2: #1E1E1E;
+      --border: rgba(255,255,255,0.08);
+      --orange: #FF6B35;
+      --orange2: #FF8C5A;
+      --purple: #9333EA;
+      --blue: #1D9BF0;
+      --green: #00BA7C;
+      --red: #F43F5E;
+      --text: #F5F5F5;
+      --muted: #888;
+      --dim: #444;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      padding: 3rem 5% 2rem;
+      border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: flex-end;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .brand-mark { display: flex; align-items: center; gap: 1rem; }
+    .brand-icon {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--orange), var(--purple));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+    }
+    .brand-name {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.8rem; font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .brand-name span { color: var(--orange); }
+    .brand-desc { font-size: 0.82rem; color: var(--muted); margin-top: 0.1rem; }
+    .kit-meta { text-align: right; }
+    .kit-version {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem; color: var(--muted);
+    }
+    .kit-date { font-size: 0.78rem; color: var(--dim); margin-top: 0.2rem; }
+
+    /* ── NAV TABS ── */
+    .page-nav {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(10,10,10,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 5%;
+      display: flex; gap: 0; overflow-x: auto;
+    }
+    .page-nav a {
+      padding: 1rem 1.4rem;
+      color: var(--muted); text-decoration: none;
+      font-size: 0.82rem; font-weight: 600;
+      letter-spacing: 0.04em; white-space: nowrap;
+      border-bottom: 2px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .page-nav a:hover, .page-nav a.active { color: var(--text); border-bottom-color: var(--orange); }
+
+    /* ── SECTION WRAPPER ── */
+    .kit-section { padding: 4rem 5%; border-bottom: 1px solid var(--border); }
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.68rem; font-weight: 700;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--orange); margin-bottom: 0.5rem;
+    }
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.8rem; font-weight: 800;
+      letter-spacing: -0.02em; margin-bottom: 0.5rem;
+    }
+    .section-sub { font-size: 0.9rem; color: var(--muted); margin-bottom: 2.5rem; max-width: 560px; }
+
+    /* ── PROFILE MOCKUP ── */
+    .profile-mockup {
+      background: #000;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      max-width: 600px;
+      font-family: -apple-system, 'Segoe UI', sans-serif;
+    }
+
+    /* Banner */
+    .mock-banner {
+      height: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+    .banner-bg {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, #0A0510 0%, #1A0A00 40%, #0A0520 100%);
+    }
+    .banner-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,107,53,0.06) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,107,53,0.06) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .banner-content {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      flex-direction: column; gap: 0.5rem;
+    }
+    .banner-tagline {
+      font-family: 'Syne', sans-serif;
+      font-size: 2rem; font-weight: 800;
+      letter-spacing: -0.03em; color: #fff;
+      text-shadow: 0 0 40px rgba(255,107,53,0.4);
+    }
+    .banner-tagline span { color: var(--orange); }
+    .banner-sub {
+      font-size: 0.78rem; color: rgba(255,255,255,0.4);
+      letter-spacing: 0.14em; text-transform: uppercase;
+    }
+    /* Pulse glow orbs */
+    .orb {
+      position: absolute; border-radius: 50%;
+      filter: blur(60px); opacity: 0.35;
+    }
+    .orb1 { width: 200px; height: 200px; background: var(--orange); top: -80px; left: -40px; }
+    .orb2 { width: 150px; height: 150px; background: var(--purple); bottom: -60px; right: 80px; }
+    .orb3 { width: 100px; height: 100px; background: #3399FF; top: 20px; right: 20px; }
+
+    /* Profile info */
+    .mock-profile-info {
+      padding: 0 1rem 1rem;
+      position: relative;
+    }
+    .mock-avatar-wrap {
+      margin-top: -36px; margin-bottom: 0.6rem;
+      display: flex; justify-content: space-between; align-items: flex-end;
+    }
+    .mock-avatar {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--orange), var(--purple));
+      border: 3px solid #000;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem;
+      flex-shrink: 0;
+    }
+    .mock-follow-btn {
+      padding: 0.45rem 1.1rem;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 100px; color: #fff;
+      font-size: 0.82rem; font-weight: 700;
+      background: transparent;
+    }
+    .mock-name { font-size: 1.1rem; font-weight: 800; color: #fff; margin-bottom: 0.1rem; }
+    .mock-handle { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.7rem; }
+    .mock-bio {
+      font-size: 0.9rem; color: #e7e9ea;
+      line-height: 1.5; margin-bottom: 0.7rem;
+    }
+    .mock-bio a { color: var(--blue); text-decoration: none; }
+    .mock-meta {
+      display: flex; gap: 1.2rem; flex-wrap: wrap;
+      font-size: 0.82rem; color: var(--muted);
+      margin-bottom: 0.8rem;
+    }
+    .mock-meta span { display: flex; align-items: center; gap: 0.3rem; }
+    .mock-stats {
+      display: flex; gap: 1.5rem;
+      font-size: 0.85rem;
+    }
+    .mock-stats .ms-num { font-weight: 700; color: #e7e9ea; }
+    .mock-stats .ms-label { color: var(--muted); }
+
+    /* ── BANNER VARIANTS ── */
+    .variants-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+    .variant-card {
+      border-radius: 12px; overflow: hidden;
+      border: 2px solid transparent;
+      cursor: pointer; transition: border-color 0.2s;
+    }
+    .variant-card:hover, .variant-card.selected { border-color: var(--orange); }
+    .variant-banner { height: 100px; position: relative; overflow: hidden; }
+    .variant-label {
+      padding: 0.6rem 0.8rem;
+      background: var(--surface);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .vl-name { font-size: 0.8rem; font-weight: 700; }
+    .vl-tag { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+    /* ── BIO COPY ── */
+    .bio-options { display: flex; flex-direction: column; gap: 1rem; }
+    .bio-option {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.2rem 1.5rem;
+      cursor: pointer; transition: border-color 0.2s;
+      position: relative;
+    }
+    .bio-option:hover, .bio-option.selected { border-color: var(--orange); }
+    .bio-option.selected::after {
+      content: '✓ Selected';
+      position: absolute; top: 0.8rem; right: 1rem;
+      font-size: 0.68rem; font-weight: 700;
+      color: var(--orange); letter-spacing: 0.06em;
+    }
+    .bio-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem; color: var(--muted);
+      letter-spacing: 0.1em; margin-bottom: 0.5rem;
+    }
+    .bio-text { font-size: 0.9rem; line-height: 1.6; }
+    .bio-text .hl { color: var(--orange); font-weight: 600; }
+    .bio-text .hl2 { color: var(--blue); }
+    .bio-annotation {
+      margin-top: 0.8rem; padding-top: 0.8rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.75rem; color: var(--muted);
+      display: flex; gap: 1.5rem; flex-wrap: wrap;
+    }
+    .ba-item { display: flex; align-items: center; gap: 0.4rem; }
+    .ba-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--orange); flex-shrink: 0; }
+
+    /* ── PINNED TWEET STRATEGY ── */
+    .pinned-options { display: flex; flex-direction: column; gap: 1.2rem; }
+    .pinned-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden;
+    }
+    .pinned-header {
+      padding: 0.8rem 1.2rem;
+      background: rgba(255,107,53,0.06);
+      border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .ph-strategy { font-size: 0.72rem; font-weight: 700; color: var(--orange); letter-spacing: 0.08em; text-transform: uppercase; }
+    .ph-goal { font-size: 0.72rem; color: var(--muted); }
+    .pinned-tweet {
+      padding: 1.2rem;
+      font-family: -apple-system, 'Segoe UI', sans-serif;
+    }
+    .pt-header { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.8rem; }
+    .pt-ava {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--orange), var(--purple));
+      display: flex; align-items: center; justify-content: center; font-size: 0.9rem;
+      flex-shrink: 0;
+    }
+    .pt-meta .pt-name { font-size: 0.85rem; font-weight: 700; }
+    .pt-meta .pt-handle { font-size: 0.78rem; color: var(--muted); }
+    .pt-body { font-size: 0.9rem; line-height: 1.6; margin-bottom: 0.8rem; color: #e7e9ea; }
+    .pt-actions { display: flex; gap: 1.5rem; }
+    .pta { font-size: 0.78rem; color: var(--dim); display: flex; align-items: center; gap: 0.3rem; }
+    .pt-why {
+      padding: 0.8rem 1.2rem;
+      background: var(--surface2);
+      border-top: 1px solid var(--border);
+      font-size: 0.78rem; color: var(--muted); line-height: 1.5;
+    }
+
+    /* ── COLOR PALETTE ── */
+    .palette-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1rem; }
+    .swatch {
+      border-radius: 12px; overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .swatch-color { height: 80px; }
+    .swatch-info { padding: 0.8rem; background: var(--surface); }
+    .swatch-name { font-size: 0.8rem; font-weight: 700; margin-bottom: 0.2rem; }
+    .swatch-hex {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.72rem; color: var(--muted);
+    }
+    .swatch-use { font-size: 0.65rem; color: var(--dim); margin-top: 0.3rem; }
+
+    /* ── TYPOGRAPHY ── */
+    .type-samples { display: flex; flex-direction: column; gap: 2rem; }
+    .type-sample {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px; padding: 1.5rem;
+    }
+    .ts-meta { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+    .ts-specimen { margin-bottom: 0.8rem; }
+    .ts-spec { font-size: 0.75rem; color: var(--dim); font-family: 'Space Mono', monospace; }
+
+    /* ── VOICE ── */
+    .voice-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .voice-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px; padding: 1.5rem;
+    }
+    .vc-header { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1rem; }
+    .vc-icon { font-size: 1.5rem; }
+    .vc-title { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; }
+    .vc-items { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .vc-items li { font-size: 0.83rem; color: var(--muted); display: flex; gap: 0.5rem; }
+    .vc-items li::before { content: '→'; color: var(--orange); flex-shrink: 0; }
+    .do-dont {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-top: 2rem;
+    }
+    .do-card, .dont-card {
+      background: var(--surface);
+      border-radius: 12px; padding: 1.2rem; border-top: 3px solid;
+    }
+    .do-card { border-color: var(--green); }
+    .dont-card { border-color: var(--red); }
+    .dd-title { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.8rem; }
+    .do-card .dd-title { color: var(--green); }
+    .dont-card .dd-title { color: var(--red); }
+    .dd-items { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .dd-items li { font-size: 0.82rem; color: var(--muted); display: flex; gap: 0.5rem; }
+    .dd-items li .icon { flex-shrink: 0; }
+
+    /* ── VISUAL STYLE GUIDE ── */
+    .style-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    .style-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px; overflow: hidden;
+    }
+    .sc-preview { height: 160px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+    .sc-body { padding: 1.2rem; }
+    .sc-title { font-family: 'Syne', sans-serif; font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .sc-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+
+    /* ── DOWNLOAD BAR ── */
+    .download-bar {
+      position: sticky; bottom: 0;
+      background: rgba(10,10,10,0.95);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border);
+      padding: 1rem 5%;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 1rem;
+    }
+    .dl-info { font-size: 0.82rem; color: var(--muted); }
+    .dl-info strong { color: var(--text); }
+    .dl-btns { display: flex; gap: 0.8rem; }
+    .dl-btn {
+      padding: 0.6rem 1.4rem;
+      border-radius: 8px; font-size: 0.85rem; font-weight: 700;
+      cursor: pointer; border: none; font-family: 'Inter', sans-serif;
+      transition: all 0.2s; text-decoration: none;
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .dl-btn.primary { background: var(--orange); color: #fff; }
+    .dl-btn.primary:hover { background: var(--orange2); }
+    .dl-btn.ghost { background: var(--surface2); color: var(--text); border: 1px solid var(--border); }
+    .dl-btn.ghost:hover { border-color: rgba(255,107,53,0.4); }
+
+    @media (max-width: 700px) {
+      .variants-grid { grid-template-columns: 1fr; }
+      .palette-grid { grid-template-columns: repeat(3, 1fr); }
+      .voice-grid { grid-template-columns: 1fr; }
+      .do-dont { grid-template-columns: 1fr; }
+      .style-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="brand-mark">
+    <div class="brand-icon">⚡</div>
+    <div>
+      <div class="brand-name"><span>@</span>PULSE</div>
+      <div class="brand-desc">Twitter Profile Brand Kit — v1.0</div>
+    </div>
+  </div>
+  <div class="kit-meta">
+    <div class="kit-version">KIT VERSION 1.0.0 · READY FOR LAUNCH</div>
+    <div class="kit-date">Prepared April 2026 · Brief: Mario Nawfal-style influencer</div>
+  </div>
+</div>
+
+<!-- NAV TABS -->
+<nav class="page-nav">
+  <a href="#profile" class="active">Profile Mockup</a>
+  <a href="#banner">Banner</a>
+  <a href="#bio">Bio Copy</a>
+  <a href="#pinned">Pinned Tweet</a>
+  <a href="#palette">Colors</a>
+  <a href="#type">Typography</a>
+  <a href="#voice">Voice</a>
+  <a href="#style">Style Guide</a>
+</nav>
+
+<!-- ── 1. PROFILE MOCKUP ── -->
+<section class="kit-section" id="profile">
+  <div class="section-label">// 01 — Profile Mockup</div>
+  <div class="section-title">The Complete Profile</div>
+  <div class="section-sub">Full Twitter profile preview — banner, avatar, bio, and stats as it will appear on launch day.</div>
+
+  <div class="profile-mockup">
+    <!-- Banner -->
+    <div class="mock-banner">
+      <div class="banner-bg"></div>
+      <div class="banner-grid"></div>
+      <div class="orb orb1"></div>
+      <div class="orb orb2"></div>
+      <div class="orb orb3"></div>
+      <div class="banner-content">
+        <div class="banner-tagline">THE <span>PULSE</span></div>
+        <div class="banner-sub">Signal · Speed · Impact</div>
+      </div>
+    </div>
+    <!-- Profile info -->
+    <div class="mock-profile-info">
+      <div class="mock-avatar-wrap">
+        <div class="mock-avatar">⚡</div>
+        <div class="mock-follow-btn">Follow</div>
+      </div>
+      <div class="mock-name">PULSE ⚡</div>
+      <div class="mock-handle">@thepulsex</div>
+      <div class="mock-bio">
+        Tracking the signal. Cutting the noise. 🔥<br>
+        Tech · Geopolitics · Founders · Markets<br>
+        Host of <strong>PULSE SPACES</strong> — Live debates 3x/week 🎙️<br>
+        <a href="#">↓ Get the weekly brief</a>
+      </div>
+      <div class="mock-meta">
+        <span>📍 The Internet</span>
+        <span>🔗 pulse.substack.com</span>
+        <span>📅 Joined May 2026</span>
+      </div>
+      <div class="mock-stats">
+        <span><span class="ms-num">142</span>&nbsp;<span class="ms-label">Following</span></span>
+        <span><span class="ms-num" id="followerCounter">0</span>&nbsp;<span class="ms-label">Followers</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 2. BANNER ── -->
+<section class="kit-section" id="banner">
+  <div class="section-label">// 02 — Banner Design</div>
+  <div class="section-title">Banner Variants</div>
+  <div class="section-sub">Four banner options from bold to minimal. Click to select. All use the core brand palette.</div>
+
+  <div class="variants-grid">
+    <!-- Variant A -->
+    <div class="variant-card selected" onclick="selectVariant(this)">
+      <div class="variant-banner">
+        <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0A0510,#1A0A00,#0A0520);"></div>
+        <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,107,53,0.06)1px,transparent 1px),linear-gradient(90deg,rgba(255,107,53,0.06)1px,transparent 1px);background-size:30px 30px;"></div>
+        <div style="position:absolute;width:120px;height:120px;border-radius:50%;background:var(--orange);filter:blur(50px);opacity:0.3;top:-40px;left:-20px;"></div>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0.3rem;">
+          <div style="font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;color:#fff;letter-spacing:-0.02em;">THE <span style="color:var(--orange);">PULSE</span></div>
+          <div style="font-size:0.55rem;color:rgba(255,255,255,0.3);letter-spacing:0.2em;text-transform:uppercase;">Signal · Speed · Impact</div>
+        </div>
+      </div>
+      <div class="variant-label">
+        <span class="vl-name">Dark Grid</span>
+        <span class="vl-tag">Recommended ✓</span>
+      </div>
+    </div>
+    <!-- Variant B -->
+    <div class="variant-card" onclick="selectVariant(this)">
+      <div class="variant-banner">
+        <div style="position:absolute;inset:0;background:linear-gradient(90deg,#1A0000,#3A0800,#1A0015);"></div>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">
+          <div style="font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:900;color:var(--orange);letter-spacing:0.1em;text-shadow:0 0 30px rgba(255,107,53,0.5);">⚡ PULSE</div>
+        </div>
+        <div style="position:absolute;bottom:8px;right:12px;font-size:0.5rem;color:rgba(255,255,255,0.2);letter-spacing:0.15em;text-transform:uppercase;">@thepulsex</div>
+      </div>
+      <div class="variant-label">
+        <span class="vl-name">Bold Fire</span>
+        <span class="vl-tag">High Impact</span>
+      </div>
+    </div>
+    <!-- Variant C -->
+    <div class="variant-card" onclick="selectVariant(this)">
+      <div class="variant-banner">
+        <div style="position:absolute;inset:0;background:#000;"></div>
+        <div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(255,107,53,0.04)0px,rgba(255,107,53,0.04)1px,transparent 1px,transparent 20px);"></div>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;padding:0 1.5rem;gap:1rem;">
+          <div style="width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--orange),var(--purple));display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;">⚡</div>
+          <div>
+            <div style="font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;color:#fff;">@PULSE</div>
+            <div style="font-size:0.55rem;color:rgba(255,255,255,0.4);letter-spacing:0.12em;text-transform:uppercase;">The Internet's Heartbeat</div>
+          </div>
+        </div>
+      </div>
+      <div class="variant-label">
+        <span class="vl-name">Minimal Dark</span>
+        <span class="vl-tag">Professional</span>
+      </div>
+    </div>
+    <!-- Variant D -->
+    <div class="variant-card" onclick="selectVariant(this)">
+      <div class="variant-banner">
+        <div style="position:absolute;inset:0;background:linear-gradient(135deg,#0D0030,#1A0060,#300050);"></div>
+        <div style="position:absolute;width:200px;height:200px;border-radius:50%;background:var(--purple);filter:blur(80px);opacity:0.3;top:-80px;right:-30px;"></div>
+        <div style="position:absolute;width:100px;height:100px;border-radius:50%;background:var(--orange);filter:blur(50px);opacity:0.25;bottom:-20px;left:40px;"></div>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0.4rem;">
+          <div style="font-family:'Syne',sans-serif;font-size:1.3rem;font-weight:900;color:#fff;letter-spacing:0.08em;">PULSE</div>
+          <div style="font-size:0.5rem;color:rgba(255,255,255,0.35);letter-spacing:0.25em;text-transform:uppercase;">Premium · Verified · Amplified</div>
+        </div>
+      </div>
+      <div class="variant-label">
+        <span class="vl-name">Purple Haze</span>
+        <span class="vl-tag">Premium Feel</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Banner specs -->
+  <div style="margin-top:1.5rem; background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:1.2rem; display:flex; gap:2.5rem; flex-wrap:wrap;">
+    <div><div style="font-size:0.65rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.3rem;">Dimensions</div><div style="font-family:'Space Mono',monospace;font-size:0.85rem;">1500 × 500 px</div></div>
+    <div><div style="font-size:0.65rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.3rem;">Format</div><div style="font-family:'Space Mono',monospace;font-size:0.85rem;">PNG or JPEG</div></div>
+    <div><div style="font-size:0.65rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.3rem;">Max Size</div><div style="font-family:'Space Mono',monospace;font-size:0.85rem;">2 MB</div></div>
+    <div><div style="font-size:0.65rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.3rem;">Safe Zone</div><div style="font-family:'Space Mono',monospace;font-size:0.85rem;">Keep key content in center 900px</div></div>
+  </div>
+</section>
+
+<!-- ── 3. BIO COPY ── -->
+<section class="kit-section" id="bio">
+  <div class="section-label">// 03 — Bio Copy</div>
+  <div class="section-title">Bio Options</div>
+  <div class="section-sub">Five bio variants for different positioning strategies. Click one to select it. All fit within Twitter's 160-character limit.</div>
+
+  <div class="bio-options">
+    <div class="bio-option selected" onclick="selectBio(this)">
+      <div class="bio-num">BIO 01 — RECOMMENDED · 147 chars</div>
+      <div class="bio-text">
+        Tracking the signal. Cutting the noise. 🔥<br>
+        <span class="hl">Tech · Geopolitics · Founders · Markets</span><br>
+        Host of <span class="hl">PULSE SPACES</span> — Live debates 3x/week 🎙️<br>
+        ↓ Get the weekly brief
+      </div>
+      <div class="bio-annotation">
+        <div class="ba-item"><span class="ba-dot"></span>Power tagline opens with velocity</div>
+        <div class="ba-item"><span class="ba-dot"></span>Topic pillars as credibility signal</div>
+        <div class="ba-item"><span class="ba-dot"></span>Spaces host badge builds authority</div>
+        <div class="ba-item"><span class="ba-dot"></span>CTA drives newsletter conversions</div>
+      </div>
+    </div>
+    <div class="bio-option" onclick="selectBio(this)">
+      <div class="bio-num">BIO 02 — AUTHORITY FOCUS · 139 chars</div>
+      <div class="bio-text">
+        What they won't say on TV. 📡<br>
+        <span class="hl">Breaking analysis</span> on Tech, AI &amp; Global Markets<br>
+        1.2M impressions/month<br>
+        <span class="hl2">🎙️ PULSE SPACES</span> · Tue / Thu / Sun 9PM ET
+      </div>
+      <div class="bio-annotation">
+        <div class="ba-item"><span class="ba-dot"></span>Contrarian hook creates intrigue</div>
+        <div class="ba-item"><span class="ba-dot"></span>Impression stat = social proof</div>
+        <div class="ba-item"><span class="ba-dot"></span>Specific schedule builds habit</div>
+      </div>
+    </div>
+    <div class="bio-option" onclick="selectBio(this)">
+      <div class="bio-num">BIO 03 — VIBE-FORWARD · 128 chars</div>
+      <div class="bio-text">
+        ⚡ The internet's heartbeat<br>
+        Hot takes that age well · Spaces that hit different<br>
+        <span class="hl">Tech · AI · Crypto · Founders</span><br>
+        No filler. No fluff. Just signal.
+      </div>
+      <div class="bio-annotation">
+        <div class="ba-item"><span class="ba-dot"></span>Personality-first — appeals to Gen Z / millennials</div>
+        <div class="ba-item"><span class="ba-dot"></span>"Ages well" — differentiates from hot take farms</div>
+        <div class="ba-item"><span class="ba-dot"></span>Last line is memorable + shareable</div>
+      </div>
+    </div>
+    <div class="bio-option" onclick="selectBio(this)">
+      <div class="bio-num">BIO 04 — MONETIZATION SIGNAL · 155 chars</div>
+      <div class="bio-text">
+        Signal over noise. Every day. ⚡<br>
+        <span class="hl">Tech · Geopolitics · Markets · AI</span><br>
+        🎙️ Host · 📩 <span class="hl2">pulse.substack.com</span> · 💼 Sponsorships open<br>
+        DMs open for collabs
+      </div>
+      <div class="bio-annotation">
+        <div class="ba-item"><span class="ba-dot"></span>"Sponsorships open" signals commercial intent early</div>
+        <div class="ba-item"><span class="ba-dot"></span>Newsletter link drives off-platform revenue</div>
+        <div class="ba-item"><span class="ba-dot"></span>Best for attracting brand partnerships faster</div>
+      </div>
+    </div>
+    <div class="bio-option" onclick="selectBio(this)">
+      <div class="bio-num">BIO 05 — MINIMAL PREMIUM · 98 chars</div>
+      <div class="bio-text">
+        <span class="hl">Tracking what matters.</span><br>
+        Tech · AI · Markets · Geopolitics<br>
+        ⚡ @thepulsex — The Signal
+      </div>
+      <div class="bio-annotation">
+        <div class="ba-item"><span class="ba-dot"></span>Minimal = high-status signal</div>
+        <div class="ba-item"><span class="ba-dot"></span>Works best once you have 10K+ followers already</div>
+        <div class="ba-item"><span class="ba-dot"></span>Add more detail during growth phase</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 4. PINNED TWEET STRATEGY ── -->
+<section class="kit-section" id="pinned">
+  <div class="section-label">// 04 — Pinned Tweet Strategy</div>
+  <div class="section-title">Pinned Tweet Playbook</div>
+  <div class="section-sub">Your pinned tweet is permanent first-impression content. It should convert profile visitors into followers and subscribers. Rotate every 30–60 days.</div>
+
+  <div class="pinned-options">
+    <div class="pinned-card">
+      <div class="pinned-header">
+        <span class="ph-strategy">LAUNCH PHASE (Day 1–30)</span>
+        <span class="ph-goal">Goal: establish identity + get first 1K follows</span>
+      </div>
+      <div class="pinned-tweet">
+        <div class="pt-header">
+          <div class="pt-ava">⚡</div>
+          <div class="pt-meta"><div class="pt-name">PULSE ⚡</div><div class="pt-handle">@thepulsex</div></div>
+        </div>
+        <div class="pt-body">
+          If you just found this account, here's what I do 🧵<br><br>
+          I track the signal while everyone else chases noise.<br><br>
+          Every week I break down the 3 things that actually matter in tech, AI, and global markets — the stuff that will define the next 10 years.<br><br>
+          I host PULSE SPACES 3x/week with founders, investors, and people who know things others don't.<br><br>
+          If that sounds useful, follow.<br><br>
+          The best content I've posted →
+        </div>
+        <div class="pt-actions">
+          <span class="pta">🔁 2.1K</span>
+          <span class="pta">❤️ 14K</span>
+          <span class="pta">💬 840</span>
+          <span class="pta">👁️ 1.8M</span>
+        </div>
+      </div>
+      <div class="pt-why">
+        <strong style="color:var(--orange);">Why this works:</strong> Explains value prop in 3 sentences. "Follow" CTA is direct. Thread format encourages deep engagement. "Best content" link drives profile exploration.
+      </div>
+    </div>
+
+    <div class="pinned-card">
+      <div class="pinned-header">
+        <span class="ph-strategy">GROWTH PHASE (Day 31–90)</span>
+        <span class="ph-goal">Goal: convert followers → newsletter subscribers</span>
+      </div>
+      <div class="pinned-tweet">
+        <div class="pt-header">
+          <div class="pt-ava">⚡</div>
+          <div class="pt-meta"><div class="pt-name">PULSE ⚡</div><div class="pt-handle">@thepulsex</div></div>
+        </div>
+        <div class="pt-body">
+          I write a weekly brief that 14,000 people read.<br><br>
+          Every Sunday: the 3 things that moved markets, shaped geopolitics, and changed tech this week — with my analysis on what it means for the next 90 days.<br><br>
+          No clickbait. No padding. Just the signal.<br><br>
+          Free to join ↓<br>
+          pulse.substack.com
+        </div>
+        <div class="pt-actions">
+          <span class="pta">🔁 3.4K</span>
+          <span class="pta">❤️ 22K</span>
+          <span class="pta">💬 1.2K</span>
+          <span class="pta">👁️ 3.1M</span>
+        </div>
+      </div>
+      <div class="pt-why">
+        <strong style="color:var(--orange);">Why this works:</strong> Social proof ("14,000 people") creates FOMO. Specific format ("3 things") sets expectation. "Free" removes friction. Newsletter subscribers = owned audience.
+      </div>
+    </div>
+
+    <div class="pinned-card">
+      <div class="pinned-header">
+        <span class="ph-strategy">MONETIZATION PHASE (Day 90+)</span>
+        <span class="ph-goal">Goal: signal credibility + attract brand deals</span>
+      </div>
+      <div class="pinned-tweet">
+        <div class="pt-header">
+          <div class="pt-ava">⚡</div>
+          <div class="pt-meta"><div class="pt-name">PULSE ⚡</div><div class="pt-handle">@thepulsex</div></div>
+        </div>
+        <div class="pt-body">
+          In 90 days @thepulsex went from 0 to 47K followers.<br><br>
+          Here's the exact playbook I used — and what I'd do differently 🧵
+        </div>
+        <div class="pt-actions">
+          <span class="pta">🔁 8.2K</span>
+          <span class="pta">❤️ 41K</span>
+          <span class="pta">💬 3.1K</span>
+          <span class="pta">👁️ 6.4M</span>
+        </div>
+      </div>
+      <div class="pt-why">
+        <strong style="color:var(--orange);">Why this works:</strong> Meta-content about your own growth is the highest-engagement format once you have proof. Shows brands exactly what they're buying. Builds credibility loop.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 5. COLOR PALETTE ── -->
+<section class="kit-section" id="palette">
+  <div class="section-label">// 05 — Color Palette</div>
+  <div class="section-title">Brand Colors</div>
+  <div class="section-sub">Five core colors used across banner, graphics, and content. Apply consistently to build instant recognition.</div>
+
+  <div class="palette-grid">
+    <div class="swatch">
+      <div class="swatch-color" style="background:#FF6B35;"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Signal Orange</div>
+        <div class="swatch-hex">#FF6B35</div>
+        <div class="swatch-use">Primary · CTAs · Highlights</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#050505;border-bottom:1px solid #222;"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Void Black</div>
+        <div class="swatch-hex">#050505</div>
+        <div class="swatch-use">Background · Heavy text</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#9333EA;"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Pulse Purple</div>
+        <div class="swatch-hex">#9333EA</div>
+        <div class="swatch-use">Premium moments · Accent</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#F5F5F5;"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Clean White</div>
+        <div class="swatch-hex">#F5F5F5</div>
+        <div class="swatch-use">Body text · Light surfaces</div>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#888888;"></div>
+      <div class="swatch-info">
+        <div class="swatch-name">Smoke Grey</div>
+        <div class="swatch-hex">#888888</div>
+        <div class="swatch-use">Secondary text · Metadata</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 6. TYPOGRAPHY ── -->
+<section class="kit-section" id="type">
+  <div class="section-label">// 06 — Typography</div>
+  <div class="section-title">Type System</div>
+  <div class="section-sub">Two typefaces. Syne for bold display moments. Inter for body and clarity. On Twitter itself, system fonts apply — use these in graphics.</div>
+
+  <div class="type-samples">
+    <div class="type-sample">
+      <div class="ts-meta">PRIMARY — SYNE · Display / Headers</div>
+      <div class="ts-specimen" style="font-family:'Syne',sans-serif;font-size:3rem;font-weight:800;letter-spacing:-0.02em;line-height:1;">Breaking Signal</div>
+      <div class="ts-spec">font-family: Syne · weight: 800 · tracking: -0.02em · Use: banners, graphics, headlines</div>
+    </div>
+    <div class="type-sample">
+      <div class="ts-meta">SECONDARY — INTER · Body / Interface</div>
+      <div class="ts-specimen" style="font-family:'Inter',sans-serif;font-size:1.2rem;font-weight:400;line-height:1.6;">The market is pricing in a soft landing. It shouldn't be. Here's the data they're ignoring and why it changes everything you think you know about Q3.</div>
+      <div class="ts-spec">font-family: Inter · weight: 400/600 · Use: tweet body copy, newsletter, captions</div>
+    </div>
+    <div class="type-sample">
+      <div class="ts-meta">ACCENT — SPACE MONO · Data / Metrics</div>
+      <div class="ts-specimen" style="font-family:'Space Mono',monospace;font-size:1.1rem;font-weight:400;color:var(--orange);">+2.4M impressions · 47K followers · 14K subscribers</div>
+      <div class="ts-spec">font-family: Space Mono · Use: stats, timestamps, identifiers, code references</div>
+    </div>
+  </div>
+</section>
+
+<!-- ── 7. VOICE & TONE ── -->
+<section class="kit-section" id="voice">
+  <div class="section-label">// 07 — Voice & Tone</div>
+  <div class="section-title">Brand Voice</div>
+  <div class="section-sub">@PULSE's voice is what makes it unmistakable. Urgent, direct, and never boring — but always defensible.</div>
+
+  <div class="voice-grid">
+    <div class="voice-card">
+      <div class="vc-header"><div class="vc-icon">🔥</div><div class="vc-title">The PULSE Voice</div></div>
+      <ul class="vc-items">
+        <li>Urgent but never panicked — calm confidence under pressure</li>
+        <li>Contrarian when warranted, never just for attention</li>
+        <li>Short sentences. White space. No padding.</li>
+        <li>Always adds context: "this matters because..."</li>
+        <li>One take per tweet — no hedging, no "both sides"</li>
+        <li>Willing to be wrong, fast to update when corrected</li>
+      </ul>
+    </div>
+    <div class="voice-card">
+      <div class="vc-header"><div class="vc-icon">🎯</div><div class="vc-title">Content Personality</div></div>
+      <ul class="vc-items">
+        <li>Thinks like a journalist, writes like a founder</li>
+        <li>Treats the audience as intelligent — never condescending</li>
+        <li>Finds the second-order implication most miss</li>
+        <li>Engages with replies substantively — not just likes</li>
+        <li>Personal but not personal — life is context, not content</li>
+        <li>Emoji: ⚡🔥📡🎙️ — your 4 signatures only</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="do-dont">
+    <div class="do-card">
+      <div class="dd-title">✓ Do Write</div>
+      <ul class="dd-items">
+        <li><span class="icon">⚡</span>"OpenAI's valuation isn't about revenue. It's about controlling the next OS. Everyone's looking at the wrong metric."</li>
+        <li><span class="icon">⚡</span>"The VC market isn't frozen. It's bifurcated. If you're building AI infra, money is flowing. Everything else is fighting for scraps."</li>
+        <li><span class="icon">⚡</span>"Three things happened today that most people missed. Here's why they matter more than the headline everyone's talking about 🧵"</li>
+      </ul>
+    </div>
+    <div class="dont-card">
+      <div class="dd-title">✗ Don't Write</div>
+      <ul class="dd-items">
+        <li><span class="icon">❌</span>"Interesting thread! Some good points here, definitely food for thought. What do you think everyone?"</li>
+        <li><span class="icon">❌</span>"I think maybe possibly the market could potentially go either way, but it's hard to say for sure..."</li>
+        <li><span class="icon">❌</span>"BREAKING BREAKING BREAKING: [thing that happened 4 hours ago that everyone already covered]"</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ── 8. VISUAL STYLE GUIDE ── -->
+<section class="kit-section" id="style">
+  <div class="section-label">// 08 — Visual Style Guide</div>
+  <div class="section-title">Graphics & Assets</div>
+  <div class="section-sub">Visual language for Twitter graphics, thread covers, and promotional assets.</div>
+
+  <div class="style-grid">
+    <div class="style-card">
+      <div class="sc-preview" style="background:linear-gradient(135deg,#0A0510,#1A0A00);">
+        <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,107,53,0.07)1px,transparent 1px),linear-gradient(90deg,rgba(255,107,53,0.07)1px,transparent 1px);background-size:25px 25px;"></div>
+        <div style="position:relative;text-align:center;padding:1rem;">
+          <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:var(--orange);letter-spacing:0.15em;margin-bottom:0.5rem;">PULSE THREAD</div>
+          <div style="font-family:'Syne',sans-serif;font-size:1.1rem;font-weight:800;color:#fff;line-height:1.2;">Why the Fed<br>is wrong</div>
+        </div>
+      </div>
+      <div class="sc-body">
+        <div class="sc-title">Thread Cover Card</div>
+        <div class="sc-desc">Dark grid bg + orange accent label + Syne bold headline. Use as tweet 1 image for all major threads. 1200×675px.</div>
+      </div>
+    </div>
+    <div class="style-card">
+      <div class="sc-preview" style="background:#000;">
+        <div style="background:rgba(255,107,53,0.08);border:1px solid rgba(255,107,53,0.3);border-radius:12px;padding:1rem 1.5rem;text-align:center;max-width:200px;">
+          <div style="font-family:'Space Mono',monospace;font-size:0.6rem;color:var(--orange);margin-bottom:0.5rem;">TONIGHT · 9PM ET</div>
+          <div style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;color:#fff;margin-bottom:0.3rem;">🎙️ PULSE SPACES</div>
+          <div style="font-size:0.65rem;color:rgba(255,255,255,0.5);">Is the AI bubble real?</div>
+        </div>
+      </div>
+      <div class="sc-body">
+        <div class="sc-title">Spaces Promo Card</div>
+        <div class="sc-desc">Dark bg with orange-bordered event card. Time + show name + topic. Post 4 hours before each Space.</div>
+      </div>
+    </div>
+    <div class="style-card">
+      <div class="sc-preview" style="background:linear-gradient(135deg,#0D0030,#1A0060);">
+        <div style="position:absolute;width:120px;height:120px;border-radius:50%;background:var(--purple);filter:blur(50px);opacity:0.3;top:-30px;right:-20px;"></div>
+        <div style="position:relative;display:flex;align-items:center;gap:0.8rem;padding:1rem;">
+          <div style="font-family:'Space Mono',monospace;font-size:2rem;font-weight:700;color:var(--orange);">47K</div>
+          <div>
+            <div style="font-size:0.7rem;color:#fff;font-weight:700;">Followers</div>
+            <div style="font-size:0.55rem;color:rgba(255,255,255,0.4);">in 90 days</div>
+          </div>
+        </div>
+      </div>
+      <div class="sc-body">
+        <div class="sc-title">Milestone Announcement</div>
+        <div class="sc-desc">Purple gradient bg + Space Mono metric + context label. Use for follower milestones, impression records, and subscriber counts.</div>
+      </div>
+    </div>
+    <div class="style-card">
+      <div class="sc-preview" style="background:#000;padding:1rem;display:flex;align-items:center;justify-content:center;">
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1rem;max-width:220px;">
+          <div style="font-size:0.6rem;color:var(--muted);font-family:'Space Mono',monospace;margin-bottom:0.5rem;">WEEKLY BRIEF · ISSUE 12</div>
+          <div style="font-family:'Syne',sans-serif;font-size:0.9rem;font-weight:700;color:#fff;margin-bottom:0.5rem;">This week in the signal</div>
+          <div style="font-size:0.65rem;color:var(--muted);line-height:1.5;">3 things · AI · Markets · Geopolitics · What comes next</div>
+          <div style="margin-top:0.6rem;padding-top:0.6rem;border-top:1px solid var(--border);font-size:0.6rem;color:var(--orange);">pulse.substack.com ↗</div>
+        </div>
+      </div>
+      <div class="sc-body">
+        <div class="sc-title">Newsletter Promo Card</div>
+        <div class="sc-desc">Card-in-dark-bg style. Issue number + title + topic teasers + link. Post Sunday morning alongside newsletter drop.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DOWNLOAD BAR -->
+<div class="download-bar">
+  <div class="dl-info"><strong>@PULSE Brand Kit v1.0</strong> · All assets specified · Ready for launch</div>
+  <div class="dl-btns">
+    <button class="dl-btn ghost" onclick="window.print()">🖨 Print PDF</button>
+    <button class="dl-btn primary" onclick="handleExport()">⚡ Export Kit</button>
+  </div>
+</div>
+
+<script>
+// Follower counter animation
+setTimeout(() => {
+  const el = document.getElementById('followerCounter');
+  if (!el) return;
+  let n = 0;
+  const target = 1247;
+  const dur = 1600;
+  const t0 = performance.now();
+  (function tick(now) {
+    const p = Math.min((now - t0) / dur, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.floor(ease * target).toLocaleString();
+    if (p < 1) requestAnimationFrame(tick);
+    else el.textContent = target.toLocaleString();
+  })(performance.now());
+}, 500);
+
+// Banner variant selection
+function selectVariant(card) {
+  document.querySelectorAll('.variant-card').forEach(c => c.classList.remove('selected'));
+  card.classList.add('selected');
+}
+
+// Bio selection
+function selectBio(option) {
+  document.querySelectorAll('.bio-option').forEach(o => o.classList.remove('selected'));
+  option.classList.add('selected');
+}
+
+// Nav active state on scroll
+const sections = document.querySelectorAll('.kit-section');
+const navLinks = document.querySelectorAll('.page-nav a');
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const id = e.target.id;
+      navLinks.forEach(l => {
+        l.classList.toggle('active', l.getAttribute('href') === '#' + id);
+      });
+    }
+  });
+}, { rootMargin: '-40% 0px -55% 0px' });
+sections.forEach(s => observer.observe(s));
+
+// Export
+function handleExport() {
+  const btn = event.currentTarget;
+  btn.textContent = '✓ Kit ready!';
+  btn.style.background = '#00BA7C';
+  setTimeout(() => {
+    btn.textContent = '⚡ Export Kit';
+    btn.style.background = '';
+  }, 2500);
+}
+</script>
+</body>
+</html>
