@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🐔 CHICKEN RACE</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sky: #87CEEB;
+      --grass: #5DBB3F;
+      --dirt: #C8A96E;
+      --track: #E8D5A3;
+      --fence: #8B6914;
+      --red: #FF3333;
+      --yellow: #FFD700;
+      --blue: #3399FF;
+      --green: #33CC44;
+      --purple: #CC44FF;
+      --pink: #FF66CC;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #1a1a2e;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      font-weight: 900;
+      color: #FFD700;
+      text-shadow: 4px 4px 0 #CC8800, 0 0 30px rgba(255,215,0,0.5);
+      letter-spacing: 0.05em;
+      margin-bottom: 0.3rem;
+      text-align: center;
+    }
+    .subtitle {
+      color: #aaa;
+      font-size: 0.95rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 1.2rem;
+      text-align: center;
+    }
+
+    /* ── GAME CONTAINER ── */
+    #gameWrap {
+      position: relative;
+      width: 820px;
+      max-width: 98vw;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      border-radius: 16px;
+      border: 4px solid #FFD700;
+      box-shadow: 0 0 40px rgba(255,215,0,0.3), 0 8px 32px rgba(0,0,0,0.6);
+    }
+
+    /* ── OVERLAYS ── */
+    .overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      background: rgba(10,10,20,0.88);
+      backdrop-filter: blur(4px);
+      gap: 1.2rem;
+      padding: 2rem;
+    }
+    .overlay.hidden { display: none; }
+
+    .overlay h2 {
+      font-size: 2.2rem;
+      font-weight: 900;
+      color: #FFD700;
+      text-shadow: 3px 3px 0 #996600;
+      text-align: center;
+    }
+
+    .pick-label {
+      color: #ccc;
+      font-size: 1rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .chicken-picks {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .pick-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem 1.2rem;
+      background: rgba(255,255,255,0.07);
+      border: 3px solid transparent;
+      border-radius: 14px;
+      cursor: pointer;
+      transition: all 0.18s;
+      min-width: 90px;
+    }
+    .pick-btn:hover, .pick-btn.selected {
+      border-color: #FFD700;
+      background: rgba(255,215,0,0.12);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(255,215,0,0.2);
+    }
+    .pick-btn .chicken-emoji { font-size: 2.4rem; line-height: 1; }
+    .pick-btn .chick-name { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
+    .pick-btn .chick-odds { font-size: 0.7rem; color: #aaa; }
+
+    .big-btn {
+      padding: 0.9rem 2.5rem;
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.15s;
+      box-shadow: 0 4px 0 #996600;
+    }
+    .big-btn.gold {
+      background: linear-gradient(135deg, #FFD700, #FFA500);
+      color: #1a1a2e;
+    }
+    .big-btn.gold:hover { transform: translateY(-2px); box-shadow: 0 6px 0 #774400; }
+    .big-btn.gold:active { transform: translateY(2px); box-shadow: 0 2px 0 #774400; }
+    .big-btn.disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
+
+    /* winner overlay */
+    #winnerOverlay .trophy { font-size: 5rem; line-height: 1; margin-bottom: 0.2rem; }
+    #winnerOverlay .winner-name { font-size: 1.2rem; color: #fff; margin-bottom: 0.4rem; }
+    #winnerOverlay .pick-result {
+      font-size: 1rem;
+      padding: 0.5rem 1.5rem;
+      border-radius: 100px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    #winnerOverlay .pick-result.win { background: rgba(51,204,68,0.2); color: #33CC44; border: 2px solid #33CC44; }
+    #winnerOverlay .pick-result.loss { background: rgba(255,51,51,0.15); color: #FF6666; border: 2px solid #FF5555; }
+
+    /* bottom bar */
+    #bottomBar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 0.8rem;
+      padding: 0 0.4rem;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .legend {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .leg-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.8rem;
+      color: #ccc;
+    }
+    .leg-dot {
+      width: 10px; height: 10px; border-radius: 50%;
+    }
+    .speed-info {
+      font-size: 0.78rem;
+      color: #888;
+      font-style: italic;
+    }
+
+    /* confetti canvas */
+    #confettiCanvas {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>🐔 CHICKEN RACE</h1>
+<div class="subtitle">Pick your bird &bull; Watch them run &bull; Who will win?</div>
+
+<div id="gameWrap">
+  <canvas id="gameCanvas" width="820" height="420"></canvas>
+  <canvas id="confettiCanvas" width="820" height="420"></canvas>
+
+  <!-- PICK SCREEN -->
+  <div class="overlay" id="pickOverlay">
+    <h2>Pick Your Chicken!</h2>
+    <div class="pick-label">Choose your champion</div>
+    <div class="chicken-picks">
+      <div class="pick-btn" data-idx="0" onclick="selectChicken(0)">
+        <div class="chicken-emoji">🐔</div>
+        <div class="chick-name" style="color:#FF5555">Red Hen</div>
+        <div class="chick-odds">Speed: ★★★★☆</div>
+      </div>
+      <div class="pick-btn" data-idx="1" onclick="selectChicken(1)">
+        <div class="chicken-emoji">🐣</div>
+        <div class="chick-name" style="color:#FFD700">Golden Boy</div>
+        <div class="chick-odds">Speed: ★★★☆☆</div>
+      </div>
+      <div class="pick-btn" data-idx="2" onclick="selectChicken(2)">
+        <div class="chicken-emoji">🐓</div>
+        <div class="chick-name" style="color:#3399FF">Blue Rooster</div>
+        <div class="chick-odds">Speed: ★★★★★</div>
+      </div>
+      <div class="pick-btn" data-idx="3" onclick="selectChicken(3)">
+        <div class="chicken-emoji">🐥</div>
+        <div class="chick-name" style="color:#33CC44">Greenie</div>
+        <div class="chick-odds">Speed: ★★☆☆☆</div>
+      </div>
+      <div class="pick-btn" data-idx="4" onclick="selectChicken(4)">
+        <div class="chicken-emoji">🦆</div>
+        <div class="chick-name" style="color:#CC44FF">Purple Duck</div>
+        <div class="chick-odds">Speed: ★★★☆☆</div>
+      </div>
+    </div>
+    <button class="big-btn gold disabled" id="startBtn" onclick="startRace()">🏁 START RACE!</button>
+  </div>
+
+  <!-- WINNER OVERLAY -->
+  <div class="overlay hidden" id="winnerOverlay">
+    <div class="trophy" id="winTrophy">🏆</div>
+    <h2 id="winTitle">Winner!</h2>
+    <div class="winner-name" id="winName"></div>
+    <div class="pick-result" id="pickResult"></div>
+    <button class="big-btn gold" onclick="resetGame()">🔄 Race Again!</button>
+  </div>
+</div>
+
+<div id="bottomBar">
+  <div class="legend" id="legend"></div>
+  <div class="speed-info">Each race is randomised — upsets happen!</div>
+</div>
+
+<script>
+// ── CONFIG ──
+const CHICKENS = [
+  { name: 'Red Hen',    color: '#FF3333', hatColor: '#CC0000', baseSpeed: 2.8, emoji: '🐔' },
+  { name: 'Golden Boy', color: '#FFD700', hatColor: '#CC8800', baseSpeed: 2.4, emoji: '🐣' },
+  { name: 'Blue Rooster',color:'#3399FF', hatColor: '#0055CC', baseSpeed: 3.2, emoji: '🐓' },
+  { name: 'Greenie',    color: '#33CC44', hatColor: '#117722', baseSpeed: 1.9, emoji: '🐥' },
+  { name: 'Purple Duck',color: '#CC44FF', hatColor: '#7700CC', baseSpeed: 2.5, emoji: '🦆' },
+];
+
+const TRACK_COUNT = CHICKENS.length;
+const TRACK_H = 60;
+const PADDING_TOP = 60;
+const FINISH_X = 720;
+const START_X = 60;
+
+// Canvas setup
+const gc = document.getElementById('gameCanvas');
+const gctx = gc.getContext('2d');
+const cc = document.getElementById('confettiCanvas');
+const cctx = cc.getContext('2d');
+
+let selectedIdx = -1;
+let raceStarted = false;
+let raceFinished = false;
+let animId = null;
+let confettiParticles = [];
+let countdownVal = 0;
+let countdownTimer = null;
+let frameCount = 0;
+
+// Per-chicken state
+let runners = [];
+
+function initRunners() {
+  runners = CHICKENS.map((c, i) => ({
+    ...c,
+    x: START_X,
+    lane: i,
+    speed: c.baseSpeed * (0.7 + Math.random() * 0.6),
+    bobPhase: Math.random() * Math.PI * 2,
+    stumbBlk: 0,   // frames remaining in stumble
+    boostTimer: 0,
+    finished: false,
+    finishTime: null,
+    place: null,
+    wingPhase: 0,
+  }));
+}
+
+// ── DRAWING HELPERS ──
+function laneY(lane) { return PADDING_TOP + lane * TRACK_H + TRACK_H / 2; }
+
+function drawBackground() {
+  // Sky
+  const skyGrad = gctx.createLinearGradient(0, 0, 0, 60);
+  skyGrad.addColorStop(0, '#1a1a2e');
+  skyGrad.addColorStop(1, '#2a2a4e');
+  gctx.fillStyle = skyGrad;
+  gctx.fillRect(0, 0, gc.width, PADDING_TOP);
+
+  // Track background
+  for (let i = 0; i < TRACK_COUNT; i++) {
+    const y = PADDING_TOP + i * TRACK_H;
+    gctx.fillStyle = i % 2 === 0 ? '#D4C080' : '#C8A96E';
+    gctx.fillRect(0, y, gc.width, TRACK_H);
+
+    // Lane divider
+    gctx.strokeStyle = 'rgba(255,255,255,0.3)';
+    gctx.lineWidth = 1;
+    gctx.setLineDash([12, 8]);
+    gctx.beginPath();
+    gctx.moveTo(0, y + TRACK_H);
+    gctx.lineTo(gc.width, y + TRACK_H);
+    gctx.stroke();
+    gctx.setLineDash([]);
+  }
+
+  // Ground/grass bottom strip
+  gctx.fillStyle = '#5DBB3F';
+  gctx.fillRect(0, PADDING_TOP + TRACK_COUNT * TRACK_H, gc.width, gc.height - PADDING_TOP - TRACK_COUNT * TRACK_H);
+
+  // Finish line
+  const stripeH = 12;
+  const stripes = Math.floor((TRACK_COUNT * TRACK_H) / stripeH);
+  for (let s = 0; s < stripes; s++) {
+    gctx.fillStyle = s % 2 === 0 ? '#fff' : '#111';
+    gctx.fillRect(FINISH_X, PADDING_TOP + s * stripeH, 10, stripeH);
+  }
+  gctx.fillStyle = 'rgba(255,255,255,0.9)';
+  gctx.font = 'bold 13px Arial';
+  gctx.textAlign = 'center';
+  gctx.fillText('FINISH', FINISH_X + 5, PADDING_TOP - 8);
+
+  // Start line
+  gctx.strokeStyle = '#fff';
+  gctx.lineWidth = 3;
+  gctx.beginPath();
+  gctx.moveTo(START_X, PADDING_TOP);
+  gctx.lineTo(START_X, PADDING_TOP + TRACK_COUNT * TRACK_H);
+  gctx.stroke();
+  gctx.font = 'bold 11px Arial';
+  gctx.fillText('START', START_X, PADDING_TOP - 8);
+
+  // Crowd dots along top
+  gctx.font = '14px Arial';
+  const crowds = ['👥','🙌','👏','🎉','🥳','🤩','👑'];
+  for (let cx = 20; cx < gc.width - 20; cx += 40) {
+    gctx.fillText(crowds[Math.floor(cx/40) % crowds.length], cx, 22);
+  }
+}
+
+function drawChicken(runner, frame) {
+  const x = runner.x;
+  const y = laneY(runner.lane);
+  const bob = Math.sin(runner.bobPhase + frame * 0.25) * 3;
+  const wingFlap = Math.sin(runner.wingPhase) > 0;
+  const isSelected = runner.lane === selectedIdx;
+  const stumbling = runner.stumbBlk > 0;
+
+  gctx.save();
+  gctx.translate(x, y + bob);
+
+  // Selection ring
+  if (isSelected) {
+    gctx.beginPath();
+    gctx.arc(0, 0, 24, 0, Math.PI * 2);
+    gctx.strokeStyle = 'rgba(255,215,0,0.6)';
+    gctx.lineWidth = 3;
+    gctx.stroke();
+  }
+
+  if (stumbling) {
+    gctx.rotate(Math.sin(frame * 0.4) * 0.3);
+  }
+
+  // Body
+  gctx.fillStyle = runner.color;
+  gctx.beginPath();
+  gctx.ellipse(0, 2, 16, 12, 0, 0, Math.PI * 2);
+  gctx.fill();
+
+  // Wing (left side, flapping)
+  gctx.fillStyle = runner.hatColor;
+  gctx.beginPath();
+  if (wingFlap) {
+    gctx.ellipse(-12, -2, 10, 6, -0.5, 0, Math.PI * 2);
+  } else {
+    gctx.ellipse(-10, 4, 8, 5, 0.3, 0, Math.PI * 2);
+  }
+  gctx.fill();
+
+  // Head
+  gctx.fillStyle = runner.color;
+  gctx.beginPath();
+  gctx.arc(12, -8, 9, 0, Math.PI * 2);
+  gctx.fill();
+
+  // Comb
+  gctx.fillStyle = '#FF3333';
+  gctx.beginPath();
+  gctx.moveTo(8, -16);
+  gctx.lineTo(11, -12);
+  gctx.lineTo(14, -17);
+  gctx.lineTo(17, -13);
+  gctx.lineTo(20, -16);
+  gctx.lineTo(20, -14);
+  gctx.lineTo(8, -14);
+  gctx.closePath();
+  gctx.fill();
+
+  // Beak
+  gctx.fillStyle = '#FFA500';
+  gctx.beginPath();
+  gctx.moveTo(20, -8);
+  gctx.lineTo(26, -6);
+  gctx.lineTo(20, -5);
+  gctx.closePath();
+  gctx.fill();
+
+  // Eye
+  gctx.fillStyle = '#111';
+  gctx.beginPath();
+  gctx.arc(16, -10, 2.5, 0, Math.PI * 2);
+  gctx.fill();
+  gctx.fillStyle = '#fff';
+  gctx.beginPath();
+  gctx.arc(16.5, -10.5, 1, 0, Math.PI * 2);
+  gctx.fill();
+
+  // Legs (running animation)
+  const legSwing = Math.sin(frame * 0.4 + runner.lane) * 10;
+  gctx.strokeStyle = '#FFA500';
+  gctx.lineWidth = 3;
+  gctx.lineCap = 'round';
+  // Left leg
+  gctx.beginPath();
+  gctx.moveTo(-4, 12);
+  gctx.lineTo(-4 + legSwing, 24);
+  gctx.lineTo(-8 + legSwing, 26);
+  gctx.stroke();
+  // Right leg
+  gctx.beginPath();
+  gctx.moveTo(4, 12);
+  gctx.lineTo(4 - legSwing, 24);
+  gctx.lineTo(0 - legSwing, 26);
+  gctx.stroke();
+
+  // Stumble stars
+  if (stumbling) {
+    gctx.font = '14px Arial';
+    gctx.fillText('💫', -20, -20);
+  }
+
+  // Finish ribbon
+  if (runner.finished && runner.place === 1) {
+    gctx.font = '18px Arial';
+    gctx.fillText('🏆', -8, -30);
+  }
+
+  gctx.restore();
+
+  // Name label
+  gctx.save();
+  gctx.font = `bold 11px Arial`;
+  gctx.textAlign = 'left';
+  gctx.fillStyle = isSelected ? '#FFD700' : '#fff';
+  gctx.fillText(runner.name, Math.max(START_X + 2, x - 20), y - 20);
+  gctx.restore();
+}
+
+function drawHUD() {
+  // Top banner
+  gctx.fillStyle = 'rgba(10,10,30,0.85)';
+  gctx.fillRect(0, 0, gc.width, PADDING_TOP - 2);
+
+  if (raceStarted && !raceFinished) {
+    // Distance bars
+    const barW = 200;
+    const barX = gc.width / 2 - barW / 2;
+    gctx.font = 'bold 12px Arial';
+    gctx.textAlign = 'center';
+    gctx.fillStyle = '#FFD700';
+    gctx.fillText('🏁 RACE IN PROGRESS 🏁', gc.width / 2, 30);
+  }
+}
+
+// ── PHYSICS UPDATE ──
+function updateRunners(frame) {
+  let finishedCount = runners.filter(r => r.finished).length;
+
+  runners.forEach((r, i) => {
+    if (r.finished) return;
+
+    r.wingPhase += 0.35;
+    r.bobPhase += 0.1;
+
+    if (r.stumbBlk > 0) {
+      r.stumbBlk--;
+      r.x += r.speed * 0.2; // slow while stumbling
+    } else {
+      // Random events every ~60 frames
+      if (Math.random() < 0.004) {
+        // Stumble
+        r.stumbBlk = 30 + Math.floor(Math.random() * 30);
+      } else if (Math.random() < 0.003) {
+        // Burst of speed
+        r.boostTimer = 20;
+      }
+
+      const boost = r.boostTimer > 0 ? 1.8 : 1;
+      if (r.boostTimer > 0) r.boostTimer--;
+
+      // Speed jitter for excitement
+      const jitter = (Math.random() - 0.45) * 0.6;
+      r.x += (r.speed + jitter) * boost;
+    }
+
+    if (r.x >= FINISH_X && !r.finished) {
+      r.finished = true;
+      r.finishTime = frame;
+      r.place = finishedCount + 1;
+      finishedCount++;
+
+      if (finishedCount === 1) {
+        // First to finish — trigger win
+        triggerWin(r);
+      }
+    }
+  });
+}
+
+// ── GAME LOOP ──
+function gameLoop() {
+  frameCount++;
+  gctx.clearRect(0, 0, gc.width, gc.height);
+  drawBackground();
+  drawHUD();
+
+  runners.forEach(r => drawChicken(r, frameCount));
+
+  if (raceStarted && !raceFinished) updateRunners(frameCount);
+
+  animId = requestAnimationFrame(gameLoop);
+}
+
+// ── COUNTDOWN ──
+function startCountdown() {
+  countdownVal = 3;
+  const drawCountdown = () => {
+    gctx.clearRect(0, 0, gc.width, gc.height);
+    drawBackground();
+    runners.forEach(r => drawChicken(r, frameCount));
+
+    // Big number
+    gctx.save();
+    gctx.font = 'bold 120px Arial';
+    gctx.textAlign = 'center';
+    gctx.textBaseline = 'middle';
+    const txt = countdownVal > 0 ? String(countdownVal) : 'GO!';
+    gctx.fillStyle = countdownVal > 0 ? '#FFD700' : '#33FF66';
+    gctx.shadowColor = countdownVal > 0 ? '#FF8800' : '#00AA33';
+    gctx.shadowBlur = 30;
+    gctx.fillText(txt, gc.width / 2, gc.height / 2);
+    gctx.restore();
+  };
+
+  let t = 0;
+  countdownTimer = setInterval(() => {
+    drawCountdown();
+    if (t < 3) {
+      t++;
+      countdownVal = 3 - t;
+    } else {
+      clearInterval(countdownTimer);
+      countdownVal = 0;
+      // Start actual race loop
+      raceStarted = true;
+      gameLoop();
+    }
+  }, 800);
+
+  // Draw first immediately
+  drawCountdown();
+}
+
+// ── CONFETTI ──
+const CONFETTI_COLORS = ['#FFD700','#FF3333','#33CC44','#3399FF','#FF66CC','#CC44FF','#FF8800'];
+
+function spawnConfetti() {
+  for (let i = 0; i < 120; i++) {
+    confettiParticles.push({
+      x: Math.random() * cc.width,
+      y: -10,
+      vx: (Math.random() - 0.5) * 4,
+      vy: 2 + Math.random() * 4,
+      rot: Math.random() * Math.PI * 2,
+      rotV: (Math.random() - 0.5) * 0.2,
+      w: 8 + Math.random() * 8,
+      h: 5 + Math.random() * 5,
+      color: CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
+      life: 180 + Math.floor(Math.random() * 120),
+    });
+  }
+}
+
+function animateConfetti() {
+  cctx.clearRect(0, 0, cc.width, cc.height);
+  confettiParticles = confettiParticles.filter(p => p.life > 0);
+  confettiParticles.forEach(p => {
+    p.x += p.vx;
+    p.y += p.vy;
+    p.vy += 0.12;
+    p.rot += p.rotV;
+    p.life--;
+    const alpha = Math.min(1, p.life / 30);
+    cctx.save();
+    cctx.globalAlpha = alpha;
+    cctx.translate(p.x, p.y);
+    cctx.rotate(p.rot);
+    cctx.fillStyle = p.color;
+    cctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+    cctx.restore();
+  });
+  if (confettiParticles.length > 0) requestAnimationFrame(animateConfetti);
+  else cctx.clearRect(0, 0, cc.width, cc.height);
+}
+
+// ── WIN HANDLER ──
+function triggerWin(winner) {
+  raceFinished = true;
+  cancelAnimationFrame(animId);
+
+  // One more draw of the final frame
+  gctx.clearRect(0, 0, gc.width, gc.height);
+  drawBackground();
+  runners.forEach(r => drawChicken(r, frameCount));
+
+  // Show winner overlay
+  const ov = document.getElementById('winnerOverlay');
+  const title = document.getElementById('winTitle');
+  const name = document.getElementById('winName');
+  const result = document.getElementById('pickResult');
+  const trophy = document.getElementById('winTrophy');
+
+  const didWin = winner.lane === selectedIdx;
+
+  trophy.textContent = didWin ? '🏆' : '😢';
+  title.textContent = `${winner.emoji} ${winner.name} WINS!`;
+  name.textContent = didWin
+    ? 'You backed the winner!'
+    : `You backed ${CHICKENS[selectedIdx].name}`;
+
+  result.textContent = didWin ? '🎉 WINNER! YOU CALLED IT!' : '😅 Better luck next race!';
+  result.className = 'pick-result ' + (didWin ? 'win' : 'loss');
+
+  ov.classList.remove('hidden');
+
+  // Confetti burst
+  spawnConfetti();
+  spawnConfetti();
+  requestAnimationFrame(animateConfetti);
+}
+
+// ── UI ACTIONS ──
+function selectChicken(idx) {
+  selectedIdx = idx;
+  document.querySelectorAll('.pick-btn').forEach((b, i) => {
+    b.classList.toggle('selected', i === idx);
+  });
+  document.getElementById('startBtn').classList.remove('disabled');
+}
+
+function startRace() {
+  if (selectedIdx < 0) return;
+  document.getElementById('pickOverlay').classList.add('hidden');
+  initRunners();
+  frameCount = 0;
+  startCountdown();
+}
+
+function resetGame() {
+  raceStarted = false;
+  raceFinished = false;
+  selectedIdx = -1;
+  cancelAnimationFrame(animId);
+  clearInterval(countdownTimer);
+  confettiParticles = [];
+  cctx.clearRect(0, 0, cc.width, cc.height);
+
+  document.getElementById('winnerOverlay').classList.add('hidden');
+  document.getElementById('pickOverlay').classList.remove('hidden');
+  document.querySelectorAll('.pick-btn').forEach(b => b.classList.remove('selected'));
+  document.getElementById('startBtn').classList.add('disabled');
+
+  initRunners();
+  gctx.clearRect(0, 0, gc.width, gc.height);
+  drawBackground();
+  runners.forEach(r => drawChicken(r, 0));
+}
+
+// ── BUILD LEGEND ──
+function buildLegend() {
+  const leg = document.getElementById('legend');
+  CHICKENS.forEach(c => {
+    const item = document.createElement('div');
+    item.className = 'leg-item';
+    const dot = document.createElement('div');
+    dot.className = 'leg-dot';
+    dot.style.background = c.color;
+    const span = document.createElement('span');
+    span.textContent = c.name;
+    item.appendChild(dot);
+    item.appendChild(span);
+    leg.appendChild(item);
+  });
+}
+
+// ── INIT ──
+initRunners();
+buildLegend();
+gctx.clearRect(0, 0, gc.width, gc.height);
+drawBackground();
+runners.forEach(r => drawChicken(r, 0));
+</script>
+</body>
+</html>
