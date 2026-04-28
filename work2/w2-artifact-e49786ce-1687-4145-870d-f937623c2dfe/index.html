@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Viking Wedding Guide — Sweden</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@400;700&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A227;
+    --gold-light: #E8C547;
+    --gold-dim: #8A6E1A;
+    --red: #8B1A1A;
+    --dark: #0D0D0D;
+    --dark2: #141410;
+    --dark3: #1C1A14;
+    --dark4: #24211A;
+    --cream: #F0E6C8;
+    --cream2: #D4C49A;
+    --forest: #1A2E1A;
+    --ice: #C8DCE8;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{background:var(--dark);color:var(--cream);font-family:'Lora',serif;overflow-x:hidden}
+  ::-webkit-scrollbar{width:6px}
+  ::-webkit-scrollbar-track{background:var(--dark)}
+  ::-webkit-scrollbar-thumb{background:var(--gold-dim);border-radius:3px}
+
+  /* NAV */
+  nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(13,13,13,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(201,162,39,0.2);padding:0 2rem}
+  .nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:56px}
+  .nav-brand{font-family:'Cinzel Decorative',serif;font-size:1rem;color:var(--gold);letter-spacing:0.05em}
+  .nav-links{display:flex;gap:1.5rem;list-style:none}
+  .nav-links a{font-family:'Cinzel',serif;font-size:0.72rem;letter-spacing:0.1em;color:var(--cream2);text-decoration:none;text-transform:uppercase;transition:color 0.2s}
+  .nav-links a:hover{color:var(--gold)}
+  @media(max-width:768px){.nav-links{display:none}}
+
+  /* HERO */
+  .hero{position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;background:linear-gradient(180deg,#0A0808 0%,#1A1008 40%,#0D1A0D 100%)}
+  #hero-canvas{position:absolute;inset:0;width:100%;height:100%}
+  .hero-content{position:relative;z-index:2;text-align:center;padding:2rem}
+  .hero-eyebrow{font-family:'Cinzel',serif;font-size:0.8rem;letter-spacing:0.3em;color:var(--gold);text-transform:uppercase;margin-bottom:1.5rem;display:flex;align-items:center;gap:1rem;justify-content:center}
+  .hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;height:1px;width:60px;background:linear-gradient(90deg,transparent,var(--gold))}
+  .hero-eyebrow::after{background:linear-gradient(90deg,var(--gold),transparent)}
+  .hero-title{font-family:'Cinzel Decorative',serif;font-size:clamp(2.8rem,7vw,6rem);font-weight:700;line-height:1.1;background:linear-gradient(180deg,#F0E6C8 0%,#C9A227 50%,#8A6E1A 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:1rem;filter:drop-shadow(0 0 40px rgba(201,162,39,0.3))}
+  .hero-subtitle{font-family:'Cinzel',serif;font-size:clamp(1rem,2.5vw,1.4rem);color:var(--cream2);letter-spacing:0.15em;margin-bottom:2rem}
+  .hero-runes{font-size:1.8rem;letter-spacing:0.4em;color:rgba(201,162,39,0.4);margin-bottom:2.5rem}
+  .hero-cta{display:inline-block;font-family:'Cinzel',serif;font-size:0.85rem;letter-spacing:0.2em;text-transform:uppercase;text-decoration:none;color:var(--dark);background:linear-gradient(135deg,var(--gold),var(--gold-light));padding:0.9rem 2.5rem;clip-path:polygon(12px 0%,100% 0%,calc(100% - 12px) 100%,0% 100%);transition:filter 0.2s;border:none;cursor:pointer}
+  .hero-cta:hover{filter:brightness(1.15)}
+  .hero-scroll{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.2em;color:rgba(201,162,39,0.5);text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:0.5rem}
+  .scroll-line{width:1px;height:40px;background:linear-gradient(180deg,transparent,var(--gold));animation:pulse 2s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:0.3}50%{opacity:1}}
+
+  /* SECTIONS */
+  section{padding:6rem 2rem;position:relative}
+  .section-inner{max-width:1100px;margin:0 auto}
+  .section-eyebrow{font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.3em;color:var(--gold);text-transform:uppercase;margin-bottom:0.75rem;display:flex;align-items:center;gap:0.75rem}
+  .section-eyebrow::before{content:'';display:block;height:1px;width:40px;background:var(--gold);opacity:0.5}
+  .section-title{font-family:'Cinzel Decorative',serif;font-size:clamp(1.8rem,4vw,2.8rem);color:var(--gold);margin-bottom:1rem;line-height:1.2}
+  .section-lead{font-size:1.05rem;line-height:1.8;color:var(--cream2);max-width:700px;margin-bottom:3rem}
+  .divider{display:flex;align-items:center;gap:1rem;margin:3rem 0}
+  .divider-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold-dim),transparent)}
+  .divider-symbol{font-size:1.2rem;color:var(--gold);opacity:0.6}
+
+  /* INTRO STRIP */
+  .intro-strip{background:linear-gradient(135deg,var(--forest) 0%,var(--dark3) 100%);border-top:1px solid rgba(201,162,39,0.2);border-bottom:1px solid rgba(201,162,39,0.2)}
+  .intro-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:2rem}
+  .intro-card{text-align:center;padding:2rem 1rem}
+  .intro-icon{font-size:2.5rem;margin-bottom:1rem}
+  .intro-card h3{font-family:'Cinzel',serif;font-size:0.95rem;letter-spacing:0.1em;color:var(--gold);margin-bottom:0.5rem}
+  .intro-card p{font-size:0.9rem;color:var(--cream2);line-height:1.7}
+
+  /* STAT BAND */
+  .stat-band{background:rgba(201,162,39,0.05);border-top:1px solid rgba(201,162,39,0.15);border-bottom:1px solid rgba(201,162,39,0.15);padding:2.5rem 2rem}
+  .stats-row{max-width:900px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:2rem;text-align:center}
+  .stat-val{font-family:'Cinzel Decorative',serif;font-size:2.2rem;color:var(--gold);line-height:1;margin-bottom:0.4rem}
+  .stat-label{font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.1em;color:var(--cream2);text-transform:uppercase}
+
+  /* VENUES */
+  .venues-section{background:var(--dark2)}
+  .venue-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:2rem}
+  .venue-card{background:var(--dark3);border:1px solid rgba(201,162,39,0.15);border-top:3px solid var(--gold-dim);padding:2rem;position:relative;overflow:hidden;transition:transform 0.3s,border-color 0.3s}
+  .venue-card:hover{transform:translateY(-4px);border-color:rgba(201,162,39,0.4)}
+  .venue-tag{display:inline-block;font-family:'Cinzel',serif;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--dark);background:var(--gold-dim);padding:0.25rem 0.75rem;margin-bottom:1rem}
+  .venue-card h3{font-family:'Cinzel',serif;font-size:1.2rem;color:var(--cream);margin-bottom:0.4rem}
+  .venue-location{font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.1em;color:var(--gold);margin-bottom:1rem}
+  .venue-card p{font-size:0.9rem;line-height:1.75;color:var(--cream2)}
+  .venue-features{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1rem}
+  .venue-feat{font-size:0.75rem;font-family:'Cinzel',serif;color:var(--cream2);background:rgba(201,162,39,0.08);border:1px solid rgba(201,162,39,0.2);padding:0.25rem 0.6rem}
+
+  /* CEREMONY */
+  .ceremony-section{background:linear-gradient(180deg,var(--dark) 0%,var(--forest) 50%,var(--dark) 100%)}
+  .ritual-list{display:flex;flex-direction:column;gap:2.5rem}
+  .ritual-item{display:grid;grid-template-columns:64px 1fr;gap:1.5rem;align-items:start;padding:1.5rem;background:rgba(255,255,255,0.02);border-left:3px solid var(--gold-dim)}
+  .ritual-num{font-family:'Cinzel Decorative',serif;font-size:2rem;color:var(--gold);opacity:0.4;line-height:1}
+  .ritual-body h3{font-family:'Cinzel',serif;font-size:1.1rem;color:var(--cream);margin-bottom:0.5rem}
+  .ritual-body p{font-size:0.92rem;line-height:1.8;color:var(--cream2)}
+  .ritual-tip{margin-top:0.75rem;font-size:0.82rem;font-style:italic;color:var(--gold);opacity:0.8;padding-left:1rem;border-left:2px solid rgba(201,162,39,0.3)}
+
+  /* FEAST */
+  .feast-section{background:var(--dark4)}
+  .feast-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem}
+  @media(max-width:700px){.feast-grid{grid-template-columns:1fr}}
+  .feast-col h3{font-family:'Cinzel',serif;font-size:1rem;letter-spacing:0.1em;color:var(--gold);margin-bottom:1.25rem;text-transform:uppercase}
+  .feast-items{list-style:none;display:flex;flex-direction:column;gap:0.75rem}
+  .feast-items li{display:flex;align-items:start;gap:0.75rem;font-size:0.92rem;line-height:1.7;color:var(--cream2)}
+  .feast-items li::before{content:'';color:var(--gold);font-size:0.85rem;flex-shrink:0;margin-top:0.15rem}
+  .mead-box{margin-top:2rem;background:rgba(201,162,39,0.06);border:1px solid rgba(201,162,39,0.2);padding:1.5rem}
+  .mead-box h4{font-family:'Cinzel',serif;font-size:0.85rem;letter-spacing:0.15em;color:var(--gold);text-transform:uppercase;margin-bottom:0.75rem}
+  .mead-box p{font-size:0.88rem;line-height:1.75;color:var(--cream2)}
+
+  /* ATTIRE */
+  .attire-section{background:var(--dark2)}
+  .attire-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:2rem}
+  .attire-card{background:var(--dark3);border:1px solid rgba(201,162,39,0.12);padding:2rem;text-align:center}
+  .attire-icon{font-size:3rem;margin-bottom:1rem}
+  .attire-card h3{font-family:'Cinzel',serif;font-size:0.95rem;letter-spacing:0.08em;color:var(--gold);margin-bottom:0.75rem}
+  .attire-card p{font-size:0.88rem;line-height:1.75;color:var(--cream2)}
+  .attire-list{list-style:none;text-align:left;margin-top:1rem;display:flex;flex-direction:column;gap:0.4rem}
+  .attire-list li{font-size:0.85rem;color:var(--cream2);padding-left:1rem;position:relative}
+  .attire-list li::before{content:'';position:absolute;left:0;color:var(--gold)}
+
+  /* DECOR */
+  .decor-section{background:linear-gradient(180deg,var(--dark) 0%,#0A0A18 100%)}
+  .decor-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem}
+  .decor-item{padding:1.5rem;background:rgba(255,255,255,0.02);border:1px solid rgba(201,162,39,0.1);text-align:center;transition:background 0.3s}
+  .decor-item:hover{background:rgba(201,162,39,0.05)}
+  .decor-item .dicon{font-size:2rem;margin-bottom:0.75rem}
+  .decor-item h4{font-family:'Cinzel',serif;font-size:0.85rem;letter-spacing:0.08em;color:var(--cream);margin-bottom:0.5rem}
+  .decor-item p{font-size:0.82rem;color:var(--cream2);line-height:1.65}
+
+  /* ENTERTAINMENT */
+  .entertainment-section{background:var(--dark3)}
+  .ent-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem}
+  .ent-card{display:flex;gap:1.25rem;padding:1.5rem;background:rgba(255,255,255,0.02);border-left:3px solid var(--red)}
+  .ent-emoji{font-size:2.2rem;flex-shrink:0}
+  .ent-card h3{font-family:'Cinzel',serif;font-size:0.95rem;color:var(--cream);margin-bottom:0.4rem}
+  .ent-card p{font-size:0.88rem;line-height:1.7;color:var(--cream2)}
+
+  /* TIMELINE */
+  .timeline-section{background:var(--dark)}
+  .timeline{display:flex;flex-direction:column}
+  .tl-phase{display:grid;grid-template-columns:180px 1fr;border-bottom:1px solid rgba(201,162,39,0.1)}
+  @media(max-width:600px){.tl-phase{grid-template-columns:1fr}}
+  .tl-period{padding:1.5rem;background:rgba(201,162,39,0.04);border-right:1px solid rgba(201,162,39,0.1);display:flex;align-items:center}
+  @media(max-width:600px){.tl-period{border-right:none;border-bottom:1px solid rgba(201,162,39,0.1)}}
+  .tl-period-label{font-family:'Cinzel',serif;font-size:0.8rem;letter-spacing:0.1em;color:var(--gold);text-transform:uppercase}
+  .tl-tasks{padding:1.5rem;display:flex;flex-direction:column;gap:0.6rem}
+  .tl-task{display:flex;align-items:start;gap:0.75rem;font-size:0.88rem;color:var(--cream2);cursor:pointer}
+  .tl-check{width:16px;height:16px;flex-shrink:0;margin-top:2px;border:1px solid var(--gold-dim);background:transparent;cursor:pointer;appearance:none;-webkit-appearance:none;position:relative;transition:background 0.2s}
+  .tl-check:checked{background:var(--gold);border-color:var(--gold)}
+  .tl-check:checked::after{content:'v';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--dark);font-weight:bold}
+
+  /* BUDGET */
+  .budget-section{background:var(--dark2)}
+  .budget-table{width:100%;border-collapse:collapse}
+  .budget-table th{font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--gold);padding:0.75rem 1rem;text-align:left;border-bottom:2px solid rgba(201,162,39,0.3)}
+  .budget-table td{font-size:0.88rem;color:var(--cream2);padding:0.85rem 1rem;border-bottom:1px solid rgba(201,162,39,0.07)}
+  .budget-table tr:hover td{background:rgba(201,162,39,0.04)}
+  .budget-table .total td{font-family:'Cinzel',serif;color:var(--gold);border-top:2px solid rgba(201,162,39,0.3);border-bottom:none;font-size:0.95rem}
+  .cost-hi{color:var(--cream);font-weight:500}
+
+  /* VENDORS */
+  .vendors-section{background:var(--dark4)}
+  .vendor-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem}
+  .vendor-card{background:var(--dark3);border:1px solid rgba(201,162,39,0.12);padding:1.5rem}
+  .vendor-cat{font-family:'Cinzel',serif;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem}
+  .vendor-card h4{font-family:'Cinzel',serif;font-size:1rem;color:var(--cream);margin-bottom:0.5rem}
+  .vendor-card p{font-size:0.85rem;color:var(--cream2);line-height:1.7}
+  .vendor-region{margin-top:0.75rem;font-size:0.78rem;font-style:italic;color:var(--ice);opacity:0.7}
+
+  /* CTA */
+  .cta-section{background:linear-gradient(135deg,var(--forest) 0%,#0D1A0D 50%,var(--dark) 100%);text-align:center;padding:5rem 2rem}
+  .cta-form{max-width:520px;margin:0 auto;display:flex;flex-direction:column;gap:1rem}
+  .cta-form input,.cta-form select,.cta-form textarea{background:rgba(255,255,255,0.04);border:1px solid rgba(201,162,39,0.25);color:var(--cream);padding:0.85rem 1rem;font-family:'Lora',serif;font-size:0.9rem;outline:none;transition:border-color 0.2s}
+  .cta-form input:focus,.cta-form select:focus,.cta-form textarea:focus{border-color:var(--gold)}
+  .cta-form select option{background:var(--dark3);color:var(--cream)}
+  .cta-form button{font-family:'Cinzel',serif;font-size:0.85rem;letter-spacing:0.2em;text-transform:uppercase;background:linear-gradient(135deg,var(--gold-dim),var(--gold));color:var(--dark);border:none;cursor:pointer;padding:1rem 2rem;clip-path:polygon(10px 0%,100% 0%,calc(100% - 10px) 100%,0% 100%);transition:filter 0.2s}
+  .cta-form button:hover{filter:brightness(1.15)}
+
+  /* QUOTE */
+  .quote-block{background:rgba(201,162,39,0.04);border-left:4px solid var(--gold);padding:1.5rem 2rem;margin:2.5rem 0}
+  .quote-block blockquote{font-size:1.1rem;font-style:italic;color:var(--cream);line-height:1.8;margin-bottom:0.5rem}
+  .quote-block cite{font-family:'Cinzel',serif;font-size:0.75rem;letter-spacing:0.1em;color:var(--gold)}
+
+  /* FOOTER */
+  footer{background:var(--dark);border-top:1px solid rgba(201,162,39,0.15);padding:2.5rem 2rem;text-align:center}
+  .footer-brand{font-family:'Cinzel Decorative',serif;font-size:1.1rem;color:var(--gold);margin-bottom:0.5rem}
+  .footer-sub{font-size:0.82rem;color:var(--cream2);opacity:0.6;font-style:italic}
+  .footer-runes{font-size:1.4rem;letter-spacing:0.5em;color:rgba(201,162,39,0.2);margin-top:1rem}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-brand">Vikingbröllopet</div>
+    <ul class="nav-links">
+      <li><a href="#venues">Venues</a></li>
+      <li><a href="#ceremony">Ceremony</a></li>
+      <li><a href="#feast">Feast</a></li>
+      <li><a href="#attire">Attire</a></li>
+      <li><a href="#entertainment">Entertainment</a></li>
+      <li><a href="#timeline">Timeline</a></li>
+      <li><a href="#contact">Plan Your Day</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Sweden &middot; Norse Traditions &middot; Eternal Bonds</div>
+    <h1 class="hero-title">The Viking<br>Wedding Guide</h1>
+    <p class="hero-subtitle">Plan Your Norse Ceremony in the Land of the Midnight Sun</p>
+    <div class="hero-runes">&#x16A0; &#x16A2; &#x16A6; &#x16A8; &#x16B1; &#x16B2;</div>
+    <a href="#venues" class="hero-cta">Begin Your Journey</a>
+  </div>
+  <div class="hero-scroll">Scroll<div class="scroll-line"></div></div>
+</section>
+
+<section class="intro-strip">
+  <div class="section-inner">
+    <div class="intro-grid">
+      <div class="intro-card">
+        <div class="intro-icon">&#x1F3D4;&#xFE0F;</div>
+        <h3>Authentic Swedish Settings</h3>
+        <p>Ancient runestone sites, forest longhouses, and island shores where Norse warriors once gathered</p>
+      </div>
+      <div class="intro-card">
+        <div class="intro-icon">&#x1F37A;</div>
+        <h3>Feasts Fit for Valhalla</h3>
+        <p>Mead halls, roasted meats, traditional Swedish dishes, and hand-crafted drinking horns for the toast</p>
+      </div>
+      <div class="intro-card">
+        <div class="intro-icon">&#x2694;&#xFE0F;</div>
+        <h3>Sacred Viking Rituals</h3>
+        <p>Blot blessings, sword exchanges, handfasting cords, and vows sworn under the open sky</p>
+      </div>
+      <div class="intro-card">
+        <div class="intro-icon">&#x1F333;</div>
+        <h3>Norse Living Tradition</h3>
+        <p>Sweden is home to over 2,500 runestones — more than any other country — and a proud Norse heritage</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="stat-band">
+  <div class="stats-row">
+    <div><div class="stat-val" id="sv1">2,500+</div><div class="stat-label">Runestones in Sweden</div></div>
+    <div><div class="stat-val" id="sv2">793</div><div class="stat-label">AD — Viking Age Begins</div></div>
+    <div><div class="stat-val" id="sv3">24</div><div class="stat-label">Hours of Summer Daylight North</div></div>
+    <div><div class="stat-val" id="sv4">3</div><div class="stat-label">UNESCO Viking Heritage Sites</div></div>
+  </div>
+</div>
+
+<section class="venues-section" id="venues">
+  <div class="section-inner">
+    <div class="section-eyebrow">Where to Wed</div>
+    <h2 class="section-title">Sacred Venues Across Sweden</h2>
+    <p class="section-lead">From ancient runestone meadows to reconstructed longhouses, Sweden offers settings of unmatched Viking authenticity — directly connected to over a thousand years of Norse history.</p>
+    <div class="venue-grid">
+
+      <div class="venue-card">
+        <div class="venue-tag">UNESCO Site</div>
+        <h3>Birka — Björkö Island</h3>
+        <div class="venue-location">Lake Mälaren, Uppland</div>
+        <p>Sweden's most important Viking Age town (750–970 AD) and a UNESCO World Heritage Site. Birka's burial mounds and reconstructed longhouses create an unrivalled backdrop. Only reachable by boat — your arrival is a journey in itself.</p>
+        <div class="venue-features">
+          <span class="venue-feat">UNESCO Site</span>
+          <span class="venue-feat">Boat Access</span>
+          <span class="venue-feat">Burial Mounds</span>
+          <span class="venue-feat">Longhouse</span>
+        </div>
+      </div>
+
+      <div class="venue-card">
+        <div class="venue-tag">Runestone Meadow</div>
+        <h3>Rök Runestone Site</h3>
+        <div class="venue-location">Östergötland, Eastern Sweden</div>
+        <p>Home to the Rök runestone — the most famous in Sweden — this pastoral Östergötland setting provides deeply atmospheric ceremony space. The inscription's 760 characters make it the longest known runic text in existence.</p>
+        <div class="venue-features">
+          <span class="venue-feat">Iconic Runestone</span>
+          <span class="venue-feat">Open Air</span>
+          <span class="venue-feat">Rural Setting</span>
+        </div>
+      </div>
+
+      <div class="venue-card">
+        <div class="venue-tag">Longhouse Venue</div>
+        <h3>Foteviken Viking Reserve</h3>
+        <div class="venue-location">Vellinge, Skåne</div>
+        <p>A living Viking village reconstructed to 1134 AD standards. Ceremony spaces inside torch-lit timber longhouses, blacksmith workshops, and an open-air market. Dedicated wedding packages include reenactors, feasts, and Norse officiants.</p>
+        <div class="venue-features">
+          <span class="venue-feat">Wedding Packages</span>
+          <span class="venue-feat">Full Venue</span>
+          <span class="venue-feat">Reenactors</span>
+          <span class="venue-feat">Feast Hall</span>
+        </div>
+      </div>
+
+      <div class="venue-card">
+        <div class="venue-tag">Northern Light</div>
+        <h3>Hägnan Open Air Museum</h3>
+        <div class="venue-location">Gammelstad, Luleå — Near Arctic Circle</div>
+        <p>Reconstructed Iron Age and Viking-era buildings surrounded by boreal forest near the Arctic Circle. Midnight sun ceremonies in summer offer otherworldly golden light that lasts all night — as though the gods refuse to let the day end.</p>
+        <div class="venue-features">
+          <span class="venue-feat">Midnight Sun</span>
+          <span class="venue-feat">Arctic Circle</span>
+          <span class="venue-feat">Forest Setting</span>
+        </div>
+      </div>
+
+      <div class="venue-card">
+        <div class="venue-tag">Island Fortress</div>
+        <h3>Gotland — Visby</h3>
+        <div class="venue-location">Gotland Island, Baltic Sea</div>
+        <p>A Viking trading hub of enormous historic importance. Visby's medieval walls, surrounding meadows, and accessible beaches allow outdoor ceremonies with a Norse aesthetic. Gotland hosts an annual Medieval Week each August drawing thousands.</p>
+        <div class="venue-features">
+          <span class="venue-feat">Island Setting</span>
+          <span class="venue-feat">Medieval Walls</span>
+          <span class="venue-feat">Beach Access</span>
+          <span class="venue-feat">Ferry Access</span>
+        </div>
+      </div>
+
+      <div class="venue-card">
+        <div class="venue-tag">Forest Sanctuary</div>
+        <h3>Bergslagen Forest Estates</h3>
+        <div class="venue-location">Bergslagen, Central Sweden</div>
+        <p>Sweden's vast inland forests — known to the Norse as Utgard, the wild beyond — provide intimate, private ceremony settings. The Bergslagen region has forested clearings, iron-age hearth sites, and private estate venues styled for Nordic weddings.</p>
+        <div class="venue-features">
+          <span class="venue-feat">Private Forest</span>
+          <span class="venue-feat">Intimate</span>
+          <span class="venue-feat">Iron Age Sites</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="ceremony-section" id="ceremony">
+  <div class="section-inner">
+    <div class="section-eyebrow">The Sacred Rites</div>
+    <h2 class="section-title">Viking Ceremony Traditions</h2>
+    <p class="section-lead">A Viking wedding — called a <em>brullaup</em> in Old Norse — was a multi-day event steeped in ritual. Here are the core rites to incorporate into a modern Norse ceremony in Sweden.</p>
+
+    <div class="quote-block">
+      <blockquote>"Cattle die, kinsmen die, the self must also die. I know one thing which never dies: the glory of the great dead."</blockquote>
+      <cite>— Hávamál, Words of the High One (Poetic Edda)</cite>
+    </div>
+
+    <div class="ritual-list">
+      <div class="ritual-item">
+        <div class="ritual-num">I</div>
+        <div class="ritual-body">
+          <h3>The Blót — Pre-Wedding Offering</h3>
+          <p>Before the wedding, a ritual blót (offering) was made to the gods — typically Frigg and Freyr for fertility and prosperity, and Odin for wisdom. In a modern setting this becomes a ceremonial pouring of mead onto the earth, accompanied by an invocation to the Norse pantheon spoken by the góði.</p>
+          <div class="ritual-tip">Modern adaptation: Pour a horn of mead over the roots of a chosen tree the evening before. Have a góði recite the invocation in Old Norse as the sun sets.</div>
+        </div>
+      </div>
+      <div class="ritual-item">
+        <div class="ritual-num">II</div>
+        <div class="ritual-body">
+          <h3>Mjölnir Blessing — Thor's Hammer</h3>
+          <p>A replica Mjölnir hammer was placed on the bride's lap by the góði at the start of the ceremony, invoking Thor's blessing for the union. The hammer represents protection, fertility, and the sanctification of the marriage bond.</p>
+          <div class="ritual-tip">Commission a hand-forged Mjölnir replica from a Swedish blacksmith. Several Foteviken Reserve smiths offer this service with Old Norse inscription options.</div>
+        </div>
+      </div>
+      <div class="ritual-item">
+        <div class="ritual-num">III</div>
+        <div class="ritual-body">
+          <h3>The Sword Exchange</h3>
+          <p>The groom presented his bride with an ancestral sword to be kept for their future sons. The bride presented her groom with a sword from her own family's lineage. This solemn act joined bloodlines through steel. Both swords were then worn throughout the feast.</p>
+          <div class="ritual-tip">Commission matching hand-forged swords engraved with runic inscriptions of your names. They become powerful family heirlooms passed to future generations.</div>
+        </div>
+      </div>
+      <div class="ritual-item">
+        <div class="ritual-num">IV</div>
+        <div class="ritual-body">
+          <h3>Ring Exchange on Sword Hilts</h3>
+          <p>Rings were placed on the hilt of crossed swords and transferred blade-to-blade — not passed hand to hand. This tied the rings' symbolism to the steel: your vows as enduring as iron.</p>
+          <div class="ritual-tip">This moment photographs exceptionally well. Brief your photographer to capture it from above as the rings transfer across the crossed blades in the ceremony light.</div>
+        </div>
+      </div>
+      <div class="ritual-item">
+        <div class="ritual-num">V</div>
+        <div class="ritual-body">
+          <h3>Handfasting — Binding of Hands</h3>
+          <p>The couple's wrists were bound together with a cord — often braided from wool in family colors — while vows were spoken. This is the origin of the phrase "tying the knot." The bound hands were raised before the gathered guests as a declaration of union.</p>
+          <div class="ritual-tip">Use hand-spun wool in your family colors. Some couples incorporate threads from each family's garments. The cord is kept as a family heirloom after the ceremony.</div>
+        </div>
+      </div>
+      <div class="ritual-item">
+        <div class="ritual-num">VI</div>
+        <div class="ritual-body">
+          <h3>The Bridal Crown</h3>
+          <p>Swedish Viking brides traditionally wore a crown of silver or gilt — often featuring interlaced knotwork — along with a wreath of myrtle, symbolising love and fidelity. Unbinding the hair for the ceremony represented the transition from maiden to wife.</p>
+          <div class="ritual-tip">Swedish jewelry workshops in Gothenburg and Stockholm offer historically-inspired bridal crowns in sterling silver with Norse knotwork. Myrtle wreaths are easily sourced from Nordic florists.</div>
+        </div>
+      </div>
+      <div class="ritual-item">
+        <div class="ritual-num">VII</div>
+        <div class="ritual-body">
+          <h3>The Horn of Mead — First Sip</h3>
+          <p>The ceremony was sealed with both partners drinking from the same drinking horn of mead. The remaining mead was poured onto the ground as an offering. This communal drink represented shared fate, shared fortune, and the beginning of a single household.</p>
+          <div class="ritual-tip">Source hand-turned drinking horns from Nordic craftspeople and engrave the runes for union (Gebo) and protection (Ansuz) inside the rim. The horn becomes a permanent keepsake.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="feast-section" id="feast">
+  <div class="section-inner">
+    <div class="section-eyebrow">The Mead Hall</div>
+    <h2 class="section-title">The Viking Wedding Feast</h2>
+    <p class="section-lead">A Viking wedding was incomplete without a feast lasting multiple days. The <em>brullaupsgille</em> — the wedding feast — was judged by its abundance. Honor your guests and the gods with a table that never empties.</p>
+    <div class="feast-grid">
+      <div class="feast-col">
+        <h3>Traditional Feast Menu</h3>
+        <ul class="feast-items">
+          <li><strong>Roasted Whole Boar</strong> — the centerpiece of any Norse feast, carved tableside by the góði or a designated carver</li>
+          <li><strong>Smoked Salmon and Herring</strong> — Sweden's coastal staple, served with dill, mustard, and rye bread</li>
+          <li><strong>Lamb Stew with Root Vegetables</strong> — slow-cooked with wild thyme, juniper berries, and barley</li>
+          <li><strong>Venison and Wild Boar Sausages</strong> — grilled over open flame, served with lingonberry preserve</li>
+          <li><strong>Flatbreads and Rye Loaves</strong> — baked in clay ovens, served with cultured butter and smoked lard</li>
+          <li><strong>Skyr with Honey and Cloudberries</strong> — a Norse dairy tradition still alive in Scandinavia today</li>
+          <li><strong>Roasted Root Vegetables</strong> — turnips, parsnips, and swede roasted with forest herbs</li>
+          <li><strong>Porridge with Dried Berries</strong> — traditional graut with lingonberries and cream, served as first course</li>
+        </ul>
+      </div>
+      <div class="feast-col">
+        <h3>Drink and Mead Selection</h3>
+        <ul class="feast-items">
+          <li><strong>Ceremonial Mead</strong> — honey wine, ideally brewed 6–12 months before the wedding for the couple's personal supply</li>
+          <li><strong>Gotlandsdricka</strong> — an ancient Swedish farmhouse ale brewed with juniper branches, still made in Gotland today</li>
+          <li><strong>Viking Mead</strong> — commercial Swedish producers offer wedding packages; look for Mjödhamnen in Stockholm</li>
+          <li><strong>Swedish Aquavit</strong> — spirits distilled with caraway and dill, served ice-cold for toasts</li>
+          <li><strong>Birch Sap Wine</strong> — traditional Scandinavian spring tonic, lightly fermented and delicate</li>
+          <li><strong>Elderflower Cordial</strong> — a non-alcoholic Norse-style drink made from foraged Swedish blooms</li>
+        </ul>
+        <div class="mead-box">
+          <h4>The Origin of "Honeymoon"</h4>
+          <p>The word honeymoon is of Norse origin. After the wedding, couples were given enough mead to last one full lunar cycle — one month. This "month of honey" was spent in seclusion, beginning new life together. Commission a barrel of Swedish artisanal mead as your honeymoon supply — a living continuation of 1,000-year-old tradition.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"><div class="divider-line"></div><div class="divider-symbol">&#x16A0;</div><div class="divider-line"></div></div>
+
+    <div class="decor-grid">
+      <div class="decor-item"><div class="dicon">&#x1F36F;</div><h4>Mead Tasting Bar</h4><p>Set up a mead flight station featuring 5–6 Swedish producers. Guests vote on the "official mead of the union."</p></div>
+      <div class="decor-item"><div class="dicon">&#x1F525;</div><h4>Open Fire Cooking</h4><p>Arrange live fire pits for roasting. The smell and sight of open flames transforms any venue into a true mead hall.</p></div>
+      <div class="decor-item"><div class="dicon">&#x1FA99;</div><h4>Long Communal Tables</h4><p>Viking feasts used communal long tables — no round tables. Seat all guests together in one grand hall for unity.</p></div>
+      <div class="decor-item"><div class="dicon">&#x1F4AF;</div><h4>Horn Toast</h4><p>Each place setting receives a small drinking horn. The skald calls the toast and everyone drinks simultaneously.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="attire-section" id="attire">
+  <div class="section-inner">
+    <div class="section-eyebrow">Dress for the Age</div>
+    <h2 class="section-title">Viking Wedding Attire</h2>
+    <p class="section-lead">Norse clothing was richly textured — wool, linen, and silk traded along Viking routes — dyed in deep blues, greens, and reds. A Viking wedding called for the finest garments in the household.</p>
+    <div class="attire-grid">
+      <div class="attire-card">
+        <div class="attire-icon">&#x1F455;</div>
+        <h3>The Bride — Brúðr</h3>
+        <p>The Viking bride wore a long linen underdress (<em>serk</em>) under a woolen overdress (<em>hangerock</em>), held by two oval brooches. Colors leaned toward deep blue, forest green, or burgundy — never white, which is a Victorian invention.</p>
+        <ul class="attire-list">
+          <li>Oval bronze or silver tortoise brooches</li>
+          <li>Braided hair or wrapped headscarf</li>
+          <li>Bridal crown of silver knotwork</li>
+          <li>Myrtle wreath over crown</li>
+          <li>Leather belt with hanging keys (symbol of household authority)</li>
+          <li>Fur-lined cloak for outdoor ceremonies</li>
+        </ul>
+      </div>
+      <div class="attire-card">
+        <div class="attire-icon">&#x2694;&#xFE0F;</div>
+        <h3>The Groom — Brúðgumi</h3>
+        <p>The Viking groom wore his finest tunic — wool or silk depending on wealth — belted with tooled leather, often with silver fittings. The ceremony sword was worn at the hip. A fur-lined cloak signified status and readiness for the feast.</p>
+        <ul class="attire-list">
+          <li>Embroidered woolen tunic (knee-length)</li>
+          <li>Leather trousers or woolen breeches</li>
+          <li>Tooled leather belt with silver buckle</li>
+          <li>Ceremonial sword on left hip</li>
+          <li>Torc or arm ring of silver or bronze</li>
+          <li>Fur-lined cloak pinned at right shoulder</li>
+        </ul>
+      </div>
+      <div class="attire-card">
+        <div class="attire-icon">&#x1F465;</div>
+        <h3>Wedding Party</h3>
+        <p>Shield-maidens (bridesmaids) and huscarls (groomsmen) dressed to reflect the warrior household. Women wore matching oval brooches in coordinating colors; men wore matching arm rings. The party served as a literal honor guard.</p>
+        <ul class="attire-list">
+          <li>Shield-maidens: matching overdresses in family colors</li>
+          <li>Huscarls: coordinating tunic color with belt style</li>
+          <li>All carry small drinking horns</li>
+          <li>Floral crowns of wildflowers for maidens</li>
+          <li>Shield bearers for the couple's procession</li>
+        </ul>
+      </div>
+      <div class="attire-card">
+        <div class="attire-icon">&#x1F48D;</div>
+        <h3>Jewelry and Accessories</h3>
+        <p>Norse jewelry was a statement of wealth and spiritual protection. Both partners should wear pieces specifically crafted for the ceremony — rune-inscribed rings, knotwork pendants, and arm rings are all historically authentic.</p>
+        <ul class="attire-list">
+          <li>Runic wedding bands with Norse knotwork</li>
+          <li>Mjölnir pendants for protection</li>
+          <li>Silver arm rings (gift of the groom)</li>
+          <li>Amber necklaces (Baltic amber was prized along trade routes)</li>
+          <li>Cloak pins of silver or bronze filigree</li>
+          <li>Rune-carved leather cuffs</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="decor-section" id="decor">
+  <div class="section-inner">
+    <div class="section-eyebrow">Set the Scene</div>
+    <h2 class="section-title">Décor and Ambiance</h2>
+    <p class="section-lead">The atmosphere of a Viking wedding is built through fire, timber, steel, and nature. Every element should speak to the age — rough-hewn and beautiful, wild and deliberate.</p>
+    <div class="decor-grid">
+      <div class="decor-item"><div class="dicon">&#x1F525;</div><h4>Torch Lighting</h4><p>Iron wall-mounted torches and standing fire-bowls replace candles. Firelight creates the amber warmth of a real mead hall.</p></div>
+      <div class="decor-item"><div class="dicon">&#x1F6E1;&#xFE0F;</div><h4>Shield Wall Display</h4><p>Line the ceremony aisle or feast hall walls with painted shields in family colors. A shield wall behind the altar is dramatic and deeply Norse.</p></div>
+      <div class="decor-item"><div class="dicon">&#x26B0;&#xFE0F;</div><h4>Runic Centerpieces</h4><p>Carved wooden tablets with runic inscriptions serve as table centerpieces. Each table bears a different rune meaningful to the couple.</p></div>
+      <div class="decor-item"><div class="dicon">&#x1F33F;</div><h4>Foraged Florals</h4><p>Swedish wildflowers, pine branches, juniper sprigs, and birch twigs. No imported tropical flowers — forage local or use dried Nordic botanicals.</p></div>
+      <div class="decor-item"><div class="dicon">&#x1FA99;</div><h4>Timber and Hide</h4><p>Raw timber table bases, fur throws on benches, and leather-bound menu cards. Natural materials ground every aesthetic choice in authenticity.</p></div>
+      <div class="decor-item"><div class="dicon">&#x1F985;</div><h4>Raven Motifs</h4><p>Odin's ravens Huginn and Muninn appear throughout Norse iconography. Incorporate carved motifs into signage and table markers.</p></div>
+      <div class="decor-item"><div class="dicon">&#x1F5FF;</div><h4>Runic Seating Chart</h4><p>Replace paper seating charts with a runic stone board — or a polished slab of Swedish granite with names chalked in elder futhark runes.</p></div>
+      <div class="decor-item"><div class="dicon">&#x1F333;</div><h4>Yggdrasil Altar</h4><p>Build the ceremony altar around a living or carved Yggdrasil (World Tree) — a large birch or ash decorated with hanging runes and candles.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="entertainment-section" id="entertainment">
+  <div class="section-inner">
+    <div class="section-eyebrow">Merriment and Battle</div>
+    <h2 class="section-title">Entertainment</h2>
+    <p class="section-lead">Vikings were not merely warriors — they were poets, musicians, storytellers, and craftspeople. A Viking wedding should celebrate all of it, from the skald's verse to the wrestling ring.</p>
+    <div class="ent-grid">
+      <div class="ent-card">
+        <div class="ent-emoji">&#x1F3B5;</div>
+        <div>
+          <h3>Skald Performances</h3>
+          <p>Hire a skald (Norse poet-musician) to perform original poetry about the couple. Traditional instruments include the langeleik, lur (bronze horn), and frame drums. Several Swedish folk ensembles specialise in authentic Viking-age acoustic music.</p>
+        </div>
+      </div>
+      <div class="ent-card">
+        <div class="ent-emoji">&#x2694;&#xFE0F;</div>
+        <div>
+          <h3>Viking Combat Display</h3>
+          <p>Arrange a choreographed combat display by licensed Viking reenactors. Swedish reenactment societies like Vikingaklubben and ULFBERHT put on spectacular displays for private events. The wedding party can receive mock-combat training beforehand.</p>
+        </div>
+      </div>
+      <div class="ent-card">
+        <div class="ent-emoji">&#x1F3AE;</div>
+        <div>
+          <h3>Kubb Tournament</h3>
+          <p>Kubb is an ancient Swedish Viking lawn game — sometimes called "Viking chess." Set up a tournament as guests arrive. It needs no prior experience and creates instant community. Teams named after Norse clans add atmosphere and gentle rivalry.</p>
+        </div>
+      </div>
+      <div class="ent-card">
+        <div class="ent-emoji">&#x1F3F9;</div>
+        <div>
+          <h3>Archery Range</h3>
+          <p>Set up a supervised archery station with traditional longbows. A ranking system where guests shoot for honor points — with prizes for the best archer — creates friendly competition throughout the feast period.</p>
+        </div>
+      </div>
+      <div class="ent-card">
+        <div class="ent-emoji">&#x1FAB6;</div>
+        <div>
+          <h3>Rune Reading</h3>
+          <p>Hire a Norse runologist to offer rune readings to guests — drawing from a set of elder futhark stones for personal insights. This is both entertaining and deeply atmospheric, and ties directly to historical Norse divination tradition.</p>
+        </div>
+      </div>
+      <div class="ent-card">
+        <div class="ent-emoji">&#x1F94A;</div>
+        <div>
+          <h3>Glíma Wrestling</h3>
+          <p>The ancient Norse sport of Glíma (upright folk wrestling) was a staple of Viking gatherings. A Glíma display or light competition between the groomsmen creates memorable atmosphere and usually produces great photographs.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="timeline-section" id="timeline">
+  <div class="section-inner">
+    <div class="section-eyebrow">Planning Scroll</div>
+    <h2 class="section-title">Month-by-Month Checklist</h2>
+    <p class="section-lead">Click each task as it is completed. A well-planned Viking wedding requires 12–18 months of lead time for the most sought-after venues and craftspeople — your checklist is saved automatically.</p>
+    <div class="timeline">
+
+      <div class="tl-phase">
+        <div class="tl-period"><div class="tl-period-label">18–12 Months Before</div></div>
+        <div class="tl-tasks">
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Set total budget and guest count</label>
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Choose Swedish region (Stockholm area, Gotland, North Sweden, Skåne)</label>
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Tour and book primary venue (Foteviken, Birka, Gotland, etc.)</label>
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Book góði (Norse officiant) — check availability early; they are rare</label>
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Commission swords from a Swedish blacksmith (lead time: 6–9 months)</label>
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Begin brewing ceremonial mead (minimum 12 months for ceremony-quality mead)</label>
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Research Swedish marriage license requirements for foreign nationals</label>
+        </div>
+      </div>
+
+      <div class="tl-phase">
+        <div class="tl-period"><div class="tl-period-label">12–9 Months</div></div>
+        <div class="tl-tasks">
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Commission bridal crown and attire from Norse costume maker</label>
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Commission groom's tunic, cloak, and accessories</label>
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Book Viking reenactors and combat display group</label>
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Book skald and Norse musicians</label>
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Hire photographer experienced in Norse or outdoor ceremonies</label>
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Design handfasting cord with both families' colors</label>
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Source drinking horns and have them engraved with chosen runes</label>
+        </div>
+      </div>
+
+      <div class="tl-phase">
+        <div class="tl-period"><div class="tl-period-label">9–6 Months</div></div>
+        <div class="tl-tasks">
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Design and send rune-inspired wedding invitations</label>
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Book accommodation for guests near venue</label>
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Plan feast menu with caterer — source wild boar, local salmon, mead</label>
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Commission runic wedding bands from a Norse jeweler</label>
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Book archery, Kubb, and activity vendors</label>
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Source fur throws, shield wall props, and torch stands for décor</label>
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Write vows in Old Norse with góði's assistance (optional but memorable)</label>
+        </div>
+      </div>
+
+      <div class="tl-phase">
+        <div class="tl-period"><div class="tl-period-label">6–3 Months</div></div>
+        <div class="tl-tasks">
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Confirm all vendors and review contracts</label>
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Arrange guest transport to remote venues (Birka boat, Gotland ferry)</label>
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Plan ceremony rehearsal with góði</label>
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Finalize seating plan and runic seating chart design</label>
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Confirm weather backup plans (Norse-tented enclosure)</label>
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Arrange marriage license appointment at Swedish Skatteverket office</label>
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Create ceremony program in Old Norse and English or Swedish</label>
+        </div>
+      </div>
+
+      <div class="tl-phase">
+        <div class="tl-period"><div class="tl-period-label">Final Month</div></div>
+        <div class="tl-tasks">
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Final attire fittings and alterations</label>
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Rehearsal dinner — small blót ceremony with immediate family</label>
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Confirm feast headcount with caterer</label>
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Pick up commissioned swords, rings, and drinking horns</label>
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Pack ceremonial items: handfasting cord, Mjölnir, mead, rings</label>
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Brief wedding party on ceremony flow and Viking protocol</label>
+          <label class="tl-task"><input type="checkbox" class="tl-check"> Enjoy your Viking wedding day — Skål!</label>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="budget-section" id="budget">
+  <div class="section-inner">
+    <div class="section-eyebrow">The War Chest</div>
+    <h2 class="section-title">Budget Reference Guide</h2>
+    <p class="section-lead">Viking wedding costs vary by guest count, venue, and authenticity level. Below is a reference range for a 50–100 guest ceremony in Sweden, priced in Swedish Kronor (SEK) and Euros (EUR).</p>
+    <div style="overflow-x:auto">
+      <table class="budget-table">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Range (SEK)</th>
+            <th>Range (EUR)</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>Venue Hire</td><td class="cost-hi">40,000 – 120,000</td><td>3,500 – 10,500</td><td>Foteviken full weekend packages from SEK 55,000</td></tr>
+          <tr><td>Catering and Feast</td><td class="cost-hi">80,000 – 200,000</td><td>7,000 – 17,500</td><td>Wild boar, mead, and open-fire cooking add cost</td></tr>
+          <tr><td>Attire (Both Partners)</td><td class="cost-hi">25,000 – 80,000</td><td>2,200 – 7,000</td><td>Custom-commissioned Norse garments; sword rental available</td></tr>
+          <tr><td>Jewelry and Rings</td><td class="cost-hi">15,000 – 60,000</td><td>1,300 – 5,200</td><td>Hand-forged Norse rings; bridal crown priced separately</td></tr>
+          <tr><td>Photography and Film</td><td class="cost-hi">25,000 – 70,000</td><td>2,200 – 6,100</td><td>Cinematic documentary-style coverage recommended</td></tr>
+          <tr><td>Music and Entertainment</td><td class="cost-hi">20,000 – 55,000</td><td>1,750 – 4,800</td><td>Skald, combat display, Kubb, archery, rune reading</td></tr>
+          <tr><td>Décor and Florals</td><td class="cost-hi">15,000 – 45,000</td><td>1,300 – 3,900</td><td>Torches, shields, fur throws, foraged botanicals</td></tr>
+          <tr><td>Góði (Officiant)</td><td class="cost-hi">5,000 – 15,000</td><td>440 – 1,300</td><td>Norse officiants are rare; book 12+ months ahead</td></tr>
+          <tr><td>Invitations and Stationery</td><td class="cost-hi">5,000 – 18,000</td><td>440 – 1,570</td><td>Laser-engraved wood invitations or hand-carved rune tablets</td></tr>
+          <tr><td>Transport and Logistics</td><td class="cost-hi">10,000 – 30,000</td><td>875 – 2,600</td><td>Includes boat hire for Birka, Gotland ferry coordination</td></tr>
+          <tr class="total"><td>Total (50–100 guests)</td><td class="cost-hi">240,000 – 693,000</td><td>21,000 – 60,000</td><td>Mid-range budget: approx. SEK 420,000 / EUR 36,700</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="vendors-section" id="vendors">
+  <div class="section-inner">
+    <div class="section-eyebrow">Your Clan of Craftspeople</div>
+    <h2 class="section-title">Specialist Vendors in Sweden</h2>
+    <p class="section-lead">Ask at your chosen venue for their recommended supplier network. Foteviken and Birka both maintain curated lists of authentic Norse craftspeople who have worked with the venues before.</p>
+    <div class="vendor-grid">
+      <div class="vendor-card">
+        <div class="vendor-cat">Officiant</div>
+        <h4>Norse Góðar</h4>
+        <p>Authentic Norse officiants who can conduct blót ceremonies and Viking-tradition vow exchanges. Seek through Asatru congregations — Samfundet Forn Sed Sverige is Sweden's registered Norse faith organisation.</p>
+        <div class="vendor-region">Based across Sweden; nationwide</div>
+      </div>
+      <div class="vendor-card">
+        <div class="vendor-cat">Blacksmithing</div>
+        <h4>Viking Swordsmith</h4>
+        <p>Commission-only hand-forged swords, Mjölnir replicas, and ceremonial blades. Look for smiths who specialise in historical weaponry. Delivery lead time is typically 6–8 months for custom work.</p>
+        <div class="vendor-region">Dalarna, Uppland, Skåne</div>
+      </div>
+      <div class="vendor-card">
+        <div class="vendor-cat">Jewelry</div>
+        <h4>Norse Jewelry Atelier</h4>
+        <p>Sterling silver rune-engraved wedding bands, oval tortoise brooches, arm rings, and bridal crowns. Nordic jewelers in Gothenburg and Stockholm specialise in historically accurate Norse reproductions.</p>
+        <div class="vendor-region">Stockholm, Gothenburg, Uppsala</div>
+      </div>
+      <div class="vendor-card">
+        <div class="vendor-cat">Costume and Attire</div>
+        <h4>Viking Garment Makers</h4>
+        <p>Handwoven Viking-era costumes for the couple and wedding party. Use natural-dyed wool and hand-sewn linen. Lead time 4–6 months; commission both partners together for a coordinated family color palette.</p>
+        <div class="vendor-region">Linköping, Visby, Stockholm</div>
+      </div>
+      <div class="vendor-card">
+        <div class="vendor-cat">Catering</div>
+        <h4>Viking Feast Caterers</h4>
+        <p>Specialist open-fire caterers who source wild boar, elk, and smoked fish locally. Foteviken Reserve's in-house catering team is one of the most experienced in Viking feast cooking in Scandinavia.</p>
+        <div class="vendor-region">Skåne, Gotland, Stockholm</div>
+      </div>
+      <div class="vendor-card">
+        <div class="vendor-cat">Mead and Brewing</div>
+        <h4>Swedish Mead Producers</h4>
+        <p>Mjödhamnen (Stockholm), Gotlandsdricka brewers in Gotland, and several artisan mead-makers in Uppland offer wedding custom brews. Order 12 months ahead for ceremony-grade batch mead in branded bottles or barrels.</p>
+        <div class="vendor-region">Stockholm, Gotland, Uppland</div>
+      </div>
+      <div class="vendor-card">
+        <div class="vendor-cat">Music</div>
+        <h4>Norse Musicians and Skalds</h4>
+        <p>Traditional Nordic folk ensembles and solo skalds who perform on historical instruments. Seek ensembles based in Uppsala and Stockholm who specialise in authentic Viking-age music for ceremonies and feasts.</p>
+        <div class="vendor-region">Uppsala, Stockholm, Lund</div>
+      </div>
+      <div class="vendor-card">
+        <div class="vendor-cat">Reenactment</div>
+        <h4>Viking Combat Societies</h4>
+        <p>ULFBERHT Viking Society and Vikingaklubben are Swedish-based reenactment groups that perform at private events. Their combat displays and living-history setups are professional and family-safe.</p>
+        <div class="vendor-region">Stockholm, Malmö, Göteborg</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-section" id="contact">
+  <div class="section-inner">
+    <div class="section-eyebrow" style="justify-content:center">Begin Your Saga</div>
+    <h2 class="section-title" style="color:var(--gold)">Ready to Plan Your Viking Wedding?</h2>
+    <p class="section-lead" style="margin:0 auto 2.5rem">Share the details of your vision and let us connect you with the right Norse craftspeople, venues, and officiants across Sweden. Your saga starts here.</p>
+    <form class="cta-form" onsubmit="handleSubmit(event)">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Email Address" required>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">
+        <input type="text" placeholder="Partner's Name">
+        <input type="text" placeholder="Estimated Date or Year">
+      </div>
+      <select required>
+        <option value="" disabled selected>Preferred Swedish Region</option>
+        <option>Stockholm / Lake Mälaren Area</option>
+        <option>Gotland / Baltic Island</option>
+        <option>Skåne / Southern Sweden</option>
+        <option>Uppland / Uppsala Area</option>
+        <option>Northern Sweden / Arctic Circle</option>
+        <option>Open to Recommendations</option>
+      </select>
+      <select>
+        <option value="" disabled selected>Estimated Guest Count</option>
+        <option>Intimate (under 30)</option>
+        <option>Small (30–60)</option>
+        <option>Medium (60–120)</option>
+        <option>Grand Feast (120+)</option>
+      </select>
+      <textarea rows="4" placeholder="Tell us about your Viking wedding vision — themes, rituals, questions..."></textarea>
+      <button type="submit">Send Your Raven</button>
+    </form>
+    <p id="form-msg" style="margin-top:1rem;font-family:'Cinzel',serif;font-size:0.85rem;color:var(--gold);display:none">Your raven has been sent. We will reply by next moon.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-brand">Vikingbröllopet</div>
+  <p class="footer-sub">A Viking Wedding Planning Guide — Sweden Edition</p>
+  <p class="footer-sub" style="margin-top:0.25rem;font-style:normal">Traditions rooted in Norse heritage · Ceremonies beneath Swedish skies</p>
+  <div class="footer-runes">&#x16A0; &#x16A2; &#x16A6; &#x16A8; &#x16B1; &#x16B2; &#x16B7; &#x16B9; &#x16BA; &#x16BE; &#x16C1; &#x16C3;</div>
+</footer>
+
+<script>
+// HERO CANVAS — snowflakes and embers
+(function(){
+  const canvas = document.getElementById('hero-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+
+  function resize(){
+    W = canvas.width = canvas.offsetWidth;
+    H = canvas.height = canvas.offsetHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  function createParticle(){
+    const type = Math.random() < 0.55 ? 'snow' : 'ember';
+    return {
+      x: Math.random() * W,
+      y: type === 'snow' ? Math.random() * -100 : H + 10,
+      r: type === 'snow' ? Math.random() * 2 + 0.5 : Math.random() * 1.5 + 0.5,
+      vx: (Math.random() - 0.5) * (type === 'snow' ? 0.8 : 1.2),
+      vy: type === 'snow' ? Math.random() * 0.8 + 0.3 : -(Math.random() * 1.2 + 0.5),
+      alpha: Math.random() * 0.6 + 0.2,
+      type: type,
+      life: 1,
+      decay: Math.random() * 0.003 + 0.001,
+      seed: Math.random() * Math.PI * 2
+    };
+  }
+
+  for(var i = 0; i < 120; i++) particles.push(createParticle());
+
+  function draw(){
+    ctx.clearRect(0, 0, W, H);
+    var now = Date.now();
+    particles.forEach(function(p, i){
+      p.x += p.vx + Math.sin(now * 0.001 + p.seed) * 0.2;
+      p.y += p.vy;
+      p.life -= p.decay;
+      if(p.life <= 0 || p.y > H + 20 || p.y < -20){
+        particles[i] = createParticle();
+        return;
+      }
+      ctx.save();
+      ctx.globalAlpha = p.alpha * p.life;
+      if(p.type === 'snow'){
+        ctx.fillStyle = '#E8E8F0';
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      } else {
+        var grad = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 3);
+        grad.addColorStop(0, 'rgba(255,160,40,0.9)');
+        grad.addColorStop(0.4, 'rgba(200,80,20,0.4)');
+        grad.addColorStop(1, 'rgba(200,80,20,0)');
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r * 3, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+    });
+
+    // Subtle aurora bands
+    var t = now * 0.0003;
+    for(var b = 0; b < 3; b++){
+      var y = H * (0.3 + 0.2 * b + 0.05 * Math.sin(t + b * 2));
+      var bg = ctx.createLinearGradient(0, y - 60, 0, y + 60);
+      var cols = [
+        ['rgba(20,80,40,0)', 'rgba(20,80,40,0.04)', 'rgba(20,80,40,0)'],
+        ['rgba(40,20,80,0)', 'rgba(40,20,80,0.03)', 'rgba(40,20,80,0)'],
+        ['rgba(20,60,80,0)', 'rgba(20,60,80,0.03)', 'rgba(20,60,80,0)']
+      ];
+      bg.addColorStop(0, cols[b][0]);
+      bg.addColorStop(0.5, cols[b][1]);
+      bg.addColorStop(1, cols[b][2]);
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, y - 60, W, 120);
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// SCROLL-SPY NAV
+(function(){
+  var links = document.querySelectorAll('.nav-links a');
+  var sections = [];
+  links.forEach(function(l){
+    var el = document.querySelector(l.getAttribute('href'));
+    if(el) sections.push({el: el, link: l});
+  });
+  function onScroll(){
+    var y = window.scrollY + 80;
+    var active = sections[0];
+    sections.forEach(function(s){ if(s.el.offsetTop <= y) active = s; });
+    sections.forEach(function(s){ s.link.style.color = s === active ? 'var(--gold)' : ''; });
+  }
+  window.addEventListener('scroll', onScroll, {passive: true});
+})();
+
+// CHECKLIST PERSISTENCE
+(function(){
+  document.querySelectorAll('.tl-check').forEach(function(cb, i){
+    var key = 'vwg-check-' + i;
+    cb.checked = localStorage.getItem(key) === '1';
+    cb.addEventListener('change', function(){ localStorage.setItem(key, cb.checked ? '1' : '0'); });
+  });
+})();
+
+// FORM SUBMIT
+function handleSubmit(e){
+  e.preventDefault();
+  document.getElementById('form-msg').style.display = 'block';
+  e.target.style.opacity = '0.4';
+  e.target.style.pointerEvents = 'none';
+}
+</script>
+</body>
+</html>
