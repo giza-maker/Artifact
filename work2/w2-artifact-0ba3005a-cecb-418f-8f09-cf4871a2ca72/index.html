@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dragon Color Book</title>
+<link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Nunito:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1a1a2e;
+  --bg:#fff9f0;
+  --purple:#7c3aed;
+  --pink:#ec4899;
+  --teal:#0d9488;
+  --orange:#f97316;
+  --gold:#f59e0b;
+  --green:#16a34a;
+  --red:#dc2626;
+  --blue:#2563eb;
+  --sky:#0ea5e9;
+  --lime:#65a30d;
+}
+body{
+  font-family:'Nunito',sans-serif;
+  background:var(--bg);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ── Header ── */
+header{
+  background:var(--purple);
+  padding:14px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:4px solid var(--ink);
+  position:sticky;top:0;z-index:100;
+}
+.logo{
+  font-family:'Bubblegum Sans',cursive;
+  font-size:26px;color:#fff;
+  text-shadow:3px 3px 0 var(--ink);
+  display:flex;align-items:center;gap:8px;
+}
+.logo span{font-size:30px}
+.score-badge{
+  background:#fff;border:3px solid var(--ink);
+  border-radius:20px;padding:6px 16px;
+  font-size:14px;font-weight:800;
+  box-shadow:3px 3px 0 var(--ink);
+}
+
+/* ── Page select ── */
+.page-select{
+  display:flex;justify-content:center;gap:12px;flex-wrap:wrap;
+  padding:16px;background:rgba(124,58,237,.08);
+  border-bottom:3px solid var(--ink);
+}
+.page-btn{
+  font-family:'Bubblegum Sans',cursive;
+  font-size:15px;cursor:pointer;
+  padding:8px 18px;border:3px solid var(--ink);
+  border-radius:16px;background:#fff;
+  box-shadow:4px 4px 0 var(--ink);
+  transition:transform .1s,box-shadow .1s;
+}
+.page-btn:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--ink)}
+.page-btn.active{background:var(--purple);color:#fff}
+
+/* ── Main layout ── */
+main{
+  display:grid;
+  grid-template-columns:1fr 220px;
+  gap:16px;
+  padding:16px;
+  max-width:1100px;
+  margin:0 auto;
+}
+@media(max-width:720px){
+  main{grid-template-columns:1fr;grid-template-rows:auto auto}
+  .sidebar{order:-1;display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+}
+
+/* ── Canvas area ── */
+.canvas-wrap{
+  border:4px solid var(--ink);
+  border-radius:16px;
+  overflow:hidden;
+  background:#fff;
+  box-shadow:6px 6px 0 var(--ink);
+  cursor:crosshair;
+  position:relative;
+  touch-action:none;
+}
+canvas{display:block;width:100%;height:auto}
+.canvas-label{
+  position:absolute;top:8px;left:50%;transform:translateX(-50%);
+  background:rgba(0,0,0,.55);color:#fff;
+  font-family:'Bubblegum Sans',cursive;font-size:13px;
+  padding:3px 12px;border-radius:20px;pointer-events:none;
+}
+
+/* ── Sidebar ── */
+.sidebar{display:flex;flex-direction:column;gap:12px}
+.panel{
+  border:3px solid var(--ink);border-radius:14px;
+  background:#fff;padding:12px;
+  box-shadow:4px 4px 0 var(--ink);
+}
+.panel h3{
+  font-family:'Bubblegum Sans',cursive;font-size:16px;
+  margin-bottom:10px;color:var(--ink);
+}
+
+/* Color palette */
+.palette{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.color-swatch{
+  width:100%;aspect-ratio:1;border:3px solid var(--ink);
+  border-radius:8px;cursor:pointer;
+  transition:transform .1s,box-shadow .1s;
+  box-shadow:2px 2px 0 var(--ink);
+}
+.color-swatch:active{transform:scale(.9)}
+.color-swatch.chosen{
+  outline:4px solid var(--ink);
+  transform:scale(1.15);
+  box-shadow:0 0 0 var(--ink);
+}
+.color-preview{
+  width:100%;height:36px;border:3px solid var(--ink);
+  border-radius:10px;margin-top:8px;
+}
+
+/* Brush size */
+.brush-row{display:flex;gap:6px;align-items:center;margin-top:6px}
+.brush-btn{
+  flex:1;padding:5px;border:3px solid var(--ink);border-radius:8px;
+  background:var(--bg);cursor:pointer;font-size:11px;font-weight:700;
+  box-shadow:2px 2px 0 var(--ink);
+}
+.brush-btn.chosen{background:var(--purple);color:#fff}
+.brush-btn:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink)}
+
+/* Reference image */
+.ref-wrap{
+  border:3px solid var(--ink);border-radius:10px;overflow:hidden;
+  background:#f5f0ff;
+}
+.ref-canvas{width:100%;height:auto;display:block}
+
+/* Score display */
+.score-ring{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+}
+.score-num{
+  font-family:'Bubblegum Sans',cursive;font-size:36px;color:var(--purple);
+}
+.score-stars{font-size:24px;letter-spacing:4px}
+.score-tip{font-size:11px;color:#666;text-align:center}
+
+/* Check button */
+.check-btn{
+  width:100%;padding:12px;
+  font-family:'Bubblegum Sans',cursive;font-size:18px;
+  background:var(--green);color:#fff;
+  border:3px solid var(--ink);border-radius:14px;
+  cursor:pointer;box-shadow:4px 4px 0 var(--ink);
+  transition:transform .1s,box-shadow .1s;
+}
+.check-btn:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--ink)}
+.clear-btn{
+  width:100%;padding:8px;
+  font-family:'Bubblegum Sans',cursive;font-size:15px;
+  background:#fff;color:var(--red);
+  border:3px solid var(--ink);border-radius:12px;
+  cursor:pointer;box-shadow:3px 3px 0 var(--ink);
+  transition:transform .1s,box-shadow .1s;
+}
+.clear-btn:active{transform:translate(3px,3px);box-shadow:0 0 0 var(--ink)}
+
+/* ── Completion overlay ── */
+#overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,.6);z-index:200;
+  align-items:center;justify-content:center;
+}
+#overlay.show{display:flex}
+.overlay-card{
+  background:#fff;border:5px solid var(--ink);border-radius:24px;
+  padding:32px 40px;text-align:center;
+  box-shadow:8px 8px 0 var(--ink);max-width:360px;width:90%;
+}
+.overlay-card .oc-emoji{font-size:64px;margin-bottom:8px}
+.overlay-card h2{
+  font-family:'Bubblegum Sans',cursive;font-size:28px;
+  color:var(--purple);margin-bottom:8px;
+}
+.overlay-card p{font-size:14px;color:#555;margin-bottom:16px}
+.oc-stars{font-size:36px;letter-spacing:6px;margin-bottom:16px}
+.oc-score{
+  font-family:'Bubblegum Sans',cursive;font-size:22px;
+  color:var(--ink);margin-bottom:20px;
+}
+.oc-btns{display:flex;gap:10px;justify-content:center}
+.oc-btn{
+  padding:10px 22px;font-family:'Bubblegum Sans',cursive;font-size:16px;
+  border:3px solid var(--ink);border-radius:14px;cursor:pointer;
+  box-shadow:4px 4px 0 var(--ink);
+  transition:transform .1s,box-shadow .1s;
+}
+.oc-btn:active{transform:translate(4px,4px);box-shadow:0 0 0 var(--ink)}
+.oc-btn.primary{background:var(--purple);color:#fff}
+.oc-btn.secondary{background:#fff;color:var(--ink)}
+
+/* ── Confetti ── */
+.conf{
+  position:fixed;pointer-events:none;z-index:300;
+  border-radius:2px;animation:fall linear forwards;
+}
+@keyframes fall{
+  0%{transform:translateY(-20px) rotate(0deg);opacity:1}
+  100%{transform:translateY(110vh) rotate(720deg);opacity:0}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo"><span>🐉</span> Dragon Color Book</div>
+  <div class="score-badge">⭐ Total: <span id="total-score">0</span> pts</div>
+</header>
+
+<!-- Page selector -->
+<div class="page-select" id="page-select"></div>
+
+<main>
+  <div class="canvas-wrap" id="canvas-wrap">
+    <div class="canvas-label" id="canvas-label">Dragon Cat</div>
+    <canvas id="draw-canvas" width="700" height="560"></canvas>
+  </div>
+
+  <div class="sidebar">
+    <!-- Color palette -->
+    <div class="panel">
+      <h3>🎨 Colors</h3>
+      <div class="palette" id="palette"></div>
+      <div class="color-preview" id="color-preview"></div>
+    </div>
+
+    <!-- Brush size -->
+    <div class="panel">
+      <h3>✏️ Brush</h3>
+      <div class="brush-row" id="brush-row">
+        <button class="brush-btn" data-size="8">S</button>
+        <button class="brush-btn chosen" data-size="18">M</button>
+        <button class="brush-btn" data-size="32">L</button>
+        <button class="brush-btn" data-size="48">XL</button>
+      </div>
+      <div style="margin-top:8px">
+        <button class="brush-btn" id="eraser-btn" data-size="24" style="width:100%;font-size:13px">🧹 Eraser</button>
+      </div>
+    </div>
+
+    <!-- Reference -->
+    <div class="panel">
+      <h3>🖼️ Reference</h3>
+      <div class="ref-wrap">
+        <canvas id="ref-canvas" width="200" height="160" class="ref-canvas"></canvas>
+      </div>
+    </div>
+
+    <!-- Score -->
+    <div class="panel">
+      <h3>📊 Score</h3>
+      <div class="score-ring">
+        <div class="score-num" id="cur-score">—</div>
+        <div class="score-stars" id="cur-stars">⬜⬜⬜</div>
+        <div class="score-tip" id="score-tip">Color and check to score!</div>
+      </div>
+    </div>
+
+    <button class="check-btn" onclick="checkScore()">✅ Check Score!</button>
+    <button class="clear-btn" onclick="clearCanvas()">🧹 Clear Page</button>
+  </div>
+</main>
+
+<!-- Completion overlay -->
+<div id="overlay">
+  <div class="overlay-card">
+    <div class="oc-emoji" id="oc-emoji">🌟</div>
+    <h2 id="oc-title">Amazing!</h2>
+    <p id="oc-msg">You colored this page brilliantly!</p>
+    <div class="oc-stars" id="oc-stars">⭐⭐⭐</div>
+    <div class="oc-score" id="oc-score">Score: 95 / 100</div>
+    <div class="oc-btns">
+      <button class="oc-btn secondary" onclick="hideOverlay()">Keep Coloring</button>
+      <button class="oc-btn primary" onclick="nextPage()">Next Page →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Data ──────────────────────────────────────────────────────────
+const PAGES = [
+  {
+    id:'cat',name:'Dragon Cat',emoji:'🐱🐉',
+    // SVG path data for outline drawing (drawn on canvas)
+    draw(ctx, W, H) {
+      ctx.save();
+      ctx.strokeStyle='#1a1a2e';ctx.lineWidth=3;ctx.lineCap='round';ctx.lineJoin='round';
+      const s=W/700, t=H/560;
+      function sc(x,y){return[x*s,y*t]}
+      function mv(x,y){ctx.moveTo(...sc(x,y))}
+      function ln(x,y){ctx.lineTo(...sc(x,y))}
+      function bz(x1,y1,x2,y2,x,y){ctx.bezierCurveTo(...sc(x1,y1),...sc(x2,y2),...sc(x,y))}
+      function circle(cx,cy,r){ctx.beginPath();ctx.ellipse(cx*s,cy*t,r*s,r*(H/W)*s,0,0,Math.PI*2);ctx.stroke()}
+      function fill(col){ctx.fillStyle=col;ctx.fill()}
+      // Body
+      ctx.beginPath();mv(200,300);bz(180,200,300,150,350,160);bz(400,150,520,200,500,300);bz(520,400,450,470,350,460);bz(250,470,180,400,200,300);ctx.closePath();ctx.stroke();
+      // Head
+      ctx.beginPath();mv(280,200);bz(260,130,340,100,380,110);bz(420,100,460,140,440,200);bz(430,240,310,240,280,200);ctx.closePath();ctx.stroke();
+      // Cat ears (pointed + horn)
+      ctx.beginPath();mv(300,140);ln(285,95);ln(320,130);ctx.stroke();
+      ctx.beginPath();mv(400,140);ln(415,95);ln(380,130);ctx.stroke();
+      // Dragon horn between ears
+      ctx.beginPath();mv(350,108);ln(340,68);ln(360,68);ln(350,108);ctx.closePath();ctx.stroke();
+      // Eyes
+      circle(325,170,14);circle(375,170,14);
+      // Pupils
+      ctx.beginPath();ctx.fillStyle='#1a1a2e';ctx.ellipse(325*s,170*t,6*s,8*t,0,0,Math.PI*2);ctx.fill();
+      ctx.beginPath();ctx.ellipse(375*s,170*t,6*s,8*t,0,0,Math.PI*2);ctx.fill();
+      // Nose
+      ctx.beginPath();ctx.fillStyle='#1a1a2e';ctx.ellipse(350*s,190*t,6*s,4*t,0,0,Math.PI*2);ctx.fill();
+      // Whiskers
+      ctx.beginPath();mv(315,190);ln(270,183);ctx.stroke();
+      ctx.beginPath();mv(315,193);ln(268,193);ctx.stroke();
+      ctx.beginPath();mv(385,190);ln(430,183);ctx.stroke();
+      ctx.beginPath();mv(385,193);ln(432,193);ctx.stroke();
+      // Dragon wings
+      ctx.beginPath();mv(200,300);bz(120,240,60,160,100,120);bz(130,100,160,140,200,230);ctx.stroke();
+      ctx.beginPath();mv(500,300);bz(580,240,640,160,600,120);bz(570,100,540,140,500,230);ctx.stroke();
+      // Wing membrane lines
+      ctx.lineWidth=1.5;
+      ctx.beginPath();mv(200,300);bz(140,240,100,180,100,120);ctx.stroke();
+      ctx.beginPath();mv(200,280);bz(150,230,120,170,108,135);ctx.stroke();
+      ctx.beginPath();mv(500,300);bz(560,240,600,180,600,120);ctx.stroke();
+      ctx.beginPath();mv(500,280);bz(550,230,580,170,592,135);ctx.stroke();
+      ctx.lineWidth=3;
+      // Tail
+      ctx.beginPath();mv(200,400);bz(130,430,100,380,120,340);bz(130,310,150,330,140,360);ctx.stroke();
+      // Tail spikes
+      ctx.beginPath();mv(120,340);ln(105,318);ln(135,325);ctx.stroke();
+      ctx.beginPath();mv(130,360);ln(112,340);ln(148,350);ctx.stroke();
+      // Paws
+      ctx.beginPath();mv(240,440);bz(220,460,270,480,310,470);bz(320,480,340,470,350,460);ctx.stroke();
+      ctx.beginPath();mv(460,440);bz(440,480,480,490,510,470);bz(520,460,510,445,500,440);ctx.stroke();
+      // Scale pattern on body
+      ctx.lineWidth=1.5;
+      for(let ry=300;ry<440;ry+=35){
+        for(let rx=240;rx<480;rx+=30){
+          ctx.beginPath();ctx.arc(rx*s,ry*t,10*s,Math.PI,0);ctx.stroke();
+        }
+      }
+      ctx.lineWidth=3;
+      // Belly
+      ctx.beginPath();mv(290,380);bz(280,440,420,440,410,380);bz(420,320,280,320,290,380);ctx.closePath();ctx.stroke();
+      ctx.restore();
+    },
+    // Reference colors for scoring (region → hue-ish)
+    regions:[
+      {name:'body',x:350,y:320,color:'#7c3aed'},
+      {name:'belly',x:350,y:400,color:'#c4b5fd'},
+      {name:'head',x:355,y:175,color:'#7c3aed'},
+      {name:'wings',x:130,y:220,color:'#4f46e5'},
+      {name:'horn',x:350,y:80,color:'#f59e0b'},
+    ],
+  },
+  {
+    id:'dog',name:'Dragon Dog',emoji:'🐕🐉',
+    draw(ctx, W, H) {
+      ctx.save();
+      ctx.strokeStyle='#1a1a2e';ctx.lineWidth=3;ctx.lineCap='round';ctx.lineJoin='round';
+      const s=W/700, t=H/560;
+      function sc(x,y){return[x*s,y*t]}
+      function mv(x,y){ctx.moveTo(...sc(x,y))}
+      function ln(x,y){ctx.lineTo(...sc(x,y))}
+      function bz(x1,y1,x2,y2,x,y){ctx.bezierCurveTo(...sc(x1,y1),...sc(x2,y2),...sc(x,y))}
+      // Body
+      ctx.beginPath();mv(180,290);bz(170,200,280,150,380,160);bz(480,150,560,210,540,310);bz(550,420,460,480,360,470);bz(240,470,160,400,180,290);ctx.closePath();ctx.stroke();
+      // Head (rounder, dog-like)
+      ctx.beginPath();mv(270,200);bz(250,120,360,85,400,100);bz(450,100,490,150,470,210);bz(460,260,280,265,270,200);ctx.closePath();ctx.stroke();
+      // Floppy dog ears
+      ctx.beginPath();mv(280,150);bz(240,140,210,180,230,230);bz(240,250,265,240,270,220);ctx.stroke();
+      ctx.beginPath();mv(460,150);bz(500,140,530,180,510,230);bz(500,250,475,240,470,220);ctx.stroke();
+      // Dragon horns on head
+      ctx.beginPath();mv(320,110);ln(305,70);ln(330,80);ctx.stroke();
+      ctx.beginPath();mv(420,110);ln(435,70);ln(410,80);ctx.stroke();
+      // Snout (dog-ish rectangle)
+      ctx.beginPath();mv(315,220);bz(310,240,325,265,365,268);bz(405,270,425,245,420,220);bz(415,200,320,200,315,220);ctx.closePath();ctx.stroke();
+      // Nose
+      ctx.beginPath();ctx.fillStyle='#1a1a2e';ctx.ellipse(365*s,235*t,14*s,10*t,0,0,Math.PI*2);ctx.fill();
+      // Eyes
+      ctx.beginPath();ctx.ellipse(315*s,185*t,13*s,13*t,0,0,Math.PI*2);ctx.stroke();
+      ctx.beginPath();ctx.ellipse(415*s,185*t,13*s,13*t,0,0,Math.PI*2);ctx.stroke();
+      ctx.beginPath();ctx.fillStyle='#1a1a2e';ctx.ellipse(315*s,185*t,6*s,8*t,0,0,Math.PI*2);ctx.fill();
+      ctx.beginPath();ctx.fillStyle='#1a1a2e';ctx.ellipse(415*s,185*t,6*s,8*t,0,0,Math.PI*2);ctx.fill();
+      // Dragon wings
+      ctx.beginPath();mv(180,290);bz(100,230,50,150,90,100);bz(120,70,155,120,180,220);ctx.stroke();
+      ctx.beginPath();mv(540,290);bz(620,230,670,150,630,100);bz(600,70,565,120,540,220);ctx.stroke();
+      ctx.lineWidth=1.5;
+      ctx.beginPath();mv(180,280);bz(115,225,75,165,90,100);ctx.stroke();
+      ctx.beginPath();mv(180,260);bz(125,210,95,158,105,118);ctx.stroke();
+      ctx.beginPath();mv(540,280);bz(605,225,625,165,630,100);ctx.stroke();
+      ctx.beginPath();mv(540,260);bz(575,210,605,158,595,118);ctx.stroke();
+      ctx.lineWidth=3;
+      // Curly tail with spikes
+      ctx.beginPath();mv(540,380);bz(600,400,620,360,590,330);bz(570,305,545,315,560,340);ctx.stroke();
+      // Spikes on tail
+      ctx.beginPath();mv(590,330);ln(610,310);ln(578,318);ctx.stroke();
+      // Legs (4 paws)
+      ctx.beginPath();mv(240,450);bz(230,480,260,495,285,490);bz(305,495,315,480,310,450);ctx.stroke();
+      ctx.beginPath();mv(400,450);bz(390,480,420,495,445,490);bz(465,495,475,480,470,450);ctx.stroke();
+      ctx.beginPath();mv(210,380);bz(195,410,220,430,245,425);bz(260,430,265,410,255,385);ctx.stroke();
+      ctx.beginPath();mv(490,380);bz(505,410,490,430,468,425);bz(450,430,448,410,460,385);ctx.stroke();
+      // Scale pattern
+      ctx.lineWidth=1.5;
+      for(let ry=290;ry<440;ry+=35){
+        for(let rx=220;rx<520;rx+=32){
+          ctx.beginPath();ctx.arc(rx*s,ry*t,11*s,Math.PI,0);ctx.stroke();
+        }
+      }
+      ctx.lineWidth=3;
+      // Belly
+      ctx.beginPath();mv(280,380);bz(270,450,450,450,440,380);bz(450,310,270,310,280,380);ctx.closePath();ctx.stroke();
+      // Tongue
+      ctx.beginPath();mv(350,268);bz(340,290,330,305,340,310);bz(348,314,358,310,360,304);bz(370,305,378,310,368,310);bz(375,304,380,280,365,268);ctx.closePath();ctx.fillStyle='#fda4af';ctx.fill();ctx.stroke();
+      ctx.restore();
+    },
+    regions:[
+      {name:'body',x:360,y:320,color:'#0d9488'},
+      {name:'belly',x:360,y:400,color:'#99f6e4'},
+      {name:'head',x:370,y:175,color:'#0d9488'},
+      {name:'wings',x:110,y:200,color:'#0891b2'},
+      {name:'ears',x:230,y:190,color:'#f97316'},
+      {name:'horns',x:322,y:78,color:'#f59e0b'},
+    ],
+  },
+  {
+    id:'bunny',name:'Dragon Bunny',emoji:'🐰🐉',
+    draw(ctx, W, H) {
+      ctx.save();
+      ctx.strokeStyle='#1a1a2e';ctx.lineWidth=3;ctx.lineCap='round';ctx.lineJoin='round';
+      const s=W/700, t=H/560;
+      function sc(x,y){return[x*s,y*t]}
+      function mv(x,y){ctx.moveTo(...sc(x,y))}
+      function ln(x,y){ctx.lineTo(...sc(x,y))}
+      function bz(x1,y1,x2,y2,x,y){ctx.bezierCurveTo(...sc(x1,y1),...sc(x2,y2),...sc(x,y))}
+      // Body (chubby bunny)
+      ctx.beginPath();mv(190,310);bz(175,210,290,150,370,160);bz(450,150,560,220,545,330);bz(555,440,460,490,360,480);bz(240,480,175,420,190,310);ctx.closePath();ctx.stroke();
+      // Head
+      ctx.beginPath();mv(280,210);bz(265,130,355,90,390,100);bz(440,95,480,145,465,215);bz(455,265,290,268,280,210);ctx.closePath();ctx.stroke();
+      // Long bunny ears (tall and narrow)
+      ctx.beginPath();mv(300,140);bz(280,60,305,20,315,15);bz(330,10,345,35,340,140);ctx.closePath();ctx.stroke();
+      // Inner ear
+      ctx.beginPath();mv(308,128);bz(295,60,312,25,318,20);bz(328,18,338,45,333,128);ctx.closePath();ctx.stroke();
+      ctx.beginPath();mv(400,140);bz(390,60,405,20,415,15);bz(430,10,440,35,435,140);ctx.closePath();ctx.stroke();
+      // Inner ear
+      ctx.beginPath();mv(408,128);bz(398,60,412,25,418,20);bz(428,18,437,45,432,128);ctx.closePath();ctx.stroke();
+      // Dragon horn between ears
+      ctx.beginPath();mv(360,105);ln(345,58);ln(375,58);ln(360,105);ctx.closePath();ctx.stroke();
+      // Eyes (big round)
+      ctx.beginPath();ctx.ellipse(320*s,180*t,16*s,16*t,0,0,Math.PI*2);ctx.stroke();
+      ctx.beginPath();ctx.ellipse(415*s,180*t,16*s,16*t,0,0,Math.PI*2);ctx.stroke();
+      ctx.beginPath();ctx.fillStyle='#1a1a2e';ctx.ellipse(322*s,180*t,8*s,10*t,0,0,Math.PI*2);ctx.fill();
+      ctx.beginPath();ctx.fillStyle='#1a1a2e';ctx.ellipse(417*s,180*t,8*s,10*t,0,0,Math.PI*2);ctx.fill();
+      // Eye gleam
+      ctx.beginPath();ctx.fillStyle='#fff';ctx.ellipse(326*s,174*t,4*s,4*t,0,0,Math.PI*2);ctx.fill();
+      ctx.beginPath();ctx.fillStyle='#fff';ctx.ellipse(421*s,174*t,4*s,4*t,0,0,Math.PI*2);ctx.fill();
+      // Button nose
+      ctx.beginPath();ctx.fillStyle='#1a1a2e';ctx.ellipse(365*s,205*t,5*s,4*t,0,0,Math.PI*2);ctx.fill();
+      // Little mouth
+      ctx.beginPath();mv(355,210);bz(360,220,370,220,375,210);ctx.stroke();
+      // Dragon wings
+      ctx.beginPath();mv(190,310);bz(100,250,45,155,85,100);bz(115,60,160,110,185,230);ctx.stroke();
+      ctx.beginPath();mv(545,310);bz(635,250,690,155,650,100);bz(620,60,575,110,550,230);ctx.stroke();
+      ctx.lineWidth=1.5;
+      ctx.beginPath();mv(185,295);bz(110,245,65,162,85,100);ctx.stroke();
+      ctx.beginPath();mv(183,270);bz(120,230,90,166,102,118);ctx.stroke();
+      ctx.beginPath();mv(548,295);bz(622,245,635,162,650,100);ctx.stroke();
+      ctx.beginPath();mv(548,270);bz(610,230,620,166,608,118);ctx.stroke();
+      ctx.lineWidth=3;
+      // Fluffy tail
+      ctx.beginPath();ctx.ellipse(200*s,430*t,35*s,30*t,0,0,Math.PI*2);ctx.stroke();
+      ctx.beginPath();ctx.ellipse(195*s,427*t,22*s,18*t,0,0,Math.PI*2);ctx.stroke();
+      // Scale pattern
+      ctx.lineWidth=1.5;
+      for(let ry=300;ry<450;ry+=35){
+        for(let rx=240;rx<520;rx+=30){
+          ctx.beginPath();ctx.arc(rx*s,ry*t,10*s,Math.PI,0);ctx.stroke();
+        }
+      }
+      ctx.lineWidth=3;
+      // Belly
+      ctx.beginPath();mv(285,380);bz(275,455,455,455,445,380);bz(455,310,275,310,285,380);ctx.closePath();ctx.stroke();
+      // Paws
+      ctx.beginPath();mv(260,455);bz(245,485,275,500,300,495);bz(325,500,335,480,325,455);ctx.stroke();
+      ctx.beginPath();mv(410,455);bz(395,485,425,500,450,495);bz(475,500,485,480,475,455);ctx.stroke();
+      ctx.restore();
+    },
+    regions:[
+      {name:'body',x:370,y:330,color:'#ec4899'},
+      {name:'belly',x:370,y:410,color:'#fbcfe8'},
+      {name:'head',x:370,y:185,color:'#ec4899'},
+      {name:'ears',x:315,y:70,color:'#f9a8d4'},
+      {name:'inner ear',x:318,y:68,color:'#db2777'},
+      {name:'wings',x:105,y:200,color:'#9333ea'},
+      {name:'horn',x:360,y:70,color:'#f59e0b'},
+      {name:'tail',x:195,y:430,color:'#fff'},
+    ],
+  },
+];
+
+const PALETTE = [
+  '#dc2626','#f97316','#f59e0b','#eab308','#84cc16',
+  '#16a34a','#0d9488','#0ea5e9','#2563eb','#7c3aed',
+  '#ec4899','#f9a8d4','#bfdbfe','#bbf7d0','#fef08a',
+  '#c4b5fd','#fed7aa','#fff','#c0c0c0','#1a1a2e',
+];
+
+// ── State ─────────────────────────────────────────────────────────
+let curPage = 0;
+let curColor = PALETTE[9]; // purple
+let brushSize = 18;
+let isErasing = false;
+let drawing = false;
+let totalScore = 0;
+const pageScores = {};
+
+// ── Canvas setup ──────────────────────────────────────────────────
+const drawCanvas = document.getElementById('draw-canvas');
+const dc = drawCanvas.getContext('2d');
+const refCanvas = document.getElementById('ref-canvas');
+const rc = refCanvas.getContext('2d');
+
+// Drawing state per page
+const pageStates = {};
+function getPageKey(){ return PAGES[curPage].id; }
+
+function savePageState(){
+  pageStates[getPageKey()] = dc.getImageData(0,0,drawCanvas.width,drawCanvas.height);
+}
+function restorePageState(){
+  const s = pageStates[getPageKey()];
+  if(s) dc.putImageData(s,0,0);
+  else { dc.clearRect(0,0,drawCanvas.width,drawCanvas.height); renderOutline(); }
+}
+
+function renderOutline(){
+  const W=drawCanvas.width, H=drawCanvas.height;
+  dc.clearRect(0,0,W,H);
+  dc.fillStyle='#fff';dc.fillRect(0,0,W,H);
+  PAGES[curPage].draw(dc,W,H);
+}
+
+function renderRef(){
+  const W=refCanvas.width, H=refCanvas.height;
+  rc.clearRect(0,0,W,H);
+  rc.fillStyle='#f5f0ff';rc.fillRect(0,0,W,H);
+  // Draw colored reference
+  const page = PAGES[curPage];
+  rc.save();
+  // Fill regions with reference colors
+  page.regions.forEach(r=>{
+    // We'll fill large areas with the reference color as a hint overlay
+    rc.fillStyle = r.color + '88';
+    rc.beginPath();
+    const blobR = Math.min(W,H)*0.18;
+    const rx = r.x / 700 * W, ry = r.y / 560 * H;
+    rc.ellipse(rx,ry,blobR,blobR*0.7,0,0,Math.PI*2);
+    rc.fill();
+  });
+  page.draw(rc,W,H);
+  rc.restore();
+}
+
+// ── Build UI ──────────────────────────────────────────────────────
+function buildPageSelect(){
+  const ps = document.getElementById('page-select');
+  PAGES.forEach((p,i)=>{
+    const btn=document.createElement('button');
+    btn.className='page-btn'+(i===0?' active':'');
+    btn.textContent=p.emoji+' '+p.name;
+    btn.onclick=()=>switchPage(i);
+    ps.appendChild(btn);
+  });
+}
+
+function buildPalette(){
+  const pal = document.getElementById('palette');
+  PALETTE.forEach(col=>{
+    const sw=document.createElement('div');
+    sw.className='color-swatch'+(col===curColor?' chosen':'');
+    sw.style.background=col;
+    if(col==='#fff'){sw.style.border='3px solid #ccc'}
+    sw.onclick=()=>pickColor(col,sw);
+    pal.appendChild(sw);
+  });
+  document.getElementById('color-preview').style.background=curColor;
+}
+
+function pickColor(col,swEl){
+  isErasing=false;
+  curColor=col;
+  document.querySelectorAll('.color-swatch').forEach(s=>s.classList.remove('chosen'));
+  swEl.classList.add('chosen');
+  document.getElementById('color-preview').style.background=col;
+  document.getElementById('eraser-btn').classList.remove('chosen');
+}
+
+document.getElementById('brush-row').querySelectorAll('.brush-btn').forEach(btn=>{
+  btn.onclick=()=>{
+    document.querySelectorAll('#brush-row .brush-btn').forEach(b=>b.classList.remove('chosen'));
+    btn.classList.add('chosen');
+    brushSize=parseInt(btn.dataset.size);
+    isErasing=false;
+    document.getElementById('eraser-btn').classList.remove('chosen');
+  };
+});
+
+document.getElementById('eraser-btn').onclick=()=>{
+  isErasing=!isErasing;
+  document.getElementById('eraser-btn').classList.toggle('chosen',isErasing);
+};
+
+// ── Drawing logic ─────────────────────────────────────────────────
+function getPos(e){
+  const r=drawCanvas.getBoundingClientRect();
+  const scx=drawCanvas.width/r.width, scy=drawCanvas.height/r.height;
+  if(e.touches){
+    return[(e.touches[0].clientX-r.left)*scx,(e.touches[0].clientY-r.top)*scy];
+  }
+  return[(e.clientX-r.left)*scx,(e.clientY-r.top)*scy];
+}
+
+function startDraw(e){
+  e.preventDefault();drawing=true;
+  const [x,y]=getPos(e);
+  dc.beginPath();dc.moveTo(x,y);
+  paint(x,y);
+}
+function moveDraw(e){
+  if(!drawing)return;
+  e.preventDefault();
+  const [x,y]=getPos(e);
+  paint(x,y);
+}
+function endDraw(e){
+  if(!drawing)return;
+  drawing=false;
+  dc.closePath();
+  // Re-draw outline on top so it stays crisp
+  PAGES[curPage].draw(dc,drawCanvas.width,drawCanvas.height);
+  savePageState();
+}
+
+function paint(x,y){
+  if(isErasing){
+    dc.globalCompositeOperation='destination-out';
+    dc.beginPath();dc.arc(x,y,brushSize,0,Math.PI*2);dc.fillStyle='rgba(0,0,0,1)';dc.fill();
+    dc.globalCompositeOperation='source-over';
+  } else {
+    dc.globalCompositeOperation='source-over';
+    dc.lineTo(x,y);
+    dc.strokeStyle=curColor;dc.lineWidth=brushSize*2;
+    dc.lineCap='round';dc.lineJoin='round';
+    dc.stroke();
+    dc.beginPath();dc.moveTo(x,y);
+  }
+}
+
+drawCanvas.addEventListener('mousedown',startDraw);
+drawCanvas.addEventListener('mousemove',moveDraw);
+drawCanvas.addEventListener('mouseup',endDraw);
+drawCanvas.addEventListener('mouseleave',endDraw);
+drawCanvas.addEventListener('touchstart',startDraw,{passive:false});
+drawCanvas.addEventListener('touchmove',moveDraw,{passive:false});
+drawCanvas.addEventListener('touchend',endDraw);
+
+// ── Scoring ───────────────────────────────────────────────────────
+function checkScore(){
+  const W=drawCanvas.width, H=drawCanvas.height;
+  const imgData=dc.getImageData(0,0,W,H).data;
+  // Count colored pixels (non-white, non-transparent, not outline)
+  let coloredPx=0, totalPx=W*H;
+  for(let i=0;i<imgData.length;i+=4){
+    const r=imgData[i],g=imgData[i+1],b=imgData[i+2],a=imgData[i+3];
+    if(a>200 && !(r>230&&g>230&&b>230) && !(r<30&&g<30&&b<30)){
+      coloredPx++;
+    }
+  }
+  const coverage=coloredPx/totalPx;
+  // Score: 0-100 based on coverage (target ~25% of canvas colored)
+  const raw=Math.min(100,Math.round(coverage/0.28*100));
+  const score=Math.max(5,raw);
+  pageScores[getPageKey()]=score;
+  totalScore=Object.values(pageScores).reduce((a,b)=>a+b,0);
+  document.getElementById('total-score').textContent=totalScore;
+
+  const stars=score>=85?3:score>=55?2:1;
+  const starStr=['⭐','⭐⭐','⭐⭐⭐'][stars-1];
+  document.getElementById('cur-score').textContent=score;
+  document.getElementById('cur-stars').textContent=starStr;
+  const tips=['Keep going — color more areas!','Nice coloring!','Amazing work!'];
+  document.getElementById('score-tip').textContent=tips[stars-1];
+
+  // Show overlay
+  const emojis=['🎨','🌟','🏆'];
+  const titles=['Good Start!','Well Done!','Dragon Master!'];
+  const msgs=['Add more color to boost your score!','You\'re getting the hang of it!','Incredible coloring skills!'];
+  document.getElementById('oc-emoji').textContent=emojis[stars-1];
+  document.getElementById('oc-title').textContent=titles[stars-1];
+  document.getElementById('oc-msg').textContent=msgs[stars-1];
+  document.getElementById('oc-stars').textContent=starStr;
+  document.getElementById('oc-score').textContent='Score: '+score+' / 100';
+  document.getElementById('overlay').classList.add('show');
+
+  if(stars===3) launchConfetti();
+}
+
+function clearCanvas(){
+  renderOutline();
+  delete pageStates[getPageKey()];
+  delete pageScores[getPageKey()];
+  totalScore=Object.values(pageScores).reduce((a,b)=>a+b,0);
+  document.getElementById('total-score').textContent=totalScore;
+  document.getElementById('cur-score').textContent='—';
+  document.getElementById('cur-stars').textContent='⬜⬜⬜';
+  document.getElementById('score-tip').textContent='Color and check to score!';
+}
+
+function hideOverlay(){ document.getElementById('overlay').classList.remove('show'); }
+
+function nextPage(){
+  hideOverlay();
+  const next=(curPage+1)%PAGES.length;
+  switchPage(next);
+}
+
+// ── Page switch ───────────────────────────────────────────────────
+function switchPage(i){
+  savePageState();
+  curPage=i;
+  document.querySelectorAll('.page-btn').forEach((b,j)=>b.classList.toggle('active',j===i));
+  document.getElementById('canvas-label').textContent=PAGES[i].name;
+  restorePageState();
+  renderRef();
+  const sc=pageScores[getPageKey()];
+  if(sc){
+    const stars=sc>=85?3:sc>=55?2:1;
+    document.getElementById('cur-score').textContent=sc;
+    document.getElementById('cur-stars').textContent=['⭐','⭐⭐','⭐⭐⭐'][stars-1];
+    document.getElementById('score-tip').textContent='Scored!';
+  } else {
+    document.getElementById('cur-score').textContent='—';
+    document.getElementById('cur-stars').textContent='⬜⬜⬜';
+    document.getElementById('score-tip').textContent='Color and check to score!';
+  }
+}
+
+// ── Confetti ──────────────────────────────────────────────────────
+function launchConfetti(){
+  const cols=['#dc2626','#f97316','#f59e0b','#16a34a','#2563eb','#7c3aed','#ec4899'];
+  for(let i=0;i<80;i++){
+    const el=document.createElement('div');
+    el.className='conf';
+    el.style.cssText=`
+      left:${Math.random()*100}vw;
+      width:${6+Math.random()*8}px;
+      height:${10+Math.random()*10}px;
+      background:${cols[Math.floor(Math.random()*cols.length)]};
+      border-radius:${Math.random()>0.5?'50%':'2px'};
+      animation-duration:${1.5+Math.random()*2}s;
+      animation-delay:${Math.random()*0.8}s;
+    `;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),4000);
+  }
+}
+
+// ── Init ──────────────────────────────────────────────────────────
+buildPageSelect();
+buildPalette();
+renderOutline();
+renderRef();
+</script>
+</body>
+</html>
