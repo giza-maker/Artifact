@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Manzel — Luxury Hotels in Riyadh</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Amiri:ital,wght@0,400;0,700;1,400&family=Cinzel:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root{
+  --midnight: #07040F;
+  --deep:     #0E0A1E;
+  --card:     #130F25;
+  --card2:    #1A1535;
+  --gold:     #C9A55A;
+  --gold2:    #E2C27A;
+  --gold-dim: rgba(201,165,90,.12);
+  --gold-dim2:rgba(201,165,90,.06);
+  --sand:     #EDD9A3;
+  --cream:    #F8F1E2;
+  --muted:    rgba(248,241,226,.5);
+  --muted2:   rgba(248,241,226,.25);
+  --border:   rgba(201,165,90,.22);
+  --border2:  rgba(201,165,90,.1);
+  --shadow:   rgba(0,0,0,.5);
+  --red:      #E07070;
+  --green:    #70C090;
+}
+
+html{ scroll-behavior:smooth }
+
+body{
+  font-family:'Amiri',Georgia,serif;
+  background:var(--midnight);
+  color:var(--cream);
+  min-height:100vh;
+  /* Islamic diamond grid */
+  background-image:
+    repeating-linear-gradient(45deg, var(--gold-dim2) 0, var(--gold-dim2) 1px, transparent 0, transparent 50%),
+    repeating-linear-gradient(-45deg,var(--gold-dim2) 0, var(--gold-dim2) 1px, transparent 0, transparent 50%);
+  background-size:32px 32px;
+}
+
+/* ─── Typography ─────────────────────────────────────────── */
+h1,h2,h3,h4{font-family:'Cormorant Garamond',Georgia,serif;font-weight:300;line-height:1.2}
+.label{font-family:'Cinzel',serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--gold)}
+.gold{color:var(--gold)}
+.gold2{color:var(--gold2)}
+.muted{color:var(--muted)}
+.arabic{font-family:'Amiri',serif;direction:rtl}
+
+/* ─── Animations ─────────────────────────────────────────── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+@keyframes shimmer{0%,100%{opacity:.5}50%{opacity:1}}
+@keyframes goldPulse{0%,100%{box-shadow:0 0 0 0 rgba(201,165,90,0)}50%{box-shadow:0 0 20px 4px rgba(201,165,90,.2)}}
+.fadeUp{animation:fadeUp .6s ease both}
+.fadeUp-2{animation:fadeUp .6s .12s ease both}
+.fadeUp-3{animation:fadeUp .6s .24s ease both}
+.fadeUp-4{animation:fadeUp .6s .36s ease both}
+
+/* ─── Buttons ─────────────────────────────────────────────── */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  border:none;cursor:pointer;font-family:'Cinzel',serif;
+  letter-spacing:1.5px;font-size:11px;padding:14px 28px;border-radius:2px;
+  transition:all .25s;text-decoration:none;white-space:nowrap;
+}
+.btn-gold{
+  background:linear-gradient(135deg,#C9A55A,#E2C27A,#C9A55A);
+  background-size:200% 100%;color:#07040F;font-weight:500;
+}
+.btn-gold:hover{background-position:100% 0;transform:translateY(-2px);box-shadow:0 8px 24px rgba(201,165,90,.35)}
+.btn-gold:active{transform:translateY(0)}
+.btn-outline{
+  background:transparent;color:var(--gold);
+  border:1px solid var(--gold);
+}
+.btn-outline:hover{background:var(--gold-dim);transform:translateY(-1px)}
+.btn-ghost{background:transparent;color:var(--cream);border:1px solid var(--border)}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+.btn-sm{padding:10px 20px;font-size:10px}
+
+/* ─── Inputs / Form ──────────────────────────────────────── */
+.field-group{display:flex;flex-direction:column;gap:6px}
+.field-group label{font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;color:var(--gold);text-transform:uppercase}
+.field-group input,.field-group select,.field-group textarea{
+  background:var(--card);
+  border:1px solid var(--border2);
+  color:var(--cream);
+  padding:13px 16px;
+  font-family:'Amiri',serif;font-size:16px;
+  border-radius:2px;
+  outline:none;width:100%;
+  transition:border-color .2s;
+}
+.field-group input:focus,.field-group select:focus,.field-group textarea:focus{
+  border-color:var(--gold);
+  box-shadow:0 0 0 3px rgba(201,165,90,.08);
+}
+.field-group input::placeholder{color:var(--muted2)}
+.field-group select option{background:var(--deep);color:var(--cream)}
+.field-group textarea{height:90px;resize:vertical}
+
+/* ─── Header ─────────────────────────────────────────────── */
+#header{
+  position:fixed;top:0;left:0;right:0;z-index:800;
+  padding:0 40px;height:70px;
+  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(7,4,15,.85);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border2);
+  transition:background .3s;
+}
+.logo-wrap{display:flex;flex-direction:column;align-items:flex-start;cursor:pointer;gap:0}
+.logo-en{font-family:'Cinzel',serif;font-size:20px;letter-spacing:6px;color:var(--gold);line-height:1}
+.logo-ar{font-family:'Amiri',serif;font-size:14px;color:var(--muted);line-height:1;direction:rtl;letter-spacing:1px}
+.header-nav{display:flex;align-items:center;gap:24px}
+.nav-link{
+  font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;
+  color:var(--muted);cursor:pointer;transition:color .2s;text-transform:uppercase;
+  background:none;border:none;padding:4px 0;border-bottom:1px solid transparent;
+}
+.nav-link:hover{color:var(--gold);border-bottom-color:var(--gold)}
+.api-key-btn{
+  font-size:9px;padding:8px 14px;
+  background:rgba(201,165,90,.08);border:1px solid var(--border);
+  color:var(--muted);cursor:pointer;border-radius:2px;
+  font-family:'Cinzel',serif;letter-spacing:1px;
+  transition:all .2s;
+}
+.api-key-btn.connected{color:var(--green);border-color:rgba(112,192,144,.3)}
+.api-key-btn:hover{color:var(--gold);border-color:var(--gold)}
+
+/* ─── Modal ──────────────────────────────────────────────── */
+.modal-overlay{
+  position:fixed;inset:0;z-index:1000;
+  background:rgba(0,0,0,.75);backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .3s;
+}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal-box{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:4px;padding:40px;
+  max-width:480px;width:90%;
+  transform:translateY(20px);transition:transform .3s;
+  box-shadow:0 40px 80px rgba(0,0,0,.6);
+}
+.modal-overlay.open .modal-box{transform:translateY(0)}
+.modal-box h2{font-size:26px;margin-bottom:8px}
+.modal-box p{color:var(--muted);line-height:1.7;margin-bottom:24px;font-size:14px}
+.modal-footer{display:flex;gap:12px;justify-content:flex-end;margin-top:24px}
+.modal-close{
+  position:absolute;top:16px;right:20px;background:none;border:none;
+  color:var(--muted);cursor:pointer;font-size:20px;
+}
+
+/* ─── Pages ──────────────────────────────────────────────── */
+.page{display:none}
+.page.active{display:block}
+
+/* ─── SEARCH PAGE ─────────────────────────────────────────── */
+#page-search{
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:100px 24px 60px;
+  position:relative;overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;z-index:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(60,40,15,.8) 0%,rgba(7,4,15,0) 70%),
+    linear-gradient(180deg,rgba(30,20,5,.6) 0%,rgba(7,4,15,1) 100%);
+}
+.hero-glow{
+  position:absolute;top:20%;left:50%;transform:translateX(-50%);
+  width:600px;height:300px;
+  background:radial-gradient(ellipse,rgba(201,165,90,.12) 0%,transparent 70%);
+  z-index:0;
+}
+.hero-content{position:relative;z-index:1;text-align:center;max-width:760px;width:100%}
+.hero-overline{margin-bottom:20px}
+.hero-title{
+  font-size:clamp(42px,6vw,72px);
+  font-weight:300;
+  line-height:1.1;
+  margin-bottom:16px;
+  background:linear-gradient(135deg,var(--cream) 40%,var(--gold) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.hero-sub{
+  font-size:18px;color:var(--muted);line-height:1.6;
+  font-style:italic;margin-bottom:48px;
+}
+.hero-deco{
+  width:120px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  margin:0 auto 48px;
+}
+
+/* Search form card */
+.search-card{
+  background:rgba(19,15,37,.85);
+  backdrop-filter:blur(20px);
+  border:1px solid var(--border);
+  border-radius:4px;
+  padding:32px;
+  width:100%;max-width:800px;
+  box-shadow:0 32px 80px rgba(0,0,0,.5);
+}
+.search-grid{
+  display:grid;
+  grid-template-columns:1.4fr 1fr 1fr 0.7fr auto;
+  gap:12px;align-items:end;
+}
+@media(max-width:780px){
+  .search-grid{grid-template-columns:1fr 1fr;gap:12px}
+  .search-grid .btn{grid-column:1/-1}
+}
+@media(max-width:480px){
+  .search-grid{grid-template-columns:1fr}
+}
+
+/* ─── HOTELS PAGE ─────────────────────────────────────────── */
+#page-hotels{padding-top:70px;min-height:100vh}
+.hotels-header{
+  padding:40px 40px 0;
+  display:flex;flex-direction:column;gap:8px;
+}
+.hotels-header h1{font-size:clamp(28px,4vw,42px)}
+.hotels-meta{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.dates-badge{
+  background:var(--gold-dim);border:1px solid var(--border2);
+  padding:5px 14px;border-radius:20px;font-size:13px;color:var(--sand);
+}
+.hotels-body{
+  display:grid;grid-template-columns:260px 1fr;gap:0;
+  padding:24px 40px;
+  align-items:start;
+}
+@media(max-width:900px){
+  .hotels-body{grid-template-columns:1fr;padding:16px 20px}
+  .filter-sidebar{display:none}
+}
+
+/* Filter sidebar */
+.filter-sidebar{
+  position:sticky;top:90px;
+  background:var(--card);border:1px solid var(--border2);
+  border-radius:4px;padding:24px;
+}
+.filter-sidebar h3{font-size:18px;margin-bottom:20px}
+.filter-section{margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--border2)}
+.filter-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.filter-section h4{font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;color:var(--gold);margin-bottom:12px;text-transform:uppercase}
+.star-filter-row,.amenity-filter-row{display:flex;flex-direction:column;gap:8px}
+.filter-check{display:flex;align-items:center;gap:10px;cursor:pointer;font-size:15px;color:var(--muted)}
+.filter-check:hover{color:var(--cream)}
+.filter-check input[type=checkbox]{accent-color:var(--gold);width:15px;height:15px}
+.price-range-row{display:flex;gap:8px;align-items:center}
+.price-range-row input{width:80px;padding:8px;font-size:13px;text-align:center}
+
+/* Hotel grid */
+.hotel-grid-wrap{padding-left:24px}
+@media(max-width:900px){.hotel-grid-wrap{padding-left:0}}
+.hotel-count{font-size:13px;color:var(--muted);margin-bottom:20px;font-style:italic}
+.sort-row{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.sort-row label{font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;color:var(--gold);text-transform:uppercase}
+.sort-row select{
+  background:var(--card);border:1px solid var(--border2);
+  color:var(--cream);padding:8px 12px;font-size:13px;border-radius:2px;
+}
+.hotel-list{display:flex;flex-direction:column;gap:16px}
+.hotel-card{
+  background:var(--card);border:1px solid var(--border2);border-radius:4px;
+  overflow:hidden;display:grid;grid-template-columns:280px 1fr;
+  transition:border-color .25s,box-shadow .25s,transform .25s;
+  cursor:pointer;
+}
+.hotel-card:hover{
+  border-color:var(--gold);
+  box-shadow:0 8px 40px rgba(0,0,0,.4),0 0 0 1px rgba(201,165,90,.1);
+  transform:translateY(-2px);
+}
+@media(max-width:680px){.hotel-card{grid-template-columns:1fr;grid-template-rows:200px auto}}
+.hotel-card-img{
+  position:relative;overflow:hidden;min-height:200px;
+}
+.hotel-card-img-inner{
+  position:absolute;inset:0;
+  background-size:cover;background-position:center;
+  transition:transform .4s;
+}
+.hotel-card:hover .hotel-card-img-inner{transform:scale(1.04)}
+.hotel-card-img-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(0,0,0,.2),transparent);
+}
+.hotel-card-badge{
+  position:absolute;top:12px;left:12px;
+  background:rgba(7,4,15,.8);backdrop-filter:blur(8px);
+  border:1px solid var(--border);
+  padding:4px 10px;border-radius:2px;
+  font-family:'Cinzel',serif;font-size:9px;letter-spacing:2px;color:var(--gold);
+}
+.hotel-card-body{
+  padding:24px;display:flex;flex-direction:column;gap:10px;
+}
+.hotel-name{font-size:22px;font-weight:400;line-height:1.3}
+.hotel-neighborhood{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.hotel-neighborhood::before{content:'◈';color:var(--gold);font-size:10px}
+.star-row{display:flex;gap:3px}
+.star-icon{color:var(--gold);font-size:12px}
+.star-icon.empty{color:var(--border);opacity:.5}
+.hotel-amenities-preview{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.amenity-tag{
+  font-size:11px;padding:3px 10px;
+  background:var(--gold-dim);border:1px solid var(--border2);
+  color:var(--sand);border-radius:20px;
+  font-family:'Cinzel',serif;letter-spacing:.5px;
+}
+.hotel-card-footer{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  margin-top:auto;padding-top:16px;border-top:1px solid var(--border2);
+}
+.hotel-rating-block{display:flex;align-items:center;gap:10px}
+.hotel-rating-num{
+  background:var(--gold);color:#07040F;
+  font-family:'Cinzel',serif;font-size:14px;font-weight:500;
+  padding:4px 10px;border-radius:2px;
+}
+.hotel-rating-label{font-size:12px;color:var(--muted)}
+.hotel-price-block{text-align:right}
+.hotel-price-num{
+  font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:300;color:var(--gold2);
+}
+.hotel-price-unit{font-size:12px;color:var(--muted);display:block}
+.hotel-price-currency{font-size:14px;color:var(--muted);margin-right:4px}
+.view-hotel-btn{
+  font-size:10px;padding:10px 20px;
+}
+
+/* ─── HOTEL DETAIL PAGE ──────────────────────────────────── */
+#page-detail{padding-top:70px;min-height:100vh}
+.detail-hero{
+  height:420px;position:relative;overflow:hidden;
+  display:flex;align-items:flex-end;
+}
+.detail-hero-img{
+  position:absolute;inset:0;background-size:cover;background-position:center;
+}
+.detail-hero-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(0deg,rgba(7,4,15,1) 0%,rgba(7,4,15,.4) 50%,rgba(7,4,15,.1) 100%);
+}
+.detail-hero-content{
+  position:relative;z-index:1;padding:40px;
+  width:100%;
+}
+.detail-hero-content h1{font-size:clamp(28px,4vw,52px);text-shadow:0 2px 20px rgba(0,0,0,.5)}
+.back-link{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;
+  color:var(--muted);cursor:pointer;transition:color .2s;
+  background:none;border:none;margin-bottom:20px;padding:0;
+}
+.back-link:hover{color:var(--gold)}
+.back-link::before{content:'←';font-size:14px}
+.detail-body{
+  display:grid;grid-template-columns:1fr 340px;gap:40px;
+  padding:40px;max-width:1200px;
+}
+@media(max-width:900px){.detail-body{grid-template-columns:1fr;padding:20px}}
+.detail-info-col{display:flex;flex-direction:column;gap:32px}
+.detail-meta{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.detail-address{font-size:14px;color:var(--muted);display:flex;align-items:center;gap:8px}
+.detail-address::before{content:'📍';font-size:12px}
+.detail-desc{font-size:17px;line-height:1.8;color:var(--sand)}
+.amenities-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.amenity-item{
+  display:flex;align-items:center;gap:10px;
+  background:var(--card);border:1px solid var(--border2);
+  padding:12px 16px;border-radius:2px;font-size:14px;
+}
+.amenity-icon{font-size:18px;flex-shrink:0}
+.section-title{font-size:clamp(22px,3vw,32px);margin-bottom:20px}
+.section-line{width:60px;height:1px;background:linear-gradient(90deg,var(--gold),transparent);margin-bottom:28px}
+
+/* Rooms */
+.room-list{display:flex;flex-direction:column;gap:16px}
+.room-card{
+  background:var(--card);border:1px solid var(--border2);
+  border-radius:4px;padding:24px;
+  display:flex;justify-content:space-between;align-items:center;
+  transition:border-color .2s;gap:20px;
+  flex-wrap:wrap;
+}
+.room-card:hover{border-color:var(--gold)}
+.room-info{flex:1;min-width:200px}
+.room-name{font-size:20px;margin-bottom:6px}
+.room-details{display:flex;gap:16px;flex-wrap:wrap;margin-top:8px}
+.room-detail-item{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:5px}
+.room-detail-icon{color:var(--gold);font-size:14px}
+.room-price-block{text-align:right}
+.room-price-num{
+  font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:300;color:var(--gold2);
+  white-space:nowrap;
+}
+
+/* Detail sidebar */
+.detail-sidebar{
+  position:sticky;top:90px;
+  display:flex;flex-direction:column;gap:16px;
+}
+.booking-summary-box{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:4px;padding:24px;
+}
+.booking-summary-box h3{font-size:20px;margin-bottom:20px}
+.summary-line{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:10px 0;border-bottom:1px solid var(--border2);
+  font-size:14px;
+}
+.summary-line:last-child{border-bottom:none}
+.summary-line.total{font-size:17px;color:var(--gold2);margin-top:8px}
+.summary-val{color:var(--sand)}
+.guest-count-row{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.count-btn{
+  width:30px;height:30px;border-radius:50%;
+  background:var(--gold-dim);border:1px solid var(--border);
+  color:var(--gold);font-size:18px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s;
+}
+.count-btn:hover{background:var(--gold);color:#07040F}
+.count-num{font-family:'Cormorant Garamond',serif;font-size:22px;min-width:30px;text-align:center}
+
+/* ─── BOOKING PAGE ─────────────────────────────────────────── */
+#page-booking{padding-top:70px;min-height:100vh}
+.booking-wrapper{
+  max-width:1100px;margin:0 auto;
+  padding:40px;
+  display:grid;grid-template-columns:1fr 360px;gap:40px;
+  align-items:start;
+}
+@media(max-width:900px){.booking-wrapper{grid-template-columns:1fr;padding:20px}}
+.booking-form-col h1{font-size:clamp(28px,4vw,42px);margin-bottom:8px}
+.booking-form-col > p{color:var(--muted);font-style:italic;margin-bottom:32px}
+.form-section{
+  background:var(--card);border:1px solid var(--border2);
+  border-radius:4px;padding:28px;margin-bottom:20px;
+}
+.form-section h3{font-size:20px;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.form-section h3 .sec-num{
+  width:26px;height:26px;border-radius:50%;
+  background:var(--gold);color:#07040F;
+  font-family:'Cinzel',serif;font-size:11px;font-weight:500;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:580px){.form-grid{grid-template-columns:1fr}}
+.form-grid .full{grid-column:1/-1}
+.booking-sidebar-col{position:sticky;top:90px}
+.booking-price-card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:4px;padding:28px;
+}
+.booking-price-card h3{font-size:20px;margin-bottom:20px}
+.price-breakdown{display:flex;flex-direction:column;gap:0}
+.price-row{
+  display:flex;justify-content:space-between;padding:12px 0;
+  border-bottom:1px solid var(--border2);font-size:14px;
+}
+.price-row:last-child{border-bottom:none}
+.price-row.total{font-size:18px;color:var(--gold2);padding-top:16px;margin-top:4px}
+.price-row-val{color:var(--sand);font-family:'Cormorant Garamond',serif;font-size:17px}
+.price-row.total .price-row-val{font-size:22px;color:var(--gold2)}
+.price-note{font-size:11px;color:var(--muted2);margin-top:16px;line-height:1.6}
+.terms-check{display:flex;gap:12px;align-items:flex-start;margin-top:16px;font-size:13px;color:var(--muted);cursor:pointer}
+.terms-check input{accent-color:var(--gold);margin-top:3px;flex-shrink:0}
+
+/* ─── CONFIRMATION PAGE ──────────────────────────────────── */
+#page-confirm{
+  padding-top:70px;min-height:100vh;
+  display:flex;align-items:center;justify-content:center;padding-bottom:60px;
+}
+.confirm-outer{max-width:640px;width:90%;margin:60px auto 0;text-align:center}
+.confirm-icon{font-size:64px;margin-bottom:24px;display:block;animation:goldPulse 2s infinite}
+.confirm-outer h1{font-size:clamp(32px,5vw,56px);margin-bottom:12px}
+.confirm-outer > p{font-size:17px;color:var(--muted);font-style:italic;margin-bottom:40px;line-height:1.7}
+.confirm-ref{
+  font-family:'Cinzel',serif;font-size:11px;letter-spacing:3px;color:var(--gold);
+  margin-bottom:6px;text-transform:uppercase;
+}
+.ref-num{
+  font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:300;
+  background:var(--gold-dim);border:1px solid var(--border);
+  padding:16px 40px;border-radius:2px;display:inline-block;
+  color:var(--gold2);letter-spacing:6px;margin-bottom:32px;
+}
+.confirm-card{
+  background:var(--card);border:1px solid var(--border2);
+  border-radius:4px;padding:28px;text-align:left;margin-bottom:32px;
+}
+.confirm-card .confirm-row{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:12px 0;border-bottom:1px solid var(--border2);font-size:15px;
+}
+.confirm-card .confirm-row:last-child{border-bottom:none}
+.confirm-row-label{color:var(--muted);font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;text-transform:uppercase}
+.confirm-row-val{color:var(--sand)}
+.confirm-note{
+  background:rgba(201,165,90,.06);border:1px solid var(--border2);
+  border-radius:4px;padding:16px 20px;
+  font-size:13px;color:var(--muted);line-height:1.8;margin-bottom:32px;text-align:left;
+}
+.confirm-note strong{color:var(--sand)}
+.confirm-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+/* ─── Error / Loading ────────────────────────────────────── */
+.loading-overlay{
+  position:fixed;inset:0;z-index:900;
+  background:rgba(7,4,15,.85);backdrop-filter:blur(4px);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .3s;
+}
+.loading-overlay.show{opacity:1;pointer-events:all}
+.loading-spinner{
+  display:flex;flex-direction:column;align-items:center;gap:20px;
+}
+.spinner{
+  width:48px;height:48px;border:2px solid var(--border2);
+  border-top-color:var(--gold);border-radius:50%;
+  animation:spin 1s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-family:'Cinzel',serif;font-size:11px;letter-spacing:3px;color:var(--muted);text-transform:uppercase}
+.error-msg{
+  background:rgba(224,112,112,.1);border:1px solid rgba(224,112,112,.3);
+  color:#E07070;padding:12px 16px;border-radius:2px;
+  font-size:14px;margin-top:12px;
+}
+
+/* ─── Misc ──────────────────────────────────────────────── */
+.divider{
+  width:100%;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  margin:0;
+}
+.arabic-pattern{
+  text-align:center;color:var(--gold);opacity:.2;font-size:24px;
+  letter-spacing:8px;margin:20px 0;font-family:'Amiri',serif;
+}
+.api-notice{
+  background:rgba(201,165,90,.05);border:1px solid var(--border2);
+  border-radius:4px;padding:14px 18px;
+  font-size:13px;color:var(--muted);display:flex;align-items:center;gap:12px;
+  margin-top:12px;
+}
+.api-notice .notice-icon{font-size:18px;flex-shrink:0}
+.api-notice a,.api-notice span.link{color:var(--gold);cursor:pointer;text-decoration:underline}
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header id="header">
+  <div class="logo-wrap" onclick="goSearch()">
+    <span class="logo-en">MANZEL</span>
+    <span class="logo-ar">منزل فنادق الرياض</span>
+  </div>
+  <nav class="header-nav">
+    <button class="nav-link" onclick="goSearch()">Home</button>
+    <button class="nav-link" onclick="goHotels()">Hotels</button>
+    <span style="color:var(--border);font-size:16px">|</span>
+    <span style="font-family:'Cinzel',serif;font-size:10px;letter-spacing:2px;color:var(--muted)">SAR ﷼</span>
+    <button class="api-key-btn" id="api-key-btn" onclick="openApiModal()">⚙ API Key</button>
+  </nav>
+</header>
+
+<!-- API Key Modal -->
+<div class="modal-overlay" id="api-modal">
+  <div class="modal-box">
+    <h2 class="label" style="font-size:18px;margin-bottom:8px">Live Price Integration</h2>
+    <h2 style="font-size:26px;margin-bottom:12px">Connect Real Hotel Data</h2>
+    <p>
+      This SPA integrates with the <strong>Booking.com API on RapidAPI</strong> to fetch live prices and real hotel listings for Riyadh.
+      Enter your key below to switch from demo mode to live data.<br><br>
+      Get a free key at <strong>rapidapi.com</strong> → search "booking-com15" → subscribe to the free tier.
+    </p>
+    <div class="field-group">
+      <label>RapidAPI Key</label>
+      <input type="text" id="api-key-input" placeholder="e.g. a1b2c3d4e5f6...">
+    </div>
+    <div class="api-notice" style="margin-top:16px">
+      <span class="notice-icon">🔒</span>
+      <span>Your key is stored only in session memory — never sent anywhere except the RapidAPI endpoint.</span>
+    </div>
+    <div id="api-modal-error" style="display:none"></div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost btn-sm" onclick="closeApiModal()">Cancel</button>
+      <button class="btn btn-ghost btn-sm" onclick="clearApiKey()" style="color:var(--red);border-color:rgba(224,112,112,.3)">Clear Key</button>
+      <button class="btn btn-gold btn-sm" onclick="saveApiKey()">Save &amp; Connect</button>
+    </div>
+  </div>
+</div>
+
+<!-- Loading Overlay -->
+<div class="loading-overlay" id="loading">
+  <div class="loading-spinner">
+    <div class="spinner"></div>
+    <div class="loading-text">Searching Hotels</div>
+  </div>
+</div>
+
+<!-- Pages -->
+<div id="page-search" class="page">
+  <div class="hero-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-overline label fadeUp">Riyadh, Saudi Arabia</div>
+    <h1 class="hero-title fadeUp-2">Where Luxury Meets<br>Arabian Hospitality</h1>
+    <div class="hero-deco fadeUp-3"></div>
+    <p class="hero-sub fadeUp-3">Hand-curated five-star hotels in the heart of the Kingdom.<br>Real-time prices. Instant booking initiation.</p>
+
+    <div class="search-card fadeUp-4">
+      <div id="search-error" style="display:none"></div>
+      <div class="search-grid">
+        <div class="field-group">
+          <label>Destination</label>
+          <input type="text" id="s-dest" value="Riyadh, Saudi Arabia" readonly style="cursor:not-allowed;opacity:.7">
+        </div>
+        <div class="field-group">
+          <label>Check-in</label>
+          <input type="date" id="s-checkin">
+        </div>
+        <div class="field-group">
+          <label>Check-out</label>
+          <input type="date" id="s-checkout">
+        </div>
+        <div class="field-group">
+          <label>Guests</label>
+          <select id="s-guests">
+            <option value="1">1 Guest</option>
+            <option value="2" selected>2 Guests</option>
+            <option value="3">3 Guests</option>
+            <option value="4">4 Guests</option>
+          </select>
+        </div>
+        <button class="btn btn-gold" onclick="searchHotels()">Search</button>
+      </div>
+      <div class="api-notice" style="margin-top:20px">
+        <span class="notice-icon">🌐</span>
+        <div id="api-status-msg">Showing curated demo data. <span class="link" onclick="openApiModal()">Add your RapidAPI key</span> to load real-time prices.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="page-hotels" class="page">
+  <div class="hotels-header">
+    <p class="label">Riyadh, Saudi Arabia</p>
+    <h1>Luxury Hotels</h1>
+    <div class="hotels-meta">
+      <div class="dates-badge" id="hotels-dates-badge">— → —</div>
+      <div class="dates-badge" id="hotels-guests-badge">2 Guests</div>
+      <button class="btn btn-ghost btn-sm" onclick="goSearch()">✎ Edit Search</button>
+    </div>
+  </div>
+  <div class="hotels-body">
+    <aside class="filter-sidebar">
+      <h3>Refine</h3>
+      <div class="filter-section">
+        <h4>Star Rating</h4>
+        <div class="star-filter-row">
+          <label class="filter-check"><input type="checkbox" class="star-filter" value="5" checked> ★★★★★ Five Star</label>
+          <label class="filter-check"><input type="checkbox" class="star-filter" value="4" checked> ★★★★ Four Star</label>
+        </div>
+      </div>
+      <div class="filter-section">
+        <h4>Price per Night</h4>
+        <div class="price-range-row">
+          <div class="field-group"><label style="font-size:9px">Min SAR</label><input type="number" id="filter-min" value="0" min="0" step="100"></div>
+          <span style="color:var(--muted);margin-top:20px">—</span>
+          <div class="field-group"><label style="font-size:9px">Max SAR</label><input type="number" id="filter-max" value="10000" min="0" step="100"></div>
+        </div>
+      </div>
+      <div class="filter-section">
+        <h4>Amenities</h4>
+        <div class="amenity-filter-row">
+          <label class="filter-check"><input type="checkbox" class="amenity-filter" value="Pool"> Swimming Pool</label>
+          <label class="filter-check"><input type="checkbox" class="amenity-filter" value="Spa"> Spa &amp; Wellness</label>
+          <label class="filter-check"><input type="checkbox" class="amenity-filter" value="Free WiFi"> Free WiFi</label>
+          <label class="filter-check"><input type="checkbox" class="amenity-filter" value="Restaurant"> Restaurant</label>
+        </div>
+      </div>
+      <button class="btn btn-gold" style="width:100%;margin-top:8px" onclick="applyFilters()">Apply Filters</button>
+    </aside>
+
+    <div class="hotel-grid-wrap">
+      <div class="sort-row">
+        <label>Sort by:</label>
+        <select id="sort-select" onchange="applyFilters()">
+          <option value="rating">Top Rated</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+        </select>
+      </div>
+      <div class="hotel-count" id="hotel-count"></div>
+      <div class="hotel-list" id="hotel-list"></div>
+    </div>
+  </div>
+</div>
+
+<div id="page-detail" class="page">
+  <div class="detail-hero">
+    <div class="detail-hero-img" id="detail-hero-img"></div>
+    <div class="detail-hero-overlay"></div>
+    <div class="detail-hero-content">
+      <button class="back-link" onclick="goHotels()">Back to Hotels</button>
+      <div class="star-row" id="detail-stars" style="margin-bottom:10px"></div>
+      <h1 id="detail-name"></h1>
+      <div class="detail-meta" id="detail-meta" style="margin-top:12px"></div>
+    </div>
+  </div>
+  <div class="detail-body">
+    <div class="detail-info-col">
+      <div>
+        <p class="label" style="margin-bottom:8px">About the Hotel</p>
+        <div class="section-line"></div>
+        <p class="detail-desc" id="detail-desc"></p>
+      </div>
+      <div>
+        <p class="label" style="margin-bottom:8px">Amenities &amp; Services</p>
+        <div class="section-line"></div>
+        <div class="amenities-grid" id="detail-amenities"></div>
+      </div>
+      <div>
+        <p class="label" style="margin-bottom:8px">Available Rooms</p>
+        <div class="section-line"></div>
+        <div class="room-list" id="detail-rooms"></div>
+      </div>
+    </div>
+    <div class="detail-sidebar">
+      <div class="booking-summary-box">
+        <h3>Your Stay</h3>
+        <div class="summary-line">
+          <span class="label" style="font-size:11px">Check-in</span>
+          <span class="summary-val" id="sidebar-checkin">—</span>
+        </div>
+        <div class="summary-line">
+          <span class="label" style="font-size:11px">Check-out</span>
+          <span class="summary-val" id="sidebar-checkout">—</span>
+        </div>
+        <div class="summary-line">
+          <span class="label" style="font-size:11px">Duration</span>
+          <span class="summary-val" id="sidebar-nights">— nights</span>
+        </div>
+        <div class="summary-line">
+          <span class="label" style="font-size:11px">Guests</span>
+          <span class="summary-val" id="sidebar-guests">—</span>
+        </div>
+        <div class="summary-line total">
+          <span>Lowest Rate</span>
+          <span class="summary-val" id="sidebar-price" style="color:var(--gold2)">SAR —</span>
+        </div>
+      </div>
+      <div class="api-notice">
+        <span class="notice-icon">✦</span>
+        <span style="font-size:12px">Prices shown per night, per room. Taxes and fees calculated at checkout. Free cancellation available on most rates.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="page-booking" class="page">
+  <div class="booking-wrapper">
+    <div class="booking-form-col">
+      <p class="label">Secure Reservation</p>
+      <h1>Complete Your Booking</h1>
+      <p>Fill in your details to initiate your reservation at <strong id="bk-hotel-name" style="color:var(--gold)"></strong>.</p>
+
+      <div class="form-section">
+        <h3><span class="sec-num">1</span>Guest Information</h3>
+        <div class="form-grid">
+          <div class="field-group">
+            <label>First Name *</label>
+            <input type="text" id="bk-first" placeholder="Ahmad">
+          </div>
+          <div class="field-group">
+            <label>Last Name *</label>
+            <input type="text" id="bk-last" placeholder="Al-Rashid">
+          </div>
+          <div class="field-group full">
+            <label>Email Address *</label>
+            <input type="email" id="bk-email" placeholder="ahmad@example.com">
+          </div>
+          <div class="field-group">
+            <label>Phone Number *</label>
+            <input type="tel" id="bk-phone" placeholder="+966 5X XXX XXXX">
+          </div>
+          <div class="field-group">
+            <label>Nationality</label>
+            <select id="bk-nationality">
+              <option>Saudi Arabia</option>
+              <option>United Arab Emirates</option>
+              <option>Kuwait</option>
+              <option>Qatar</option>
+              <option>Bahrain</option>
+              <option>Oman</option>
+              <option>Jordan</option>
+              <option>Egypt</option>
+              <option>United Kingdom</option>
+              <option>United States</option>
+              <option>Other</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3><span class="sec-num">2</span>Stay Preferences</h3>
+        <div class="form-grid">
+          <div class="field-group">
+            <label>Arrival Time</label>
+            <select id="bk-arrival">
+              <option>Before 12:00 PM</option>
+              <option selected>12:00 PM – 3:00 PM</option>
+              <option>3:00 PM – 6:00 PM</option>
+              <option>After 6:00 PM</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Room Type</label>
+            <input type="text" id="bk-room-display" readonly style="cursor:not-allowed;opacity:.7">
+          </div>
+          <div class="field-group full">
+            <label>Special Requests</label>
+            <textarea id="bk-requests" placeholder="High floor, early check-in, occasion celebration, dietary requirements..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h3><span class="sec-num">3</span>Terms &amp; Confirmation</h3>
+        <p style="font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:16px">
+          By initiating this booking, you agree that your details will be shared with <strong style="color:var(--sand)" id="bk-hotel-name-2"></strong> to complete the reservation. A confirmation email will be sent to your provided address.
+        </p>
+        <label class="terms-check" id="terms-check">
+          <input type="checkbox" id="bk-terms">
+          I agree to the hotel's cancellation policy and terms of service, and confirm all details above are accurate.
+        </label>
+      </div>
+
+      <div id="booking-error" style="display:none"></div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px">
+        <button class="btn btn-ghost" onclick="goHotels()">← Back</button>
+        <button class="btn btn-gold" onclick="confirmBooking()" style="flex:1;justify-content:center">Initiate Booking →</button>
+      </div>
+    </div>
+
+    <div class="booking-sidebar-col">
+      <div class="booking-price-card">
+        <h3>Price Summary</h3>
+        <div class="price-breakdown">
+          <div class="price-row">
+            <span>Room</span>
+            <span class="price-row-val" id="bk-room-name">—</span>
+          </div>
+          <div class="price-row">
+            <span>Rate per night</span>
+            <span class="price-row-val" id="bk-rate">SAR —</span>
+          </div>
+          <div class="price-row">
+            <span>Duration</span>
+            <span class="price-row-val" id="bk-nights-display">— nights</span>
+          </div>
+          <div class="price-row">
+            <span>Subtotal</span>
+            <span class="price-row-val" id="bk-subtotal">SAR —</span>
+          </div>
+          <div class="price-row">
+            <span>VAT (15%)</span>
+            <span class="price-row-val" id="bk-vat">SAR —</span>
+          </div>
+          <div class="price-row total">
+            <span>Total</span>
+            <span class="price-row-val" id="bk-total">SAR —</span>
+          </div>
+        </div>
+        <p class="price-note">Payment is collected directly by the hotel at check-in. No charges are made through Manzel.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="page-confirm" class="page">
+  <div class="confirm-outer">
+    <span class="confirm-icon">✦</span>
+    <p class="label" style="margin-bottom:8px">Booking Initiated</p>
+    <h1 style="font-size:clamp(32px,5vw,56px)">You're Almost There</h1>
+    <p style="font-size:17px;color:var(--muted);font-style:italic;margin-bottom:40px;line-height:1.7">
+      Your reservation request has been received. The hotel will confirm your booking within 24 hours.
+    </p>
+    <div class="confirm-ref label">Booking Reference</div>
+    <div class="ref-num" id="confirm-ref">MNZ-XXXXXX</div>
+    <div class="confirm-card">
+      <div class="confirm-row">
+        <span class="confirm-row-label">Hotel</span>
+        <span class="confirm-row-val" id="conf-hotel"></span>
+      </div>
+      <div class="confirm-row">
+        <span class="confirm-row-label">Room</span>
+        <span class="confirm-row-val" id="conf-room"></span>
+      </div>
+      <div class="confirm-row">
+        <span class="confirm-row-label">Guest</span>
+        <span class="confirm-row-val" id="conf-guest"></span>
+      </div>
+      <div class="confirm-row">
+        <span class="confirm-row-label">Check-in</span>
+        <span class="confirm-row-val" id="conf-checkin"></span>
+      </div>
+      <div class="confirm-row">
+        <span class="confirm-row-label">Check-out</span>
+        <span class="confirm-row-val" id="conf-checkout"></span>
+      </div>
+      <div class="confirm-row">
+        <span class="confirm-row-label">Total (incl. VAT)</span>
+        <span class="confirm-row-val" id="conf-total" style="color:var(--gold2)"></span>
+      </div>
+    </div>
+    <div class="confirm-note">
+      <strong>Next Steps:</strong><br>
+      A confirmation email has been sent to <strong id="conf-email"></strong>. The hotel will contact you within 24 hours to finalise payment details and any special arrangements you requested.
+    </div>
+    <div class="confirm-actions">
+      <button class="btn btn-outline" onclick="window.print()">🖨 Print Confirmation</button>
+      <button class="btn btn-gold" onclick="goSearch()">Book Another Hotel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════════════════════
+// DATA
+// ══════════════════════════════════════════════════════════════════
+const HOTELS = [
+  {
+    id:0, stars:5,
+    name:'Four Seasons Hotel Riyadh at Kingdom Centre',
+    neighborhood:'King Fahd District, Al Olaya',
+    rating:9.4, reviews:1842,
+    price:1450, currency:'SAR',
+    amenities:['Pool','Spa','Gym','Free WiFi','Fine Dining','Valet Parking','Concierge','24hr Room Service'],
+    amenityIcons:{Pool:'🏊',Spa:'💆',Gym:'🏋️','Free WiFi':'📶','Fine Dining':'🍽️','Valet Parking':'🚗',Concierge:'🎩','24hr Room Service':'🛎️'},
+    gradient:'linear-gradient(160deg,#0d1a0d 0%,#1a3a28 45%,#2d6040 75%,#3a5a30 100%)',
+    description:'Occupying the uppermost floors of the iconic Kingdom Centre tower — one of Riyadh\'s most recognisable landmarks — the Four Seasons delivers 360° panoramic views of the capital alongside legendary personalised service. The hotel\'s rooftop pool, award-winning spa, and Sintoho restaurant set the gold standard for luxury in the Kingdom.',
+    address:'Kingdom Centre Tower, Floors 30–35, Al Olaya, Riyadh 12214',
+    rooms:[
+      {name:'Deluxe City View Room',price:1450,size:'52 m²',bed:'King Bed',view:'City Panorama',breakfast:false},
+      {name:'Kingdom View Superior',price:1820,size:'65 m²',bed:'King Bed',view:'Kingdom Tower',breakfast:true},
+      {name:'Four Seasons Suite',price:3600,size:'140 m²',bed:'King Bed + Lounge',view:'360° Panorama',breakfast:true},
+    ]
+  },
+  {
+    id:1, stars:5,
+    name:'The Ritz-Carlton, Riyadh',
+    neighborhood:'Diplomatic Quarter',
+    rating:9.6, reviews:2314,
+    price:1890, currency:'SAR',
+    amenities:['Pool','Spa','Golf Course','Free WiFi','5 Restaurants','Butler Service','Tennis','Helipad'],
+    amenityIcons:{Pool:'🏊',Spa:'💆','Golf Course':'⛳','Free WiFi':'📶','5 Restaurants':'🍽️','Butler Service':'🎩',Tennis:'🎾',Helipad:'🚁'},
+    gradient:'linear-gradient(160deg,#1a0a2e 0%,#2d1550 45%,#4a2878 75%,#5a3060 100%)',
+    description:'A palace among hotels, The Ritz-Carlton Riyadh occupies 52 immaculate hectares within the Diplomatic Quarter. Modelled after the great palaces of Najd, its Arabesque architecture — intricate carved plasterwork, grand marble halls, and verdant gardens — has welcomed royalty, heads of state, and discerning travellers since 1999.',
+    address:'Al Hada Street, Al Safarat, Diplomatic Quarter, Riyadh 11564',
+    rooms:[
+      {name:'Deluxe Garden Room',price:1890,size:'58 m²',bed:'King Bed',view:'Garden',breakfast:false},
+      {name:'Club Level Room',price:2450,size:'58 m²',bed:'King Bed',view:'Garden or Pool',breakfast:true},
+      {name:'Royal Ambassador Suite',price:6200,size:'230 m²',bed:'King Bed + Living',view:'Palace Gardens',breakfast:true},
+    ]
+  },
+  {
+    id:2, stars:5,
+    name:'Mandarin Oriental Al Faisaliah',
+    neighborhood:'King Fahd Road, Al Olaya',
+    rating:9.2, reviews:1156,
+    price:1200, currency:'SAR',
+    amenities:['Spa','Pool','Free WiFi','Globe Restaurant','Rooftop Bar','Concierge','Business Centre'],
+    amenityIcons:{Spa:'💆',Pool:'🏊','Free WiFi':'📶','Globe Restaurant':'🌐','Rooftop Bar':'🍸',Concierge:'🎩','Business Centre':'💼'},
+    gradient:'linear-gradient(160deg,#0a1628 0%,#1a3050 45%,#1e4870 75%,#2a5878 100%)',
+    description:'Anchored beneath the unmistakable Al Faisaliah Globe — a gilded sphere crowning one of the first skyscrapers built in the Kingdom — the Mandarin Oriental blends sleek contemporary design with warm Arabian hospitality. Its sky-high Globe Bar and the acclaimed Al Faisaliah restaurant offer an unparalleled dining experience suspended above the city.',
+    address:'Al Faisaliah Complex, King Fahd Road, Al Olaya, Riyadh 11523',
+    rooms:[
+      {name:'Superior Globe View',price:1200,size:'48 m²',bed:'King Bed',view:'City Skyline',breakfast:false},
+      {name:'Deluxe Globe View',price:1650,size:'60 m²',bed:'King Bed',view:'Al Faisaliah Globe',breakfast:true},
+      {name:'Oriental Suite',price:3200,size:'110 m²',bed:'King Bed + Study',view:'Full City',breakfast:true},
+    ]
+  },
+  {
+    id:3, stars:5,
+    name:'Rosewood Riyadh',
+    neighborhood:'King Abdullah Financial District (KAFD)',
+    rating:9.5, reviews:892,
+    price:1650, currency:'SAR',
+    amenities:['Pool','Spa','Free WiFi','4 Restaurants','Private Lounge','Fitness Centre','Valet'],
+    amenityIcons:{Pool:'🏊',Spa:'💆','Free WiFi':'📶','4 Restaurants':'🍽️','Private Lounge':'🛋️','Fitness Centre':'🏋️',Valet:'🚗'},
+    gradient:'linear-gradient(160deg,#1a0f0a 0%,#3a2010 45%,#6a3820 75%,#8a4a25 100%)',
+    description:'Rising at the heart of King Abdullah Financial District — Riyadh\'s gleaming new business and cultural hub — Rosewood Riyadh is a statement of ultra-modern Arabian luxury. Its collection of destination restaurants, the restorative Sense Spa, and the warm personalised \'A Sense of Place\' philosophy make every stay deeply memorable.',
+    address:'KAFD, Prince Turki Al Awwal Road, Riyadh 13519',
+    rooms:[
+      {name:'City View Room',price:1650,size:'55 m²',bed:'King Bed',view:'KAFD Skyline',breakfast:false},
+      {name:'KAFD Suite',price:3100,size:'108 m²',bed:'King Bed + Parlour',view:'Financial District',breakfast:true},
+    ]
+  },
+  {
+    id:4, stars:5,
+    name:'InterContinental Riyadh',
+    neighborhood:'Al Muraba',
+    rating:8.9, reviews:3427,
+    price:980, currency:'SAR',
+    amenities:['Pool','Free WiFi','Fitness Centre','3 Restaurants','Business Lounge','Shuttle Service'],
+    amenityIcons:{Pool:'🏊','Free WiFi':'📶','Fitness Centre':'🏋️','3 Restaurants':'🍽️','Business Lounge':'💼','Shuttle Service':'🚌'},
+    gradient:'linear-gradient(160deg,#0c1a0c 0%,#1a3818 45%,#2e5822 75%,#386830 100%)',
+    description:'A cornerstone of Riyadh\'s hospitality landscape since 1975, the InterContinental has hosted dignitaries, diplomats, and discerning business travellers across five decades. Following a comprehensive renovation, its spacious rooms, diverse dining venues, and legendary service tradition continue to set the benchmark for classic five-star hospitality in the capital.',
+    address:'Al Maather Street, Al Muraba, Riyadh 11593',
+    rooms:[
+      {name:'Classic King Room',price:980,size:'42 m²',bed:'King Bed',view:'City',breakfast:false},
+      {name:'Club InterContinental Room',price:1320,size:'42 m²',bed:'King Bed',view:'City + Club Access',breakfast:true},
+      {name:'Junior Suite',price:2100,size:'85 m²',bed:'King Bed + Lounge',view:'City',breakfast:true},
+    ]
+  },
+  {
+    id:5, stars:5,
+    name:'Waldorf Astoria Riyadh — Kingdom Tower',
+    neighborhood:'Al Olaya',
+    rating:9.7, reviews:736,
+    price:2280, currency:'SAR',
+    amenities:['Infinity Pool','Spa','Free WiFi','5 Restaurants','Personal Concierge','Butler','Helipad','Private Club'],
+    amenityIcons:{'Infinity Pool':'🏊',Spa:'💆','Free WiFi':'📶','5 Restaurants':'🍽️','Personal Concierge':'🎩',Butler:'🛎️',Helipad:'🚁','Private Club':'🥂'},
+    gradient:'linear-gradient(160deg,#0a0a1a 0%,#1a1020 45%,#3a2040 75%,#4a3060 100%)',
+    description:'The pinnacle of Riyadh luxury, the Waldorf Astoria occupies a prime position in the iconic Kingdom Tower complex. Every detail — from the hand-woven Arabian carpets and bespoke furniture to the personalised butler service and exclusive invitation-only Club — speaks to an uncompromising commitment to the absolute finest in hospitality.',
+    address:'Kingdom Tower, Al Olaya, Riyadh 12214',
+    rooms:[
+      {name:'Waldorf King Room',price:2280,size:'65 m²',bed:'King Bed',view:'City Panorama',breakfast:true},
+      {name:'Grand Deluxe Suite',price:4800,size:'150 m²',bed:'King Bed + Grand Salon',view:'360° City',breakfast:true},
+      {name:'Royal Penthouse',price:12000,size:'450 m²',bed:'Two King Bedrooms',view:'Kingdom & Beyond',breakfast:true},
+    ]
+  },
+  {
+    id:6, stars:5,
+    name:'Nobu Hotel Riyadh',
+    neighborhood:'Al Hamra District',
+    rating:9.1, reviews:644,
+    price:1100, currency:'SAR',
+    amenities:['Nobu Restaurant','Spa','Pool','Free WiFi','Sake Bar','Chef\'s Table','Meditation Garden'],
+    amenityIcons:{'Nobu Restaurant':'🍣',Spa:'💆',Pool:'🏊','Free WiFi':'📶','Sake Bar':'🍶','Chef\'s Table':'👨‍🍳','Meditation Garden':'🌿'},
+    gradient:'linear-gradient(160deg,#1a1410 0%,#2d2015 45%,#4a3018 75%,#5a3a20 100%)',
+    description:'Where Nobu Matsuhisa\'s celebrated culinary empire meets the warmth of Saudi hospitality. The Nobu Hotel Riyadh is a sanctuary of Japanese-inspired minimalism softened by Arabian warmth — all clean lines, warm timber, and natural stone. The legendary Nobu restaurant is reason alone to stay, but the Spa and Sake Bar will ensure you never want to leave.',
+    address:'King Abdullah Road, Al Hamra, Riyadh 13216',
+    rooms:[
+      {name:'Nobu King Room',price:1100,size:'50 m²',bed:'King Bed',view:'City',breakfast:false},
+      {name:'Nobu City Suite',price:2400,size:'98 m²',bed:'King Bed + Study',view:'City Panorama',breakfast:true},
+    ]
+  },
+];
+
+// ══════════════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════════════
+let state = {
+  checkin:'',checkout:'',guests:2,
+  selectedHotel:null, selectedRoom:null,
+  bookingRef:'',
+  filteredHotels:[...HOTELS],
+  apiKey: sessionStorage.getItem('manzel_api_key') || '',
+};
+
+// ══════════════════════════════════════════════════════════════════
+// ROUTING
+// ══════════════════════════════════════════════════════════════════
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+id).classList.add('active');
+  window.scrollTo(0,0);
+}
+function goSearch(){showPage('search')}
+function goHotels(){showPage('hotels')}
+function goDetail(id){renderDetail(id);showPage('detail')}
+function goBooking(hotelId,roomIdx){renderBooking(hotelId,roomIdx);showPage('booking')}
+function goConfirm(){showPage('confirm')}
+
+// ══════════════════════════════════════════════════════════════════
+// DATE UTILS
+// ══════════════════════════════════════════════════════════════════
+function toYMD(d){return d.toISOString().split('T')[0]}
+function parseDate(s){const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d)}
+function fmtDate(s){
+  if(!s)return'—';
+  const d=parseDate(s);
+  return d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+}
+function nightsBetween(a,b){
+  return Math.round((parseDate(b)-parseDate(a))/(1000*60*60*24));
+}
+function sar(n){return'SAR '+n.toLocaleString('en-SA')}
+
+// ══════════════════════════════════════════════════════════════════
+// INIT DATES
+// ══════════════════════════════════════════════════════════════════
+(function initDates(){
+  const now=new Date();
+  const ci=new Date(now.getTime()+3*86400000);
+  const co=new Date(now.getTime()+6*86400000);
+  state.checkin=toYMD(ci);
+  state.checkout=toYMD(co);
+  document.getElementById('s-checkin').value=state.checkin;
+  document.getElementById('s-checkout').value=state.checkout;
+  document.getElementById('s-checkin').min=toYMD(now);
+  document.getElementById('s-checkout').min=toYMD(ci);
+  updateApiStatus();
+})();
+
+function updateApiStatus(){
+  const btn=document.getElementById('api-key-btn');
+  const msg=document.getElementById('api-status-msg');
+  if(state.apiKey){
+    btn.className='api-key-btn connected';btn.textContent='⚡ Live Data';
+    if(msg)msg.innerHTML='Live prices from Booking.com via RapidAPI. <span class="link" onclick="openApiModal()">Change key</span>.';
+  } else {
+    btn.className='api-key-btn';btn.textContent='⚙ API Key';
+    if(msg)msg.innerHTML='Showing curated demo data. <span class="link" onclick="openApiModal()">Add your RapidAPI key</span> to load real-time prices.';
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════
+// SEARCH
+// ══════════════════════════════════════════════════════════════════
+async function searchHotels(){
+  const ci=document.getElementById('s-checkin').value;
+  const co=document.getElementById('s-checkout').value;
+  const g=parseInt(document.getElementById('s-guests').value);
+  const errDiv=document.getElementById('search-error');
+  errDiv.style.display='none';
+
+  if(!ci||!co){showError(errDiv,'Please select check-in and check-out dates.');return}
+  if(ci>=co){showError(errDiv,'Check-out must be after check-in.');return}
+  const nights=nightsBetween(ci,co);
+  if(nights<1){showError(errDiv,'Minimum stay is 1 night.');return}
+  if(nights>30){showError(errDiv,'Maximum search window is 30 nights.');return}
+
+  state.checkin=ci; state.checkout=co; state.guests=g;
+  state.filteredHotels=[...HOTELS];
+
+  document.getElementById('hotels-dates-badge').textContent=fmtDate(ci)+' → '+fmtDate(co);
+  document.getElementById('hotels-guests-badge').textContent=g+' Guest'+(g>1?'s':'');
+  document.getElementById('sidebar-checkin').textContent=fmtDate(ci);
+  document.getElementById('sidebar-checkout').textContent=fmtDate(co);
+  document.getElementById('sidebar-nights').textContent=nights+' night'+(nights>1?'s':'');
+  document.getElementById('sidebar-guests').textContent=g+' guest'+(g>1?'s':'');
+
+  if(state.apiKey){
+    showLoading(true);
+    try{
+      await fetchLiveHotels(ci,co,g);
+    } catch(e){
+      console.warn('API error, falling back to demo:',e);
+      state.filteredHotels=[...HOTELS];
+    }
+    showLoading(false);
+  }
+
+  renderHotelList(state.filteredHotels);
+  goHotels();
+}
+
+async function fetchLiveHotels(ci,co,guests){
+  // RapidAPI — Booking.com Hotels API
+  // Riyadh dest_id: -3712566, search_type: CITY
+  const url=`https://booking-com15.p.rapidapi.com/api/v1/hotels/searchHotels?dest_id=-3712566&search_type=CITY&arrival_date=${ci}&departure_date=${co}&adults=${guests}&room_qty=1&page_number=1&languagecode=en-us&currency_code=SAR`;
+  const res=await fetch(url,{
+    headers:{'x-rapidapi-key':state.apiKey,'x-rapidapi-host':'booking-com15.p.rapidapi.com'}
+  });
+  if(!res.ok) throw new Error('API '+res.status);
+  const data=await res.json();
+  if(data.status && data.data && data.data.hotels && data.data.hotels.length){
+    const live=data.data.hotels.slice(0,7).map((h,i)=>({
+      id:1000+i,stars:h.property.accuratePropertyClass||5,
+      name:h.property.name,
+      neighborhood:h.property.wishlistName||'Riyadh',
+      rating:h.property.reviewScore||8.5,
+      reviews:h.property.reviewCount||100,
+      price:Math.round(h.property.priceBreakdown?.grossPrice?.value||1200),
+      currency:'SAR',
+      amenities:['Free WiFi','Pool','Restaurant'],
+      amenityIcons:{'Free WiFi':'📶',Pool:'🏊',Restaurant:'🍽️'},
+      gradient:HOTELS[i%HOTELS.length].gradient,
+      description:'A premium hotel in Riyadh offering exceptional comfort and Saudi hospitality.',
+      address:h.property.wishlistName||'Riyadh, Saudi Arabia',
+      rooms:[{name:'Standard Room',price:Math.round(h.property.priceBreakdown?.grossPrice?.value||1200),size:'40 m²',bed:'King Bed',view:'City',breakfast:false}],
+    }));
+    state.filteredHotels=live;
+  }
+}
+
+// ══════════════════════════════════════════════════════════════════
+// HOTEL LIST RENDER
+// ══════════════════════════════════════════════════════════════════
+function renderHotelList(hotels){
+  const list=document.getElementById('hotel-list');
+  const count=document.getElementById('hotel-count');
+  count.textContent=`${hotels.length} properties found`;
+  if(!hotels.length){list.innerHTML='<p style="color:var(--muted);font-style:italic;padding:20px 0">No hotels match your filters.</p>';return}
+  list.innerHTML=hotels.map((h,i)=>`
+    <div class="hotel-card fadeUp" style="animation-delay:${i*0.07}s" onclick="goDetail(${h.id})">
+      <div class="hotel-card-img">
+        <div class="hotel-card-img-inner" style="background:${h.gradient}"></div>
+        <div class="hotel-card-img-overlay"></div>
+        <div class="hotel-card-badge">${'★'.repeat(h.stars)}</div>
+      </div>
+      <div class="hotel-card-body">
+        <div>
+          <div class="hotel-name">${h.name}</div>
+          <div class="hotel-neighborhood">${h.neighborhood}</div>
+        </div>
+        <div class="hotel-amenities-preview">
+          ${h.amenities.slice(0,4).map(a=>`<span class="amenity-tag">${a}</span>`).join('')}
+        </div>
+        <div class="hotel-card-footer">
+          <div class="hotel-rating-block">
+            <div class="hotel-rating-num">${h.rating}</div>
+            <div><div style="font-size:12px;color:var(--sand)">${ratingLabel(h.rating)}</div>
+            <div class="hotel-rating-label">${h.reviews.toLocaleString()} reviews</div></div>
+          </div>
+          <div class="hotel-price-block">
+            <div class="hotel-price-num"><span class="hotel-price-currency">SAR</span>${h.price.toLocaleString()}</div>
+            <span class="hotel-price-unit">per night · excl. taxes</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function ratingLabel(r){
+  if(r>=9.5)return'Exceptional';
+  if(r>=9.0)return'Superb';
+  if(r>=8.5)return'Excellent';
+  if(r>=8.0)return'Very Good';
+  return'Good';
+}
+
+function applyFilters(){
+  const stars=[...document.querySelectorAll('.star-filter:checked')].map(c=>parseInt(c.value));
+  const amenities=[...document.querySelectorAll('.amenity-filter:checked')].map(c=>c.value);
+  const minP=parseInt(document.getElementById('filter-min').value)||0;
+  const maxP=parseInt(document.getElementById('filter-max').value)||99999;
+  const sort=document.getElementById('sort-select').value;
+
+  let hotels=[...HOTELS].filter(h=>{
+    if(stars.length&&!stars.includes(h.stars))return false;
+    if(amenities.length&&!amenities.every(a=>h.amenities.includes(a)))return false;
+    if(h.price<minP||h.price>maxP)return false;
+    return true;
+  });
+
+  if(sort==='price-asc') hotels.sort((a,b)=>a.price-b.price);
+  else if(sort==='price-desc') hotels.sort((a,b)=>b.price-a.price);
+  else hotels.sort((a,b)=>b.rating-a.rating);
+
+  renderHotelList(hotels);
+}
+
+// ══════════════════════════════════════════════════════════════════
+// HOTEL DETAIL
+// ══════════════════════════════════════════════════════════════════
+function renderDetail(hotelId){
+  const h=HOTELS.find(h=>h.id===hotelId)||HOTELS[0];
+  state.selectedHotel=h;
+  document.getElementById('detail-hero-img').style.background=h.gradient;
+  document.getElementById('detail-name').textContent=h.name;
+  document.getElementById('detail-stars').innerHTML='<span style="color:var(--gold);font-size:14px">'+'★'.repeat(h.stars)+'</span>';
+  document.getElementById('detail-meta').innerHTML=`
+    <div class="detail-address">${h.address}</div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <span style="background:var(--gold);color:#07040F;padding:4px 10px;font-family:Cinzel,serif;font-size:14px;font-weight:500">${h.rating}</span>
+      <span style="font-size:14px;color:var(--muted)">${ratingLabel(h.rating)} · ${h.reviews.toLocaleString()} reviews</span>
+    </div>
+  `;
+  document.getElementById('detail-desc').textContent=h.description;
+  document.getElementById('detail-amenities').innerHTML=h.amenities.map(a=>`
+    <div class="amenity-item">
+      <span class="amenity-icon">${h.amenityIcons[a]||'✓'}</span>
+      <span>${a}</span>
+    </div>
+  `).join('');
+
+  const nights=state.checkin&&state.checkout?nightsBetween(state.checkin,state.checkout):1;
+  document.getElementById('detail-rooms').innerHTML=h.rooms.map((r,i)=>`
+    <div class="room-card">
+      <div class="room-info">
+        <div class="room-name">${r.name}</div>
+        <div class="room-details">
+          <span class="room-detail-item"><span class="room-detail-icon">🛏</span> ${r.bed}</span>
+          <span class="room-detail-item"><span class="room-detail-icon">📐</span> ${r.size}</span>
+          <span class="room-detail-item"><span class="room-detail-icon">🌅</span> ${r.view}</span>
+          ${r.breakfast?'<span class="room-detail-item" style="color:var(--gold)"><span class="room-detail-icon">🍳</span> Breakfast included</span>':''}
+        </div>
+      </div>
+      <div class="room-price-block">
+        <div class="room-price-num">SAR ${r.price.toLocaleString()}<span style="font-size:14px;color:var(--muted);font-family:Amiri,serif"> / night</span></div>
+        <div style="font-size:11px;color:var(--muted);margin:4px 0">SAR ${(r.price*nights).toLocaleString()} total for ${nights} night${nights!==1?'s':''}</div>
+        <button class="btn btn-gold btn-sm" style="margin-top:10px" onclick="goBooking(${h.id},${i})">Book This Room →</button>
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('sidebar-checkin').textContent=fmtDate(state.checkin);
+  document.getElementById('sidebar-checkout').textContent=fmtDate(state.checkout);
+  document.getElementById('sidebar-nights').textContent=nights+' night'+(nights!==1?'s':'');
+  document.getElementById('sidebar-guests').textContent=state.guests+' guest'+(state.guests!==1?'s':'');
+  document.getElementById('sidebar-price').textContent='SAR '+h.price.toLocaleString()+'+';
+}
+
+// ══════════════════════════════════════════════════════════════════
+// BOOKING
+// ══════════════════════════════════════════════════════════════════
+function renderBooking(hotelId,roomIdx){
+  const h=HOTELS.find(h=>h.id===hotelId)||state.selectedHotel||HOTELS[0];
+  const r=h.rooms[roomIdx]||h.rooms[0];
+  state.selectedHotel=h;
+  state.selectedRoom=r;
+
+  const nights=state.checkin&&state.checkout?nightsBetween(state.checkin,state.checkout):1;
+  const subtotal=r.price*nights;
+  const vat=Math.round(subtotal*0.15);
+  const total=subtotal+vat;
+
+  document.getElementById('bk-hotel-name').textContent=h.name;
+  document.getElementById('bk-hotel-name-2').textContent=h.name;
+  document.getElementById('bk-room-display').value=r.name;
+  document.getElementById('bk-room-name').textContent=r.name;
+  document.getElementById('bk-rate').textContent='SAR '+r.price.toLocaleString();
+  document.getElementById('bk-nights-display').textContent=nights+' night'+(nights!==1?'s':'');
+  document.getElementById('bk-subtotal').textContent='SAR '+subtotal.toLocaleString();
+  document.getElementById('bk-vat').textContent='SAR '+vat.toLocaleString();
+  document.getElementById('bk-total').textContent='SAR '+total.toLocaleString();
+}
+
+function confirmBooking(){
+  const errDiv=document.getElementById('booking-error');
+  errDiv.style.display='none';
+  const first=document.getElementById('bk-first').value.trim();
+  const last=document.getElementById('bk-last').value.trim();
+  const email=document.getElementById('bk-email').value.trim();
+  const phone=document.getElementById('bk-phone').value.trim();
+  const terms=document.getElementById('bk-terms').checked;
+
+  if(!first||!last){showError(errDiv,'Please enter your full name.');return}
+  if(!email||!email.includes('@')){showError(errDiv,'Please enter a valid email address.');return}
+  if(!phone){showError(errDiv,'Please enter your phone number.');return}
+  if(!terms){showError(errDiv,'Please accept the terms to proceed.');return}
+
+  const h=state.selectedHotel;
+  const r=state.selectedRoom||h.rooms[0];
+  const nights=state.checkin&&state.checkout?nightsBetween(state.checkin,state.checkout):1;
+  const total=Math.round(r.price*nights*1.15);
+  const ref='MNZ-'+Math.random().toString(36).substring(2,8).toUpperCase();
+  state.bookingRef=ref;
+
+  document.getElementById('confirm-ref').textContent=ref;
+  document.getElementById('conf-hotel').textContent=h.name;
+  document.getElementById('conf-room').textContent=r.name;
+  document.getElementById('conf-guest').textContent=first+' '+last;
+  document.getElementById('conf-checkin').textContent=fmtDate(state.checkin);
+  document.getElementById('conf-checkout').textContent=fmtDate(state.checkout);
+  document.getElementById('conf-total').textContent='SAR '+total.toLocaleString();
+  document.getElementById('conf-email').textContent=email;
+
+  goConfirm();
+}
+
+// ══════════════════════════════════════════════════════════════════
+// API KEY MODAL
+// ══════════════════════════════════════════════════════════════════
+function openApiModal(){
+  document.getElementById('api-key-input').value=state.apiKey;
+  document.getElementById('api-modal').classList.add('open');
+}
+function closeApiModal(){document.getElementById('api-modal').classList.remove('open')}
+function saveApiKey(){
+  const key=document.getElementById('api-key-input').value.trim();
+  if(key&&key.length<20){showError(document.getElementById('api-modal-error'),'Key appears too short. Please check your RapidAPI key.');return}
+  state.apiKey=key;
+  if(key) sessionStorage.setItem('manzel_api_key',key);
+  else sessionStorage.removeItem('manzel_api_key');
+  updateApiStatus();
+  closeApiModal();
+}
+function clearApiKey(){
+  state.apiKey='';sessionStorage.removeItem('manzel_api_key');
+  document.getElementById('api-key-input').value='';
+  updateApiStatus();
+  closeApiModal();
+}
+document.getElementById('api-modal').addEventListener('click',e=>{
+  if(e.target===document.getElementById('api-modal'))closeApiModal();
+});
+
+// ══════════════════════════════════════════════════════════════════
+// HELPERS
+// ══════════════════════════════════════════════════════════════════
+function showLoading(v){document.getElementById('loading').classList.toggle('show',v)}
+function showError(el,msg){el.className='error-msg';el.textContent=msg;el.style.display='block'}
+
+// Date input constraints
+document.getElementById('s-checkin').addEventListener('change',function(){
+  const co=document.getElementById('s-checkout');
+  co.min=this.value;
+  if(co.value&&co.value<=this.value){
+    const d=new Date(this.value);d.setDate(d.getDate()+1);
+    co.value=toYMD(d);
+  }
+});
+
+// ══════════════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════════════
+showPage('search');
+renderHotelList(HOTELS);
+</script>
+</body>
+</html>
