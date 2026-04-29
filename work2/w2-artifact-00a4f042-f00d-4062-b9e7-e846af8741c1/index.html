@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1024">
+<title>NovaDev OS — Ship Faster</title>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --gray:#C0C0C0;--dark:#808080;--darker:#404040;
+  --white:#fff;--navy:#000080;--blue:#1084d0;--teal:#008080;
+}
+body{
+  font-family:'MS Sans Serif',Tahoma,Arial,sans-serif;
+  font-size:11px;background:var(--teal);
+  overflow:hidden;height:100vh;width:100vw;user-select:none;
+}
+#desktop{
+  position:absolute;inset:0;bottom:28px;
+  background:radial-gradient(circle,rgba(0,0,0,.12) 1px,transparent 1px) var(--teal);
+  background-size:4px 4px;
+}
+.dicon{
+  position:absolute;width:76px;display:flex;flex-direction:column;
+  align-items:center;gap:3px;padding:4px;cursor:default;
+  border:1px dotted transparent;
+}
+.dicon:hover{background:rgba(0,0,128,.45);border-color:rgba(255,255,255,.5)}
+.dicon.sel{background:rgba(0,0,128,.6);border-color:rgba(255,255,255,.7)}
+.dicon .di{font-size:32px;line-height:1}
+.dicon .dl{font-size:9px;color:#fff;text-align:center;text-shadow:1px 1px 0 #000;word-break:break-word;line-height:1.3}
+
+/* Windows */
+.win{
+  position:absolute;background:var(--gray);
+  border:2px solid;border-color:var(--white) var(--darker) var(--darker) var(--white);
+  display:none;min-width:200px;
+}
+.win.open{display:flex;flex-direction:column}
+.tb{display:flex;align-items:center;padding:2px 2px 2px 4px;cursor:move;flex-shrink:0}
+.win.act .tb{background:linear-gradient(90deg,var(--navy),var(--blue))}
+.win:not(.act) .tb{background:linear-gradient(90deg,#7f7f7f,#a0a0a0)}
+.tb-text{
+  display:flex;align-items:center;gap:5px;flex:1;
+  color:#fff;font-family:'Press Start 2P',monospace;font-size:7px;
+  overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+}
+.tb-text .ti{font-size:13px}
+.tb-btns{display:flex;gap:2px;margin-left:4px}
+.tb-btns button{
+  width:16px;height:14px;background:var(--gray);
+  border:2px solid;border-color:var(--white) var(--darker) var(--darker) var(--white);
+  font-size:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  padding:0;line-height:1;font-family:Arial,sans-serif;
+}
+.tb-btns button:active{
+  border-color:var(--darker) var(--white) var(--white) var(--darker);
+  padding-top:1px;padding-left:1px;
+}
+.mbar{display:flex;background:var(--gray);border-bottom:1px solid var(--dark);flex-shrink:0}
+.mbar span{padding:2px 8px;font-size:11px;cursor:default}
+.mbar span:hover{background:var(--navy);color:#fff}
+.wcontent{overflow:auto;flex:1}
+.sbar{display:flex;gap:2px;padding:2px 4px;border-top:1px solid var(--dark);flex-shrink:0}
+.sbar-f{
+  border:2px solid;border-color:var(--darker) var(--white) var(--white) var(--darker);
+  padding:1px 4px;font-size:10px;flex:1;
+}
+.btn95{
+  background:var(--gray);border:2px solid;
+  border-color:var(--white) var(--darker) var(--darker) var(--white);
+  padding:4px 14px;font-family:'MS Sans Serif',Tahoma,sans-serif;
+  font-size:11px;cursor:pointer;min-width:72px;white-space:nowrap;
+}
+.btn95:active{
+  border-color:var(--darker) var(--white) var(--white) var(--darker);
+  padding:5px 13px 3px 15px;
+}
+.notepad{
+  font-family:'Courier New',monospace;font-size:11px;line-height:1.7;
+  white-space:pre-wrap;padding:8px;min-height:100%;background:#fff;
+}
+.fex-toolbar{
+  display:flex;align-items:center;gap:4px;
+  padding:4px;border-bottom:1px solid var(--dark);flex-shrink:0;
+}
+.fex-addr{
+  flex:1;padding:2px 4px;
+  border:2px solid;border-color:var(--darker) var(--white) var(--white) var(--darker);
+  background:#fff;font-size:11px;
+}
+.fex-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(90px,1fr));
+  gap:4px;padding:8px;
+}
+.fex-item{
+  display:flex;flex-direction:column;align-items:center;
+  gap:4px;padding:8px 4px;cursor:default;border:1px solid transparent;
+}
+.fex-item:hover{background:rgba(0,0,128,.1);border-color:rgba(0,0,128,.3)}
+.fex-item .fi{font-size:32px}
+.fex-item .fn{font-size:9px;text-align:center;word-break:break-word}
+.dash-inner{padding:8px}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
+.metric{
+  border:2px solid;border-color:var(--darker) var(--white) var(--white) var(--darker);
+  background:#fff;padding:8px;text-align:center;
+}
+.mv{font-family:'Press Start 2P',monospace;font-size:13px;color:var(--navy)}
+.ml{font-size:9px;color:#555;margin-top:4px}
+.pbar-wrap{margin-bottom:7px}
+.pbar-label{font-size:10px;margin-bottom:3px;display:flex;justify-content:space-between}
+.pbar-outer{
+  border:2px solid;border-color:var(--darker) var(--white) var(--white) var(--darker);
+  background:#fff;height:14px;
+}
+.pbar-inner{height:100%;background:var(--navy)}
+.contact-inner{padding:10px}
+.fg{margin-bottom:8px}
+.fg label{display:block;margin-bottom:3px}
+.fg input,.fg textarea,.fg select{
+  width:100%;border:2px solid;
+  border-color:var(--darker) var(--white) var(--white) var(--darker);
+  background:#fff;padding:3px 4px;
+  font-family:'MS Sans Serif',Tahoma,sans-serif;font-size:11px;outline:none;
+}
+.fg textarea{resize:vertical;height:56px}
+.form-row{display:flex;gap:6px;justify-content:flex-end;margin-top:8px}
+
+/* Taskbar */
+#taskbar{
+  position:fixed;bottom:0;left:0;right:0;height:28px;
+  background:var(--gray);border-top:2px solid var(--white);
+  display:flex;align-items:center;padding:2px;gap:2px;z-index:9000;
+}
+#start-btn{
+  height:22px;padding:0 8px;background:var(--gray);
+  border:2px solid;border-color:var(--white) var(--darker) var(--darker) var(--white);
+  font-family:'Press Start 2P',monospace;font-size:7px;font-weight:700;
+  cursor:pointer;display:flex;align-items:center;gap:5px;white-space:nowrap;
+}
+#start-btn:active,#start-btn.pressed{
+  border-color:var(--darker) var(--white) var(--white) var(--darker);
+  padding:1px 7px 0 9px;
+}
+.tb-divider{
+  width:2px;height:20px;
+  border-left:1px solid var(--dark);border-right:1px solid var(--white);
+  margin:0 2px;flex-shrink:0;
+}
+#tb-wins{display:flex;gap:2px;overflow:hidden;flex:1}
+.tb-wbtn{
+  height:22px;padding:0 6px;background:var(--gray);
+  border:2px solid;border-color:var(--white) var(--darker) var(--darker) var(--white);
+  font-family:'MS Sans Serif',Tahoma,sans-serif;font-size:10px;
+  cursor:pointer;display:flex;align-items:center;gap:4px;
+  max-width:130px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex-shrink:0;
+}
+.tb-wbtn.pressed{
+  border-color:var(--darker) var(--white) var(--white) var(--darker);
+  padding:1px 5px 0 7px;
+}
+#clock{
+  height:22px;
+  border:2px solid;border-color:var(--darker) var(--white) var(--white) var(--darker);
+  padding:0 8px;display:flex;align-items:center;font-size:11px;white-space:nowrap;flex-shrink:0;
+}
+
+/* Start Menu */
+#startmenu{
+  position:fixed;bottom:28px;left:0;width:210px;background:var(--gray);
+  border:2px solid;border-color:var(--white) var(--darker) var(--darker) var(--white);
+  display:none;z-index:9500;flex-direction:row;
+}
+#startmenu.open{display:flex}
+.sm-sidebar{
+  width:26px;
+  background:linear-gradient(0deg,var(--navy),var(--blue));
+  display:flex;align-items:flex-end;justify-content:center;
+  padding-bottom:6px;flex-shrink:0;
+}
+.sm-sidebar-text{
+  writing-mode:vertical-rl;transform:rotate(180deg);
+  color:#fff;font-family:'Press Start 2P',monospace;font-size:8px;
+  letter-spacing:3px;opacity:.9;
+}
+.sm-items{flex:1}
+.sm-item{
+  display:flex;align-items:center;gap:8px;
+  padding:6px 8px;cursor:default;font-size:12px;
+}
+.sm-item:hover{background:var(--navy);color:#fff}
+.sm-item .si{font-size:18px;width:22px;text-align:center}
+.sm-sep{height:1px;margin:2px 4px 2px 30px;background:var(--dark);border-top:1px solid var(--white)}
+
+/* Toast */
+#toast{
+  position:fixed;bottom:35px;right:10px;background:var(--gray);
+  border:2px solid;border-color:var(--white) var(--darker) var(--darker) var(--white);
+  padding:8px 12px;font-size:11px;display:none;z-index:9800;max-width:320px;
+}
+
+/* Boot screen */
+#boot{
+  position:fixed;inset:0;background:#000;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  z-index:99999;font-family:'Press Start 2P',monospace;
+}
+.boot-logo{font-size:22px;color:#fff;margin-bottom:16px;letter-spacing:4px}
+.boot-sub{font-size:8px;color:#aaa;margin-bottom:32px}
+.boot-bar-wrap{width:280px;height:16px;border:2px solid #555;background:#111}
+.boot-bar{height:100%;background:var(--navy);width:0;transition:width .1s}
+.boot-msg{font-size:7px;color:#555;margin-top:12px}
+</style>
+</head>
+<body>
+
+<!-- Boot Screen -->
+<div id="boot">
+  <div class="boot-logo">NOVADEV OS</div>
+  <div class="boot-sub">Version 1.0 — Starting up...</div>
+  <div class="boot-bar-wrap"><div class="boot-bar" id="boot-bar"></div></div>
+  <div class="boot-msg" id="boot-msg">Initializing kernel...</div>
+</div>
+
+<!-- Desktop -->
+<div id="desktop" onclick="desktopClick(event)">
+
+  <div class="dicon" id="di-welcome" style="left:16px;top:16px"
+       onclick="selectIcon('welcome',event)" ondblclick="openWin('welcome')">
+    <div class="di">📄</div><div class="dl">Welcome.txt</div>
+  </div>
+  <div class="dicon" id="di-features" style="left:16px;top:106px"
+       onclick="selectIcon('features',event)" ondblclick="openWin('features')">
+    <div class="di">📁</div><div class="dl">My Features</div>
+  </div>
+  <div class="dicon" id="di-dashboard" style="left:16px;top:196px"
+       onclick="selectIcon('dashboard',event)" ondblclick="openWin('dashboard')">
+    <div class="di">📊</div><div class="dl">Dashboard.exe</div>
+  </div>
+  <div class="dicon" id="di-pricing" style="left:16px;top:286px"
+       onclick="selectIcon('pricing',event)" ondblclick="openWin('pricing')">
+    <div class="di">💰</div><div class="dl">Pricing.txt</div>
+  </div>
+  <div class="dicon" id="di-contact" style="left:16px;top:376px"
+       onclick="selectIcon('contact',event)" ondblclick="openWin('contact')">
+    <div class="di">✉️</div><div class="dl">Contact.exe</div>
+  </div>
+  <div class="dicon" style="right:16px;bottom:4px"
+       ondblclick="showToast('🗑️  Recycle Bin is empty. Your competitors\' products are in here.')">
+    <div class="di">🗑️</div><div class="dl">Recycle Bin</div>
+  </div>
+
+</div>
+
+<!-- ═══ WELCOME WINDOW ═══ -->
+<div class="win" id="win-welcome" data-wid="welcome" style="left:100px;top:40px;width:440px">
+  <div class="tb">
+    <div class="tb-text"><span class="ti">📄</span> Welcome.txt – Notepad</div>
+    <div class="tb-btns">
+      <button onclick="minimizeWin('welcome')">_</button>
+      <button onclick="showToast('⚠️  Maximize not available in this edition.')">□</button>
+      <button onclick="closeWin('welcome')">✕</button>
+    </div>
+  </div>
+  <div class="mbar"><span>File</span><span>Edit</span><span>Search</span><span>Help</span></div>
+  <div class="wcontent" style="height:260px">
+    <div class="notepad">╔══════════════════════════════════════╗
+║    N O V A D E V   O S   v 1 . 0     ║
+║         Welcome!                     ║
+╚══════════════════════════════════════╝
+
+  Your developer team's command center.
+
+  NovaDev brings everything your team
+  needs to ship faster, together:
+
+   ✓  Real-time code collaboration
+   ✓  AI-powered code review
+   ✓  CI/CD pipeline automation
+   ✓  Team analytics & insights
+   ✓  Secret & env management
+   ✓  Built-in API playground
+
+  ➜  Double-click any desktop icon to explore.
+  ➜  Click [Start] for quick navigation.
+
+  Trusted by 14,000+ engineering teams.
+  Start free. No credit card required.
+
+══════════════════════════════════════════
+  © 2026 NovaDev Corp. All rights reserved.
+══════════════════════════════════════════</div>
+  </div>
+  <div class="sbar">
+    <div class="sbar-f">Line 1, Col 1</div>
+    <div class="sbar-f" style="flex:0;min-width:80px">100% zoom</div>
+  </div>
+</div>
+
+<!-- ═══ FEATURES WINDOW ═══ -->
+<div class="win" id="win-features" data-wid="features" style="left:160px;top:70px;width:500px">
+  <div class="tb">
+    <div class="tb-text"><span class="ti">📁</span> My Features – NovaDev Explorer</div>
+    <div class="tb-btns">
+      <button onclick="minimizeWin('features')">_</button>
+      <button onclick="showToast('⚠️  Maximize not available in this edition.')">□</button>
+      <button onclick="closeWin('features')">✕</button>
+    </div>
+  </div>
+  <div class="fex-toolbar">
+    <button class="btn95" onclick="showToast('⚠️  Back function not supported.')">← Back</button>
+    <button class="btn95" onclick="showToast('⚠️  Forward function not supported.')">→ Fwd</button>
+    <div class="fex-addr">C:\NovaDev\Features\</div>
+  </div>
+  <div class="wcontent" style="height:280px">
+    <div class="fex-grid">
+      <div class="fex-item" ondblclick="featureInfo('collab')">
+        <div class="fi">🤝</div><div class="fn">Collaboration</div>
+      </div>
+      <div class="fex-item" ondblclick="featureInfo('ai')">
+        <div class="fi">🤖</div><div class="fn">AI Review</div>
+      </div>
+      <div class="fex-item" ondblclick="featureInfo('cicd')">
+        <div class="fi">🔄</div><div class="fn">CI/CD Pipeline</div>
+      </div>
+      <div class="fex-item" ondblclick="featureInfo('analytics')">
+        <div class="fi">📈</div><div class="fn">Analytics</div>
+      </div>
+      <div class="fex-item" ondblclick="featureInfo('secrets')">
+        <div class="fi">🔐</div><div class="fn">Secret Vault</div>
+      </div>
+      <div class="fex-item" ondblclick="featureInfo('api')">
+        <div class="fi">🌐</div><div class="fn">API Playground</div>
+      </div>
+      <div class="fex-item" ondblclick="featureInfo('alerts')">
+        <div class="fi">🔔</div><div class="fn">Smart Alerts</div>
+      </div>
+      <div class="fex-item" ondblclick="featureInfo('registry')">
+        <div class="fi">📦</div><div class="fn">Package Registry</div>
+      </div>
+    </div>
+  </div>
+  <div class="sbar">
+    <div class="sbar-f">8 objects</div>
+    <div class="sbar-f">Double-click any icon to learn more</div>
+  </div>
+</div>
+
+<!-- ═══ DASHBOARD WINDOW ═══ -->
+<div class="win" id="win-dashboard" data-wid="dashboard" style="left:220px;top:90px;width:460px">
+  <div class="tb">
+    <div class="tb-text"><span class="ti">📊</span> Dashboard.exe – Live Stats</div>
+    <div class="tb-btns">
+      <button onclick="minimizeWin('dashboard')">_</button>
+      <button onclick="showToast('⚠️  Maximize not available in this edition.')">□</button>
+      <button onclick="closeWin('dashboard')">✕</button>
+    </div>
+  </div>
+  <div class="mbar"><span>View</span><span>Refresh</span><span>Export</span></div>
+  <div class="wcontent" style="height:300px">
+    <div class="dash-inner">
+      <div class="metrics">
+        <div class="metric"><div class="mv">14K+</div><div class="ml">Dev Teams</div></div>
+        <div class="metric"><div class="mv">98.9%</div><div class="ml">Uptime SLA</div></div>
+        <div class="metric"><div class="mv">5.2M</div><div class="ml">Builds Shipped</div></div>
+        <div class="metric"><div class="mv">47ms</div><div class="ml">Avg. Latency</div></div>
+      </div>
+      <div style="font-size:10px;font-weight:bold;margin-bottom:7px">Feature Adoption</div>
+      <div class="pbar-wrap">
+        <div class="pbar-label"><span>🤖 AI Code Review</span><span>91%</span></div>
+        <div class="pbar-outer"><div class="pbar-inner" style="width:91%"></div></div>
+      </div>
+      <div class="pbar-wrap">
+        <div class="pbar-label"><span>🤝 Collaboration</span><span>78%</span></div>
+        <div class="pbar-outer"><div class="pbar-inner" style="width:78%"></div></div>
+      </div>
+      <div class="pbar-wrap">
+        <div class="pbar-label"><span>📈 Analytics</span><span>88%</span></div>
+        <div class="pbar-outer"><div class="pbar-inner" style="width:88%"></div></div>
+      </div>
+      <div class="pbar-wrap">
+        <div class="pbar-label"><span>🔄 CI/CD Pipeline</span><span>65%</span></div>
+        <div class="pbar-outer"><div class="pbar-inner" style="width:65%"></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="sbar">
+    <div class="sbar-f">Last updated: just now</div>
+    <div class="sbar-f" style="flex:0;min-width:100px">Live data feed ●</div>
+  </div>
+</div>
+
+<!-- ═══ PRICING WINDOW ═══ -->
+<div class="win" id="win-pricing" data-wid="pricing" style="left:280px;top:55px;width:400px">
+  <div class="tb">
+    <div class="tb-text"><span class="ti">💰</span> Pricing.txt – Notepad</div>
+    <div class="tb-btns">
+      <button onclick="minimizeWin('pricing')">_</button>
+      <button onclick="showToast('⚠️  Maximize not available in this edition.')">□</button>
+      <button onclick="closeWin('pricing')">✕</button>
+    </div>
+  </div>
+  <div class="mbar"><span>File</span><span>Edit</span><span>Help</span></div>
+  <div class="wcontent" style="height:310px">
+    <div class="notepad">NOVADEV PRICING — 2026
+══════════════════════════════════
+
+[FREE]  $0 / month
+  • 1 developer seat
+  • 5 active projects
+  • 100 CI/CD build minutes / mo
+  • Community forums & docs
+
+[PRO]  $19 / month per user
+  • Unlimited projects
+  • 2,000 CI/CD minutes / mo
+  • AI-powered code review
+  • Priority email support
+
+[TEAM]  $49 / month per user
+  • Everything in Pro
+  • SSO / SAML auth
+  • Audit logs & RBAC
+  • Slack & Jira integrations
+  • 8-hour support SLA
+
+[ENTERPRISE]  Custom pricing
+  • Dedicated infrastructure
+  • 99.99% uptime SLA guarantee
+  • Custom integrations
+  • 24/7 dedicated support team
+
+══════════════════════════════════
+  → Start free at novadev.io
+  → Upgrade anytime, no contracts
+  → Annual billing saves 20%</div>
+  </div>
+  <div class="sbar">
+    <div class="sbar-f">Prices in USD. Billed monthly or annually.</div>
+  </div>
+</div>
+
+<!-- ═══ CONTACT WINDOW ═══ -->
+<div class="win" id="win-contact" data-wid="contact" style="left:360px;top:110px;width:340px">
+  <div class="tb">
+    <div class="tb-text"><span class="ti">✉️</span> Contact.exe</div>
+    <div class="tb-btns">
+      <button onclick="minimizeWin('contact')">_</button>
+      <button onclick="showToast('⚠️  Maximize not available in this edition.')">□</button>
+      <button onclick="closeWin('contact')">✕</button>
+    </div>
+  </div>
+  <div class="wcontent">
+    <div class="contact-inner">
+      <div style="margin-bottom:10px">Get in touch with the NovaDev team:</div>
+      <div class="fg"><label>Full Name *</label><input type="text" id="c-name" placeholder="e.g. Alex Johnson"></div>
+      <div class="fg"><label>Work Email *</label><input type="email" id="c-email" placeholder="alex@company.com"></div>
+      <div class="fg"><label>Company</label><input type="text" id="c-company" placeholder="Optional"></div>
+      <div class="fg">
+        <label>I'm interested in</label>
+        <select id="c-interest">
+          <option>Free Trial</option><option>Pro Plan</option>
+          <option>Team Plan</option><option>Enterprise</option><option>Other</option>
+        </select>
+      </div>
+      <div class="fg"><label>Message</label><textarea id="c-msg" placeholder="Tell us about your team..."></textarea></div>
+      <div class="form-row">
+        <button class="btn95" onclick="closeWin('contact')">Cancel</button>
+        <button class="btn95" style="font-weight:bold" onclick="submitContact()">Send →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TASKBAR ═══ -->
+<div id="taskbar">
+  <button id="start-btn" onclick="toggleStartMenu()">
+    <span style="font-size:16px">🖥️</span> Start
+  </button>
+  <div class="tb-divider"></div>
+  <div id="tb-wins"></div>
+  <div style="flex:1"></div>
+  <div id="clock">12:00 PM</div>
+</div>
+
+<!-- ═══ START MENU ═══ -->
+<div id="startmenu">
+  <div class="sm-sidebar"><div class="sm-sidebar-text">NovaDev OS</div></div>
+  <div class="sm-items">
+    <div class="sm-item" onclick="openWin('welcome');closeStartMenu()"><span class="si">📄</span> Welcome.txt</div>
+    <div class="sm-item" onclick="openWin('features');closeStartMenu()"><span class="si">📁</span> My Features</div>
+    <div class="sm-item" onclick="openWin('dashboard');closeStartMenu()"><span class="si">📊</span> Dashboard</div>
+    <div class="sm-item" onclick="openWin('pricing');closeStartMenu()"><span class="si">💰</span> Pricing</div>
+    <div class="sm-item" onclick="openWin('contact');closeStartMenu()"><span class="si">✉️</span> Contact Us</div>
+    <div class="sm-sep"></div>
+    <div class="sm-item" onclick="shutdown()"><span class="si">⏻</span> Shut Down…</div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ── Window Manager ────────────────────────────────────────────────
+let zTop = 100;
+const wins = {};
+
+function registerWins() {
+  document.querySelectorAll('.win').forEach(el => {
+    const id = el.dataset.wid;
+    wins[id] = {el, minimized: false, tbBtn: null};
+    const tb = el.querySelector('.tb');
+    makeDraggable(el, tb);
+    el.addEventListener('mousedown', () => focusWin(id));
+  });
+}
+
+function openWin(id) {
+  const w = wins[id];
+  if (!w) return;
+  w.el.classList.add('open');
+  w.el.style.display = '';
+  w.minimized = false;
+  if (!w.tbBtn) {
+    const btn = document.createElement('button');
+    btn.className = 'tb-wbtn';
+    const raw = w.el.querySelector('.tb-text').textContent.trim().split('–')[0].trim();
+    btn.textContent = raw.length > 18 ? raw.slice(0, 18) + '…' : raw;
+    btn.onclick = () => taskbarClick(id);
+    document.getElementById('tb-wins').appendChild(btn);
+    w.tbBtn = btn;
+  }
+  focusWin(id);
+}
+
+function closeWin(id) {
+  const w = wins[id];
+  if (!w) return;
+  w.el.classList.remove('open');
+  w.el.style.display = 'none';
+  if (w.tbBtn) { w.tbBtn.remove(); w.tbBtn = null; }
+}
+
+function minimizeWin(id) {
+  const w = wins[id];
+  if (!w) return;
+  w.el.style.display = 'none';
+  w.minimized = true;
+  if (w.tbBtn) w.tbBtn.classList.remove('pressed');
+}
+
+function focusWin(id) {
+  Object.values(wins).forEach(w => {
+    w.el.classList.remove('act');
+    if (w.tbBtn) w.tbBtn.classList.remove('pressed');
+  });
+  const w = wins[id];
+  if (!w) return;
+  w.el.classList.add('act');
+  w.el.style.zIndex = ++zTop;
+  if (w.tbBtn) w.tbBtn.classList.add('pressed');
+}
+
+function taskbarClick(id) {
+  const w = wins[id];
+  if (!w) return;
+  if (w.minimized) {
+    w.el.style.display = '';
+    w.minimized = false;
+    focusWin(id);
+  } else if (w.el.classList.contains('act')) {
+    minimizeWin(id);
+  } else {
+    focusWin(id);
+  }
+}
+
+// ── Drag ──────────────────────────────────────────────────────────
+function makeDraggable(winEl, handle) {
+  let sx, sy, sl, st;
+  handle.addEventListener('mousedown', e => {
+    if (e.target.closest('.tb-btns')) return;
+    sx = e.clientX; sy = e.clientY;
+    sl = winEl.offsetLeft; st = winEl.offsetTop;
+    const mv = e2 => {
+      winEl.style.left = (sl + e2.clientX - sx) + 'px';
+      winEl.style.top  = Math.max(0, st + e2.clientY - sy) + 'px';
+    };
+    const up = () => {
+      document.removeEventListener('mousemove', mv);
+      document.removeEventListener('mouseup', up);
+    };
+    document.addEventListener('mousemove', mv);
+    document.addEventListener('mouseup', up);
+    e.preventDefault();
+  });
+}
+
+// ── Desktop ───────────────────────────────────────────────────────
+function desktopClick(e) {
+  if (!e.target.closest('.dicon') && !e.target.closest('#startmenu')) {
+    document.querySelectorAll('.dicon').forEach(d => d.classList.remove('sel'));
+    closeStartMenu();
+  }
+}
+function selectIcon(id, e) {
+  e.stopPropagation();
+  document.querySelectorAll('.dicon').forEach(d => d.classList.remove('sel'));
+  document.getElementById('di-' + id)?.classList.add('sel');
+  closeStartMenu();
+}
+
+// ── Start Menu ────────────────────────────────────────────────────
+function toggleStartMenu() {
+  const sm = document.getElementById('startmenu');
+  if (sm.classList.contains('open')) closeStartMenu();
+  else { sm.classList.add('open'); document.getElementById('start-btn').classList.add('pressed'); }
+}
+function closeStartMenu() {
+  document.getElementById('startmenu').classList.remove('open');
+  document.getElementById('start-btn').classList.remove('pressed');
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('#startmenu') && !e.target.closest('#start-btn')) closeStartMenu();
+});
+
+// ── Clock ─────────────────────────────────────────────────────────
+function updateClock() {
+  const n = new Date(), h = n.getHours(), m = n.getMinutes();
+  document.getElementById('clock').textContent =
+    (h % 12 || 12) + ':' + String(m).padStart(2, '0') + ' ' + (h >= 12 ? 'PM' : 'AM');
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// ── Toast ─────────────────────────────────────────────────────────
+function showToast(msg, dur = 3500) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.display = 'block';
+  clearTimeout(t._t);
+  t._t = setTimeout(() => { t.style.display = 'none'; }, dur);
+}
+
+// ── Feature Info ──────────────────────────────────────────────────
+const FD = {
+  collab:    '🤝 Collaboration — Pair program and review code live. Shared cursors, inline comments, conflict-free merging.',
+  ai:        '🤖 AI Review — Get instant LLM-powered feedback. Catch bugs before they ship, enforce style, learn from suggestions.',
+  cicd:      '🔄 CI/CD Pipeline — Automate build, test, and deploy with zero YAML config. Parallel jobs, smart caching built-in.',
+  analytics: '📈 Analytics — Track DORA metrics: velocity, deployment frequency, lead time. Visualize team health in real time.',
+  secrets:   '🔐 Secret Vault — AES-256 encrypted credential storage. Per-environment injection, zero plaintext ever touches disk.',
+  api:       '🌐 API Playground — Test REST and GraphQL APIs inline. Auto-generate client code in 12 languages.',
+  alerts:    '🔔 Smart Alerts — Slack, email, or webhook notifications when builds fail or error rates spike.',
+  registry:  '📦 Package Registry — Host private npm, pip, Maven packages alongside source. Fine-grained access control.',
+};
+function featureInfo(key) { if (FD[key]) showToast(FD[key], 4500); }
+
+// ── Contact ───────────────────────────────────────────────────────
+function submitContact() {
+  const name = document.getElementById('c-name').value.trim();
+  const email = document.getElementById('c-email').value.trim();
+  if (!name || !email) { showToast('⚠️  Please enter your Name and Email.'); return; }
+  closeWin('contact');
+  showToast("✅  Message sent! We'll be in touch within 1 business day.", 5000);
+}
+
+// ── Shutdown ──────────────────────────────────────────────────────
+function shutdown() {
+  closeStartMenu();
+  showToast('💾  It is now safe to turn off your browser.', 6000);
+}
+
+// ── Boot Sequence ─────────────────────────────────────────────────
+const bootMsgs = [
+  'Initializing kernel...','Loading NovaDev OS...','Mounting file system...',
+  'Starting session manager...','Loading desktop environment...','Ready.'
+];
+let bStep = 0;
+function bootStep() {
+  if (bStep >= bootMsgs.length) {
+    document.getElementById('boot').style.transition = 'opacity .4s';
+    document.getElementById('boot').style.opacity = '0';
+    setTimeout(() => {
+      document.getElementById('boot').style.display = 'none';
+      registerWins();
+      openWin('welcome');
+      setTimeout(() => openWin('features'), 400);
+      setTimeout(() => openWin('dashboard'), 800);
+    }, 450);
+    return;
+  }
+  document.getElementById('boot-msg').textContent = bootMsgs[bStep];
+  document.getElementById('boot-bar').style.width = ((bStep + 1) / bootMsgs.length * 100) + '%';
+  bStep++;
+  setTimeout(bootStep, bStep === bootMsgs.length ? 300 : 260);
+}
+setTimeout(bootStep, 200);
+</script>
+</body>
+</html>
