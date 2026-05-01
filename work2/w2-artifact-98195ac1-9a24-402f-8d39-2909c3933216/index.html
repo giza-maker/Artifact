@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lunar Bunny Cosmic Bakeshop — Moon‑fresh. Game‑ready.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,500&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --void: #0b1020;
+      --ink: #0f172a;
+      --hud: #111c33;
+      --line: rgba(255, 255, 255, 0.1);
+      --txt: #f8fafc;
+      --muted: rgba(248, 250, 252, 0.7);
+      --sun: #f97316;
+      --gold: #facc15;
+      --cream: #fff7ed;
+      --glow: rgba(250, 204, 21, 0.45);
+      --max: 1120px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "DM Sans", system-ui, sans-serif;
+      background:
+        radial-gradient(ellipse 1100px 600px at 8% 0%, rgba(249, 115, 22, 0.28), transparent 55%),
+        radial-gradient(ellipse 800px 500px at 92% 12%, rgba(250, 204, 21, 0.2), transparent 50%),
+        radial-gradient(ellipse 600px 400px at 50% 100%, rgba(99, 102, 241, 0.12), transparent 45%),
+        linear-gradient(180deg, #0a0e1a 0%, var(--void) 40%, #05060c 100%);
+      color: var(--txt);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .grid-fade {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(ellipse 80% 60% at 50% 20%, black 20%, transparent 70%);
+      opacity: 0.5;
+      z-index: 0;
+    }
+    .shell { max-width: var(--max); margin: 0 auto; padding: 0 1.35rem; position: relative; z-index: 1; }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1.15rem 0 1.5rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-family: Syne, sans-serif;
+      font-weight: 800;
+      font-size: 1.2rem;
+      letter-spacing: -0.03em;
+    }
+    .logo-mark {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: linear-gradient(145deg, var(--sun), var(--gold));
+      box-shadow: 0 0 40px var(--glow);
+      display: grid;
+      place-items: center;
+      font-size: 1.35rem;
+    }
+    nav { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: flex-end; }
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.88rem;
+    }
+    nav a:hover { color: var(--txt); }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(17, 28, 51, 0.65);
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+    .pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 12px var(--gold);
+    }
+
+    .hero {
+      padding: 3.25rem 0 2.5rem;
+      display: grid;
+      gap: 2.25rem;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 900px) {
+      .hero {
+        grid-template-columns: 1.05fr 0.95fr;
+        align-items: center;
+        padding: 4rem 0 3rem;
+      }
+    }
+    .hero h1 {
+      font-family: Syne, sans-serif;
+      font-weight: 800;
+      font-size: clamp(2.35rem, 4.5vw, 3.55rem);
+      line-height: 1.05;
+      letter-spacing: -0.035em;
+      margin-bottom: 1rem;
+    }
+    .hero h1 span {
+      background: linear-gradient(105deg, var(--cream), var(--gold));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .lede {
+      font-size: 1.12rem;
+      line-height: 1.65;
+      color: var(--muted);
+      max-width: 34rem;
+      margin-bottom: 1.65rem;
+    }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+    .btn {
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 0.85rem 1.35rem;
+      border-radius: 12px;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--sun), #ea580c);
+      color: #0c0410;
+      box-shadow: 0 14px 40px rgba(249, 115, 22, 0.35);
+    }
+    .btn-primary:hover { box-shadow: 0 18px 48px rgba(249, 115, 22, 0.45); }
+    .btn-ghost {
+      background: rgba(17, 28, 51, 0.55);
+      color: var(--txt);
+      border: 1px solid var(--line);
+    }
+    .micro {
+      font-size: 0.82rem;
+      color: rgba(248, 250, 252, 0.55);
+      margin-top: 0.85rem;
+      max-width: 28rem;
+    }
+
+    .hero-card {
+      background: linear-gradient(155deg, rgba(17, 28, 51, 0.92), rgba(15, 23, 42, 0.65));
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 1.35rem;
+      box-shadow: 0 28px 80px rgba(0, 0, 0, 0.45);
+    }
+    .hero-card h2 {
+      font-family: Syne, sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 0.65rem;
+      color: var(--gold);
+    }
+    .game-panel {
+      margin-top: 0.75rem;
+      border-radius: 16px;
+      background: radial-gradient(ellipse at 30% 20%, rgba(250, 204, 21, 0.15), transparent 55%), var(--ink);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 1rem;
+      min-height: 220px;
+      position: relative;
+      overflow: hidden;
+    }
+    .game-hud {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 0.75rem;
+    }
+    .score { color: var(--gold); font-variant-numeric: tabular-nums; }
+    .playfield {
+      position: relative;
+      height: 170px;
+      border-radius: 12px;
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.4), rgba(2, 6, 23, 0.85));
+    }
+    .target {
+      position: absolute;
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      font-size: 1.45rem;
+      cursor: pointer;
+      user-select: none;
+      background: linear-gradient(145deg, rgba(249, 115, 22, 0.95), rgba(250, 204, 21, 0.85));
+      box-shadow: 0 10px 28px rgba(249, 115, 22, 0.4);
+      border: 2px solid rgba(255, 255, 255, 0.35);
+      animation: float 2.4s ease-in-out infinite;
+      transition: transform 0.08s ease;
+    }
+    .target:active { transform: scale(0.92); }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    .spark {
+      position: absolute;
+      pointer-events: none;
+      font-size: 1.1rem;
+      animation: rise 0.7s ease-out forwards;
+    }
+    @keyframes rise {
+      to { transform: translateY(-38px); opacity: 0; }
+    }
+
+    section { padding: 2.5rem 0; border-top: 1px solid var(--line); }
+    section h2 {
+      font-family: Syne, sans-serif;
+      font-size: 1.65rem;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+    }
+    .section-lede { color: var(--muted); margin-bottom: 1.75rem; max-width: 42rem; line-height: 1.6; }
+
+    .steps {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 800px) {
+      .steps { grid-template-columns: repeat(3, 1fr); }
+    }
+    .step {
+      background: rgba(17, 28, 51, 0.55);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 1.25rem 1.35rem;
+    }
+    .step-num {
+      font-family: Syne, sans-serif;
+      font-weight: 800;
+      font-size: 0.75rem;
+      color: var(--sun);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+    .step h3 { font-size: 1.08rem; margin-bottom: 0.45rem; }
+    .step p { color: var(--muted); font-size: 0.92rem; line-height: 1.55; }
+
+    .split {
+      display: grid;
+      gap: 1.5rem;
+      grid-template-columns: 1fr;
+      align-items: start;
+    }
+    @media (min-width: 860px) {
+      .split { grid-template-columns: 1fr 1fr; }
+    }
+    .waitlist {
+      background: rgba(17, 28, 51, 0.55);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 1.5rem;
+    }
+    .waitlist label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--muted); margin-bottom: 0.45rem; }
+    .waitlist input {
+      width: 100%;
+      padding: 0.75rem 0.9rem;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: rgba(15, 23, 42, 0.65);
+      color: var(--txt);
+      font: inherit;
+      margin-bottom: 0.85rem;
+    }
+    .waitlist input::placeholder { color: rgba(248, 250, 252, 0.35); }
+    .toast {
+      margin-top: 0.65rem;
+      font-size: 0.88rem;
+      color: var(--gold);
+      font-weight: 600;
+      min-height: 1.25rem;
+    }
+
+    footer {
+      padding: 2rem 0 3rem;
+      color: rgba(248, 250, 252, 0.45);
+      font-size: 0.82rem;
+      border-top: 1px solid var(--line);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+<body>
+  <div class="grid-fade" aria-hidden="true"></div>
+  <div class="shell">
+    <header>
+      <div class="logo">
+        <div class="logo-mark" aria-hidden="true">🐰</div>
+        Lunar Bunny Cosmic Bakeshop
+      </div>
+      <nav>
+        <a href="#workflow">Core workflow</a>
+        <a href="#validate">Validate demand</a>
+        <a href="#play">Try lunar shift</a>
+      </nav>
+    </header>
+
+    <div class="hero">
+      <div>
+        <div class="pill"><span class="pill-dot"></span> Web app · Playful & energetic · Bold startup polish</div>
+        <h1>Bake on the moon.<br /><span>Win on Earth.</span></h1>
+        <p class="lede">
+          A lightweight MVP shell for a cosmic bakery management game—built to test positioning, tone, and demand with customers before you overbuild systems. Mix recipes, run lunar shifts, and read the room from day one.
+        </p>
+        <div class="cta-row">
+          <button type="button" class="btn btn-primary" onclick="document.getElementById('play').scrollIntoView({behavior:'smooth'})">Play the 30‑second demo</button>
+          <a class="btn btn-ghost" href="#validate" style="text-decoration:none;display:inline-flex;align-items:center;">Join the signal list</a>
+        </div>
+        <p class="micro">Internal team use prototype · Success = sharable first impression that sparks real conversations with potential players & partners.</p>
+      </div>
+
+      <div class="hero-card" id="play">
+        <h2>Lunar shift sim — core loop teaser</h2>
+        <p style="color:var(--muted);font-size:0.92rem;line-height:1.55;margin-bottom:0.25rem;">
+          Tap glowing treats before the shift timer ends. This stub proves rhythm + delight without a backend.
+        </p>
+        <div class="game-panel">
+          <div class="game-hud">
+            <span>Shift timer <strong id="timer" class="score">12.0s</strong></span>
+            <span>Score <strong id="score" class="score">0</strong></span>
+          </div>
+          <div class="playfield" id="field" aria-label="Tap targets game area"></div>
+        </div>
+      </div>
+    </div>
+
+    <section id="workflow">
+      <h2>Core workflow (MVP slice)</h2>
+      <p class="section-lede">
+        Three rails your team can demo tomorrow: define the cosmic menu, run a shift loop with visible stakes, and capture reactions as qualitative demand data—fast, polished, intentionally thin.
+      </p>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">01 · Menu lab</div>
+          <h3>Recipe cards & rarity</h3>
+          <p>Sketch bunny‑themed bakes with rarity tiers. Enough structure to discuss monetization without locking schema.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">02 · Shift engine</div>
+          <h3>Timed actions & mood</h3>
+          <p>Prove out cadence: spawn targets, pressure clock, score pulse—the emotional hook players feel in the first minute.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">03 · Demand signals</div>
+          <h3>Waitlist + reactions</h3>
+          <p>Capture interest and notes from stakeholders; optimize for learning speed, not feature count.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="validate">
+      <h2>Validate demand, not vanity metrics</h2>
+      <p class="section-lede">
+        This page is a conversation starter: send it to customers, watch where they click, ask what they’d pay for next. Polished first impression, smallest surface area.
+      </p>
+      <div class="split">
+        <div>
+          <div class="step" style="margin-bottom:1rem;">
+            <div class="step-num">What “good” looks like</div>
+            <h3>Qualitative pull</h3>
+            <p>Teams reply with feature ideas, tone tweaks, or partnership angles—evidence you’re onto a market story.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">Constraint honored</div>
+            <h3>No overbuild</h3>
+            <p>No accounts, no cloud saves—just HTML/CSS/JS you can host anywhere and iterate after feedback lands.</p>
+          </div>
+        </div>
+        <div class="waitlist">
+          <h3 style="font-family:Syne,sans-serif;font-size:1.15rem;margin-bottom:0.75rem;">Signal list (demo)</h3>
+          <label for="email">Work email</label>
+          <input id="email" type="email" autocomplete="email" placeholder="you@company.com" />
+          <button type="button" class="btn btn-primary" style="width:100%" id="joinBtn">Reserve a design critique slot</button>
+          <div class="toast" id="toast" role="status"></div>
+          <p style="margin-top:1rem;font-size:0.85rem;color:var(--muted);line-height:1.5;">
+            Front‑end only: nothing is transmitted. Wire your API when the narrative validates.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <span>© Lunar Bunny Cosmic Bakeshop — concept artifact for demand testing.</span>
+      <span>Bold startup · Fastest useful version</span>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      var field = document.getElementById("field");
+      var scoreEl = document.getElementById("score");
+      var timerEl = document.getElementById("timer");
+      var score = 0;
+      var timeLeft = 12;
+      var interval = null;
+      var spawnTimer = null;
+
+      function placeTarget() {
+        if (!field) return;
+        var el = document.createElement("button");
+        el.type = "button";
+        el.className = "target";
+        el.textContent = ["🥐", "🌙", "🐇", "✨"][Math.floor(Math.random() * 4)];
+        var maxX = field.clientWidth - 56;
+        var maxY = field.clientHeight - 56;
+        el.style.left = Math.max(8, Math.random() * maxX) + "px";
+        el.style.top = Math.max(8, Math.random() * maxY) + "px";
+        el.addEventListener("click", function (ev) {
+          ev.preventDefault();
+          score += 120 + Math.floor(Math.random() * 80);
+          scoreEl.textContent = String(score);
+          var sp = document.createElement("span");
+          sp.className = "spark";
+          sp.textContent = "+" + (120 + Math.floor(Math.random() * 40));
+          sp.style.left = el.style.left;
+          sp.style.top = el.style.top;
+          field.appendChild(sp);
+          setTimeout(function () { field.removeChild(sp); }, 650);
+          el.remove();
+        });
+        field.appendChild(el);
+        setTimeout(function () {
+          if (el.parentNode) el.remove();
+        }, 1800);
+      }
+
+      function tick() {
+        timeLeft -= 0.1;
+        if (timeLeft <= 0) {
+          timeLeft = 0;
+          timerEl.textContent = "0.0s";
+          clearInterval(interval);
+          clearInterval(spawnTimer);
+          return;
+        }
+        timerEl.textContent = timeLeft.toFixed(1) + "s";
+      }
+
+      function start() {
+        score = 0;
+        timeLeft = 12;
+        scoreEl.textContent = "0";
+        timerEl.textContent = "12.0s";
+        field.innerHTML = "";
+        clearInterval(interval);
+        clearInterval(spawnTimer);
+        interval = setInterval(tick, 100);
+        spawnTimer = setInterval(placeTarget, 550);
+        placeTarget();
+      }
+
+      start();
+
+      var joinBtn = document.getElementById("joinBtn");
+      var toast = document.getElementById("toast");
+      var email = document.getElementById("email");
+      joinBtn.addEventListener("click", function () {
+        var v = (email.value || "").trim();
+        toast.textContent = v
+          ? "Thanks — in a live build we’d POST \"" + v.replace(/</g, "") + "\" to your intake API."
+          : "Add an email to simulate the capture moment.";
+      });
+    })();
+  </script>
+</body>
+</html>
