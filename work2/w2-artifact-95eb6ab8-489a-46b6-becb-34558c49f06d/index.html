@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MemeDaily — Hear the news from the memes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,500&family=Syne:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #070708;
+      --sheet: #0f0f12;
+      --edge: rgba(255, 255, 255, 0.09);
+      --txt: #fafafa;
+      --dim: rgba(250, 250, 250, 0.62);
+      --sun: #ff4d00;
+      --pink: #ff2fb3;
+      --mint: #5dff9e;
+      --wide: 1180px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "DM Sans", system-ui, sans-serif;
+      background:
+        radial-gradient(ellipse 900px 520px at 15% -15%, rgba(255, 77, 0, 0.35), transparent 55%),
+        radial-gradient(ellipse 640px 420px at 95% 25%, rgba(255, 47, 179, 0.22), transparent 52%),
+        radial-gradient(ellipse 500px 360px at 40% 105%, rgba(93, 255, 158, 0.07), transparent 48%),
+        var(--bg);
+      color: var(--txt);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .noise {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      opacity: 0.045;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+      z-index: 0;
+    }
+    .shell { max-width: var(--wide); margin: 0 auto; padding: 0 1.5rem; position: relative; z-index: 1; }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1rem 0 1.25rem;
+      border-bottom: 1px solid var(--edge);
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      font-family: Syne, sans-serif;
+      font-weight: 800;
+      font-size: 1.35rem;
+      letter-spacing: -0.03em;
+    }
+    .logo-badge {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--sun), var(--pink));
+      box-shadow: 0 0 36px rgba(255, 77, 0, 0.45);
+      display: grid;
+      place-items: center;
+      font-size: 1.15rem;
+    }
+    nav a {
+      color: var(--dim);
+      text-decoration: none;
+      margin-left: 1.35rem;
+      font-weight: 500;
+      font-size: 0.9rem;
+    }
+    nav a:hover { color: var(--txt); }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      padding: 0.72rem 1.35rem;
+      border-radius: 999px;
+      font-family: inherit;
+      font-weight: 600;
+      font-size: 0.92rem;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-fill {
+      background: linear-gradient(110deg, var(--sun), var(--pink));
+      color: #120602;
+      box-shadow: 0 14px 42px rgba(255, 77, 0, 0.35);
+    }
+    .btn-line {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: var(--edge);
+      color: var(--txt);
+    }
+    .hero {
+      padding: 3rem 0 4rem;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 2.25rem;
+      align-items: center;
+    }
+    @media (max-width: 960px) {
+      .hero { grid-template-columns: 1fr; }
+      nav { display: none; }
+    }
+    .kicker {
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mint);
+      margin-bottom: 0.85rem;
+    }
+    h1 {
+      font-family: Syne, sans-serif;
+      font-weight: 800;
+      font-size: clamp(2.35rem, 5vw, 3.85rem);
+      line-height: 1.02;
+      letter-spacing: -0.045em;
+      margin-bottom: 1rem;
+    }
+    h1 span {
+      background: linear-gradient(105deg, #fff 10%, var(--mint) 42%, var(--pink) 78%, #fff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .lede {
+      font-size: 1.14rem;
+      line-height: 1.65;
+      color: var(--dim);
+      max-width: 32rem;
+      margin-bottom: 1.75rem;
+    }
+    .row { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.5rem; }
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: rgba(250, 250, 250, 0.38);
+    }
+    .pill-row b { color: var(--sun); font-weight: 700; }
+    .stage {
+      border-radius: 28px;
+      border: 1px solid var(--edge);
+      background: linear-gradient(165deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.02));
+      box-shadow: 0 28px 90px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      padding: 1.35rem 1.35rem 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .stage::before {
+      content: "";
+      position: absolute;
+      inset: -30% 40% 50% -20%;
+      background: radial-gradient(circle, rgba(255, 47, 179, 0.16), transparent 60%);
+      pointer-events: none;
+    }
+    .dk {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.1rem;
+      padding-bottom: 0.85rem;
+      border-bottom: 1px solid var(--edge);
+      font-size: 0.8rem;
+      color: var(--dim);
+      position: relative;
+      z-index: 1;
+    }
+    .wave {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 3px;
+      height: 52px;
+      margin-bottom: 1rem;
+      padding: 0 0.15rem;
+      position: relative;
+      z-index: 1;
+    }
+    .wave span {
+      flex: 1;
+      border-radius: 4px;
+      background: linear-gradient(180deg, var(--mint), rgba(93, 255, 158, 0.25));
+      animation: w 1.1s ease-in-out infinite;
+      animation-delay: calc(var(--i) * 0.06s);
+      min-width: 3px;
+      max-width: 10px;
+    }
+    @keyframes w {
+      0%, 100% { height: 22%; opacity: 0.55; }
+      50% { height: 100%; opacity: 1; }
+    }
+    .player {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+    .play {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      background: linear-gradient(145deg, var(--sun), var(--pink));
+      color: #1a0508;
+      font-size: 1.35rem;
+      display: grid;
+      place-items: center;
+      box-shadow: 0 12px 40px rgba(255, 77, 0, 0.45);
+      flex-shrink: 0;
+    }
+    .track-meta h4 {
+      font-family: Syne, sans-serif;
+      font-size: 1rem;
+      margin-bottom: 0.2rem;
+    }
+    .track-meta p {
+      font-size: 0.82rem;
+      color: var(--dim);
+      line-height: 1.4;
+    }
+    .bar {
+      margin-top: 0.65rem;
+      height: 6px;
+      border-radius: 99px;
+      background: rgba(255, 255, 255, 0.08);
+      overflow: hidden;
+    }
+    .bar > i {
+      display: block;
+      height: 100%;
+      width: 38%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--sun), var(--mint));
+    }
+    .mvp {
+      margin-top: 1.15rem;
+      padding: 0.85rem 1rem;
+      border-radius: 16px;
+      border: 1px dashed rgba(93, 255, 158, 0.35);
+      background: rgba(93, 255, 158, 0.06);
+      font-size: 0.82rem;
+      color: var(--dim);
+      line-height: 1.45;
+      position: relative;
+      z-index: 1;
+    }
+    .mvp strong { color: var(--mint); }
+    section { padding: 3.25rem 0; }
+    .sec-title {
+      font-family: Syne, sans-serif;
+      font-size: clamp(1.65rem, 2.8vw, 2.35rem);
+      letter-spacing: -0.03em;
+      margin-bottom: 0.65rem;
+    }
+    .sec-sub {
+      color: var(--dim);
+      max-width: 38rem;
+      line-height: 1.55;
+      margin-bottom: 2rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+    @media (max-width: 880px) { .grid { grid-template-columns: 1fr; } }
+    .tile {
+      padding: 1.5rem 1.35rem;
+      border-radius: 20px;
+      border: 1px solid var(--edge);
+      background: rgba(255, 255, 255, 0.03);
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .tile:hover {
+      border-color: rgba(255, 77, 0, 0.45);
+      transform: translateY(-4px);
+    }
+    .tile h3 {
+      font-family: Syne, sans-serif;
+      font-size: 1.08rem;
+      margin-bottom: 0.45rem;
+    }
+    .tile p { font-size: 0.9rem; color: var(--dim); line-height: 1.5; }
+    .num {
+      font-family: Syne, sans-serif;
+      font-weight: 800;
+      font-size: 2rem;
+      color: rgba(255, 255, 255, 0.07);
+      margin-bottom: 0.35rem;
+      line-height: 1;
+    }
+    .flow {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0.55rem 0.35rem;
+      padding: 2rem 1.25rem;
+      border-radius: 24px;
+      border: 1px solid var(--edge);
+      background: rgba(15, 15, 18, 0.85);
+    }
+    .node {
+      padding: 0.65rem 1.05rem;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--edge);
+      font-weight: 600;
+      font-size: 0.86rem;
+    }
+    .chev { color: var(--pink); font-weight: 800; }
+    footer {
+      padding: 2.5rem 0 3rem;
+      border-top: 1px solid var(--edge);
+      font-size: 0.82rem;
+      color: rgba(250, 250, 250, 0.38);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="shell">
+    <header>
+      <div class="logo"><span class="logo-badge" aria-hidden="true">🔊</span> MemeDaily</div>
+      <nav aria-label="Primary">
+        <a href="#listen">Listen</a>
+        <a href="#mvp">MVP</a>
+        <a href="#flow">Flow</a>
+      </nav>
+      <div>
+        <button type="button" class="btn btn-line" style="margin-right:0.45rem">Web beta</button>
+        <button type="button" class="btn btn-fill">Get early access</button>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div>
+        <p class="kicker">Web app · Bold startup · Ship fast</p>
+        <h1><span>Hear the news</span> from the memes.</h1>
+        <p class="lede">
+          Scroll the joke first. Tap play and get a tight audio rundown—what happened, why it matters, why the internet is yelling. Built for the smallest milestone that still proves demand.
+        </p>
+        <div class="row">
+          <button type="button" class="btn btn-fill">Join waitlist</button>
+          <button type="button" class="btn btn-line">See sample clip</button>
+        </div>
+        <p class="pill-row"><b>MVP</b> validate demand · <b>Scope</b> tight · <b>Speed</b> fastest useful version</p>
+      </div>
+      <div class="stage" id="listen" aria-label="Product preview">
+        <div class="dk">
+          <span>Today’s meme bulletin</span>
+          <span>~0:34</span>
+        </div>
+        <div class="wave" aria-hidden="true">
+          <span style="--i:0"></span><span style="--i:1"></span><span style="--i:2"></span><span style="--i:3"></span>
+          <span style="--i:4"></span><span style="--i:5"></span><span style="--i:6"></span><span style="--i:7"></span>
+          <span style="--i:8"></span><span style="--i:9"></span><span style="--i:10"></span><span style="--i:11"></span>
+          <span style="--i:12"></span><span style="--i:13"></span><span style="--i:14"></span><span style="--i:15"></span>
+          <span style="--i:16"></span><span style="--i:17"></span><span style="--i:18"></span><span style="--i:19"></span>
+        </div>
+        <div class="player">
+          <button type="button" class="play" aria-label="Play audio demo">▶</button>
+          <div class="track-meta">
+            <h4>Breaking: policy vote splits the timeline</h4>
+            <p>Meme format: split-screen debate · Audio explains the vote count + what changes Monday.</p>
+            <div class="bar"><i></i></div>
+          </div>
+        </div>
+        <p class="mvp" id="mvp"><strong>Why this ships.</strong> Studio goal: meme-first headlines with audio context for busy feeds—web-first, demand-testable, no feature bloat on day one.</p>
+      </div>
+    </section>
+
+    <section id="flow">
+      <h2 class="sec-title">Three taps. You’re caught up.</h2>
+      <p class="sec-sub">Optimized for the “fastest useful version”: meme hits emotional recognition; audio carries the facts; share cards fuel organic tests with customers.</p>
+      <div class="flow">
+        <span class="node">Meme hits the feed</span>
+        <span class="chev">→</span>
+        <span class="node">Tap ▶ listen</span>
+        <span class="chev">→</span>
+        <span class="node">30s plain recap</span>
+        <span class="chev">→</span>
+        <span class="node">Share / save</span>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="sec-title">What’s in the first cut</h2>
+      <p class="sec-sub">Everything here supports validation: can people habitually open the web app and finish a story without friction?</p>
+      <div class="grid">
+        <article class="tile">
+          <div class="num">01</div>
+          <h3>Meme audio cards</h3>
+          <p>Each story ships as a meme surface plus a generated voice track—pause, scrub, replay.</p>
+        </article>
+        <article class="tile">
+          <div class="num">02</div>
+          <h3>“Explain like I’m in the group chat”</h3>
+          <p>Optional text snippet under the player for quiet environments—same script as audio.</p>
+        </article>
+        <article class="tile">
+          <div class="num">03</div>
+          <h3>Lean web shell</h3>
+          <p>Single-column feed, blazing load, obvious CTA for waitlist referrals—measure conversion, not vanity metrics.</p>
+        </article>
+      </div>
+    </section>
+
+    <footer>
+      <p><strong>MemeDaily</strong> — concept landing for Mission Studio handoff. Not a live service.</p>
+      <p style="margin-top:0.45rem">Parent coordinator owns consolidated delivery links.</p>
+    </footer>
+  </div>
+</body>
+</html>
