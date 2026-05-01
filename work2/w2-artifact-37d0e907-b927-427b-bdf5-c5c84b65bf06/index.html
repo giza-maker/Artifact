@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FlowPilot — Automate the boring. Scale what pays.</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Syne:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg0: #060814;
+      --bg1: #0c1022;
+      --violet: #7c3aed;
+      --blue: #3b82f6;
+      --cyan: #22d3ee;
+      --glass: rgba(255, 255, 255, 0.06);
+      --glass2: rgba(255, 255, 255, 0.1);
+      --stroke: rgba(255, 255, 255, 0.12);
+      --text: #f8fafc;
+      --muted: rgba(248, 250, 252, 0.72);
+      --max: 1440px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: "DM Sans", system-ui, sans-serif;
+      background: radial-gradient(1200px 800px at 12% -10%, rgba(124, 58, 237, 0.35), transparent 55%),
+                  radial-gradient(900px 600px at 88% 20%, rgba(59, 130, 246, 0.28), transparent 50%),
+                  radial-gradient(700px 500px at 50% 100%, rgba(34, 211, 238, 0.08), transparent 45%),
+                  linear-gradient(180deg, var(--bg0), var(--bg1) 40%, #05060f);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .noise {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+      z-index: 0;
+    }
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 0 2.5rem; position: relative; z-index: 1; }
+    header {
+      padding: 1.25rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .logo {
+      font-family: Syne, sans-serif;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      font-size: 1.35rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .logo-mark {
+      width: 36px; height: 36px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--blue), var(--violet));
+      box-shadow: 0 0 32px rgba(59, 130, 246, 0.45), inset 0 1px 0 rgba(255,255,255,0.25);
+    }
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      margin-left: 1.75rem;
+      font-size: 0.92rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    nav a:hover { color: var(--text); }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.85rem 1.5rem;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #3b82f6, #7c3aed);
+      color: white;
+      box-shadow: 0 12px 40px rgba(124, 58, 237, 0.35), 0 0 0 1px rgba(255,255,255,0.08);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 16px 48px rgba(59, 130, 246, 0.4); }
+    .btn-ghost {
+      background: var(--glass);
+      border-color: var(--stroke);
+      color: var(--text);
+      backdrop-filter: blur(12px);
+    }
+    .btn-ghost:hover { background: var(--glass2); transform: translateY(-2px); }
+    .hero {
+      padding: 3rem 0 5rem;
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+    @media (max-width: 1024px) {
+      .hero { grid-template-columns: 1fr; }
+      nav { display: none; }
+    }
+    .eyebrow {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--cyan);
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    h1 {
+      font-family: Syne, sans-serif;
+      font-weight: 800;
+      font-size: clamp(2.6rem, 4.8vw, 4.25rem);
+      line-height: 1.05;
+      letter-spacing: -0.04em;
+      margin-bottom: 1.25rem;
+      background: linear-gradient(120deg, #fff 20%, #c4d4ff 45%, #a78bfa 75%, #22d3ee);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      filter: drop-shadow(0 20px 50px rgba(124, 58, 237, 0.25));
+    }
+    .sub {
+      font-size: 1.2rem;
+      line-height: 1.65;
+      color: var(--muted);
+      max-width: 34rem;
+      margin-bottom: 2rem;
+    }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 1rem; margin-bottom: 2.25rem; }
+    .logos {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem 2.25rem;
+      align-items: center;
+      opacity: 0.85;
+    }
+    .logos span {
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(248, 250, 252, 0.45);
+      padding: 0.35rem 0.6rem;
+      border-radius: 6px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,0.03);
+    }
+    .dashboard-float {
+      position: relative;
+      perspective: 1200px;
+    }
+    .glass-panel {
+      background: linear-gradient(145deg, rgba(255,255,255,0.09), rgba(255,255,255,0.02));
+      border: 1px solid var(--stroke);
+      border-radius: 24px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255,255,255,0.12);
+      padding: 1.25rem;
+      transform: rotateY(-6deg) rotateX(4deg) translateZ(0);
+      transition: transform 0.4s ease;
+    }
+    .dashboard-float:hover .glass-panel {
+      transform: rotateY(-3deg) rotateX(2deg) translateY(-6px);
+    }
+    .dash-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
+      border-bottom: 1px solid var(--stroke);
+    }
+    .dash-title { font-size: 0.85rem; font-weight: 600; color: var(--muted); }
+    .pill-live {
+      font-size: 0.72rem;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(34, 211, 238, 0.15);
+      color: var(--cyan);
+      border: 1px solid rgba(34, 211, 238, 0.35);
+    }
+    .dash-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 0.85rem;
+    }
+    @media (max-width: 520px) { .dash-grid { grid-template-columns: 1fr; } }
+    .mini-card {
+      border-radius: 16px;
+      background: rgba(8, 12, 28, 0.65);
+      border: 1px solid rgba(255,255,255,0.06);
+      padding: 0.85rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .mini-card::after {
+      content: "";
+      position: absolute;
+      inset: -40% -20%;
+      background: radial-gradient(circle, rgba(124, 58, 237, 0.15), transparent 55%);
+      pointer-events: none;
+    }
+    .mini-label { font-size: 0.72rem; color: var(--muted); margin-bottom: 0.35rem; }
+    .mini-val { font-family: Syne, sans-serif; font-size: 1.35rem; font-weight: 700; }
+    .chart-svg { width: 100%; height: auto; display: block; margin-top: 0.35rem; }
+    .streak {
+      position: absolute;
+      width: 140px; height: 4px;
+      background: linear-gradient(90deg, transparent, rgba(34,211,238,0.9), transparent);
+      border-radius: 999px;
+      filter: blur(1px);
+      opacity: 0.65;
+      animation: streak 4s ease-in-out infinite;
+    }
+    @keyframes streak {
+      0%, 100% { transform: translate(20px, 120px) rotate(-12deg); opacity: 0.3; }
+      50% { transform: translate(180px, 40px) rotate(-12deg); opacity: 0.75; }
+    }
+    section { padding: 4.5rem 0; position: relative; }
+    .section-head {
+      max-width: 36rem;
+      margin-bottom: 2.75rem;
+    }
+    .section-head h2 {
+      font-family: Syne, sans-serif;
+      font-size: clamp(1.85rem, 3vw, 2.6rem);
+      letter-spacing: -0.03em;
+      margin-bottom: 0.75rem;
+    }
+    .section-head p { color: var(--muted); line-height: 1.6; }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+    @media (max-width: 900px) { .features { grid-template-columns: 1fr; } }
+    .feat {
+      padding: 1.75rem;
+      border-radius: 20px;
+      border: 1px solid var(--stroke);
+      background: linear-gradient(160deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      backdrop-filter: blur(14px);
+      transition: transform 0.25s, border-color 0.25s;
+    }
+    .feat:hover {
+      transform: translateY(-6px);
+      border-color: rgba(34, 211, 238, 0.35);
+      box-shadow: 0 20px 50px rgba(59, 130, 246, 0.15);
+    }
+    .feat-icon {
+      width: 44px; height: 44px;
+      border-radius: 14px;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, rgba(59,130,246,0.35), rgba(124,58,237,0.35));
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .feat h3 { font-size: 1.1rem; margin-bottom: 0.5rem; font-weight: 600; }
+    .feat p { font-size: 0.92rem; color: var(--muted); line-height: 1.55; }
+    .workflow {
+      border-radius: 28px;
+      border: 1px solid var(--stroke);
+      background: rgba(6, 10, 22, 0.55);
+      padding: 3rem 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .workflow::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(600px 280px at 50% 0%, rgba(124, 58, 237, 0.2), transparent);
+    }
+    .flow-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 1rem 0.5rem;
+      position: relative;
+      z-index: 1;
+    }
+    .node {
+      padding: 0.85rem 1.25rem;
+      border-radius: 14px;
+      background: var(--glass);
+      border: 1px solid var(--stroke);
+      font-size: 0.88rem;
+      font-weight: 600;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 0 24px rgba(59, 130, 246, 0.12);
+    }
+    .connector {
+      width: 48px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--blue), var(--violet));
+      border-radius: 99px;
+      box-shadow: 0 0 12px rgba(34, 211, 238, 0.6);
+      position: relative;
+    }
+    .connector::after {
+      content: "";
+      position: absolute;
+      right: -2px;
+      top: 50%;
+      transform: translateY(-50%);
+      border: 5px solid transparent;
+      border-left-color: var(--violet);
+    }
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      counter-reset: s;
+    }
+    @media (max-width: 800px) { .steps { grid-template-columns: 1fr; } }
+    .step {
+      padding: 2rem 1.75rem;
+      border-radius: 20px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,0.03);
+      position: relative;
+    }
+    .step::before {
+      counter-increment: s;
+      content: counter(s);
+      font-family: Syne, sans-serif;
+      font-weight: 800;
+      font-size: 2.5rem;
+      position: absolute;
+      top: 1.25rem;
+      right: 1.5rem;
+      color: rgba(255,255,255,0.06);
+    }
+    .step h3 { font-size: 1.15rem; margin-bottom: 0.6rem; }
+    .step p { color: var(--muted); font-size: 0.95rem; line-height: 1.55; }
+    .pricing {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+      align-items: stretch;
+    }
+    @media (max-width: 900px) { .pricing { grid-template-columns: 1fr; } }
+    .price-card {
+      padding: 2rem 1.75rem;
+      border-radius: 22px;
+      border: 1px solid var(--stroke);
+      background: rgba(255,255,255,0.04);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .price-card.featured {
+      border-color: rgba(124, 58, 237, 0.55);
+      box-shadow: 0 0 60px rgba(124, 58, 237, 0.2);
+      background: linear-gradient(180deg, rgba(124,58,237,0.12), rgba(255,255,255,0.03));
+    }
+    .price-card .tier { font-size: 0.85rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    .price-card .amt { font-family: Syne, sans-serif; font-size: 2.25rem; font-weight: 800; }
+    .price-card ul { list-style: none; margin: 0.5rem 0 1rem; flex: 1; }
+    .price-card li {
+      font-size: 0.9rem;
+      color: var(--muted);
+      padding: 0.35rem 0;
+      padding-left: 1.25rem;
+      position: relative;
+    }
+    .price-card li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0.65rem;
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--cyan);
+      box-shadow: 0 0 8px var(--cyan);
+    }
+    .testimonials {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+    @media (max-width: 800px) { .testimonials { grid-template-columns: 1fr; } }
+    .quote {
+      padding: 2rem;
+      border-radius: 20px;
+      border: 1px solid var(--stroke);
+      background: linear-gradient(135deg, rgba(59,130,246,0.08), rgba(124,58,237,0.06));
+    }
+    .quote p { font-size: 1.05rem; line-height: 1.65; margin-bottom: 1.25rem; color: #e2e8f0; }
+    .quote footer { font-size: 0.88rem; color: var(--muted); }
+    .quote strong { color: var(--text); }
+    .banner {
+      margin: 2rem 0 4rem;
+      padding: 3.5rem 2.5rem;
+      border-radius: 28px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: linear-gradient(120deg, rgba(59,130,246,0.22), rgba(124,58,237,0.25), rgba(34,211,238,0.12));
+      position: relative;
+      overflow: hidden;
+    }
+    .banner::before {
+      content: "";
+      position: absolute;
+      inset: -50%;
+      background: repeating-linear-gradient(
+        -25deg,
+        transparent,
+        transparent 40px,
+        rgba(255,255,255,0.02) 40px,
+        rgba(255,255,255,0.02) 80px
+      );
+      animation: pan 20s linear infinite;
+    }
+    @keyframes pan { to { transform: translate(80px, 40px); } }
+    .banner-inner { position: relative; z-index: 1; }
+    .banner h2 {
+      font-family: Syne, sans-serif;
+      font-size: clamp(1.75rem, 3vw, 2.5rem);
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.03em;
+    }
+    .banner p { color: rgba(248,250,252,0.85); margin-bottom: 1.75rem; max-width: 36rem; margin-left: auto; margin-right: auto; }
+    footer.site {
+      padding: 2rem 0 3rem;
+      border-top: 1px solid var(--stroke);
+      color: rgba(248,250,252,0.45);
+      font-size: 0.85rem;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="wrap">
+    <header>
+      <div class="logo"><span class="logo-mark" aria-hidden="true"></span> FlowPilot</div>
+      <nav aria-label="Primary">
+        <a href="#features">Product</a>
+        <a href="#workflow">Automation</a>
+        <a href="#pricing">Pricing</a>
+      </nav>
+      <button type="button" class="btn btn-ghost">Sign in</button>
+    </header>
+
+    <div class="hero">
+      <div>
+        <p class="eyebrow">AI workflow automation</p>
+        <h1>Automate the boring. Scale what pays.</h1>
+        <p class="sub">
+          FlowPilot turns scattered busywork into reliable systems—automate proposals, invoices,
+          CRM follow-ups, and client workflows so your team ships revenue work, not maintenance.
+        </p>
+        <div class="cta-row">
+          <button type="button" class="btn btn-primary">Start free trial</button>
+          <button type="button" class="btn btn-ghost">Watch 90s demo</button>
+        </div>
+        <div class="logos" aria-label="Trusted by teams at">
+          <span>Nimbus Labs</span>
+          <span>Harbor Studio</span>
+          <span>Northwind Ops</span>
+          <span>Pulse Creative</span>
+        </div>
+      </div>
+      <div class="dashboard-float" aria-label="Product preview">
+        <div class="streak" aria-hidden="true"></div>
+        <div class="glass-panel">
+          <div class="dash-top">
+            <span class="dash-title">Revenue cockpit</span>
+            <span class="pill-live">Live sync</span>
+          </div>
+          <div class="dash-grid">
+            <div class="mini-card">
+              <div class="mini-label">Pipeline value</div>
+              <div class="mini-val">$842k</div>
+              <svg class="chart-svg" viewBox="0 0 200 70" aria-hidden="true">
+                <defs>
+                  <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#7c3aed" stop-opacity="0.5"/>
+                    <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <path d="M0 55 L35 40 L70 48 L105 22 L140 30 L175 12 L200 18 L200 70 L0 70 Z" fill="url(#g1)" />
+                <path d="M0 55 L35 40 L70 48 L105 22 L140 30 L175 12 L200 18" fill="none" stroke="#22d3ee" stroke-width="2" />
+              </svg>
+            </div>
+            <div>
+              <div class="mini-card" style="margin-bottom:0.85rem">
+                <div class="mini-label">Conversion</div>
+                <div class="mini-val">4.8%</div>
+              </div>
+              <div class="mini-card">
+                <div class="mini-label">CRM touches</div>
+                <div class="mini-val">12.4k</div>
+                <svg class="chart-svg" viewBox="0 0 200 48" aria-hidden="true">
+                  <rect x="10" y="28" width="22" height="16" rx="4" fill="#3b82f6" opacity="0.85"/>
+                  <rect x="42" y="18" width="22" height="26" rx="4" fill="#7c3aed" opacity="0.9"/>
+                  <rect x="74" y="22" width="22" height="22" rx="4" fill="#22d3ee" opacity="0.75"/>
+                  <rect x="106" y="12" width="22" height="32" rx="4" fill="#3b82f6" opacity="0.65"/>
+                  <rect x="138" y="20" width="22" height="24" rx="4" fill="#7c3aed" opacity="0.8"/>
+                  <rect x="170" y="26" width="22" height="18" rx="4" fill="#22d3ee" opacity="0.55"/>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section id="features">
+      <div class="section-head">
+        <h2>Everything your ops stack forgot</h2>
+        <p>Glass-clear orchestration across sales, finance, and delivery—without another brittle spreadsheet.</p>
+      </div>
+      <div class="features">
+        <article class="feat">
+          <div class="feat-icon" aria-hidden="true"></div>
+          <h3>Playbooks that run themselves</h3>
+          <p>Trigger multi-step flows from CRM stages, invoices, or form fills—with approvals where it matters.</p>
+        </article>
+        <article class="feat">
+          <div class="feat-icon" aria-hidden="true"></div>
+          <h3>Context-aware drafting</h3>
+          <p>Generate on-brand proposals and follow-ups using live deal data, past wins, and guardrails you define.</p>
+        </article>
+        <article class="feat">
+          <div class="feat-icon" aria-hidden="true"></div>
+          <h3>Operational radar</h3>
+          <p>Unified analytics across pipeline, revenue, and workflow health—spot drift before it hits churn.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="workflow">
+      <div class="section-head">
+        <h2>Automation that feels kinetic</h2>
+        <p>Motion cues in a still layout—glowing paths, depth, and glass layers imply velocity without a video file.</p>
+      </div>
+      <div class="workflow">
+        <div class="flow-row">
+          <span class="node">Signal</span>
+          <span class="connector" aria-hidden="true"></span>
+          <span class="node">Policy engine</span>
+          <span class="connector" aria-hidden="true"></span>
+          <span class="node">Human checkpoint</span>
+          <span class="connector" aria-hidden="true"></span>
+          <span class="node">Delivery + audit</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="how">
+      <div class="section-head">
+        <h2>How it works</h2>
+        <p>Three deliberate steps from messy manual work to measured automation.</p>
+      </div>
+      <div class="steps">
+        <article class="step">
+          <h3>Map your revenue rituals</h3>
+          <p>Connect CRM, billing, and inbox. FlowPilot learns the sequences that actually close deals and collect cash.</p>
+        </article>
+        <article class="step">
+          <h3>Compose guarded automations</h3>
+          <p>Blend templates, AI drafts, and deterministic rules. Every step leaves a breadcrumb for compliance.</p>
+        </article>
+        <article class="step">
+          <h3>Measure and tighten loops</h3>
+          <p>Dashboards tie workflow runs to pipeline and revenue impact—iterate where friction still hides.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="pricing">
+      <div class="section-head">
+        <h2>Pricing that scales with outcomes</h2>
+        <p>Start lean, graduate when automation carries real workload—not seat inflation.</p>
+      </div>
+      <div class="pricing">
+        <div class="price-card">
+          <div class="tier">Starter</div>
+          <div class="amt">$29<span style="font-size:1rem;font-weight:600;color:var(--muted)">/seat</span></div>
+          <ul>
+            <li>3 active playbooks</li>
+            <li>CRM + email triggers</li>
+            <li>Weekly insights</li>
+          </ul>
+          <button type="button" class="btn btn-ghost" style="width:100%">Choose Starter</button>
+        </div>
+        <div class="price-card featured">
+          <div class="tier">Growth</div>
+          <div class="amt">$79<span style="font-size:1rem;font-weight:600;color:var(--muted)">/seat</span></div>
+          <ul>
+            <li>Unlimited playbooks</li>
+            <li>AI drafting + approvals</li>
+            <li>Revenue attribution</li>
+            <li>Priority support</li>
+          </ul>
+          <button type="button" class="btn btn-primary" style="width:100%">Start Growth trial</button>
+        </div>
+        <div class="price-card">
+          <div class="tier">Enterprise</div>
+          <div class="amt">Custom</div>
+          <ul>
+            <li>SAML + SCIM</li>
+            <li>Regional data residency</li>
+            <li>Dedicated success pod</li>
+          </ul>
+          <button type="button" class="btn btn-ghost" style="width:100%">Talk to sales</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="social">
+      <div class="section-head">
+        <h2>Teams shipping calm ops</h2>
+        <p>Quotes from operators who traded thrash for throughput.</p>
+      </div>
+      <div class="testimonials">
+        <blockquote class="quote">
+          <p>“We stopped babysitting follow-ups. FlowPilot drafts, routes approvals, and logs everything—our AE’s finally live in pipeline.”</p>
+          <footer><strong>Maya Chen</strong> — VP Revenue, Nimbus Labs</footer>
+        </blockquote>
+        <blockquote class="quote">
+          <p>“Finance saw invoice latency drop in week two. The glass UI is slick, but the audit trail is why legal signed off.”</p>
+          <footer><strong>Jordan Ashe</strong> — Head of Ops, Harbor Studio</footer>
+        </blockquote>
+      </div>
+    </section>
+
+    <section class="banner" aria-labelledby="cta-title">
+      <div class="banner-inner">
+        <h2 id="cta-title">Ready for workflows that glow—then grind?</h2>
+        <p>Spin up a workspace, connect your stack, and ship your first automated proposal flow before lunch.</p>
+        <button type="button" class="btn btn-primary">Launch FlowPilot</button>
+      </div>
+    </section>
+  </div>
+  <footer class="site">
+    FlowPilot · Fictional showcase artifact · Desktop landing · GIZ-543
+  </footer>
+</body>
+</html>
