@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MemeWire — Learn today’s news through memes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Unbounded:wght@600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #0a0a0c;
+      --panel: #12121a;
+      --line: rgba(255, 255, 255, 0.1);
+      --text: #f4f4f8;
+      --muted: rgba(244, 244, 248, 0.68);
+      --lime: #c8ff3d;
+      --hot: #ff2d6a;
+      --volt: #00f0ff;
+      --amber: #ffb020;
+      --max: 1200px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: Outfit, system-ui, sans-serif;
+      background:
+        radial-gradient(900px 520px at 8% -8%, rgba(255, 45, 106, 0.22), transparent 55%),
+        radial-gradient(700px 480px at 92% 12%, rgba(0, 240, 255, 0.12), transparent 50%),
+        radial-gradient(600px 400px at 50% 110%, rgba(200, 255, 61, 0.06), transparent 45%),
+        linear-gradient(180deg, #050507, var(--ink) 35%, #08080d);
+      color: var(--text);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    .grain {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+      z-index: 0;
+    }
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 0 1.75rem; position: relative; z-index: 1; }
+    header {
+      padding: 1.1rem 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-family: Unbounded, sans-serif;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      font-size: 1.2rem;
+    }
+    .brand-mark {
+      width: 38px; height: 38px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--hot), var(--volt));
+      box-shadow: 0 0 28px rgba(255, 45, 106, 0.45);
+      position: relative;
+      overflow: hidden;
+    }
+    .brand-mark::after {
+      content: "";
+      position: absolute;
+      inset: 8px;
+      border: 2px dashed rgba(255,255,255,0.35);
+      border-radius: 8px;
+    }
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      margin-left: 1.5rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    nav a:hover { color: var(--text); }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.45rem;
+      padding: 0.78rem 1.35rem;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 0.92rem;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary {
+      background: linear-gradient(120deg, var(--lime), #9fe60a);
+      color: #0a0a0c;
+      box-shadow: 0 12px 36px rgba(200, 255, 61, 0.25);
+    }
+    .btn-primary:hover { transform: translateY(-2px); }
+    .btn-ghost {
+      background: rgba(255,255,255,0.05);
+      border-color: var(--line);
+      color: var(--text);
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,0.09); transform: translateY(-2px); }
+    .ticker {
+      margin-top: 0.85rem;
+      font-size: 0.78rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    }
+    .ticker span {
+      display: inline-block;
+      animation: scroll 22s linear infinite;
+      padding-right: 3rem;
+    }
+    @keyframes scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .hero {
+      padding: 3rem 0 4rem;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 2.5rem;
+      align-items: center;
+    }
+    @media (max-width: 960px) {
+      .hero { grid-template-columns: 1fr; }
+      nav { display: none; }
+    }
+    .eyebrow {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--volt);
+      font-weight: 700;
+      margin-bottom: 0.85rem;
+    }
+    h1 {
+      font-family: Unbounded, sans-serif;
+      font-weight: 800;
+      font-size: clamp(2.2rem, 4.2vw, 3.5rem);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+      background: linear-gradient(110deg, #fff 15%, var(--lime) 42%, var(--volt) 78%, #fff);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .lead {
+      font-size: 1.12rem;
+      line-height: 1.65;
+      color: var(--muted);
+      max-width: 32rem;
+      margin-bottom: 1.75rem;
+    }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 0.85rem; margin-bottom: 1.5rem; }
+    .trust {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem 1rem;
+      font-size: 0.82rem;
+      color: rgba(244,244,248,0.45);
+    }
+    .trust b { color: var(--amber); font-weight: 600; }
+    .phone {
+      position: relative;
+      perspective: 1000px;
+    }
+    .phone-inner {
+      border-radius: 28px;
+      border: 1px solid var(--line);
+      background: linear-gradient(165deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+      box-shadow: 0 28px 80px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.1);
+      padding: 1rem 1rem 1.25rem;
+      transform: rotateY(-4deg) rotateX(3deg);
+      transition: transform 0.35s ease;
+    }
+    .phone:hover .phone-inner { transform: rotateY(-1deg) rotateX(1deg) translateY(-6px); }
+    .pw-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.85rem;
+      padding-bottom: 0.65rem;
+      border-bottom: 1px solid var(--line);
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .live-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--hot);
+      box-shadow: 0 0 12px var(--hot);
+      display: inline-block;
+      margin-right: 0.35rem;
+      vertical-align: middle;
+    }
+    .breaking {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--hot);
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+    }
+    .headline {
+      font-weight: 700;
+      font-size: 1.05rem;
+      line-height: 1.35;
+      margin-bottom: 1rem;
+    }
+    .meme-card {
+      border-radius: 16px;
+      background: #1a1a24;
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 0.85rem;
+      margin-bottom: 1rem;
+    }
+    .meme-label {
+      font-size: 0.7rem;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+    .meme-stage {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0.4rem;
+      align-items: end;
+      min-height: 88px;
+      padding: 0.5rem;
+      border-radius: 12px;
+      background: linear-gradient(180deg, #2a2438, #1e1c28);
+    }
+    .fig {
+      font-size: 0.62rem;
+      text-align: center;
+      color: var(--muted);
+    }
+    .fig strong { display: block; color: var(--text); font-size: 0.72rem; margin-top: 0.2rem; }
+    .boy {
+      width: 100%;
+      height: 52px;
+      border-radius: 8px;
+      background: linear-gradient(180deg, #4a9fff, #2563eb);
+      position: relative;
+    }
+    .boy::after {
+      content: "↗";
+      position: absolute;
+      right: 6px; top: 6px;
+      font-size: 0.9rem;
+      color: white;
+      opacity: 0.9;
+    }
+    .girl-a { width: 100%; height: 48px; border-radius: 8px; background: linear-gradient(180deg, #f472b6, #db2777); }
+    .girl-b { width: 100%; height: 48px; border-radius: 8px; background: linear-gradient(180deg, #a78bfa, #7c3aed); }
+    .context {
+      border-radius: 14px;
+      border: 1px dashed rgba(0, 240, 255, 0.35);
+      padding: 0.75rem 0.85rem;
+      background: rgba(0, 240, 255, 0.06);
+    }
+    .context h4 {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--volt);
+      margin-bottom: 0.35rem;
+    }
+    .context p { font-size: 0.82rem; color: var(--muted); line-height: 1.45; }
+    section { padding: 3.5rem 0; }
+    .section-head { max-width: 38rem; margin-bottom: 2rem; }
+    .section-head h2 {
+      font-family: Unbounded, sans-serif;
+      font-size: clamp(1.6rem, 2.6vw, 2.15rem);
+      margin-bottom: 0.6rem;
+      letter-spacing: -0.02em;
+    }
+    .section-head p { color: var(--muted); line-height: 1.55; }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+    @media (max-width: 860px) { .grid-3 { grid-template-columns: 1fr; } }
+    .card {
+      padding: 1.5rem 1.35rem;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.03);
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(200, 255, 61, 0.35);
+    }
+    .card-icon {
+      width: 42px; height: 42px;
+      border-radius: 12px;
+      margin-bottom: 0.85rem;
+      background: linear-gradient(135deg, rgba(255,45,106,0.35), rgba(0,240,255,0.25));
+      border: 1px solid var(--line);
+    }
+    .card h3 { font-size: 1.05rem; margin-bottom: 0.45rem; }
+    .card p { font-size: 0.9rem; color: var(--muted); line-height: 1.5; }
+    .flow {
+      border-radius: 22px;
+      border: 1px solid var(--line);
+      background: rgba(18, 18, 26, 0.7);
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 0.65rem;
+    }
+    .chip {
+      padding: 0.65rem 1rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--line);
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .arrow {
+      color: var(--lime);
+      font-size: 1.1rem;
+      font-weight: 800;
+    }
+    .pricing {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+    @media (max-width: 640px) { .pricing { grid-template-columns: 1fr; } }
+    .price {
+      padding: 1.75rem 1.5rem;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.03);
+    }
+    .price.featured {
+      border-color: rgba(200, 255, 61, 0.45);
+      box-shadow: 0 0 48px rgba(200, 255, 61, 0.08);
+    }
+    .price h3 { font-family: Unbounded, sans-serif; font-size: 1.1rem; margin-bottom: 0.35rem; }
+    .price .amt { font-size: 2rem; font-weight: 800; margin: 0.5rem 0; }
+    .price ul { list-style: none; margin: 1rem 0; color: var(--muted); font-size: 0.88rem; }
+    .price li { margin-bottom: 0.45rem; padding-left: 1.1rem; position: relative; }
+    .price li::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: var(--lime);
+      font-weight: 700;
+    }
+    footer {
+      padding: 2.5rem 0 3rem;
+      border-top: 1px solid var(--line);
+      color: rgba(244,244,248,0.4);
+      font-size: 0.82rem;
+      text-align: center;
+    }
+    footer a { color: var(--volt); text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="wrap">
+    <header>
+      <div class="brand"><span class="brand-mark" aria-hidden="true"></span> MemeWire</div>
+      <nav aria-label="Primary">
+        <a href="#flow">How it works</a>
+        <a href="#features">Product</a>
+        <a href="#pricing">Pricing</a>
+      </nav>
+      <div>
+        <button type="button" class="btn btn-ghost" style="margin-right:0.5rem">Log in</button>
+        <button type="button" class="btn btn-primary">Get the app</button>
+      </div>
+    </header>
+    <div class="ticker" aria-hidden="true">
+      <span>
+        BREAKING · Markets · Politics · Tech · Culture · Sports · BREAKING · Markets · Politics · Tech · Culture · Sports ·
+        BREAKING · Markets · Politics · Tech · Culture · Sports · BREAKING · Markets · Politics · Tech · Culture · Sports ·
+      </span>
+    </div>
+
+    <section class="hero">
+      <div>
+        <p class="eyebrow">News, but you actually finish it</p>
+        <h1>Learn today’s news through memes.</h1>
+        <p class="lead">
+          Headlines are exhausting. MemeWire turns the day’s stories into shareable meme formats—then gives you the straight facts underneath. Laugh first, understand second.
+        </p>
+        <div class="cta-row">
+          <button type="button" class="btn btn-primary">Join waitlist</button>
+          <button type="button" class="btn btn-ghost">Watch 60s demo</button>
+        </div>
+        <p class="trust"><b>Meme-first feed</b> · Explain-the-joke mode · Mood filters · Timeline view</p>
+      </div>
+      <div class="phone" aria-label="Product preview">
+        <div class="phone-inner">
+          <div class="pw-top">
+            <span><span class="live-dot"></span>Live wire</span>
+            <span>Today</span>
+          </div>
+          <p class="breaking">Breaking</p>
+          <p class="headline">Tech company announces 5,000 layoffs amid AI restructuring.</p>
+          <div class="meme-card">
+            <p class="meme-label">Meme card · Distracted boyfriend</p>
+            <div class="meme-stage">
+              <div>
+                <div class="boy"></div>
+                <p class="fig"><strong>Companies</strong> chasing AI upside</p>
+              </div>
+              <div>
+                <div class="girl-a"></div>
+                <p class="fig"><strong>Employees</strong> reading the memo</p>
+              </div>
+              <div>
+                <div class="girl-b"></div>
+                <p class="fig"><strong>Regulators</strong> taking notes</p>
+              </div>
+            </div>
+          </div>
+          <div class="context">
+            <h4>What actually happened?</h4>
+            <p>Reductions target non-AI roles; severance and retraining programs announced. Stock up 4% after hours.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="flow">
+      <div class="section-head">
+        <h2>Three beats: meme, context, done.</h2>
+        <p>Every story is packaged so your brain gets the emotional hook before the nuance—without doom-scrolling paragraphs.</p>
+      </div>
+      <div class="flow">
+        <span class="chip">Breaking headline</span>
+        <span class="arrow">→</span>
+        <span class="chip">Meme translation</span>
+        <span class="arrow">→</span>
+        <span class="chip">Short factual summary</span>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="section-head">
+        <h2>Built for people who live on the internet.</h2>
+        <p>Filters and explainers keep the jokes sharp—and the facts honest.</p>
+      </div>
+      <div class="grid-3">
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"></div>
+          <h3>Meme-first feed</h3>
+          <p>Stories surface as templates you already know—so context lands faster than a wall of text.</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"></div>
+          <h3>Explain why it’s funny</h3>
+          <p>Tap “decode” for references, formats, and the cultural angle—great for group chats and older relatives.</p>
+        </article>
+        <article class="card">
+          <div class="card-icon" aria-hidden="true"></div>
+          <h3>Mood filters &amp; timeline</h3>
+          <p>Skim “serious,” “chaotic,” or “wholesome” moods. Scroll a meme timeline of the week to see how narratives evolved.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="pricing">
+      <div class="section-head" style="text-align:center;margin-left:auto;margin-right:auto">
+        <h2>Free to scroll. Pro to go deep.</h2>
+        <p>Start free; upgrade for unlimited decodes, offline packs, and ad-light reading.</p>
+      </div>
+      <div class="pricing">
+        <div class="price">
+          <h3>Free</h3>
+          <div class="amt">$0</div>
+          <ul>
+            <li>Daily meme headlines</li>
+            <li>Limited “explain” credits</li>
+            <li>Standard mood filters</li>
+          </ul>
+          <button type="button" class="btn btn-ghost" style="width:100%">Start free</button>
+        </div>
+        <div class="price featured">
+          <h3>MemeWire Pro</h3>
+          <div class="amt">$7<span style="font-size:1rem;font-weight:600;color:var(--muted)">/mo</span></div>
+          <ul>
+            <li>Unlimited joke decodes</li>
+            <li>Full meme timeline history</li>
+            <li>Offline meme packs · fewer ads</li>
+          </ul>
+          <button type="button" class="btn btn-primary" style="width:100%">Upgrade</button>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>MemeWire is a concept landing for product exploration. Not affiliated with any news organization.</p>
+      <p style="margin-top:0.5rem"><a href="#top">Back to top</a></p>
+    </footer>
+  </div>
+</body>
+</html>
