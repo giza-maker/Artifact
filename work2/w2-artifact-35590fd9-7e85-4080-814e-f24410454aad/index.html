@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Quahog × Peak — Mash Lab</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,400;0,700;1,400&family=Knewave&family=Rubik+Mono+One&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --ink: #0c0a09;
+      --panel-left: #fff7ed;
+      --panel-right: #ecfccb;
+      --accent-left: #ea580c;
+      --accent-right: #a855f7;
+      --bubble-left: #fed7aa;
+      --bubble-right: #d9f99d;
+      --shadow: 0 18px 40px rgba(12, 10, 9, 0.22);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; background: #111; color: var(--ink); font-family: "Figtree", system-ui, sans-serif; }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+    }
+    .noise {
+      position: fixed; inset: 0; pointer-events: none; opacity: 0.045;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      z-index: 0;
+    }
+    .shell {
+      position: relative; z-index: 1;
+      max-width: 1180px; margin: 0 auto; padding: 1.25rem;
+      min-height: 100vh; display: flex; flex-direction: column; gap: 1rem;
+    }
+    header.banner {
+      background: linear-gradient(105deg, #f97316 0%, #fde047 42%, #22c55e 100%);
+      border-radius: 20px; padding: 1rem 1.25rem;
+      box-shadow: var(--shadow);
+      display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0.75rem;
+      border: 3px solid var(--ink);
+    }
+    header.banner h1 {
+      margin: 0; font-family: "Rubik Mono One", sans-serif; font-size: clamp(1.15rem, 3vw, 1.65rem);
+      letter-spacing: -0.02em; text-transform: uppercase;
+    }
+    header.banner p { margin: 0; font-size: 0.92rem; max-width: 38rem; opacity: 0.92; }
+    .split {
+      flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+      min-height: 420px;
+    }
+    @media (max-width: 820px) { .split { grid-template-columns: 1fr; } }
+    .panel {
+      border-radius: 18px; border: 3px solid var(--ink); padding: 1rem 1.1rem;
+      display: flex; flex-direction: column; gap: 0.85rem;
+      position: relative; overflow: hidden;
+      animation: panelIn 0.7s ease-out backwards;
+    }
+    .panel.left { background: var(--panel-left); animation-delay: 0.08s; }
+    .panel.right { background: var(--panel-right); animation-delay: 0.18s; }
+    @keyframes panelIn {
+      from { opacity: 0; transform: translateY(12px) rotate(-0.4deg); }
+      to { opacity: 1; transform: none; }
+    }
+    .panel h2 {
+      margin: 0; font-family: "Knewave", cursive; font-size: 1.35rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .badge {
+      font-family: "Rubik Mono One", sans-serif; font-size: 0.62rem;
+      padding: 0.2rem 0.45rem; border-radius: 6px; border: 2px solid var(--ink);
+      background: #fff;
+    }
+    .avatar {
+      width: 100%; aspect-ratio: 16/9; border-radius: 12px; border: 3px solid var(--ink);
+      display: grid; place-items: center; font-size: 2.5rem;
+      background: repeating-linear-gradient(-12deg, transparent, transparent 8px, rgba(0,0,0,0.06) 8px, rgba(0,0,0,0.06) 10px);
+    }
+    .panel.left .avatar { background-color: #ffedd5; }
+    .panel.right .avatar { background-color: #d9f99d; }
+    .picker { display: flex; flex-wrap: wrap; gap: 0.45rem; }
+    .picker button {
+      font: inherit; cursor: pointer; border: 2px solid var(--ink); border-radius: 999px;
+      padding: 0.35rem 0.75rem; background: #fff; transition: transform 0.12s ease, box-shadow 0.12s ease;
+    }
+    .picker button:hover { transform: translateY(-2px); box-shadow: 3px 3px 0 var(--ink); }
+    .picker button[aria-pressed="true"] {
+      background: var(--ink); color: #fff; box-shadow: 3px 3px 0 rgba(255,255,255,0.35);
+    }
+    .fuse-row {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 0.65rem; justify-content: center;
+    }
+    .fuse {
+      font-family: "Rubik Mono One", sans-serif; font-size: 0.95rem;
+      padding: 0.85rem 1.4rem; border-radius: 14px; border: 3px solid var(--ink);
+      background: linear-gradient(90deg, var(--accent-left), var(--accent-right)); color: #fff;
+      cursor: pointer; text-transform: uppercase; letter-spacing: 0.04em;
+      box-shadow: 6px 6px 0 var(--ink);
+      animation: pulse 2.4s ease-in-out infinite;
+    }
+    .fuse:active { transform: translate(3px, 3px); box-shadow: 3px 3px 0 var(--ink); }
+    @keyframes pulse { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.08); } }
+    .secondary {
+      font: inherit; cursor: pointer; padding: 0.65rem 1rem; border-radius: 12px;
+      border: 2px solid var(--ink); background: #fef08a;
+    }
+    .stage {
+      flex: 1; border-radius: 16px; border: 3px dashed var(--ink); padding: 1rem;
+      background: #fafaf9; min-height: 220px;
+      display: flex; flex-direction: column; gap: 0.65rem;
+    }
+    .bubble {
+      max-width: 92%; padding: 0.65rem 0.85rem; border-radius: 14px; border: 2px solid var(--ink);
+      font-size: 0.98rem; line-height: 1.45; position: relative;
+      animation: pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+    }
+    @keyframes pop { from { opacity: 0; transform: scale(0.92); } }
+    .bubble.lefty { align-self: flex-start; background: var(--bubble-left); margin-right: 10%; }
+    .bubble.righty { align-self: flex-end; background: var(--bubble-right); margin-left: 10%; text-align: right; }
+    .bubble span.meta { display: block; font-size: 0.72rem; opacity: 0.75; margin-bottom: 0.25rem; font-weight: 700; }
+    footer.legal {
+      font-size: 0.78rem; color: #a8a29e; padding: 0 0.25rem 1.5rem; line-height: 1.5;
+    }
+    footer.legal strong { color: #e7e5e4; }
+  </style>
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="shell">
+    <header class="banner">
+      <div>
+        <h1>Quahog × Peak — Mash Lab</h1>
+        <p>Split-screen chaos generator for superfans. Pick two worlds, collide dialogue, copy the roast. Original artwork only — a loving parody, not affiliated with any network or studio.</p>
+      </div>
+      <span class="badge">Web desktop • Share-ready</span>
+    </header>
+
+    <div class="split" role="presentation">
+      <section class="panel left" aria-labelledby="left-title">
+        <h2 id="left-title"><span class="badge" style="background:#fed7aa">LEFT</span> Suburban spiral</h2>
+        <div class="avatar" id="leftAvatar" aria-hidden="true">🛋️</div>
+        <div class="picker" id="leftPick" role="group" aria-label="Left universe character"></div>
+      </section>
+      <section class="panel right" aria-labelledby="right-title">
+        <h2 id="right-title"><span class="badge" style="background:#d9f99d">RIGHT</span> Mountain paper town</h2>
+        <div class="avatar" id="rightAvatar" aria-hidden="true">⛰️</div>
+        <div class="picker" id="rightPick" role="group" aria-label="Right universe character"></div>
+      </section>
+    </div>
+
+    <div class="fuse-row">
+      <button type="button" class="fuse" id="fuseBtn">Smash dialogue</button>
+      <button type="button" class="secondary" id="shareBtn">Share snapshot</button>
+      <button type="button" class="secondary" id="copyBtn">Copy lines</button>
+    </div>
+
+    <section class="stage" aria-live="polite" aria-relevant="additions" id="stage">
+      <div class="bubble lefty"><span class="meta">Waiting</span>Hit <strong>Smash dialogue</strong> for a loud, clashing cold open.</div>
+    </section>
+
+    <footer class="legal">
+      <strong>Licensing note:</strong> This page ships original SVG/CSS visuals and text templates only.
+      It does not embed network logos, clips, or trademarked character art. If production needs licensed assets, route through legal clearance first.
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      var LEFT = [
+        { id: "dad", label: "Neighborhood Dad", emoji: "🍔", hooks: ["cutaway gag", "bird-law rant", "driveway speech"] },
+        { id: "genius", label: "Baby Mastermind", emoji: "🍼", hooks: ["world domination", "British vowels", "sinister toy piano"] },
+        { id: "hound", label: "Talking Hound", emoji: "🐕", hooks: ["dry aside", "novel chapter", "martini wisdom"] },
+        { id: "anchor", label: "Newsroom Anchor", emoji: "📺", hooks: ["misread teleprompter", "laugh track immunity"] }
+      ];
+      var RIGHT = [
+        { id: "chaos", label: "Chaos Hoodie", emoji: "🔻", hooks: ["scheme pitch", "mom basement economics"] },
+        { id: "skeptic", label: "Ethical Skeptic", emoji: "🧢", hooks: ["you killed Kenny vibe", "righteous finger wag"] },
+        { id: "muffled", label: "Muffled Buddy", emoji: "🧣", hooks: ["unintelligible loyalty", "hero sacrifice bit"] },
+        { id: "chef", label: "Cafeteria Chef", emoji: "👨‍🍳", hooks: ["mystery meat lore", "sing-along trauma"] }
+      ];
+
+      var leftSel = LEFT[0];
+      var rightSel = RIGHT[0];
+
+      function renderPickers() {
+        var lp = document.getElementById("leftPick");
+        var rp = document.getElementById("rightPick");
+        lp.innerHTML = "";
+        rp.innerHTML = "";
+        LEFT.forEach(function (c, i) {
+          var b = document.createElement("button");
+          b.type = "button";
+          b.textContent = c.label;
+          b.setAttribute("aria-pressed", c.id === leftSel.id ? "true" : "false");
+          b.addEventListener("click", function () {
+            leftSel = c;
+            document.getElementById("leftAvatar").textContent = c.emoji;
+            renderPickers();
+          });
+          lp.appendChild(b);
+        });
+        RIGHT.forEach(function (c) {
+          var b = document.createElement("button");
+          b.type = "button";
+          b.textContent = c.label;
+          b.setAttribute("aria-pressed", c.id === rightSel.id ? "true" : "false");
+          b.addEventListener("click", function () {
+            rightSel = c;
+            document.getElementById("rightAvatar").textContent = c.emoji;
+            renderPickers();
+          });
+          rp.appendChild(b);
+        });
+        document.getElementById("leftAvatar").textContent = leftSel.emoji;
+        document.getElementById("rightAvatar").textContent = rightSel.emoji;
+      }
+
+      function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+
+      function smash() {
+        var stage = document.getElementById("stage");
+        stage.innerHTML = "";
+        var beats = [
+          { side: "lefty", who: leftSel.label, text: "Okay new rule: if we do a " + pick(leftSel.hooks) + ", the universe owes us a pizza arc." },
+          { side: "righty", who: rightSel.label, text: "Respectfully—no. We're doing a " + pick(rightSel.hooks) + " and calling it 'performance art' for tax purposes." },
+          { side: "lefty", who: leftSel.label, text: "You're why our split-screen feels like two Wi‑Fi routers fighting. Beautiful. Horrible. Bravo." },
+          { side: "righty", who: rightSel.label, text: "Copy that. Now share this before legal wakes up. Metric: chaos-per-session > 1." }
+        ];
+        beats.forEach(function (line, idx) {
+          var div = document.createElement("div");
+          div.className = "bubble " + line.side;
+          div.style.animationDelay = (idx * 0.06) + "s";
+          div.innerHTML = '<span class="meta">' + line.who + "</span>" + line.text;
+          stage.appendChild(div);
+        });
+      }
+
+      function snapshotText() {
+        var bubbles = Array.prototype.slice.call(document.querySelectorAll("#stage .bubble"));
+        return "Quahog × Peak Mash Lab\n" + leftSel.label + " × " + rightSel.label + "\n\n" +
+          bubbles.map(function (b) { return b.innerText.replace(/\n/g, " "); }).join("\n");
+      }
+
+      document.getElementById("fuseBtn").addEventListener("click", smash);
+      document.getElementById("copyBtn").addEventListener("click", function () {
+        var t = snapshotText();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(t).catch(function () { window.prompt("Copy:", t); });
+        } else {
+          window.prompt("Copy:", t);
+        }
+      });
+      document.getElementById("shareBtn").addEventListener("click", function () {
+        var t = snapshotText();
+        if (navigator.share) {
+          navigator.share({ title: "Quahog × Peak Mash Lab", text: t }).catch(function () {});
+        } else if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(t);
+        }
+      });
+
+      renderPickers();
+    })();
+  </script>
+</body>
+</html>
