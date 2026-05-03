@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Quest: Real-Time Converter — Prepare for launch</title>
+    <link rel="stylesheet" href="/api/attachments/.../content/tokens.css">
+    <link rel="stylesheet" href="/api/attachments/.../content/motion.css">
+    <link rel="stylesheet" href="/api/attachments/.../content/components.html">
+    <style>
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-canvas);
+            color: var(--fg-strong);
+        }
+
+        .hero-shell {
+            background-image: url('/api/attachments/.../content/hero-illustration');
+            background-size: cover;
+            padding: var(--space-6);
+            text-align: center;
+            color: var(--fg-inverse);
+        }
+
+        .feature-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: var(--space-4);
+            margin: var(--space-6) 0;
+        }
+
+        .btn {
+            padding: var(--space-2) var(--space-4);
+            background-color: var(--accent-primary);
+            color: var(--fg-inverse);
+            border: none;
+            border-radius: var(--radius-card);
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: var(--accent-secondary);
+        }
+
+        .cta-row {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-4);
+        }
+    </style>
+</head>
+<body>
+
+<!-- Hero Section -->
+<section class="hero-shell fx-enter">
+    <div class="eyebrow">Currency Quest: Real-Time Converter</div>
+    <h1>Prepare for Launch</h1>
+    <p>Your trusted companion for instant currency conversions - gamified to enhance your experience.</p>
+    <div class="cta-row fx-stagger">
+        <a class="btn" href="#start">Get Started</a>
+        <a class="btn" href="#details">Learn More</a>
+    </div>
+</section>
+
+<!-- Feature Section -->
+<section class="feature-section fx-enter">
+    <article class="feature-card">
+        <h2>Instant Conversion</h2>
+        <p>Convert currencies in real-time with the latest exchange rates.</p>
+    </article>
+    <article class="feature-card">
+        <h2>Gamified Experience</h2>
+        <p>Earn points and rewards as you engage with our converter.</p>
+    </article>
+    <article class="feature-card">
+        <h2>User-Friendly Interface</h2>
+        <p>Intuitive design ensures an effortless user journey.</p>
+    </article>
+    <article class="feature-card">
+        <h2>Detailed Analytics</h2>
+        <p>Track your conversion history and stay informed.</p>
+    </article>
+</section>
+
+<!-- Closing CTA -->
+<section class="cta-row fx-stagger">
+    <h2>Ready to start your Currency Quest?</h2>
+    <a class="btn" href="#converter">Launch the Converter</a>
+</section>
+
+<script src="/api/attachments/.../content/scripts.js"></script>
+</body>
+</html>
