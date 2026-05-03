@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/api/attachments/.../content/tokens.css">
+  <link rel="stylesheet" href="/api/attachments/.../content/motion.css">
+  <title>CanadaVacay Calendar</title>
+  <style>
+    body {
+      font-family: var(--body-font);
+      background-color: var(--bg-canvas);
+      color: var(--fg-strong);
+      margin: 0;
+      padding: 0;
+    }
+    .hero {
+      text-align: center;
+      padding: var(--space-5);
+      background-color: var(--bg-panel);
+    }
+    .hero h1 {
+      font-size: var(--display-1);
+    }
+    .hero p {
+      margin-top: var(--space-3);
+      font-size: var(--body-lg);
+    }
+    .cta-btn {
+      display: inline-block;
+      margin: var(--space-2);
+      padding: var(--space-2) var(--space-4);
+      background-color: var(--accent-primary);
+      color: var(--fg-inverse);
+      text-decoration: none;
+      border-radius: var(--radius-pill);
+      transition: transform 180ms ease, box-shadow 180ms ease;
+    }
+    .cta-btn:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-strong);
+    }
+    .feature-section {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-4);
+      padding: var(--space-5);
+    }
+    .feature-card {
+      background: var(--bg-panel);
+      border-radius: var(--radius-card);
+      padding: var(--space-3);
+      box-shadow: var(--shadow-soft);
+    }
+    .footer {
+      text-align: center;
+      padding: var(--space-5);
+      background-color: var(--bg-accent);
+      color: var(--fg-inverse);
+    }
+  </style>
+</head>
+<body>
+
+  <section class="hero fx-enter">
+    <h1 class="eyebrow">CanadaVacay Calendar</h1>
+    <p>Plan your next adventure with our easy-to-use vacation calendar!</p>
+    <a class="cta-btn" href="#calendar">Get Started</a>
+  </section>
+
+  <section class="feature-section fx-stagger">
+    <div class="feature-card">
+      <h2>Canadian Holidays & Events</h2>
+      <p>Stay updated with all the holidays and events happening across Canada.</p>
+    </div>
+    <div class="feature-card">
+      <h2>Interactive Calendar UI</h2>
+      <p>Use our intuitive calendar interface to plan your trips effortlessly!</p>
+    </div>
+    <div class="feature-card">
+      <h2>Cute Canada-themed Design</h2>
+      <p>A playful design that embodies the spirit of Canada in every detail.</p>
+    </div>
+    <div class="feature-card">
+      <h2>Share Your Plans</h2>
+      <p>Easily share your calendar with friends and family to coordinate trips together.</p>
+    </div>
+  </section>
+
+  <section id="calendar" class="dashboard-slab fx-enter">
+    <!-- Calendar UI will be placed here -->
+    <div class="dashboard-stat">
+      <span class="label">Upcoming Events</span>
+      <strong>3</strong>
+    </div>
+    <div class="dashboard-stat">
+      <span class="label">Next Holiday</span>
+      <strong>Canada Day - July 1</strong>
+    </div>
+  </section>
+
+  <footer class="footer fx-hover-lift">
+    <p>Ready to plan your next Canadian vacation? Start now!</p>
+    <a class="cta-btn" href="#calendar">Explore the Calendar</a>
+  </footer>
+
+</body>
+</html>
