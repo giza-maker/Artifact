@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cute Card Game — QA, Accessibility, and Public Link Deploy</title>
+    <link rel="stylesheet" href="tokens.css">
+    <link rel="stylesheet" href="motion.css">
+    <style>
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-canvas);
+            color: var(--fg-strong);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        h1 {
+            font-size: var(--display-1);
+            margin: 1rem 0;
+        }
+        .hero-shell {
+            width: 100%;
+            max-width: 800px;
+            margin: 1.5rem;
+            padding: 1.5rem;
+            background: var(--bg-panel);
+            border-radius: var(--radius-card);
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s;
+        }
+        .cta-row {
+            margin-top: 1.5rem;
+        }
+        .btn {
+            padding: 0.5rem 1rem;
+            margin: 0.5rem;
+            border: none;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            transition: transform 180ms ease, box-shadow 180ms ease;
+        }
+        .btn-primary {
+            background: var(--accent-primary);
+            color: var(--fg-inverse);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-strong);
+        }
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--accent-primary);
+            color: var(--accent-primary);
+        }
+        .btn-secondary:hover {
+            background: var(--accent-primary);
+            color: var(--fg-inverse);
+        }
+    </style>
+</head>
+<body>
+
+<section class="hero-shell fx-enter">
+    <div class="eyebrow">Cute Card Game</div>
+    <h1>Unlock the Fun with Our Cute Card Game!</h1>
+    <p>Experience a playful PvP card game designed for little girls and their friends. Challenge each other, play, win, and replay!</p>
+    <div class="cta-row fx-stagger">
+        <a class="btn btn-primary" href="#start-game">Start Playing!</a>
+        <a class="btn btn-secondary" href="#how-to-play">How to Play</a>
+    </div>
+</section>
+
+<section id="how-to-play" class="fx-enter">
+    <h2>How to Play</h2>
+    <p>Gather your friends and deal the cards! The objective is simple, strategize your moves and have a blast!</p>
+</section>
+
+<section id="start-game" class="dashboard-slab fx-enter">
+    <h2>Ready to Deal?</h2>
+    <div class="dashboard-stat">
+        <strong>Players: 2</strong>
+    </div>
+    <div class="dashboard-stat">
+        <strong>Current Deck: 30 Cards</strong>
+    </div>
+    <div class="cta-row fx-stagger">
+        <button class="btn btn-primary" onclick="startGame()">Deal Cards!</button>
+    </div>
+</section>
+
+<script>
+    function startGame() {
+        alert("The game has started! Good luck!");
+        // Add game logic here
+    }
+</script>
+
+</body>
+</html>
