@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BABYKITTEN — Luxury Tuxedo Atelier · New York</title>
+  <meta name="description" content="New York's most exclusive luxury tuxedo atelier. Bespoke black-tie dressing for those who define the evening." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       TOKENS
+    ============================================================ */
+    :root {
+      --bk-obsidian: #0A0A0B;
+      --bk-charcoal: #141416;
+      --bk-graphite: #1E1E22;
+      --bk-mist: #F5F3EF;
+      --bk-ivory: #FAF8F4;
+      --bk-gold: #C9A96E;
+      --bk-gold-light: #E2C98A;
+      --bk-gold-muted: #8A6F45;
+      --bk-platinum: #D4D0C8;
+      --bk-smoke: #6B6B72;
+      --bk-font-display: 'Cormorant Garamond', Georgia, serif;
+      --bk-font-body: 'Montserrat', 'Helvetica Neue', sans-serif;
+      --bk-t-hero: clamp(3.5rem, 8vw, 7.5rem);
+      --bk-t-headline: clamp(2rem, 4vw, 3.5rem);
+      --bk-t-subhead: clamp(1.1rem, 2vw, 1.5rem);
+      --bk-t-body: clamp(0.875rem, 1.2vw, 1rem);
+      --bk-t-eyebrow: 0.6875rem;
+      --bk-space-xs: 0.5rem;
+      --bk-space-sm: 1rem;
+      --bk-space-md: 2rem;
+      --bk-space-lg: 4rem;
+      --bk-space-xl: 7rem;
+      --bk-ease-luxury: cubic-bezier(0.16, 1, 0.3, 1);
+      --bk-ease-reveal: cubic-bezier(0.22, 0, 0.36, 1);
+      --bk-dur-med: 600ms;
+      --bk-dur-slow: 1000ms;
+      --bk-dur-cinematic: 1400ms;
+    }
+
+    /* ============================================================
+       RESET + BASE
+    ============================================================ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body {
+      background: var(--bk-obsidian);
+      color: var(--bk-mist);
+      font-family: var(--bk-font-body);
+      font-size: var(--bk-t-body);
+      font-weight: 300;
+      line-height: 1.7;
+      overflow-x: hidden;
+    }
+    img { display: block; width: 100%; height: 100%; object-fit: cover; }
+    a { text-decoration: none; color: inherit; }
+    button { cursor: pointer; border: none; background: none; font-family: inherit; }
+
+    /* ============================================================
+       MOTION PRESETS
+    ============================================================ */
+    /* fx-enter: elements fade + translate up on load */
+    .fx-enter {
+      opacity: 0;
+      transform: translateY(2.5rem);
+      transition: opacity var(--bk-dur-slow) var(--bk-ease-luxury),
+                  transform var(--bk-dur-slow) var(--bk-ease-luxury);
+    }
+    .fx-enter.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* fx-stagger: child elements stagger their entry */
+    .fx-stagger > * {
+      opacity: 0;
+      transform: translateY(2rem);
+      transition: opacity var(--bk-dur-slow) var(--bk-ease-luxury),
+                  transform var(--bk-dur-slow) var(--bk-ease-luxury);
+    }
+    .fx-stagger.is-visible > *:nth-child(1) { opacity: 1; transform: translateY(0); transition-delay: 0ms; }
+    .fx-stagger.is-visible > *:nth-child(2) { opacity: 1; transform: translateY(0); transition-delay: 120ms; }
+    .fx-stagger.is-visible > *:nth-child(3) { opacity: 1; transform: translateY(0); transition-delay: 240ms; }
+    .fx-stagger.is-visible > *:nth-child(4) { opacity: 1; transform: translateY(0); transition-delay: 360ms; }
+    .fx-stagger.is-visible > *:nth-child(5) { opacity: 1; transform: translateY(0); transition-delay: 480ms; }
+
+    /* fx-hover-lift: cards lift on hover */
+    .fx-hover-lift {
+      transition: transform var(--bk-dur-med) var(--bk-ease-luxury),
+                  box-shadow var(--bk-dur-med) var(--bk-ease-luxury);
+    }
+    .fx-hover-lift:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 24px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(201,169,110,0.15);
+    }
+
+    /* ============================================================
+       EDITORIAL GRID SYSTEM
+    ============================================================ */
+    .editorial-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: clamp(1rem, 2vw, 1.5rem);
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0 clamp(1.5rem, 5vw, 5rem);
+    }
+    .col-span-12 { grid-column: span 12; }
+    .col-span-8  { grid-column: span 8; }
+    .col-span-7  { grid-column: span 7; }
+    .col-span-6  { grid-column: span 6; }
+    .col-span-5  { grid-column: span 5; }
+    .col-span-4  { grid-column: span 4; }
+    .col-span-3  { grid-column: span 3; }
+    .col-start-2 { grid-column-start: 2; }
+    .col-start-3 { grid-column-start: 3; }
+
+    @media (max-width: 1024px) {
+      .col-span-8, .col-span-7 { grid-column: span 12; }
+      .col-span-5, .col-span-4 { grid-column: span 12; }
+    }
+    @media (max-width: 768px) {
+      .col-span-6, .col-span-3 { grid-column: span 12; }
+      .col-start-2, .col-start-3 { grid-column-start: 1; }
+    }
+
+    /* ============================================================
+       NAVIGATION
+    ============================================================ */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 1.5rem clamp(1.5rem, 5vw, 5rem);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(to bottom, rgba(10,10,11,0.95) 0%, transparent 100%);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(201,169,110,0.08);
+      transition: background var(--bk-dur-med) var(--bk-ease-luxury);
+    }
+    .nav__wordmark {
+      font-family: var(--bk-font-display);
+      font-size: 1.35rem;
+      font-weight: 400;
+      letter-spacing: 0.35em;
+      color: var(--bk-gold);
+      text-transform: uppercase;
+    }
+    .nav__wordmark span {
+      font-style: italic;
+      font-weight: 300;
+      color: var(--bk-mist);
+    }
+    .nav__links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    .nav__links a {
+      font-family: var(--bk-font-body);
+      font-size: var(--bk-t-eyebrow);
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--bk-platinum);
+      transition: color var(--bk-dur-fast) ease;
+    }
+    .nav__links a:hover { color: var(--bk-gold); }
+    .nav__cta {
+      font-family: var(--bk-font-body);
+      font-size: var(--bk-t-eyebrow);
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--bk-obsidian);
+      background: var(--bk-gold);
+      padding: 0.65rem 1.5rem;
+      border-radius: 1px;
+      transition: background var(--bk-dur-fast) ease, color var(--bk-dur-fast) ease;
+    }
+    .nav__cta:hover { background: var(--bk-gold-light); }
+
+    @media (max-width: 768px) {
+      .nav__links { display: none; }
+    }
+
+    /* ============================================================
+       HERO SECTION — 16:9 Editorial Hero
+    ============================================================ */
+    .hero {
+      position: relative;
+      min-height: 100svh;
+      display: flex;
+      align-items: flex-end;
+      overflow: hidden;
+    }
+    .hero__visual {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .hero__visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      transform: scale(1.04);
+      transition: transform var(--bk-dur-cinematic) var(--bk-ease-luxury);
+    }
+    .hero.is-loaded .hero__visual img {
+      transform: scale(1);
+    }
+
+    /* Cinematic gradient overlay */
+    .hero__overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background:
+        linear-gradient(to top, rgba(10,10,11,0.96) 0%, rgba(10,10,11,0.55) 45%, rgba(10,10,11,0.1) 100%),
+        linear-gradient(to right, rgba(10,10,11,0.3) 0%, transparent 60%);
+    }
+
+    /* Decorative gold line */
+    .hero__rule {
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 100%; height: 1px;
+      background: linear-gradient(to right, var(--bk-gold) 0%, transparent 60%);
+      z-index: 3;
+      opacity: 0.4;
+    }
+
+    .hero__content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      padding: 0 clamp(1.5rem, 5vw, 5rem);
+      padding-bottom: clamp(4I'll deliver the complete, polished HTML snippet/file for the Babykitten luxury tuxedo boutique — ready for the parent coordinator (GIZ-607) to integrate.
