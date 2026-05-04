@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Goodbye — Wave Around the World</title>
+  <style>
+    :root {
+      --bg-canvas: #f8f4ee;
+      --bg-panel: rgba(255, 255, 255, 0.9);
+      --bg-accent: #132730;
+      --fg-strong: #1f1a17;
+      --fg-muted: #5e544c;
+      --fg-inverse: #f8f4ee;
+      --line-soft: rgba(36, 31, 27, 0.12);
+      --line-strong: rgba(23, 49, 62, 0.28);
+      --accent-primary: #cf6b42;
+      --accent-secondary: #5d857b;
+      --accent-highlight: #f3c969;
+      --radius-card: 28px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 18px 44px rgba(27, 31, 36, 0.12);
+      --shadow-strong: 0 24px 64px rgba(16, 19, 24, 0.22);
+      --display-font: "Avenir Next", "Segoe UI", sans-serif;
+      --body-font: "Georgia", "Times New Roman", serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg-canvas);
+      color: var(--fg-strong);
+      font-family: var(--body-font);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Ambient background blobs */
+    .ambient {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .ambient-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.18;
+    }
+    .blob-1 {
+      width: 520px; height: 520px;
+      background: var(--accent-primary);
+      top: -120px; left: -100px;
+      animation: blob-drift 12s ease-in-out infinite alternate;
+    }
+    .blob-2 {
+      width: 400px; height: 400px;
+      background: var(--accent-secondary);
+      bottom: -80px; right: -80px;
+      animation: blob-drift 15s ease-in-out infinite alternate-reverse;
+    }
+    .blob-3 {
+      width: 300px; height: 300px;
+      background: var(--accent-highlight);
+      top: 40%; left: 60%;
+      animation: blob-drift 10s ease-in-out infinite alternate;
+    }
+    @keyframes blob-drift {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(40px, 30px) scale(1.08); }
+    }
+
+    /* Main stage */
+    .stage {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    /* Waving hand */
+    .hand-wrap {
+      font-size: clamp(4rem, 12vw, 8rem);
+      line-height: 1;
+      cursor: pointer;
+      user-select: none;
+      display: inline-block;
+      animation: wave-idle 3s ease-in-out infinite;
+      transform-origin: 75% 85%;
+      filter: drop-shadow(0 8px 24px rgba(207, 107, 66, 0.25));
+      transition: filter 0.3s ease;
+    }
+    .hand-wrap:hover {
+      filter: drop-shadow(0 12px 32px rgba(207, 107, 66, 0.4));
+    }
+    .hand-wrap.waving {
+      animation: wave-active 0.6s ease-in-out;
+    }
+    @keyframes wave-idle {
+      0%, 100% { transform: rotate(0deg); }
+      25%       { transform: rotate(12deg); }
+      75%       { transform: rotate(-6deg); }
+    }
+    @keyframes wave-active {
+      0%   { transform: rotate(0deg) scale(1); }
+      20%  { transform: rotate(25deg) scale(1.12); }
+      40%  { transform: rotate(-15deg) scale(1.08); }
+      60%  { transform: rotate(20deg) scale(1.1); }
+      80%  { transform: rotate(-10deg) scale(1.05); }
+      100% { transform: rotate(0deg) scale(1); }
+    }
+
+    /* Goodbye word display */
+    .word-container {
+      position: relative;
+      height: clamp(5rem, 14vw, 9rem);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1.5rem;
+      overflow: visible;
+    }
+    .word {
+      position: absolute;
+      font-family: var(--display-font);
+      font-size: clamp(2.8rem, 9vw, 6.5rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--fg-strong);
+      opacity: 0;
+      transform: translateY(24px) scale(0.94);
+      pointer-events: none;
+      white-space: nowrap;
+      transition: none;
+    }
+    .word.enter {
+      animation: word-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .word.exit {
+      animation: word-out 0.4s cubic-bezier(0.4, 0, 1, 1) forwards;
+    }
+    @keyframes word-in {
+      from { opacity: 0; transform: translateY(24px) scale(0.94); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes word-out {
+      from { opacity: 1; transform: translateY(0) scale(1); }
+      to   { opacity: 0; transform: translateY(-28px) scale(1.04); }
+    }
+
+    /* Language label */
+    .lang-label {
+      font-family: var(--display-font);
+      font-size: clamp(0.8rem, 2vw, 1rem);
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      margin-top: 0.5rem;
+      min-height: 1.4em;
+      transition: opacity 0.35s ease;
+    }
+
+    /* Hint */
+    .hint {
+      margin-top: 2.5rem;
+      font-family: var(--display-font);
+      font-size: 0.9rem;
+      color: var(--fg-muted);
+      letter-spacing: 0.04em;
+      opacity: 0.75;
+      animation: fx-enter 1s 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .hint span {
+      display: inline-block;
+      animation: pulse-hint 2.8s ease-in-out infinite;
+    }
+    @keyframes pulse-hint {
+      0%, 100% { opacity: 0.7; }
+      50%       { opacity: 1; }
+    }
+
+    /* Progress dots */
+    .dots {
+      display: flex;
+      gap: 0.45rem;
+      margin-top: 2rem;
+      animation: fx-enter 1s 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--line-strong);
+      transition: background 0.3s ease, transform 0.3s ease;
+    }
+    .dot.active {
+      background: var(--accent-primary);
+      transform: scale(1.4);
+    }
+
+    /* Floating particles */
+    .particles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0;
+      animation: particle-rise linear forwards;
+    }
+
+    @keyframes particle-rise {
+      0%   { opacity: 0; transform: translateY(0) scale(0); }
+      15%  { opacity: 0.7; transform: translateY(-20px) scale(1); }
+      100% { opacity: 0; transform: translateY(-160px) scale(0.4); }
+    }
+
+    /* Color accent on word */
+    .word.accent-0 { color: var(--fg-strong); }
+    .word.accent-1 { color: var(--accent-primary); }
+    .word.accent-2 { color: var(--accent-secondary); }
+    .word.accent-3 { color: #8b5cf6; }
+    .word.accent-4 { color: #0891b2; }
+    .word.accent-5 { color: var(--accent-primary); }
+
+    @keyframes fx-enter {
+      from { opacity: 0; transform: translate3d(0, 18px, 0) scale(0.985); }
+      to   { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .hand-wrap, .hand-wrap.waving, .ambient-blob,
+      .word.enter, .word.exit, .hint span, .particle {
+        animation: none !important;
+        transition: none !important;
+      }
+      .word.enter { opacity: 1; transform: none; }
+    }
+
+    @media (max-width: 480px) {
+      .word { font-size: clamp(2.2rem, 11vw, 3.5rem); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ambient">
+    <div class="ambient-blob blob-1"></div>
+    <div class="ambient-blob blob-2"></div>
+    <div class="ambient-blob blob-3"></div>
+  </div>
+
+  <div class="particles" id="particles"></div>
+
+  <main class="stage" role="main">
+    <div
+      class="hand-wrap"
+      id="hand"
+      role="button"
+      tabindex="0"
+      aria-label="Wave goodbye — click to see the next language"
+      title="Click to wave!"
+    >👋</div>
+
+    <div class="word-container" aria-live="polite" aria-atomic="true">
+      <div class="word enter accent-0" id="word-display">Goodbye</div>
+    </div>
+
+    <div class="lang-label" id="lang-label">English</div>
+
+    <div class="dots" id="dots" role="list" aria-label="Language progress"></div>
+
+    <p class="hint"><span>Click the hand to wave in a new language →</span></p>
+  </main>
+
+  <script>
+    const languages = [
+      { word: "Goodbye",     lang: "English",    script: "latin" },
+      { word: "Au revoir",   lang: "French",     script: "latin" },
+      { word: "Auf Wiedersehen", lang: "German", script: "latin" },
+      { word: "Adiós",       lang: "Spanish",    script: "latin" },
+      { word: "Arrivederci", lang: "Italian",    script: "latin" },
+      { word: "Até logo",    lang: "Portuguese", script: "latin" },
+      { word: "До свидания", lang: "Russian",    script: "cyrillic" },
+      { word: "再见",         lang: "Chinese",    script: "cjk" },
+      { word: "さようなら",   lang: "Japanese",   script: "cjk" },
+      { word: "안녕히 가세요", lang: "Korean",    script: "hangul" },
+      { word: "مع السلامة",  lang: "Arabic",     script: "rtl" },
+      { word: "Shalom",      lang: "Hebrew",     script: "latin" },
+      { word: "Namaste",     lang: "Hindi",      script: "latin" },
+      { word: "नमस्ते",      lang: "Hindi (Dev)",script: "devanagari" },
+      { word: "Güle güle",   lang: "Turkish",    script: "latin" },
+      { word: "Paalam",      lang: "Filipino",   script: "latin" },
+      { word: "Selamat tinggal", lang: "Malay",  script: "latin" },
+      { word: "Kwaheri",     lang: "Swahili",    script: "latin" },
+      { word: "Vale",        lang: "Latin",      script: "latin" },
+      { word: "Ciao",        lang: "Italian (inf.)", script: "latin" },
+    ];
+
+    const accents = ["accent-0","accent-1","accent-2","accent-3","accent-4","accent-5"];
+
+    let current = 0;
+    let animating = false;
+    const wordDisplay = document.getElementById("word-display");
+    const langLabel   = document.getElementById("lang-label");
+    const hand        = document.getElementById("hand");
+    const dotsEl      = document.getElementById("dots");
+    const particlesEl = document.getElementById("particles");
+
+    // Build dots
+    languages.forEach((_, i) => {
+      const d = document.createElement("div");
+      d.className = "dot" + (i === 0 ? " active" : "");
+      d.setAttribute("role", "listitem");
+      dotsEl.appendChild(d);
+    });
+
+    function updateDots(idx) {
+      const dots = dotsEl.querySelectorAll(".dot");
+      dots.forEach((d, i) => d.classList.toggle("active", i === idx));
+    }
+
+    function spawnParticles(x, y) {
+      const colors = [
+        "var(--accent-primary)",
+        "var(--accent-secondary)",
+        "var(--accent-highlight)",
+        "#c084fc",
+        "#60a5fa"
+      ];
+      for (let i = 0; i < 10; i++) {
+        const p = document.createElement("div");
+        p.className = "particle";
+        const size = 5 + Math.random() * 8;
+        p.style.cssText = `
+          width: ${size}px;
+          height: ${size}px;
+          left: ${x + (Math.random() - 0.5) * 80}px;
+          top: ${y + (Math.random() - 0.5) * 40}px;
+          background: ${colors[Math.floor(Math.random() * colors.length)]};
+          animation-duration: ${0.8 + Math.random() * 0.8}s;
+          animation-delay: ${Math.random() * 0.2}s;
+        `;
+        particlesEl.appendChild(p);
+        p.addEventListener("animationend", () => p.remove());
+      }
+    }
+
+    function transitionWord(nextIdx) {
+      if (animating) return;
+      animating = true;
+
+      // Trigger hand wave
+      hand.classList.remove("waving");
+      void hand.offsetWidth;
+      hand.classList.add("waving");
+      hand.addEventListener("animationend", () => hand.classList.remove("waving"), { once: true });
+
+      // Particles from hand position
+      const rect = hand.getBoundingClientRect();
+      spawnParticles(rect.left + rect.width / 2, rect.top + rect.height / 2);
+
+      // Exit old word
+      const accentClass = accents[nextIdx % accents.length];
+      wordDisplay.classList.remove(...accents);
+      wordDisplay.classList.remove("enter");
+      wordDisplay.classList.add("exit");
+
+      setTimeout(() => {
+        // Swap content
+        wordDisplay.classList.remove("exit");
+        wordDisplay.classList.add(accentClass);
+
+        // RTL support
+        if (languages[nextIdx].script === "rtl") {
+          wordDisplay.setAttribute("dir", "rtl");
+        } else {
+          wordDisplay.removeAttribute("dir");
+        }
+        wordDisplay.textContent = languages[nextIdx].word;
+        langLabel.textContent = languages[nextIdx].lang;
+
+        // Enter new word
+        void wordDisplay.offsetWidth;
+        wordDisplay.classList.add("enter");
+        updateDots(nextIdx);
+
+        setTimeout(() => { animating = false; }, 600);
+      }, 420);
+    }
+
+    function handleClick(e) {
+      const next = (current + 1) % languages.length;
+      transitionWord(next);
+      current = next;
+    }
+
+    hand.addEventListener("click", handleClick);
+    hand.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleClick(); }
+    });
+
+    // Initialize first word as visible
+    wordDisplay.classList.add(...[accents[0]]);
+  </script>
+</body>
+</html>
