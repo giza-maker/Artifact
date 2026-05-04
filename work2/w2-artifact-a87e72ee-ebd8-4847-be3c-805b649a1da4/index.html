@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hudson Fresh Milk — New York's Family Dairy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;1,9..144,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Design tokens ── */
+    :root {
+      --bg-canvas: #f5f0e8;
+      --bg-panel: rgba(255, 252, 247, 0.94);
+      --bg-accent: #1a3a2a;
+      --fg-strong: #1a2a1a;
+      --fg-muted: #5a6a5a;
+      --fg-inverse: #f5f0e8;
+      --line-soft: rgba(30, 50, 30, 0.10);
+      --accent-primary: #2e7d4f;
+      --accent-warm: #e8a020;
+      --accent-cream: #fff8e8;
+      --accent-sky: #4a9ebe;
+      --radius-card: 24px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 12px 40px rgba(20, 50, 20, 0.10);
+      --shadow-strong: 0 20px 60px rgba(10, 30, 10, 0.18);
+      --display-font: 'Fraunces', Georgia, serif;
+      --body-font: 'DM Sans', 'Segoe UI', sans-serif;
+      --space-1: 0.375rem;
+      --space-2: 0.75rem;
+      --space-3: 1rem;
+      --space-4: 1.5rem;
+      --space-5: 2rem;
+      --space-6: 3rem;
+      --space-7: 4.5rem;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg-canvas);
+      color: var(--fg-strong);
+      font-family: var(--body-font);
+      font-size: 1rem;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── Animations ── */
+    @media (prefers-reduced-motion: reduce) {
+      .fx-enter, .fx-stagger > *, .fx-hover-lift, .fx-pulse-ring {
+        animation: none !important; transition: none !important; transform: none !important;
+      }
+    }
+    @keyframes fx-enter {
+      from { opacity: 0; transform: translate3d(0, 20px, 0) scale(0.98); }
+      to   { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+    }
+    @keyframes fx-pulse {
+      0%,100% { box-shadow: 0 0 0 0 rgba(46,125,79,0.25); }
+      50%      { box-shadow: 0 0 0 14px rgba(46,125,79,0); }
+    }
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-8px); }
+    }
+    .fx-enter { animation: fx-enter 680ms cubic-bezier(0.22,1,0.36,1) both; }
+    .fx-stagger > * { opacity: 0; animation: fx-enter 580ms cubic-bezier(0.22,1,0.36,1) both; }
+    .fx-stagger > *:nth-child(1) { animation-delay: 80ms; }
+    .fx-stagger > *:nth-child(2) { animation-delay: 160ms; }
+    .fx-stagger > *:nth-child(3) { animation-delay: 240ms; }
+    .fx-stagger > *:nth-child(4) { animation-delay: 320ms; }
+    .fx-stagger > *:nth-child(5) { animation-delay: 400ms; }
+    .fx-hover-lift { transition: transform 180ms ease, box-shadow 180ms ease; }
+    .fx-hover-lift:hover { transform: translateY(-5px); box-shadow: var(--shadow-strong); }
+    .fx-pulse-ring { animation: fx-pulse 2.8s ease-in-out infinite; }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(245,240,232,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line-soft);
+      padding: var(--space-3) var(--space-5);
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .nav-logo {
+      font-family: var(--display-font);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent-primary);
+      letter-spacing: -0.02em;
+    }
+    .nav-logo span { color: var(--accent-warm); }
+    .nav-links { display: flex; gap: var(--space-4); list-style: none; }
+    .nav-links a {
+      font-size: 0.9rem; font-weight: 500;
+      color: var(--fg-muted); text-decoration: none;
+      transition: color 150ms;
+    }
+    .nav-links a:hover { color: var(--accent-primary); }
+    .nav-cta {
+      background: var(--accent-primary); color: #fff;
+      border: none; border-radius: var(--radius-pill);
+      padding: 0.5rem 1.25rem; font-size: 0.88rem; font-weight: 600;
+      cursor: pointer; transition: background 150ms, transform 120ms;
+      font-family: var(--body-font);
+    }
+    .nav-cta:hover { background: #1f5c38; transform: scale(1.03); }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 88vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      overflow: hidden;
+    }
+    .hero-left {
+      display: flex; flex-direction: column; justify-content: center;
+      padding: var(--space-7) var(--space-6) var(--space-7) clamp(var(--space-5), 6vw, var(--space-7));
+      position: relative;
+    }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: var(--space-2);
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--accent-primary);
+      margin-bottom: var(--space-4);
+    }
+    .eyebrow::before {
+      content: ''; display: block; width: 28px; height: 2px;
+      background: var(--accent-warm);
+    }
+    .hero-headline {
+      font-family: var(--display-font);
+      font-size: clamp(2.6rem, 5vw, 4.4rem);
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      color: var(--fg-strong);
+      margin-bottom: var(--space-4);
+    }
+    .hero-headline em {
+      font-style: italic; color: var(--accent-primary);
+    }
+    .hero-sub {
+      font-size: 1.1rem; color: var(--fg-muted);
+      max-width: 420px; margin-bottom: var(--space-5);
+      line-height: 1.7;
+    }
+    .hero-actions { display: flex; gap: var(--space-3); flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--accent-primary); color: #fff;
+      border: none; border-radius: var(--radius-pill);
+      padding: 0.85rem 2rem; font-size: 1rem; font-weight: 600;
+      cursor: pointer; text-decoration: none; display: inline-block;
+      transition: background 150ms, transform 120ms;
+      font-family: var(--body-font);
+    }
+    .btn-primary:hover { background: #1f5c38; transform: scale(1.03); }
+    .btn-secondary {
+      background: transparent; color: var(--accent-primary);
+      border: 2px solid var(--accent-primary); border-radius: var(--radius-pill);
+      padding: 0.85rem 2rem; font-size: 1rem; font-weight: 600;
+      cursor: pointer; text-decoration: none; display: inline-block;
+      transition: all 150ms; font-family: var(--body-font);
+    }
+    .btn-secondary:hover { background: var(--accent-primary); color: #fff; }
+
+    .hero-right {
+      background: var(--accent-primary);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+    .hero-right::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 30% 70%, rgba(232,160,32,0.25) 0%, transparent 60%),
+                  radial-gradient(ellipse at 80% 20%, rgba(255,255,255,0.08) 0%, transparent 50%);
+    }
+    .hero-illustration {
+      position: relative; z-index: 1; text-align: center;
+      animation: float 4s ease-in-out infinite;
+    }
+    .milk-bottle-svg {
+      width: 200px; height: 280px;
+      filter: drop-shadow(0 20px 40px rgba(0,0,0,0.3));
+    }
+    .hero-badge {
+      position: absolute; bottom: 40px; right: 40px;
+      background: var(--accent-warm); color: var(--fg-strong);
+      border-radius: 50%; width: 110px; height: 110px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      font-family: var(--display-font); font-size: 0.75rem; font-weight: 600;
+      text-align: center; line-height: 1.2;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    }
+    .hero-badge strong { font-size: 1.4rem; display: block; }
+
+    /* ── Stats strip ── */
+    .stats-strip {
+      background: var(--fg-strong);
+      padding: var(--space-5) clamp(var(--space-5), 6vw, var(--space-7));
+      display: flex; gap: var(--space-5); flex-wrap: wrap;
+      justify-content: space-around; align-items: center;
+    }
+    .stat-item { text-align: center; color: var(--fg-inverse); }
+    .stat-value {
+      font-family: var(--display-font);
+      font-size: 2.4rem; font-weight: 700;
+      color: var(--accent-warm);
+      display: block; line-height: 1;
+    }
+    .stat-label { font-size: 0.82rem; color: rgba(245,240,232,0.65); margin-top: 4px; }
+
+    /* ── Section wrapper ── */
+    .section { padding: var(--space-7) clamp(var(--space-5), 6vw, var(--space-7)); }
+    .section-header { margin-bottom: var(--space-6); }
+    .section-tag {
+      font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--accent-warm);
+      display: block; margin-bottom: var(--space-2);
+    }
+    .section-title {
+      font-family: var(--display-font);
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: 700; letter-spacing: -0.02em;
+      color: var(--fg-strong);
+    }
+    .section-sub { color: var(--fg-muted); font-size: 1.05rem; margin-top: var(--space-2); max-width: 560px; }
+
+    /* ── Products grid ── */
+    #products { background: var(--accent-cream); }
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: var(--space-4);
+      margin-top: var(--space-5);
+    }
+    .product-card {
+      background: var(--bg-panel);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid var(--line-soft);
+      display: flex; flex-direction: column;
+    }
+    .product-img-wrap {
+      height: 180px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 5rem;
+      position: relative; overflow: hidden;
+    }
+    .product-body { padding: var(--space-4); flex: 1; display: flex; flex-direction: column; }
+    .product-tag {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 3px 10px;
+      border-radius: var(--radius-pill); display: inline-block; margin-bottom: var(--space-2);
+    }
+    .tag-green { background: rgba(46,125,79,0.12); color: var(--accent-primary); }
+    .tag-blue  { background: rgba(74,158,190,0.12); color: var(--accent-sky); }
+    .tag-gold  { background: rgba(232,160,32,0.15); color: #b07800; }
+    .product-name {
+      font-family: var(--display-font); font-size: 1.25rem; font-weight: 600;
+      color: var(--fg-strong); margin-bottom: var(--space-1);
+    }
+    .product-desc { font-size: 0.88rem; color: var(--fg-muted); flex: 1; margin-bottom: var(--space-3); line-height: 1.55; }
+    .product-footer { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); }
+    .product-price {
+      font-family: var(--display-font); font-size: 1.6rem; font-weight: 700; color: var(--fg-strong);
+    }
+    .product-price sub { font-size: 0.85rem; font-weight: 400; color: var(--fg-muted); }
+    .product-price small { font-size: 0.72rem; display: block; color: var(--fg-muted); font-family: var(--body-font); font-weight: 400; }
+    .btn-cart {
+      background: var(--accent-primary); color: #fff;
+      border: none; border-radius: var(--radius-pill);
+      padding: 0.55rem 1.25rem; font-size: 0.85rem; font-weight: 600;
+      cursor: pointer; transition: background 150ms; font-family: var(--body-font);
+    }
+    .btn-cart:hover { background: #1f5c38; }
+
+    /* ── Pricing dashboard ── */
+    #pricing { background: var(--bg-canvas); }
+    .dashboard-slab {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--space-3);
+      margin-top: var(--space-5);
+    }
+    .dash-card {
+      background: var(--bg-panel);
+      border-radius: 20px;
+      padding: var(--space-4) var(--space-4);
+      border: 1px solid var(--line-soft);
+      box-shadow: var(--shadow-soft);
+    }
+    .dash-label { font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg-muted); margin-bottom: var(--space-2); }
+    .dash-value { font-family: var(--display-font); font-size: 2rem; font-weight: 700; color: var(--fg-strong); line-height: 1; }
+    .dash-sub { font-size: 0.8rem; color: var(--fg-muted); margin-top: var(--space-1); }
+    .dash-pill {
+      display: inline-block; font-size: 0.72rem; font-weight: 600;
+      padding: 3px 10px; border-radius: var(--radius-pill);
+      background: rgba(46,125,79,0.12); color: var(--accent-primary);
+      margin-top: var(--space-2);
+    }
+    .pricing-table {
+      margin-top: var(--space-5);
+      background: var(--bg-panel);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid var(--line-soft);
+    }
+    .pricing-table table {
+      width: 100%; border-collapse: collapse;
+      font-size: 0.92rem;
+    }
+    .pricing-table th {
+      background: var(--fg-strong); color: var(--fg-inverse);
+      padding: var(--space-3) var(--space-4);
+      text-align: left; font-size: 0.78rem; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .pricing-table td {
+      padding: var(--space-3) var(--space-4);
+      border-bottom: 1px solid var(--line-soft);
+      vertical-align: middle;
+    }
+    .pricing-table tr:last-child td { border-bottom: none; }
+    .pricing-table tr:hover td { background: rgba(46,125,79,0.04); }
+    .price-cell { font-family: var(--display-font); font-size: 1.1rem; font-weight: 600; color: var(--accent-primary); }
+    .margin-badge {
+      display: inline-block; font-size: 0.72rem; font-weight: 600;
+      padding: 3px 8px; border-radius: var(--radius-pill);
+      background: rgba(232,160,32,0.15); color: #b07800;
+    }
+
+    /* ── Suppliers ── */
+    #suppliers { background: var(--accent-cream); }
+    .suppliers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--space-4);
+      margin-top: var(--space-5);
+    }
+    .supplier-card {
+      background: var(--bg-panel);
+      border-radius: var(--radius-card);
+      padding: var(--space-5);
+      border: 1px solid var(--line-soft);
+      box-shadow: var(--shadow-soft);
+      position: relative; overflow: hidden;
+    }
+    .supplier-card::after {
+      content: ''; position: absolute; top: 0; left: 0;
+      width: 4px; height: 100%;
+    }
+    .supplier-card.tier-premium::after { background: var(--accent-warm); }
+    .supplier-card.tier-standard::after { background: var(--accent-primary); }
+    .supplier-card.tier-coop::after { background: var(--accent-sky); }
+    .supplier-tier {
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; padding: 3px 10px;
+      border-radius: var(--radius-pill); display: inline-block; margin-bottom: var(--space-3);
+    }
+    .supplier-name { font-family: var(--display-font); font-size: 1.3rem; font-weight: 700; color: var(--fg-strong); margin-bottom: var(--space-1); }
+    .supplier-location { font-size: 0.85rem; color: var(--fg-muted); margin-bottom: var(--space-3); display: flex; align-items: center; gap: 4px; }
+    .supplier-details { display: flex; flex-direction: column; gap: var(--space-2); }
+    .supplier-row { display: flex; justify-content: space-between; font-size: 0.88rem; }
+    .supplier-row span:first-child { color: var(--fg-muted); }
+    .supplier-row span:last-child { font-weight: 600; color: var(--fg-strong); }
+    .supplier-contact {
+      margin-top: var(--space-3); padding-top: var(--space-3);
+      border-top: 1px solid var(--line-soft);
+      font-size: 0.82rem; color: var(--accent-primary); font-weight: 500;
+    }
+
+    /* ── Regulations ── */
+    #regulations { background: var(--bg-canvas); }
+    .reg-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: var(--space-4); margin-top: var(--space-5);
+    }
+    .reg-card {
+      background: var(--bg-panel);
+      border-radius: 20px; padding: var(--space-5);
+      border: 1px solid var(--line-soft);
+      box-shadow: var(--shadow-soft);
+    }
+    .reg-icon { font-size: 2rem; margin-bottom: var(--space-3); }
+    .reg-title { font-family: var(--display-font); font-size: 1.1rem; font-weight: 700; color: var(--fg-strong); margin-bottom: var(--space-2); }
+    .reg-items { list-style: none; display: flex; flex-direction: column; gap: var(--space-2); }
+    .reg-items li { display: flex; align-items: flex-start; gap: var(--space-2); font-size: 0.88rem; color: var(--fg-muted); line-height: 1.5; }
+    .reg-items li::before { content: '✓'; color: var(--accent-primary); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+    .reg-cost {
+      margin-top: var(--space-3); padding: var(--space-3);
+      background: rgba(46,125,79,0.07); border-radius: 12px;
+      font-size: 0.85rem; color: var(--fg-muted);
+    }
+    .reg-cost strong { color: var(--accent-primary); }
+
+    /* ── Launch timeline ── */
+    #timeline { background: var(--fg-strong); }
+    #timeline .section-title { color: var(--fg-inverse); }
+    #timeline .section-tag { color: var(--accent-warm); }
+    .timeline-track {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-3); margin-top: var(--space-5);
+      position: relative;
+    }
+    .timeline-track::before {
+      content: ''; position: absolute; top: 30px; left: 16%; right: 16%;
+      height: 2px; background: rgba(245,240,232,0.15);
+    }
+    .timeline-step {
+      background: rgba(255,252,247,0.07);
+      border-radius: 20px; padding: var(--space-4) var(--space-3);
+      text-align: center; border: 1px solid rgba(255,252,247,0.1);
+      position: relative;
+    }
+    .step-num {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--accent-warm); color: var(--fg-strong);
+      font-weight: 700; font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto var(--space-3);
+      font-family: var(--display-font);
+    }
+    .step-week { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(245,240,232,0.5); margin-bottom: var(--space-1); }
+    .step-title { font-family: var(--display-font); font-size: 1rem; font-weight: 700; color: var(--fg-inverse); margin-bottom: var(--space-1); }
+    .step-desc { font-size: 0.8rem; color: rgba(245,240,232,0.6); line-height: 1.5; }
+
+    /* ── Newsletter ── */
+    .newsletter-strip {
+      background: var(--accent-primary);
+      padding: var(--space-6) clamp(var(--space-5), 6vw, var(--space-7));
+      display: flex; align-items: center; justify-content: space-between;
+      gap: var(--space-5); flex-wrap: wrap;
+    }
+    .newsletter-text h3 {
+      font-family: var(--display-font); font-size: 1.6rem; font-weight: 700;
+      color: #fff; margin-bottom: var(--space-1);
+    }
+    .newsletter-text p { color: rgba(255,255,255,0.75); font-size: 0.95rem; }
+    .newsletter-form { display: flex; gap: var(--space-2); flex-wrap: wrap; }
+    .newsletter-input {
+      padding: 0.75rem 1.25rem; border-radius: var(--radius-pill);
+      border: none; font-size: 0.95rem; min-width: 260px;
+      font-family: var(--body-font); outline: none;
+      background: rgba(255,255,255,0.15); color: #fff;
+    }
+    .newsletter-input::placeholder { color: rgba(255,255,255,0.55); }
+    .newsletter-btn {
+      padding: 0.75rem 1.75rem; border-radius: var(--radius-pill);
+      border: none; background: var(--accent-warm); color: var(--fg-strong);
+      font-weight: 700; font-size: 0.95rem; cursor: pointer;
+      transition: transform 120ms; font-family: var(--body-font);
+    }
+    .newsletter-btn:hover { transform: scale(1.04); }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--fg-strong);
+      padding: var(--space-6) clamp(var(--space-5), 6vw, var(--space-7));
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: var(--space-5);
+    }
+    .footer-brand .nav-logo { font-size: 1.6rem; display: block; margin-bottom: var(--space-3); }
+    .footer-brand p { font-size: 0.85rem; color: rgba(245,240,232,0.55); line-height: 1.65; max-width: 260px; }
+    .footer-col h4 {
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--accent-warm); margin-bottom: var(--space-3);
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: var(--space-2); }
+    .footer-col ul li a { font-size: 0.88rem; color: rgba(245,240,232,0.6); text-decoration: none; transition: color 150ms; }
+    .footer-col ul li a:hover { color: var(--fg-inverse); }
+    .footer-bottom {
+      background: rgba(0,0,0,0.2);
+      padding: var(--space-3) clamp(var(--space-5), 6vw, var(--space-7));
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.78rem; color: rgba(245,240,232,0.4); flex-wrap: wrap; gap: var(--space-2);
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-right { min-height: 300px; }
+      .reg-grid { grid-template-columns: 1fr; }
+      .timeline-track { grid-template-columns: 1fr 1fr; }
+      footer { grid-template-columns: 1fr 1fr; }
+      .nav-links { display: none; }
+    }
+    @media (max-width: 600px) {
+      .timeline-track { grid-template-columns: 1fr; }
+      footer { grid-template-columns: 1fr; }
+      .dashboard-slab { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav class="fx-enter">
+  <span class="nav-logo">Hudson <span>Fresh</span></span>
+  <ul class="nav-links">
+    <li><a href="#products">Products</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#suppliers">Suppliers</a></li>
+    <li><a href="#regulations">Compliance</a></li>
+    <li><a href="#timeline">Launch</a></li>
+  </ul>
+  <button class="nav-cta fx-pulse-ring" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Shop Now</button>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-left fx-enter">
+    <span class="eyebrow">New York's Family Dairy</span>
+    <h1 class="hero-headline">
+      Fresh <em>Local</em> Milk,<br/>
+      Delivered to<br/>
+      Your Family
+    </h1>
+    <p class="hero-sub">
+      Sourced from upstate New York farms you can trust. Pure, fresh, and wholesome — because your family deserves the best on the table every morning.
+    </p>
+    <div class="hero-actions">
+      <a href="#products" class="btn-primary">Browse Products</a>
+      <a href="#suppliers" class="btn-secondary">Our Farms</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-illustration">
+      <svg class="milk-bottle-svg" viewBox="0 0 200 280" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Milk bottle illustration">
+        <!-- cap -->
+        <rect x="72" y="10" width="56" height="22" rx="8" fill="rgba(255,255,255,0.9)"/>
+        <!-- neck -->
+        <path d="M72 30 L65 70 H135 L128 30 Z" fill="rgba(255,255,255,0.85)"/>
+        <!-- body -->
+        <rect x="38" y="70" width="124" height="178" rx="20" fill="rgba(255,255,255,0.9)"/>
+        <!-- milk fill -->
+        <rect x="38" y="100" width="124" height="148" rx="0 0 20 20" fill="rgba(255,255,255,0.6)"/>
+        <!-- label -->
+        <rect x="54" y="118" width="92" height="100" rx="12" fill="rgba(46,125,79,0.85)"/>
+        <text x="100" y="148" text-anchor="middle" font-family="Georgia,serif" font-size="13" font-weight="700" fill="white">HUDSON</text>
+        <text x="100" y="165" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="rgba(255,255,255,0.8)">FRESH</text>
+        <rect x="64" y="172" width="72" height="1.5" fill="rgba(255,255,255,0.3)"/>
+        <text x="100" y="189" text-anchor="middle" font-family="Georgia,serif" font-size="9" fill="rgba(255,255,255,0.7)">WHOLE MILK</text>
+        <text x="100" y="203" text-anchor="middle" font-family="Georgia,serif" font-size="9" fill="rgba(255,255,255,0.7)">1 GALLON</text>
+        <!-- shine -->
+        <ellipse cx="75" cy="85" rx="6" ry="14" fill="rgba(255,255,255,0.35)" transform="rotate(-15 75 85)"/>
+      </svg>
+    </div>
+    <div class="hero-badge">
+      <strong>NY</strong>
+      Farm Fresh
+    </div>
+  </div>
+</section>
+
+<!-- ══ STATS STRIP ══ -->
+<div class="stats-strip fx-stagger">
+  <div class="stat-item">
+    <span class="stat-value">6</span>
+    <div class="stat-label">Verified NY Suppliers</div>
+  </div>
+  <div class="stat-item">
+    <span class="stat-value">5</span>
+    <div class="stat-label">Product SKUs</div>
+  </div>
+  <div class="stat-item">
+    <span class="stat-value">50%</span>
+    <div class="stat-label">Avg. Gross Margin</div>
+  </div>
+  <div class="stat-item">
+    <span class="stat-value">30</span>
+    <div class="stat-label">Days to Launch</div>
+  </div>
+  <div class="stat-item">
+    <span class="stat-value">≤45°F</span>
+    <div class="stat-label">Cold Chain Compliance</div>
+  </div>
+</div>
+
+<!-- ══ PRODUCTS ══ -->
+<section class="section" id="products">
+  <div class="section-header">
+    <span class="section-tag">Product Listings</span>
+    <h2 class="section-title">Our Milk Collection</h2>
+    <p class="section-sub">All products sourced from New York State farms. Grade A pasteurized, cold-chain certified, and ready for your family.</p>
+  </div>
+  <div class="products-grid fx-stagger">
+
+    <div class="product-card fx-hover-lift">
+      <div class="product-img-wrap" style="background: linear-gradient(135deg, #e8f5ee 0%, #c8e6d5 100%);">🥛</div>
+      <div class="product-body">
+        <span class="product-tag tag-green">Best Seller</span>
+        <div class="product-name">Whole Milk</div>
+        <p class="product-desc">Rich, creamy, full-fat milk from pasture-raised NY cows. Perfect for cereal, cooking, and growing kids. Homogenized & pasteurized.</p>
+        <div class="product-footer">
+          <div class="product-price">
+            $5.49<sub>/gal</sub>
+            <small>Wholesale ~$2.80 · 49% margin</small>
+          </div>
+          <button class="btn-cart">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card fx-hover-lift">
+      <div class="product-img-wrap" style="background: linear-gradient(135deg, #e8f0f5 0%, #c5dced 100%);">🫙</div>
+      <div class="product-body">
+        <span class="product-tag tag-blue">Low-Fat</span>
+        <div class="product-name">2% Reduced Fat Milk</div>
+        <p class="product-desc">The family favorite. All the calcium and protein, with less fat. Versatile for drinking, baking, or smoothies. Half-gallon size available.</p>
+        <div class="product-footer">
+          <div class="product-price">
+            $3.49<sub>/½ gal</sub>
+            <small>Wholesale ~$1.75 · 50% margin</small>
+          </div>
+          <button class="btn-cart">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card fx-hover-lift">
+      <div class="product-img-wrap" style="background: linear-gradient(135deg, #f5f0e8 0%, #e8dfc8 100%);">🍶</div>
+      <div class="product-body">
+        <span class="product-tag tag-green">Light</span>
+        <div class="product-name">Skim Milk</div>
+        <p class="product-desc">Zero fat, maximum nutrition. Ideal for calorie-conscious families without sacrificing any of the essential vitamins and minerals.</p>
+        <div class="product-footer">
+          <div class="product-price">
+            $2.99<sub>/qt</sub>
+            <small>Wholesale ~$1.50 · 50% margin</small>
+          </div>
+          <button class="btn-cart">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card fx-hover-lift">
+      <div class="product-img-wrap" style="background: linear-gradient(135deg, #f0ffe8 0%, #d4edc0 100%);">🌿</div>
+      <div class="product-body">
+        <span class="product-tag tag-gold">Organic</span>
+        <div class="product-name">Organic Whole Milk</div>
+        <p class="product-desc">USDA-certified organic from NY farms with no hormones or synthetic pesticides. For families who choose clean, conscious nutrition.</p>
+        <div class="product-footer">
+          <div class="product-price">
+            $8.99<sub>/gal</sub>
+            <small>Wholesale ~$5.00 · 44% margin</small>
+          </div>
+          <button class="btn-cart">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card fx-hover-lift">
+      <div class="product-img-wrap" style="background: linear-gradient(135deg, #fff0e8 0%, #f5d4b8 100%);">🎁</div>
+      <div class="product-body">
+        <span class="product-tag tag-gold">Bundle Value</span>
+        <div class="product-name">Family Bundle Pack</div>
+        <p class="product-desc">Whole milk gallon + 2% half-gallon + skim quart. Everything a busy family needs for the week, curated and delivered fresh.</p>
+        <div class="product-footer">
+          <div class="product-price">
+            $12.00<sub>/bundle</sub>
+            <small>Wholesale ~$8.00 · 50% margin</small>
+          </div>
+          <button class="btn-cart">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ PRICING DASHBOARD ══ -->
+<section class="section" id="pricing">
+  <div class="section-header">
+    <span class="section-tag">Pricing Intelligence</span>
+    <h2 class="section-title">Wholesale vs. Retail Benchmarks</h2>
+    <p class="section-sub">Cross-referenced with USDA Agricultural Marketing Service NY milk price reports and current NYC grocery averages.</p>
+  </div>
+
+  <div class="dashboard-slab fx-stagger">
+    <div class="dash-card fx-hover-lift">
+      <div class="dash-label">NYC Retail Average</div>
+      <div class="dash-value">$5.50</div>
+      <div class="dash-sub">Per gallon, whole milk</div>
+      <span class="dash-pill">USDA Benchmark</span>
+    </div>
+    <div class="dash-card fx-hover-lift">
+      <div class="dash-label">Our Retail Price</div>
+      <div class="dash-value">$5.49</div>
+      <div class="dash-sub">Competitive vs. grocery avg.</div>
+      <span class="dash-pill">Competitive</span>
+    </div>
+    <div class="dash-card fx-hover-lift">
+      <div class="dash-label">Avg. Wholesale Cost</div>
+      <div class="dash-value">$2.75</div>
+      <div class="dash-sub">Per gallon, commodity tier</div>
+      <span class="dash-pill">All Suppliers</span>
+    </div>
+    <div class="dash-card fx-hover-lift">
+      <div class="dash-label">Gross Margin Target</div>
+      <div class="dash-value">50%</div>
+      <div class="dash-sub">Wholesale × 1.5× markup baseline</div>
+      <span class="dash-pill">Target Met</span>
+    </div>
+    <div class="dash-card fx-hover-lift">
+      <div class="dash-label">Organic Premium</div>
+      <div class="dash-value">+60%</div>
+      <div class="dash-sub">Vs. conventional milk</div>
+      <span class="dash-pill">High Margin</span>
+    </div>
+    <div class="dash-card fx-hover-lift">
+      <div class="dash-label">Volume Discount (100+ gal)</div>
+      <div class="dash-value">8–12%</div>
+      <div class="dash-sub">Off standard wholesale rate</div>
+      <span class="dash-pill">Negotiable</span>
+    </div>
+  </div>
+
+  <div class="pricing-table fx-enter">
+    <table>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Size</th>
+          <th>Wholesale Cost</th>
+          <th>Retail Price</th>
+          <th>Gross Margin</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Whole Milk</td>
+          <td>1 Gallon</td>
+          <td class="price-cell">$2.60–$3.00</td>
+          <td class="price-cell">$5.49</td>
+          <td><span class="margin-badge">~49%</span></td>
+          <td>Most popular family SKU</td>
+        </tr>
+        <tr>
+          <td>2% Reduced Fat</td>
+          <td>½ Gallon</td>
+          <td class="price-cell">$1.60–$1.90</td>
+          <td class="price-cell">$3.49</td>
+          <td><span class="margin-badge">~50%</span></td>
+          <td>High velocity, reorder weekly</td>
+        </tr>
+        <tr>
+          <td>Skim Milk</td>
+          <td>1 Quart</td>
+          <td class="price-cell">$1.40–$1.60</td>
+          <td class="price-cell">$2.99</td>
+          <td><span class="margin-badge">~50%</span></td>
+          <td>Lower demand, higher margin</td>
+        </tr>
+        <tr>
+          <td>Organic Whole Milk</td>
+          <td>1 Gallon</td>
+          <td class="price-cell">$4.50–$5.50</td>
+          <td class="price-cell">$8.99</td>
+          <td><span class="margin-badge">~44%</span></td>
+          <td>Premium segment, growing demand</td>
+        </tr>
+        <tr>
+          <td>Family Bundle</td>
+          <td>Mixed</td>
+          <td class="price-cell">~$8.00</td>
+          <td class="price-cell">$12.00</td>
+          <td><span class="margin-badge">~50%</span></td>
+          <td>Drives avg. order value</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ══ SUPPLIERS ══ -->
+<section class="section" id="suppliers">
+  <div class="section-header">
+    <span class="section-tag">NY Dairy Sourcing</span>
+    <h2 class="section-title">Vetted New York Suppliers</h2>
+    <p class="section-sub">Six confirmed NY-state dairy partners covering commodity to premium tiers. All support small-business MOQs under 50 gallons/week.</p>
+  </div>
+  <div class="suppliers-grid fx-stagger">
+
+    <div class="supplier-card tier-premium fx-hover-lift">
+      <span class="supplier-tier tag-gold">Premium Artisan</span>
+      <div class="supplier-name">Battenkill Valley Creamery</div>
+      <div class="supplier-location">📍 Salem, NY (Washington County)</div>
+      <div class="supplier-details">
+        <div class="supplier-row"><span>Wholesale (gallon)</span><span>$3.00–$4.00</span></div>
+        <div class="supplier-row"><span>MOQ</span><span>~25 gal/week</span></div>
+        <div class="supplier-row"><span>Specialties</span><span>Non-homogenized, glass bottle</span></div>
+        <div class="supplier-row"><span>Delivery</span><span>Weekly, NYC metro</span></div>
+      </div>
+      <div class="supplier-contact">🌐 battenkillvalleycreamery.com · (518) 854-3942</div>
+    </div>
+
+    <div class="supplier-card tier-premium fx-hover-lift">
+      <span class="supplier-tier tag-gold">Premium Artisan</span>
+      <div class="supplier-name">Ronnybrook Farm Dairy</div>
+      <div class="supplier-location">📍 Ancramdale, NY (Columbia County)</div>
+      <div class="supplier-details">
+        <div class="supplier-row"><span>Wholesale (gallon)</span><span>$3.25–$4.50</span></div>
+        <div class="supplier-row"><span>MOQ</span><span>~20 gal/week</span></div>
+        <div class="supplier-row"><span>Specialties</span><span>Creamline, organic available</span></div>
+        <div class="supplier-row"><span>Delivery</span><span>Twice weekly to NYC</span></div>
+      </div>
+      <div class="supplier-contact">🌐 ronnybrook.com · (518) 398-6455</div>
+    </div>
+
+    <div class="supplier-card tier-coop fx-hover-lift">
+      <span class="supplier-tier tag-blue">Cooperative</span>
+      <div class="supplier-name">Upstate Farms Cooperative</div>
+      <div class="supplier-location">📍 Buffalo, NY (statewide coverage)</div>
+      <div class="supplier-details">
+        <div class="supplier-row"><span>Wholesale (gallon)</span><span>$2.00–$2.60</span></div>
+        <div class="supplier-row"><span>MOQ</span><span>50+ gal/week preferred</span></div>
+        <div class="supplier-row"><span>Specialties</span><span>Full SKU range, high volume</span></div>
+        <div class="supplier-row"><span>Delivery</span><span>Regular routes, all NY</span></div>
+      </div>
+      <div class="supplier-contact">🌐 upstatefarms.com · (716) 892-3156</div>
+    </div>
+
+    <div class="supplier-card tier-standard fx-hover-lift">
+      <span class="supplier-tier tag-green">Regional</span>
+      <div class="supplier-name">Hudson Valley Fresh</div>
+      <div class="supplier-location">📍 Rhinebeck, NY (Dutchess County)</div>
+      <div class="supplier-details">
+        <div class="supplier-row"><span>Wholesale (gallon)</span><span>$2.80–$3.50</span></div>
+        <div class="supplier-row"><span>MOQ</span><span>~30 gal/week</span></div>
+        <div class="supplier-row"><span>Specialties</span><span>Hormone-free, grass-fed</span></div>
+        <div class="supplier-row"><span>Delivery</span><span>Weekly to NYC/Westchester</span></div>
+      </div>
+      <div class="supplier-contact">🌐 hudsonvalleyfresh.com</div>
+    </div>
+
+    <div class="supplier-card tier-coop fx-hover-lift">
+      <span class="supplier-tier tag-blue">Wholesale Distributor</span>
+      <div class="supplier-name">Elmhurst Dairy (Legacy) / Modern Distributors</div>
+      <div class="supplier-location">📍 Jamaica, Queens, NY</div>
+      <div class="supplier-details">
+        <div class="supplier-row"><span>Wholesale (gallon)</span><span>$1.90–$2.40</span></div>
+        <div class="supplier-row"><span>MOQ</span><span>Flexible, small biz friendly</span></div>
+        <div class="supplier-row"><span>Specialties</span><span>Commodity tiers, nut milks</span></div>
+        <div class="supplier-row"><span>Delivery</span><span>NYC metro, 2–3× week</span></div>
+      </div>
+      <div class="supplier-contact">Contact via NYC food distributor network</div>
+    </div>
+
+    <div class="supplier-card tier-standard fx-hover-lift">
+      <span class="supplier-tier tag-green">Organic Certified</span>
+      <div class="supplier-name">Stonyfield / Horizon (NY Organic)</div>
+      <div class="supplier-location">📍 Via NY certified organic farms</div>
+      <div class="supplier-details">
+        <div class="supplier-row"><span>Wholesale (gallon)</span><span>$4.50–$5.50</span></div>
+        <div class="supplier-row"><span>MOQ</span><span>~15 gal/week organic</span></div>
+        <div class="supplier-row"><span>Specialties</span><span>USDA organic, all fat levels</span></div>
+        <div class="supplier-row"><span>Delivery</span><span>Broker-arranged, flexible</span></div>
+      </div>
+      <div class="supplier-contact">Contact via organic dairy broker network</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ REGULATIONS ══ -->
+<section class="section" id="regulations">
+  <div class="section-header">
+    <span class="section-tag">Compliance Checklist</span>
+    <h2 class="section-title">NY Licensing & Regulations</h2>
+    <p class="section-sub">Everything you must have in place before your first sale. No launch-blocking gaps identified — all have clear resolution paths.</p>
+  </div>
+  <div class="reg-grid fx-stagger">
+
+    <div class="reg-card fx-hover-lift">
+      <div class="reg-icon">🏛️</div>
+      <div class="reg-title">NYS Department of Agriculture & Markets</div>
+      <ul class="reg-items">
+        <li>Grade A Pasteurized Milk License (Form DAM-101) — required before any sales</li>
+        <li>Dairy Dealer License — for purchasing/reselling Grade A milk</li>
+        <li>Annual farm and facility inspection compliance</li>
+        <li>Cold storage certified at ≤45°F throughout supply chain</li>
+      </ul>
+      <div class="reg-cost">Estimated cost: <strong>$150–$300/year</strong> · Apply at: agriculture.ny.gov</div>
+    </div>
+
+    <div class="reg-card fx-hover-lift">
+      <div class="reg-icon">🏙️</div>
+      <div class="reg-title">NYC Department of Health & Mental Hygiene</div>
+      <ul class="reg-items">
+        <li>Retail Food Store License (if operating a physical location in NYC)</li>
+        <li>Food Protection Certificate for responsible party</li>
+        <li>HACCP plan for cold storage and distribution</li>
+        <li>Annual permit renewal and inspections</li>
+      </ul>
+      <div class="reg-cost">Estimated cost: <strong>$280–$400/year</strong> · Apply at: nyc.gov/health</div>
+    </div>
+
+    <div class="reg-card fx-hover-lift">
+      <div class="reg-icon">📋</div>
+      <div class="reg-title">FDA Labeling Requirements (21 CFR 101)</div>
+      <ul class="reg-items">
+        <li>Nutrition Facts panel required on all retail packages</li>
+        <li>Ingredient list and allergen declarations</li>
+        <li>Net quantity of contents statement</li>
+        <li>"Pasteurized" statement on all fluid milk products</li>
+        <li>Grade A shield if applicable</li>
+      </ul>
+      <div class="reg-cost">Label design cost: <strong>$200–$600</strong> (one-time)</div>
+    </div>
+
+    <div class="reg-card fx-hover-lift">
+      <div class="reg-icon">🚚</div>
+      <div class="reg-title">Cold Chain & Distribution Compliance</div>
+      <ul class="reg-items">
+        <li>Refrigerated transport required — maintained at ≤45°F at all times</li>
+        <li>Temperature log documentation for all deliveries</li>
+        <li>Vehicle inspected and certified for food transport</li>
+        <li>Sell-by date compliance — typically 14–21 days from processing</li>
+      </ul>
+      <div class="reg-cost">Refrigerated van lease: <strong>~$800–$1,500/month</strong> if self-delivering</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ LAUNCH TIMELINE ══ -->
+<section class="section" id="timeline">
+  <div class="section-header">
+    <span class="section-tag">30-Day Roadmap</span>
+    <h2 class="section-title" style="color:var(--fg-inverse)">Launch in One Month</h2>
+    <p class="section-sub" style="color:rgba(245,240,232,0.65)">A clear path from zero to live Shopify store with your first supplier partner confirmed.</p>
+  </div>
+  <div class="timeline-track fx-stagger">
+    <div class="timeline-step">
+      <div class="step-num">1</div>
+      <div class="step-week">Week 1</div>
+      <div class="step-title">Licenses & Legal</div>
+      <p class="step-desc">File DAM-101, NYC food permit. Register your business entity (LLC recommended). Open business bank account.</p>
+    </div>
+    <div class="timeline-step">
+      <div class="step-num">2</div>
+      <div class="step-week">Week 2</div>
+      <div class="step-title">Supplier Contract</div>
+      <p class="step-desc">Contact 2–3 suppliers from our list. Negotiate MOQ and pricing. Sign first purchase agreement with delivery schedule.</p>
+    </div>
+    <div class="timeline-step">
+      <div class="step-num">3</div>
+      <div class="step-week">Week 3</div>
+      <div class="step-title">Shopify Setup</div>
+      <p class="step-desc">Launch Shopify Dawn theme store. Upload 5 product listings with photos, pricing, and descriptions. Enable Shopify Payments.</p>
+    </div>
+    <div class="timeline-step">
+      <div class="step-num">4</div>
+      <div class="step-week">Week 4</div>
+      <div class="step-title">Go Live! 🎉</div>
+      <p class="step-desc">Receive first inventory delivery. Fulfill first family orders. Collect feedback and optimize for Month 2 growth.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══ NEWSLETTER ══ -->
+<div class="newsletter-strip fx-enter">
+  <div class="newsletter-text">
+    <h3>Stay Fresh — Join Our Family List</h3>
+    <p>Get notified about seasonal deals, new farm partners, and delivery updates in your area.</p>
+  </div>
+  <form class="newsletter-form" onsubmit="event.preventDefault(); this.querySelector('input').value=''; this.querySelector('button').textContent='✓ Subscribed!';">
+    <input class="newsletter-input" type="email" placeholder="your@email.com" required />
+    <button class="newsletter-btn" type="submit">Subscribe</button>
+  </form>
+</div>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="footer-brand">
+    <span class="nav-logo">Hudson <span>Fresh</span></span>
+    <p>New York's family dairy — connecting upstate farms to city kitchens since Day 1. Fresh, local, and yours.</p>
+  </div>
+  <div class="footer-col">
+    <h4>Products</h4>
+    <ul>
+      <li><a href="#products">Whole Milk</a></li>
+      <li><a href="#products">2% Milk</a></li>
+      <li><a href="#products">Skim Milk</a></li>
+      <li><a href="#products">Organic Milk</a></li>
+      <li><a href="#products">Family Bundle</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h4>Resources</h4>
+    <ul>
+      <li><a href="#suppliers">Our Farms</a></li>
+      <li><a href="#pricing">Pricing Guide</a></li>
+      <li><a href="#regulations">Compliance</a></li>
+      <li><a href="#timeline">Launch Plan</a></li>
+    </ul>
+  </div>
+  <div class="footer-col">
+    <h4>Contact</h4>
+    <ul>
+      <li><a href="#">hello@hudsonfresh.com</a></li>
+      <li><a href="#">Order Support</a></li>
+      <li><a href="#">Wholesale Inquiries</a></li>
+      <li><a href="#">NYC Delivery Zones</a></li>
+    </ul>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <span>© 2025 Hudson Fresh Milk · New York, NY · All rights reserved</span>
+  <span>Pricing benchmarked against USDA AMS NY milk reports · Updated May 2025</span>
+</div>
+
+<script>
+  // Intersection observer for scroll-triggered entrance animations
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animationPlayState = 'running';
+        // Trigger child stagger animations
+        const staggerChildren = entry.target.querySelectorAll('.fx-stagger > *');
+        staggerChildren.forEach(child => {
+          child.style.animationPlayState = 'running';
+        });
+      }
+    });
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.fx-enter, .fx-stagger').forEach(el => {
+    el.style.animationPlayState = 'paused';
+    observer.observe(el);
+  });
+
+  // Immediately play above-fold elements
+  document.querySelectorAll('nav, .hero-left, .hero-right, .stats-strip').forEach(el => {
+    el.style.animationPlayState = 'running';
+    el.querySelectorAll('.fx-stagger > *').forEach(c => c.style.animationPlayState = 'running');
+  });
+
+  // Cart button interaction
+  document.querySelectorAll('.btn-cart').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const orig = this.textContent;
+      this.textContent = '✓ Added!';
+      this.style.background = '#1f5c38';
+      setTimeout(() => {
+        this.textContent = orig;
+        this.style.background = '';
+      }, 1800);
+    });
+  });
+</script>
+</body>
+</html>
