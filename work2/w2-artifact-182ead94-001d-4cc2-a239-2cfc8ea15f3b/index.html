@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>دليل الحمل الكامل - رحلة الأمومة 🌸</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Fredoka+One&display=swap');
+    
+    :root {
+      --primary: #FF6B9D;
+      --secondary: #C084FC;
+      --accent: #FFD700;
+      --success: #4ADE80;
+      --bg-main: #FFF5FF;
+      --bg-card: #FFFFFF;
+      --text-dark: #2D1B69;
+      --text-medium: #6B21A8;
+      --border-r: 24px;
+      --shadow: 0 8px 32px rgba(192,132,252,0.18);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: var(--bg-main);
+      color: var(--text-dark);
+      direction: rtl;
+      min-height: 100vh;
+    }
+
+    /* HERO */
+    .hero {
+      background: linear-gradient(135deg, #FF6B9D 0%, #C084FC 50%, #818CF8 100%);
+      padding: 3rem 1.5rem 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '🌸💫⭐🌟💕🌺';
+      position: absolute;
+      font-size: 2rem;
+      top: 10px; left: 0; right: 0;
+      letter-spacing: 2rem;
+      opacity: 0.3;
+      animation: float 6s ease-in-out infinite;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0; right: 0;
+      height: 60px;
+      background: var(--bg-main);
+      clip-path: ellipse(55% 100% at 50% 100%);
+    }
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 900;
+      color: white;
+      text-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      margin-bottom: 0.5rem;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 1.5rem;
+    }
+    .stars-display {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255,255,255,0.2);
+      border-radius: 999px;
+      padding: 0.5rem 1.5rem;
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 700;
+      backdrop-filter: blur(8px);
+      margin-bottom: 1.5rem;
+    }
+    .start-btn {
+      background: white;
+      color: var(--text-medium);
+      border: none;
+      border-radius: 999px;
+      padding: 1rem 2.5rem;
+      font-size: 1.2rem;
+      font-weight: 800;
+      font-family: 'Tajawal', sans-serif;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .start-btn:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 12px 32px rgba(0,0,0,0.2); }
+
+    /* PROGRESS */
+    .progress-bar-wrap {
+      background: white;
+      border-bottom: 2px solid #f3e8ff;
+      padding: 1rem 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      box-shadow: 0 2px 12px rgba(192,132,252,0.10);
+    }
+    .progress-bar-bg {
+      flex: 1;
+      height: 18px;
+      background: #f3e8ff;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #FF6B9D, #C084FC);
+      border-radius: 999px;
+      transition: width 0.7s cubic-bezier(.4,2,.6,1);
+      width: 0%;
+    }
+    .level-badge {
+      background: linear-gradient(135deg, #FFD700, #FFA500);
+      color: white;
+      border-radius: 999px;
+      padding: 0.3rem 1rem;
+      font-weight: 800;
+      font-size: 0.9rem;
+      white-space: nowrap;
+    }
+    .xp-badge {
+      color: var(--text-medium);
+      font-weight: 700;
+      font-size: 0.95rem;
+      white-space: nowrap;
+    }
+
+    /* MONTHS GRID */
+    .months-section {
+      padding: 2rem 1rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .section-title {
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--text-medium);
+      margin-bottom: 2rem;
+    }
+    .months-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    .month-card {
+      background: white;
+      border-radius: var(--border-r);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.25s, box-shadow 0.25s;
+      border: 3px solid transparent;
+      position: relative;
+      animation: fx-enter 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .month-card:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 16px 48px rgba(192,132,252,0.28); }
+    .month-card.unlocked { border-color: var(--success); }
+    .month-card.active { border-color: var(--primary); }
+    
+    .card-header {
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      position: relative;
+    }
+    .month-emoji {
+      font-size: 3rem;
+      flex-shrink: 0;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.12));
+    }
+    .month-info h3 {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--text-dark);
+    }
+    .month-info p {
+      color: #9ca3af;
+      font-size: 0.9rem;
+      margin-top: 0.2rem;
+    }
+    .xp-chip {
+      position: absolute;
+      bottom: 1rem;
+      left: 1rem;
+      background: linear-gradient(135deg, #FF6B9D, #C084FC);
+      color: white;
+      border-radius: 999px;
+      padding: 0.2rem 0.7rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .card-body {
+      padding: 0 1.5rem 1.5rem;
+      display: none;
+    }
+    .card-body.open { display: block; animation: slideIn 0.35s ease; }
+    @keyframes slideIn {
+      from { opacity:0; transform:translateY(10px); }
+      to { opacity:1; transform:translateY(0); }
+    }
+    .info-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      background: #f3e8ff;
+      border: none;
+      border-radius: 999px;
+      padding: 0.4rem 1rem;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: var(--text-medium);
+      transition: background 0.2s, color 0.2s;
+    }
+    .tab-btn.active { background: var(--primary); color: white; }
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+    
+    .info-list {
+      list-style: none;
+      padding: 0;
+    }
+    .info-list li {
+      padding: 0.6rem 0;
+      border-bottom: 1px solid #f3e8ff;
+      font-size: 0.95rem;
+      color: #4b5563;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      line-height: 1.5;
+    }
+    .info-list li:last-child { border-bottom: none; }
+    .info-list li::before { content: '✨'; flex-shrink: 0; }
+    
+    .complete-btn {
+      width: 100%;
+      margin-top: 1rem;
+      background: linear-gradient(135deg, #4ADE80, #22C55E);
+      color: white;
+      border: none;
+      border-radius: 999px;
+      padding: 0.8rem;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s, opacity 0.2s;
+    }
+    .complete-btn:hover { transform: scale(1.03); }
+    .complete-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    
+    /* ACHIEVEMENTS */
+    .achievements-section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+    .badges-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 1rem;
+    }
+    .badge-item {
+      background: white;
+      border-radius: 16px;
+      padding: 1.2rem 0.8rem;
+      text-align: center;
+      box-shadow: var(--shadow);
+      transition: transform 0.2s;
+      animation: fx-enter 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .badge-item:hover { transform: scale(1.05); }
+    .badge-item.locked-badge { opacity: 0.4; filter: grayscale(1); }
+    .badge-item .badge-emoji { font-size: 2.5rem; display: block; margin-bottom: 0.5rem; }
+    .badge-item .badge-name { font-size: 0.8rem; font-weight: 700; color: var(--text-medium); }
+    
+    /* QUIZ */
+    .quiz-section {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+    .quiz-card {
+      background: white;
+      border-radius: var(--border-r);
+      box-shadow: var(--shadow);
+      padding: 2rem;
+      animation: fx-enter 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .quiz-question {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+    .quiz-opt {
+      background: #f3e8ff;
+      border: 2px solid transparent;
+      border-radius: 12px;
+      padding: 0.9rem 1.2rem;
+      cursor: pointer;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      text-align: right;
+      transition: all 0.2s;
+    }
+    .quiz-opt:hover { border-color: var(--primary); background: #fce7f3; }
+    .quiz-opt.correct { background: #dcfce7; border-color: #4ADE80; }
+    .quiz-opt.wrong { background: #fee2e2; border-color: #f87171; }
+    .quiz-feedback {
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1rem;
+      display: none;
+      line-height: 1.5;
+    }
+    .quiz-feedback.show { display: block; animation: slideIn 0.3s ease; }
+    .quiz-feedback.correct { background: #dcfce7; color: #166534; }
+    .quiz-feedback.wrong { background: #fee2e2; color: #991b1b; }
+    .quiz-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.5rem;
+      gap: 1rem;
+    }
+    .quiz-nav button {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      border: none;
+      border-radius: 999px;
+      padding: 0.7rem 1.5rem;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .quiz-nav button:hover { transform: scale(1.05); }
+    .quiz-counter { color: #9ca3af; font-size: 0.9rem; }
+    
+    /* NEWBORN GUIDE */
+    .newborn-section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+    }
+    .newborn-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    .newborn-card {
+      background: white;
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      border-top: 4px solid var(--primary);
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      animation: fx-enter 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .newborn-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(192,132,252,0.22); }
+    .newborn-card .nc-icon { font-size: 2.5rem; margin-bottom: 0.8rem; display: block; }
+    .newborn-card h3 { font-size: 1.1rem; font-weight: 800; color: var(--text-dark); margin-bottom: 0.5rem; }
+    .newborn-card p { font-size: 0.9rem; color: #6b7280; line-height: 1.7; }
+    
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: linear-gradient(135deg, #FF6B9D, #C084FC);
+      color: white;
+      border-radius: 999px;
+      padding: 1rem 2rem;
+      font-weight: 700;
+      font-size: 1rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+      z-index: 1000;
+      transition: transform 0.4s cubic-bezier(.4,2,.6,1);
+      text-align: center;
+      max-width: 90vw;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* CONFETTI */
+    .confetti-piece {
+      position: fixed;
+      width: 10px; height: 10px;
+      border-radius: 2px;
+      pointer-events: none;
+      z-index: 9999;
+      animation: confettiFall 1.5s ease-in forwards;
+    }
+    @keyframes confettiFall {
+      0% { transform: translateY(-100px) rotate(0deg); opacity:1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity:0; }
+    }
+    
+    /* NAV TABS */
+    .main-nav {
+      display: flex;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 1rem 1rem;
+      flex-wrap: wrap;
+      background: white;
+      border-bottom: 2px solid #f3e8ff;
+      position: sticky;
+      top: 58px;
+      z-index: 99;
+    }
+    .nav-btn {
+      background: #f3e8ff;
+      border: none;
+      border-radius: 999px;
+      padding: 0.6rem 1.4rem;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      color: var(--text-medium);
+      transition: all 0.2s;
+    }
+    .nav-btn.active { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; }
+    
+    .section-wrapper { display: none; }
+    .section-wrapper.active { display: block; }
+
+    /* MOTION */
+    @keyframes fx-enter {
+      from { opacity: 0; transform: translate3d(0, 18px, 0) scale(0.985); }
+      to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, .month-card, .badge-item, .newborn-card, .quiz-card { animation: none !important; transition: none !important; }
+    }
+
+    /* FOOTER */
+    .footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      color: #9ca3af;
+      font-size: 0.85rem;
+      background: white;
+      border-top: 2px solid #f3e8ff;
+      margin-top: 2rem;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 2rem; }
+      .months-grid { grid-template-columns: 1fr; }
+      .badges-grid { grid-template-columns: repeat(3,1fr); }
+      .newborn-grid { grid-template-columns: 1fr; }
+      .main-nav { top: 52px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div style="font-size:3.5rem;margin-bottom:0.5rem;animation:float 3s ease-in-out infinite">🤰✨</div>
+    <h1>رحلة الأمومة 🌸</h1>
+    <p>دليلك الكامل للحمل — 9 أشهر من السحر والفرح!</p>
+    <div class="stars-display">
+      <span>⭐</span>
+      <span id="heroStars">0</span>
+      <span>نقطة</span>
+      <span>|</span>
+      <span>🏆</span>
+      <span id="heroLevel">مبتدئة</span>
+    </div>
+    <br>
+    <button class="start-btn" onclick="startJourney()">ابدئي رحلتك! 🚀</button>
+  </div>
+
+  <!-- PROGRESS BAR -->
+  <div class="progress-bar-wrap">
+    <div class="level-badge" id="levelBadge">المستوى 1</div>
+    <div class="progress-bar-bg">
+      <div class="progress-bar-fill" id="progressFill"></div>
+    </div>
+    <div class="xp-badge"><span id="xpDisplay">0</span> / <span id="xpMax">200</span> XP</div>
+  </div>
+
+  <!-- MAIN NAV -->
+  <nav class="main-nav">
+    <button class="nav-btn active" onclick="showSection('months', event)">📅 أشهر الحمل</button>
+    <button class="nav-btn" onclick="showSection('achievements', event)">🏆 الإنجازات</button>
+    <button class="nav-btn" onclick="showSection('quiz', event)">🧠 اختبار</button>
+    <button class="nav-btn" onclick="showSection('newborn', event)">👶 رعاية المولود</button>
+  </nav>
+
+  <!-- MONTHS SECTION -->
+  <div class="section-wrapper active" id="sec-months">
+    <div class="months-section">
+      <div class="section-title">🌙 رحلة الـ 9 أشهر</div>
+      <div class="months-grid" id="monthsGrid"></div>
+    </div>
+  </div>
+
+  <!-- ACHIEVEMENTS SECTION -->
+  <div class="section-wrapper" id="sec-achievements">
+    <div class="achievements-section">
+      <div class="section-title">🏆 شارات الإنجاز</div>
+      <div class="badges-grid" id="badgesGrid"></div>
+    </div>
+  </div>
+
+  <!-- QUIZ SECTION -->
+  <div class="section-wrapper" id="sec-quiz">
+    <div class="quiz-section">
+      <div class="section-title">🧠 اختبري معلوماتك</div>
+      <div class="quiz-card">
+        <div class="quiz-question" id="quizQuestion"></div>
+        <div class="quiz-options" id="quizOptions"></div>
+        <div class="quiz-feedback" id="quizFeedback"></div>
+        <div class="quiz-nav">
+          <button onclick="nextQuestion()">السؤال التالي ⬅</button>
+          <span class="quiz-counter" id="quizCounter">1 / 7</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEWBORN SECTION -->
+  <div class="section-wrapper" id="sec-newborn">
+    <div class="newborn-section">
+      <div class="section-title">👶 دليل رعاية المولود الأول</div>
+      <div class="newborn-grid" id="newbornGrid"></div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    🌸 رحلة الأمومة — دليل الحمل التفاعلي بالعربية | صُنع بالحب 💕
+  </footer>
+
+  <script>
+    // ===================== DATA =====================
+    const months = [
+      {
+        num: 1, emoji: '🌱', title: 'الشهر الأول', subtitle: 'البداية السحرية',
+        color: '#FF6B9D', xp: 50,
+        tabs: {
+          baby: ['يبدأ الجنين كخلية واحدة تنقسم بسرعة كبيرة', 'يتشكل الحبل الشوكي والدماغ المبكر', 'يصل حجمه إلى 0.6 سم تقريباً', 'تبدأ نبضات القلب في الأسبوع الرابع', 'تتشكل براعم الأطراف الأولى'],
+          mother: ['غثيان صباحي — جسمك يعمل بجد!', 'تعب شديد — النوم الكافي مهم جداً', 'حساسية مفرطة للروائح', 'توقفت الدورة الشهرية', 'تحولات هرمونية سريعة'],
+          needs: ['حمض الفوليك يومياً (400-800 ميكروغرام)', 'فيتامين د وكالسيوم', 'شرب 8 أكواب ماء يومياً', 'تجنب الكافيين والكحول والدخان', 'زيارة الطبيب الأولى']
+        }
+      },
+      {
+        num: 2, emoji: '🐣', title: 'الشهر الثاني', subtitle: 'الأعضاء تتشكل',
+        color: '#C084FC', xp: 55,
+        tabs: {
+          baby: ['يتشكل القلب بشكل كامل وينبض بانتظام', 'تنمو الأذنان والعيون والأنف', 'تتطور المعدة والكبد والبنكرياس', 'يصل الطول إلى 2.5 سم', 'الأصابع تبدأ في التشكل'],
+          mother: ['الغثيان في أوجه — صابري!', 'ثدي حساس ومتضخم', 'التبول المتكرر', 'تقلبات مزاجية', 'دوار وإرهاق'],
+          needs: ['حمض الفوليك مستمر', 'تجنب الأدوية بدون وصفة', 'الراحة الكافية', 'أكل وجبات صغيرة ومتكررة', 'فيتامينات الحمل']
+        }
+      },
+      {
+        num: 3, emoji: '🐥', title: 'الشهر الثالث', subtitle: 'نهاية الثلث الأول',
+        color: '#818CF8', xp: 60,
+        tabs: {
+          baby: ['يصبح جنيناً بالكامل وليس جرثومة', 'يمكن سماع نبضات القلب بالأجهزة', 'الأصابع والأظافر تكتمل', 'يصل الطول إلى 7-8 سم', 'يبدأ في الحركة (لا تشعرين بعد)'],
+          mother: ['قد يخف الغثيان تدريجياً 🎉', 'بطنك يبدأ في الظهور قليلاً', 'زيادة في الطاقة', 'قد تشعرين بانتعاش', 'الدوار يقل'],
+          needs: ['فحص النسبة المئوية للكروموسومات', 'سونار الثلث الأول', 'الاستمرار بفيتامينات الحمل', 'تمارين خفيفة مناسبة للحوامل', 'دعم نفسي ومشاركة الخبر للعائلة']
+        }
+      },
+      {
+        num: 4, emoji: '🌿', title: 'الشهر الرابع', subtitle: 'الثلث الثاني يبدأ',
+        color: '#4ADE80', xp: 65,
+        tabs: {
+          baby: ['يبدأ الطفل في حركات حقيقية', 'يتطور سمعه ويسمع صوتك!', 'يصل الطول إلى 15 سم', 'الحواجب والرموش تنمو', 'يبتلع السائل الأمنيوسي'],
+          mother: ['تشعرين بحركة الجنين أحياناً', 'البطن واضح أكثر', 'جلدك يتغير — قد تظهر بقع داكنة', 'الطاقة تعود تدريجياً', 'آلام أسفل الظهر تبدأ'],
+          needs: ['سونار لمعرفة الجنس (اختياري)', 'حديد لمنع الأنيميا', 'كالسيوم لعظام الطفل', 'تمارين كيجل لتقوية قاع الحوض', 'نوم على الجانب الأيسر']
+        }
+      },
+      {
+        num: 5, emoji: '🌺', title: 'الشهر الخامس', subtitle: 'الطفل يتحرك!',
+        color: '#F472B6', xp: 70,
+        tabs: {
+          baby: ['حركة قوية يمكن الشعور بها بوضوح', 'يمص إبهامه', 'يتطور دماغه بسرعة', 'يصل الطول إلى 25 سم', 'الأذن تكتمل — يسمع الموسيقى!'],
+          mother: ['حركة الجنين تصبح واضحة وممتعة', 'توسع الجلد قد يسبب حكة', 'تستطيعين الشعور بالركلات', 'النوم يصبح أصعب قليلاً', 'كريمات التمدد مفيدة'],
+          needs: ['كريم مرطب للوقاية من التشققات', 'وسادة للحوامل للنوم المريح', 'غذاء غني بالأوميجا 3 لدماغ الطفل', 'قراءة وحديث مع الجنين', 'فحص سكر الحمل']
+        }
+      },
+      {
+        num: 6, emoji: '🌻', title: 'الشهر السادس', subtitle: 'منتصف الرحلة',
+        color: '#FCD34D', xp: 75,
+        tabs: {
+          baby: ['يفتح عيونه ويغلقها', 'بصمات الأصابع اكتملت', 'يصل الطول إلى 30 سم والوزن 600 جرام', 'الرئتان تتطوران', 'ردود أفعال قوية للمس'],
+          mother: ['البطن كبيرة وواضحة جداً', 'آلام الظهر تزداد', 'صعوبة في التنفس أحياناً', 'الكاحلان قد يتورمان', 'التعب يعود'],
+          needs: ['دروس تحضير الولادة', 'حزام دعم البطن', 'تمارين اليوجا للحوامل', 'فحص هيموغلوبين الدم', 'التخطيط لإجازة الأمومة']
+        }
+      },
+      {
+        num: 7, emoji: '🍎', title: 'الشهر السابع', subtitle: 'الثلث الأخير يبدأ',
+        color: '#FB923C', xp: 80,
+        tabs: {
+          baby: ['يمكن أن يبقى حياً إذا وُلد مبكراً', 'يزن حوالي 1 كيلو', 'الدماغ ينمو بشكل هائل', 'ينام ويستيقظ بشكل منتظم', 'يستجيب للضوء والصوت'],
+          mother: ['صعوبة في التنفس مع الحركة', 'حرقة المعدة شائعة', 'تقلصات براكستون هيكس', 'التعب الشديد يعود', 'صعوبة في الجلوس والقيام'],
+          needs: ['تحضير حقيبة المستشفى', 'تعلم علامات الولادة المبكرة', 'الاسترخاء والتنفس العميق', 'متابعة طبية أكثر تكراراً', 'الحصول على دعم عاطفي']
+        }
+      },
+      {
+        num: 8, emoji: '🎁', title: 'الشهر الثامن', subtitle: 'استعداد للولادة',
+        color: '#60A5FA', xp: 85,
+        tabs: {
+          baby: ['يزن حوالي 2 كيلو', 'يتحرك نزولاً نحو الحوض', 'الرئتان شبه مكتملة', 'الدهون تتراكم تحت الجلد', 'يصل الطول إلى 45 سم'],
+          mother: ['ضغط على المثانة — تبول متكرر', 'صعوبة النوم تزيد', 'تقلصات أكثر وضوحاً', 'تضخم الأوردة أحياناً', 'قلق وترقب طبيعيان'],
+          needs: ['الانتهاء من تجهيز غرفة الطفل', 'حضور دورات الرضاعة الطبيعية', 'الاسترخاء وتجنب الضغط', 'التواجد القريب من المستشفى', 'تعلم تمارين التنفس للولادة']
+        }
+      },
+      {
+        num: 9, emoji: '👑', title: 'الشهر التاسع', subtitle: 'الملكة على وشك الولادة',
+        color: '#FF6B9D', xp: 100,
+        tabs: {
+          baby: ['يصل الوزن 3-3.5 كيلو', 'الأعضاء كاملة ومكتملة 100%', 'الرأس ينزل نحو قناة الولادة', 'الجلد وردي ناعم', 'جاهز للحياة خارج الرحم!'],
+          mother: ['تقلصات قوية ومنتظمة قريباً', 'نزول رأس الجنين يخفف التنفس', 'إفرازات متزايدة', 'الغريزة الأمومية في أوجها', 'أنتِ أقوى امرأة! 💪'],
+          needs: ['حقيبة المستشفى جاهزة ✓', 'رقم الطبيب محفوظ ✓', 'خطة التوصل للمستشفى واضحة ✓', 'دعم الزوج والعائلة ✓', 'التنفس والثقة بنفسك ✓']
+        }
+      }
+    ];
+
+    const achievements = [
+      { id: 'first_step', emoji: '🌱', name: 'أول خطوة', desc: 'افتحي الشهر الأول' },
+      { id: 'trimester1', emoji: '🥇', name: 'الثلث الأول', desc: 'أكملي الأشهر 1-3' },
+      { id: 'halfway', emoji: '🌟', name: 'منتصف الطريق', desc: 'أكملي الشهر الخامس' },
+      { id: 'trimester2', emoji: '💎', name: 'الثلث الثاني', desc: 'أكملي الأشهر 4-6' },
+      { id: 'almost_there', emoji: '🚀', name: 'اقتربت!', desc: 'أكملي الشهر السابع' },
+      { id: 'trimester3', emoji: '👸', name: 'الثلث الثالث', desc: 'أكملي الأشهر 7-9' },
+      { id: 'quiz_master', emoji: '🧠', name: 'عبقرية', desc: 'أجيبي على 5 أسئلة صحيحة' },
+      { id: 'full_journey', emoji: '👑', name: 'ملكة الأمومة', desc: 'أكملي كل الأشهر التسعة' },
+      { id: 'newborn_pro', emoji: '🍼', name: 'خبيرة الرعاية', desc: 'اقرئي دليل المولود' }
+    ];
+
+    const quizData = [
+      { q: 'في أي أسبوع يبدأ قلب الجنين بالنبض؟', opts: ['الأسبوع الثاني', 'الأسبوع الرابع', 'الأسبوع الثامن', 'الأسبوع العاشر'], correct: 1, exp: 'يبدأ قلب الجنين بالنبض في الأسبوع الرابع!' },
+      { q: 'ما هو أهم فيتامين في الثلث الأول للحمل؟', opts: ['فيتامين C', 'فيتامين D', 'حمض الفوليك', 'فيتامين B12'], correct: 2, exp: 'حمض الفوليك ضروري جداً لتطور الجهاز العصبي!' },
+      { q: 'متى تشعر الأم بحركة الجنين لأول مرة؟', opts: ['الشهر الأول', 'الشهر الثالث', 'الشهر الرابع أو الخامس', 'الشهر السابع'], correct: 2, exp: 'عادةً تشعر الأم بأول حركة في الشهر الرابع أو الخامس!' },
+      { q: 'على أي جانب يُفضل النوم أثناء الحمل؟', opts: ['الجانب الأيمن', 'الجانب الأيسر', 'على الظهر', 'أي جانب'], correct: 1, exp: 'النوم على الجانب الأيسر أفضل لتدفق الدم للطفل!' },
+      { q: 'ما هو الوزن الطبيعي للمولود؟', opts: ['1-2 كيلو', '2-2.5 كيلو', '3-3.5 كيلو', '4-5 كيلو'], correct: 2, exp: 'الوزن الطبيعي للمولود هو 3-3.5 كيلو!' },
+      { q: 'كم مرة يجب إرضاع المولود في اليوم؟', opts: ['3-4 مرات', '6-8 مرات', '8-12 مرة', '12-15 مرة'], correct: 2, exp: 'المولود يحتاج للرضاعة 8-12 مرة في اليوم!' },
+      { q: 'متى تكتمل رئتا الجنين بشكل كافٍ للتنفس؟', opts: ['الشهر الخامس', 'الشهر السادس', 'الشهر السابع', 'الشهر التاسع'], correct: 2, exp: 'رئتا الجنين تكتملان بشكل كافٍ في الشهر السابع!' }
+    ];
+
+    const newbornGuide = [
+      { icon: '🤱', title: 'الرضاعة الطبيعية', text: 'أرضعي طفلك 8-12 مرة يومياً. اللبأ (السرسوب) هو أول حليب وهو ذهب للمناعة! تأكدي من صحة الإمساك لتجنب آلام الحلمة.' },
+      { icon: '😴', title: 'نوم المولود', text: 'المولود ينام 16-17 ساعة يومياً على جرعات صغيرة. نمي حين ينام طفلك. ضعيه على ظهره دائماً لمنع متلازمة الموت المفاجئ.' },
+      { icon: '🛁', title: 'استحمام المولود', text: 'اغسلي المولود بإسفنجة حتى يسقط الحبل السري (10-14 يوم). الماء الفاتر ومدة قصيرة هي الأفضل. جففي جميع الطيات.' },
+      { icon: '😭', title: 'فهم بكاء الطفل', text: 'البكاء لغة الطفل: جوع، تغيير حفاضة، نوم، تجشؤ، أو مجرد الحاجة للحضن. ستتعلمين الفرق بالتجربة!' },
+      { icon: '💉', title: 'التطعيمات', text: 'التطعيمات أساسية لحماية طفلك. أول تطعيم في المستشفى بعد الولادة مباشرة. اتبعي جدول التطعيمات بدقة.' },
+      { icon: '🤗', title: 'الربط العاطفي', text: 'الحضن والكلام والنظر في عيني طفلك يبني الثقة والأمان. الجلد بالجلد (Skin to Skin) مهم جداً للأم والطفل.' },
+      { icon: '⚠️', title: 'متى تذهبين للطوارئ', text: 'حرارة أكثر من 38°م، صعوبة في التنفس، لون أزرق على الجلد، عدم الأكل لأكثر من 4 ساعات. لا تترددي!' },
+      { icon: '💚', title: 'رعاية الأم', text: 'اعتني بنفسك أيضاً! اكتئاب ما بعد الولادة حقيقي. اطلبي المساعدة ولا تكوني بطلة وحدك. صحتك = صحة طفلك.' }
+    ];
+
+    // ===================== STATE =====================
+    let xp = 0;
+    let completedMonths = new Set();
+    let unlockedAchievements = new Set();
+    let quizIndex = 0;
+    let quizAnswered = false;
+    let correctAnswers = 0;
+    const levels = [
+      { name: 'مبتدئة', min: 0, max: 200 },
+      { name: 'حامل واعية', min: 200, max: 400 },
+      { name: 'أم قوية', min: 400, max: 600 },
+      { name: 'خبيرة الحمل', min: 600, max: 750 },
+      { name: 'أم مذهلة', min: 750, max: 900 }
+    ];
+
+    // ===================== INIT =====================
+    function init() {
+      renderMonths();
+      renderAchievements();
+      renderQuiz();
+      renderNewborn();
+      updateProgress();
+    }
+
+    function renderMonths() {
+      const grid = document.getElementById('monthsGrid');
+      grid.innerHTML = months.map((m, idx) => `
+        <div class="month-card" id="card-${m.num}" onclick="toggleCard(${m.num})" style="animation-delay:${idx * 60}ms">
+          <div class="card-header" style="background: linear-gradient(135deg, ${m.color}22, ${m.color}11)">
+            <div class="month-emoji">${m.emoji}</div>
+            <div class="month-info">
+              <h3>${m.title}</h3>
+              <p>${m.subtitle}</p>
+            </div>
+            <div class="xp-chip">+${m.xp} XP</div>
+          </div>
+          <div class="card-body" id="body-${m.num}">
+            <div class="info-tabs">
+              <button class="tab-btn active" onclick="switchTab(event, ${m.num}, 'baby')">👶 الجنين</button>
+              <button class="tab-btn" onclick="switchTab(event, ${m.num}, 'mother')">🤰 الأم</button>
+              <button class="tab-btn" onclick="switchTab(event, ${m.num}, 'needs')">💊 الاحتياجات</button>
+            </div>
+            <div class="tab-content active" id="tab-${m.num}-baby">
+              <ul class="info-list">${m.tabs.baby.map(i => `<li>${i}</li>`).join('')}</ul>
+            </div>
+            <div class="tab-content" id="tab-${m.num}-mother">
+              <ul class="info-list">${m.tabs.mother.map(i => `<li>${i}</li>`).join('')}</ul>
+            </div>
+            <div class="tab-content" id="tab-${m.num}-needs">
+              <ul class="info-list">${m.tabs.needs.map(i => `<li>${i}</li>`).join('')}</ul>
+            </div>
+            <button class="complete-btn" id="btn-${m.num}" onclick="completeMonth(event, ${m.num})"
+              ${completedMonths.has(m.num) ? 'disabled' : ''}>
+              ${completedMonths.has(m.num) ? '✅ مكتمل!' : '🎉 أكملت هذا الشهر!'}
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function toggleCard(num) {
+      const body = document.getElementById(`body-${num}`);
+      const card = document.getElementById(`card-${num}`);
+      const isOpen = body.classList.contains('open');
+      document.querySelectorAll('.card-body').forEach(b => b.classList.remove('open'));
+      document.querySelectorAll('.month-card').forEach(c => c.classList.remove('active'));
+      if (!isOpen) {
+        body.classList.add('open');
+        card.classList.add('active');
+      }
+    }
+
+    function switchTab(e, num, tab) {
+      e.stopPropagation();
+      document.querySelectorAll(`[id^="tab-${num}-"]`).forEach(t => t.classList.remove('active'));
+      document.getElementById(`tab-${num}-${tab}`).classList.add('active');
+      e.currentTarget.parentElement.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      e.currentTarget.classList.add('active');
+    }
+
+    function completeMonth(e, num) {
+      e.stopPropagation();
+      if (completedMonths.has(num)) return;
+      completedMonths.add(num);
+      const month = months.find(m => m.num === num);
+      xp += month.xp;
+      updateProgress();
+      checkAchievements();
+      showConfetti();
+      showToast(`🎉 أحسنتِ! +${month.xp} XP على ${month.title}!`);
+      const btn = document.getElementById(`btn-${num}`);
+      btn.textContent = '✅ مكتمل!';
+      btn.disabled = true;
+      document.getElementById(`card-${num}`).classList.add('unlocked');
+    }
+
+    function updateProgress() {
+      const lvl = getCurrentLevel();
+      const lvlIndex = levels.indexOf(lvl);
+      const fill = ((xp - lvl.min) / (lvl.max - lvl.min)) * 100;
+      document.getElementById('progressFill').style.width = Math.min(Math.max(fill, 0), 100) + '%';
+      document.getElementById('xpDisplay').textContent = xp;
+      document.getElementById('xpMax').textContent = lvl.max;
+      document.getElementById('levelBadge').textContent = 'المستوى ' + (lvlIndex + 1);
+      document.getElementById('heroLevel').textContent = lvl.name;
+      document.getElementById('heroStars').textContent = xp;
+    }
+
+    function getCurrentLevel() {
+      for (let i = levels.length - 1; i >= 0; i--) {
+        if (xp >= levels[i].min) return levels[i];
+      }
+      return levels[0];
+    }
+
+    function checkAchievements() {
+      const c = completedMonths;
+      if (c.has(1) && !unlockedAchievements.has('first_step')) unlockAchievement('first_step');
+      if (c.has(1) && c.has(2) && c.has(3) && !unlockedAchievements.has('trimester1')) unlockAchievement('trimester1');
+      if (c.has(5) && !unlockedAchievements.has('halfway')) unlockAchievement('halfway');
+      if (c.has(4) && c.has(5) && c.has(6) && !unlockedAchievements.has('trimester2')) unlockAchievement('trimester2');
+      if (c.has(7) && !unlockedAchievements.has('almost_there')) unlockAchievement('almost_there');
+      if (c.has(7) && c.has(8) && c.has(9) && !unlockedAchievements.has('trimester3')) unlockAchievement('trimester3');
+      if (completedMonths.size === 9 && !unlockedAchievements.has('full_journey')) unlockAchievement('full_journey');
+      renderAchievements();
+    }
+
+    function unlockAchievement(id) {
+      unlockedAchievements.add(id);
+      xp += 30;
+      const ach = achievements.find(a => a.id === id);
+      showToast(`🏆 إنجاز جديد: ${ach.name}! +30 XP`);
+      updateProgress();
+    }
+
+    function renderAchievements() {
+      document.getElementById('badgesGrid').innerHTML = achievements.map((a, idx) => `
+        <div class="badge-item ${unlockedAchievements.has(a.id) ? '' : 'locked-badge'}" style="animation-delay:${idx * 50}ms">
+          <span class="badge-emoji">${a.emoji}</span>
+          <div class="badge-name">${a.name}</div>
+          <div style="font-size:0.7rem;color:#9ca3af;margin-top:0.2rem">${a.desc}</div>
+        </div>
+      `).join('');
+    }
+
+    function renderQuiz() {
+      const q = quizData[quizIndex];
+      document.getElementById('quizQuestion').textContent = (quizIndex + 1) + '. ' + q.q;
+      document.getElementById('quizOptions').innerHTML = q.opts.map((o, i) => `
+        <button class="quiz-opt" onclick="answerQuiz(${i})">${o}</button>
+      `).join('');
+      document.getElementById('quizFeedback').className = 'quiz-feedback';
+      document.getElementById('quizFeedback').textContent = '';
+      document.getElementById('quizCounter').textContent = (quizIndex + 1) + ' / ' + quizData.length;
+      quizAnswered = false;
+    }
+
+    function answerQuiz(idx) {
+      if (quizAnswered) return;
+      quizAnswered = true;
+      const q = quizData[quizIndex];
+      const opts = document.querySelectorAll('.quiz-opt');
+      const fb = document.getElementById('quizFeedback');
+      opts[q.correct].classList.add('correct');
+      if (idx !== q.correct) {
+        opts[idx].classList.add('wrong');
+        fb.className = 'quiz-feedback wrong show';
+        fb.textContent = '❌ ' + q.exp;
+      } else {
+        fb.className = 'quiz-feedback correct show';
+        fb.textContent = '✅ صحيح! ' + q.exp;
+        xp += 20;
+        correctAnswers++;
+        updateProgress();
+        showToast('🎉 إجابة صحيحة! +20 XP');
+        if (correctAnswers >= 5 && !unlockedAchievements.has('quiz_master')) {
+          unlockAchievement('quiz_master');
+          renderAchievements();
+        }
+      }
+    }
+
+    function nextQuestion() {
+      quizIndex = (quizIndex + 1) % quizData.length;
+      renderQuiz();
+    }
+
+    function renderNewborn() {
+      document.getElementById('newbornGrid').innerHTML = newbornGuide.map((n, idx) => `
+        <div class="newborn-card" onclick="unlockNewbornAch()" style="animation-delay:${idx * 60}ms">
+          <span class="nc-icon">${n.icon}</span>
+          <h3>${n.title}</h3>
+          <p>${n.text}</p>
+        </div>
+      `).join('');
+    }
+
+    let newbornAchUnlocked = false;
+    function unlockNewbornAch() {
+      if (!newbornAchUnlocked) {
+        newbornAchUnlocked = true;
+        if (!unlockedAchievements.has('newborn_pro')) {
+          unlockAchievement('newborn_pro');
+          renderAchievements();
+        }
+      }
+    }
+
+    function showSection(id, event) {
+      document.querySelectorAll('.section-wrapper').forEach(s => s.classList.remove('active'));
+      document.getElementById('sec-' + id).classList.add('active');
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      if (event && event.currentTarget) event.currentTarget.classList.add('active');
+    }
+
+    function startJourney() {
+      showSection('months', null);
+      document.querySelectorAll('.nav-btn')[0].classList.add('active');
+      setTimeout(() => {
+        document.getElementById('monthsGrid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 3200);
+    }
+
+    function showConfetti() {
+      const colors = ['#FF6B9D','#C084FC','#FFD700','#4ADE80','#60A5FA','#F472B6'];
+      for (let i = 0; i < 36; i++) {
+        const c = document.createElement('div');
+        c.className = 'confetti-piece';
+        const size = 8 + Math.random() * 8;
+        c.style.cssText = `left:${Math.random()*100}%;top:-20px;width:${size}px;height:${size}px;background:${colors[Math.floor(Math.random()*colors.length)]};transform:rotate(${Math.random()*360}deg);animation-delay:${Math.random()*0.5}s;animation-duration:${1.2+Math.random()*0.8}s;border-radius:${Math.random()>0.5?'50%':'2px'};`;
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 2500);
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
