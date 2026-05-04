@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Tip Calculator — Scaffold HTML Structure</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg-canvas:        #f8f4ee;
+  --bg-panel:         rgba(255,255,255,0.92);
+  --bg-accent:        #132730;
+  --fg-strong:        #1f1a17;
+  --fg-muted:         #5e544c;
+  --fg-inverse:       #f8f4ee;
+  --line-soft:        rgba(36,31,27,0.12);
+  --line-strong:      rgba(23,49,62,0.28);
+  --accent-primary:   #cf6b42;
+  --accent-secondary: #5d857b;
+  --accent-highlight: #f3c969;
+  --radius-card:      28px;
+  --radius-pill:      999px;
+  --shadow-soft:      0 18px 44px rgba(27,31,36,0.12);
+  --shadow-strong:    0 24px 64px rgba(16,19,24,0.22);
+  --space-1: 0.375rem;
+  --space-2: 0.75rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2rem;
+  --space-6: 3rem;
+  --space-7: 4.5rem;
+  --display-font: "Playfair Display", Georgia, serif;
+  --body-font:    "DM Sans", "Segoe UI", sans-serif;
+  --mono-font:    "DM Mono", "Courier New", monospace;
+  --display-1:    clamp(2.9rem,6vw,5.8rem);
+  --display-2:    clamp(2.2rem,4vw,3.6rem);
+  --heading-1:    clamp(1.6rem,2.3vw,2.4rem);
+  --body-lg: 1.125rem;
+  --body-md: 1rem;
+  --body-sm: 0.92rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fx-enter,.fx-stagger>*,.fx-hover-lift {
+    animation:none!important;transition:none!important;transform:none!important;
+  }
+}
+.fx-enter { animation: fx-enter 620ms cubic-bezier(.22,1,.36,1) both; }
+.fx-stagger>* {
+  opacity:0;
+  animation: fx-enter 560ms cubic-bezier(.22,1,.36,1) both;
+}
+.fx-stagger>*:nth-child(1){animation-delay:60ms}
+.fx-stagger>*:nth-child(2){animation-delay:120ms}
+.fx-stagger>*:nth-child(3){animation-delay:180ms}
+.fx-stagger>*:nth-child(4){animation-delay:240ms}
+.fx-stagger>*:nth-child(5){animation-delay:300ms}
+.fx-stagger>*:nth-child(6){animation-delay:360ms}
+.fx-hover-lift { transition:transform 180ms ease,box-shadow 180ms ease; }
+.fx-hover-lift:hover { transform:translateY(-4px);box-shadow:var(--shadow-strong); }
+@keyframes fx-enter {
+  from{opacity:0;transform:translate3d(0,18px,0) scale(.985)}
+  to  {opacity:1;transform:translate3d(0,0,0)    scale(1)}
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;scroll-behavior:smooth}
+body {
+  font-family: var(--body-font);
+  background: var(--bg-canvas);
+  color: var(--fg-strong);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+body::before {
+  content:"";
+  position:fixed;inset:0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events:none;z-index:0;opacity:.6;
+}
+
+nav {
+  display:flex;align-items:center;justify-content:space-between;
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--line-soft);
+  position:sticky;top:0;z-index:100;
+  background: rgba(248,244,238,.92);
+  backdrop-filter: blur(12px);
+}
+.nav-logo {
+  font-family: var(--display-font);
+  font-size:1.1rem;font-weight:700;
+  color: var(--fg-strong);
+  letter-spacing:-.02em;
+}
+.nav-badge {
+  font-family: var(--mono-font);
+  font-size:.72rem;font-weight:500;
+  background: var(--bg-accent);
+  color: var(--fg-inverse);
+  padding:.2rem .65rem;
+  border-radius:var(--radius-pill);
+  letter-spacing:.06em;
+  text-transform:uppercase;
+}
+
+.hero {
+  position:relative;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap: var(--space-6);
+  align-items:center;
+  padding: var(--space-7) var(--space-6);
+  max-width:1240px;margin:0 auto;
+  min-height:68vh;
+}
+@media(max-width:780px){
+  .hero{grid-template-columns:1fr;min-height:auto;padding:var(--space-6) var(--space-4);}
+}
+.hero-copy { position:relative;z-index:1; }
+.hero-eyebrow {
+  display:inline-block;
+  font-family: var(--mono-font);
+  font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;
+  color: var(--accent-primary);
+  border:1px solid var(--accent-primary);
+  padding:.2rem .8rem;border-radius:var(--radius-pill);
+  margin-bottom: var(--space-4);
+}
+.hero-title {
+  font-family: var(--display-font);
+  font-size: var(--display-1);
+  font-weight:900;line-height:1.03;
+  letter-spacing:-.03em;
+  color: var(--fg-strong);
+  margin-bottom: var(--space-4);
+}
+.hero-title em { font-style:italic; color: var(--accent-primary); }
+.hero-sub {
+  font-size: var(--body-lg);
+  color: var(--fg-muted);
+  line-height:1.6;
+  max-width:38ch;
+  margin-bottom: var(--space-5);
+}
+.hero-cta {
+  display:inline-flex;align-items:center;gap:.5rem;
+  background: var(--bg-accent);
+  color: var(--fg-inverse);
+  font-family: var(--body-font);
+  font-size:.95rem;font-weight:500;
+  padding:.85rem 2rem;
+  border-radius:var(--radius-pill);
+  text-decoration:none;
+  transition:background 200ms,transform 180ms;
+}
+.hero-cta:hover{background:#1e3d4d;transform:translateY(-2px)}
+.hero-cta svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:2.2;overflow:visible}
+
+.hero-visual {
+  border-radius:var(--radius-card);
+  overflow:hidden;
+  aspect-ratio:16/9;
+  box-shadow:var(--shadow-strong);
+  position:relative;
+}
+.hero-visual img{width:100%;height:100%;object-fit:cover;display:block;}
+.hero-visual::after {
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(19,39,48,.3) 0%,transparent 60%);
+}
+
+.section-wrap {
+  max-width:1240px;margin:0 auto;
+  padding: var(--space-7) var(--space-6);
+}
+@media(max-width:600px){.section-wrap{padding:var(--space-6) var(--space-4)}}
+
+.section-label {
+  font-family: var(--mono-font);
+  font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;
+  color: var(--accent-secondary);
+  margin-bottom: var(--space-3);
+}
+.section-heading {
+  font-family: var(--display-font);
+  font-size: var(--heading-1);
+  font-weight:700;line-height:1.15;
+  letter-spacing:-.025em;
+  margin-bottom: var(--space-5);
+}
+
+.calc-shell {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap: var(--space-5);
+  background: var(--bg-panel);
+  border:1px solid var(--line-soft);
+  border-radius:var(--radius-card);
+  padding: var(--space-6);
+  box-shadow:var(--shadow-soft);
+}
+@media(max-width:760px){.calc-shell{grid-template-columns:1fr;}}
+
+.field-group { display:flex;flex-direction:column;gap: var(--space-2); }
+.field-label {
+  font-size:.8rem;font-weight:500;letter-spacing:.06em;
+  text-transform:uppercase;color: var(--fg-muted);
+}
+.field-input {
+  font-family: var(--mono-font);
+  font-size:1.6rem;font-weight:500;
+  color: var(--fg-strong);
+  background:transparent;
+  border:none;border-bottom:2px solid var(--line-strong);
+  padding: var(--space-2) 0;
+  outline:none;width:100%;
+  transition:border-color 200ms;
+  -moz-appearance:textfield;
+}
+.field-input::-webkit-outer-spin-button,
+.field-input::-webkit-inner-spin-button { -webkit-appearance:none; }
+.field-input:focus{border-color:var(--accent-primary);}
+.field-input::placeholder{color:var(--line-strong);}
+
+.tip-grid {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+}
+@media(max-width:500px){.tip-grid{grid-template-columns:repeat(2,1fr)}}
+.tip-btn {
+  font-family: var(--mono-font);
+  font-size:.92rem;font-weight:500;
+  background:transparent;
+  border:1.5px solid var(--line-strong);
+  border-radius:12px;
+  padding:.6rem .4rem;
+  cursor:pointer;
+  color: var(--fg-strong);
+  transition:background 150ms,border-color 150ms,color 150ms,transform 120ms;
+}
+.tip-btn:hover{background:var(--bg-accent);color:var(--fg-inverse);border-color:var(--bg-accent);transform:translateY(-2px)}
+.tip-btn.active{background:var(--accent-primary);color:#fff;border-color:var(--accent-primary);}
+
+.custom-tip-wrap { margin-top:var(--space-2);display:none; }
+.custom-tip-wrap.visible{display:block;}
+.custom-tip-input {
+  font-family: var(--mono-font);
+  font-size:1.1rem;
+  width:100%;
+  border:1.5px solid var(--accent-primary);
+  border-radius:10px;
+  padding:.55rem .8rem;
+  background:transparent;
+  color:var(--fg-strong);
+  outline:none;
+  -moz-appearance:textfield;
+}
+.custom-tip-input::-webkit-outer-spin-button,
+.custom-tip-input::-webkit-inner-spin-button{-webkit-appearance:none;}
+
+.results-panel {
+  background: var(--bg-accent);
+  border-radius:20px;
+  padding: var(--space-5);
+  display:flex;flex-direction:column;
+  gap: var(--space-4);
+}
+.result-row {
+  display:flex;align-items:flex-end;justify-content:space-between;
+  padding-bottom: var(--space-4);
+  border-bottom:1px solid rgba(255,255,255,.1);
+}
+.result-row:last-of-type{border-bottom:none;padding-bottom:0;}
+.result-label { color: rgba(248,244,238,.55); font-size:.82rem; letter-spacing:.07em; text-transform:uppercase; }
+.result-sub   { color: rgba(248,244,238,.35); font-size:.72rem; margin-top:.15rem; }
+.result-value {
+  font-family: var(--display-font);
+  font-size:clamp(2rem,3.5vw,2.8rem);
+  font-weight:700;
+  color: var(--accent-highlight);
+  letter-spacing:-.02em;
+  line-height:1;
+}
+.result-value .dollar{font-size:.6em;vertical-align:super;color:rgba(243,201,105,.7)}
+.result-grand{color:rgba(248,244,238,.85);font-size:clamp(1.4rem,2.5vw,2rem)!important;}
+.result-grand .dollar{color:rgba(248,244,238,.4)!important;}
+
+.reset-btn {
+  display:block;width:100%;
+  font-family:var(--body-font);
+  font-size:.9rem;font-weight:500;
+  background:transparent;
+  border:1.5px solid rgba(255,255,255,.2);
+  border-radius:var(--radius-pill);
+  color:var(--fg-inverse);
+  padding:.7rem;cursor:pointer;
+  transition:background 160ms,border-color 160ms;
+  margin-top:auto;
+}
+.reset-btn:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.4);}
+
+.feature-strip {
+  background: var(--bg-accent);
+  padding: var(--space-7) var(--space-6);
+}
+.feature-inner {
+  max-width:1240px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:var(--space-5);
+}
+@media(max-width:700px){.feature-inner{grid-template-columns:1fr;}}
+.feature-card {
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:var(--radius-card);
+  padding: var(--space-5);
+  color:var(--fg-inverse);
+  cursor:default;
+}
+.feature-card .f-icon {
+  width:36px;height:36px;
+  background:var(--accent-primary);
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:var(--space-3);
+  font-size:1rem;
+}
+.feature-card h3{
+  font-family:var(--display-font);
+  font-size:1.15rem;font-weight:700;
+  margin-bottom:var(--space-2);
+}
+.feature-card p{font-size:.9rem;color:rgba(248,244,238,.6);line-height:1.6;}
+
+.support-section {
+  max-width:1240px;margin:0 auto;
+  padding: var(--space-7) var(--space-6);
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:var(--space-6);align-items:center;
+}
+@media(max-width:760px){.support-section{grid-template-columns:1fr;padding:var(--space-6) var(--space-4);}}
+.support-visual {
+  border-radius:var(--radius-card);
+  overflow:hidden;aspect-ratio:4/3;
+  box-shadow:var(--shadow-soft);
+}
+.support-visual img{width:100%;height:100%;object-fit:cover;display:block;}
+.support-copy p{color:var(--fg-muted);line-height:1.7;font-size:var(--body-lg);}
+
+footer {
+  border-top:1px solid var(--line-soft);
+  padding:var(--space-5) var(--space-6);
+  display:flex;align-items:center;justify-content:space-between;
+  font-size:var(--body-sm);color:var(--fg-muted);
+}
+.footer-brand{font-family:var(--display-font);font-weight:700;color:var(--fg-strong);}
+</style>
+</head>
+
+<body>
+
+<nav class="fx-enter">
+  <span class="nav-logo">Tip&thinsp;/&thinsp;Calc</span>
+  <span class="nav-badge">Editorial Build</span>
+</nav>
+
+<section class="hero">
+  <div class="hero-copy fx-enter">
+    <span class="hero-eyebrow">Scaffold HTML Structure</span>
+    <h1 class="hero-title">Split the<br/><em>bill,</em><br/>not your nerves.</h1>
+    <p class="hero-sub">
+      Enter a total, pick a tip, choose your party size —
+      get per-person totals instantly. No spreadsheet required.
+    </p>
+    <a class="hero-cta" href="#calculator">
+      Start calculating
+      <svg viewBox="0 0 24 24" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+  </div>
+  <div class="hero-visual fx-enter" style="animation-delay:120ms">
+    <img
+      src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=900&auto=format&fit=crop&q=80"
+      alt="Hero illustration matching the brief — a beautifully lit restaurant table with a bill"
+    />
+  </div>
+</section>
+
+<div class="section-wrap" id="calculator">
+  <p class="section-label">The Calculator</p>
+  <h2 class="section-heading">Your numbers, clean&nbsp;&&nbsp;clear.</h2>
+
+  <div class="calc-shell fx-enter">
+
+    <div class="fx-stagger" style="display:flex;flex-direction:column;gap:var(--space-5);">
+
+      <div class="field-group">
+        <label class="field-label" for="bill-amount">Bill Amount ($)</label>
+        <input
+          class="field-input"
+          id="bill-amount"
+          type="number"
+          min="0"
+          step="0.01"
+          placeholder="0.00"
+          inputmode="decimal"
+          aria-label="Bill amount in dollars"
+        />
+      </div>
+
+      <div class="field-group">
+        <span class="field-label" id="tip-label">Select Tip %</span>
+        <div class="tip-grid" role="group" aria-labelledby="tip-label">
+          <button class="tip-btn fx-hover-lift" data-tip="10" type="button">10%</button>
+          <button class="tip-btn fx-hover-lift" data-tip="15" type="button">15%</button>
+          <button class="tip-btn fx-hover-lift" data-tip="20" type="button">20%</button>
+          <button class="tip-btn fx-hover-lift" data-tip="custom" type="button">Custom</button>
+        </div>
+        <div class="custom-tip-wrap" id="custom-tip-wrap">
+          <input
+            class="custom-tip-input"
+            id="custom-tip"
+            type="number"
+            min="0"
+            max="100"
+            step="0.5"
+            placeholder="Enter %"
+            inputmode="decimal"
+            aria-label="Custom tip percentage"
+          />
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label" for="num-people">Number of People</label>
+        <input
+          class="field-input"
+          id="num-people"
+          type="number"
+          min="1"
+          step="1"
+          placeholder="1"
+          inputmode="numeric"
+          aria-label="Number of people splitting the bill"
+        />
+      </div>
+
+    </div>
+
+    <div class="results-panel fx-enter" style="animation-delay:200ms" role="region" aria-label="Calculation results">
+
+      <div class="result-row">
+        <div>
+          <div class="result-label">Tip Amount</div>
+          <div class="result-sub">per person</div>
+        </div>
+        <div class="result-value" id="tip-val" aria-live="polite">
+          <span class="dollar">$</span>0.00
+        </div>
+      </div>
+
+      <div class="result-row">
+        <div>
+          <div class="result-label">Total</div>
+          <div class="result-sub">per person</div>
+        </div>
+        <div class="result-value" id="total-val" aria-live="polite">
+          <span class="dollar">$</span>0.00
+        </div>
+      </div>
+
+      <div class="result-row">
+        <div>
+          <div class="result-label">Grand Total</div>
+          <div class="result-sub">whole table</div>
+        </div>
+        <div class="result-value result-grand" id="grand-val" aria-live="polite">
+          <span class="dollar">$</span>0.00
+        </div>
+      </div>
+
+      <button class="reset-btn" id="reset-btn" type="button">Reset</button>
+
+    </div>
+  </div>
+</div>
+
+<section class="feature-strip">
+  <div class="feature-inner fx-stagger">
+    <div class="feature-card fx-hover-lift">
+      <div class="f-icon">&#9889;</div>
+      <h3>Instant Results</h3>
+      <p>Every keystroke triggers a recalculation. No submit button, no delay — see the split update live.</p>
+    </div>
+    <div class="feature-card fx-hover-lift">
+      <div class="f-icon">&#10022;</div>
+      <h3>Flexible Tips</h3>
+      <p>Choose 10, 15, or 20 percent presets, or dial in a custom percentage for any occasion.</p>
+    </div>
+    <div class="feature-card fx-hover-lift">
+      <div class="f-icon">&#9711;</div>
+      <h3>Party-Aware</h3>
+      <p>Scale from a table for one to a large group. Each person's share is always accurate to the cent.</p>
+    </div>
+  </div>
+</section>
+
+<section class="support-section fx-enter">
+  <div class="support-visual">
+    <img
+      src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&auto=format&fit=crop&q=80"
+      alt="Supporting visual for the main feature section — a warm restaurant dining room"
+    />
+  </div>
+  <div class="support-copy">
+    <p class="section-label">Why it matters</p>
+    <h2 class="section-heading">Fair splits, zero&nbsp;awkwardness.</h2>
+    <p>
+      Whether it's a business dinner or a birthday table, everyone deserves a
+      clear, confident answer to "what do I owe?" This scaffold puts the right
+      inputs in the right order and surfaces only the numbers that matter.
+    </p>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-brand">Tip&thinsp;/&thinsp;Calc</span>
+  <span>Built with the editorial design system</span>
+</footer>
+
+<script>
+(function () {
+  var billInput   = document.getElementById('bill-amount');
+  var peopleInput = document.getElementById('num-people');
+  var customInput = document.getElementById('custom-tip');
+  var customWrap  = document.getElementById('custom-tip-wrap');
+  var tipBtns     = document.querySelectorAll('.tip-btn');
+  var tipEl       = document.getElementById('tip-val');
+  var totalEl     = document.getElementById('total-val');
+  var grandEl     = document.getElementById('grand-val');
+  var resetBtn    = document.getElementById('reset-btn');
+
+  var selectedTip = null;
+
+  function fmt(n) {
+    return (isNaN(n) || !isFinite(n)) ? '0.00' : n.toFixed(2);
+  }
+
+  function setVal(el, value) {
+    var dollar = el.querySelector('.dollar');
+    el.textContent = value;
+    if (dollar) { el.insertBefore(dollar, el.firstChild); }
+  }
+
+  function calculate() {
+    var bill   = parseFloat(billInput.value)  || 0;
+    var people = Math.max(1, parseInt(peopleInput.value) || 1);
+    var pct = 0;
+    if (selectedTip === 'custom') {
+      pct = parseFloat(customInput.value) || 0;
+    } else if (selectedTip !== null) {
+      pct = parseFloat(selectedTip);
+    }
+    var tipTotal       = bill * (pct / 100);
+    var tipPerPerson   = tipTotal / people;
+    var totalPerPerson = (bill + tipTotal) / people;
+    var grandTotal     = bill + tipTotal;
+
+    setVal(tipEl,   fmt(tipPerPerson));
+    setVal(totalEl, fmt(totalPerPerson));
+    setVal(grandEl, fmt(grandTotal));
+  }
+
+  tipBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      tipBtns.forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      selectedTip = btn.dataset.tip;
+      if (selectedTip === 'custom') {
+        customWrap.classList.add('visible');
+        customInput.focus();
+      } else {
+        customWrap.classList.remove('visible');
+      }
+      calculate();
+    });
+  });
+
+  [billInput, peopleInput, customInput].forEach(function(el) {
+    el.addEventListener('input', calculate);
+  });
+
+  resetBtn.addEventListener('click', function() {
+    billInput.value   = '';
+    peopleInput.value = '';
+    customInput.value = '';
+    selectedTip = null;
+    tipBtns.forEach(function(b){ b.classList.remove('active'); });
+    customWrap.classList.remove('visible');
+    calculate();
+  });
+
+  calculate();
+})();
+</script>
+
+</body>
+</html>
