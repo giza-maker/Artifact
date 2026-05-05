@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luna & the Sleepy Stars ✨ A Bedtime Story</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-night: #0d1b3e;
+    --bg-deep: #091229;
+    --bg-panel: rgba(20, 35, 80, 0.85);
+    --bg-card: rgba(255,255,255,0.07);
+    --fg-strong: #f0eaff;
+    --fg-muted: #b8c0e8;
+    --accent-gold: #ffd86e;
+    --accent-rose: #ff8fab;
+    --accent-mint: #7effd4;
+    --accent-lavender: #c8b4ff;
+    --accent-orange: #ffad5e;
+    --radius-card: 24px;
+    --radius-pill: 999px;
+    --shadow-glow: 0 0 32px rgba(255,216,110,0.18);
+    --shadow-card: 0 8px 40px rgba(0,0,0,0.4);
+    --space-2: 0.75rem;
+    --space-3: 1rem;
+    --space-4: 1.5rem;
+    --space-5: 2rem;
+    --space-6: 3rem;
+    --display-font: 'Fredoka One', cursive;
+    --body-font: 'Nunito', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--body-font);
+    background: var(--bg-deep);
+    color: var(--fg-strong);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── STARFIELD ── */
+  .starfield {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .star {
+    position: absolute;
+    border-radius: 50%;
+    background: white;
+    animation: twinkle var(--dur, 3s) ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.2; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.4); }
+  }
+
+  /* ── LAYOUT ── */
+  .app-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: var(--space-4);
+  }
+
+  /* ── HEADER ── */
+  .book-header {
+    text-align: center;
+    padding: var(--space-6) var(--space-4) var(--space-5);
+    animation: fadeUp 700ms cubic-bezier(0.22,1,0.36,1) both;
+  }
+  .book-header .eyebrow {
+    font-family: var(--body-font);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent-mint);
+    margin-bottom: var(--space-2);
+    opacity: 0.9;
+  }
+  .book-header h1 {
+    font-family: var(--display-font);
+    font-size: clamp(2.4rem, 8vw, 4rem);
+    line-height: 1.1;
+    color: var(--accent-gold);
+    text-shadow: 0 0 40px rgba(255,216,110,0.4);
+    margin-bottom: var(--space-3);
+  }
+  .book-header .subtitle {
+    font-size: 1.1rem;
+    color: var(--fg-muted);
+    font-weight: 600;
+    max-width: 420px;
+    margin: 0 auto;
+  }
+
+  /* ── PROGRESS BAR ── */
+  .progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius-pill);
+    padding: 10px 20px;
+    margin-bottom: var(--space-5);
+    animation: fadeUp 700ms 100ms cubic-bezier(0.22,1,0.36,1) both;
+  }
+  .progress-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent-lavender);
+    white-space: nowrap;
+  }
+  .progress-bar-outer {
+    flex: 1;
+    height: 10px;
+    background: rgba(255,255,255,0.1);
+    border-radius: var(--radius-pill);
+    overflow: hidden;
+  }
+  .progress-bar-inner {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-lavender), var(--accent-mint));
+    border-radius: var(--radius-pill);
+    transition: width 0.6s cubic-bezier(0.22,1,0.36,1);
+    width: 0%;
+  }
+  .progress-stars {
+    font-size: 1rem;
+    display: flex;
+    gap: 4px;
+  }
+  .star-icon {
+    transition: transform 0.3s, filter 0.3s;
+    filter: grayscale(1) opacity(0.4);
+    font-size: 1.1rem;
+  }
+  .star-icon.earned {
+    filter: none;
+    transform: scale(1.2);
+    animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+  @keyframes popIn {
+    0% { transform: scale(0); }
+    100% { transform: scale(1.2); }
+  }
+
+  /* ── STORY PAGES ── */
+  .story-pages { position: relative; }
+
+  .story-page {
+    display: none;
+    animation: fadeUp 600ms cubic-bezier(0.22,1,0.36,1) both;
+  }
+  .story-page.active { display: block; }
+
+  /* ── SCENE CARD ── */
+  .scene-card {
+    background: var(--bg-panel);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    margin-bottom: var(--space-4);
+  }
+
+  .scene-illustration {
+    width: 100%;
+    aspect-ratio: 16/9;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Illustration backgrounds per page */
+  .scene-1 .scene-illustration { background: linear-gradient(160deg, #1a1a4e 0%, #2d1b4e 50%, #0d1b3e 100%); }
+  .scene-2 .scene-illustration { background: linear-gradient(160deg, #0d2450 0%, #1a3a6e 40%, #0d1b3e 100%); }
+  .scene-3 .scene-illustration { background: linear-gradient(160deg, #1a0d3e 0%, #2d1b6e 50%, #0a1428 100%); }
+  .scene-4 .scene-illustration { background: linear-gradient(160deg, #0d2d40 0%, #1a4050 40%, #0d1b3e 100%); }
+  .scene-5 .scene-illustration { background: linear-gradient(160deg, #1a1a50 0%, #0d2d3e 50%, #091229 100%); }
+
+  /* CSS Illustrations */
+  .illus-moon {
+    width: 100px; height: 100px;
+    background: radial-gradient(circle at 35% 35%, #fffde0, #ffd86e);
+    border-radius: 50%;
+    box-shadow: 0 0 50px rgba(255,216,110,0.5), 0 0 100px rgba(255,216,110,0.2);
+    position: absolute;
+    top: 15%; right: 18%;
+    animation: moonFloat 5s ease-in-out infinite;
+  }
+  @keyframes moonFloat {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+  .illus-fox {
+    font-size: 4rem;
+    position: absolute;
+    bottom: 12%;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: foxBob 3s ease-in-out infinite;
+    filter: drop-shadow(0 4px 16px rgba(255,140,80,0.4));
+    z-index: 2;
+  }
+  @keyframes foxBob {
+    0%,100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(-8px); }
+  }
+  .illus-cloud {
+    position: absolute;
+    font-size: 3rem;
+    opacity: 0.6;
+    animation: cloudDrift var(--drift-dur, 8s) ease-in-out infinite;
+  }
+  @keyframes cloudDrift {
+    0%,100% { transform: translateX(0); }
+    50% { transform: translateX(12px); }
+  }
+  .illus-star-small {
+    position: absolute;
+    font-size: var(--sz, 1.5rem);
+    animation: twinkle var(--tw-dur, 2s) ease-in-out infinite;
+    animation-delay: var(--tw-del, 0s);
+  }
+  .illus-firefly {
+    position: absolute;
+    width: 8px; height: 8px;
+    background: var(--accent-mint);
+    border-radius: 50%;
+    box-shadow: 0 0 12px var(--accent-mint);
+    animation: fireflyDrift var(--ff-dur, 4s) ease-in-out infinite;
+    animation-delay: var(--ff-del, 0s);
+  }
+  @keyframes fireflyDrift {
+    0% { transform: translate(0,0); opacity: 0.3; }
+    25% { opacity: 1; }
+    50% { transform: translate(var(--ff-x, 30px), var(--ff-y, -20px)); opacity: 0.6; }
+    75% { opacity: 1; }
+    100% { transform: translate(0,0); opacity: 0.3; }
+  }
+  .illus-tree {
+    position: absolute;
+    bottom: 0;
+    font-size: var(--tree-sz, 4rem);
+    opacity: 0.7;
+  }
+  .illus-owl { font-size: 3rem; position: absolute; animation: foxBob 4s 1s ease-in-out infinite; filter: drop-shadow(0 4px 12px rgba(200,180,255,0.4)); }
+  .illus-bear { font-size: 3.5rem; position: absolute; animation: foxBob 3.5s 0.5s ease-in-out infinite; filter: drop-shadow(0 4px 12px rgba(255,173,94,0.4)); }
+  .illus-rabbit { font-size: 3rem; position: absolute; animation: foxBob 3s 1.5s ease-in-out infinite; filter: drop-shadow(0 4px 12px rgba(255,143,171,0.4)); }
+  .illus-bed { font-size: 5rem; position: absolute; bottom: 8%; left: 50%; transform: translateX(-50%); filter: drop-shadow(0 8px 24px rgba(200,180,255,0.3)); }
+  .illus-shooting-star {
+    position: absolute;
+    width: 80px; height: 2px;
+    background: linear-gradient(90deg, transparent, white);
+    border-radius: 2px;
+    animation: shootStar 3s 2s ease-in infinite;
+    opacity: 0;
+  }
+  @keyframes shootStar {
+    0% { opacity: 0; transform: translateX(0) translateY(0) rotate(-30deg); }
+    10% { opacity: 1; }
+    40% { opacity: 0; transform: translateX(120px) translateY(60px) rotate(-30deg); }
+    100% { opacity: 0; }
+  }
+
+  /* ── STORY TEXT ── */
+  .story-text-area {
+    padding: var(--space-5);
+  }
+  .page-number {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent-lavender);
+    margin-bottom: var(--space-2);
+    opacity: 0.8;
+  }
+  .story-text {
+    font-size: clamp(1.05rem, 2.5vw, 1.2rem);
+    line-height: 1.75;
+    color: var(--fg-strong);
+    font-weight: 600;
+  }
+  .story-text em {
+    color: var(--accent-gold);
+    font-style: normal;
+    font-weight: 700;
+  }
+
+  /* ── NAV BUTTONS ── */
+  .nav-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-5);
+    gap: var(--space-3);
+  }
+  .btn-nav {
+    font-family: var(--display-font);
+    font-size: 1.05rem;
+    padding: 12px 28px;
+    border-radius: var(--radius-pill);
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-nav:hover { transform: translateY(-3px); }
+  .btn-prev {
+    background: rgba(255,255,255,0.08);
+    color: var(--fg-muted);
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+  .btn-prev:hover { background: rgba(255,255,255,0.12); color: var(--fg-strong); }
+  .btn-next {
+    background: linear-gradient(135deg, var(--accent-lavender), var(--accent-rose));
+    color: #1a0d3e;
+    font-weight: 700;
+    box-shadow: 0 4px 20px rgba(200,180,255,0.35);
+  }
+  .btn-next:hover { box-shadow: 0 8px 30px rgba(200,180,255,0.5); }
+  .btn-next:disabled, .btn-prev:disabled {
+    opacity: 0.35;
+    cursor: default;
+    transform: none;
+    box-shadow: none;
+  }
+  .page-indicator {
+    font-size: 0.9rem;
+    color: var(--fg-muted);
+    font-weight: 700;
+  }
+
+  /* ── ACTIVITY SECTION ── */
+  .activity-section {
+    background: var(--bg-card);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius-card);
+    padding: var(--space-5);
+    margin-bottom: var(--space-5);
+    animation: fadeUp 600ms 150ms cubic-bezier(0.22,1,0.36,1) both;
+  }
+  .activity-title {
+    font-family: var(--display-font);
+    font-size: 1.4rem;
+    color: var(--accent-gold);
+    margin-bottom: var(--space-2);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .activity-description {
+    font-size: 0.95rem;
+    color: var(--fg-muted);
+    margin-bottom: var(--space-4);
+    font-weight: 600;
+    line-height: 1.6;
+  }
+
+  /* ── STAR HUNT GAME ── */
+  .star-hunt-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+    margin-bottom: var(--space-4);
+  }
+  .star-cell {
+    aspect-ratio: 1;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.05);
+    border: 2px solid rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s, border-color 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+  .star-cell:hover { background: rgba(255,255,255,0.1); transform: scale(1.08); }
+  .star-cell.found {
+    background: rgba(255,216,110,0.18);
+    border-color: var(--accent-gold);
+    animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+  .star-cell.wrong {
+    background: rgba(255,100,100,0.15);
+    border-color: rgba(255,100,100,0.4);
+    animation: shake 0.4s ease both;
+  }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+  .hunt-result {
+    text-align: center;
+    font-family: var(--display-font);
+    font-size: 1.2rem;
+    color: var(--accent-mint);
+    min-height: 2rem;
+    padding: var(--space-2);
+  }
+
+  /* ── LULLABY ACTIVITY ── */
+  .lullaby-lines { display: flex; flex-direction: column; gap: 10px; margin-bottom: var(--space-4); }
+  .lullaby-line {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 12px;
+    padding: 12px 16px;
+    border: 1px solid rgba(255,255,255,0.07);
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+  }
+  .lullaby-line:hover { background: rgba(255,255,255,0.08); transform: translateX(4px); }
+  .lullaby-line.sung {
+    background: rgba(200,180,255,0.12);
+    border-color: var(--accent-lavender);
+  }
+  .lullaby-note {
+    font-size: 1.3rem;
+    flex-shrink: 0;
+    transition: transform 0.3s;
+  }
+  .lullaby-line.sung .lullaby-note { animation: noteFloat 0.8s ease both; }
+  @keyframes noteFloat {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.4) rotate(15deg); }
+    100% { transform: scale(1); }
+  }
+  .lullaby-text { font-size: 1rem; font-weight: 700; color: var(--fg-strong); flex: 1; }
+  .lullaby-sung-badge {
+    font-size: 0.75rem;
+    background: var(--accent-lavender);
+    color: #1a0d3e;
+    border-radius: var(--radius-pill);
+    padding: 3px 10px;
+    font-weight: 700;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .lullaby-line.sung .lullaby-sung-badge { opacity: 1; }
+
+  /* ── PATH PUZZLE ── */
+  .path-choices {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: var(--space-4);
+  }
+  .path-btn {
+    font-family: var(--body-font);
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 14px 22px;
+    border-radius: 14px;
+    border: 2px solid rgba(255,255,255,0.1);
+    background: rgba(255,255,255,0.05);
+    color: var(--fg-strong);
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .path-btn:hover:not(:disabled) { background: rgba(255,255,255,0.1); transform: translateX(6px); }
+  .path-btn.correct {
+    background: rgba(126,255,212,0.15);
+    border-color: var(--accent-mint);
+    animation: popIn 0.4s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+  .path-btn.incorrect {
+    background: rgba(255,100,100,0.12);
+    border-color: rgba(255,100,100,0.35);
+    animation: shake 0.4s ease both;
+  }
+  .path-btn:disabled { cursor: default; }
+  .path-result {
+    text-align: center;
+    font-family: var(--display-font);
+    font-size: 1.15rem;
+    min-height: 2rem;
+    padding: var(--space-2);
+  }
+
+  /* ── PJ DRESSER ── */
+  .pj-choices {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: var(--space-4);
+  }
+  .pj-card {
+    aspect-ratio: 1;
+    border-radius: 18px;
+    background: rgba(255,255,255,0.05);
+    border: 2px solid rgba(255,255,255,0.08);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, border-color 0.2s, background 0.2s;
+    font-size: 2.4rem;
+    padding: var(--space-3);
+  }
+  .pj-card span.label { font-size: 0.75rem; font-weight: 700; color: var(--fg-muted); font-family: var(--body-font); }
+  .pj-card:hover { transform: scale(1.06); border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.1); }
+  .pj-card.selected {
+    border-color: var(--accent-rose);
+    background: rgba(255,143,171,0.15);
+    transform: scale(1.08);
+  }
+  .pj-result {
+    text-align: center;
+    font-family: var(--display-font);
+    font-size: 1.1rem;
+    color: var(--accent-rose);
+    min-height: 2.5rem;
+    padding: var(--space-2);
+  }
+
+  /* ── COMPLETION SCREEN ── */
+  .completion-screen {
+    display: none;
+    text-align: center;
+    padding: var(--space-7) var(--space-5);
+    animation: fadeUp 700ms cubic-bezier(0.22,1,0.36,1) both;
+  }
+  .completion-screen.active { display: block; }
+  .completion-emoji { font-size: 5rem; display: block; margin-bottom: var(--space-4); animation: foxBob 2s ease-in-out infinite; }
+  .completion-title {
+    font-family: var(--display-font);
+    font-size: clamp(2rem, 6vw, 3rem);
+    color: var(--accent-gold);
+    text-shadow: 0 0 30px rgba(255,216,110,0.5);
+    margin-bottom: var(--space-3);
+  }
+  .completion-msg {
+    font-size: 1.1rem;
+    color: var(--fg-muted);
+    font-weight: 600;
+    max-width: 400px;
+    margin: 0 auto var(--space-5);
+    line-height: 1.7;
+  }
+  .completion-stars {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: var(--space-5);
+    font-size: 2.5rem;
+  }
+  .completion-star {
+    animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+  }
+  .completion-star:nth-child(2) { animation-delay: 0.1s; }
+  .completion-star:nth-child(3) { animation-delay: 0.2s; }
+  .btn-restart {
+    font-family: var(--display-font);
+    font-size: 1.2rem;
+    padding: 16px 40px;
+    border-radius: var(--radius-pill);
+    background: linear-gradient(135deg, var(--accent-gold), var(--accent-orange));
+    color: #1a0d3e;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 24px rgba(255,216,110,0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-restart:hover { transform: translateY(-4px) scale(1.04); box-shadow: 0 10px 36px rgba(255,216,110,0.55); }
+
+  /* ── UTILS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hidden { display: none !important; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 520px) {
+    .star-hunt-grid { grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .star-cell { font-size: 1.2rem; }
+    .pj-choices { grid-template-columns: repeat(3, 1fr); }
+    .pj-card { font-size: 1.8rem; }
+    .book-header h1 { font-size: 2.2rem; }
+  }
+
+  /* Sound button */
+  .sound-btn {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 100;
+    background: rgba(20,35,80,0.8);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: var(--radius-pill);
+    padding: 8px 16px;
+    color: var(--fg-muted);
+    font-family: var(--body-font);
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.2s, color 0.2s;
+    backdrop-filter: blur(8px);
+  }
+  .sound-btn:hover { background: rgba(40,60,120,0.9); color: var(--fg-strong); }
+</style>
+</head>
+<body>
+
+<!-- Starfield -->
+<div class="starfield" id="starfield"></div>
+
+<!-- Sound toggle (visual only) -->
+<button class="sound-btn" onclick="this.textContent=this.textContent.includes('🔊')?'🔇 Sound Off':'🔊 Sound On'">🔊 Sound On</button>
+
+<div class="app-wrap">
+
+  <!-- Header -->
+  <header class="book-header">
+    <div class="eyebrow">✨ A Gentle Bedtime Story</div>
+    <h1>Luna & the Sleepy Stars</h1>
+    <p class="subtitle">Help little Fox Luna guide her starry friends to bed 🌙</p>
+  </header>
+
+  <!-- Progress -->
+  <div class="progress-wrap">
+    <span class="progress-label">Adventure</span>
+    <div class="progress-bar-outer">
+      <div class="progress-bar-inner" id="progressBar"></div>
+    </div>
+    <div class="progress-stars" id="progressStars">
+      <span class="star-icon" id="ps1">⭐</span>
+      <span class="star-icon" id="ps2">⭐</span>
+      <span class="star-icon" id="ps3">⭐</span>
+    </div>
+  </div>
+
+  <!-- ══ STORY PAGES ══ -->
+  <div class="story-pages">
+
+    <!-- PAGE 1 -->
+    <div class="story-page active scene-1" data-page="1">
+      <div class="scene-card">
+        <div class="scene-illustration" aria-label="Luna the fox looks up at a glowing moon in a dark blue sky">
+          <div class="illus-moon"></div>
+          <span class="illus-star-small" style="top:20%;left:15%;--sz:1.8rem;--tw-dur:2.3s;--tw-del:0.2s">⭐</span>
+          <span class="illus-star-small" style="top:35%;left:28%;--sz:1.2rem;--tw-dur:3s;--tw-del:0.5s">✨</span>
+          <span class="illus-star-small" style="top:15%;left:60%;--sz:1.4rem;--tw-dur:2.6s;--tw-del:0.8s">⭐</span>
+          <span class="illus-star-small" style="top:28%;left:75%;--sz:1rem;--tw-dur:2s;--tw-del:0.3s">✨</span>
+          <span class="illus-cloud" style="top:10%;left:5%;--drift-dur:9s">☁️</span>
+          <div class="illus-tree" style="left:5%;--tree-sz:4.5rem">🌲</div>
+          <div class="illus-tree" style="right:8%;--tree-sz:3.5rem">🌲</div>
+          <div class="illus-fox" style="bottom:8%;left:50%;transform:translateX(-50%)">🦊</div>
+        </div>
+        <div class="story-text-area">
+          <div class="page-number">Page 1 of 5</div>
+          <p class="story-text">
+            High on a soft hill, little <em>Luna the Fox</em> gazed up at the sky.<br><br>
+            "Oh my," she whispered, her bright eyes wide with wonder.<br>
+            "The moon is already asleep… but where are all the stars?"
+          </p>
+        </div>
+      </div>
+
+      <!-- Activity: Star Hunt -->
+      <div class="activity-section">
+        <div class="activity-title">🌟 Star Hunt!</div>
+        <p class="activity-description">Luna needs your help! Find all <strong>5 hidden stars</strong> in the night sky. Tap the cells to search!</p>
+        <div class="star-hunt-grid" id="starHuntGrid"></div>
+        <div class="hunt-result" id="huntResult"></div>
+      </div>
+
+      <div class="nav-row">
+        <button class="btn-nav btn-prev" disabled>← Back</button>
+        <span class="page-indicator">1 / 5</span>
+        <button class="btn-nav btn-next" onclick="goToPage(2)">Next Page →</button>
+      </div>
+    </div>
+
+    <!-- PAGE 2 -->
+    <div class="story-page scene-2" data-page="2">
+      <div class="scene-card">
+        <div class="scene-illustration" aria-label="Luna meets Ollie the Owl on a mossy branch in the forest">
+          <span class="illus-star-small" style="top:12%;left:20%;--sz:1.5rem;--tw-dur:2.8s;--tw-del:0.1s">⭐</span>
+          <span class="illus-star-small" style="top:22%;left:65%;--sz:1.2rem;--tw-dur:3.2s;--tw-del:0.6s">✨</span>
+          <div class="illus-firefly" style="left:30%;top:40%;--ff-dur:4s;--ff-del:0s;--ff-x:40px;--ff-y:-30px"></div>
+          <div class="illus-firefly" style="left:60%;top:35%;--ff-dur:5s;--ff-del:0.8s;--ff-x:-30px;--ff-y:20px"></div>
+          <div class="illus-firefly" style="left:50%;top:55%;--ff-dur:3.5s;--ff-del:0.3s;--ff-x:25px;--ff-y:-15px"></div>
+          <div class="illus-tree" style="left:0%;--tree-sz:5rem">🌳</div>
+          <div class="illus-tree" style="right:0%;--tree-sz:4rem">🌳</div>
+          <div class="illus-fox" style="bottom:8%;left:35%;transform:translateX(-50%)">🦊</div>
+          <span class="illus-owl" style="bottom:30%;right:22%">🦉</span>
+        </div>
+        <div class="story-text-area">
+          <div class="page-number">Page 2 of 5</div>
+          <p class="story-text">
+            Luna trotted through the whispery forest until she found <em>Ollie the Owl</em> perched on a mossy branch.<br><br>
+            "Ollie! Have you seen the stars?" Luna asked softly.<br>
+            Ollie blinked his big round eyes. "They've been yawning all day, little one. They need help finding their cozy spots!"
+          </p>
+        </div>
+      </div>
+
+      <!-- Activity: Lullaby -->
+      <div class="activity-section">
+        <div class="activity-title">🎵 Sing a Lullaby!</div>
+        <p class="activity-description">Help Luna and Ollie sing the stars to sleep! Tap each line to sing it out loud together. 🎶</p>
+        <div class="lullaby-lines" id="lullabyLines">
+          <div class="lullaby-line" onclick="singLine(this)"><span class="lullaby-note">🎵</span><span class="lullaby-text">Twinkle, twinkle, little star...</span><span class="lullaby-sung-badge">Sung! 🌟</span></div>
+          <div class="lullaby-line" onclick="singLine(this)"><span class="lullaby-note">🎶</span><span class="lullaby-text">How I wonder what you are!</span><span class="lullaby-sung-badge">Sung! 🌟</span></div>
+          <div class="lullaby-line" onclick="singLine(this)"><span class="lullaby-note">🎵</span><span class="lullaby-text">Up above the world so high...</span><span class="lullaby-sung-badge">Sung! 🌟</span></div>
+          <div class="lullaby-line" onclick="singLine(this)"><span class="lullaby-note">🎶</span><span class="lullaby-text">Like a diamond in the sky! 💎</span><span class="lullaby-sung-badge">Sung! 🌟</span></div>
+        </div>
+        <div id="lullabyResult" style="text-align:center;font-family:var(--display-font);font-size:1.1rem;color:var(--accent-gold);min-height:2rem;"></div>
+      </div>
+
+      <div class="nav-row">
+        <button class="btn-nav btn-prev" onclick="goToPage(1)">← Back</button>
+        <span class="page-indicator">2 / 5</span>
+        <button class="btn-nav btn-next" onclick="goToPage(3)">Next Page →</button>
+      </div>
+    </div>
+
+    <!-- PAGE 3 -->
+    <div class="story-page scene-3" data-page="3">
+      <div class="scene-card">
+        <div class="scene-illustration" aria-label="Luna finds Bear and Rabbit yawning under the stars">
+          <span class="illus-star-small" style="top:10%;left:25%;--sz:1.6rem;--tw-dur:2.4s;--tw-del:0.4s">⭐</span>
+          <span class="illus-star-small" style="top:18%;left:50%;--sz:1rem;--tw-dur:3.1s;--tw-del:0.2s">✨</span>
+          <span class="illus-star-small" style="top:25%;left:75%;--sz:1.4rem;--tw-dur:2.7s;--tw-del:0.7s">⭐</span>
+          <div class="illus-shooting-star" style="top:20%;left:5%"></div>
+          <div class="illus-tree" style="left:0;--tree-sz:4rem">🌲</div>
+          <div class="illus-fox" style="bottom:8%;left:50%;transform:translateX(-50%)">🦊</div>
+          <span class="illus-bear" style="bottom:8%;left:22%">🐻</span>
+          <span class="illus-rabbit" style="bottom:8%;right:18%">🐰</span>
+        </div>
+        <div class="story-text-area">
+          <div class="page-number">Page 3 of 5</div>
+          <p class="story-text">
+            Down by the Wishing Pond, Luna found <em>Bruno the Bear</em> and <em>Rosie the Rabbit</em> — both rubbing their sleepy eyes.<br><br>
+            "The stars are lost!" said Rosie with a yawn. "They don't know which way to go home!"<br>
+            "Then we'll show them the way," Luna said gently. "Together!"
+          </p>
+        </div>
+      </div>
+
+      <!-- Activity: Path Puzzle -->
+      <div class="activity-section">
+        <div class="activity-title">🗺️ Help Fox Find the Star!</div>
+        <p class="activity-description">A lost star doesn't know which path leads home. Can you help Luna choose the right way?</p>
+        <div class="path-choices" id="pathChoices">
+          <button class="path-btn" onclick="choosePath(this, false)">🌊 Follow the rushing river (it's very fast!)</button>
+          <button class="path-btn" onclick="choosePath(this, true)">✨ Follow the soft glowing light in the sky</button>
+          <button class="path-btn" onclick="choosePath(this, false)">🌑 Walk into the dark cave (no lights at all!)</button>
+        </div>
+        <div class="path-result" id="pathResult"></div>
+      </div>
+
+      <div class="nav-row">
+        <button class="btn-nav btn-prev" onclick="goToPage(2)">← Back</button>
+        <span class="page-indicator">3 / 5</span>
+        <button class="btn-nav btn-next" onclick="goToPage(4)">Next Page →</button>
+      </div>
+    </div>
+
+    <!-- PAGE 4 -->
+    <div class="story-page scene-4" data-page="4">
+      <div class="scene-card">
+        <div class="scene-illustration" aria-label="All the forest friends gather to guide the stars home">
+          <div class="illus-moon" style="width:80px;height:80px;top:10%;right:10%"></div>
+          <span class="illus-star-small" style="top:8%;left:18%;--sz:2rem;--tw-dur:2s;--tw-del:0.1s">⭐</span>
+          <span class="illus-star-small" style="top:20%;left:40%;--sz:1.5rem;--tw-dur:2.8s;--tw-del:0.5s">✨</span>
+          <span class="illus-star-small" style="top:12%;left:58%;--sz:1.2rem;--tw-dur:3.2s;--tw-del:0.9s">⭐</span>
+          <div class="illus-firefly" style="left:25%;top:50%;--ff-dur:3.5s;--ff-del:0.2s;--ff-x:50px;--ff-y:-25px"></div>
+          <div class="illus-firefly" style="left:55%;top:45%;--ff-dur:4.2s;--ff-del:0.6s;--ff-x:-35px;--ff-y:20px"></div>
+          <div class="illus-firefly" style="left:40%;top:60%;--ff-dur:3s;--ff-del:1s;--ff-x:20px;--ff-y:-40px"></div>
+          <div class="illus-fox" style="bottom:8%;left:50%;transform:translateX(-50%)">🦊</div>
+          <span class="illus-owl" style="bottom:28%;left:18%">🦉</span>
+          <span class="illus-bear" style="bottom:8%;left:20%">🐻</span>
+          <span class="illus-rabbit" style="bottom:8%;right:20%">🐰</span>
+        </div>
+        <div class="story-text-area">
+          <div class="page-number">Page 4 of 5</div>
+          <p class="story-text">
+            Together, Luna and all her friends held up their tiny lanterns and called out into the sky:<br><br>
+            "Stars, oh stars — we see you up there! Follow our light, and we'll show you the way home!"<br><br>
+            One by one, the <em>twinkling stars drifted back</em> to their special places, blinking a happy thank-you.
+          </p>
+        </div>
+      </div>
+
+      <!-- Activity: Lullaby 2 / Firefly count (repurposed as sing-along) -->
+      <div class="activity-section">
+        <div class="activity-title">🌠 Count the Stars!</div>
+        <p class="activity-description">The stars are coming home! Help Luna count them by tapping each star as it appears. How many can you find?</p>
+        <div id="countStarArea" style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;padding:var(--space-3) 0;min-height:80px;">
+          <!-- stars generated by JS -->
+        </div>
+        <div id="countResult" style="text-align:center;font-family:var(--display-font);font-size:1.15rem;color:var(--accent-mint);min-height:2rem;padding:var(--space-2);"></div>
+      </div>
+
+      <div class="nav-row">
+        <button class="btn-nav btn-prev" onclick="goToPage(3)">← Back</button>
+        <span class="page-indicator">4 / 5</span>
+        <button class="btn-nav btn-next" onclick="goToPage(5)">Next Page →</button>
+      </div>
+    </div>
+
+    <!-- PAGE 5 -->
+    <div class="story-page scene-5" data-page="5">
+      <div class="scene-card">
+        <div class="scene-illustration" aria-label="Luna curled up in her cozy bed under a sky full of stars">
+          <div class="illus-moon" style="width:90px;height:90px;top:8%;left:50%;transform:translateX(-50%)"></div>
+          <span class="illus-star-small" style="top:18%;left:10%;--sz:1.5rem;--tw-dur:2.2s;--tw-del:0.3s">⭐</span>
+          <span class="illus-star-small" style="top:10%;left:30%;--sz:1.8rem;--tw-dur:2.7s;--tw-del:0.7s">✨</span>
+          <span class="illus-star-small" style="top:16%;left:65%;--sz:1.3rem;--tw-dur:3s;--tw-del:0.1s">⭐</span>
+          <span class="illus-star-small" style="top:22%;left:82%;--sz:1rem;--tw-dur:2.5s;--tw-del:0.9s">✨</span>
+          <div class="illus-shooting-star" style="top:15%;left:10%;animation-delay:0.5s"></div>
+          <div class="illus-bed">🛏️</div>
+          <div class="illus-fox" style="bottom:14%;left:50%;transform:translateX(-50%);font-size:2.5rem">🦊</div>
+        </div>
+        <div class="story-text-area">
+          <div class="page-number">Page 5 of 5</div>
+          <p class="story-text">
+            With every star safely home, Luna curled up in her warm, snuggly bed.<br><br>
+            She looked up through her little window at the glittering sky and smiled.<br><br>
+            <em>"Goodnight, stars,"</em> she whispered. <em>"Goodnight, moon. Goodnight, everyone."</em><br><br>
+            And just like that — Luna drifted off into the most wonderful, magical dreams. 🌙
+          </p>
+        </div>
+      </div>
+
+      <!-- Activity: PJ Dresser -->
+      <div class="activity-section">
+        <div class="activity-title">🌙 Pick Luna's Pajamas!</div>
+        <p class="activity-description">Time for bed! Help Luna choose her favourite pair of cozy pajamas for tonight. Which ones do YOU like best?</p>
+        <div class="pj-choices" id="pjChoices">
+          <div class="pj-card" onclick="choosePJ(this,'Star pajamas')">🌟<span class="label">Star Print</span></div>
+          <div class="pj-card" onclick="choosePJ(this,'Moon pajamas')">🌙<span class="label">Moon Stripes</span></div>
+          <div class="pj-card" onclick="choosePJ(this,'Rainbow pajamas')">🌈<span class="label">Rainbow</span></div>
+          <div class="pj-card" onclick="choosePJ(this,'Cloud pajamas')">☁️<span class="label">Fluffy Cloud</span></div>
+          <div class="pj-card" onclick="choosePJ(this,'Fox pajamas')">🦊<span class="label">Fox Spots</span></div>
+          <div class="pj-card" onclick="choosePJ(this,'Flower pajamas')">🌸<span class="label">Flower Garden</span></div>
+        </div>
+        <div class="pj-result" id="pjResult"></div>
+      </div>
+
+      <div class="nav-row">
+        <button class="btn-nav btn-prev" onclick="goToPage(4)">← Back</button>
+        <span class="page-indicator">5 / 5</span>
+        <button class="btn-nav btn-next" onclick="showCompletion()" id="finishBtn" style="background:linear-gradient(135deg,var(--accent-gold),var(--accent-orange));color:#1a0d3e;">The End! 🌙</button>
+      </div>
+    </div>
+
+  </div><!-- /story-pages -->
+
+  <!-- COMPLETION SCREEN -->
+  <div class="completion-screen" id="completionScreen">
+    <span class="completion-emoji">🌟</span>
+    <h2 class="completion-title">You did it! The End!</h2>
+    <div class="completion-stars">
+      <span class="completion-star">⭐</span>
+      <span class="completion-star">⭐</span>
+      <span class="completion-star">⭐</span>
+    </div>
+    <p class="completion-msg">
+      You helped Luna and her friends guide all the stars safely home. 
+      Now it's time for YOU to snuggle up and drift off to dreamland too! 🦊💤
+    </p>
+    <button class="btn-restart" onclick="restartStory()">🔄 Read Again!</button>
+  </div>
+
+</div><!-- /app-wrap -->
+
+<script>
+  /* ── STARFIELD ── */
+  (function() {
+    const sf = document.getElementById('starfield');
+    for (let i = 0; i < 120; i++) {
+      const s = document.createElement('div');
+      s.className = 'star';
+      const size = Math.random() * 2.5 + 0.5;
+      s.style.cssText = `
+        width:${size}px;height:${size}px;
+        left:${Math.random()*100}%;top:${Math.random()*100}%;
+        --dur:${2 + Math.random()*4}s;
+        --delay:${Math.random()*4}s;
+        opacity:${Math.random()*0.5+0.1};
+      `;
+      sf.appendChild(s);
+    }
+  })();
+
+  /* ── PAGE STATE ── */
+  let currentPage = 1;
+  const totalPages = 5;
+  let starsEarned = 0;
+  let starsEarnedPerPage = {};
+
+  function updateProgress() {
+    const pct = ((currentPage - 1) / totalPages) * 100;
+    document.getElementById('progressBar').style.width = pct + '%';
+    // Update star icons
+    const thresholds = [2, 4, 5];
+    const ids = ['ps1','ps2','ps3'];
+    ids.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (currentPage - 1 >= thresholds[i]) el.classList.add('earned');
+      else el.classList.remove('earned');
+    });
+  }
+
+  function goToPage(n) {
+    document.querySelector(`.story-page[data-page="${currentPage}"]`).classList.remove('active');
+    currentPage = n;
+    document.querySelector(`.story-page[data-page="${n}"]`).classList.add('active');
+    updateProgress();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* ── STAR HUNT ── */
+  (function initStarHunt() {
+    const grid = document.getElementById('starHuntGrid');
+    const totalCells = 20;
+    const starPositions = new Set();
+    while (starPositions.size < 5) starPositions.add(Math.floor(Math.random() * totalCells));
+    let found = 0;
+    const items = ['🌙','☁️','💨','🌿','🍃','🌑','💤','🌾','🌫️','🍂'];
+    for (let i = 0; i < totalCells; i++) {
+      const cell = document.createElement('div');
+      cell.className = 'star-cell';
+      cell.dataset.idx = i;
+      cell.textContent = '?';
+      cell.onclick = function() {
+        if (this.classList.contains('found') || this.classList.contains('wrong')) return;
+        if (starPositions.has(i)) {
+          this.textContent = '⭐';
+          this.classList.add('found');
+          found++;
+          const r = document.getElementById('huntResult');
+          if (found === 5) {
+            r.textContent = '🎉 You found all 5 stars! Luna is so happy!';
+            r.style.color = 'var(--accent-gold)';
+          } else {
+            r.textContent = `✨ ${found} of 5 stars found! Keep looking!`;
+          }
+        } else {
+          this.textContent = items[Math.floor(Math.random()*items.length)];
+          this.classList.add('wrong');
+          setTimeout(() => {
+            this.classList.remove('wrong');
+            this.textContent = '?';
+          }, 700);
+        }
+      };
+      grid.appendChild(cell);
+    }
+  })();
+
+  /* ── LULLABY ── */
+  let sungCount = 0;
+  function singLine(el) {
+    if (el.classList.contains('sung')) return;
+    el.classList.add('sung');
+    sungCount++;
+    if (sungCount === 4) {
+      document.getElementById('lullabyResult').textContent = '🎶 Beautiful! You sang the whole lullaby! The stars are yawning... 😴';
+    }
+  }
+
+  /* ── PATH PUZZLE ── */
+  let pathChosen = false;
+  function choosePath(btn, correct) {
+    if (pathChosen) return;
+    pathChosen = true;
+    const btns = document.querySelectorAll('#pathChoices .path-btn');
+    const result = document.getElementById('pathResult');
+    if (correct) {
+      btn.classList.add('correct');
+      result.textContent = '🌟 Yes! Follow the glowing light! The star found its way home!';
+      result.style.color = 'var(--accent-mint)';
+    } else {
+      btn.classList.add('incorrect');
+      result.textContent = '💛 Oops! That path is tricky. Try the glowing light next time!';
+      result.style.color = 'var(--accent-orange)';
+      btns.forEach(b => { if (b !== btn) b.style.opacity = '0.5'; });
+    }
+    btns.forEach(b => b.disabled = true);
+  }
+
+  /* ── COUNT STARS ── */
+  (function initCountStars() {
+    const area = document.getElementById('countStarArea');
+    const total = 8;
+    let counted = 0;
+    for (let i = 0; i < total; i++) {
+      const star = document.createElement('div');
+      star.style.cssText = `
+        font-size:2.2rem;cursor:pointer;opacity:0;
+        transition:opacity 0.4s, transform 0.3s;
+        animation:fadeUp 0.6s ${i*0.12}s cubic-bezier(0.22,1,0.36,1) both;
+        user-select:none;
+      `;
+      star.textContent = '⭐';
+      star.dataset.counted = '0';
+      star.onclick = function() {
+        if (this.dataset.counted === '1') return;
+        this.dataset.counted = '1';
+        this.style.transform = 'scale(1.4) rotate(20deg)';
+        this.style.filter = 'drop-shadow(0 0 10px gold)';
+        counted++;
+        const r = document.getElementById('countResult');
+        if (counted === total) {
+          r.textContent = `🎉 ${counted} stars home! The sky is shining bright!`;
+        } else {
+          r.textContent = `✨ ${counted} stars counted! Keep going!`;
+        }
+      };
+      area.appendChild(star);
+    }
+    // Make them visible after mount
+    setTimeout(() => {
+      area.querySelectorAll('div').forEach((s, i) => {
+        setTimeout(() => { s.style.opacity = '1'; }, i * 120);
+      });
+    }, 100);
+  })();
+
+  /* ── PJ CHOOSER ── */
+  function choosePJ(card, name) {
+    document.querySelectorAll('#pjChoices .pj-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    document.getElementById('pjResult').textContent = `🌙 ${name}! Luna loves them! Sweet dreams are on the way...`;
+  }
+
+  /* ── COMPLETION ── */
+  function showCompletion() {
+    document.querySelector(`.story-page[data-page="${currentPage}"]`).classList.remove('active');
+    document.getElementById('completionScreen').classList.add('active');
+    document.getElementById('progressBar').style.width = '100%';
+    ['ps1','ps2','ps3'].forEach(id => document.getElementById(id).classList.add('earned'));
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function restartStory() {
+    document.getElementById('completionScreen').classList.remove('active');
+    currentPage = 1;
+    document.querySelectorAll('.story-page').forEach(p => p.classList.remove('active'));
+    document.querySelector('.story-page[data-page="1"]').classList.add('active');
+    updateProgress();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* init */
+  updateProgress();
+</script>
+</body>
+</html>
