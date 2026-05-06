@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explore Egypt - Gamified Experience</title>
+    <link rel="stylesheet" href="tokens.css">
+    <link rel="stylesheet" href="motion.css">
+    <style>
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-canvas);
+            color: var(--fg-strong);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        .hero {
+            background-color: var(--bg-panel);
+            padding: var(--space-6) var(--space-3);
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: var(--display-1);
+            color: var(--accent-primary);
+        }
+        .hero p {
+            font-size: var(--body-lg);
+            margin: var(--space-4) 0;
+        }
+        .interactive-section {
+            display: flex;
+            justify-content: space-evenly;
+            padding: var(--space-6);
+        }
+        .card {
+            background-color: var(--bg-panel);
+            border-radius: var(--radius-card);
+            box-shadow: var(--shadow-soft);
+            padding: var(--space-4);
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-strong);
+        }
+        .badge {
+            background-color: var(--accent-highlight);
+            border-radius: var(--radius-pill);
+            display: inline-block;
+            padding: var(--space-1) var(--space-2);
+            margin-top: var(--space-2);
+            font-size: var(--body-sm);
+            color: var(--fg-inverse);
+        }
+        @keyframes storyAnimation {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        .story {
+            animation: storyAnimation 2s ease-in-out;
+            padding: var(--space-5);
+        }
+        .footer {
+            background-color: var(--bg-accent);
+            color: var(--fg-inverse);
+            text-align: center;
+            padding: var(--space-3);
+        }
+    </style>
+</head>
+<body>
+    <section class="hero fx-enter">
+        <h1>Welcome to Egypt's Gamified Adventure!</h1>
+        <p>Embark on a playful quest through Egypt's most enchanting touristic spots. Earn badges, take quizzes, and discover the wonders of ancient and modern Egypt through fun interactive experiences.</p>
+    </section>
+
+    <section class="interactive-section fx-stagger">
+        <div class="card">
+            <h2>Nile Adventure</h2>
+            <p>Navigate the Nile and learn about Egypt's life-giving river.</p>
+            <span class="badge fx-pulse-ring">New</span>
+        </div>
+        <div class="card">
+            <h2>Pyramids Challenge</h2>
+            <p>Can you solve the mysteries of the Pyramids?</p>
+            <span class="badge fx-pulse-ring">Popular</span>
+        </div>
+        <div class="card">
+            <h2>Cairo Quest</h2>
+            <p>Explore the bustling city of Cairo through interactive stories.</p>
+            <span class="badge fx-pulse-ring">Trending</span>
+        </div>
+    </section>
+
+    <div class="story">
+        <h3>Your Journey Begins Here!</h3>
+        <p>Start your adventure in the heart of Egypt, where ancient history meets modern culture. Collect artifacts, unravel stories, and share your achievements with fellow explorers!</p>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 Explore Egypt - All rights reserved | Follow us on social media for more adventures!</p>
+    </footer>
+</body>
+</html>
