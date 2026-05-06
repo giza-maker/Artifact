@@ -1,0 +1,1239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpendQuest — Your Money Mission Control</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,500;0,9..40,700;1,9..40,300&family=Syne:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  /* ── Design tokens ── */
+  :root {
+    --bg-canvas: #0d1117;
+    --bg-panel: rgba(22, 30, 42, 0.92);
+    --bg-panel-solid: #161e2a;
+    --bg-accent: #0f2133;
+    --fg-strong: #e8f0fe;
+    --fg-muted: #8899aa;
+    --fg-inverse: #0d1117;
+    --line-soft: rgba(136, 153, 170, 0.15);
+    --line-strong: rgba(100, 200, 180, 0.3);
+    --accent-primary: #00e5a0;
+    --accent-secondary: #4dabf7;
+    --accent-warm: #ffd43b;
+    --accent-danger: #ff6b6b;
+    --accent-purple: #cc5de8;
+    --radius-card: 20px;
+    --radius-pill: 999px;
+    --shadow-soft: 0 8px 32px rgba(0, 229, 160, 0.08);
+    --shadow-strong: 0 16px 48px rgba(0, 0, 0, 0.4);
+    --shadow-glow: 0 0 24px rgba(0, 229, 160, 0.25);
+    --display-font: 'Syne', sans-serif;
+    --mono-font: 'Space Mono', monospace;
+    --body-font: 'DM Sans', sans-serif;
+  }
+
+  /* ── Reset & base ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--body-font);
+    background: var(--bg-canvas);
+    color: var(--fg-strong);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── Motion ── */
+  @media (prefers-reduced-motion: reduce) {
+    .fx-enter, .fx-stagger > *, .fx-hover-lift, .fx-pulse-ring { animation: none !important; transition: none !important; transform: none !important; }
+  }
+  .fx-enter { animation: fx-enter 620ms cubic-bezier(0.22,1,0.36,1) both; }
+  .fx-stagger > * { opacity: 0; animation: fx-enter 560ms cubic-bezier(0.22,1,0.36,1) both; }
+  .fx-stagger > *:nth-child(1) { animation-delay: 60ms; }
+  .fx-stagger > *:nth-child(2) { animation-delay: 130ms; }
+  .fx-stagger > *:nth-child(3) { animation-delay: 200ms; }
+  .fx-stagger > *:nth-child(4) { animation-delay: 270ms; }
+  .fx-stagger > *:nth-child(5) { animation-delay: 340ms; }
+  .fx-hover-lift { transition: transform 180ms ease, box-shadow 180ms ease; }
+  .fx-hover-lift:hover { transform: translateY(-4px); box-shadow: var(--shadow-strong); }
+  .fx-pulse-ring { animation: fx-pulse 2.6s ease-in-out infinite; }
+  @keyframes fx-enter {
+    from { opacity: 0; transform: translate3d(0,18px,0) scale(0.985); }
+    to   { opacity: 1; transform: translate3d(0,0,0) scale(1); }
+  }
+  @keyframes fx-pulse {
+    0%,100% { box-shadow: 0 0 0 0 rgba(0,229,160,0.3); }
+    50%      { box-shadow: 0 0 0 14px rgba(0,229,160,0); }
+  }
+  @keyframes scanline {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 100%; }
+  }
+  @keyframes countUp {
+    from { opacity: 0; transform: scale(0.7); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  @keyframes badgePop {
+    0% { transform: scale(0); opacity: 0; }
+    70% { transform: scale(1.2); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  @keyframes progressFill {
+    from { width: 0; }
+  }
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+  @keyframes floatParticle {
+    0% { transform: translateY(0) translateX(0) scale(1); opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { transform: translateY(-120px) translateX(var(--dx,20px)) scale(0); opacity: 0; }
+  }
+
+  /* ── Background grid ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(0,229,160,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,229,160,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+  }
+
+  /* ── Layout shell ── */
+  .app-shell { display: grid; grid-template-columns: 240px 1fr; min-height: 100vh; position: relative; z-index: 1; }
+
+  /* ── Sidebar nav ── */
+  .sidebar {
+    background: var(--bg-panel-solid);
+    border-right: 1px solid var(--line-soft);
+    display: flex; flex-direction: column;
+    padding: 1.5rem 1rem;
+    position: sticky; top: 0; height: 100vh;
+    overflow-y: auto;
+  }
+  .sidebar-logo {
+    display: flex; align-items: center; gap: 0.6rem;
+    margin-bottom: 2rem; padding: 0 0.5rem;
+  }
+  .logo-icon {
+    width: 36px; height: 36px;
+    background: var(--accent-primary);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+    box-shadow: var(--shadow-glow);
+  }
+  .logo-text {
+    font-family: var(--display-font);
+    font-size: 1.2rem; font-weight: 800;
+    color: var(--fg-strong);
+    letter-spacing: -0.02em;
+  }
+  .logo-text span { color: var(--accent-primary); }
+
+  .nav-section-label {
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--fg-muted);
+    padding: 0.5rem 0.75rem;
+    margin-top: 1rem;
+  }
+  .nav-item {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.65rem 0.75rem;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 0.88rem; font-weight: 500;
+    color: var(--fg-muted);
+    transition: all 160ms ease;
+    border: none; background: none; width: 100%; text-align: left;
+    margin-bottom: 2px;
+  }
+  .nav-item:hover { background: rgba(0,229,160,0.07); color: var(--fg-strong); }
+  .nav-item.active { background: rgba(0,229,160,0.12); color: var(--accent-primary); }
+  .nav-item .nav-icon { font-size: 1.1rem; width: 20px; text-align: center; }
+
+  /* XP bar in sidebar */
+  .sidebar-xp {
+    margin-top: auto;
+    padding: 1rem 0.75rem;
+    background: rgba(0,229,160,0.05);
+    border-radius: 14px;
+    border: 1px solid var(--line-soft);
+  }
+  .xp-label { font-size: 0.7rem; color: var(--fg-muted); margin-bottom: 0.4rem; display: flex; justify-content: space-between; }
+  .xp-label strong { color: var(--accent-primary); font-family: var(--mono-font); }
+  .xp-bar-track { height: 6px; background: rgba(255,255,255,0.08); border-radius: 999px; overflow: hidden; }
+  .xp-bar-fill {
+    height: 100%; border-radius: 999px;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+    animation: progressFill 1.2s cubic-bezier(0.22,1,0.36,1) both;
+  }
+  .level-badge {
+    display: flex; align-items: center; gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .level-pill {
+    font-family: var(--mono-font); font-size: 0.65rem; font-weight: 700;
+    background: var(--accent-primary); color: var(--fg-inverse);
+    padding: 2px 8px; border-radius: 999px;
+  }
+  .level-name { font-size: 0.78rem; font-weight: 600; color: var(--fg-strong); }
+
+  /* ── Main content ── */
+  .main { padding: 2rem 2.5rem; overflow-y: auto; }
+
+  /* ── Page header ── */
+  .page-header {
+    display: flex; align-items: flex-start; justify-content: space-between;
+    margin-bottom: 2rem;
+  }
+  .page-title-group .eyebrow {
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent-primary); margin-bottom: 0.25rem;
+  }
+  .page-title {
+    font-family: var(--display-font);
+    font-size: 2rem; font-weight: 800;
+    letter-spacing: -0.03em; line-height: 1.1;
+  }
+  .page-subtitle { color: var(--fg-muted); font-size: 0.9rem; margin-top: 0.35rem; }
+
+  .header-actions { display: flex; gap: 0.75rem; align-items: center; }
+  .streak-badge {
+    display: flex; align-items: center; gap: 0.4rem;
+    background: rgba(255,212,59,0.12);
+    border: 1px solid rgba(255,212,59,0.25);
+    border-radius: 999px; padding: 0.4rem 1rem;
+    font-size: 0.82rem; font-weight: 700;
+    color: var(--accent-warm);
+  }
+
+  /* ── Stats row ── */
+  .stats-row {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 1rem; margin-bottom: 1.5rem;
+  }
+  .stat-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius-card);
+    padding: 1.25rem 1.5rem;
+    position: relative; overflow: hidden;
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: var(--card-accent, var(--accent-primary));
+  }
+  .stat-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg-muted); margin-bottom: 0.5rem; }
+  .stat-value {
+    font-family: var(--mono-font); font-size: 1.6rem; font-weight: 700;
+    color: var(--fg-strong); line-height: 1;
+    animation: countUp 500ms cubic-bezier(0.22,1,0.36,1) both;
+  }
+  .stat-value.positive { color: var(--accent-primary); }
+  .stat-value.warning { color: var(--accent-warm); }
+  .stat-value.danger { color: var(--accent-danger); }
+  .stat-delta { font-size: 0.75rem; color: var(--fg-muted); margin-top: 0.4rem; }
+  .stat-delta .up { color: var(--accent-primary); }
+  .stat-delta .down { color: var(--accent-danger); }
+  .stat-icon { position: absolute; top: 1rem; right: 1.25rem; font-size: 1.4rem; opacity: 0.4; }
+
+  /* ── Main grid ── */
+  .main-grid { display: grid; grid-template-columns: 1fr 340px; gap: 1.5rem; }
+
+  /* ── Add expense form ── */
+  .add-expense-panel {
+    background: var(--bg-panel);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius-card);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .panel-title {
+    font-family: var(--display-font); font-size: 1rem; font-weight: 800;
+    margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;
+  }
+  .expense-form { display: grid; grid-template-columns: 1fr 1fr 1.2fr auto; gap: 0.75rem; align-items: end; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-label { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--fg-muted); }
+  .form-input, .form-select {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--line-soft);
+    border-radius: 10px;
+    padding: 0.65rem 0.9rem;
+    color: var(--fg-strong);
+    font-family: var(--body-font);
+    font-size: 0.9rem;
+    transition: border-color 160ms, box-shadow 160ms;
+    outline: none;
+  }
+  .form-input:focus, .form-select:focus {
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(0,229,160,0.12);
+  }
+  .form-select option { background: var(--bg-panel-solid); }
+  .form-input::placeholder { color: var(--fg-muted); }
+
+  .btn-add {
+    background: var(--accent-primary);
+    color: var(--fg-inverse);
+    border: none; border-radius: 10px;
+    padding: 0.7rem 1.4rem;
+    font-family: var(--display-font); font-size: 0.9rem; font-weight: 700;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 0.4rem;
+    transition: all 160ms; white-space: nowrap;
+    box-shadow: var(--shadow-glow);
+  }
+  .btn-add:hover { transform: translateY(-2px); box-shadow: 0 0 32px rgba(0,229,160,0.4); }
+  .btn-add:active { transform: translateY(0); }
+
+  /* ── Expense list ── */
+  .expense-list-panel {
+    background: var(--bg-panel);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+  }
+  .list-header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--line-soft);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .expense-list { list-style: none; }
+  .expense-item {
+    display: grid; grid-template-columns: auto 1fr auto auto;
+    align-items: center; gap: 1rem;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--line-soft);
+    transition: background 160ms;
+    cursor: default;
+  }
+  .expense-item:last-child { border-bottom: none; }
+  .expense-item:hover { background: rgba(255,255,255,0.02); }
+  .expense-item.new-entry { animation: fx-enter 500ms cubic-bezier(0.22,1,0.36,1) both; }
+
+  .category-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .expense-info .name { font-size: 0.9rem; font-weight: 500; }
+  .expense-info .meta { font-size: 0.75rem; color: var(--fg-muted); margin-top: 2px; }
+  .expense-amount { font-family: var(--mono-font); font-size: 0.95rem; font-weight: 700; }
+  .expense-xp {
+    font-size: 0.72rem; font-weight: 700;
+    color: var(--accent-primary);
+    background: rgba(0,229,160,0.1);
+    border-radius: 999px; padding: 2px 8px;
+    white-space: nowrap;
+  }
+  .expense-delete {
+    background: none; border: none; color: var(--fg-muted);
+    cursor: pointer; font-size: 0.8rem; padding: 4px 8px; border-radius: 6px;
+    transition: all 160ms; opacity: 0;
+  }
+  .expense-item:hover .expense-delete { opacity: 1; }
+  .expense-delete:hover { background: rgba(255,107,107,0.15); color: var(--accent-danger); }
+
+  .empty-state {
+    padding: 3rem 1.5rem; text-align: center;
+    color: var(--fg-muted);
+  }
+  .empty-state .empty-icon { font-size: 2.5rem; margin-bottom: 0.75rem; }
+  .empty-state p { font-size: 0.88rem; }
+
+  /* ── Right sidebar panels ── */
+  .right-col { display: flex; flex-direction: column; gap: 1.5rem; }
+
+  /* ── Achievement panel ── */
+  .achievements-panel {
+    background: var(--bg-panel);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius-card);
+    padding: 1.5rem;
+  }
+  .badges-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-top: 1rem; }
+  .badge-item {
+    display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+    padding: 0.75rem 0.5rem;
+    border-radius: 14px;
+    border: 1px solid var(--line-soft);
+    text-align: center; cursor: default;
+    transition: all 200ms;
+    position: relative;
+  }
+  .badge-item.unlocked { background: rgba(0,229,160,0.07); border-color: rgba(0,229,160,0.2); }
+  .badge-item.locked { opacity: 0.4; filter: grayscale(1); }
+  .badge-item.newly-unlocked { animation: badgePop 600ms cubic-bezier(0.22,1,0.36,1) both; }
+  .badge-icon { font-size: 1.6rem; }
+  .badge-name { font-size: 0.65rem; font-weight: 700; color: var(--fg-muted); line-height: 1.2; }
+  .badge-item.unlocked .badge-name { color: var(--accent-primary); }
+
+  /* ── Budget ring ── */
+  .budget-panel {
+    background: var(--bg-panel);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius-card);
+    padding: 1.5rem;
+  }
+  .budget-ring-wrap { display: flex; align-items: center; gap: 1.25rem; margin-top: 1rem; }
+  .ring-svg { flex-shrink: 0; }
+  .ring-track { fill: none; stroke: rgba(255,255,255,0.06); stroke-width: 8; }
+  .ring-fill {
+    fill: none; stroke-width: 8;
+    stroke-linecap: round;
+    stroke-dasharray: 251.2;
+    transition: stroke-dashoffset 800ms cubic-bezier(0.22,1,0.36,1);
+    transform-origin: center;
+    transform: rotate(-90deg);
+  }
+  .ring-label { text-anchor: middle; dominant-baseline: middle; }
+  .budget-details { flex: 1; }
+  .budget-category { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.5rem; }
+  .budget-cat-name { font-size: 0.8rem; display: flex; align-items: center; gap: 0.4rem; }
+  .budget-cat-bar { height: 4px; background: rgba(255,255,255,0.06); border-radius: 999px; flex: 1; margin: 0 0.5rem; overflow: hidden; }
+  .budget-cat-fill { height: 100%; border-radius: 999px; animation: progressFill 1s ease both; }
+  .budget-cat-pct { font-family: var(--mono-font); font-size: 0.7rem; color: var(--fg-muted); }
+
+  /* ── Category breakdown colors ── */
+  .cat-food    { --cat-clr: #00e5a0; }
+  .cat-transport { --cat-clr: #4dabf7; }
+  .cat-entertainment { --cat-clr: #cc5de8; }
+  .cat-study   { --cat-clr: #ffd43b; }
+  .cat-health  { --cat-clr: #ff6b6b; }
+  .cat-other   { --cat-clr: #adb5bd; }
+
+  /* ── Quest / challenge panel ── */
+  .quests-panel {
+    background: var(--bg-panel);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius-card);
+    padding: 1.5rem;
+  }
+  .quest-item {
+    display: flex; align-items: flex-start; gap: 0.75rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .quest-item:last-child { border-bottom: none; }
+  .quest-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 2px; }
+  .quest-info { flex: 1; }
+  .quest-name { font-size: 0.84rem; font-weight: 600; margin-bottom: 0.3rem; }
+  .quest-desc { font-size: 0.74rem; color: var(--fg-muted); margin-bottom: 0.5rem; }
+  .quest-progress-bar { height: 5px; background: rgba(255,255,255,0.06); border-radius: 999px; overflow: hidden; }
+  .quest-progress-fill { height: 100%; border-radius: 999px; background: var(--bar-color, var(--accent-primary)); animation: progressFill 1.2s cubic-bezier(0.22,1,0.36,1) both; }
+  .quest-reward { font-size: 0.7rem; font-weight: 700; color: var(--accent-warm); white-space: nowrap; margin-top: 4px; }
+
+  /* ── Toast notifications ── */
+  .toast-container { position: fixed; top: 1.5rem; right: 1.5rem; z-index: 9999; display: flex; flex-direction: column; gap: 0.5rem; }
+  .toast {
+    background: var(--bg-panel-solid);
+    border: 1px solid var(--line-soft);
+    border-radius: 14px;
+    padding: 0.9rem 1.25rem;
+    display: flex; align-items: center; gap: 0.75rem;
+    font-size: 0.88rem;
+    animation: fx-enter 400ms cubic-bezier(0.22,1,0.36,1) both;
+    max-width: 320px;
+    box-shadow: var(--shadow-strong);
+  }
+  .toast.toast-xp { border-color: rgba(0,229,160,0.3); }
+  .toast.toast-badge { border-color: rgba(255,212,59,0.3); }
+  .toast-icon { font-size: 1.3rem; }
+  .toast-body .toast-title { font-weight: 700; margin-bottom: 2px; }
+  .toast-body .toast-msg { font-size: 0.8rem; color: var(--fg-muted); }
+
+  /* ── Confetti canvas ── */
+  #confetti-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 9998; }
+
+  /* ── Particle burst ── */
+  .particle { position: fixed; pointer-events: none; z-index: 9997; font-size: 1rem; animation: floatParticle 800ms ease-out forwards; }
+
+  /* ── Tabs ── */
+  .tab-bar { display: flex; gap: 0.25rem; margin-bottom: 1rem; }
+  .tab-btn {
+    background: none; border: none;
+    padding: 0.4rem 0.9rem;
+    border-radius: 8px; cursor: pointer;
+    font-size: 0.82rem; font-weight: 600;
+    color: var(--fg-muted);
+    transition: all 160ms;
+  }
+  .tab-btn.active { background: rgba(0,229,160,0.1); color: var(--accent-primary); }
+  .tab-btn:hover:not(.active) { background: rgba(255,255,255,0.04); color: var(--fg-strong); }
+
+  /* ── Leaderboard mini ── */
+  .leaderboard-item {
+    display: flex; align-items: center; gap: 0.75rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .leaderboard-item:last-child { border-bottom: none; }
+  .lb-rank {
+    font-family: var(--mono-font); font-size: 0.75rem; font-weight: 700;
+    width: 24px; text-align: center;
+    color: var(--fg-muted);
+  }
+  .lb-rank.gold { color: var(--accent-warm); }
+  .lb-rank.silver { color: #adb5bd; }
+  .lb-rank.bronze { color: #cd7f32; }
+  .lb-avatar {
+    width: 30px; height: 30px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.9rem;
+    background: rgba(255,255,255,0.06);
+    flex-shrink: 0;
+  }
+  .lb-name { flex: 1; font-size: 0.84rem; font-weight: 500; }
+  .lb-name .lb-sub { font-size: 0.7rem; color: var(--fg-muted); }
+  .lb-score { font-family: var(--mono-font); font-size: 0.82rem; color: var(--accent-primary); }
+
+  /* ── Monthly chart ── */
+  .chart-container { margin-top: 1rem; }
+  .bar-chart { display: flex; align-items: flex-end; gap: 6px; height: 80px; }
+  .bar-col { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .bar {
+    width: 100%; border-radius: 4px 4px 0 0;
+    background: rgba(0,229,160,0.25);
+    transition: background 160ms;
+    cursor: default;
+    min-height: 4px;
+    position: relative;
+    animation: progressFill 800ms cubic-bezier(0.22,1,0.36,1) both;
+    animation-name: barGrow;
+  }
+  @keyframes barGrow {
+    from { transform: scaleY(0); transform-origin: bottom; }
+    to { transform: scaleY(1); transform-origin: bottom; }
+  }
+  .bar.current { background: var(--accent-primary); }
+  .bar:hover { background: var(--accent-primary); }
+  .bar-label { font-size: 0.62rem; color: var(--fg-muted); }
+
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--line-soft); border-radius: 999px; }
+
+  /* Budget month selector */
+  .month-badge {
+    font-size: 0.72rem; font-weight: 700; color: var(--accent-secondary);
+    background: rgba(77,171,247,0.1);
+    border-radius: 999px; padding: 3px 10px;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+<div class="toast-container" id="toastContainer"></div>
+
+<div class="app-shell">
+  <!-- ── Sidebar ── -->
+  <nav class="sidebar fx-enter">
+    <div class="sidebar-logo">
+      <div class="logo-icon">🚀</div>
+      <div class="logo-text">Spend<span>Quest</span></div>
+    </div>
+
+    <span class="nav-section-label">Mission Deck</span>
+    <button class="nav-item active" onclick="switchPage('dashboard')">
+      <span class="nav-icon">📊</span> Dashboard
+    </button>
+    <button class="nav-item" onclick="switchPage('expenses')">
+      <span class="nav-icon">💸</span> Expenses
+    </button>
+    <button class="nav-item" onclick="switchPage('quests')">
+      <span class="nav-icon">🎯</span> Quests
+    </button>
+
+    <span class="nav-section-label">Progress</span>
+    <button class="nav-item" onclick="switchPage('achievements')">
+      <span class="nav-icon">🏆</span> Achievements
+    </button>
+    <button class="nav-item" onclick="switchPage('leaderboard')">
+      <span class="nav-icon">🏅</span> Leaderboard
+    </button>
+    <button class="nav-item" onclick="switchPage('budget')">
+      <span class="nav-icon">💰</span> Budget
+    </button>
+
+    <!-- XP / Level widget -->
+    <div class="sidebar-xp fx-pulse-ring" id="sidebarXp">
+      <div class="level-badge">
+        <span class="level-pill" id="levelPill">LVL 1</span>
+        <span class="level-name" id="levelName">Budget Rookie</span>
+      </div>
+      <div class="xp-label">
+        <span>XP Progress</span>
+        <strong id="xpDisplay">0 / 200 XP</strong>
+      </div>
+      <div class="xp-bar-track">
+        <div class="xp-bar-fill" id="xpBarFill" style="width:0%"></div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── Main content ── -->
+  <main class="main">
+    <!-- DASHBOARD PAGE -->
+    <div id="page-dashboard">
+      <div class="page-header fx-enter">
+        <div class="page-title-group">
+          <div class="eyebrow">Mission Control</div>
+          <h1 class="page-title">Your Spending HQ 💫</h1>
+          <p class="page-subtitle">Track, save, and level up your student budget!</p>
+        </div>
+        <div class="header-actions">
+          <div class="streak-badge fx-pulse-ring">🔥 <span id="streakCount">0</span>-day streak</div>
+        </div>
+      </div>
+
+      <!-- Stats row -->
+      <div class="stats-row fx-stagger">
+        <div class="stat-card fx-hover-lift" style="--card-accent: var(--accent-primary)">
+          <div class="stat-label">This Month</div>
+          <div class="stat-value danger" id="statMonthly">$0.00</div>
+          <div class="stat-delta"><span class="up">↑</span> All tracked expenses</div>
+          <div class="stat-icon">📅</div>
+        </div>
+        <div class="stat-card fx-hover-lift" style="--card-accent: var(--accent-secondary)">
+          <div class="stat-label">Total XP Earned</div>
+          <div class="stat-value positive" id="statXp">0 XP</div>
+          <div class="stat-delta">Keep logging to earn more!</div>
+          <div class="stat-icon">⚡</div>
+        </div>
+        <div class="stat-card fx-hover-lift" style="--card-accent: var(--accent-warm)">
+          <div class="stat-label">Entries Logged</div>
+          <div class="stat-value" id="statEntries">0</div>
+          <div class="stat-delta">Every entry = +10 XP</div>
+          <div class="stat-icon">📝</div>
+        </div>
+        <div class="stat-card fx-hover-lift" style="--card-accent: var(--accent-purple)">
+          <div class="stat-label">Badges Earned</div>
+          <div class="stat-value" id="statBadges">0 / 6</div>
+          <div class="stat-delta">Unlock all achievements!</div>
+          <div class="stat-icon">🏅</div>
+        </div>
+      </div>
+
+      <!-- Main grid -->
+      <div class="main-grid">
+        <!-- Left col -->
+        <div>
+          <!-- Add expense form -->
+          <div class="add-expense-panel fx-enter">
+            <div class="panel-title">➕ Log New Expense</div>
+            <div class="expense-form">
+              <div class="form-group">
+                <label class="form-label">Description</label>
+                <input class="form-input" id="expenseName" type="text" placeholder="e.g. Lunch, Bus ride…" autocomplete="off">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Amount ($)</label>
+                <input class="form-input" id="expenseAmount" type="number" placeholder="0.00" min="0" step="0.01">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Category</label>
+                <select class="form-select" id="expenseCategory">
+                  <option value="food">🍕 Food</option>
+                  <option value="transport">🚌 Transport</option>
+                  <option value="entertainment">🎮 Entertainment</option>
+                  <option value="study">📚 Study</option>
+                  <option value="health">💊 Health</option>
+                  <option value="other">📦 Other</option>
+                </select>
+              </div>
+              <button class="btn-add" onclick="addExpense()">+ Log it</button>
+            </div>
+          </div>
+
+          <!-- Expense list -->
+          <div class="expense-list-panel fx-enter">
+            <div class="list-header">
+              <div class="panel-title" style="margin:0">📋 Recent Expenses</div>
+              <div class="tab-bar">
+                <button class="tab-btn active" id="tab-all" onclick="filterExpenses('all')">All</button>
+                <button class="tab-btn" id="tab-food" onclick="filterExpenses('food')">🍕</button>
+                <button class="tab-btn" id="tab-transport" onclick="filterExpenses('transport')">🚌</button>
+                <button class="tab-btn" id="tab-entertainment" onclick="filterExpenses('entertainment')">🎮</button>
+                <button class="tab-btn" id="tab-study" onclick="filterExpenses('study')">📚</button>
+                <button class="tab-btn" id="tab-health" onclick="filterExpenses('health')">💊</button>
+              </div>
+            </div>
+            <ul class="expense-list" id="expenseList">
+              <li class="empty-state">
+                <div class="empty-icon">🎯</div>
+                <p>No expenses yet — log your first one to start earning XP!</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Right col -->
+        <div class="right-col">
+          <!-- Budget ring -->
+          <div class="budget-panel fx-enter fx-hover-lift">
+            <div class="panel-title" style="display:flex;justify-content:space-between;align-items:center">
+              💰 Monthly Budget
+              <span class="month-badge" id="monthBadge">May 2025</span>
+            </div>
+            <div class="budget-ring-wrap">
+              <svg class="ring-svg" width="90" height="90" viewBox="0 0 90 90">
+                <circle class="ring-track" cx="45" cy="45" r="40"/>
+                <circle class="ring-fill" cx="45" cy="45" r="40" id="budgetRing"
+                  stroke="url(#ringGrad)" stroke-dashoffset="251.2"/>
+                <defs>
+                  <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#00e5a0"/>
+                    <stop offset="100%" stop-color="#4dabf7"/>
+                  </linearGradient>
+                </defs>
+                <text x="45" y="42" class="ring-label" fill="#e8f0fe" font-size="11" font-family="Space Mono" font-weight="700" id="ringPct">0%</text>
+                <text x="45" y="56" class="ring-label" fill="#8899aa" font-size="7" font-family="DM Sans">used</text>
+              </svg>
+              <div class="budget-details">
+                <div style="font-size:0.75rem;color:var(--fg-muted);margin-bottom:4px">Monthly limit: <strong style="color:var(--fg-strong);font-family:var(--mono-font)">$<span id="budgetLimitDisplay">500</span></strong></div>
+                <div style="font-family:var(--mono-font);font-size:1.1rem;font-weight:700;color:var(--accent-primary)" id="budgetSpent">$0.00</div>
+                <div style="font-size:0.75rem;color:var(--fg-muted)">of $<span id="budgetLimitSub">500</span> spent</div>
+                <div style="margin-top:8px;display:flex;gap:6px;flex-wrap:wrap">
+                  <button onclick="setBudget()" style="background:rgba(0,229,160,0.1);border:1px solid rgba(0,229,160,0.2);border-radius:6px;padding:3px 10px;font-size:0.72rem;font-weight:700;color:var(--accent-primary);cursor:pointer;">Set limit</button>
+                </div>
+              </div>
+            </div>
+            <!-- Category bars -->
+            <div id="catBars" style="margin-top:1rem"></div>
+          </div>
+
+          <!-- Achievements -->
+          <div class="achievements-panel fx-enter">
+            <div class="panel-title">🏆 Achievements</div>
+            <div class="badges-grid fx-stagger" id="badgesGrid"></div>
+          </div>
+
+          <!-- Quests -->
+          <div class="quests-panel fx-enter">
+            <div class="panel-title">🎯 Active Quests</div>
+            <div id="questsList"></div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /dashboard -->
+
+    <!-- EXPENSES PAGE (simplified redirect) -->
+    <div id="page-expenses" style="display:none">
+      <div class="page-header fx-enter">
+        <div class="page-title-group">
+          <div class="eyebrow">Finance Log</div>
+          <h1 class="page-title">All Expenses 💸</h1>
+          <p class="page-subtitle">Full history of your tracked spending.</p>
+        </div>
+      </div>
+      <div class="expense-list-panel fx-enter">
+        <div class="list-header">
+          <div class="panel-title" style="margin:0">Transaction History</div>
+        </div>
+        <ul class="expense-list" id="expenseListFull"></ul>
+      </div>
+    </div>
+
+    <!-- ACHIEVEMENTS PAGE -->
+    <div id="page-achievements" style="display:none">
+      <div class="page-header fx-enter">
+        <div class="page-title-group">
+          <div class="eyebrow">Hall of Fame</div>
+          <h1 class="page-title">Your Achievements 🏆</h1>
+          <p class="page-subtitle">Badges unlock as you hit milestones. Keep going!</p>
+        </div>
+      </div>
+      <div class="achievements-panel fx-enter" style="max-width:520px">
+        <div class="badges-grid fx-stagger" id="badgesGridFull" style="grid-template-columns:repeat(3,1fr);gap:1rem"></div>
+      </div>
+    </div>
+
+    <!-- LEADERBOARD PAGE -->
+    <div id="page-leaderboard" style="display:none">
+      <div class="page-header fx-enter">
+        <div class="page-title-group">
+          <div class="eyebrow">Rankings</div>
+          <h1 class="page-title">Leaderboard 🏅</h1>
+          <p class="page-subtitle">See how you rank among other budget heroes.</p>
+        </div>
+      </div>
+      <div class="expense-list-panel fx-enter" style="max-width:480px;padding:1rem">
+        <div id="leaderboardList" style="padding:0.5rem 0.5rem"></div>
+      </div>
+    </div>
+
+    <!-- BUDGET PAGE -->
+    <div id="page-budget" style="display:none">
+      <div class="page-header fx-enter">
+        <div class="page-title-group">
+          <div class="eyebrow">Finance Goals</div>
+          <h1 class="page-title">Budget Centre 💰</h1>
+          <p class="page-subtitle">Set your monthly limit and track spending by category.</p>
+        </div>
+      </div>
+      <div class="budget-panel fx-enter" style="max-width:520px">
+        <div class="panel-title">Monthly Limit</div>
+        <div style="display:flex;gap:0.75rem;margin-top:0.75rem;align-items:flex-end">
+          <div class="form-group" style="flex:1">
+            <label class="form-label">Budget Amount ($)</label>
+            <input class="form-input" id="budgetInput" type="number" placeholder="500" min="1">
+          </div>
+          <button class="btn-add" onclick="saveBudget()">Save</button>
+        </div>
+        <div id="catBarsFull" style="margin-top:1.5rem"></div>
+      </div>
+    </div>
+
+    <!-- QUESTS PAGE -->
+    <div id="page-quests" style="display:none">
+      <div class="page-header fx-enter">
+        <div class="page-title-group">
+          <div class="eyebrow">Active Missions</div>
+          <h1 class="page-title">Your Quests 🎯</h1>
+          <p class="page-subtitle">Complete quests to earn bonus XP and unlock badges.</p>
+        </div>
+      </div>
+      <div class="quests-panel fx-enter" style="max-width:480px">
+        <div id="questsListFull"></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ─── State ───────────────────────────────────────────────
+const state = {
+  expenses: JSON.parse(localStorage.getItem('sq_expenses') || '[]'),
+  xp: parseInt(localStorage.getItem('sq_xp') || '0'),
+  level: parseInt(localStorage.getItem('sq_level') || '1'),
+  streak: parseInt(localStorage.getItem('sq_streak') || '0'),
+  lastDay: localStorage.getItem('sq_lastday') || '',
+  budget: parseFloat(localStorage.getItem('sq_budget') || '500'),
+  unlockedBadges: JSON.parse(localStorage.getItem('sq_badges') || '[]'),
+  filter: 'all',
+};
+
+const LEVEL_NAMES = ['Budget Rookie','Penny Pincher','Coin Keeper','Savings Scout','Money Mentor','Finance Ace','Budget Master','XP Legend'];
+const LEVEL_THRESHOLDS = [0,200,500,900,1400,2100,3000,4200];
+
+const CAT_META = {
+  food:          { label:'🍕 Food',          color:'#00e5a0' },
+  transport:     { label:'🚌 Transport',      color:'#4dabf7' },
+  entertainment: { label:'🎮 Entertainment',  color:'#cc5de8' },
+  study:         { label:'📚 Study',          color:'#ffd43b' },
+  health:        { label:'💊 Health',         color:'#ff6b6b' },
+  other:         { label:'📦 Other',          color:'#adb5bd' },
+};
+
+const BADGES = [
+  { id:'first',    icon:'🌟', name:'First Entry',    req: e => e.length >= 1 },
+  { id:'five',     icon:'🔥', name:'5 Entries',      req: e => e.length >= 5 },
+  { id:'ten',      icon:'💎', name:'10 Entries',     req: e => e.length >= 10 },
+  { id:'streak3',  icon:'⚡', name:'3-Day Streak',   req: () => state.streak >= 3 },
+  { id:'budget',   icon:'💰', name:'Budget Set',     req: () => true, manual: 'budget' },
+  { id:'allcat',   icon:'🗂️', name:'All Categories', req: e => new Set(e.map(x=>x.cat)).size >= 5 },
+];
+
+const QUESTS = [
+  { id:'q1', icon:'📝', name:'Rookie Logger', desc:'Log 3 expenses', reward:'+30 XP', target:3, current:() => state.expenses.length, max:3 },
+  { id:'q2', icon:'🍕', name:'Food Tracker',  desc:'Log 2 food expenses', reward:'+25 XP', target:2, current:() => state.expenses.filter(e=>e.cat==='food').length, max:2 },
+  { id:'q3', icon:'🎯', name:'Week Warrior',  desc:'Log 5 total expenses', reward:'+50 XP', target:5, current:() => state.expenses.length, max:5 },
+  { id:'q4', icon:'🗂️', name:'Category Pro',  desc:'Try 3 different categories', reward:'+40 XP', target:3, current:() => new Set(state.expenses.map(x=>x.cat)).size, max:3 },
+];
+
+const LEADERBOARD = [
+  { name:'You',     sub:'', avatar:'🧑‍💻', score: () => state.xp, isYou: true },
+  { name:'Alex S.', sub:'Economics',  avatar:'😎', score: () => 480 },
+  { name:'Priya M.',sub:'Medicine',   avatar:'🎓', score: () => 360 },
+  { name:'Jamie T.',sub:'Design',     avatar:'✏️', score: () => 210 },
+  { name:'Sam K.',  sub:'CS',         avatar:'⌨️', score: () => 150 },
+];
+
+function save() {
+  localStorage.setItem('sq_expenses', JSON.stringify(state.expenses));
+  localStorage.setItem('sq_xp', state.xp);
+  localStorage.setItem('sq_level', state.level);
+  localStorage.setItem('sq_streak', state.streak);
+  localStorage.setItem('sq_lastday', state.lastDay);
+  localStorage.setItem('sq_budget', state.budget);
+  localStorage.setItem('sq_badges', JSON.stringify(state.unlockedBadges));
+}
+
+// ─── Streak ──────────────────────────────────────────────
+function checkStreak() {
+  const today = new Date().toDateString();
+  if (state.lastDay === today) return;
+  const yesterday = new Date(Date.now()-86400000).toDateString();
+  if (state.lastDay === yesterday) {
+    state.streak++;
+  } else if (state.lastDay !== today) {
+    state.streak = 1;
+  }
+  state.lastDay = today;
+}
+
+// ─── XP & Level ──────────────────────────────────────────
+function addXP(amount, reason) {
+  state.xp += amount;
+  // Level up?
+  let leveled = false;
+  for (let i = LEVEL_THRESHOLDS.length-1; i >= 0; i--) {
+    if (state.xp >= LEVEL_THRESHOLDS[i] && state.level !== i+1) {
+      if (i+1 > state.level) {
+        state.level = i+1;
+        leveled = true;
+      }
+    }
+  }
+  updateXPBar();
+  if (leveled) {
+    showToast('toast-xp','⬆️','Level Up!',`You reached Level ${state.level}: ${LEVEL_NAMES[state.level-1]}!`);
+    fireConfetti();
+  } else {
+    showToast('toast-xp','⚡',`+${amount} XP`,reason);
+  }
+}
+
+function updateXPBar() {
+  const lvl = state.level-1;
+  const current = state.xp - LEVEL_THRESHOLDS[lvl];
+  const needed = (LEVEL_THRESHOLDS[lvl+1] || LEVEL_THRESHOLDS[lvl]+500) - LEVEL_THRESHOLDS[lvl];
+  const pct = Math.min(100, Math.round(current/needed*100));
+  document.getElementById('xpBarFill').style.width = pct+'%';
+  document.getElementById('xpDisplay').textContent = `${state.xp} / ${LEVEL_THRESHOLDS[lvl+1]||'MAX'} XP`;
+  document.getElementById('levelPill').textContent = `LVL ${state.level}`;
+  document.getElementById('levelName').textContent = LEVEL_NAMES[state.level-1] || 'Legend';
+}
+
+// ─── Badges ──────────────────────────────────────────────
+function checkBadges(extra) {
+  let newlyUnlocked = [];
+  BADGES.forEach(b => {
+    if (state.unlockedBadges.includes(b.id)) return;
+    if (b.manual && extra !== b.manual) return;
+    if (!b.manual && b.req(state.expenses)) {
+      state.unlockedBadges.push(b.id);
+      newlyUnlocked.push(b);
+    } else if (b.manual && extra === b.manual) {
+      state.unlockedBadges.push(b.id);
+      newlyUnlocked.push(b);
+    }
+  });
+  newlyUnlocked.forEach(b => {
+    showToast('toast-badge','🏆','Badge Unlocked!',`You earned the "${b.name}" badge!`);
+  });
+  renderBadges();
+}
+
+function renderBadges() {
+  const grid = document.getElementById('badgesGrid');
+  const gridFull = document.getElementById('badgesGridFull');
+  [grid, gridFull].forEach(el => {
+    if (!el) return;
+    el.innerHTML = BADGES.map(b => {
+      const unlocked = state.unlockedBadges.includes(b.id);
+      return `<div class="badge-item ${unlocked?'unlocked':'locked'}">
+        <div class="badge-icon">${b.icon}</div>
+        <div class="badge-name">${b.name}</div>
+      </div>`;
+    }).join('');
+  });
+  document.getElementById('statBadges').textContent = `${state.unlockedBadges.length} / ${BADGES.length}`;
+}
+
+// ─── Quests ──────────────────────────────────────────────
+function renderQuests() {
+  ['questsList','questsListFull'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.innerHTML = QUESTS.map(q => {
+      const cur = Math.min(q.current(), q.max);
+      const pct = Math.round(cur/q.max*100);
+      const done = cur >= q.max;
+      const colors = ['#00e5a0','#4dabf7','#cc5de8','#ffd43b'];
+      const color = colors[QUESTS.indexOf(q)%colors.length];
+      return `<div class="quest-item">
+        <div class="quest-icon">${done?'✅':q.icon}</div>
+        <div class="quest-info">
+          <div class="quest-name">${q.name}</div>
+          <div class="quest-desc">${q.desc} — ${cur}/${q.max}</div>
+          <div class="quest-progress-bar">
+            <div class="quest-progress-fill" style="width:${pct}%;--bar-color:${color}"></div>
+          </div>
+        </div>
+        <div class="quest-reward">${q.reward}</div>
+      </div>`;
+    }).join('');
+  });
+}
+
+// ─── Budget ring + category bars ─────────────────────────
+function renderBudget() {
+  const total = state.expenses.reduce((s,e)=>s+e.amount,0);
+  const pct = Math.min(100, Math.round(total/state.budget*100));
+  const offset = 251.2 - (251.2 * pct/100);
+  const ring = document.getElementById('budgetRing');
+  if (ring) {
+    ring.style.strokeDashoffset = offset;
+    ring.style.stroke = pct > 80 ? '#ff6b6b' : pct > 60 ? '#ffd43b' : 'url(#ringGrad)';
+  }
+  const ringPct = document.getElementById('ringPct');
+  if (ringPct) ringPct.textContent = pct+'%';
+  const budgetSpent = document.getElementById('budgetSpent');
+  if (budgetSpent) budgetSpent.textContent = '$'+total.toFixed(2);
+  ['budgetLimitDisplay','budgetLimitSub'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = state.budget.toFixed(0);
+  });
+
+  // Category bars
+  const catTotals = {};
+  state.expenses.forEach(e => { catTotals[e.cat] = (catTotals[e.cat]||0)+e.amount; });
+  const barsHtml = Object.entries(CAT_META).map(([cat, meta]) => {
+    const amt = catTotals[cat]||0;
+    const p = total > 0 ? Math.round(amt/total*100) : 0;
+    return `<div class="budget-category" style="align-items:center;gap:0.5rem">
+      <span class="budget-cat-name" style="font-size:0.78rem;min-width:100px">${meta.label}</span>
+      <div class="budget-cat-bar" style="flex:1;height:5px;background:rgba(255,255,255,0.06);border-radius:999px;overflow:hidden">
+        <div class="budget-cat-fill" style="width:${p}%;background:${meta.color};height:100%;border-radius:999px"></div>
+      </div>
+      <span class="budget-cat-pct" style="font-family:var(--mono-font);font-size:0.7rem;color:var(--fg-muted);min-width:30px;text-align:right">$${amt.toFixed(0)}</span>
+    </div>`;
+  }).join('');
+  ['catBars','catBarsFull'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = barsHtml;
+  });
+
+  document.getElementById('statMonthly').textContent = '$'+total.toFixed(2);
+}
+
+// ─── Stats ───────────────────────────────────────────────
+function renderStats() {
+  document.getElementById('statXp').textContent = state.xp+' XP';
+  document.getElementById('statEntries').textContent = state.expenses.length;
+  document.getElementById('streakCount').textContent = state.streak;
+  const month = new Date().toLocaleDateString('en-US',{month:'long',year:'numeric'});
+  const mb = document.getElementById('monthBadge');
+  if (mb) mb.textContent = month;
+}
+
+// ─── Expense list ─────────────────────────────────────────
+function renderList() {
+  const lists = ['expenseList','expenseListFull'];
+  lists.forEach(listId => {
+    const el = document.getElementById(listId);
+    if (!el) return;
+    let items = [...state.expenses].reverse();
+    if (listId === 'expenseList' && state.filter !== 'all') {
+      items = items.filter(e => e.cat === state.filter);
+    }
+    if (items.length === 0) {
+      el.innerHTML = `<li class="empty-state"><div class="empty-icon">🎯</div><p>No expenses here yet!</p></li>`;
+      return;
+    }
+    el.innerHTML = items.map((e,i) => {
+      const meta = CAT_META[e.cat]||CAT_META.other;
+      const date = new Date(e.ts).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+      return `<li class="expense-item${i===0?' new-entry':''}" data-id="${e.id}">
+        <div class="category-dot" style="background:${meta.color}"></div>
+        <div class="expense-info">
+          <div class="name">${escHtml(e.name)}</div>
+          <div class="meta">${meta.label} · ${date}</div>
+        </div>
+        <div class="expense-amount" style="color:${meta.color}">$${e.amount.toFixed(2)}</div>
+        <div class="expense-xp">+${e.xp} XP</div>
+        <button class="expense-delete" onclick="deleteExpense('${e.id}')">✕</button>
+      </li>`;
+    }).join('');
+  });
+}
+
+// ─── Leaderboard ─────────────────────────────────────────
+function renderLeaderboard() {
+  const el = document.getElementById('leaderboardList');
+  if (!el) return;
+  const sorted = LEADERBOARD
+    .map(p => ({...p, pts: p.score()}))
+    .sort((a,b)=>b.pts-a.pts);
+  el.innerHTML = sorted.map((p,i) => {
+    const rankCls = i===0?'gold':i===1?'silver':i===2?'bronze':'';
+    const rankIcon = i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1;
+    return `<div class="leaderboard-item${p.isYou?' ':''}">
+      <div class="lb-rank ${rankCls}">${rankIcon}</div>
+      <div class="lb-avatar">${p.avatar}</div>
+      <div class="lb-name">${p.name}${p.sub?`<div class="lb-sub">${p.sub}</div>`:''}</div>
+      <div class="lb-score">${p.pts} XP</div>
+    </div>`;
+  }).join('');
+}
+
+// ─── Add expense ─────────────────────────────────────────
+function addExpense() {
+  const name = document.getElementById('expenseName').value.trim();
+  const amt = parseFloat(document.getElementById('expenseAmount').value);
+  const cat = document.getElementById('expenseCategory').value;
+  if (!name || isNaN(amt) || amt <= 0) {
+    shakeInput(); return;
+  }
+  checkStreak();
+  const baseXP = 10;
+  const bonusXP = cat === 'study' ? 5 : 0; // study bonus
+  const xpEarned = baseXP + bonusXP;
+  const entry = { id: Date.now()+'', name, amount: amt, cat, ts: Date.now(), xp: xpEarned };
+  state.expenses.push(entry);
+  addXP(xpEarned, `Logged "${name}" expense`);
+  spawnParticles('+'+xpEarned+' XP ⚡');
+  document.getElementById('expenseName').value = '';
+  document.getElementById('expenseAmount').value = '';
+  checkBadges();
+  save();
+  renderAll();
+}
+
+function deleteExpense(id) {
+  state.expenses = state.expenses.filter(e => e.id !== id);
+  save();
+  renderAll();
+}
+
+function filterExpenses(cat) {
+  state.filter = cat;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  const tb = document.getElementById('tab-'+cat);
+  if (tb) tb.classList.add('active');
+  renderList();
+}
+
+function setBudget() { switchPage('budget'); }
+function saveBudget() {
+  const val = parseFloat(document.getElementById('budgetInput').value);
+  if (!isNaN(val) && val > 0) {
+    state.budget = val;
+    save();
+    checkBadges('budget');
+    renderBudget();
+    showToast('toast-xp','💰','Budget Set!','Your monthly limit has been updated.');
+  }
+}
+
+// ─── Page switching ───────────────────────────────────────
+function switchPage(page) {
+  ['dashboard','expenses','achievements','leaderboard','budget','quests'].forEach(p => {
+    const el = document.getElementById('page-'+p);
+    if (el) el.style.display = p===page?'block':'none';
+  });
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  const pages = ['dashboard','expenses','quests','achievements','leaderboard','budget'];
+  const navs = document.querySelectorAll('.nav-item');
+  navs.forEach((n,i) => { if (pages[i]===page) n.classList.add('active'); });
+  if (page==='leaderboard') renderLeaderboard();
+  if (page==='expenses') renderList();
+}
+
+// ─── Toast ───────────────────────────────────────────────
+function showToast(cls, icon, title, msg) {
+  const container = document.getElementById('toastContainer');
+  const toast = document.createElement('div');
+  toast.className = `toast ${cls}`;
+  toast.innerHTML = `<div class="toast-icon">${icon}</div><div class="toast-body"><div class="toast-title">${title}</div><div class="toast-msg">${msg}</div></div>`;
+  container.appendChild(toast);
+  setTimeout(() => { toast.style.opacity='0'; toast.style.transform='translateX(20px)'; toast.style.transition='all 300ms ease'; setTimeout(()=>toast.remove(),300); }, 3500);
+}
+
+// ─── Particles ───────────────────────────────────────────
+function spawnParticles(text) {
+  for (let i=0;i<6;i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.textContent = text;
+    p.style.left = (Math.random()*60+20)+'%';
+    p.style.top = (Math.random()*30+40)+'%';
+    p.style.setProperty('--dx', (Math.random()-0.5)*80+'px');
+    p.style.animationDelay = (i*80)+'ms';
+    p.style.fontSize = '0.75rem';
+    p.style.fontFamily = 'var(--mono-font)';
+    p.style.fontWeight = '700';
+    p.style.color = 'var(--accent-primary)';
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(),900);
+  }
+}
+
+// ─── Confetti ────────────────────────────────────────────
+function fireConfetti() {
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const particles = Array.from({length:80},()=>({
+    x: Math.random()*canvas.width,
+    y: -10,
+    vx: (Math.random()-0.5)*4,
+    vy: Math.random()*4+2,
+    size: Math.random()*6+4,
+    color: ['#00e5a0','#4dabf7','#ffd43b','#cc5de8','#ff6b6b'][Math.floor(Math.random()*5)],
+    rot: Math.random()*360,
+    rv: (Math.random()-0.5)*6,
+  }));
+  let frame;
+  function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    particles.forEach(p => {
+      p.x+=p.vx; p.y+=p.vy; p.rot+=p.rv;
+      ctx.save();
+      ctx.translate(p.x,p.y);
+      ctx.rotate(p.rot*Math.PI/180);
+      ctx.fillStyle=p.color;
+      ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size);
+      ctx.restore();
+    });
+    if (particles.some(p=>p.y<canvas.height)) frame=requestAnimationFrame(draw);
+    else ctx.clearRect(0,0,canvas.width,canvas.height);
+  }
+  draw();
+  setTimeout(()=>cancelAnimationFrame(frame),3000);
+}
+
+// ─── Helpers ─────────────────────────────────────────────
+function escHtml(s) { return s.replace(/&/g,'&').replace(/</g,'<').replace(/>/g,'>').replace(/"/g,'"'); }
+function shakeInput() {
+  const inp = document.getElementById('expenseName');
+  inp.style.borderColor='var(--accent-danger)';
+  inp.style.animation='none'; void inp.offsetWidth;
+  setTimeout(()=>{inp.style.borderColor='';},1500);
+}
+
+function renderAll() {
+  renderList();
+  renderBudget();
+  renderStats();
+  renderBadges();
+  renderQuests();
+  updateXPBar();
+}
+
+// ─── Enter key on form ───────────────────────────────────
+['expenseName','expenseAmount'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('keydown', e => { if (e.key==='Enter') addExpense(); });
+});
+
+// ─── Init ────────────────────────────────────────────────
+checkStreak();
+save();
+renderAll();
+</script>
+</body>
+</html>
