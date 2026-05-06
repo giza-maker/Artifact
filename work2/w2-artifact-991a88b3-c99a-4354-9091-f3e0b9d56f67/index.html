@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expenses Calculator</title>
+    <link rel="stylesheet" href="styles/tokens.css">
+    <link rel="stylesheet" href="styles/components.css">
+    <link rel="stylesheet" href="styles/motion.css">
+    <style>
+      body {
+          font-family: var(--body-font);
+          background-color: var(--bg-canvas);
+          color: var(--fg-strong);
+      }
+      .hero-shell {
+          text-align: center;
+          padding: var(--space-5);
+          margin-bottom: var(--space-6);
+          background-color: var(--bg-panel);
+          border-radius: var(--radius-card);
+          box-shadow: var(--shadow-soft);
+      }
+      .cta-row {
+          margin-top: var(--space-3);
+      }
+      .points-system, .achievements {
+          display: flex;
+          justify-content: space-between;
+          margin: var(--space-4) 0;
+      }
+      .button{
+          padding: var(--space-2) var(--space-3);
+          background-color: var(--accent-primary);
+          color: var(--fg-inverse);
+          border: none;
+          border-radius: var(--radius-pill);
+          cursor: pointer;
+          transition: transform 0.3s ease;
+      }
+      .button:hover {
+          transform: translateY(-2px);
+          box-shadow: var(--shadow-strong);
+      }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero-shell fx-enter">
+        <h1>Expenses Calculator</h1>
+        <p>Welcome to your personal mission control for managing expenses. Let's make tracking spending interactive and fun!</p>
+        <div class="cta-row fx-stagger">
+            <button class="button" id="start">Get Started</button>
+            <button class="button" id="learn-more">Learn More</button>
+        </div>
+    </section>
+    
+    <!-- Dashboard Section -->
+    <section class="dashboard-slab fx-enter">
+        <h2>Dashboard Overview</h2>
+        <div class="dashboard-stat">
+            <span class="label">Total Expenses</span>
+            <strong>$0.00</strong>
+        </div>
+        <div class="dashboard-stat">
+            <span class="label">Points Earned</span>
+            <strong>0</strong>
+        </div>
+    </section>
+    
+    <!-- Gamification Section -->
+    <section class="editorial-grid fx-enter">
+        <div class="points-system">
+            <h3>Points System</h3>
+            <p>Earn points for every expense you log. Watch your score climb as you manage your finances better!</p>
+        </div>
+        <div class="achievements">
+            <h3>Achievements</h3>
+            <p>Unlock badges and celebrate milestones in your financial journey.</p>
+        </div>
+    </section>
+    
+    <!-- Scripts -->
+    <script>
+        document.getElementById('start').addEventListener('click', function () {
+            // Logic to start the expense tracking process
+            alert('Starting your expense tracking journey!');
+        });
+
+        document.getElementById('learn-more').addEventListener('click', function () {
+            // Logic to show more information
+            alert('Learn how to manage your expenses with our interactive guide!');
+        });
+    </script>
+</body>
+</html>
