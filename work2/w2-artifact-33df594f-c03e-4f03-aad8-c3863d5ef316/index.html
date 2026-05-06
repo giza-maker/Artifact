@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create a Skilled HTML Engineer</title>
+  <link rel="stylesheet" href="/asset-design/tokens.css">
+  <link rel="stylesheet" href="/asset-design/motion.css">
+  <style>
+    body {
+      font-family: var(--body-font);
+      background-color: var(--bg-canvas);
+      color: var(--fg-strong);
+    }
+    .hero {
+      background-color: var(--bg-panel);
+      padding: var(--space-6);
+      text-align: center;
+      animation: fx-enter 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .hero img {
+      max-width: 100%;
+      height: auto;
+    }
+    .editorial-grid {
+      padding: var(--space-5);
+      display: grid;
+      gap: var(--space-4);
+      grid-template-columns: repeat(2, 1fr);
+      animation: fx-stagger 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    .editorial-grid > * {
+      background-color: var(--bg-panel);
+      padding: var(--space-4);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-soft);
+    }
+    .cta {
+      background-color: var(--accent-primary);
+      color: var(--fg-inverse);
+      text-align: center;
+      padding: var(--space-3);
+      margin: var(--space-5) 0;
+      border-radius: var(--radius-pill);
+      display: inline-block;
+      transition: transform 180ms ease, box-shadow 180ms ease;
+      animation: fx-hover-lift 180ms ease-in both;
+    }
+    .cta:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-strong);
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <img src="/api/attachments/hero-illustration/content/hero-image.jpg" alt="Featured hero artwork illustrating a skilled HTML engineer">
+    <h1>Become a Skilled HTML Engineer</h1>
+    <p>Create exceptional, production-ready web components and applications with confidence.</p>
+  </header>
+  
+  <main class="editorial-grid">
+    <article>
+      <h2>Proof of Expertise</h2>
+      <p>Gain access to industry-leading practices and protocols, ensuring your skillset is both current and competitive.</p>
+    </article>
+    <article>
+      <h2>Dynamic Features</h2>
+      <p>Explore robust tools and methodologies designed to enhance your engineering capabilities and project outcomes.</p>
+    </article>
+    <article>
+      <h2>Continual Growth</h2>
+      <p>Keep up with emerging trends and technologies to maintain a cutting-edge advantage in your projects.</p>
+    </article>
+    <article>
+      <img src="/api/attachments/feature-support/content/support-image.jpg" alt="Supporting section artwork showing confidence and clarity">
+    </article>
+  </main>
+
+  <footer class="cta">
+    <a href="#start">Start Your Journey Now</a>
+  </footer>
+
+  <script src="/asset-design/scripts.js"></script>
+</body>
+</html>
