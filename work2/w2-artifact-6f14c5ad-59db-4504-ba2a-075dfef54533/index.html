@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Egypt Adventure Quest Pro — Prepare for Public Launch</title>
+    <link rel="stylesheet" href="/api/attachments/tokens.css">
+    <link rel="stylesheet" href="/api/attachments/motion.css">
+    <style>
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-canvas);
+            color: var(--fg-strong);
+            margin: 0;
+            padding: 0;
+        }
+        header, section, footer {
+            padding: var(--space-4);
+            text-align: center;
+        }
+        .hero-shell {
+            background-color: var(--bg-panel);
+            box-shadow: var(--shadow-soft);
+            border-radius: var(--radius-card);
+            padding: var(--space-5);
+            margin-bottom: var(--space-6);
+        }
+        h1 {
+            font-size: var(--display-1);
+            margin-bottom: var(--space-3);
+        }
+        p {
+            font-size: var(--body-md);
+            margin-bottom: var(--space-3);
+        }
+        .cta-row > a {
+            margin: var(--space-2);
+            padding: var(--space-2) var(--space-4);
+            text-decoration: none;
+            color: var(--fg-inverse);
+            background-color: var(--accent-primary);
+            border-radius: var(--radius-pill);
+            transition: background-color 0.3s;
+        }
+        .cta-row > a:hover {
+            background-color: var(--accent-secondary);
+        }
+        .editorial-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--space-4);
+        }
+        .feature-card {
+            background-color: var(--bg-panel);
+            box-shadow: var(--shadow-soft);
+            border-radius: var(--radius-card);
+            padding: var(--space-4);
+        }
+        .dashboard-slab {
+            background-color: var(--bg-panel);
+            box-shadow: var(--shadow-strong);
+            border-radius: var(--radius-card);
+            padding: var(--space-5);
+            display: flex;
+            justify-content: space-around;
+            margin-top: var(--space-6);
+        }
+        .dashboard-stat {
+            text-align: center;
+            margin: var(--space-3);
+        }
+        footer {
+            padding: var(--space-4) var(--space-3);
+        }
+    </style>
+</head>
+<body>
+    <header class="hero-shell fx-enter">
+        <div class="eyebrow">Egypt Adventure Quest Pro</div>
+        <h1>Prepare for an Unforgettable Adventure Launch in Egypt</h1>
+        <p>Embark on an interactive and gamified experience exploring the wonders of Egypt. Discover touristic treasures, enrich yourself with cultural tales, and engage in unique quests.</p>
+        <div class="cta-row fx-stagger">
+            <a class="btn btn-primary" href="#start">Start Your Adventure</a>
+            <a class="btn btn-secondary" href="#details">Learn More</a>
+        </div>
+    </header>
+
+    <section class="editorial-grid fx-enter">
+        <article class="feature-card">
+            <h2>Discover Cairo</h2>
+            <p>A bustling metropolis filled with history and modern wonders. Spin the wheel to start your journey here!</p>
+        </article>
+        <article class="feature-card">
+            <h2>Explore Luxor</h2>
+            <p>Uncover ancient mysteries and soak in the grandeur of temples alongside the mighty Nile.</p>
+        </article>
+    </section>
+
+    <section class="dashboard-slab fx-enter">
+        <div class="dashboard-stat">
+            <span class="label">Popular Destinations</span>
+            <strong>8</strong>
+        </div>
+        <div class="dashboard-stat">
+            <span class="label">Quests Completed</span>
+            <strong>120+</strong>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2023 Egypt Adventure Quest Pro. All rights reserved. Embark on your journey today!</p>
+    </footer>
+
+    <script>
+        // JavaScript for interactive elements such as the wheel spin
+        document.querySelector('.btn-primary').addEventListener('click', function(){
+            alert('Adventure awaits! Launching your Egypt-themed journey now!');
+        });
+    </script>
+</body>
+</html>
