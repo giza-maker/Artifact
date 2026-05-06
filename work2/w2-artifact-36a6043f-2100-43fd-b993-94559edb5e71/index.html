@@ -1,0 +1,1595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpendQuest — Student Expense Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ── Design Tokens ── */
+  :root {
+    --bg-canvas: #0b1220;
+    --bg-panel: rgba(255,255,255,0.04);
+    --bg-panel-solid: #111c2e;
+    --bg-card: rgba(255,255,255,0.06);
+    --fg-strong: #eef2ff;
+    --fg-muted: #7b8db0;
+    --fg-inverse: #0b1220;
+    --line-soft: rgba(255,255,255,0.08);
+    --line-strong: rgba(99,179,237,0.3);
+    --accent-primary: #4fd1c5;
+    --accent-secondary: #f6ad55;
+    --accent-highlight: #fc8181;
+    --accent-purple: #9f7aea;
+    --accent-green: #68d391;
+    --radius-card: 18px;
+    --radius-pill: 999px;
+    --shadow-soft: 0 8px 32px rgba(0,0,0,0.4);
+    --shadow-glow: 0 0 32px rgba(79,209,197,0.18);
+    --space-1: 0.375rem;
+    --space-2: 0.75rem;
+    --space-3: 1rem;
+    --space-4: 1.5rem;
+    --space-5: 2rem;
+    --space-6: 3rem;
+    --display-font: 'Space Mono', monospace;
+    --body-font: 'DM Sans', sans-serif;
+  }
+
+  /* ── Reset ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 16px; scroll-behavior: smooth; }
+  body {
+    background: var(--bg-canvas);
+    color: var(--fg-strong);
+    font-family: var(--body-font);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── Animated BG Grid ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(79,209,197,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(79,209,197,0.04) 1px, transparent 1px);
+    background-size: 40px 40px;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* ── Motion Presets ── */
+  @media (prefers-reduced-motion: no-preference) {
+    .fx-enter { animation: fx-enter 620ms cubic-bezier(0.22,1,0.36,1) both; }
+    .fx-stagger > * {
+      opacity: 0;
+      animation: fx-enter 560ms cubic-bezier(0.22,1,0.36,1) both;
+    }
+    .fx-stagger > *:nth-child(1) { animation-delay: 60ms; }
+    .fx-stagger > *:nth-child(2) { animation-delay: 120ms; }
+    .fx-stagger > *:nth-child(3) { animation-delay: 180ms; }
+    .fx-stagger > *:nth-child(4) { animation-delay: 240ms; }
+    .fx-stagger > *:nth-child(5) { animation-delay: 300ms; }
+    .fx-stagger > *:nth-child(6) { animation-delay: 360ms; }
+    .fx-hover-lift {
+      transition: transform 180ms ease, box-shadow 180ms ease;
+    }
+    .fx-hover-lift:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-soft), var(--shadow-glow);
+    }
+    .fx-pulse-ring {
+      animation: fx-pulse 2.6s ease-in-out infinite;
+    }
+  }
+  @keyframes fx-enter {
+    from { opacity: 0; transform: translate3d(0,18px,0) scale(0.985); }
+    to   { opacity: 1; transform: translate3d(0,0,0) scale(1); }
+  }
+  @keyframes fx-pulse {
+    0%,100% { box-shadow: 0 0 0 0 rgba(79,209,197,0.3); }
+    50%      { box-shadow: 0 0 0 12px rgba(79,209,197,0); }
+  }
+
+  /* ── Layout ── */
+  .app-shell {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    grid-template-rows: auto 1fr;
+    min-height: 100vh;
+  }
+
+  /* ── Top Bar ── */
+  .topbar {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-3) var(--space-5);
+    background: rgba(11,18,32,0.9);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line-soft);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .logo {
+    font-family: var(--display-font);
+    font-size: 1.1rem;
+    color: var(--accent-primary);
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .logo-icon {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-purple));
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+  }
+  .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+  .xp-bar-wrap {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: 0.85rem;
+    color: var(--fg-muted);
+  }
+  .xp-bar {
+    width: 120px; height: 6px;
+    background: var(--line-soft);
+    border-radius: var(--radius-pill);
+    overflow: hidden;
+  }
+  .xp-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-purple));
+    border-radius: var(--radius-pill);
+    transition: width 0.6s cubic-bezier(0.22,1,0.36,1);
+  }
+  .level-badge {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-purple));
+    color: var(--fg-inverse);
+    font-family: var(--display-font);
+    font-size: 0.7rem;
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+    font-weight: 700;
+  }
+  .streak-badge {
+    display: flex; align-items: center; gap: 4px;
+    font-size: 0.85rem;
+    color: var(--accent-secondary);
+    font-weight: 600;
+  }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    background: var(--bg-panel-solid);
+    border-right: 1px solid var(--line-soft);
+    padding: var(--space-5) var(--space-3);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .nav-section-label {
+    font-size: 0.72rem;
+    font-family: var(--display-font);
+    color: var(--fg-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    padding: var(--space-2) var(--space-3) var(--space-1);
+    margin-top: var(--space-3);
+  }
+  .nav-section-label:first-child { margin-top: 0; }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-3);
+    border-radius: 10px;
+    cursor: pointer;
+    color: var(--fg-muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background 0.15s, color 0.15s;
+    border: none;
+    background: transparent;
+    width: 100%;
+    text-align: left;
+  }
+  .nav-item:hover { background: var(--bg-card); color: var(--fg-strong); }
+  .nav-item.active {
+    background: linear-gradient(135deg, rgba(79,209,197,0.15), rgba(159,122,234,0.1));
+    color: var(--accent-primary);
+    border: 1px solid rgba(79,209,197,0.2);
+  }
+  .nav-icon { font-size: 1.1rem; width: 22px; text-align: center; }
+
+  /* ── Main Content ── */
+  .main-content {
+    padding: var(--space-5);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  /* ── Page Header ── */
+  .page-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+  .page-title {
+    font-family: var(--display-font);
+    font-size: clamp(1.4rem, 2.5vw, 1.9rem);
+    line-height: 1.2;
+    color: var(--fg-strong);
+  }
+  .page-subtitle {
+    color: var(--fg-muted);
+    font-size: 0.95rem;
+    margin-top: var(--space-1);
+  }
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-purple));
+    color: var(--fg-inverse);
+    font-family: var(--display-font);
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding: var(--space-2) var(--space-4);
+    border-radius: var(--radius-pill);
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.15s;
+    white-space: nowrap;
+  }
+  .btn-primary:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  /* ── Stats Slabs ── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-4);
+  }
+  .stat-slab {
+    background: var(--bg-card);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius-card);
+    padding: var(--space-4);
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-slab::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent-color, var(--accent-primary)), transparent);
+  }
+  .stat-slab.teal   { --accent-color: var(--accent-primary); }
+  .stat-slab.orange { --accent-color: var(--accent-secondary); }
+  .stat-slab.red    { --accent-color: var(--accent-highlight); }
+  .stat-slab.purple { --accent-color: var(--accent-purple); }
+  .stat-label {
+    font-size: 0.78rem;
+    font-family: var(--display-font);
+    color: var(--fg-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: var(--space-2);
+  }
+  .stat-value {
+    font-family: var(--display-font);
+    font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+    color: var(--fg-strong);
+    line-height: 1;
+  }
+  .stat-delta {
+    font-size: 0.8rem;
+    margin-top: var(--space-1);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .delta-up   { color: var(--accent-green); }
+  .delta-down { color: var(--accent-highlight); }
+
+  /* ── Grid Layout ── */
+  .content-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: var(--space-4);
+    align-items: start;
+  }
+
+  /* ── Panel Cards ── */
+  .panel-card {
+    background: var(--bg-card);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius-card);
+    padding: var(--space-4) var(--space-5);
+  }
+  .panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--space-4);
+  }
+  .panel-title {
+    font-family: var(--display-font);
+    font-size: 0.9rem;
+    color: var(--fg-strong);
+    letter-spacing: 0.04em;
+  }
+  .panel-badge {
+    font-size: 0.75rem;
+    background: var(--bg-panel);
+    border: 1px solid var(--line-soft);
+    color: var(--fg-muted);
+    padding: 3px 10px;
+    border-radius: var(--radius-pill);
+  }
+
+  /* ── Expense Form ── */
+  .expense-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+  }
+  .form-group { display: flex; flex-direction: column; gap: var(--space-1); }
+  .form-group.full { grid-column: 1 / -1; }
+  .form-label {
+    font-size: 0.78rem;
+    font-family: var(--display-font);
+    color: var(--fg-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  .form-input, .form-select {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--line-soft);
+    border-radius: 10px;
+    color: var(--fg-strong);
+    font-family: var(--body-font);
+    font-size: 0.95rem;
+    padding: var(--space-2) var(--space-3);
+    outline: none;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .form-input:focus, .form-select:focus {
+    border-color: var(--accent-primary);
+    background: rgba(79,209,197,0.06);
+  }
+  .form-select option { background: var(--bg-panel-solid); color: var(--fg-strong); }
+  .submit-row {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  /* ── Expense List ── */
+  .expense-list { display: flex; flex-direction: column; gap: var(--space-2); }
+  .expense-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--line-soft);
+    border-radius: 12px;
+    padding: var(--space-3);
+    transition: background 0.15s, border-color 0.15s;
+    cursor: default;
+  }
+  .expense-item:hover {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(79,209,197,0.2);
+  }
+  .expense-icon {
+    width: 38px; height: 38px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .expense-info { flex: 1; min-width: 0; }
+  .expense-name {
+    font-weight: 600;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .expense-cat {
+    font-size: 0.78rem;
+    color: var(--fg-muted);
+    margin-top: 2px;
+  }
+  .expense-amount {
+    font-family: var(--display-font);
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+  .expense-delete {
+    background: none; border: none; color: var(--fg-muted);
+    cursor: pointer; font-size: 0.85rem;
+    padding: 4px 6px;
+    border-radius: 6px;
+    transition: background 0.12s, color 0.12s;
+  }
+  .expense-delete:hover { background: rgba(252,129,129,0.15); color: var(--accent-highlight); }
+  .expense-points {
+    font-size: 0.75rem;
+    color: var(--accent-primary);
+    font-weight: 600;
+  }
+
+  /* ── Category Color Map ── */
+  .cat-food     { background: rgba(246,173,85,0.15); color: var(--accent-secondary); }
+  .cat-transport{ background: rgba(79,209,197,0.12); color: var(--accent-primary); }
+  .cat-housing  { background: rgba(159,122,234,0.12); color: var(--accent-purple); }
+  .cat-entertainment { background: rgba(252,129,129,0.12); color: var(--accent-highlight); }
+  .cat-health   { background: rgba(104,211,145,0.12); color: var(--accent-green); }
+  .cat-other    { background: rgba(255,255,255,0.07); color: var(--fg-muted); }
+
+  /* ── Budget Progress Bars ── */
+  .budget-list { display: flex; flex-direction: column; gap: var(--space-3); }
+  .budget-row {}
+  .budget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-1);
+  }
+  .budget-cat-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: var(--space-1);
+  }
+  .budget-amounts {
+    font-size: 0.8rem;
+    color: var(--fg-muted);
+    font-family: var(--display-font);
+  }
+  .budget-track {
+    height: 8px;
+    background: rgba(255,255,255,0.07);
+    border-radius: var(--radius-pill);
+    overflow: hidden;
+  }
+  .budget-fill {
+    height: 100%;
+    border-radius: var(--radius-pill);
+    transition: width 0.7s cubic-bezier(0.22,1,0.36,1);
+  }
+
+  /* ── Achievements ── */
+  .achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-3);
+  }
+  .achievement-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--line-soft);
+    border-radius: 14px;
+    padding: var(--space-3);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.15s;
+  }
+  .achievement-card.unlocked {
+    border-color: rgba(79,209,197,0.3);
+    background: rgba(79,209,197,0.05);
+  }
+  .achievement-card.unlocked::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-purple));
+  }
+  .achievement-icon {
+    font-size: 1.8rem;
+    margin-bottom: var(--space-1);
+    display: block;
+    filter: grayscale(0.4);
+  }
+  .achievement-card.unlocked .achievement-icon { filter: none; }
+  .achievement-name {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--fg-strong);
+  }
+  .achievement-desc {
+    font-size: 0.7rem;
+    color: var(--fg-muted);
+    margin-top: 3px;
+  }
+  .achievement-locked {
+    position: absolute;
+    inset: 0;
+    background: rgba(11,18,32,0.5);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+  }
+
+  /* ── Mini Chart ── */
+  .chart-wrap {
+    position: relative;
+    height: 160px;
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+    padding-top: var(--space-3);
+  }
+  .chart-bar-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    height: 100%;
+    justify-content: flex-end;
+  }
+  .chart-bar {
+    width: 100%;
+    border-radius: 5px 5px 0 0;
+    transition: height 0.7s cubic-bezier(0.22,1,0.36,1), opacity 0.15s;
+    cursor: pointer;
+    position: relative;
+  }
+  .chart-bar:hover { opacity: 0.8; }
+  .chart-label {
+    font-size: 0.68rem;
+    color: var(--fg-muted);
+    font-family: var(--display-font);
+    white-space: nowrap;
+  }
+
+  /* ── Quest / Challenges ── */
+  .quest-list { display: flex; flex-direction: column; gap: var(--space-3); }
+  .quest-item {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--line-soft);
+    border-radius: 12px;
+    padding: var(--space-3) var(--space-4);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  .quest-item.completed {
+    border-color: rgba(104,211,145,0.3);
+    background: rgba(104,211,145,0.05);
+  }
+  .quest-icon { font-size: 1.4rem; width: 32px; text-align: center; flex-shrink: 0; }
+  .quest-info { flex: 1; }
+  .quest-name { font-size: 0.88rem; font-weight: 600; }
+  .quest-desc { font-size: 0.78rem; color: var(--fg-muted); margin-top: 2px; }
+  .quest-reward {
+    font-family: var(--display-font);
+    font-size: 0.8rem;
+    color: var(--accent-secondary);
+    white-space: nowrap;
+  }
+  .quest-check {
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    border: 2px solid var(--line-soft);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+  }
+  .quest-item.completed .quest-check {
+    border-color: var(--accent-green);
+    background: rgba(104,211,145,0.2);
+    color: var(--accent-green);
+  }
+
+  /* ── Toast ── */
+  #toast-container {
+    position: fixed;
+    bottom: var(--space-5);
+    right: var(--space-5);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .toast {
+    background: var(--bg-panel-solid);
+    border: 1px solid var(--line-strong);
+    border-radius: 12px;
+    padding: var(--space-3) var(--space-4);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: 0.88rem;
+    font-weight: 500;
+    box-shadow: var(--shadow-soft);
+    animation: fx-enter 400ms cubic-bezier(0.22,1,0.36,1) both;
+    color: var(--fg-strong);
+    max-width: 300px;
+  }
+  .toast-icon { font-size: 1.2rem; }
+
+  /* ── Empty State ── */
+  .empty-state {
+    text-align: center;
+    padding: var(--space-6);
+    color: var(--fg-muted);
+    font-size: 0.9rem;
+  }
+  .empty-icon { font-size: 2rem; margin-bottom: var(--space-2); display: block; }
+
+  /* ── Tabs ── */
+  .tab-row {
+    display: flex;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+    border-bottom: 1px solid var(--line-soft);
+    padding-bottom: var(--space-1);
+  }
+  .tab-btn {
+    background: none;
+    border: none;
+    color: var(--fg-muted);
+    font-family: var(--body-font);
+    font-size: 0.88rem;
+    font-weight: 600;
+    padding: var(--space-1) var(--space-3);
+    cursor: pointer;
+    border-radius: 8px 8px 0 0;
+    transition: color 0.15s;
+    position: relative;
+  }
+  .tab-btn.active { color: var(--accent-primary); }
+  .tab-btn.active::after {
+    content: '';
+    position: absolute;
+    bottom: -5px; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent-primary);
+    border-radius: var(--radius-pill);
+  }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── Leaderboard ── */
+  .leaderboard-list { display: flex; flex-direction: column; gap: var(--space-2); }
+  .lb-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    border-radius: 10px;
+    background: rgba(255,255,255,0.03);
+  }
+  .lb-rank {
+    font-family: var(--display-font);
+    font-size: 0.85rem;
+    color: var(--fg-muted);
+    width: 24px;
+    text-align: center;
+  }
+  .lb-rank.top { color: var(--accent-secondary); }
+  .lb-avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+  .lb-name { flex: 1; font-size: 0.88rem; font-weight: 600; }
+  .lb-score { font-family: var(--display-font); font-size: 0.85rem; color: var(--accent-primary); }
+
+  /* ── Scrollbar ── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--line-soft); border-radius: 3px; }
+</style>
+</head>
+<body>
+<div class="app-shell">
+
+  <!-- Top Bar -->
+  <header class="topbar fx-enter">
+    <div class="logo">
+      <div class="logo-icon">🚀</div>
+      SPENDQUEST
+    </div>
+    <div class="topbar-right">
+      <div class="streak-badge">🔥 <span id="streak-count">3</span>-day streak</div>
+      <div class="xp-bar-wrap">
+        <span style="color:var(--accent-primary);font-family:var(--display-font);font-size:0.78rem;" id="xp-display">320 XP</span>
+        <div class="xp-bar"><div class="xp-fill" id="xp-fill" style="width:64%"></div></div>
+        <span style="font-size:0.75rem;">500 XP</span>
+      </div>
+      <div class="level-badge" id="level-badge">LVL 4</div>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <nav class="sidebar fx-enter">
+    <div class="nav-section-label">Mission</div>
+    <button class="nav-item active" onclick="switchView('dashboard')">
+      <span class="nav-icon">📊</span> Dashboard
+    </button>
+    <button class="nav-item" onclick="switchView('add')">
+      <span class="nav-icon">➕</span> Add Expense
+    </button>
+    <button class="nav-item" onclick="switchView('history')">
+      <span class="nav-icon">📋</span> History
+    </button>
+
+    <div class="nav-section-label">Gamify</div>
+    <button class="nav-item" onclick="switchView('achievements')">
+      <span class="nav-icon">🏆</span> Achievements
+    </button>
+    <button class="nav-item" onclick="switchView('quests')">
+      <span class="nav-icon">⚡</span> Quests
+    </button>
+    <button class="nav-item" onclick="switchView('leaderboard')">
+      <span class="nav-icon">🎖️</span> Leaderboard
+    </button>
+
+    <div class="nav-section-label">Budget</div>
+    <button class="nav-item" onclick="switchView('budget')">
+      <span class="nav-icon">🎯</span> Budget Goals
+    </button>
+
+    <div style="flex:1"></div>
+    <div style="background:linear-gradient(135deg,rgba(79,209,197,0.1),rgba(159,122,234,0.1));border:1px solid rgba(79,209,197,0.15);border-radius:12px;padding:var(--space-3);text-align:center;">
+      <div style="font-size:1.4rem;margin-bottom:4px;">💡</div>
+      <div style="font-size:0.78rem;color:var(--fg-muted);line-height:1.4;">Track every expense to earn XP and unlock achievements!</div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="main-content" id="main-content">
+
+    <!-- DASHBOARD VIEW -->
+    <div id="view-dashboard">
+      <div class="page-header fx-enter">
+        <div>
+          <div class="page-title">Mission Control 🛸</div>
+          <div class="page-subtitle">Your spending universe at a glance, cadet.</div>
+        </div>
+        <button class="btn-primary fx-pulse-ring" onclick="switchView('add')">+ Log Expense</button>
+      </div>
+
+      <!-- Stats Slabs -->
+      <div class="stats-row fx-stagger">
+        <div class="stat-slab teal fx-hover-lift">
+          <div class="stat-label">Total Spent</div>
+          <div class="stat-value" id="stat-total">$0</div>
+          <div class="stat-delta delta-down" id="stat-total-delta">↑ This month</div>
+        </div>
+        <div class="stat-slab orange fx-hover-lift">
+          <div class="stat-label">XP Earned</div>
+          <div class="stat-value" id="stat-xp">320</div>
+          <div class="stat-delta delta-up">⚡ Keep going!</div>
+        </div>
+        <div class="stat-slab purple fx-hover-lift">
+          <div class="stat-label">Streak</div>
+          <div class="stat-value" id="stat-streak">3</div>
+          <div class="stat-delta delta-up">🔥 Days active</div>
+        </div>
+        <div class="stat-slab red fx-hover-lift">
+          <div class="stat-label">Badges</div>
+          <div class="stat-value" id="stat-badges">2</div>
+          <div class="stat-delta delta-up">🏅 Unlocked</div>
+        </div>
+      </div>
+
+      <!-- Content Grid -->
+      <div class="content-grid">
+        <!-- Left: Chart + Recent -->
+        <div style="display:flex;flex-direction:column;gap:var(--space-4)">
+
+          <!-- Spending Chart -->
+          <div class="panel-card fx-hover-lift">
+            <div class="panel-header">
+              <div class="panel-title">SPENDING RADAR</div>
+              <div class="panel-badge">Last 7 days</div>
+            </div>
+            <div class="chart-wrap" id="chart-wrap">
+              <!-- Rendered by JS -->
+            </div>
+          </div>
+
+          <!-- Recent Expenses -->
+          <div class="panel-card fx-hover-lift">
+            <div class="panel-header">
+              <div class="panel-title">RECENT MISSIONS</div>
+              <button class="panel-badge" style="cursor:pointer;border:none;background:rgba(79,209,197,0.1);color:var(--accent-primary);" onclick="switchView('history')">View all →</button>
+            </div>
+            <div class="expense-list" id="recent-list">
+              <div class="empty-state"><span class="empty-icon">🌌</span>No expenses yet. Log your first mission!</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Budget + Quests -->
+        <div style="display:flex;flex-direction:column;gap:var(--space-4)">
+
+          <!-- Budget Status -->
+          <div class="panel-card fx-hover-lift">
+            <div class="panel-header">
+              <div class="panel-title">BUDGET STATUS</div>
+              <div class="panel-badge" id="budget-month">May 2026</div>
+            </div>
+            <div class="budget-list" id="budget-overview"></div>
+          </div>
+
+          <!-- Active Quests -->
+          <div class="panel-card fx-hover-lift">
+            <div class="panel-header">
+              <div class="panel-title">ACTIVE QUESTS</div>
+              <div class="panel-badge">2/3 done</div>
+            </div>
+            <div class="quest-list" id="dashboard-quests"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADD EXPENSE VIEW -->
+    <div id="view-add" style="display:none;">
+      <div class="page-header fx-enter">
+        <div>
+          <div class="page-title">Log Expense ➕</div>
+          <div class="page-subtitle">Every entry earns you XP. Keep the streak alive!</div>
+        </div>
+        <div style="background:rgba(79,209,197,0.1);border:1px solid rgba(79,209,197,0.2);border-radius:12px;padding:var(--space-2) var(--space-4);font-family:var(--display-font);font-size:0.82rem;color:var(--accent-primary);">
+          +10 XP per entry
+        </div>
+      </div>
+      <div class="panel-card fx-enter" style="max-width:680px;">
+        <div class="panel-header"><div class="panel-title">NEW EXPENSE</div></div>
+        <form class="expense-form" id="expense-form" onsubmit="addExpense(event)">
+          <div class="form-group full">
+            <label class="form-label">Description</label>
+            <input class="form-input" type="text" id="form-desc" placeholder="e.g. Coffee at campus cafe" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Amount ($)</label>
+            <input class="form-input" type="number" id="form-amount" step="0.01" min="0.01" placeholder="0.00" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Category</label>
+            <select class="form-select" id="form-cat">
+              <option value="food">🍔 Food & Drink</option>
+              <option value="transport">🚌 Transport</option>
+              <option value="housing">🏠 Housing</option>
+              <option value="entertainment">🎮 Entertainment</option>
+              <option value="health">💊 Health</option>
+              <option value="other">📦 Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Date</label>
+            <input class="form-input" type="date" id="form-date" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Note (optional)</label>
+            <input class="form-input" type="text" id="form-note" placeholder="Any extra details?">
+          </div>
+          <div class="submit-row">
+            <button class="btn-primary" type="submit" style="font-size:0.9rem;padding:var(--space-2) var(--space-5);">
+              🚀 Log & Earn XP
+            </button>
+            <span style="font-size:0.82rem;color:var(--fg-muted);">Your entry is saved locally</span>
+          </div>
+        </form>
+      </div>
+
+      <!-- Quick Add tips -->
+      <div class="panel-card fx-enter" style="max-width:680px;margin-top:var(--space-4);">
+        <div class="panel-header"><div class="panel-title">CADET TIPS 💡</div></div>
+        <div class="fx-stagger" style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-3);">
+          <div style="background:rgba(255,255,255,0.03);border-radius:10px;padding:var(--space-3);">
+            <div style="color:var(--accent-primary);font-weight:700;margin-bottom:4px;">🔥 Streak Bonus</div>
+            <div style="font-size:0.82rem;color:var(--fg-muted);">Log expenses 3 days in a row for a 2× XP multiplier!</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.03);border-radius:10px;padding:var(--space-3);">
+            <div style="color:var(--accent-secondary);font-weight:700;margin-bottom:4px;">🎯 Budget Goals</div>
+            <div style="font-size:0.82rem;color:var(--fg-muted);">Stay under your monthly budget to unlock the Saver badge.</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.03);border-radius:10px;padding:var(--space-3);">
+            <div style="color:var(--accent-purple);font-weight:700;margin-bottom:4px;">🏅 Achievements</div>
+            <div style="font-size:0.82rem;color:var(--fg-muted);">Unlock badges for first entry, 10 entries, and category mastery.</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.03);border-radius:10px;padding:var(--space-3);">
+            <div style="color:var(--accent-green);font-weight:700;margin-bottom:4px;">📊 Insights</div>
+            <div style="font-size:0.82rem;color:var(--fg-muted);">The dashboard radar updates in real-time as you track.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HISTORY VIEW -->
+    <div id="view-history" style="display:none;">
+      <div class="page-header fx-enter">
+        <div>
+          <div class="page-title">Expense History 📋</div>
+          <div class="page-subtitle">All your tracked missions in one place.</div>
+        </div>
+        <div style="display:flex;gap:var(--space-2);">
+          <select class="form-select" id="filter-cat" style="width:auto;font-size:0.85rem;" onchange="renderHistory()">
+            <option value="all">All Categories</option>
+            <option value="food">Food & Drink</option>
+            <option value="transport">Transport</option>
+            <option value="housing">Housing</option>
+            <option value="entertainment">Entertainment</option>
+            <option value="health">Health</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="panel-card fx-enter">
+        <div class="expense-list" id="history-list">
+          <div class="empty-state"><span class="empty-icon">📭</span>No expenses logged yet.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACHIEVEMENTS VIEW -->
+    <div id="view-achievements" style="display:none;">
+      <div class="page-header fx-enter">
+        <div>
+          <div class="page-title">Achievements 🏆</div>
+          <div class="page-subtitle">Unlock badges by building great money habits.</div>
+        </div>
+        <div style="font-family:var(--display-font);font-size:0.82rem;color:var(--fg-muted);">
+          <span id="achieve-unlocked">2</span>/8 unlocked
+        </div>
+      </div>
+      <div class="panel-card fx-enter">
+        <div class="achievements-grid fx-stagger" id="achievements-grid"></div>
+      </div>
+    </div>
+
+    <!-- QUESTS VIEW -->
+    <div id="view-quests" style="display:none;">
+      <div class="page-header fx-enter">
+        <div>
+          <div class="page-title">Active Quests ⚡</div>
+          <div class="page-subtitle">Complete challenges to level up faster.</div>
+        </div>
+      </div>
+      <div class="panel-card fx-enter">
+        <div class="tab-row">
+          <button class="tab-btn active" onclick="switchTab(this,'tab-daily')">Daily</button>
+          <button class="tab-btn" onclick="switchTab(this,'tab-weekly')">Weekly</button>
+          <button class="tab-btn" onclick="switchTab(this,'tab-special')">Special</button>
+        </div>
+        <div id="tab-daily" class="tab-panel active">
+          <div class="quest-list" id="quests-daily"></div>
+        </div>
+        <div id="tab-weekly" class="tab-panel">
+          <div class="quest-list" id="quests-weekly"></div>
+        </div>
+        <div id="tab-special" class="tab-panel">
+          <div class="quest-list" id="quests-special"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LEADERBOARD VIEW -->
+    <div id="view-leaderboard" style="display:none;">
+      <div class="page-header fx-enter">
+        <div>
+          <div class="page-title">Leaderboard 🎖️</div>
+          <div class="page-subtitle">How do you rank among fellow student savers?</div>
+        </div>
+      </div>
+      <div class="content-grid fx-enter">
+        <div class="panel-card">
+          <div class="panel-header"><div class="panel-title">TOP SAVERS THIS MONTH</div><div class="panel-badge">May 2026</div></div>
+          <div class="leaderboard-list" id="leaderboard-list"></div>
+        </div>
+        <div class="panel-card">
+          <div class="panel-header"><div class="panel-title">YOUR RANK</div></div>
+          <div style="text-align:center;padding:var(--space-5);">
+            <div style="font-size:3rem;margin-bottom:var(--space-2);">🚀</div>
+            <div style="font-family:var(--display-font);font-size:2.5rem;color:var(--accent-primary);">#4</div>
+            <div style="color:var(--fg-muted);font-size:0.88rem;margin-top:var(--space-2);">Keep tracking to climb the ranks!</div>
+            <div style="margin-top:var(--space-4);display:flex;justify-content:center;gap:var(--space-5);">
+              <div>
+                <div style="font-family:var(--display-font);font-size:1.4rem;color:var(--accent-primary)" id="lb-my-xp">320</div>
+                <div style="font-size:0.75rem;color:var(--fg-muted)">Total XP</div>
+              </div>
+              <div>
+                <div style="font-family:var(--display-font);font-size:1.4rem;color:var(--accent-secondary)" id="lb-my-streak">3</div>
+                <div style="font-size:0.75rem;color:var(--fg-muted)">Day Streak</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BUDGET VIEW -->
+    <div id="view-budget" style="display:none;">
+      <div class="page-header fx-enter">
+        <div>
+          <div class="page-title">Budget Goals 🎯</div>
+          <div class="page-subtitle">Set limits and earn the Saver badge for staying on track.</div>
+        </div>
+      </div>
+      <div class="content-grid fx-enter">
+        <div class="panel-card">
+          <div class="panel-header"><div class="panel-title">CATEGORY BUDGETS</div></div>
+          <div class="budget-list" id="budget-detail"></div>
+          <div style="margin-top:var(--space-4);display:flex;gap:var(--space-3);flex-wrap:wrap;">
+            <div style="display:flex;flex-direction:column;gap:var(--space-1);">
+              <label class="form-label">Category</label>
+              <select class="form-select" id="budget-cat-input" style="width:auto;">
+                <option value="food">🍔 Food & Drink</option>
+                <option value="transport">🚌 Transport</option>
+                <option value="housing">🏠 Housing</option>
+                <option value="entertainment">🎮 Entertainment</option>
+                <option value="health">💊 Health</option>
+                <option value="other">📦 Other</option>
+              </select>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:var(--space-1);">
+              <label class="form-label">Monthly Budget ($)</label>
+              <input class="form-input" type="number" id="budget-amount-input" placeholder="e.g. 200" style="width:160px;" min="1">
+            </div>
+            <div style="display:flex;align-items:flex-end;">
+              <button class="btn-primary" onclick="setBudget()" style="font-size:0.85rem;">Set Budget</button>
+            </div>
+          </div>
+        </div>
+        <div class="panel-card">
+          <div class="panel-header"><div class="panel-title">BUDGET HEALTH</div></div>
+          <div style="text-align:center;padding:var(--space-5);">
+            <div style="position:relative;display:inline-block;width:120px;height:120px;">
+              <svg viewBox="0 0 120 120" width="120" height="120">
+                <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="12"/>
+                <circle cx="60" cy="60" r="50" fill="none" stroke="var(--accent-primary)" stroke-width="12"
+                  stroke-dasharray="314" stroke-dashoffset="113" stroke-linecap="round"
+                  transform="rotate(-90 60 60)" id="budget-donut"/>
+              </svg>
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--display-font);font-size:1.1rem;color:var(--accent-primary);" id="budget-pct">64%</div>
+            </div>
+            <div style="font-size:0.88rem;color:var(--fg-muted);margin-top:var(--space-3);">of total budget used</div>
+            <div style="margin-top:var(--space-4);padding:var(--space-3);background:rgba(104,211,145,0.08);border:1px solid rgba(104,211,145,0.2);border-radius:12px;">
+              <div style="color:var(--accent-green);font-weight:600;font-size:0.88rem;">✅ On Track!</div>
+              <div style="color:var(--fg-muted);font-size:0.78rem;margin-top:4px;">You're within your spending limits. Keep it up!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Toast Container -->
+<div id="toast-container"></div>
+
+<script>
+// ─── STATE ───────────────────────────────────────────────────
+const state = {
+  expenses: JSON.parse(localStorage.getItem('sq_expenses') || '[]'),
+  xp: parseInt(localStorage.getItem('sq_xp') || '320'),
+  streak: parseInt(localStorage.getItem('sq_streak') || '3'),
+  level: parseInt(localStorage.getItem('sq_level') || '4'),
+  budgets: JSON.parse(localStorage.getItem('sq_budgets') || '{"food":200,"transport":80,"housing":500,"entertainment":60,"health":40,"other":100}'),
+  achievements: JSON.parse(localStorage.getItem('sq_achievements') || '["first_entry","three_day_streak"]'),
+};
+
+function saveState() {
+  localStorage.setItem('sq_expenses', JSON.stringify(state.expenses));
+  localStorage.setItem('sq_xp', state.xp);
+  localStorage.setItem('sq_streak', state.streak);
+  localStorage.setItem('sq_level', state.level);
+  localStorage.setItem('sq_budgets', JSON.stringify(state.budgets));
+  localStorage.setItem('sq_achievements', JSON.stringify(state.achievements));
+}
+
+// ─── CATEGORY CONFIG ─────────────────────────────────────────
+const CAT = {
+  food:          { label: 'Food & Drink',   icon: '🍔', cls: 'cat-food',          color: '#f6ad55' },
+  transport:     { label: 'Transport',       icon: '🚌', cls: 'cat-transport',     color: '#4fd1c5' },
+  housing:       { label: 'Housing',         icon: '🏠', cls: 'cat-housing',       color: '#9f7aea' },
+  entertainment: { label: 'Entertainment',  icon: '🎮', cls: 'cat-entertainment', color: '#fc8181' },
+  health:        { label: 'Health',          icon: '💊', cls: 'cat-health',        color: '#68d391' },
+  other:         { label: 'Other',           icon: '📦', cls: 'cat-other',         color: '#7b8db0' },
+};
+
+// ─── ACHIEVEMENTS CONFIG ─────────────────────────────────────
+const ACHIEVEMENTS_DEF = [
+  { id: 'first_entry',       icon: '🚀', name: 'First Launch',    desc: 'Log your first expense' },
+  { id: 'ten_entries',       icon: '💫', name: 'Orbit Achieved',  desc: 'Log 10 expenses' },
+  { id: 'three_day_streak',  icon: '🔥', name: 'Heat Seeker',     desc: '3-day tracking streak' },
+  { id: 'seven_day_streak',  icon: '⚡', name: 'Voltage',         desc: '7-day tracking streak' },
+  { id: 'budget_keeper',     icon: '🎯', name: 'Budget Keeper',   desc: 'Stay under budget 1 month' },
+  { id: 'category_explorer', icon: '🗺️', name: 'Explorer',       desc: 'Use all 6 categories' },
+  { id: 'century_club',      icon: '💎', name: 'Century Club',    desc: 'Log 100 total expenses' },
+  { id: 'frugal_hero',       icon: '🦸', name: 'Frugal Hero',     desc: 'Spend under $50 in a day' },
+];
+
+// ─── QUESTS CONFIG ────────────────────────────────────────────
+const QUESTS = {
+  daily: [
+    { icon: '📝', name: 'Daily Debrief',    desc: 'Log at least 1 expense today',       reward: '+15 XP',  check: () => state.expenses.filter(e => e.date === todayStr()).length >= 1 },
+    { icon: '🎯', name: 'Category Pro',     desc: 'Log expenses in 2 categories today', reward: '+20 XP',  check: () => new Set(state.expenses.filter(e => e.date === todayStr()).map(e => e.cat)).size >= 2 },
+    { icon: '⚡', name: 'Quick Tracker',    desc: 'Log 3 expenses today',               reward: '+25 XP',  check: () => state.expenses.filter(e => e.date === todayStr()).length >= 3 },
+  ],
+  weekly: [
+    { icon: '🌟', name: 'Week Warrior',     desc: 'Log expenses 5 days this week',      reward: '+80 XP',  check: () => state.streak >= 5 },
+    { icon: '💰', name: 'Frugal Friday',    desc: 'Keep weekly food under $50',         reward: '+60 XP',  check: () => weeklyByCategory('food') < 50 },
+    { icon: '🚌', name: 'Transit Champion', desc: 'Keep transport under $20 this week', reward: '+40 XP',  check: () => weeklyByCategory('transport') < 20 },
+  ],
+  special: [
+    { icon: '🏆', name: 'Category Master',  desc: 'Use all 6 expense categories',       reward: '+150 XP', check: () => new Set(state.expenses.map(e => e.cat)).size >= 6 },
+    { icon: '🔥', name: 'Inferno Week',     desc: 'Hit a 7-day streak',                 reward: '+200 XP', check: () => state.streak >= 7 },
+    { icon: '💎', name: 'Diamond Cadet',    desc: 'Reach Level 10',                     reward: 'Badge',   check: () => state.level >= 10 },
+  ],
+};
+
+function todayStr() { return new Date().toISOString().split('T')[0]; }
+function weeklyByCategory(cat) {
+  const d = new Date(); d.setDate(d.getDate() - 7);
+  return state.expenses
+    .filter(e => e.cat === cat && new Date(e.date) >= d)
+    .reduce((s, e) => s + e.amount, 0);
+}
+
+// ─── LEADERBOARD DATA ─────────────────────────────────────────
+const LB_DATA = [
+  { rank: 1, name: 'Sarah K.',    avatar: '👩‍🎓', score: 840, bg: 'rgba(246,173,85,0.15)' },
+  { rank: 2, name: 'James M.',    avatar: '👨‍💻', score: 720, bg: 'rgba(79,209,197,0.12)' },
+  { rank: 3, name: 'Priya S.',    avatar: '👩‍🔬', score: 590, bg: 'rgba(159,122,234,0.12)' },
+  { rank: 4, name: 'You',         avatar: '🚀', score: state.xp, bg: 'rgba(79,209,197,0.1)' },
+  { rank: 5, name: 'Chris T.',    avatar: '🎓', score: 280, bg: 'rgba(255,255,255,0.04)' },
+  { rank: 6, name: 'Emma L.',     avatar: '👩‍🎨', score: 195, bg: 'rgba(255,255,255,0.04)' },
+];
+
+// ─── VIEW SWITCHING ───────────────────────────────────────────
+const VIEWS = ['dashboard','add','history','achievements','quests','leaderboard','budget'];
+
+function switchView(name) {
+  VIEWS.forEach(v => {
+    const el = document.getElementById('view-' + v);
+    if (el) el.style.display = (v === name) ? '' : 'none';
+  });
+  document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(btn => {
+    if (btn.textContent.trim().toLowerCase().includes(name) ||
+        (name === 'dashboard' && btn.textContent.includes('Dashboard')) ||
+        (name === 'add' && btn.textContent.includes('Add')) ||
+        (name === 'history' && btn.textContent.includes('History')) ||
+        (name === 'achievements' && btn.textContent.includes('Achievements')) ||
+        (name === 'quests' && btn.textContent.includes('Quests')) ||
+        (name === 'leaderboard' && btn.textContent.includes('Leaderboard')) ||
+        (name === 'budget' && btn.textContent.includes('Budget'))) {
+      btn.classList.add('active');
+    }
+  });
+  renderAll();
+}
+
+function switchTab(btn, tabId) {
+  btn.closest('.panel-card').querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.closest('.panel-card').querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(tabId).classList.add('active');
+}
+
+// ─── EXPENSE MANAGEMENT ───────────────────────────────────────
+function addExpense(e) {
+  e.preventDefault();
+  const desc   = document.getElementById('form-desc').value.trim();
+  const amount = parseFloat(document.getElementById('form-amount').value);
+  const cat    = document.getElementById('form-cat').value;
+  const date   = document.getElementById('form-date').value;
+  const note   = document.getElementById('form-note').value.trim();
+
+  if (!desc || !amount || !date) return;
+
+  const expense = { id: Date.now(), desc, amount, cat, date, note };
+  state.expenses.unshift(expense);
+
+  // Award XP
+  const xpGain = 10 + (state.streak >= 3 ? 5 : 0);
+  state.xp += xpGain;
+  checkLevelUp();
+  checkAchievements();
+  saveState();
+
+  // Reset form
+  document.getElementById('expense-form').reset();
+  document.getElementById('form-date').value = todayStr();
+
+  showToast('🚀', `Logged! +${xpGain} XP earned`);
+  switchView('dashboard');
+}
+
+function deleteExpense(id) {
+  state.expenses = state.expenses.filter(e => e.id !== id);
+  saveState();
+  renderAll();
+  showToast('🗑️', 'Expense removed');
+}
+
+// ─── XP & LEVELING ───────────────────────────────────────────
+function checkLevelUp() {
+  const thresholds = [0,100,250,450,700,1000,1400,1900,2500,3200,4000];
+  let newLevel = 1;
+  for (let i = 1; i < thresholds.length; i++) {
+    if (state.xp >= thresholds[i]) newLevel = i + 1;
+  }
+  if (newLevel > state.level) {
+    state.level = newLevel;
+    setTimeout(() => showToast('🎉', `Level Up! You're now Level ${state.level}`), 500);
+  }
+}
+
+function getXPForLevel(lvl) {
+  const t = [0,100,250,450,700,1000,1400,1900,2500,3200,4000];
+  return { curr: t[lvl-1] || 0, next: t[lvl] || t[t.length-1] };
+}
+
+// ─── ACHIEVEMENT CHECKING ────────────────────────────────────
+function checkAchievements() {
+  const n = state.expenses.length;
+  const cats = new Set(state.expenses.map(e => e.cat)).size;
+
+  const conds = {
+    first_entry:       n >= 1,
+    ten_entries:       n >= 10,
+    three_day_streak:  state.streak >= 3,
+    seven_day_streak:  state.streak >= 7,
+    category_explorer: cats >= 6,
+    century_club:      n >= 100,
+  };
+
+  let newUnlocked = false;
+  Object.entries(conds).forEach(([id, met]) => {
+    if (met && !state.achievements.includes(id)) {
+      state.achievements.push(id);
+      const a = ACHIEVEMENTS_DEF.find(x => x.id === id);
+      if (a) setTimeout(() => showToast(a.icon, `Achievement unlocked: ${a.name}!`), 800);
+      newUnlocked = true;
+    }
+  });
+  if (newUnlocked) saveState();
+}
+
+// ─── RENDER ALL ──────────────────────────────────────────────
+function renderAll() {
+  updateTopBar();
+  renderStats();
+  renderRecentList();
+  renderHistoryList();
+  renderChart();
+  renderBudgetOverview();
+  renderBudgetDetail();
+  renderAchievements();
+  renderQuests();
+  renderLeaderboard();
+  renderDashboardQuests();
+}
+
+function updateTopBar() {
+  const { curr, next } = getXPForLevel(state.level);
+  const pct = Math.min(100, ((state.xp - curr) / (next - curr)) * 100);
+  document.getElementById('xp-fill').style.width = pct + '%';
+  document.getElementById('xp-display').textContent = state.xp + ' XP';
+  document.getElementById('level-badge').textContent = 'LVL ' + state.level;
+  document.getElementById('streak-count').textContent = state.streak;
+}
+
+function renderStats() {
+  const total = state.expenses.reduce((s, e) => s + e.amount, 0);
+  document.getElementById('stat-total').textContent = '$' + total.toFixed(2);
+  document.getElementById('stat-xp').textContent = state.xp;
+  document.getElementById('stat-streak').textContent = state.streak;
+  document.getElementById('stat-badges').textContent = state.achievements.length;
+  if (document.getElementById('lb-my-xp')) {
+    document.getElementById('lb-my-xp').textContent = state.xp;
+    document.getElementById('lb-my-streak').textContent = state.streak;
+  }
+  if (document.getElementById('achieve-unlocked')) {
+    document.getElementById('achieve-unlocked').textContent = state.achievements.length;
+  }
+}
+
+function renderRecentList() {
+  const el = document.getElementById('recent-list');
+  if (!el) return;
+  const recent = state.expenses.slice(0, 5);
+  el.innerHTML = recent.length === 0
+    ? '<div class="empty-state"><span class="empty-icon">🌌</span>No expenses yet. Log your first mission!</div>'
+    : recent.map(e => expenseItemHTML(e)).join('');
+}
+
+function renderHistoryList() {
+  const el = document.getElementById('history-list');
+  if (!el) return;
+  const filter = document.getElementById('filter-cat')?.value || 'all';
+  const list = filter === 'all' ? state.expenses : state.expenses.filter(e => e.cat === filter);
+  el.innerHTML = list.length === 0
+    ? '<div class="empty-state"><span class="empty-icon">📭</span>No expenses found.</div>'
+    : list.map(e => expenseItemHTML(e)).join('');
+}
+
+function renderHistory() { renderHistoryList(); }
+
+function expenseItemHTML(e) {
+  const c = CAT[e.cat] || CAT.other;
+  return `<div class="expense-item">
+    <div class="expense-icon ${c.cls}">${c.icon}</div>
+    <div class="expense-info">
+      <div class="expense-name">${escapeHTML(e.desc)}</div>
+      <div class="expense-cat">${c.label} · ${e.date}${e.note ? ' · ' + escapeHTML(e.note) : ''}</div>
+    </div>
+    <div style="text-align:right;">
+      <div class="expense-amount" style="color:${c.color}">$${e.amount.toFixed(2)}</div>
+      <div class="expense-points">+10 XP</div>
+    </div>
+    <button class="expense-delete" onclick="deleteExpense(${e.id})" title="Delete">✕</button>
+  </div>`;
+}
+
+function renderChart() {
+  const el = document.getElementById('chart-wrap');
+  if (!el) return;
+  const days = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const s = d.toISOString().split('T')[0];
+    const label = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][d.getDay()];
+    const total = state.expenses.filter(e => e.date === s).reduce((sum, e) => sum + e.amount, 0);
+    days.push({ label, total, date: s });
+  }
+  const max = Math.max(...days.map(d => d.total), 1);
+  const colors = ['#4fd1c5','#9f7aea','#f6ad55','#fc8181','#68d391','#4fd1c5','#9f7aea'];
+  el.innerHTML = days.map((d, i) => {
+    const h = Math.round((d.total / max) * 120);
+    const today = d.date === todayStr();
+    return `<div class="chart-bar-group">
+      <div class="chart-bar" style="height:${Math.max(h, d.total > 0 ? 8 : 4)}px;background:${today ? colors[i] : colors[i]+'66'};position:relative;"
+        title="$${d.total.toFixed(2)} on ${d.date}">
+        ${d.total > 0 ? `<div style="position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-size:0.65rem;color:var(--fg-muted);white-space:nowrap;">$${d.total.toFixed(0)}</div>` : ''}
+      </div>
+      <div class="chart-label" style="color:${today ? 'var(--accent-primary)' : ''}">${d.label}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderBudgetOverview() {
+  const el = document.getElementById('budget-overview');
+  if (!el) return;
+  const now = new Date();
+  const monthStr = now.toISOString().slice(0, 7);
+  el.innerHTML = Object.entries(state.budgets).slice(0, 4).map(([cat, budget]) => {
+    const spent = state.expenses
+      .filter(e => e.cat === cat && e.date.startsWith(monthStr))
+      .reduce((s, e) => s + e.amount, 0);
+    const pct = Math.min(100, (spent / budget) * 100);
+    const over = pct > 90;
+    const color = pct > 90 ? '#fc8181' : pct > 70 ? '#f6ad55' : '#68d391';
+    const c = CAT[cat];
+    return `<div class="budget-row">
+      <div class="budget-header">
+        <div class="budget-cat-name">${c.icon} ${c.label}</div>
+        <div class="budget-amounts">$${spent.toFixed(0)} / $${budget}</div>
+      </div>
+      <div class="budget-track">
+        <div class="budget-fill" style="width:${pct}%;background:${color};"></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function renderBudgetDetail() {
+  const el = document.getElementById('budget-detail');
+  if (!el) return;
+  const now = new Date();
+  const monthStr = now.toISOString().slice(0, 7);
+  el.innerHTML = Object.entries(state.budgets).map(([cat, budget]) => {
+    const spent = state.expenses
+      .filter(e => e.cat === cat && e.date.startsWith(monthStr))
+      .reduce((s, e) => s + e.amount, 0);
+    const pct = Math.min(100, (spent / budget) * 100);
+    const color = pct > 90 ? '#fc8181' : pct > 70 ? '#f6ad55' : '#68d391';
+    const c = CAT[cat];
+    return `<div class="budget-row">
+      <div class="budget-header">
+        <div class="budget-cat-name">${c.icon} ${c.label}</div>
+        <div class="budget-amounts" style="font-family:var(--display-font);">$${spent.toFixed(0)} / $${budget}</div>
+      </div>
+      <div class="budget-track" style="height:10px;">
+        <div class="budget-fill" style="width:${pct}%;background:${color};"></div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Update donut
+  const totalBudget = Object.values(state.budgets).reduce((s, b) => s + b, 0);
+  const totalSpent  = Object.entries(state.budgets).reduce((s, [cat, budget]) => {
+    return s + state.expenses.filter(e => e.cat === cat && e.date.startsWith(now.toISOString().slice(0,7))).reduce((ss, e) => ss + e.amount, 0);
+  }, 0);
+  const overallPct = Math.min(100, (totalSpent / totalBudget) * 100);
+  const circumference = 2 * Math.PI * 50;
+  const offset = circumference - (overallPct / 100) * circumference;
+  const donut = document.getElementById('budget-donut');
+  if (donut) {
+    donut.setAttribute('stroke-dasharray', circumference.toFixed(0));
+    donut.setAttribute('stroke-dashoffset', offset.toFixed(0));
+    donut.setAttribute('stroke', overallPct > 90 ? '#fc8181' : overallPct > 70 ? '#f6ad55' : '#4fd1c5');
+  }
+  const pctEl = document.getElementById('budget-pct');
+  if (pctEl) pctEl.textContent = Math.round(overallPct) + '%';
+}
+
+function setBudget() {
+  const cat = document.getElementById('budget-cat-input').value;
+  const amt = parseFloat(document.getElementById('budget-amount-input').value);
+  if (!cat || !amt || amt <= 0) return;
+  state.budgets[cat] = amt;
+  saveState();
+  renderBudgetDetail();
+  renderBudgetOverview();
+  showToast('🎯', `Budget set: ${CAT[cat].label} → $${amt}/mo`);
+}
+
+function renderAchievements() {
+  const el = document.getElementById('achievements-grid');
+  if (!el) return;
+  el.innerHTML = ACHIEVEMENTS_DEF.map(a => {
+    const unlocked = state.achievements.includes(a.id);
+    return `<div class="achievement-card ${unlocked ? 'unlocked' : ''}" title="${a.desc}">
+      <span class="achievement-icon">${a.icon}</span>
+      <div class="achievement-name">${a.name}</div>
+      <div class="achievement-desc">${a.desc}</div>
+      ${!unlocked ? '<div class="achievement-locked">🔒</div>' : ''}
+    </div>`;
+  }).join('');
+}
+
+function renderQuestList(elId, quests) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  el.innerHTML = quests.map(q => {
+    const done = q.check();
+    return `<div class="quest-item ${done ? 'completed' : ''}">
+      <div class="quest-icon">${q.icon}</div>
+      <div class="quest-info">
+        <div class="quest-name">${q.name}</div>
+        <div class="quest-desc">${q.desc}</div>
+      </div>
+      <div class="quest-reward">${q.reward}</div>
+      <div class="quest-check">${done ? '✓' : ''}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderQuests() {
+  renderQuestList('quests-daily',   QUESTS.daily);
+  renderQuestList('quests-weekly',  QUESTS.weekly);
+  renderQuestList('quests-special', QUESTS.special);
+}
+
+function renderDashboardQuests() {
+  const el = document.getElementById('dashboard-quests');
+  if (!el) return;
+  const all = [...QUESTS.daily, ...QUESTS.weekly].slice(0, 3);
+  el.innerHTML = all.map(q => {
+    const done = q.check();
+    return `<div class="quest-item ${done ? 'completed' : ''}">
+      <div class="quest-icon">${q.icon}</div>
+      <div class="quest-info">
+        <div class="quest-name">${q.name}</div>
+        <div class="quest-desc">${q.desc}</div>
+      </div>
+      <div class="quest-reward">${q.reward}</div>
+      <div class="quest-check">${done ? '✓' : ''}</div>
+    </div>`;
+  }).join('');
+}
+
+function renderLeaderboard() {
+  const el = document.getElementById('leaderboard-list');
+  if (!el) return;
+  LB_DATA[3].score = state.xp; // update "You"
+  el.innerHTML = LB_DATA.map(p => {
+    const medals = ['🥇','🥈','🥉'];
+    const medal = medals[p.rank - 1] || '';
+    const isYou = p.name === 'You';
+    return `<div class="lb-item" style="${isYou ? 'border:1px solid rgba(79,209,197,0.3);background:rgba(79,209,197,0.05);' : ''}">
+      <div class="lb-rank ${p.rank <= 3 ? 'top' : ''}">${medal || p.rank}</div>
+      <div class="lb-avatar" style="background:${p.bg}">${p.avatar}</div>
+      <div class="lb-name" style="${isYou ? 'color:var(--accent-primary);font-weight:700;' : ''}">${p.name}${isYou ? ' ← you' : ''}</div>
+      <div class="lb-score">${p.score} XP</div>
+    </div>`;
+  }).join('');
+}
+
+// ─── TOAST ───────────────────────────────────────────────────
+function showToast(icon, msg) {
+  const tc = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.innerHTML = `<span class="toast-icon">${icon}</span><span>${msg}</span>`;
+  tc.appendChild(toast);
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(8px)';
+    toast.style.transition = 'opacity 0.3s, transform 0.3s';
+    setTimeout(() => toast.remove(), 300);
+  }, 2800);
+}
+
+function escapeHTML(str) {
+  return String(str).replace(/&/g,'&').replace(/</g,'<').replace(/>/g,'>').replace(/"/g,'"');
+}
+
+// ─── INIT ─────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  // Set today's date on form
+  const dateField = document.getElementById('form-date');
+  if (dateField) dateField.value = todayStr();
+
+  // Set current month label
+  const now = new Date();
+  const monthLabel = now.toLocaleString('default', { month: 'long', year: 'numeric' });
+  const budgetMonth = document.getElementById('budget-month');
+  if (budgetMonth) budgetMonth.textContent = monthLabel;
+
+  // Seed some demo expenses if empty
+  if (state.expenses.length === 0) {
+    const today = todayStr();
+    const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
+    const yStr = yesterday.toISOString().split('T')[0];
+    const twoDays = new Date(); twoDays.setDate(twoDays.getDate() - 2);
+    const tStr = twoDays.toISOString().split('T')[0];
+
+    state.expenses = [
+      { id: 1, desc: 'Campus coffee',       amount: 4.50,  cat: 'food',          date: today,  note: 'Morning boost' },
+      { id: 2, desc: 'Bus pass weekly',     amount: 18.00, cat: 'transport',     date: today,  note: '' },
+      { id: 3, desc: 'Grocery run',         amount: 32.75, cat: 'food',          date: yStr,   note: 'Week essentials' },
+      { id: 4, desc: 'Netflix share',       amount: 5.00,  cat: 'entertainment', date: yStr,   note: '' },
+      { id: 5, desc: 'Vitamin C',           amount: 8.99,  cat: 'health',        date: tStr,   note: '' },
+      { id: 6, desc: 'Textbook rental',     amount: 45.00, cat: 'other',         date: tStr,   note: 'CS201' },
+    ];
+    state.xp = 380;
+    saveState();
+  }
+
+  renderAll();
+  showToast('👋', 'Welcome back, Cadet!');
+});
+</script>
+</body>
+</html>
