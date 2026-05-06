@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SpendQuest — Student Expense Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,500;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-canvas: #0d1117;
+    --bg-panel: rgba(22, 30, 42, 0.92);
+    --bg-card: rgba(255,255,255,0.04);
+    --bg-card-hover: rgba(255,255,255,0.07);
+    --fg-strong: #e8f0fe;
+    --fg-muted: #8b9ab5;
+    --fg-inverse: #0d1117;
+    --line-soft: rgba(139, 154, 181, 0.15);
+    --line-strong: rgba(100, 200, 180, 0.3);
+    --accent-primary: #64c8b4;
+    --accent-secondary: #f9a842;
+    --accent-danger: #f06b6b;
+    --accent-purple: #a78bfa;
+    --accent-blue: #60a5fa;
+    --radius-card: 16px;
+    --radius-pill: 999px;
+    --shadow-soft: 0 8px 32px rgba(0,0,0,0.4);
+    --shadow-glow: 0 0 24px rgba(100, 200, 180, 0.2);
+    --display-font: 'Space Mono', monospace;
+    --body-font: 'DM Sans', sans-serif;
+    --space-1: 0.375rem;
+    --space-2: 0.75rem;
+    --space-3: 1rem;
+    --space-4: 1.5rem;
+    --space-5: 2rem;
+    --space-6: 3rem;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg-canvas);
+    color: var(--fg-strong);
+    font-family: var(--body-font);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Background grid */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(100,200,180,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(100,200,180,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Animations */
+  @keyframes fx-enter {
+    from { opacity: 0; transform: translate3d(0, 18px, 0) scale(0.985); }
+    to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+  }
+  @keyframes fx-pulse-ring {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(100,200,180,0.3); }
+    50% { box-shadow: 0 0 0 10px rgba(100,200,180,0); }
+  }
+  @keyframes badge-pop {
+    0% { transform: scale(0) rotate(-15deg); opacity: 0; }
+    60% { transform: scale(1.2) rotate(5deg); opacity: 1; }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+  @keyframes xp-fill {
+    from { width: 0; }
+  }
+  @keyframes float-up {
+    0% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(-60px); }
+  }
+  @keyframes scan-line {
+    0% { transform: translateY(-100%); }
+    100% { transform: translateY(100vh); }
+  }
+
+  .fx-enter { animation: fx-enter 620ms cubic-bezier(0.22,1,0.36,1) both; }
+  .fx-enter-delay-1 { animation: fx-enter 620ms cubic-bezier(0.22,1,0.36,1) 80ms both; }
+  .fx-enter-delay-2 { animation: fx-enter 620ms cubic-bezier(0.22,1,0.36,1) 160ms both; }
+  .fx-enter-delay-3 { animation: fx-enter 620ms cubic-bezier(0.22,1,0.36,1) 240ms both; }
+  .fx-enter-delay-4 { animation: fx-enter 620ms cubic-bezier(0.22,1,0.36,1) 320ms both; }
+
+  .fx-hover-lift {
+    transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+  }
+  .fx-hover-lift:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-soft), var(--shadow-glow);
+  }
+
+  /* Layout */
+  .app-shell {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    grid-template-rows: auto 1fr;
+    min-height: 100vh;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Top bar */
+  .topbar {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-3) var(--space-5);
+    border-bottom: 1px solid var(--line-soft);
+    background: rgba(13,17,23,0.8);
+    backdrop-filter: blur(12px);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: var(--display-font);
+    font-size: 1.1rem;
+    color: var(--accent-primary);
+    letter-spacing: 0.05em;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .logo-icon { font-size: 1.4rem; }
+
+  .topbar-right {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
+  .xp-bar-mini {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: 0.82rem;
+    color: var(--fg-muted);
+    font-family: var(--display-font);
+  }
+  .xp-track-mini {
+    width: 120px;
+    height: 6px;
+    background: rgba(255,255,255,0.08);
+    border-radius: var(--radius-pill);
+    overflow: hidden;
+  }
+  .xp-fill-mini {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+    border-radius: var(--radius-pill);
+    transition: width 600ms ease;
+    animation: xp-fill 1.2s cubic-bezier(0.22,1,0.36,1) both;
+  }
+
+  .level-badge {
+    font-family: var(--display-font);
+    font-size: 0.75rem;
+    color: var(--accent-secondary);
+    background: rgba(249,168,66,0.12);
+    border: 1px solid rgba(249,168,66,0.25);
+    border-radius: var(--radius-pill);
+    padding: 4px 12px;
+    animation: fx-pulse-ring 2.8s ease-in-out infinite;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    padding: var(--space-5) var(--space-4);
+    border-right: 1px solid var(--line-soft);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    background: rgba(13,17,23,0.6);
+  }
+
+  .sidebar-section-label {
+    font-family: var(--display-font);
+    font-size: 0.65rem;
+    color: var(--fg-muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: var(--space-2) 0 var(--space-1) var(--space-2);
+    margin-top: var(--space-3);
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: 10px var(--space-3);
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--fg-muted);
+    transition: all 180ms ease;
+    border: 1px solid transparent;
+    user-select: none;
+  }
+  .nav-item:hover, .nav-item.active {
+    background: var(--bg-card-hover);
+    color: var(--fg-strong);
+    border-color: var(--line-soft);
+  }
+  .nav-item.active { color: var(--accent-primary); border-color: rgba(100,200,180,0.2); }
+  .nav-icon { font-size: 1.1rem; width: 20px; text-align: center; }
+
+  /* Streak widget */
+  .streak-widget {
+    margin-top: auto;
+    background: linear-gradient(135deg, rgba(100,200,180,0.08), rgba(249,168,66,0.06));
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius-card);
+    padding: var(--space-3);
+    text-align: center;
+  }
+  .streak-flame { font-size: 2rem; line-height: 1; }
+  .streak-count {
+    font-family: var(--display-font);
+    font-size: 1.5rem;
+    color: var(--accent-secondary);
+    margin: 4px 0 2px;
+  }
+  .streak-label { font-size: 0.78rem; color: var(--fg-muted); }
+
+  /* Main content */
+  .main-content {
+    padding: var(--space-5);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  /* Stats row */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-3);
+  }
+
+  .stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius-card);
+    padding: var(--space-4);
+    position: relative;
+    overflow: hidden;
+  }
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    border-radius: 2px 2px 0 0;
+  }
+  .stat-card.green::before { background: var(--accent-primary); }
+  .stat-card.orange::before { background: var(--accent-secondary); }
+  .stat-card.red::before { background: var(--accent-danger); }
+  .stat-card.purple::before { background: var(--accent-purple); }
+
+  .stat-label {
+    font-size: 0.75rem;
+    color: var(--fg-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-family: var(--display-font);
+    margin-bottom: var(--space-2);
+  }
+  .stat-value {
+    font-family: var(--display-font);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--fg-strong);
+    line-height: 1;
+  }
+  .stat-sub {
+    font-size: 0.78rem;
+    color: var(--fg-muted);
+    margin-top: 6px;
+  }
+  .stat-trend {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: var(--radius-pill);
+    margin-top: 6px;
+  }
+  .stat-trend.up { background: rgba(240,107,107,0.12); color: var(--accent-danger); }
+  .stat-trend.down { background: rgba(100,200,180,0.12); color: var(--accent-primary); }
+
+  /* Two-column layout */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: var(--space-4);
+  }
+
+  /* Add expense panel */
+  .panel {
+    background: var(--bg-panel);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius-card);
+    padding: var(--space-5);
+  }
+
+  .panel-title {
+    font-family: var(--display-font);
+    font-size: 0.85rem;
+    color: var(--accent-primary);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: var(--space-4);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .panel-title-dot {
+    width: 6px; height: 6px;
+    background: var(--accent-primary);
+    border-radius: 50%;
+    animation: fx-pulse-ring 2s ease-in-out infinite;
+  }
+
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+  .form-group label {
+    font-size: 0.78rem;
+    color: var(--fg-muted);
+    font-family: var(--display-font);
+    letter-spacing: 0.05em;
+  }
+  .form-group input,
+  .form-group select {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--line-soft);
+    border-radius: 10px;
+    color: var(--fg-strong);
+    font-family: var(--body-font);
+    font-size: 0.95rem;
+    padding: 10px 14px;
+    outline: none;
+    transition: border-color 180ms ease, background 180ms ease;
+    width: 100%;
+  }
+  .form-group input:focus,
+  .form-group select:focus {
+    border-color: var(--accent-primary);
+    background: rgba(100,200,180,0.06);
+  }
+  .form-group select option { background: #1a2332; }
+
+  .category-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+  }
+  .chip {
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    font-size: 0.82rem;
+    cursor: pointer;
+    border: 1px solid var(--line-soft);
+    background: var(--bg-card);
+    color: var(--fg-muted);
+    transition: all 180ms ease;
+    user-select: none;
+  }
+  .chip:hover { border-color: var(--accent-primary); color: var(--accent-primary); }
+  .chip.selected { background: rgba(100,200,180,0.15); border-color: var(--accent-primary); color: var(--accent-primary); }
+
+  .btn-primary {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, var(--accent-primary), #4ab8a4);
+    color: var(--fg-inverse);
+    border: none;
+    border-radius: 12px;
+    font-family: var(--display-font);
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    cursor: pointer;
+    transition: all 200ms ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(100,200,180,0.35);
+  }
+  .btn-primary:active { transform: translateY(0); }
+
+  /* XP Progress */
+  .xp-section {
+    margin-top: var(--space-4);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--line-soft);
+  }
+  .xp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-2);
+    font-size: 0.8rem;
+    color: var(--fg-muted);
+    font-family: var(--display-font);
+  }
+  .xp-track {
+    height: 10px;
+    background: rgba(255,255,255,0.06);
+    border-radius: var(--radius-pill);
+    overflow: hidden;
+  }
+  .xp-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
+    border-radius: var(--radius-pill);
+    transition: width 600ms ease;
+    animation: xp-fill 1.4s cubic-bezier(0.22,1,0.36,1) both;
+  }
+
+  /* Expenses list */
+  .expense-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+    max-height: 340px;
+    overflow-y: auto;
+    padding-right: 4px;
+  }
+  .expense-list::-webkit-scrollbar { width: 4px; }
+  .expense-list::-webkit-scrollbar-track { background: transparent; }
+  .expense-list::-webkit-scrollbar-thumb { background: var(--line-soft); border-radius: 4px; }
+
+  .expense-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: 12px var(--space-3);
+    background: var(--bg-card);
+    border: 1px solid var(--line-soft);
+    border-radius: 12px;
+    transition: all 180ms ease;
+    animation: fx-enter 400ms cubic-bezier(0.22,1,0.36,1) both;
+  }
+  .expense-item:hover { background: var(--bg-card-hover); border-color: var(--line-strong); }
+
+  .expense-emoji {
+    width: 36px; height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255,255,255,0.06);
+    border-radius: 8px;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .expense-info { flex: 1; min-width: 0; }
+  .expense-name {
+    font-size: 0.9rem;
+    color: var(--fg-strong);
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .expense-meta { font-size: 0.75rem; color: var(--fg-muted); margin-top: 2px; }
+  .expense-amount {
+    font-family: var(--display-font);
+    font-size: 0.95rem;
+    color: var(--accent-danger);
+    flex-shrink: 0;
+  }
+  .expense-xp {
+    font-size: 0.72rem;
+    color: var(--accent-primary);
+    background: rgba(100,200,180,0.1);
+    padding: 3px 8px;
+    border-radius: var(--radius-pill);
+    flex-shrink: 0;
+  }
+  .expense-delete {
+    background: none;
+    border: none;
+    color: var(--fg-muted);
+    cursor: pointer;
+    font-size: 1rem;
+    padding: 4px;
+    border-radius: 6px;
+    transition: all 150ms ease;
+    flex-shrink: 0;
+  }
+  .expense-delete:hover { color: var(--accent-danger); background: rgba(240,107,107,0.1); }
+
+  /* Achievements */
+  .achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-3);
+  }
+
+  .achievement-card {
+    background: var(--bg-card);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius-card);
+    padding: var(--space-3);
+    text-align: center;
+    transition: all 200ms ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .achievement-card.unlocked {
+    border-color: rgba(100,200,180,0.3);
+    background: rgba(100,200,180,0.05);
+  }
+  .achievement-card.unlocked .achievement-icon { filter: none; }
+  .achievement-card:not(.unlocked) { opacity: 0.5; }
+  .achievement-card:not(.unlocked) .achievement-icon { filter: grayscale(1); }
+
+  .achievement-icon { font-size: 2rem; margin-bottom: var(--space-2); }
+  .achievement-name {
+    font-size: 0.8rem;
+    color: var(--fg-strong);
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .achievement-desc { font-size: 0.72rem; color: var(--fg-muted); }
+  .achievement-badge {
+    position: absolute;
+    top: 8px; right: 8px;
+    width: 16px; height: 16px;
+    background: var(--accent-primary);
+    border-radius: 50%;
+    display: none;
+  }
+  .achievement-card.unlocked .achievement-badge { display: block; }
+
+  /* Budget bars */
+  .budget-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .budget-row { display: flex; flex-direction: column; gap: 6px; }
+  .budget-row-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.83rem;
+  }
+  .budget-row-label { color: var(--fg-strong); display: flex; align-items: center; gap: 8px; }
+  .budget-row-amounts { color: var(--fg-muted); font-family: var(--display-font); font-size: 0.78rem; }
+  .budget-bar-track {
+    height: 8px;
+    background: rgba(255,255,255,0.06);
+    border-radius: var(--radius-pill);
+    overflow: hidden;
+  }
+  .budget-bar-fill {
+    height: 100%;
+    border-radius: var(--radius-pill);
+    transition: width 800ms cubic-bezier(0.22,1,0.36,1);
+    animation: xp-fill 1.2s cubic-bezier(0.22,1,0.36,1) both;
+  }
+  .budget-bar-fill.safe { background: var(--accent-primary); }
+  .budget-bar-fill.warn { background: var(--accent-secondary); }
+  .budget-bar-fill.over { background: var(--accent-danger); }
+
+  /* Notification toast */
+  #toast {
+    position: fixed;
+    bottom: var(--space-5);
+    right: var(--space-5);
+    background: var(--bg-panel);
+    border: 1px solid var(--accent-primary);
+    border-radius: 14px;
+    padding: var(--space-3) var(--space-4);
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    box-shadow: var(--shadow-soft), var(--shadow-glow);
+    z-index: 1000;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 350ms cubic-bezier(0.22,1,0.36,1);
+    max-width: 320px;
+  }
+  #toast.show { transform: translateY(0); opacity: 1; }
+  .toast-icon { font-size: 1.5rem; }
+  .toast-text .toast-title { font-size: 0.9rem; font-weight: 600; color: var(--fg-strong); }
+  .toast-text .toast-sub { font-size: 0.78rem; color: var(--fg-muted); margin-top: 2px; }
+
+  /* Float XP */
+  .float-xp {
+    position: fixed;
+    pointer-events: none;
+    font-family: var(--display-font);
+    font-size: 1.1rem;
+    color: var(--accent-primary);
+    font-weight: 700;
+    z-index: 2000;
+    animation: float-up 1.2s ease-out forwards;
+  }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: var(--space-5);
+    color: var(--fg-muted);
+  }
+  .empty-state-icon { font-size: 2.5rem; margin-bottom: var(--space-2); }
+  .empty-state-text { font-size: 0.88rem; }
+
+  /* Chart bars */
+  .chart-bars {
+    display: flex;
+    align-items: flex-end;
+    gap: var(--space-2);
+    height: 100px;
+    margin-top: var(--space-3);
+  }
+  .chart-bar-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    height: 100%;
+  }
+  .chart-bar-wrap {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+  }
+  .chart-bar {
+    width: 100%;
+    border-radius: 4px 4px 0 0;
+    background: rgba(100,200,180,0.25);
+    transition: height 600ms cubic-bezier(0.22,1,0.36,1);
+    position: relative;
+    min-height: 4px;
+  }
+  .chart-bar.today { background: var(--accent-primary); }
+  .chart-bar-label { font-size: 0.65rem; color: var(--fg-muted); font-family: var(--display-font); }
+
+  /* Scan line effect */
+  .scan-line {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(100,200,180,0.15), transparent);
+    pointer-events: none;
+    z-index: 50;
+    animation: scan-line 8s linear infinite;
+    opacity: 0.6;
+  }
+
+  /* Tab system */
+  .tabs {
+    display: flex;
+    gap: var(--space-2);
+    margin-bottom: var(--space-4);
+  }
+  .tab {
+    padding: 8px 18px;
+    border-radius: var(--radius-pill);
+    font-size: 0.83rem;
+    cursor: pointer;
+    border: 1px solid var(--line-soft);
+    background: var(--bg-card);
+    color: var(--fg-muted);
+    transition: all 180ms ease;
+    font-family: var(--display-font);
+    user-select: none;
+  }
+  .tab:hover { color: var(--fg-strong); }
+  .tab.active { background: var(--accent-primary); color: var(--fg-inverse); border-color: transparent; }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* Responsive scrollbar */
+  html { scrollbar-width: thin; scrollbar-color: var(--line-soft) transparent; }
+</style>
+</head>
+<body>
+
+<div class="scan-line"></div>
+
+<!-- Toast Notification -->
+<div id="toast">
+  <div class="toast-icon" id="toast-icon">⚡</div>
+  <div class="toast-text">
+    <div class="toast-title" id="toast-title">Achievement Unlocked!</div>
+    <div class="toast-sub" id="toast-sub">Keep tracking to earn more XP</div>
+  </div>
+</div>
+
+<div class="app-shell">
+
+  <!-- Top Bar -->
+  <header class="topbar fx-enter">
+    <div class="logo">
+      <span class="logo-icon">🚀</span> SPENDQUEST
+    </div>
+    <div class="topbar-right">
+      <div class="xp-bar-mini">
+        <span>XP</span>
+        <div class="xp-track-mini">
+          <div class="xp-fill-mini" id="xp-fill-mini" style="width:0%"></div>
+        </div>
+        <span id="xp-label-mini">0/200</span>
+      </div>
+      <div class="level-badge" id="level-badge">LV. 1</div>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="sidebar fx-enter-delay-1">
+    <div class="sidebar-section-label">Navigation</div>
+    <div class="nav-item active" onclick="switchTab('dashboard', this)">
+      <span class="nav-icon">📊</span> Dashboard
+    </div>
+    <div class="nav-item" onclick="switchTab('expenses', this)">
+      <span class="nav-icon">💸</span> Expenses
+    </div>
+    <div class="nav-item" onclick="switchTab('budget', this)">
+      <span class="nav-icon">🎯</span> Budget
+    </div>
+    <div class="nav-item" onclick="switchTab('achievements', this)">
+      <span class="nav-icon">🏆</span> Achievements
+    </div>
+
+    <div class="sidebar-section-label">Missions</div>
+    <div class="nav-item" id="mission-1">
+      <span class="nav-icon">✅</span> <span id="mission-1-text">Log 1st expense</span>
+    </div>
+    <div class="nav-item" id="mission-2">
+      <span class="nav-icon">📋</span> <span id="mission-2-text">Track 5 expenses</span>
+    </div>
+    <div class="nav-item" id="mission-3">
+      <span class="nav-icon">💰</span> <span id="mission-3-text">Stay under budget</span>
+    </div>
+
+    <div class="streak-widget fx-enter-delay-4">
+      <div class="streak-flame">🔥</div>
+      <div class="streak-count" id="streak-count">1</div>
+      <div class="streak-label">Day Streak</div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- DASHBOARD TAB -->
+    <div id="tab-dashboard" class="tab-panel active">
+
+      <!-- Stats Row -->
+      <div class="stats-row">
+        <div class="stat-card green fx-enter fx-hover-lift">
+          <div class="stat-label">Total Spent</div>
+          <div class="stat-value" id="total-spent">$0</div>
+          <div class="stat-sub">This month</div>
+        </div>
+        <div class="stat-card orange fx-enter-delay-1 fx-hover-lift">
+          <div class="stat-label">Budget Left</div>
+          <div class="stat-value" id="budget-left">$500</div>
+          <div class="stat-trend down" id="budget-trend">↓ On track</div>
+        </div>
+        <div class="stat-card purple fx-enter-delay-2 fx-hover-lift">
+          <div class="stat-label">XP Points</div>
+          <div class="stat-value" id="total-xp">0</div>
+          <div class="stat-sub">Level <span id="current-level">1</span></div>
+        </div>
+        <div class="stat-card red fx-enter-delay-3 fx-hover-lift">
+          <div class="stat-label">Transactions</div>
+          <div class="stat-value" id="tx-count">0</div>
+          <div class="stat-sub">Logged entries</div>
+        </div>
+      </div>
+
+      <!-- Two Column -->
+      <div class="two-col">
+
+        <!-- Add Expense Form -->
+        <div class="panel fx-enter-delay-2">
+          <div class="panel-title">
+            <div class="panel-title-dot"></div>
+            Log Expense
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Description</label>
+              <input type="text" id="expense-name" placeholder="e.g. Coffee, Textbook...">
+            </div>
+            <div class="form-group">
+              <label>Amount ($)</label>
+              <input type="number" id="expense-amount" placeholder="0.00" min="0" step="0.01">
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom:var(--space-3)">
+            <label>Category</label>
+          </div>
+          <div class="category-chips" id="category-chips">
+            <div class="chip" data-cat="🍕 Food" onclick="selectChip(this)">🍕 Food</div>
+            <div class="chip" data-cat="📚 Books" onclick="selectChip(this)">📚 Books</div>
+            <div class="chip" data-cat="🚌 Transport" onclick="selectChip(this)">🚌 Transport</div>
+            <div class="chip" data-cat="🎮 Fun" onclick="selectChip(this)">🎮 Fun</div>
+            <div class="chip" data-cat="🏠 Housing" onclick="selectChip(this)">🏠 Housing</div>
+            <div class="chip" data-cat="💊 Health" onclick="selectChip(this)">💊 Health</div>
+            <div class="chip" data-cat="👕 Clothes" onclick="selectChip(this)">👕 Clothes</div>
+            <div class="chip" data-cat="☕ Coffee" onclick="selectChip(this)">☕ Coffee</div>
+          </div>
+
+          <button class="btn-primary" onclick="addExpense()">⚡ LOG EXPENSE  +10 XP</button>
+
+          <div class="xp-section">
+            <div class="xp-header">
+              <span>Level Progress</span>
+              <span id="xp-text">0 / 200 XP</span>
+            </div>
+            <div class="xp-track">
+              <div class="xp-fill" id="xp-fill" style="width:0%"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Expenses -->
+        <div class="panel fx-enter-delay-3">
+          <div class="panel-title">
+            <div class="panel-title-dot"></div>
+            Recent Transactions
+          </div>
+          <div class="expense-list" id="expense-list">
+            <div class="empty-state">
+              <div class="empty-state-icon">📭</div>
+              <div class="empty-state-text">No expenses yet.<br>Log your first one!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weekly Chart -->
+      <div class="panel fx-enter-delay-4">
+        <div class="panel-title">
+          <div class="panel-title-dot"></div>
+          Weekly Spending Overview
+        </div>
+        <div class="chart-bars" id="weekly-chart">
+          <div class="chart-bar-col"><div class="chart-bar-wrap"><div class="chart-bar" style="height:20%"></div></div><div class="chart-bar-label">Mon</div></div>
+          <div class="chart-bar-col"><div class="chart-bar-wrap"><div class="chart-bar" style="height:45%"></div></div><div class="chart-bar-label">Tue</div></div>
+          <div class="chart-bar-col"><div class="chart-bar-wrap"><div class="chart-bar" style="height:30%"></div></div><div class="chart-bar-label">Wed</div></div>
+          <div class="chart-bar-col"><div class="chart-bar-wrap"><div class="chart-bar" style="height:65%"></div></div><div class="chart-bar-label">Thu</div></div>
+          <div class="chart-bar-col"><div class="chart-bar-wrap"><div class="chart-bar" style="height:40%"></div></div><div class="chart-bar-label">Fri</div></div>
+          <div class="chart-bar-col"><div class="chart-bar-wrap"><div class="chart-bar" style="height:55%"></div></div><div class="chart-bar-label">Sat</div></div>
+          <div class="chart-bar-col"><div class="chart-bar-wrap"><div class="chart-bar today" style="height:10%"></div></div><div class="chart-bar-label">Sun</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXPENSES TAB -->
+    <div id="tab-expenses" class="tab-panel">
+      <div class="panel">
+        <div class="panel-title"><div class="panel-title-dot"></div>All Expenses</div>
+        <div class="tabs">
+          <div class="tab active" onclick="filterExpenses('all', this)">All</div>
+          <div class="tab" onclick="filterExpenses('🍕 Food', this)">🍕 Food</div>
+          <div class="tab" onclick="filterExpenses('📚 Books', this)">📚 Books</div>
+          <div class="tab" onclick="filterExpenses('🚌 Transport', this)">🚌 Transport</div>
+          <div class="tab" onclick="filterExpenses('🎮 Fun', this)">🎮 Fun</div>
+        </div>
+        <div class="expense-list" id="all-expense-list" style="max-height:500px">
+          <div class="empty-state">
+            <div class="empty-state-icon">📭</div>
+            <div class="empty-state-text">No expenses yet. Start tracking!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BUDGET TAB -->
+    <div id="tab-budget" class="tab-panel">
+      <div class="two-col">
+        <div class="panel">
+          <div class="panel-title"><div class="panel-title-dot"></div>Monthly Budget</div>
+          <div class="budget-list" id="budget-list">
+            <!-- Filled by JS -->
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-title"><div class="panel-title-dot"></div>Set Budget</div>
+          <div class="form-group" style="margin-bottom:var(--space-3)">
+            <label>Total Monthly Budget ($)</label>
+            <input type="number" id="budget-input" placeholder="500" value="500">
+          </div>
+          <button class="btn-primary" onclick="updateBudget()">💾 SAVE BUDGET</button>
+          <div style="margin-top:var(--space-4);padding-top:var(--space-4);border-top:1px solid var(--line-soft)">
+            <div class="panel-title" style="margin-bottom:var(--space-3)"><div class="panel-title-dot"></div>Spending Tips</div>
+            <div style="display:flex;flex-direction:column;gap:var(--space-2);font-size:0.85rem;color:var(--fg-muted)">
+              <div>💡 Track every expense, even small ones — XP adds up!</div>
+              <div>🎯 Set category budgets to earn bonus achievements</div>
+              <div>📅 Log daily to maintain your streak</div>
+              <div>🔥 A 7-day streak unlocks the "Discipline Master" badge</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACHIEVEMENTS TAB -->
+    <div id="tab-achievements" class="tab-panel">
+      <div class="panel">
+        <div class="panel-title"><div class="panel-title-dot"></div>Achievement Board</div>
+        <div class="achievements-grid" id="achievements-grid">
+          <!-- Filled by JS -->
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  // State
+  const state = {
+    expenses: [],
+    xp: 0,
+    level: 1,
+    streak: 1,
+    totalBudget: 500,
+    selectedCategory: null,
+    achievements: [
+      { id: 'first', icon: '🌟', name: 'First Step', desc: 'Log your first expense', unlocked: false, xpReq: 0, countReq: 1 },
+      { id: 'five', icon: '🎯', name: 'Getting Serious', desc: 'Log 5 expenses', unlocked: false, countReq: 5 },
+      { id: 'ten', icon: '🔥', name: 'On Fire', desc: 'Log 10 expenses', unlocked: false, countReq: 10 },
+      { id: 'saver', icon: '💎', name: 'Budget Hero', desc: 'Stay under budget', unlocked: false, special: 'budget' },
+      { id: 'streak', icon: '⚡', name: 'Streak Master', desc: '3-day streak', unlocked: false, special: 'streak' },
+      { id: 'categories', icon: '🗂️', name: 'Organizer', desc: 'Use 4 categories', unlocked: false, special: 'categories' },
+    ]
+  };
+
+  const XP_PER_EXPENSE = 10;
+  const XP_PER_LEVEL = 200;
+
+  // Category emoji map
+  const catEmoji = {
+    '🍕 Food': '🍕', '📚 Books': '📚', '🚌 Transport': '🚌',
+    '🎮 Fun': '🎮', '🏠 Housing': '🏠', '💊 Health': '💊',
+    '👕 Clothes': '👕', '☕ Coffee': '☕', 'Other': '💳'
+  };
+
+  function selectChip(el) {
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+    state.selectedCategory = el.dataset.cat;
+  }
+
+  function addExpense() {
+    const name = document.getElementById('expense-name').value.trim();
+    const amount = parseFloat(document.getElementById('expense-amount').value);
+    const category = state.selectedCategory || 'Other';
+
+    if (!name || isNaN(amount) || amount <= 0) {
+      showToast('⚠️', 'Missing Info', 'Add a name and valid amount!');
+      return;
+    }
+
+    const expense = {
+      id: Date.now(),
+      name, amount, category,
+      date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+      xp: XP_PER_EXPENSE
+    };
+
+    state.expenses.unshift(expense);
+
+    // XP & Level
+    state.xp += XP_PER_EXPENSE;
+    const newLevel = Math.floor(state.xp / XP_PER_LEVEL) + 1;
+    if (newLevel > state.level) {
+      state.level = newLevel;
+      showToast('🎉', `Level Up! LV.${state.level}`, `You reached level ${state.level}!`);
+    } else {
+      showToast('⚡', `+${XP_PER_EXPENSE} XP!`, `${name} logged successfully`);
+    }
+
+    // Float XP animation
+    const btn = document.querySelector('.btn-primary');
+    const rect = btn.getBoundingClientRect();
+    floatXP(rect.left + rect.width / 2, rect.top);
+
+    // Clear form
+    document.getElementById('expense-name').value = '';
+    document.getElementById('expense-amount').value = '';
+    document.querySelectorAll('.chip').forEach(c => c.classList.remove('selected'));
+    state.selectedCategory = null;
+
+    updateAll();
+    checkAchievements();
+  }
+
+  function deleteExpense(id) {
+    state.expenses = state.expenses.filter(e => e.id !== id);
+    updateAll();
+  }
+
+  function updateAll() {
+    updateStats();
+    updateExpenseLists();
+    updateXPBar();
+    updateBudgetBars();
+    renderAchievements();
+    updateMissions();
+    updateChart();
+  }
+
+  function updateStats() {
+    const total = state.expenses.reduce((s, e) => s + e.amount, 0);
+    document.getElementById('total-spent').textContent = '$' + total.toFixed(2);
+    const left = state.totalBudget - total;
+    document.getElementById('budget-left').textContent = '$' + Math.max(0, left).toFixed(2);
+    const trend = document.getElementById('budget-trend');
+    if (left < 0) { trend.textContent = '↑ Over budget'; trend.className = 'stat-trend up'; }
+    else { trend.textContent = '↓ On track'; trend.className = 'stat-trend down'; }
+    document.getElementById('total-xp').textContent = state.xp;
+    document.getElementById('current-level').textContent = state.level;
+    document.getElementById('tx-count').textContent = state.expenses.length;
+    document.getElementById('level-badge').textContent = `LV. ${state.level}`;
+    document.getElementById('streak-count').textContent = state.streak;
+  }
+
+  function updateXPBar() {
+    const xpInLevel = state.xp % XP_PER_LEVEL;
+    const pct = (xpInLevel / XP_PER_LEVEL) * 100;
+    document.getElementById('xp-fill').style.width = pct + '%';
+    document.getElementById('xp-fill-mini').style.width = pct + '%';
+    document.getElementById('xp-text').textContent = `${xpInLevel} / ${XP_PER_LEVEL} XP`;
+    document.getElementById('xp-label-mini').textContent = `${xpInLevel}/${XP_PER_LEVEL}`;
+  }
+
+  function renderExpenseItem(exp, includeDelete = true) {
+    const emoji = catEmoji[exp.category] || '💳';
+    return `
+      <div class="expense-item fx-hover-lift" id="exp-${exp.id}">
+        <div class="expense-emoji">${emoji}</div>
+        <div class="expense-info">
+          <div class="expense-name">${exp.name}</div>
+          <div class="expense-meta">${exp.category} · ${exp.date}</div>
+        </div>
+        <div class="expense-xp">+${exp.xp} XP</div>
+        <div class="expense-amount">-$${exp.amount.toFixed(2)}</div>
+        ${includeDelete ? `<button class="expense-delete" onclick="deleteExpense(${exp.id})">✕</button>` : ''}
+      </div>`;
+  }
+
+  function updateExpenseLists(filter = 'all') {
+    const list = document.getElementById('expense-list');
+    const allList = document.getElementById('all-expense-list');
+    const filtered = filter === 'all' ? state.expenses : state.expenses.filter(e => e.category === filter);
+
+    if (state.expenses.length === 0) {
+      list.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📭</div><div class="empty-state-text">No expenses yet.<br>Log your first one!</div></div>';
+      allList.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📭</div><div class="empty-state-text">No expenses yet. Start tracking!</div></div>';
+    } else {
+      list.innerHTML = state.expenses.slice(0, 6).map(e => renderExpenseItem(e)).join('');
+      allList.innerHTML = filtered.length ? filtered.map(e => renderExpenseItem(e)).join('') : '<div class="empty-state"><div class="empty-state-icon">🔍</div><div class="empty-state-text">No expenses in this category.</div></div>';
+    }
+  }
+
+  function updateBudgetBars() {
+    const categories = ['🍕 Food', '📚 Books', '🚌 Transport', '🎮 Fun', '🏠 Housing', '💊 Health'];
+    const catBudgets = { '🍕 Food': 150, '📚 Books': 80, '🚌 Transport': 60, '🎮 Fun': 50, '🏠 Housing': 100, '💊 Health': 60 };
+    const catTotals = {};
+    state.expenses.forEach(e => { catTotals[e.category] = (catTotals[e.category] || 0) + e.amount; });
+
+    const list = document.getElementById('budget-list');
+    list.innerHTML = categories.map(cat => {
+      const spent = catTotals[cat] || 0;
+      const budget = catBudgets[cat];
+      const pct = Math.min((spent / budget) * 100, 100);
+      const cls = pct > 90 ? 'over' : pct > 70 ? 'warn' : 'safe';
+      return `
+        <div class="budget-row">
+          <div class="budget-row-header">
+            <div class="budget-row-label">${cat}</div>
+            <div class="budget-row-amounts">$${spent.toFixed(0)} / $${budget}</div>
+          </div>
+          <div class="budget-bar-track">
+            <div class="budget-bar-fill ${cls}" style="width:${pct}%"></div>
+          </div>
+        </div>`;
+    }).join('');
+  }
+
+  function renderAchievements() {
+    const grid = document.getElementById('achievements-grid');
+    grid.innerHTML = state.achievements.map(a => `
+      <div class="achievement-card ${a.unlocked ? 'unlocked' : ''} fx-hover-lift">
+        <div class="achievement-badge"></div>
+        <div class="achievement-icon">${a.icon}</div>
+        <div class="achievement-name">${a.name}</div>
+        <div class="achievement-desc">${a.desc}</div>
+      </div>`).join('');
+  }
+
+  function checkAchievements() {
+    const count = state.expenses.length;
+    const total = state.expenses.reduce((s, e) => s + e.amount, 0);
+    const cats = new Set(state.expenses.map(e => e.category));
+
+    state.achievements.forEach(a => {
+      if (a.unlocked) return;
+      let unlocked = false;
+      if (a.countReq && count >= a.countReq) unlocked = true;
+      if (a.special === 'budget' && total <= state.totalBudget && count > 0) unlocked = true;
+      if (a.special === 'streak' && state.streak >= 3) unlocked = true;
+      if (a.special === 'categories' && cats.size >= 4) unlocked = true;
+      if (unlocked) {
+        a.unlocked = true;
+        setTimeout(() => showToast('🏆', `Badge: ${a.name}!`, a.desc), 600);
+      }
+    });
+  }
+
+  function updateMissions() {
+    const count = state.expenses.length;
+    const m1 = document.getElementById('mission-1');
+    const m2 = document.getElementById('mission-2');
+    const m3 = document.getElementById('mission-3');
+    const total = state.expenses.reduce((s, e) => s + e.amount, 0);
+
+    if (count >= 1) { m1.querySelector('span').textContent = '✓'; m1.style.color = 'var(--accent-primary)'; }
+    if (count >= 5) { m2.querySelector('span').textContent = '✓'; m2.style.color = 'var(--accent-primary)'; }
+    if (total <= state.totalBudget && count > 0) { m3.querySelector('span').textContent = '✓'; m3.style.color = 'var(--accent-primary)'; }
+  }
+
+  function updateChart() {
+    const todayBar = document.querySelector('.chart-bar.today');
+    if (!todayBar) return;
+    const todayTotal = state.expenses.reduce((s, e) => s + e.amount, 0);
+    const pct = Math.min((todayTotal / state.totalBudget) * 100 * 1.5, 100);
+    todayBar.style.height = Math.max(8, pct) + '%';
+  }
+
+  function updateBudget() {
+    const val = parseFloat(document.getElementById('budget-input').value);
+    if (!isNaN(val) && val > 0) {
+      state.totalBudget = val;
+      updateAll();
+      showToast('💾', 'Budget Updated!', `New budget: $${val.toFixed(0)}`);
+    }
+  }
+
+  function filterExpenses(filter, tabEl) {
+    document.querySelectorAll('#tab-expenses .tab').forEach(t => t.classList.remove('active'));
+    tabEl.classList.add('active');
+    updateExpenseLists(filter);
+  }
+
+  function switchTab(tabName, navEl) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('tab-' + tabName).classList.add('active');
+    navEl.classList.add('active');
+  }
+
+  let toastTimer;
+  function showToast(icon, title, sub) {
+    const toast = document.getElementById('toast');
+    document.getElementById('toast-icon').textContent = icon;
+    document.getElementById('toast-title').textContent = title;
+    document.getElementById('toast-sub').textContent = sub;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 3200);
+  }
+
+  function floatXP(x, y) {
+    const el = document.createElement('div');
+    el.className = 'float-xp';
+    el.textContent = `+${XP_PER_EXPENSE} XP`;
+    el.style.left = x + 'px';
+    el.style.top = y + 'px';
+    document.body.appendChild(el);
+    setTimeout(() => el.remove(), 1300);
+  }
+
+  // Seed demo data
+  function seedDemo() {
+    const demos = [
+      { name: 'Morning Coffee', amount: 4.50, category: '☕ Coffee' },
+      { name: 'Python Textbook', amount: 45.00, category: '📚 Books' },
+      { name: 'Campus Lunch', amount: 9.75, category: '🍕 Food' },
+      { name: 'Bus Pass', amount: 22.00, category: '🚌 Transport' },
+    ];
+    demos.forEach((d, i) => {
+      setTimeout(() => {
+        const exp = { ...d, id: Date.now() + i, date: 'May ' + (i+1), xp: XP_PER_EXPENSE };
+        state.expenses.push(exp);
+        state.xp += XP_PER_EXPENSE;
+        state.level = Math.floor(state.xp / XP_PER_LEVEL) + 1;
+        updateAll();
+        checkAchievements();
+      }, i * 150);
+    });
+  }
+
+  // Init
+  renderAchievements();
+  updateBudgetBars();
+  setTimeout(seedDemo, 400);
+  setTimeout(() => showToast('🚀', 'Welcome to SpendQuest!', 'Log expenses to earn XP and unlock badges'), 800);
+</script>
+</body>
+</html>
