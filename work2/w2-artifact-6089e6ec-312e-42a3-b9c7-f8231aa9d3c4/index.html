@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0B1026">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="description" content="A calming sheep-counting sleep companion.">
+<title>Sleepy Sheep</title>
+<link rel="manifest" href='data:application/json;utf8,{"name":"Sleepy Sheep","short_name":"SleepySheep","start_url":".","display":"standalone","background_color":"#0B1026","theme_color":"#0B1026","icons":[{"src":"data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20192%20192%22%3E%3Ccircle%20cx%3D%2296%22%20cy%3D%2296%22%20r%3D%2296%22%20fill%3D%22%230B1026%22%2F%3E%3Ctext%20x%3D%2296%22%20y%3D%22125%22%20font-size%3D%2290%22%20text-anchor%3D%22middle%22%20fill%3D%22%23FDE68A%22%3E%F0%9F%90%91%3C%2Ftext%3E%3C%2Fsvg%3E","sizes":"192x192","type":"image/svg+xml"}]}'>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Newsreader:ital,opsz,wght@0,6..72,400;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+/* === Reset & Base === */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; overflow: hidden; touch-action: manipulation; }
+body {
+  font-family: 'Newsreader', Georgia, serif;
+  background: #070914;
+  color: #e2e8f0;
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* === Dreamy Canvas === */
+#bg {
+  position: fixed; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse at 70% 20%, rgba(99,102,241,0.22) 0%, transparent 60%),
+    radial-gradient(ellipse at 20% 80%, rgba(244,114,182,0.10) 0%, transparent 50%),
+    linear-gradient(180deg, #0B1026 0%, #070914 100%);
+}
+.moon {
+  position: fixed; top: 8%; right: 10%; width: 120px; height: 120px; z-index: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #FEF3C7, #FDE68A);
+  box-shadow: 0 0 60px rgba(253,230,138,0.22), 0 0 120px rgba(253,230,138,0.08);
+  opacity: 0.9;
+}
+.hill {
+  position: absolute; bottom: 0; left: 0; right: 0; height: 140px; z-index: 2;
+  background: radial-gradient(ellipse 90% 100% at 50% 100%, #0f172a 0%, transparent 70%);
+  opacity: 0.85; pointer-events: none;
+}
+.vignette {
+  position: fixed; inset: 0; z-index: 3; pointer-events: none;
+  background: radial-gradient(circle, transparent 50%, rgba(0,0,0,0.45) 100%);
+}
+
+/* === Particles === */
+.particle {
+  position: fixed; border-radius: 50%; background: white; pointer-events: none; z-index: 1;
+}
+@keyframes floatUp {
+  0% { transform: translateY(100vh) scale(0.8); opacity: 0; }
+  10% { opacity: 0.5; }
+  90% { opacity: 0.3; }
+  100% { transform: translateY(-10vh) scale(1.3); opacity: 0; }
+}
+
+/* === Clouds === */
+.cloud {
+  position: absolute; background: rgba(241,245,249,0.05); border-radius: 50px; filter: blur(10px);
+}
+@keyframes drift {
+  from { transform: translateX(-30vw); }
+  to { transform: translateX(130vw); }
+}
+
+/* === Scene === */
+#scene {
+  position: fixed; inset: 0; z-index: 4; overflow: hidden;
+}
+.fence {
+  position: absolute; bottom: 82px; left: 50%; transform: translateX(-50%);
+  width: 260px; height: 80px; opacity: 0.45; pointer-events: none;
+  background-image:
+    repeating-linear-gradient(90deg, transparent, transparent 34px, rgba(148,163,184,0.25) 34px, rgba(148,163,184,0.25) 36px),
+    repeating-linear-gradient(0deg, transparent, transparent 24px, rgba(148,163,184,0.25) 24px, rgba(148,163,184,0.25) 26px);
+  filter: blur(0.5px);
+}
+
+/* === Sheep === */
+.sheep {
+  position: absolute; bottom: 96px; left: -130px;
+  width: 88px; height: 56px;
+  background: linear-gradient(180deg, #FFF7ED, #FDE68A 140%);
+  border-radius: 44px;
+  box-shadow:
+    0 10px 28px rgba(0,0,0,0.25),
+    inset 0 1px 0 rgba(255,255,255,0.12),
+    0 0 24px rgba(253,230,138,0.12);
+  will-change: transform;
+  contain: layout style;
+  pointer-events: auto;
+  cursor: pointer;
+}
+.sheep::before {
+  content: ''; position: absolute; right: -18px; top: -16px;
+  width: 40px; height: 40px;
+  background: inherit; border-radius: 50%;
+  box-shadow: inherit;
+}
+.sheep::after {
+  content: ''; position: absolute; bottom: -14px; left: 14px;
+  width: 5px; height: 14px; background: #cbd5e1; border-radius: 3px;
+  box-shadow: 16px 0 0 #cbd5e1, 32px 0 0 #cbd5e1, 48px 0 0 #cbd5e1;
+  opacity: 0.7;
+}
+.sheep .wool {
+  position: absolute; top: -8px; left: 10px; width: 22px; height: 22px;
+  background: inherit; border-radius: 50%;
+  box-shadow: 18px -4px 0 -2px inherit, 36px 0 0 -4px inherit, 54px -2px 0 -2px inherit;
+}
+.sheep .eye {
+  position: absolute; right: -4px; top: -4px; width: 5px; height: 5px;
+  background: #1e293b; border-radius: 50%; z-index: 5;
+}
+
+/* === Motion Presets === */
+@media (prefers-reduced-motion: reduce) {
+  .fx-enter, .fx-stagger > *, .particle, .cloud, .sheep { animation: none !important; transition: none !important; }
+}
+.fx-enter { animation: fx-enter 620ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+.fx-stagger > * { opacity: 0; animation: fx-enter 560ms cubic-bezier(0.22, 1, 0.36, 1) both; }
+.fx-stagger > *:nth-child(1) { animation-delay: 60ms; }
+.fx-stagger > *:nth-child(2) { animation-delay: 120ms; }
+.fx-stagger > *:nth-child(3) { animation-delay: 180ms; }
+.fx-stagger > *:nth-child(4) { animation-delay: 240ms; }
+.fx-stagger > *:nth-child(5) { animation-delay: 300ms; }
+.fx-stagger > *:nth-child(6) { animation-delay: 360ms; }
+.fx-stagger > *:nth-child(7) { animation-delay: 420ms; }
+@keyframes fx-enter {
+  from { opacity: 0; transform: translate3d(0, 18px, 0) scale(0.985); }
+  to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+
+/* === UI Shell === */
+#ui {
+  position: fixed; inset: 0; z-index: 10; pointer-events: none;
+  display: flex; flex-direction: column; justify-content: space-between; padding: 22px;
+}
+.panel {
+  pointer-events: auto;
+  background: rgba(11, 16, 38, 0.55);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 28px;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06);
+}
+
+/* HUD */
+#hud { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.hud-item { padding: 14px 22px; font-family: 'Outfit', sans-serif; }
+.hud-item .label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.14em; color: #94a3b8; margin-bottom: 6px; }
+.hud-item .value { font-size: 1.6rem; font-weight: 300; color: #FDE68A; text-shadow: 0 0 24px rgba(253,230,138,0.25); line-height: 1; }
+.count-wrap { text-align: left; }
+.timer-wrap { text-align: right; }
+
+/* Controls */
+#controls { align-self: center; width: 100%; max-width: 520px; padding: 22px; margin-bottom: 8px; }
+.control-row { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.control-row:last-child { margin-bottom: 0; }
+.control-row label { font-family: 'Outfit', sans-serif; font-size: 0.78rem; color: #94a3b8; width: 80px; flex-shrink: 0; letter-spacing: 0.06em; font-weight: 400; }
+input[type=range] {
+  -webkit-appearance: none; appearance: none; flex: 1; height: 3px; background: rgba(255,255,255,0.08); border-radius: 2px; outline: none;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 18px; height: 18px; background: #FDE68A; border-radius: 50%; box-shadow: 0 0 14px rgba(253,230,138,0.35); cursor: pointer; border: none;
+}
+input[type=range]::-moz-range-thumb { width: 18px; height: 18px; background: #FDE68A; border-radius: 50%; border: none; box-shadow: 0 0 14px rgba(253,230,138,0.35); }
+.pills { display: flex; gap: 8px; flex-wrap: wrap; }
+.pill {
+  font-family: 'Outfit', sans-serif; font-size: 0.78rem; padding: 7px 16px; border-radius: 999px;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); color: #cbd5e1; cursor: pointer; pointer-events: auto;
+  transition: all 0.2s ease; font-weight: 400; letter-spacing: 0.02em;
+}
+.pill.active { background: rgba(253,230,138,0.12); color: #FDE68A; border-color: rgba(253,230,138,0.30); box-shadow: 0 0 18px rgba(253,230,138,0.08); }
+
+/* Overlays */
+#tap-overlay {
+  position: fixed; inset: 0; z-index: 100;
+  background: rgba(7,9,20,0.92);
+  backdrop-filter: blur(12px);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+  transition: opacity 0.9s ease;
+}
+#tap-overlay.hidden { opacity: 0; pointer-events: none; }
+#tap-overlay h1 {
+  font-family: 'Outfit', sans-serif; font-weight: 300; font-size: clamp(2.2rem, 7vw, 4rem);
+  color: #FDE68A; margin-bottom: 14px; text-shadow: 0 0 50px rgba(253,230,138,0.18); letter-spacing: -0.03em; line-height: 1.1;
+}
+#tap-overlay p { font-family: 'Newsreader', serif; font-size: 1.15rem; color: #94a3b8; max-width: 320px; line-height: 1.5; margin-bottom: 36px; }
+#start-btn {
+  font-family: 'Outfit', sans-serif; font-size: 0.95rem; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 18px 44px; border-radius: 999px; border: 1px solid rgba(253,230,138,0.35);
+  background: rgba(253,230,138,0.07); color: #FDE68A; cursor: pointer;
+  box-shadow: 0 0 40px rgba(253,230,138,0.06), inset 0 1px 0 rgba(255,255,255,0.08);
+  transition: all 0.35s ease; pointer-events: auto; font-weight: 400;
+}
+#start-btn:hover { background: rgba(253,230,138,0.14); box-shadow: 0 0 50px rgba(253,230,138,0.16); transform: translateY(-2px); }
+#goodnight {
+  position: fixed; inset: 0; z-index: 90;
+  background: rgba(7,9,20,0.96);
+  display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center;
+}
+#goodnight h2 { font-family: 'Outfit', sans-serif; font-size: 2.2rem; color: #FDE68A; font-weight: 300; letter-spacing: -0.02em; }
+#goodnight p { font-family: 'Newsreader', serif; color: #94a3b8; margin-top: 14px; font-size: 1.1rem; }
+</style>
+</head>
+<body>
+
+<!-- Background layer -->
+<div id="bg" aria-hidden="true">
+  <div class="moon"></div>
+</div>
+<div class="vignette" aria-hidden="true"></div>
+
+<!-- Game scene -->
+<div id="scene" aria-hidden="true">
+  <div class="fence"></div>
+  <div class="hill"></div>
+</div>
+
+<!-- HUD -->
+<div id="ui">
+  <div id="hud">
+    <div class="panel hud-item count-wrap fx-enter">
+      <div class="label">Sheep Counted</div>
+      <div class="value" id="count-value">0</div>
+    </div>
+    <div class="panel hud-item timer-wrap fx-enter">
+      <div class="label">Sleep In</div>
+      <div class="value" id="timer-display">—</div>
+    </div>
+  </div>
+
+  <div id="controls" class="panel fx-enter">
+    <div class="fx-stagger">
+      <div class="control-row"><label>Master</label><input type="range" id="vol-master" min="0" max="1" step="0.01" value="0.6"></div>
+      <div class="control-row"><label>432Hz</label><input type="range" id="vol-tone" min="0" max="1" step="0.01" value="0.5"></div>
+      <div class="control-row"><label>Binaural</label><input type="range" id="vol-binaural" min="0" max="1" step="0.01" value="0.3"></div>
+      <div class="control-row"><label>Rain</label><input type="range" id="vol-rain" min="0" max="1" step="0.01" value="0.4"></div>
+      <div class="control-row"><label>White</label><input type="range" id="vol-white" min="0" max="1" step="0.01" value="0.2"></div>
+      <div class="control-row">
+        <label>Timer</label>
+        <div class="pills">
+          <button class="pill active" data-timer="0">Off</button>
+          <button class="pill" data-timer="15">15m</button>
+          <button class="pill" data-timer="30">30m</button>
+          <button class="pill" data-timer="60">60m</button>
+        </div>
+      </div>
+      <div class="control-row">
+        <label>Display</label>
+        <div class="pills">
+          <button class="pill" id="btn-fullscreen">Fullscreen</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tap-to-start overlay -->
+<div id="tap-overlay">
+  <h1>Sleepy Sheep</h1>
+  <p>A quiet place to count sheep, slow your breath, and drift away.</p>
+  <button id="start-btn" aria-label="Begin session">Tap to Begin</button>
+</div>
+
+<!-- Sleep timer completion -->
+<div id="goodnight">
+  <h2>Goodnight</h2>
+  <p>Sleep well.</p>
+  <button class="pill" onclick="location.reload()" style="margin-top:28px">Wake</button>
+</div>
+
+<script>
+(async function() {
+  /* === Service Worker (inline Blob) === */
+  if ('serviceWorker' in navigator) {
+    const swCode = `
+      const CACHE = 'sleepy-sheep-v1';
+      const CORE = ['./'];
+      self.addEventListener('install', e => {
+        e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).then(() => self.skipWaiting()));
+      });
+      self.addEventListener('activate', e => {
+        e.waitUntil(self.clients.claim());
+      });
+      self.addEventListener('fetch', e => {
+        e.respondWith(caches.match(e.request).then(r => {
+          if (r) return r;
+          return fetch(e.request).then(resp => {
+            const clone = resp.clone();
+            caches.open(CACHE).then(c => c.put(e.request, clone));
+            return resp;
+          }).catch(() => caches.match(e.request));
+        }));
+      });
+    `;
+    try {
+      const blob = new Blob([swCode], {type: 'application/javascript'});
+      await navigator.serviceWorker.register(URL.createObjectURL(blob));
+    } catch(err) { /* silent fail */ }
+  }
+
+  /* === DOM refs === */
+  const tapOverlay = document.getElementById('tap-overlay');
+  const startBtn = document.getElementById('start-btn');
+  const scene = document.getElementById('scene');
+  const countEl = document.getElementById('count-value');
+  const timerDisplay = document.getElementById('timer-display');
+  const goodnight = document.getElementById('goodnight');
+  const bg = document.getElementById('bg');
+
+  /* === Atmosphere: particles === */
+  for (let i = 0; i < 36; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 3 + 1;
+    p.style.width = size + 'px';
+    p.style.height = size + 'px';
+    p.style.left = Math.random() * 100 + 'vw';
+    p.style.top = Math.random() * 100 + 'vh';
+    p.style.opacity = (Math.random() * 0.4 + 0.1).toFixed(2);
+    p.style.filter = `blur(${Math.random() * 2}px)`;
+    const dur = (Math.random() * 18 + 14).toFixed(1);
+    const del = (Math.random() * -20).toFixed(1);
+    p.style.animation = `floatUp ${dur}s linear ${del}s infinite`;
+    bg.appendChild(p);
+  }
+
+  /* === Atmosphere: clouds === */
+  for (let i = 0; i < 4; i++) {
+    const c = document.createElement('div');
+    c.className = 'cloud';
+    const w = 140 + Math.random() * 220;
+    c.style.width = w + 'px';
+    c.style.height = (w * 0.32) + 'px';
+    c.style.top = (8 + Math.random() * 28) + '%';
+    c.style.left = '-300px';
+    const dur = 70 + Math.random() * 70;
+    const del = Math.random() * -dur;
+    c.style.animation = `drift ${dur}s linear ${del}s infinite`;
+    bg.appendChild(c);
+  }
+
+  /* === Audio Engine === */
+  class AudioEngine {
+    constructor() {
+      this.ctx = null;
+      this.master = null;
+      this.nodes = {};
+      this.state = { tone: 0.5, binaural: 0.3, rain: 0.4, white: 0.2 };
+    }
+    init() {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      this.ctx = new AC();
+      this.master = this.ctx.createGain();
+      this.master.gain.value = 0.6;
+      this.master.connect(this.ctx.destination);
+      this._tone();
+      this._ambience();
+    }
+    _tone() {
+      // 432 Hz core
+      const osc = this.ctx.createOscillator();
+      osc.type = 'sine';
+      osc.frequency.value = 432;
+      const g = this.ctx.createGain();
+      g.gain.value = this.state.tone;
+      osc.connect(g).connect(this.master);
+      osc.start();
+      this.nodes.toneOsc = osc; this.nodes.toneGain = g;
+
+      // 4 Hz differential for theta entrainment
+      const osc2 = this.ctx.createOscillator();
+      osc2.type = 'sine';
+      osc2.frequency.value = 436;
+      const g2 = this.ctx.createGain();
+      g2.gain.value = this.state.binaural;
+      if (this.ctx.createStereoPanner) {
+        const pan = this.ctx.createStereoPanner();
+        pan.pan.value = 1;
+        osc2.connect(pan); pan.connect(g2);
+      } else {
+        osc2.connect(g2);
+      }
+      g2.connect(this.master);
+      osc2.start();
+      this.nodes.binOsc = osc2; this.nodes.binGain = g2;
+    }
+    _noiseBuffer() {
+      const len = 2 * this.ctx.sampleRate;
+      const buf = this.ctx.createBuffer(1, len, this.ctx.sampleRate);
+      const d = buf.getChannelData(0);
+      for (let i = 0; i < len; i++) d[i] = Math.random() * 2 - 1;
+      return buf;
+    }
+    _ambience() {
+      // White noise
+      const n1 = this.ctx.createBufferSource();
+      n1.buffer = this._noiseBuffer();
+      n1.loop = true;
+      const g1 = this.ctx.createGain();
+      g1.gain.value = this.state.white;
+      n1.connect(g1).connect(this.master);
+      n1.start();
+      this.nodes.whiteSrc = n1; this.nodes.whiteGain = g1;
+
+      // Rain (filtered noise)
+      const n2 = this.ctx.createBufferSource();
+      n2.buffer = this._noiseBuffer();
+      n2.loop = true;
+      const f = this.ctx.createBiquadFilter();
+      f.type = 'lowpass'; f.frequency.value = 800; f.Q.value = 0.5;
+      const g2 = this.ctx.createGain();
+      g2.gain.value = this.state.rain;
+      n2.connect(f).connect(g2).connect(this.master);
+      n2.start();
+      this.nodes.rainSrc = n2; this.nodes.rainGain = g2;
+    }
+    setVolume(key, val) {
+      this.state[key] = val;
+      const node = this.nodes[key + 'Gain'];
+      if (node) node.gain.setTargetAtTime(val, this.ctx.currentTime, 0.1);
+    }
+    setMaster(val) {
+      if (this.master) this.master.gain.setTargetAtTime(val, this.ctx.currentTime, 0.2);
+    }
+    fadeOut() {
+      if (!this.master) return;
+      this.master.gain.setTargetAtTime(0.0001, this.ctx.currentTime, 3);
+      setTimeout(() => { if (this.ctx && this.ctx.state !== 'closed') this.ctx.suspend(); }, 4000);
+    }
+  }
+  const audio = new AudioEngine();
+
+  /* === Sheep System === */
+  class SheepSystem {
+    constructor() {
+      this.count = 0;
+      this.sleepiness = 0;
+      this.baseInterval = 3200;
+      this.baseDuration = 4200;
+      this.timer = null;
+      this.running = false;
+      this.id = 0;
+    }
+    start() {
+      this.running = true;
+      this._schedule();
+    }
+    _schedule() {
+      if (!this.running) return;
+      const interval = this.baseInterval + this.sleepiness * 700 + Math.random() * 700;
+      this.timer = setTimeout(() => { this.spawn(); this._schedule(); }, interval);
+    }
+    spawn(manual = false) {
+      const el = document.createElement('div');
+      el.className = 'sheep';
+      el.innerHTML = '<div class="wool"></div><div class="eye"></div>';
+      const duration = this.baseDuration + this.sleepiness * 900;
+      const jumpHeight = Math.max(30, 160 - this.sleepiness * 10) + Math.random() * 40;
+      scene.appendChild(el);
+
+      const anim = el.animate([
+        { transform: 'translate3d(-12vw, 0, 0) scale(1)' },
+        { transform: `translate3d(28vw, -${jumpHeight * 0.55}px, 0) scale(1.04)`, offset: 0.25 },
+        { transform: `translate3d(56vw, -${jumpHeight}px, 0) scale(1.04)`, offset: 0.5 },
+        { transform: `translate3d(84vw, -${jumpHeight * 0.35}px, 0) scale(1.02)`, offset: 0.75 },
+        { transform: 'translate3d(115vw, 0, 0) scale(1)' }
+      ], {
+        duration: duration,
+        easing: 'cubic-bezier(0.45, 0, 0.55, 1)',
+        fill: 'forwards'
+      });
+
+      this.sleepiness = Math.min(this.sleepiness + 0.18, 14);
+
+      anim.onfinish = () => { if (el.parentNode) el.remove(); if (!manual) this.increment(); };
+
+      const countTap = (e) => {
+        e.stopPropagation();
+        this.increment();
+        anim.cancel();
+        el.style.transition = 'opacity 0.45s ease, transform 0.45s ease';
+        el.style.opacity = '0';
+        const currentTransform = getComputedStyle(el).transform;
+        el.style.transform = (currentTransform && currentTransform !== 'none' ? currentTransform + ' ' : '') + 'scale(1.12)';
+        setTimeout(() => el.remove(), 450);
+      };
+      el.addEventListener('pointerdown', countTap);
+    }
+    increment() {
+      this.count++;
+      countEl.textContent = this.count;
+      countEl.parentElement.animate([
+        { transform: 'scale(1)' }, { transform: 'scale(1.18)' }, { transform: 'scale(1)' }
+      ], { duration: 320 });
+    }
+    stop() { this.running = false; clearTimeout(this.timer); }
+  }
+  const sheepSys = new SheepSystem();
+
+  /* === Sleep Timer === */
+  class TimerSystem {
+    constructor() {
+      this.remaining = 0;
+      this.interval = null;
+    }
+    set(mins) {
+      this.clear();
+      this.remaining = mins * 60;
+      this._tick();
+      this.interval = setInterval(() => this._tick(), 1000);
+    }
+    clear() {
+      clearInterval(this.interval);
+      this.interval = null;
+      timerDisplay.textContent = '—';
+    }
+    _tick() {
+      if (this.remaining <= 0) {
+        this.clear();
+        this._onEnd();
+        return;
+      }
+      const m = Math.floor(this.remaining / 60).toString().padStart(2, '0');
+      const s = (this.remaining % 60).toString().padStart(2, '0');
+      timerDisplay.textContent = `${m}:${s}`;
+      this.remaining--;
+    }
+    _onEnd() {
+      sheepSys.stop();
+      audio.fadeOut();
+      goodnight.style.display = 'flex';
+    }
+  }
+  const timer = new TimerSystem();
+
+  /* === Controls wiring === */
+  document.getElementById('vol-master').addEventListener('input', e => audio.setMaster(parseFloat(e.target.value)));
+  document.getElementById('vol-tone').addEventListener('input', e => audio.setVolume('tone', parseFloat(e.target.value)));
+  document.getElementById('vol-binaural').addEventListener('input', e => audio.setVolume('binaural', parseFloat(e.target.value)));
+  document.getElementById('vol-rain').addEventListener('input', e => audio.setVolume('rain', parseFloat(e.target.value)));
+  document.getElementById('vol-white').addEventListener('input', e => audio.setVolume('white', parseFloat(e.target.value)));
+
+  document.querySelectorAll('[data-timer]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('[data-timer]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const mins = parseInt(btn.dataset.timer, 10);
+      if (mins === 0) timer.clear(); else timer.set(mins);
+    });
+  });
+
+  document.getElementById('btn-fullscreen').addEventListener('click', () => {
+    const de = document.documentElement;
+    if (!document.fullscreenElement) de.requestFullscreen().catch(()=>{}); else document.exitFullscreen();
+  });
+
+  /* === Interaction === */
+  startBtn.addEventListener('click', () => {
+    tapOverlay.classList.add('hidden');
+    audio.init();
+    sheepSys.start();
+  });
+  tapOverlay.addEventListener('click', (e) => { if (e.target === tapOverlay) startBtn.click(); });
+
+  scene.addEventListener('pointerdown', () => {
+    if (tapOverlay.classList.contains('hidden')) sheepSys.spawn(true);
+  });
+
+  // Swipe up to spawn
+  let touchY = 0;
+  scene.addEventListener('touchstart', e => { touchY = e.touches[0].clientY; }, {passive:true});
+  scene.addEventListener('touchend', e => {
+    if (tapOverlay.classList.contains('hidden') && (touchY - e.changedTouches[0].clientY) > 40) {
+      sheepSys.spawn(true);
+    }
+  }, {passive:true});
+
+  // Suppress double-tap zoom
+  let lastTouchEnd = 0;
+  document.addEventListener('touchend', e => {
+    const now = Date.now();
+    if (now - lastTouchEnd <= 300) e.preventDefault();
+    lastTouchEnd = now;
+  }, { passive: false });
+
+  // Cleanup off-screen sheep on resize
+  window.addEventListener('resize', () => {
+    document.querySelectorAll('.sheep').forEach(s => {
+      const r = s.getBoundingClientRect();
+      if (r.left > window.innerWidth + 200) s.remove();
+    });
+  });
+})();
+</script>
+</body>
+</html>
