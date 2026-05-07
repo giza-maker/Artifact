@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1f1a17">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://cdn.example.com/artifact-design/tokens.css">
+    <link rel="stylesheet" href="https://cdn.example.com/artifact-design/motion.css">
+    <style>
+        body {
+            background: var(--bg-canvas);
+            color: var(--fg-inverse);
+            font-family: var(--body-font);
+            overflow: hidden;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .sheep-animation {
+            width: 100%;
+            height: 50vh;
+            position: relative;
+            background: url('/api/attachments/cloud-bg/content') no-repeat center;
+            background-size: cover;
+        }
+        .sheep {
+            position: absolute;
+            bottom: 0;
+            animation: sheepJump 4s infinite;
+        }
+        @keyframes sheepJump {
+            0% { transform: translateY(0); }
+            25% { transform: translateY(-150px); }
+            50% { transform: translateY(0); }
+            75% { transform: translateY(-75px); }
+            100% { transform: translateY(0); }
+        }
+    </style>
+    <title>Sleepy Sheep</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Sleepy Sheep</h1>
+        <div class="sheep-animation">
+            <img class="sheep" src="/api/attachments/sheep-image/content" alt="Jumping Sheep">
+        </div>
+        <button onclick="startSleepySheep()">Start</button>
+        <audio id="relaxingAudio" src="/api/attachments/audio-relax/content" preload="none"></audio>
+    </div>
+
+    <script>
+        // Register service worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js').then(reg => {
+                console.log('Service worker registered.', reg);
+            });
+        }
+
+        // Start function
+        function startSleepySheep() {
+            const audio = document.getElementById('relaxingAudio');
+            audio.play();
+        }
+    </script>
+</body>
+</html>
