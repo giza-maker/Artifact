@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#070a1f">
+  <meta name="color-scheme" content="dark">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Sleepy Sheep">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="description" content="A calming sheep-counting dreamscape to help you drift to sleep.">
+  
+  <title>Sleepy Sheep</title>
+  
+  <link rel="manifest" id="manifest-link">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-canvas: #070a1f;
+      --bg-panel: rgba(20, 24, 56, 0.72);
+      --bg-accent: #2d3561;
+      --fg-strong: #f0e6d2;
+      --fg-muted: #a39ec3;
+      --fg-inverse: #070a1f;
+      --accent-primary: #e8c4a0;
+      --accent-secondary: #8fb9c1;
+      --accent-highlight: #ffd59e;
+      --line-soft: rgba(240, 230, 210, 0.1);
+      --line-strong: rgba(240, 230, 210, 0.2);
+      --shadow-soft: 0 18px 44px rgba(0, 0, 0, 0.32);
+      --shadow-strong: 0 24px 64px rgba(0, 0, 0, 0.44);
+      --radius-card: 24px;
+      --radius-pill: 999px;
+      --display-font: 'Cormorant Infant', 'Didot', 'Georgia', serif;
+      --body-font: 'Jost', 'Avenir Next', 'Segoe UI', sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: var(--bg-canvas);
+      color: var(--fg-strong);
+      font-family: var(--body-font);
+      font-weight: 300;
+      line-height: 1.5;
+    }
+
+    #sky {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 20%, #1a1f4d 0%, #070a1f 60%, #030511 100%);
+      z-index: 0;
+    }
+
+    .star {
+      position: absolute;
+      background: #fff;
+      border-radius: 50%;
+      opacity: 0;
+      animation: twinkle 4s ease-in-out infinite;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; transform: scale(0.8); }
+      50% { opacity: 0.9; transform: scale(1.2); }
+    }
+
+    #moon {
+      position: fixed;
+      top: 8vh;
+      right: 10vw;
+      width: 80px;
+      height: 80px;
+      background: radial-gradient(circle at 35% 35%, #fffef0, #e8e0c8);
+      border-radius: 50%;
+      box-shadow: 0 0 40px 10px rgba(255, 254, 240, 0.15), 0 0 80px 30px rgba(255, 254, 240, 0.05);
+      z-index: 1;
+      opacity: 0.9;
+    }
+
+    #ground {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 22vh;
+      background: linear-gradient(to top, #0c0f2e 0%, #11163a 40%, transparent 100%);
+      z-index: 2;
+    }
+
+    .hill {
+      position: absolute;
+      bottom: 0;
+      border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+      background: #0e1230;
+      opacity: 0.8;
+    }
+
+    #fence {
+      position: fixed;
+      bottom: 18vh;
+      left: 0;
+      right: 0;
+      height: 60px;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    .fence-post {
+      position: absolute;
+      bottom: 0;
+      width: 6px;
+      height: 50px;
+      background: linear-gradient(to right, #2a2040, #3d3058);
+      border-radius: 3px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+      transform: translateX(-50%);
+    }
+
+    .fence-post::before {
+      content: '';
+      position: absolute;
+      top: -8px;
+      left: -2px;
+      width: 10px;
+      height: 10px;
+      background: #3d3058;
+      border-radius: 2px;
+      transform: rotate(45deg);
+    }
+
+    .fence-rail {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: #3d3058;
+      opacity: 0.6;
+    }
+
+    .sheep {
+      position: fixed;
+      bottom: 20vh;
+      left: -120px;
+      width: 90px;
+      height: 70px;
+      z-index: 4;
+      will-change: transform;
+      pointer-events: auto;
+      cursor: pointer;
+      filter: drop-shadow(0 8px 16px rgba(0,0,0,0.3));
+    }
+
+    .sheep svg {
+      width: 100%;
+      height: 100%;
+      overflow: visible;
+    }
+
+    .sheep-body { fill: #e6e1f0; }
+    .sheep-face { fill: #d4cfe0; }
+    .sheep-leg { fill: #c5bfd6; }
+
+    @keyframes sheepJump {
+      0% { transform: translate3d(0, 0, 0) scale(0.9); opacity: 0; }
+      5% { opacity: 1; }
+      45% { transform: translate3d(45vw, -22vh, 0) scale(1.05) rotate(-5deg); }
+      55% { transform: translate3d(55vw, -22vh, 0) scale(1.05) rotate(5deg); }
+      95% { opacity: 1; }
+      100% { transform: translate3d(110vw, 0, 0) scale(0.9); opacity: 0; }
+    }
+
+    .sheep.jumping {
+      animation: sheepJump linear forwards;
+    }
+
+    .count-pop {
+      position: fixed;
+      font-family: var(--display-font);
+      font-size: 2rem;
+      color: var(--accent-highlight);
+      pointer-events: none;
+      z-index: 10;
+      animation: popFloat 1.2s ease-out forwards;
+      text-shadow: 0 0 20px rgba(255, 213, 158, 0.4);
+    }
+
+    @keyframes popFloat {
+      0% { transform: translateY(0) scale(0.5); opacity: 0; }
+      20% { transform: translateY(-20px) scale(1.2); opacity: 1; }
+      100% { transform: translateY(-80px) scale(1); opacity: 0; }
+    }
+
+    .particle {
+      position: fixed;
+      background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 1;
+      animation: drift linear infinite;
+    }
+
+    @keyframes drift {
+      from { transform: translateY(110vh) translateX(0); opacity: 0; }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.6; }
+      to { transform: translateY(-10vh) translateX(20px); opacity: 0; }
+    }
+
+    #start-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(7, 10, 31, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      transition: opacity 1s ease, visibility 1s ease;
+    }
+
+    #start-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    #start-overlay h1 {
+      font-family: var(--display-font);
+      font-size: clamp(2.5rem, 8vw, 5rem);
+      font-weight: 400;
+      color: var(--fg-strong);
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.02em;
+      animation: fx-enter 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    #start-overlay p {
+      font-size: 1.125rem;
+      color: var(--fg-muted);
+      max-width: 400px;
+      margin-bottom: 2.5rem;
+      animation: fx-enter 1s 0.15s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .start-btn {
+      background: linear-gradient(135deg, var(--accent-primary), #d4a574);
+      color: var(--fg-inverse);
+      border: none;
+      padding: 1rem 2.5rem;
+      font-family: var(--body-font);
+      font-size: 1rem;
+      font-weight: 500;
+      border-radius: var(--radius-pill);
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(232, 196, 160, 0.25);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      animation: fx-enter 1s 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .start-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(232, 196, 160, 0.35);
+    }
+
+    .start-btn:active {
+      transform: translateY(0);
+    }
+
+    #hud {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      z-index: 20;
+      pointer-events: none;
+    }
+
+    .hud-block {
+      pointer-events: auto;
+      background: var(--bg-panel);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-card);
+      padding: 0.75rem 1.25rem;
+      box-shadow: var(--shadow-soft);
+      transition: transform 180ms ease, box-shadow 180ms ease;
+    }
+
+    .hud-block:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-strong);
+    }
+
+    .hud-count {
+      font-family: var(--display-font);
+      font-size: 1.75rem;
+      font-weight: 600;
+      color: var(--fg-strong);
+      line-height: 1;
+    }
+
+    .hud-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--fg-muted);
+      margin-top: 0.25rem;
+    }
+
+    .hud-timer {
+      font-family: var(--display-font);
+      font-size: 1.25rem;
+      color: var(--accent-secondary);
+      line-height: 1;
+    }
+
+    #controls-toggle {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      z-index: 30;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: var(--bg-panel);
+      backdrop-filter: blur(16px);
+      border: 1px solid var(--line-soft);
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--fg-strong);
+      font-size: 1.25rem;
+      font-family: var(--display-font);
+      transition: transform 180ms ease, box-shadow 180ms ease;
+      pointer-events: auto;
+    }
+
+    #controls-toggle:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-strong);
+    }
+
+    #controls-panel {
+      position: fixed;
+      bottom: 1.5rem;
+      right: 1.5rem;
+      width: min(380px, calc(100vw - 3rem));
+      max-height: calc(100vh - 3rem);
+      overflow-y: auto;
+      background: var(--bg-panel);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-card);
+      padding: 1.5rem;
+      z-index: 25;
+      box-shadow: var(--shadow-strong);
+      transform: translateY(20px) scale(0.95);
+      opacity: 0;
+      visibility: hidden;
+      transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease, visibility 0.3s ease;
+      pointer-events: none;
+    }
+
+    #controls-panel.open {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    #controls-panel.open .control-group {
+      opacity: 0;
+      animation: fx-enter 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    #controls-panel.open .control-group:nth-child(2) { animation-delay: 0.05s; }
+    #controls-panel.open .control-group:nth-child(3) { animation-delay: 0.1s; }
+    #controls-panel.open .action-buttons { animation: fx-enter 0.5s 0.15s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.25rem;
+      animation: fx-enter 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .panel-header h2 {
+      font-family: var(--display-font);
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--fg-strong);
+    }
+
+    .panel-close {
+      background: none;
+      border: none;
+      color: var(--fg-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+      padding: 0.25rem;
+      line-height: 1;
+    }
+
+    .control-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .control-label {
+      display: block;
+      font-size: 0.875rem;
+      color: var(--fg-muted);
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    input[type="range"] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 4px;
+      background: var(--line-strong);
+      border-radius: 2px;
+      outline: none;
+      margin-bottom: 0.75rem;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      background: var(--accent-primary);
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(232, 196, 160, 0.4);
+      transition: transform 0.15s ease;
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+      background: var(--accent-primary);
+      border-radius: 50%;
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 0 10px rgba(232, 196, 160, 0.4);
+    }
+
+    .timer-buttons {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .timer-btn {
+      background: var(--bg-accent);
+      border: 1px solid var(--line-soft);
+      color: var(--fg-strong);
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-pill);
+      font-family: var(--body-font);
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: transform 180ms ease, box-shadow 180ms ease, background 0.2s ease, color 0.2s ease;
+    }
+
+    .timer-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .timer-btn.active {
+      background: var(--accent-primary);
+      color: var(--fg-inverse);
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 12px rgba(232, 196, 160, 0.3);
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .action-btn {
+      flex: 1;
+      background: var(--bg-accent);
+      border: 1px solid var(--line-soft);
+      color: var(--fg-strong);
+      padding: 0.75rem;
+      border-radius: 14px;
+      font-family: var(--body-font);
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: transform 180ms ease, box-shadow 180ms ease, background 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .action-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-soft);
+      background: rgba(255,255,255,0.08);
+    }
+
+    .cloud {
+      position: fixed;
+      background: radial-gradient(ellipse at center, rgba(200, 210, 240, 0.12) 0%, transparent 70%);
+      border-radius: 50%;
+      z-index: 1;
+      pointer-events: none;
+      animation: cloudFloat 20s ease-in-out infinite alternate;
+    }
+
+    @keyframes cloudFloat {
+      from { transform: translateX(-10px); }
+      to { transform: translateX(10px); }
+    }
+
+    @keyframes fx-enter {
+      from { opacity: 0; transform: translate3d(0, 18px, 0) scale(0.985); }
+      to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+    }
+
+    @media (max-width: 480px) {
+      #controls-panel {
+        width: calc(100vw - 2rem);
+        right: 1rem;
+        bottom: 1rem;
+        border-radius: 20px;
+        padding: 1.25rem;
+      }
+      #controls-toggle {
+        bottom: 1rem;
+        right: 1rem;
+      }
+      #hud {
+        padding: 1rem;
+      }
+      .hud-count { font-size: 1.5rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fx-enter, #controls-panel.open .control-group, #controls-panel.open .action-buttons, .panel-header,
+      .sheep.jumping, .count-pop, .particle, .star, .cloud {
+        animation: none !important;
+        transition: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="sky"></div>
+  <div id="moon"></div>
+  
+  <div class="cloud" style="width: 300px; height: 120px; top: 15%; left: 10%; animation-duration: 25s;"></div>
+  <div class="cloud" style="width: 200px; height: 80px; top: 25%; right: 20%; animation-duration: 30s; animation-delay: -5s;"></div>
+  <div class="cloud" style="width: 250px; height: 100px; top: 10%; left: 50%; animation-duration: 22s; animation-delay: -10s;"></div>
+  
+  <div id="ground">
+    <div class="hill" style="width: 60vw; height: 15vh; left: -10vw; background: #0a0d28;"></div>
+    <div class="hill" style="width: 50vw; height: 12vh; right: -5vw; background: #0c1030;"></div>
+    <div class="hill" style="width: 40vw; height: 10vh; left: 30vw; background: #0e1232;"></div>
+  </div>
+  
+  <div id="fence"></div>
+
+  <div id="start-overlay">
+    <h1>Sleepy Sheep</h1>
+    <p>A gentle dreamscape of floating sheep, sleep frequencies, and soft moonlight. Tap to begin your journey toward rest.</p>
+    <button class="start-btn" id="start-btn" aria-label="Start Sleepy Sheep">Begin Drifting</button>
+  </div>
+
+  <div id="hud" style="opacity: 0; transition: opacity 1s ease;">
+    <div class="hud-block">
+      <div class="hud-count" id="sheep-count">0</div>
+      <div class="hud-label">Sheep Counted</div>
+    </div>
+    <div class="hud-block" id="timer-display-block" style="opacity: 0; transition: opacity 0.5s ease;">
+      <div class="hud-timer" id="sleep-timer-display">--:--</div>
+      <div class="hud-label">Sleep Timer</div>
+    </div>
+  </div>
+
+  <button id="controls-toggle" aria-label="Open settings">Menu</button>
+  
+  <div id="controls-panel">
+    <div class="panel-header">
+      <h2>Dream Controls</h2>
+      <button class="panel-close" id="panel-close" aria-label="Close settings">&times;</button>
+    </div>
+    
+    <div class="control-group">
+      <label class="control-label">Sleep Timer</label>
+      <div class="timer-buttons">
+        <button class="timer-btn" data-min="5">5 min</button>
+        <button class="timer-btn" data-min="15">15 min</button>
+        <button class="timer-btn active" data-min="30">30 min</button>
+        <button class="timer-btn" data-min="60">60 min</button>
+        <button class="timer-btn" data-min="0">Off</button>
+      </div>
+    </div>
+    
+    <div class="control-group">
+      <label class="control-label">Master Volume</label>
+      <input type="range" id="vol-master" min="0" max="100" value="70">
+      
+      <label class="control-label">432Hz Tone</label>
+      <input type="range" id="vol-432" min="0" max="100" value="40">
+      
+      <label class="control-label">Binaural Beats</label>
+      <input type="range" id="vol-binaural" min="0" max="100" value="30">
+      
+      <label class="control-label">Soft Rain</label>
+      <input type="range" id="vol-rain" min="0" max="100" value="25">
+      
+      <label class="control-label">White Noise</label>
+      <input type="range" id="vol-noise" min="0" max="100" value="15">
+    </div>
+    
+    <div class="action-buttons">
+      <button class="action-btn" id="btn-fullscreen">Fullscreen</button>
+      <button class="action-btn" id="btn-mute">Mute All</button>
+    </div>
+  </div>
+
+  <script>
+    (() => {
+      const swCode = `
+        const CACHE_NAME = 'sleepy-sheep-v1';
+        const URLS_TO_CACHE = [
+          '/',
+          'https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,400;0,600;1,400&family=Jost:wght@300;400;500&display=swap'
+        ];
+        self.addEventListener('install', e => {
+          e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(URLS_TO_CACHE)).catch(() => {}));
+          self.skipWaiting();
+        });
+        self.addEventListener('activate', e => {
+          e.waitUntil(self.clients.claim());
+        });
+        self.addEventListener('fetch', e => {
+          e.respondWith(
+            caches.match(e.request).then(r => {
+              if (r) return r;
+              return fetch(e.request).then(n => {
+                if (n && n.status === 200 && e.request.method === 'GET') {
+                  const clone = n.clone();
+                  caches.open(CACHE_NAME).then(c => c.put(e.request, clone));
+                }
+                return n;
+              }).catch(() => caches.match('/'));
+            })
+          );
+        });
+      `;
+      const swBlob = new Blob([swCode], { type: 'application/javascript' });
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register(URL.createObjectURL(swBlob)).catch(() => {});
+      }
+
+      const manifest = {
+        name: 'Sleepy Sheep',
+        short_name: 'Sleepy Sheep',
+        start_url: '.',
+        display: 'standalone',
+        background_color: '#070a1f',
+        theme_color: '#070a1f',
+        orientation: 'portrait',
+        icons: [{
+          src: 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 512 512%22%3E%3Crect fill=%22%23070a1f%22 width=%22512%22 height=%22512%22/%3E%3Ctext x=%22256%22 y=%22320%22 font-size=%22280%22 text-anchor=%22middle%22%3E%F0%9F%90%91%3C/text%3E%3C/svg%3E',
+          sizes: '512x512',
+          type: 'image/svg+xml',
+          purpose: 'any maskable'
+        }]
+      };
+      document.getElementById('manifest-link').href = URL.createObjectURL(
+        new Blob([JSON.stringify(manifest)], { type: 'application/json' })
+      );
+
+      const AudioEngine = {
+        ctx: null,
+        masterGain: null,
+        nodes: {},
+        volumes: { master: 0.7, tone432: 0.4, binaural: 0.3, rain: 0.25, noise: 0.15 },
+        isMuted: false,
+        prevVolumes: null,
+
+        init() {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          this.ctx = new AC();
+          this.masterGain = this.ctx.createGain();
+          this.masterGain.gain.value = 0;
+          this.masterGain.connect(this.ctx.destination);
+          this._create432();
+          this._createBinaural();
+          this._createRain();
+          this._createNoise();
+          // Gentle fade in
+          this.masterGain.gain.linearRampToValueAtTime(this.volumes.master, this.ctx.currentTime + 2);
+        },
+
+        _create432() {
+          const osc = this.ctx.createOscillator();
+          const gain = this.ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.value = 432;
+          gain.gain.value = this.volumes.tone432 * 0.3;
+          osc.connect(gain);
+          gain.connect(this.masterGain);
+          osc.start();
+          this.nodes.tone432 = { osc, gain };
+        },
+
+        _createBinaural() {
+          const merger = this.ctx.createChannelMerger(2);
+          const gain = this.ctx.createGain();
+          const left = this.ctx.createOscillator();
+          left.type = 'sine';
+          left.frequency.value = 200;
+          const leftPan = this.ctx.createStereoPanner();
+          leftPan.pan.value = -1;
+          left.connect(leftPan);
+          leftPan.connect(merger, 0, 0);
+          left.start();
+          const right = this.ctx.createOscillator();
+          right.type = 'sine';
+          right.frequency.value = 205;
+          const rightPan = this.ctx.createStereoPanner();
+          rightPan.pan.value = 1;
+          right.connect(rightPan);
+          rightPan.connect(merger, 0, 1);
+          right.start();
+          merger.connect(gain);
+          gain.gain.value = this.volumes.binaural * 0.25;
+          gain.connect(this.masterGain);
+          this.nodes.binaural = { left, right, gain, merger };
+        },
+
+        _createNoise() {
+          const bufferSize = 2 * this.ctx.sampleRate;
+          const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+          const data = buffer.getChannelData(0);
+          for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+          const source = this.ctx.createBufferSource();
+          source.buffer = buffer;
+          source.loop = true;
+          const filter = this.ctx.createBiquadFilter();
+          filter.type = 'lowpass';
+          filter.frequency.value = 400;
+          const gain = this.ctx.createGain();
+          gain.gain.value = this.volumes.noise * 0.15;
+          source.connect(filter);
+          filter.connect(gain);
+          gain.connect(this.masterGain);
+          source.start();
+          this.nodes.noise = { source, filter, gain };
+        },
+
+        _createRain() {
+          const bufferSize = 2 * this.ctx.sampleRate;
+          const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+          const data = buffer.getChannelData(0);
+          for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * 0.6;
+          const source = this.ctx.createBufferSource();
+          source.buffer = buffer;
+          source.loop = true;
+          const filter = this.ctx.createBiquadFilter();
+          filter.type = 'lowpass';
+          filter.frequency.value = 800;
+          filter.Q.value = 0.5;
+          const gain = this.ctx.createGain();
+          gain.gain.value = this.volumes.rain * 0.2;
+          const lfo = this.ctx.createOscillator();
+          lfo.type = 'sine';
+          lfo.frequency.value = 0.3;
+          const lfoGain = this.ctx.createGain();
+          lfoGain.gain.value = 0.15;
+          lfo.connect(lfoGain);
+          lfoGain.connect(gain.gain);
+          lfo.start();
+          source.connect(filter);
+          filter.connect(gain);
+          gain.connect(this.masterGain);
+          source.start();
+          this.nodes.rain = { source, filter, gain, lfo };
+        },
+
+        setVolume(type, val) {
+          this.volumes[type] = val;
+          if (type === 'master' && this.masterGain) {
+            this.masterGain.gain.setTargetAtTime(val, this.ctx.currentTime, 0.1);
+          } else if (this.nodes[type] && this.nodes[type].gain) {
+            const max = { tone432: 0.3, binaural: 0.25, rain: 0.2, noise: 0.15 }[type] || 0.3;
+            this.nodes[type].gain.gain.setTargetAtTime(val * max, this.ctx.currentTime, 0.1);
+          }
+        },
+
+        toggleMute() {
+          if (this.isMuted) {
+            this.isMuted = false;
+            this.setVolume('master', this.volumes.master);
+            if (this.prevVolumes) {
+              Object.keys(this.prevVolumes).forEach(k => {
+                if (k !== 'master') this.setVolume(k, this.prevVolumes[k]);
+              });
+            }
+          } else {
+            this.isMuted = true;
+            this.prevVolumes = { ...this.volumes };
+            if (this.masterGain) this.masterGain.gain.setTargetAtTime(0, this.ctx.currentTime, 0.2);
+          }
+          return this.isMuted;
+        },
+
+        fadeOutAll(duration = 2) {
+          if (!this.masterGain) return;
+          this.masterGain.gain.setTargetAtTime(0, this.ctx.currentTime, duration / 3);
+        }
+      };
+
+      const SheepSystem = {
+        pool: [],
+        active: [],
+        count: 0,
+        spawnTimer: null,
+        baseInterval: 4500,
+        currentInterval: 4500,
+        maxInterval: 16000,
+        speedMultiplier: 1.0,
+        minSpeed: 0.5,
+        isRunning: false,
+
+        start() {
+          this.isRunning = true;
+          this.scheduleSpawn();
+        },
+
+        stop() {
+          this.isRunning = false;
+          clearTimeout(this.spawnTimer);
+        },
+
+        scheduleSpawn() {
+          if (!this.isRunning) return;
+          this.spawnTimer = setTimeout(() => {
+            this.spawn();
+            this.currentInterval = Math.min(this.currentInterval * 1.03, this.maxInterval);
+            this.speedMultiplier = Math.max(this.speedMultiplier * 0.97, this.minSpeed);
+            this.scheduleSpawn();
+          }, this.currentInterval + (Math.random() * 1000));
+        },
+
+        spawn() {
+          let sheep = this.pool.pop();
+          if (!sheep) sheep = this._createSheepElement();
+          sheep.classList.remove('jumping');
+          sheep.style.animation = 'none';
+          void sheep.offsetHeight;
+          const duration = (6 / this.speedMultiplier) + (Math.random() * 2);
+          sheep.style.animation = `sheepJump ${duration}s linear forwards`;
+          const startY = Math.random() * 10 - 5;
+          sheep.style.bottom = `calc(20vh + ${startY}px)`;
+          document.body.appendChild(sheep);
+          this.active.push(sheep);
+
+          const onTap = (e) => {
+            e.stopPropagation();
+            if (sheep.dataset.counted) return;
+            sheep.dataset.counted = '1';
+            this.count++;
+            const cx = e.clientX || (e.touches && e.touches[0].clientX) || window.innerWidth / 2;
+            const cy = e.clientY || (e.touches && e.touches[0].clientY) || window.innerHeight / 2;
+            this._showCountPop(cx, cy);
+            document.getElementById('sheep-count').textContent = this.count;
+            sheep.style.filter = 'drop-shadow(0 0 12px rgba(255,255,255,0.6))';
+            setTimeout(() => { sheep.style.filter = ''; }, 400);
+          };
+
+          sheep.addEventListener('click', onTap);
+          sheep.addEventListener('touchstart', onTap, { passive: true });
+
+          const onEnd = () => {
+            sheep.removeEventListener('click', onTap);
+            sheep.removeEventListener('touchstart', onTap);
+            sheep.removeEventListener('animationend', onEnd);
+            if (sheep.parentNode) sheep.parentNode.removeChild(sheep);
+            delete sheep.dataset.counted;
+            sheep.style.filter = '';
+            const idx = this.active.indexOf(sheep);
+            if (idx > -1) this.active.splice(idx, 1);
+            this.pool.push(sheep);
+          };
+          sheep.addEventListener('animationend', onEnd);
+        },
+
+        _createSheepElement() {
+          const div = document.createElement('div');
+          div.className = 'sheep jumping';
+          div.innerHTML = `
+            <svg viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg">
+              <ellipse class="sheep-body" cx="50" cy="45" rx="32" ry="22"/>
+              <circle class="sheep-body" cx="30" cy="42" r="14"/>
+              <circle class="sheep-body" cx="70" cy="42" r="14"/>
+              <circle class="sheep-body" cx="42" cy="32" r="13"/>
+              <circle class="sheep-body" cx="58" cy="32" r="13"/>
+              <circle class="sheep-body" cx="50" cy="28" r="12"/>
+              <ellipse class="sheep-face" cx="78" cy="38" rx="14" ry="12"/>
+              <circle cx="74" cy="35" r="2.5" fill="#2a2040" opacity="0.7"/>
+              <circle cx="82" cy="35" r="2.5" fill="#2a2040" opacity="0.7"/>
+              <ellipse cx="78" cy="42" rx="3" ry="2" fill="#c5bfd6" opacity="0.6"/>
+              <rect class="sheep-leg" x="32" y="58" width="6" height="14" rx="3"/>
+              <rect class="sheep-leg" x="46" y="60" width="6" height="14" rx="3"/>
+              <rect class="sheep-leg" x="60" y="58" width="6" height="14" rx="3"/>
+            </svg>
+          `;
+          return div;
+        },
+
+        _showCountPop(x, y) {
+          const pop = document.createElement('div');
+          pop.className = 'count-pop';
+          pop.textContent = this.count;
+          pop.style.left = x + 'px';
+          pop.style.top = y + 'px';
+          document.body.appendChild(pop);
+          setTimeout(() => pop.remove(), 1200);
+        }
+      };
+
+      const SleepTimer = {
+        duration: 30 * 60 * 1000,
+        remaining: 30 * 60 * 1000,
+        interval: null,
+        isRunning: false,
+        
+        set(minutes) {
+          this.duration = minutes * 60 * 1000;
+          this.remaining = this.duration;
+          this.updateDisplay();
+          document.getElementById('timer-display-block').style.opacity = minutes > 0 ? '1' : '0';
+        },
+        
+        start() {
+          if (this.interval) clearInterval(this.interval);
+          this.isRunning = true;
+          this.interval = setInterval(() => {
+            this.remaining -= 1000;
+            this.updateDisplay();
+            if (this.remaining <= 0) {
+              this.stop();
+              this._onComplete();
+            }
+          }, 1000);
+        },
+        
+        stop() {
+          this.isRunning = false;
+          if (this.interval) clearInterval(this.interval);
+        },
+        
+        updateDisplay() {
+          const s = Math.max(0, Math.floor(this.remaining / 1000));
+          const m = Math.floor(s / 60);
+          const sec = s % 60;
+          document.getElementById('sleep-timer-display').textContent =
+            `${m.toString().padStart(2, '0')}:${sec.toString().padStart(2, '0')}`;
+        },
+        
+        _onComplete() {
+          AudioEngine.fadeOutAll(3);
+          SheepSystem.stop();
+          const overlay = document.createElement('div');
+          overlay.style.cssText = 'position:fixed;inset:0;background:rgba(7,10,31,0.95);z-index:50;display:flex;align-items:center;justify-content:center;flex-direction:column;transition:opacity 3s ease;';
+          overlay.innerHTML = '<h1 style="font-family:var(--display-font);font-size:2.5rem;color:var(--fg-strong);opacity:0;transition:opacity 2s ease;">Goodnight</h1>';
+          document.body.appendChild(overlay);
+          requestAnimationFrame(() => { overlay.querySelector('h1').style.opacity = '1'; });
+          setTimeout(() => {
+            overlay.style.opacity = '0';
+            setTimeout(() => overlay.remove(), 3000);
+          }, 4000);
+        }
+      };
+
+      function initFence() {
+        const fence = document.getElementById('fence');
+        fence.innerHTML = '';
+        const postCount = Math.max(6, Math.ceil(window.innerWidth / 70));
+        for (let i = 0; i < postCount; i++) {
+          const post = document.createElement('div');
+          post.className = 'fence-post';
+          post.style.left = (i / (postCount - 1)) * 100 + '%';
+          fence.appendChild(post);
+        }
+        [12, 28].forEach(y => {
+          const rail = document.createElement('div');
+          rail.className = 'fence-rail';
+          rail.style.bottom = y + 'px';
+          fence.appendChild(rail);
+        });
+      }
+
+      function initParticles() {
+        const isMobile = window.matchMedia('(pointer: coarse)').matches;
+        const count = isMobile ? 15 : 28;
+        for (let i = 0; i < count; i++) {
+          const p = document.createElement('div');
+          p.className = 'particle';
+          const size = Math.random() * 3 + 1;
+          p.style.width = size + 'px';
+          p.style.height = size + 'px';
+          p.style.left = Math.random() * 100 + 'vw';
+          p.style.animationDuration = (15 + Math.random() * 20) + 's';
+          p.style.animationDelay = (Math.random() * -20) + 's';
+          document.body.appendChild(p);
+        }
+      }
+
+      function initStars() {
+        const sky = document.getElementById('sky');
+        for (let i = 0; i < 60; i++) {
+          const star = document.createElement('div');
+          star.className = 'star';
+          const size = Math.random() * 2.5 + 0.5;
+          star.style.width = size + 'px';
+          star.style.height = size + 'px';
+          star.style.left = Math.random() * 100 + '%';
+          star.style.top = Math.random() * 70 + '%';
+          star.style.animationDelay = (Math.random() * 4) + 's';
+          star.style.animationDuration = (3 + Math.random() * 3) + 's';
+          sky.appendChild(star);
+        }
+      }
+
+      const controlsPanel = document.getElementById('controls-panel');
+      const controlsToggle = document.getElementById('controls-toggle');
+      const panelClose = document.getElementById('panel-close');
+
+      function toggleControls() {
+        controlsPanel.classList.toggle('open');
+      }
+
+      controlsToggle.addEventListener('click', toggleControls);
+      panelClose.addEventListener('click', toggleControls);
+
+      document.querySelectorAll('.timer-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.timer-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          SleepTimer.set(parseInt(btn.dataset.min));
+        });
+      });
+
+      document.getElementById('vol-master').addEventListener('input', e => AudioEngine.setVolume('master', e.target.value / 100));
+      document.getElementById('vol-432').addEventListener('input', e => AudioEngine.setVolume('tone432', e.target.value / 100));
+      document.getElementById('vol-binaural').addEventListener('input', e => AudioEngine.setVolume('binaural', e.target.value / 100));
+      document.getElementById('vol-rain').addEventListener('input', e => AudioEngine.setVolume('rain', e.target.value / 100));
+      document.getElementById('vol-noise').addEventListener('input', e => AudioEngine.setVolume('noise', e.target.value / 100));
+
+      document.getElementById('btn-fullscreen').addEventListener('click', () => {
+        const el = document.documentElement;
+        if (!document.fullscreenElement) {
+          el.requestFullscreen?.() || el.webkitRequestFullscreen?.();
+        } else {
+          document.exitFullscreen?.() || document.webkitExitFullscreen?.();
+        }
+      });
+
+      const muteBtn = document.getElementById('btn-mute');
+      muteBtn.addEventListener('click', () => {
+        muteBtn.textContent = AudioEngine.toggleMute() ? 'Unmute' : 'Mute All';
+      });
+
+      let started = false;
+      document.getElementById('start-btn').addEventListener('click', async () => {
+        if (started) return;
+        started = true;
+        AudioEngine.init();
+        if (AudioEngine.ctx.state === 'suspended') await AudioEngine.ctx.resume();
+        document.getElementById('start-overlay').classList.add('hidden');
+        document.getElementById('hud').style.opacity = '1';
+        SheepSystem.start();
+        SleepTimer.start();
+        controlsPanel.classList.remove('open');
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!started) return;
+        if (e.target.closest('.sheep') || e.target.closest('#controls-panel') || e.target.closest('#controls-toggle')) return;
+        if (SheepSystem.active.length > 0) {
+          const sheep = SheepSystem.active[0];
+          if (!sheep.dataset.counted) {
+            sheep.dataset.counted = '1';
+            SheepSystem.count++;
+            SheepSystem._showCountPop(e.clientX, e.clientY);
+            document.getElementById('sheep-count').textContent = SheepSystem.count;
+            sheep.style.filter = 'drop-shadow(0 0 12px rgba(255,255,255,0.6))';
+            setTimeout(() => { sheep.style.filter = ''; }, 400);
+          }
+        }
+      });
+
+      initFence();
+      initStars();
+      initParticles();
+
+      window.addEventListener('resize', () => { clearTimeout(window._fenceTimer); window._fenceTimer = setTimeout(initFence, 200); });
+
+      if ('wakeLock' in navigator) {
+        navigator.wakeLock.request('screen').catch(() => {});
+      }
+
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden && started && AudioEngine.ctx?.state === 'suspended') {
+          AudioEngine.ctx.resume();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
