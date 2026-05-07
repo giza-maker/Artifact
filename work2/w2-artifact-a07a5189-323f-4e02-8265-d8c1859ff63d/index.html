@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#121212">
+  <link rel="manifest" href="/manifest.json">
+  <title>Sleepy Sheep</title>
+  <style>
+    :root {
+      --bg-color: #121212;
+      --text-color: #f0f0f0;
+      --accent-color: #bb86fc;
+      --header-font: 'Raleway', sans-serif;
+      --body-font: 'Open Sans', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--body-font);
+      background-color: var(--bg-color);
+      color: var(--text-color);
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    h1 {
+      font-family: var(--header-font);
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--accent-color);
+    }
+
+    .sheep-container {
+      position: relative;
+      width: 100%;
+      height: 60vmin;
+      background: linear-gradient(to bottom, #2d2d2d, #121212);
+      overflow: hidden;
+    }
+
+    .sheep {
+      position: absolute;
+      width: 10vmin;
+      will-change: transform;
+    }
+
+    .controls {
+      margin-top: 2rem;
+    }
+
+    .slider {
+      -webkit-appearance: none;
+      width: 80%;
+      height: 8px;
+      background: var(--accent-color);
+      outline: none;
+      opacity: 0.7;
+      transition: opacity .15s ease-in-out;
+    }
+
+    .slider:hover {
+      opacity: 1;
+    }
+
+    button {
+      margin: 0.5rem;
+      padding: 0.5rem 1rem;
+      font-family: var(--body-font);
+      font-size: 1rem;
+      cursor: pointer;
+      background-color: var(--accent-color);
+      color: var(--text-color);
+      border: none;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background-color: #ae76f3;
+    }
+
+    .particles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+  </style>
+  <link rel="stylesheet" href="/motion.css">
+  <script defer src="/service-worker.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Sleepy Sheep</h1>
+    <div class="sheep-container" id="sheepContainer"></div>
+    <canvas class="particles"></canvas>
+    <div class="controls">
+      <input type="range" min="0" max="100" value="50" class="slider" id="volumeControl">
+      <button id="fullscreenButton">Fullscreen</button>
+      <button id="sleepTimerButton">Start Sleep Timer</button>
+    </div>
+  </div>
+  <audio id="ambientAudio">
+    <source src="/sounds/sleep-frequencies.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(registration => {
+          console.log('Service Worker registered with scope:', registration.scope);
+        })
+        .catch(err => {
+          console.error('Service Worker registration failed:', err);
+        });
+    }
+
+    const sheepContainer = document.getElementById('sheepContainer');
+    let audioPlaying = false;
+    const ambientAudio = document.getElementById('ambientAudio');
+    const volumeControl = document.getElementById('volumeControl');
+
+    sheepContainer.addEventListener('click', () => {
+      if (!audioPlaying) {
+        ambientAudio.play();
+        audioPlaying = true;
+      }
+      spawnSheep();
+    });
+
+    volumeControl.addEventListener('input', (e) => {
+      ambientAudio.volume = e.target.value / 100;
+    });
+
+    function spawnSheep() {
+      const sheep = document.createElement('div');
+      sheep.className = 'sheep';
+      sheep.style.left = `${Math.random() * 100}%`;
+      sheepContainer.appendChild(sheep);
+
+      sheep.animate([
+        { transform: 'translateY(0)', opacity: 1 },
+        { transform: 'translateY(-20vh)', opacity: 0 }
+      ], {
+        duration: 2000,
+        easing: 'ease-in-out',
+        fill: 'forwards'
+      });
+
+      setTimeout(() => {
+        sheep.remove();
+      }, 2000);
+    }
+
+    document.getElementById('fullscreenButton').addEventListener('click', () => {
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      } else {
+        document.documentElement.requestFullscreen();
+      }
+    });
+
+    document.getElementById('sleepTimerButton').addEventListener('click', () => {
+      // Initialize the sleep timer functionality
+      console.log('Sleep timer started');
+    });
+  </script>
+</body>
+
+</html>
