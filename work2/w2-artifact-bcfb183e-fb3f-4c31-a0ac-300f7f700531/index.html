@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#070b14">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="A cozy, meditative sheep-counting dreamscape to help you fall asleep faster.">
+<link rel="manifest" id="manifest-link">
+<title>Sleepy Sheep</title>
+<style>
+/* ── Tokens (dark dreamscape override) ── */
+:root {
+  --bg-canvas: #070b14;
+  --bg-panel: rgba(16, 22, 40, 0.65);
+  --fg-strong: #e8e4dc;
+  --fg-muted: #8a8f9e;
+  --fg-inverse: #070b14;
+  --line-soft: rgba(232, 228, 220, 0.12);
+  --accent-primary: #8ecae6;
+  --accent-secondary: #cdb4db;
+  --accent-highlight: #fde68a;
+  --radius-card: 24px;
+  --radius-pill: 999px;
+  --shadow-soft: 0 18px 44px rgba(0, 0, 0, 0.35);
+  --shadow-strong: 0 24px 64px rgba(0, 0, 0, 0.5);
+  --space-1: 0.375rem;
+  --space-2: 0.75rem;
+  --space-3: 1rem;
+  --space-4: 1.5rem;
+  --space-5: 2rem;
+  --space-6: 3rem;
+  --space-7: 4.5rem;
+  --display-font: 'Outfit', sans-serif;
+  --body-font: 'Crimson Pro', Georgia, serif;
+  --display-1: clamp(2.9rem, 8vw, 5.8rem);
+  --heading-1: clamp(1.8rem, 3vw, 2.8rem);
+  --body-lg: 1.125rem;
+  --body-md: 1rem;
+  --body-sm: 0.92rem;
+}
+
+/* ── Reset & Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+body {
+  background: radial-gradient(ellipse at 50% 20%, #1a1f3c 0%, #0f1425 40%, #070b14 100%);
+  color: var(--fg-strong);
+  font-family: var(--body-font);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Canvas ── */
+#world {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  touch-action: none;
+}
+
+/* ── Typography ── */
+.eyebrow {
+  font-family: var(--display-font);
+  font-size: var(--body-sm);
+  color: var(--fg-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+h1, h2, strong, .stat {
+  font-family: var(--display-font);
+}
+
+/* ── HUD ── */
+.hud {
+  position: fixed;
+  top: var(--space-4);
+  left: var(--space-4);
+  right: var(--space-4);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  pointer-events: none;
+  z-index: 10;
+}
+.hud .panel { pointer-events: auto; }
+.dashboard-stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 110px;
+}
+.dashboard-stat strong {
+  font-size: var(--heading-1);
+  font-weight: 700;
+  line-height: 1;
+}
+.panel {
+  background: var(--bg-panel);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-card);
+  padding: var(--space-3) var(--space-4);
+  box-shadow: var(--shadow-soft);
+}
+
+/* ── Controls Sheet (dashboard-slab) ── */
+.controls-sheet {
+  position: fixed;
+  bottom: var(--space-4);
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(92vw, 560px);
+  z-index: 20;
+  padding: var(--space-4);
+}
+.control-section + .control-section {
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--line-soft);
+}
+.timer-presets {
+  display: flex;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+.timer-presets button { flex: 1; min-width: 64px; }
+.sliders {
+  display: grid;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+.slider-row {
+  display: grid;
+  grid-template-columns: 7em 1fr;
+  align-items: center;
+  gap: var(--space-3);
+}
+.slider-row span {
+  font-family: var(--display-font);
+  font-size: var(--body-sm);
+  color: var(--fg-muted);
+}
+.btn {
+  font-family: var(--display-font);
+  font-size: var(--body-md);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease, border-color 180ms ease;
+  background: transparent;
+  color: var(--fg-strong);
+}
+.btn-primary {
+  background: var(--accent-primary);
+  color: var(--fg-inverse);
+  border-color: var(--accent-primary);
+  box-shadow: 0 4px 20px rgba(142, 202, 230, 0.25);
+}
+.btn-secondary {
+  background: rgba(255,255,255,0.06);
+  border-color: var(--line-soft);
+  color: var(--fg-muted);
+}
+.btn-secondary.active {
+  background: var(--accent-secondary);
+  color: var(--bg-canvas);
+  border-color: var(--accent-secondary);
+  font-weight: 500;
+}
+.btn-ghost {
+  color: var(--fg-muted);
+  border-color: var(--line-soft);
+  margin-top: var(--space-3);
+  width: 100%;
+}
+.fx-hover-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-strong);
+}
+
+/* ── Sliders ── */
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  background: transparent;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  margin-top: -6px;
+  box-shadow: 0 0 12px rgba(142,202,230,0.5);
+  border: 2px solid #fff;
+  cursor: pointer;
+}
+input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px;
+  background: var(--line-soft);
+  border-radius: 2px;
+}
+input[type="range"]::-moz-range-thumb {
+  height: 16px;
+  width: 16px;
+  border-radius: 50%;
+  background: var(--accent-primary);
+  box-shadow: 0 0 12px rgba(142,202,230,0.5);
+  border: 2px solid #fff;
+  cursor: pointer;
+}
+input[type="range"]::-moz-range-track {
+  height: 4px;
+  background: var(--line-soft);
+  border-radius: 2px;
+}
+
+/* ── Start Overlay ── */
+#start-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  background: radial-gradient(ellipse at 50% 30%, #1e2240 0%, #0a0e1f 50%, #050811 100%);
+  transition: opacity 900ms cubic-bezier(0.22, 1, 0.36, 1), transform 900ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+#start-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(1.03);
+}
+.moon {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 35%, #fffbeb, #fde68a);
+  box-shadow: 0 0 60px rgba(253, 230, 138, 0.35), 0 0 120px rgba(253, 230, 138, 0.12);
+  margin-bottom: var(--space-5);
+}
+.hero-text {
+  text-align: center;
+  max-width: 52ch;
+  padding: 0 var(--space-4);
+}
+.hero-text h1 {
+  font-size: var(--display-1);
+  font-weight: 700;
+  color: var(--fg-strong);
+  text-shadow: 0 2px 30px rgba(142,202,230,0.18);
+  margin: var(--space-2) 0 var(--space-3);
+}
+.hero-text p {
+  font-size: var(--body-lg);
+  color: var(--fg-muted);
+  font-style: italic;
+  line-height: 1.55;
+}
+#start-btn {
+  margin-top: var(--space-6);
+  font-size: var(--body-lg);
+  padding: var(--space-3) var(--space-6);
+}
+
+/* ── Motion presets ── */
+@media (prefers-reduced-motion: reduce) {
+  .fx-enter, .fx-stagger > *, .fx-hover-lift, #start-overlay, .panel, .moon {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
+.fx-enter {
+  opacity: 0;
+  animation: fx-enter 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.fx-stagger > * {
+  opacity: 0;
+  animation: fx-enter 560ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.fx-stagger > *:nth-child(1) { animation-delay: 60ms; }
+.fx-stagger > *:nth-child(2) { animation-delay: 120ms; }
+.fx-stagger > *:nth-child(3) { animation-delay: 180ms; }
+.fx-stagger > *:nth-child(4) { animation-delay: 240ms; }
+@keyframes fx-enter {
+  from { opacity: 0; transform: translate3d(0, 18px, 0) scale(0.985); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<canvas id="world" aria-label="Sheep jump dreamscape"></canvas>
+
+<!-- HUD -->
+<div class="hud">
+  <div class="panel dashboard-stat fx-enter">
+    <span class="eyebrow">Counted</span>
+    <strong id="count-display">0</strong>
+  </div>
+  <div class="panel dashboard-stat fx-enter" id="timer-panel" hidden>
+    <span class="eyebrow">Sleep in</span>
+    <strong id="timer-display">--:--</strong>
+  </div>
+</div>
+
+<!-- Controls -->
+<section class="controls-sheet panel fx-enter" id="controls" aria-label="Controls">
+  <div class="control-section">
+    <div class="eyebrow">Sleep Timer</div>
+    <div class="timer-presets fx-stagger" id="timer-presets">
+      <button class="btn btn-secondary" data-min="15">15m</button>
+      <button class="btn btn-secondary" data-min="30">30m</button>
+      <button class="btn btn-secondary" data-min="60">60m</button>
+      <button class="btn btn-secondary active" data-min="0">Off</button>
+    </div>
+  </div>
+  <div class="control-section">
+    <div class="eyebrow">Sound Mix</div>
+    <div class="sliders">
+      <div class="slider-row"><span>Master</span><input type="range" data-gain="master" min="0" max="1" step="0.01" value="0.7"></div>
+      <div class="slider-row"><span>432 Hz</span><input type="range" data-gain="tone" min="0" max="1" step="0.01" value="0.3"></div>
+      <div class="slider-row"><span>Binaural</span><input type="range" data-gain="binaural" min="0" max="1" step="0.01" value="0.15"></div>
+      <div class="slider-row"><span>Rain</span><input type="range" data-gain="rain" min="0" max="1" step="0.01" value="0.25"></div>
+      <div class="slider-row"><span>White Noise</span><input type="range" data-gain="white" min="0" max="1" step="0.01" value="0.1"></div>
+    </div>
+  </div>
+  <button class="btn btn-ghost" id="fullscreen-btn" aria-label="Toggle fullscreen">⛶ Fullscreen</button>
+</section>
+
+<!-- Tap-to-start Overlay -->
+<div id="start-overlay">
+  <div class="moon fx-enter"></div>
+  <div class="hero-text">
+    <div class="eyebrow fx-enter" style="animation-delay:80ms">Dreamscape</div>
+    <h1 class="fx-enter" style="animation-delay:120ms">Sleepy Sheep</h1>
+    <p class="fx-enter" style="animation-delay:180ms">Count sheep. Breathe slowly. Drift away.</p>
+  </div>
+  <button class="btn btn-primary fx-hover-lift fx-enter" id="start-btn" style="animation-delay:260ms">Tap anywhere to begin</button>
+</div>
+
+<script>
+/* ── Audio Engine (hybrid core + procedural ambience) ── */
+class AudioEngine {
+  constructor() {
+    this.ctx = null;
+    this.master = null;
+    this.gains = {};
+    this._osc = [];
+    this._src = [];
+    this.isPlaying = false;
+  }
+  init() {
+    const AC = window.AudioContext || window.webkitAudioContext;
+    this.ctx = new AC();
+    this.master = this.ctx.createGain();
+    this.master.gain.value = 0.7;
+    this.master.connect(this.ctx.destination);
+
+    // 432 Hz core tone + gentle overtone
+    this.gains.tone = this.ctx.createGain();
+    this.gains.tone.gain.value = 0.3;
+    this._addOsc(432, 'sine', this.gains.tone, 0.35);
+    this._addOsc(864, 'sine', this.gains.tone, 0.06);
+    this.gains.tone.connect(this.master);
+
+    // Binaural beats (200 Hz left / 205 Hz right => 5 Hz theta)
+    this.gains.binaural = this.ctx.createGain();
+    this.gains.binaural.gain.value = 0.15;
+    const merger = this.ctx.createChannelMerger(2);
+    const panL = this.ctx.createStereoPanner(); panL.pan.value = -1;
+    const panR = this.ctx.createStereoPanner(); panR.pan.value = 1;
+    const oscL = this.ctx.createOscillator(); oscL.frequency.value = 200; oscL.type = 'sine';
+    const oscR = this.ctx.createOscillator(); oscR.frequency.value = 205; oscR.type = 'sine';
+    oscL.connect(panL); panL.connect(merger, 0, 0);
+    oscR.connect(panR); panR.connect(merger, 0, 1);
+    merger.connect(this.gains.binaural);
+    this.gains.binaural.connect(this.master);
+    oscL.start(); oscR.start();
+    this._osc.push(oscL, oscR);
+
+    // Soft rain (pink noise + lowpass)
+    this.gains.rain = this.ctx.createGain();
+    this.gains.rain.gain.value = 0.25;
+    const rainBuf = this._noiseBuffer('pink');
+    const rainSrc = this.ctx.createBufferSource();
+    rainSrc.buffer = rainBuf; rainSrc.loop = true;
+    const rainF = this.ctx.createBiquadFilter(); rainF.type = 'lowpass'; rainF.frequency.value = 550;
+    rainSrc.connect(rainF); rainF.connect(this.gains.rain);
+    this.gains.rain.connect(this.master);
+    rainSrc.start();
+    this._src.push(rainSrc);
+
+    // White noise (white noise + lowpass)
+    this.gains.white = this.ctx.createGain();
+    this.gains.white.gain.value = 0.1;
+    const whiteBuf = this._noiseBuffer('white');
+    const whiteSrc = this.ctx.createBufferSource();
+    whiteSrc.buffer = whiteBuf; whiteSrc.loop = true;
+    const whiteF = this.ctx.createBiquadFilter(); whiteF.type = 'lowpass'; whiteF.frequency.value = 1000;
+    whiteSrc.connect(whiteF); whiteF.connect(this.gains.white);
+    this.gains.white.connect(this.master);
+    whiteSrc.start();
+    this._src.push(whiteSrc);
+
+    this.isPlaying = true;
+  }
+  _addOsc(freq, type, dest, vol = 0.3) {
+    const o = this.ctx.createOscillator();
+    o.type = type; o.frequency.value = freq;
+    const g = this.ctx.createGain(); g.gain.value = vol;
+    o.connect(g); g.connect(dest);
+    o.start();
+    this._osc.push(o);
+  }
+  _noiseBuffer(color) {
+    const samples = 2 * this.ctx.sampleRate;
+    const buf = this.ctx.createBuffer(1, samples, this.ctx.sampleRate);
+    const d = buf.getChannelData(0);
+    if (color === 'white') {
+      for (let i = 0; i < samples; i++) d[i] = Math.random() * 2 - 1;
+    } else {
+      let b0=0,b1=0,b2=0,b3=0,b4=0,b5=0,b6=0;
+      for (let i = 0; i < samples; i++) {
+        const w = Math.random() * 2 - 1;
+        b0 = 0.99886*b0 + w*0.0555179;
+        b1 = 0.99332*b1 + w*0.0750759;
+        b2 = 0.96900*b2 + w*0.1538520;
+        b3 = 0.86650*b3 + w*0.3104856;
+        b4 = 0.55000*b4 + w*0.5329522;
+        b5 = -0.7616*b5 - w*0.0168980;
+        d[i] = (b0+b1+b2+b3+b4+b5+b6+w*0.5362)*0.11;
+        b6 = w*0.115926;
+      }
+    }
+    return buf;
+  }
+  setVolume(name, val) { if (this.gains[name]) this.gains[name].gain.value = val; }
+  setMaster(val) { if (this.master) this.master.gain.value = val; }
+  fadeOut(seconds) {
+    if (!this.master) return;
+    this.master.gain.setTargetAtTime(0, this.ctx.currentTime, seconds/3);
+    setTimeout(() => this.stop(), seconds * 1000);
+  }
+  stop() {
+    this._osc.forEach(o => { try { o.stop(); } catch(e){} });
+    this._src.forEach(s => { try { s.stop(); } catch(e){} });
+    this.isPlaying = false;
+  }
+}
+
+/* ── Visual Systems ── */
+const canvas = document.getElementById('world');
+const ctx = canvas.getContext('2d');
+let W, H;
+function resize() {
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  W = window.innerWidth; H = window.innerHeight;
+  canvas.width = W * dpr; canvas.height = H * dpr;
+  canvas.style.width = W + 'px'; canvas.style.height = H + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+window.addEventListener('resize', resize);
+resize();
+
+class ParticleSystem {
+  constructor(n) {
+    this.p = [];
+    for (let i = 0; i < n; i++) this.p.push(this._reset({first: true}));
+  }
+  _reset(o, first = false) {
+    o.x = Math.random() * W;
+    o.y = first ? Math.random() * H : H + 10;
+    o.r = Math.random() * 2.2 + 0.4;
+    o.vx = (Math.random() - 0.5) * 0.25;
+    o.vy = -(Math.random() * 0.35 + 0.08);
+    o.a = Math.random() * 0.5 + 0.1;
+    o.t = Math.random() * Math.PI * 2;
+    o.c = Math.random() > 0.65 ? '142,202,230' : '253,230,138';
+    return o;
+  }
+  update(dt) {
+    this.p.forEach(o => {
+      o.x += o.vx * (dt / 16);
+      o.y += o.vy * (dt / 16);
+      o.t += dt * 0.002;
+      if (o.y < -10) this._reset(o);
+    });
+  }
+  draw(c) {
+    this.p.forEach(o => {
+      const a = o.a * (0.6 + 0.4 * Math.sin(o.t));
+      c.fillStyle = `rgba(${o.c},${a})`;
+      c.beginPath(); c.arc(o.x, o.y, o.r, 0, Math.PI * 2); c.fill();
+    });
+  }
+}
+const particles = new ParticleSystem(75);
+
+function drawClouds(c) {
+  const base = H * 0.74;
+  c.fillStyle = 'rgba(255,255,255,0.04)';
+  const cl = [
+    {x: W*0.15, y: base, r: 55}, {x: W*0.22, y: base-18, r: 45},
+    {x: W*0.65, y: base+8, r: 65}, {x: W*0.72, y: base-14, r: 50},
+    {x: W*0.4, y: base+28, r: 80}
+  ];
+  cl.forEach(p => { c.beginPath(); c.arc(p.x, p.y, p.r, 0, Math.PI*2); c.fill(); });
+}
+function drawFence(c) {
+  const y = H * 0.70;
+  c.strokeStyle = 'rgba(232,228,220,0.14)';
+  c.lineWidth = 3; c.lineCap = 'round';
+  c.beginPath(); c.moveTo(0, y); c.lineTo(W, y); c.stroke();
+  for (let x = 24; x < W; x += 44) {
+    c.beginPath(); c.moveTo(x, y); c.lineTo(x, y+22); c.stroke();
+  }
+}
+
+class Sheep {
+  constructor(cfg) {
+    this.x = cfg.x; this.y = cfg.y; this.speed = cfg.speed;
+    this.jumpX = cfg.jumpX; this.state = 'approach';
+    this.z = 0; this.phase = Math.random() * Math.PI * 2;
+    this.glow = 0; this.dead = false;
+    this.jumpDur = 1300 / Math.max(0.5, this.speed * 0.6);
+  }
+  update(dt) {
+    this.phase += dt * 0.0035 * (this.speed + 0.5);
+    if (this.glow > 0) this.glow -= dt * 0.0015;
+    const step = this.speed * (dt / 16);
+    if (this.state === 'approach') {
+      this.x += step;
+      if (this.x >= this.jumpX) { this.state = 'jump'; this.jt = 0; }
+    } else if (this.state === 'jump') {
+      this.jt += dt;
+      const t = Math.min(this.jt / this.jumpDur, 1);
+      this.x += step;
+      this.z = Math.sin(t * Math.PI) * 68;
+      if (t >= 1) { this.state = 'depart'; this.z = 0; }
+    } else {
+      this.x += step;
+      if (this.x > W + 60) this.dead = true;
+    }
+  }
+  draw(c) {
+    c.save();
+    c.translate(this.x, this.y - this.z);
+    if (this.glow > 0) { c.shadowColor = 'rgba(142,202,230,0.6)'; c.shadowBlur = 22 * this.glow; }
+    // shadow
+    const sc = 1 - (this.z / 90);
+    c.fillStyle = `rgba(0,0,0,${0.14 * sc})`;
+    c.beginPath(); c.ellipse(0, this.z + 14, 17 * sc, 5 * sc, 0, 0, Math.PI*2); c.fill();
+    c.shadowBlur = 0;
+    // legs
+    const s = Math.sin(this.phase) * 7;
+    c.strokeStyle = '#a0aab8'; c.lineWidth = 2.4; c.lineCap = 'round';
+    c.beginPath();
+    c.moveTo(-9, 6); c.lineTo(-9 + s, 22);
+    c.moveTo(9, 6); c.lineTo(9 - s, 22);
+    c.moveTo(-3, 8); c.lineTo(-3 + s*0.7, 22);
+    c.moveTo(3, 8); c.lineTo(3 - s*0.7, 22);
+    c.stroke();
+    // wool
+    c.fillStyle = '#f2f5f8';
+    const puffs = [{x:0,y:0,r:12},{x:-9,y:-4,r:9},{x:9,y:-4,r:9},{x:-5,y:6,r:7},{x:5,y:6,r:7},{x:0,y:-8,r:9}];
+    puffs.forEach(p => { c.beginPath(); c.arc(p.x, p.y, p.r, 0, Math.PI*2); c.fill(); });
+    // head
+    c.beginPath(); c.arc(15, -10, 8.5, 0, Math.PI*2); c.fill();
+    // ears
+    c.beginPath(); c.ellipse(10, -14, 3, 2, -0.6, 0, Math.PI*2); c.fill();
+    c.beginPath(); c.ellipse(20, -14, 3, 2, 0.6, 0, Math.PI*2); c.fill();
+    // sleepy face
+    c.strokeStyle = '#6b7280'; c.lineWidth = 1.2;
+    c.beginPath(); c.arc(12, -10, 1.6, 0.2, Math.PI-0.2, false); c.stroke();
+    c.beginPath(); c.arc(18, -10, 1.6, 0.2, Math.PI-0.2, false); c.stroke();
+    c.restore();
+  }
+}
+
+let sheepList = [];
+let floaters = [];
+let totalCounted = 0;
+let spawnAcc = 0;
+let nextSpawn = 2000;
+let running = false;
+let lastT = 0;
+
+function spawnSheep() {
+  const speed = Math.max(0.3, 2.0 * Math.pow(0.985, totalCounted));
+  const interval = Math.min(9000, 2000 + totalCounted * 180);
+  nextSpawn = interval;
+  sheepList.push(new Sheep({
+    x: -50, y: H * 0.70, speed,
+    jumpX: W * (0.45 + Math.random() * 0.1)
+  }));
+}
+
+function update(dt) {
+  spawnAcc += dt;
+  if (running && spawnAcc >= nextSpawn) { spawnAcc = 0; spawnSheep(); }
+  sheepList.forEach(s => s.update(dt));
+  sheepList = sheepList.filter(s => !s.dead);
+  particles.update(dt);
+  floaters.forEach(f => { f.y += f.vy * (dt/16); f.life -= dt; f.a = Math.max(0, f.life/900); });
+  floaters = floaters.filter(f => f.life > 0);
+}
+
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+  drawClouds(ctx); drawFence(ctx);
+  sheepList.forEach(s => s.draw(ctx));
+  particles.draw(ctx);
+  floaters.forEach(f => {
+    ctx.font = '500 17px Outfit, sans-serif';
+    ctx.fillStyle = `rgba(142,202,230,${f.a})`;
+    ctx.fillText(f.text, f.x, f.y);
+  });
+}
+
+function frame(ts) {
+  if (!lastT) lastT = ts;
+  const dt = ts - lastT; lastT = ts;
+  update(dt); draw();
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+
+/* ── Interaction ── */
+const audio = new AudioEngine();
+const startOverlay = document.getElementById('start-overlay');
+const startBtn = document.getElementById('start-btn');
+const countEl = document.getElementById('count-display');
+
+function begin() {
+  if (audio.isPlaying) return;
+  startOverlay.classList.add('hidden');
+  audio.init();
+  running = true;
+}
+startBtn.addEventListener('click', begin);
+startOverlay.addEventListener('click', e => { if (e.target === startOverlay || e.target.closest('.hero-text')) begin(); });
+
+canvas.addEventListener('pointerdown', e => {
+  if (!running) return;
+  const rect = canvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  totalCounted++;
+  countEl.textContent = totalCounted;
+  let hit = false;
+  sheepList.forEach(s => {
+    const dx = s.x - x; const dy = (s.y - s.z) - y;
+    if (Math.sqrt(dx*dx + dy*dy) < 55) { s.glow = 1.0; hit = true; }
+  });
+  floaters.push({x, y: y - 24, text: hit ? 'Zzz' : '+1', vy: -0.5, life: 900, a: 1});
+});
+
+/* ── Timer ── */
+let timerId = null;
+const timerPanel = document.getElementById('timer-panel');
+const timerDisplay = document.getElementById('timer-display');
+const timerPresets = document.getElementById('timer-presets');
+
+timerPresets.addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  timerPresets.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
+  b.classList.add('active');
+  const m = parseInt(b.dataset.min, 10);
+  if (m > 0) startTimer(m); else stopTimer();
+});
+function startTimer(mins) {
+  stopTimer();
+  const end = Date.now() + mins * 60000;
+  timerPanel.hidden = false;
+  timerId = setInterval(() => {
+    const left = end - Date.now();
+    if (left <= 0) {
+      stopTimer();
+      audio.fadeOut(6);
+      running = false;
+      startOverlay.classList.remove('hidden');
+      startOverlay.querySelector('h1').textContent = 'Sleep well';
+      startOverlay.querySelector('p').textContent = 'The sounds will fade gently.';
+      startBtn.textContent = 'Wake up';
+    } else {
+      const mm = Math.floor(left/60000);
+      const ss = Math.floor((left%60000)/1000);
+      timerDisplay.textContent = `${mm}:${ss.toString().padStart(2,'0')}`;
+    }
+  }, 1000);
+}
+function stopTimer() { if (timerId) clearInterval(timerId); timerId = null; timerPanel.hidden = true; timerDisplay.textContent = '--:--'; }
+
+/* ── Volume & Fullscreen ── */
+document.querySelectorAll('.sliders input').forEach(input => {
+  input.addEventListener('input', e => {
+    const name = e.target.dataset.gain;
+    const v = parseFloat(e.target.value);
+    name === 'master' ? audio.setMaster(v) : audio.setVolume(name, v);
+  });
+});
+document.getElementById('fullscreen-btn').addEventListener('click', () => {
+  if (!document.fullscreenElement) document.documentElement.requestFullscreen().catch(()=>{});
+  else document.exitFullscreen();
+});
+
+/* ── PWA: Manifest + Service Worker ── */
+const manifest = {
+  name: "Sleepy Sheep",
+  short_name: "Sleepy Sheep",
+  start_url: ".",
+  display: "standalone",
+  background_color: "#070b14",
+  theme_color: "#070b14",
+  icons: [{
+    src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect fill='%23070b14' width='192' height='192'/%3E%3Ccircle cx='96' cy='96' r='60' fill='%23fde68a' opacity='0.9'/%3E%3Ctext x='96' y='125' font-size='80' text-anchor='middle'%3E🐑%3C/text%3E%3C/svg%3E",
+    sizes: "192x192",
+    type: "image/svg+xml"
+  }]
+};
+document.getElementById('manifest-link').href = URL.createObjectURL(new Blob([JSON.stringify(manifest)], {type:'application/json'}));
+
+if ('serviceWorker' in navigator) {
+  const sw = `
+const CACHE_NAME = 'sleepy-sheep-v1';
+const CACHE_URLS = [self.registration.scope];
+self.addEventListener('install', e => {
+  e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(CACHE_URLS)));
+  self.skipWaiting();
+});
+self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
+self.addEventListener('fetch', e => {
+  e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
+});
+`;
+  const swUrl = URL.createObjectURL(new Blob([sw], {type:'application/javascript'}));
+  navigator.serviceWorker.register(swUrl).catch(() => {});
+}
+</script>
+</body>
+</html>
