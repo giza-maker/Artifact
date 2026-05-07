@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#1a1a1a">
+  <meta name="description" content="A calming game to help users fall asleep by counting sheep and listening to ambient sounds.">
+  <title>Sleepy Sheep</title>
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="/path-to-manifest/webmanifest.json">
+
+  <!-- CSS Styles -->
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Avenir Next', sans-serif;
+      background: linear-gradient(135deg, #1a1a1a, #393939);
+      color: #ffffff;
+      overflow: hidden;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 5vw, 4rem);
+      color: #ffa;
+      animation: fx-enter 1s ease-out;
+      text-align: center;
+    }
+
+    .sheep {
+      position: relative;
+      background: url('/path-to-assets/sheep.png') no-repeat;
+      width: 100px;
+      height: 80px;
+      animation: jump 2s ease-in-out infinite, fx-hover-lift 200ms ease-in-out;
+    }
+
+    @keyframes jump {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-150px); }
+      100% { transform: translateY(0); }
+    }
+
+    @keyframes fx-hover-lift {
+      from {
+        transform: translateY(0);
+        box-shadow: 0 0 0 transparent;
+      }
+      to {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 16px rgba(255, 255, 255, 0.6);
+      }
+    }
+
+    .controls {
+      position: absolute;
+      bottom: 20px;
+      display: flex;
+      gap: 20px;
+    }
+
+    .button {
+      padding: 10px 20px;
+      background: #444;
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      cursor: pointer;
+    }
+  </style>
+
+  <!-- Web App Script -->
+  <script>
+    // Register Service Worker for Offline Caching
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(registration => {
+          console.log('Service Worker registered with scope:', registration.scope);
+        })
+        .catch(error => {
+          console.error('Service Worker registration failed:', error);
+        });
+    }
+
+    // Sheep Animation and Audio Controls (Placeholder)
+    document.addEventListener('DOMContentLoaded', function() {
+      const audio = new Audio('/path-to-assets/ambient-sound.mp3');
+      const startButton = document.getElementById('start-button');
+      
+      startButton.addEventListener('click', () => {
+        audio.play();
+        document.body.addEventListener('click', function() {
+          // Sheep jump logic
+        });
+      });
+    });
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Sleepy Sheep</h1>
+    <div class="sheep"></div>
+    <div class="controls">
+      <button id="start-button" class="button">Start</button>
+      <button class="button">Volume</button>
+      <button class="button">Timer</button>
+      <button class="button">Fullscreen</button>
+    </div>
+  </div>
+</body>
+</html>
