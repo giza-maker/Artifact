@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sleepy Sheep</title>
+    <meta name="theme-color" content="#131a20">
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="styles.css"> <!-- Assuming styles.css includes tokenized styles and motion.css -->
+    <style>
+        /* Inline necessary styles extracted for context */
+        /* Styles will be optimized, compressed, and tokenized from the design bundle */
+        body {
+            margin: 0;
+            background-color: #0b1120; /* Dreamy dark-mode background */
+            color: #f8f4ee;
+            font-family: var(--body-font);
+        }
+        .btn {
+            background-color: var(--accent-primary);
+            color: var(--fg-inverse);
+            padding: var(--space-2) var(--space-4);
+            border-radius: var(--radius-pill);
+            box-shadow: var(--shadow-soft);
+            cursor: pointer;
+        }
+        /* More styles will be defined in styles.css */
+    </style>
+    <script>
+        // Service Worker registration for offline caching
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('service-worker.js')
+                .then(function(registration) {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, function(error) {
+                    console.error('ServiceWorker registration failed:', error);
+                });
+            });
+        }
+    </script>
+</head>
+<body>
+    <section class="hero-shell fx-enter">
+        <div class="eyebrow">Sleepy Sheep</div>
+        <h1>A Calming Journey</h1>
+        <p>Count the sheep and drift into a restful slumber with soothing ambient soundscapes.</p>
+        <div class="cta-row fx-stagger">
+            <button class="btn btn-primary" onclick="startGame()">Start your journey</button>
+        </div>
+    </section>
+
+    <!-- Sheep Jump Animation System -->
+    <div id="sheep-container"></div> <!-- Sheep container for animated sheep elements -->
+
+    <!-- Audio Engine Integration -->
+    <audio id="ambient-audio" controls preload="metadata" loop>
+        <source src="ambient_core_tone.mp3" type="audio/mp3">
+        <source src="ambient_stream.mp3" type="audio/mp3">
+        Your browser does not support the audio element.
+    </audio>
+
+    <!-- Game Controls -->
+    <div class="game-controls">
+        <label for="volume-slider">Volume:</label>
+        <input type="range" id="volume-slider" min="0" max="100" value="50" oninput="setVolume(this.value)">
+        <button onclick="toggleFullscreen()">Fullscreen</button>
+        <button onclick="setSleepTimer()">Set Sleep Timer</button>
+    </div>
+
+    <script src="game.js"></script> <!-- Game logic and animations -->
+    <script>
+        // JS code to initialize game elements such as sheep, audio controls, fullscreen toggle, etc.
+        function startGame() {
+            const audio = document.getElementById('ambient-audio');
+            audio.play(); // Tap-to-start flow for audio
+        }
+
+        function setVolume(value) {
+            const audio = document.getElementById('ambient-audio');
+            audio.volume = value / 100;
+        }
+
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen();
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        function setSleepTimer() {
+            // Logic to set a sleep timer
+        }
+    </script>
+</body>
+</html>
