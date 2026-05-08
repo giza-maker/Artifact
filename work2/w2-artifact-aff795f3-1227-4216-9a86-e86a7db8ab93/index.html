@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mood Meal Planner — Your Sous-Chef</title>
+  <style>
+    :root {
+      --bg-canvas: #f8f4ee;
+      --bg-panel: rgba(255, 255, 255, 0.92);
+      --bg-accent: #132730;
+      --fg-strong: #1f1a17;
+      --fg-muted: #5e544c;
+      --fg-inverse: #f8f4ee;
+      --line-soft: rgba(36, 31, 27, 0.12);
+      --line-strong: rgba(23, 49, 62, 0.28);
+      --accent-primary: #cf6b42;
+      --accent-secondary: #5d857b;
+      --accent-highlight: #f3c969;
+      --radius-card: 28px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 18px 44px rgba(27, 31, 36, 0.12);
+      --shadow-strong: 0 24px 64px rgba(16, 19, 24, 0.22);
+      --space-1: 0.375rem;
+      --space-2: 0.75rem;
+      --space-3: 1rem;
+      --space-4: 1.5rem;
+      --space-5: 2rem;
+      --space-6: 3rem;
+      --space-7: 4.5rem;
+      --display-font: "Avenir Next", "Segoe UI", sans-serif;
+      --body-font: "Georgia", "Times New Roman", serif;
+      --display-1: clamp(2.9rem, 6vw, 5.8rem);
+      --display-2: clamp(2.2rem, 4vw, 3.6rem);
+      --heading-1: clamp(1.6rem, 2.3vw, 2.4rem);
+      --body-lg: 1.125rem;
+      --body-md: 1rem;
+      --body-sm: 0.92rem;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fx-enter, .fx-stagger > *, .fx-hover-lift, .timer-ring-progress {
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+      }
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      font-family: var(--body-font);
+      background: var(--bg-canvas);
+      color: var(--fg-strong);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, .display {
+      font-family: var(--display-font);
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+    }
+
+    /* Motion presets from design bundle */
+    .fx-enter {
+      animation: fx-enter 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .fx-stagger > * {
+      opacity: 0;
+      animation: fx-enter 560ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .fx-stagger > *:nth-child(1) { animation-delay: 60ms; }
+    .fx-stagger > *:nth-child(2) { animation-delay: 120ms; }
+    .fx-stagger > *:nth-child(3) { animation-delay: 180ms; }
+    .fx-stagger > *:nth-child(4) { animation-delay: 240ms; }
+    .fx-stagger > *:nth-child(5) { animation-delay: 300ms; }
+
+    .fx-hover-lift {
+      transition: transform 180ms ease, box-shadow 180ms ease;
+    }
+
+    .fx-hover-lift:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-strong);
+    }
+
+    @keyframes fx-enter {
+      from { opacity: 0; transform: translate3d(0, 18px, 0) scale(0.985); }
+      to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+    }
+
+    /* Layout system */
+    .view {
+      display: none;
+      min-height: 100vh;
+      flex-direction: column;
+    }
+
+    .view.active {
+      display: flex;
+      animation: fx-enter 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 var(--space-4);
+    }
+
+    /* Hero / Mood selection */
+    .hero-shell {
+      padding: var(--space-7) var(--space-4) var(--space-5);
+      text-align: center;
+    }
+
+    .eyebrow {
+      font-family: var(--display-font);
+      font-size: var(--body-sm);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent-primary);
+      margin-bottom: var(--space-3);
+    }
+
+    .hero-shell h1 {
+      font-size: var(--display-1);
+      color: var(--bg-accent);
+      margin-bottom: var(--space-3);
+      max-width: 900px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .subtitle {
+      font-size: var(--body-lg);
+      color: var(--fg-muted);
+      max-width: 600px;
+      margin: 0 auto var(--space-5);
+    }
+
+    .mood-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: var(--space-4);
+      padding-bottom: var(--space-6);
+    }
+
+    .mood-card {
+      background: var(--bg-panel);
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-card);
+      padding: var(--space-5);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+    }
+
+    .mood-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 5px;
+      background: var(--mood-color, var(--accent-primary));
+    }
+
+    .mood-card .mood-emoji {
+      font-size: 2.5rem;
+      margin-bottom: var(--space-2);
+      display: block;
+    }
+
+    .mood-card h3 {
+      font-size: var(--heading-1);
+      margin-bottom: var(--space-1);
+      color: var(--bg-accent);
+    }
+
+    .mood-card p {
+      font-size: var(--body-sm);
+      color: var(--fg-muted);
+      font-style: italic;
+    }
+
+    .dual-track-footer {
+      text-align: center;
+      padding: var(--space-4) var(--space-4) var(--space-6);
+      color: var(--fg-muted);
+      font-size: var(--body-sm);
+    }
+
+    .dual-track-footer p {
+      margin-top: var(--space-1);
+      opacity: 0.8;
+    }
+
+    .dual-badge {
+      display: inline-block;
+      font-family: var(--display-font);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      background: var(--bg-accent);
+      color: var(--fg-inverse);
+      padding: 0.35rem 0.8rem;
+      border-radius: var(--radius-pill);
+    }
+
+    /* View headers (cinematic strategy room) */
+    .view-header {
+      background: var(--bg-accent);
+      color: var(--fg-inverse);
+      padding: var(--space-5) var(--space-4);
+      border-radius: 0 0 var(--radius-card) var(--radius-card);
+    }
+
+    .view-header .eyebrow {
+      color: var(--accent-highlight);
+    }
+
+    .view-header h2 {
+      font-size: var(--display-2);
+      margin-bottom: var(--space-2);
+    }
+
+    .view-header p {
+      opacity: 0.9;
+      max-width: 640px;
+    }
+
+    .chef-quote {
+      margin-top: var(--space-3);
+      font-style: italic;
+      opacity: 0.95;
+      border-left: 3px solid var(--accent-primary);
+      padding-left: var(--space-3);
+      font-size: var(--body-lg);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      font-family: var(--display-font);
+      font-size: var(--body-md);
+      padding: 0.85rem 1.6rem;
+      border-radius: var(--radius-pill);
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 120ms ease, box-shadow 120ms ease;
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+    .btn:active { transform: translateY(0); }
+
+    .btn-primary {
+      background: var(--accent-primary);
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(207, 107, 66, 0.35);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--fg-inverse);
+      border: 1px solid rgba(255,255,255,0.35);
+    }
+
+    .btn-ghost {
+      background: rgba(255,255,255,0.1);
+      color: var(--fg-inverse);
+      padding: 0.6rem 1rem;
+      font-size: var(--body-sm);
+      margin-bottom: var(--space-3);
+    }
+
+    /* Recipe grid */
+    .recipe-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--space-4);
+      padding: var(--space-5) var(--space-4);
+    }
+
+    .recipe-card {
+      background: var(--bg-panel);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      border: 1px solid var(--line-soft);
+      cursor: pointer;
+    }
+
+    .recipe-visual {
+      height: 180px;
+      background: linear-gradient(135deg, var(--mood-color, var(--accent-primary)), var(--accent-secondary));
+      position: relative;
+    }
+
+    .recipe-visual::after {
+      content: attr(data-time);
+      position: absolute;
+      top: var(--space-2);
+      right: var(--space-2);
+      background: rgba(0,0,0,0.55);
+      color: #fff;
+      padding: 0.25rem 0.7rem;
+      border-radius: var(--radius-pill);
+      font-family: var(--display-font);
+      font-size: 0.75rem;
+    }
+
+    .recipe-body {
+      padding: var(--space-4);
+    }
+
+    .recipe-body h3 {
+      font-size: 1.15rem;
+      margin-bottom: var(--space-1);
+      color: var(--bg-accent);
+    }
+
+    .recipe-tags {
+      display: flex;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+      margin-top: var(--space-2);
+    }
+
+    .tag {
+      font-family: var(--display-font);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      background: var(--bg-canvas);
+      color: var(--fg-muted);
+      padding: 0.3rem 0.7rem;
+      border-radius: var(--radius-pill);
+    }
+
+    /* Detail */
+    .detail-hero { position: relative; }
+
+    .detail-visual {
+      height: 260px;
+      background: linear-gradient(135deg, var(--mood-color, var(--accent-primary)), var(--bg-accent));
+      border-radius: 0 0 var(--radius-card) var(--radius-card);
+    }
+
+    .detail-meta {
+      padding: var(--space-5) var(--space-4) var(--space-3);
+    }
+
+    .detail-meta h2 {
+      font-size: var(--display-2);
+      margin-bottom: var(--space-2);
+      color: var(--bg-accent);
+    }
+
+    .detail-tags { margin-bottom: var(--space-3); }
+
+    .chef-note {
+      font-style: italic;
+      color: var(--fg-muted);
+      font-size: var(--body-lg);
+      border-left: 3px solid var(--accent-primary);
+      padding-left: var(--space-3);
+    }
+
+    .detail-body {
+      padding: 0 var(--space-4) var(--space-6);
+      max-width: 720px;
+    }
+
+    .detail-body h3 {
+      font-family: var(--display-font);
+      font-size: var(--heading-1);
+      margin: var(--space-4) 0 var(--space-2);
+      color: var(--bg-accent);
+    }
+
+    .detail-body ul {
+      margin-left: 1.2rem;
+      margin-bottom: var(--space-4);
+      color: var(--fg-muted);
+    }
+
+    .detail-body li { margin-bottom: var(--space-1); }
+
+    .btn-large {
+      width: 100%;
+      padding: 1.1rem;
+      font-size: var(--body-lg);
+    }
+
+    /* Cook Mode */
+    .view--cook {
+      background: var(--bg-accent);
+      color: var(--fg-inverse);
+    }
+
+    .cook-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(0,0,0,0.15);
+      border-radius: 0;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+    }
+
+    .timer-label {
+      font-family: var(--display-font);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      opacity: 0.7;
+      width: 100%;
+    }
+
+    .timer-display {
+      font-family: var(--display-font);
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.04em;
+    }
+
+    .timer-ring-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: var(--space-5) var(--space-4);
+    }
+
+    .timer-ring {
+      width: 240px;
+      height: 240px;
+      transform: rotate(-90deg);
+    }
+
+    .timer-ring-bg {
+      fill: none;
+      stroke: rgba(255,255,255,0.12);
+      stroke-width: 8;
+    }
+
+    .timer-ring-progress {
+      fill: none;
+      stroke: var(--accent-primary);
+      stroke-width: 8;
+      stroke-linecap: round;
+      stroke-dasharray: 339.292;
+      stroke-dashoffset: 0;
+      transition: stroke-dashoffset 1s linear;
+    }
+
+    .timer-controls {
+      display: flex;
+      gap: var(--space-3);
+      margin-top: var(--space-4);
+    }
+
+    .cook-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-5);
+      padding: 0 var(--space-4) var(--space-6);
+    }
+
+    @media (min-width: 900px) {
+      .cook-layout {
+        grid-template-columns: 360px 1fr;
+        align-items: start;
+      }
+    }
+
+    .cook-steps {
+      background: rgba(255,255,255,0.06);
+      border-radius: var(--radius-card);
+      padding: var(--space-4);
+    }
+
+    .cook-steps h3 {
+      font-family: var(--display-font);
+      margin-bottom: var(--space-3);
+      font-size: var(--heading-1);
+    }
+
+    .step {
+      display: flex;
+      gap: var(--space-3);
+      padding: var(--space-3) 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      opacity: 0.7;
+      transition: opacity 200ms ease;
+    }
+
+    .step.active { opacity: 1; }
+
+    .step-number {
+      flex-shrink: 0;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--display-font);
+      font-size: 0.85rem;
+    }
+
+    .step.active .step-number { background: var(--accent-primary); }
+
+    .step input[type="checkbox"] {
+      appearance: none;
+      width: 1.3rem;
+      height: 1.3rem;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-radius: 6px;
+      margin-top: 0.2rem;
+      cursor: pointer;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .step input[type="checkbox"]:checked {
+      background: var(--accent-secondary);
+      border-color: var(--accent-secondary);
+    }
+
+    .step input[type="checkbox"]:checked::after {
+      content: '✓';
+      position: absolute;
+      left: 50%; top: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 0.8rem;
+      color: #fff;
+    }
+
+    .step p { flex: 1; line-height: 1.5; }
+
+    .cook-chef-bar {
+      background: rgba(0,0,0,0.25);
+      padding: var(--space-3) var(--space-4);
+      text-align: center;
+      font-style: italic;
+      font-size: var(--body-md);
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .hero-shell { padding-top: var(--space-5); }
+      .mood-grid { grid-template-columns: 1fr; }
+      .recipe-grid { grid-template-columns: 1fr; }
+      .timer-ring { width: 200px; height: 200px; }
+      .cook-header { padding: var(--space-3) var(--space-4); }
+    }
+  </style>
+</head>
+<body>
+
+<div id="app">
+
+  <!-- HERO / MOOD SELECTION -->
+  <section id="view-hero" class="view view--hero active">
+    <div class="container">
+      <header class="hero-shell fx-enter">
+        <div class="eyebrow">Mood Meal Planner</div>
+        <h1>How are you feeling today?</h1>
+        <p class="subtitle">No calorie math. No guilt. Just real food for your real mood. Your sous-chef is standing by.</p>
+      </header>
+
+      <div class="mood-grid editorial-grid fx-stagger" id="mood-grid">
+        <article class="mood-card fx-hover-lift" style="--mood-color: #e26a2c" onclick="selectMood('joy')">
+          <span class="mood-emoji">✨</span>
+          <h3>Joyful</h3>
+          <p>"Main character energy? I’ve got confetti for that."</p>
+        </article>
+        <article class="mood-card fx-hover-lift" style="--mood-color: #cf6b42" onclick="selectMood('stress')">
+          <span class="mood-emoji">🛋️</span>
+          <h3>Stressed</h3>
+          <p>"Put the phone down. I’m handing you a hug in a bowl."</p>
+        </article>
+        <article class="mood-card fx-hover-lift" style="--mood-color: #3e8d87" onclick="selectMood('fatigue')">
+          <span class="mood-emoji">🔋</span>
+          <h3>Sluggish</h3>
+          <p>"Low battery. High flavor. Let’s fix both."</p>
+        </article>
+        <article class="mood-card fx-hover-lift" style="--mood-color: #5d857b" onclick="selectMood('anxiety')">
+          <span class="mood-emoji">🍃</span>
+          <h3>Anxious</h3>
+          <p>"Chop, stir, breathe. The rhythm will hold you."</p>
+        </article>
+        <article class="mood-card fx-hover-lift" style="--mood-color: #d5663a" onclick="selectMood('boredom')">
+          <span class="mood-emoji">🎭</span>
+          <h3>Bored</h3>
+          <p>"Your taste buds called. They want drama."</p>
+        </article>
+      </div>
+
+      <div class="dual-track-footer">
+        <span class="dual-badge">Dual-Track Kitchen</span>
+        <p>Validated for overwhelmed need-it-now & energy-seeking audiences</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECIPES LIST -->
+  <section id="view-recipes" class="view view--recipes">
+    <div class="view-header">
+      <div class="container">
+        <button class="btn btn-ghost" onclick="goBack()">← Back to moods</button>
+        <div class="eyebrow" id="recipes-eyebrow">Strategy Room</div>
+        <h2 id="recipes-headline">Mood</h2>
+        <p id="recipes-sub">Subhead</p>
+        <div class="chef-quote" id="recipes-quote">Chef quote</div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="recipe-grid cards" id="recipe-grid"></div>
+    </div>
+  </section>
+
+  <!-- RECIPE DETAIL -->
+  <section id="view-detail" class="view view--detail">
+    <div class="detail-hero">
+      <div class="detail-visual" id="detail-visual"></div>
+      <div class="container detail-meta">
+        <h2 id="detail-title">Recipe</h2>
+        <div class="detail-tags">
+          <span class="tag" id="detail-time">20 min</span>
+          <span class="tag" id="detail-difficulty">Easy</span>
+        </div>
+        <p class="chef-note" id="detail-note">Chef note</p>
+      </div>
+    </div>
+    <div class="container detail-body">
+      <button class="btn btn-ghost" onclick="goBack()" style="color: var(--fg-muted); border-color: var(--line-soft); margin-bottom: var(--space-3);">← Back</button>
+      <h3>What you'll need</h3>
+      <ul id="detail-ingredients"></ul>
+      <button class="btn btn-primary btn-large" onclick="startCooking()">Start Cooking Mode</button>
+    </div>
+  </section>
+
+  <!-- COOK MODE -->
+  <section id="view-cook" class="view view--cook">
+    <div class="view-header cook-header">
+      <div class="container" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:var(--space-2);">
+        <div>
+          <button class="btn btn-ghost" onclick="goBack()">← Exit Cook Mode</button>
+          <div class="timer-label">30-Minute Mission Clock</div>
+        </div>
+        <div class="timer-display" id="timer-display">30:00</div>
+      </div>
+    </div>
+
+    <div class="container cook-layout">
+      <div class="timer-ring-wrapper">
+        <svg class="timer-ring" viewBox="0 0 120 120">
+          <circle class="timer-ring-bg" cx="60" cy="60" r="54"/>
+          <circle class="timer-ring-progress" cx="60" cy="60" r="54" id="timer-ring"/>
+        </svg>
+        <div class="timer-controls">
+          <button class="btn btn-primary" id="timer-toggle" onclick="toggleTimer()">Start</button>
+          <button class="btn btn-secondary" onclick="resetTimer()">Reset</button>
+        </div>
+      </div>
+
+      <div class="cook-steps" id="cook-steps">
+        <h3 id="cook-recipe-title">Recipe</h3>
+        <div id="cook-steps-list"></div>
+      </div>
+    </div>
+
+    <div class="cook-chef-bar" id="cook-chef-bar">Your sous-chef is standing by.</div>
+  </section>
+
+</div>
+
+<script>
+  /* ===== DATA ===== */
+  const MOODS = {
+    joy: { label: 'Joyful', color: '#e26a2c', headline: 'Main character energy.', sub: 'Let\'s cook something as bright as you feel.', quote: 'You\'re glowing. I\'ve got the confetti.' },
+    stress: { label: 'Stressed', color: '#cf6b42', headline: 'The world is loud. Your kitchen doesn\'t have to be.', sub: 'One pan. Zero judgment. Maximum comfort.', quote: 'Put the phone down. I\'m handing you a hug in a bowl.' },
+    fatigue: { label: 'Sluggish', color: '#3e8d87', headline: 'Low battery. High flavor.', sub: 'Iron, protein, and a little spice to wake you up.', quote: 'We\'re not running a marathon. We\'re refueling a human.' },
+    anxiety: { label: 'Anxious', color: '#5d857b', headline: 'Slow hands. Warm plate. Deep breath.', sub: 'Repetitive motions. Predictable outcomes. Grounding flavors.', quote: 'Chop, stir, breathe. The rhythm will hold you.' },
+    boredom: { label: 'Bored', color: '#d5663a', headline: 'Your taste buds called. They want drama.', sub: 'New textures. Bold sauces. Zero autopilot.', quote: 'Tonight, we\'re breaking rules and toasting seeds.' }
+  };
+
+  const RECIPES = {
+    joy: [
+      { id:'j1', title:'Lemon Ricotta Pasta with Burst Tomatoes', time:15, difficulty:'Easy', tags:['Vegetarian','Quick'], ingredients:['Spaghetti or linguine','Whole-milk ricotta','Cherry tomatoes','Garlic','Lemon','Fresh basil','Olive oil','Parmesan'], steps:['Boil pasta. Before draining, save a cup of that starchy water — liquid gold.','Warm garlic and tomatoes in olive oil until they burst and slump.','Toss drained pasta with ricotta, lemon zest, and a splash of pasta water until creamy.','Top with basil and parmesan. Eat with your shoulders dropped.'], note:'Tonight, brightness is the only goal.' },
+      { id:'j2', title:'Crispy Fish Tacos with Mango Slaw', time:20, difficulty:'Medium', tags:['Pescatarian','Crunchy'], ingredients:['White fish fillets','Corn tortillas','Shredded cabbage','Mango','Lime','Cumin','Mayo','Hot sauce'], steps:['Pat fish dry. Season with cumin and a confident pinch of salt.','Sear in a hot skillet until the edges curl and crisp.','Toss cabbage and mango with lime juice and a whisper of mayo.','Char tortillas over flame, stack fish and slaw. Squeeze lime like you mean it.'], note:'Crunch first, questions later.' },
+      { id:'j3', title:'Confetti Cauliflower Steaks', time:20, difficulty:'Easy', tags:['Vegan','Colorful'], ingredients:['Cauliflower head','Smoked paprika','Greek yogurt or coconut yogurt','Pomegranate seeds','Cilantro','Lemon','Tahini'], steps:['Slice cauliflower into thick steaks. Crumbles are chef\'s snack.','Brush with oil and paprika. Roast at high heat until deeply golden.','Whisk tahini, yogurt, and lemon with a pinch of salt until pourable.','Plate with pomegranate jewels and cilantro. Feast with your eyes first.'], note:'Color on the plate, color in your mood.' }
+    ],
+    stress: [
+      { id:'s1', title:'One-Pot Creamy Tomato Orzo', time:20, difficulty:'Easy', tags:['One-pot','Vegetarian'], ingredients:['Orzo pasta','Garlic','Canned tomatoes','Vegetable broth','Parmesan','Butter','Fresh basil'], steps:['Chop garlic. Open the tomato can. Precision is not required tonight.','Toast orzo in the pot with olive oil until it smells like popcorn.','Pour in tomatoes and broth. Stir once. Let it simmer.','Kill the heat. Stir in butter and cheese. Ladle into your favorite bowl.'], note:'Tonight, we measure comfort in melted cheese, not macros.' },
+      { id:'s2', title:'Miso Butter Udon with Soft Egg', time:15, difficulty:'Easy', tags:['Umami','Quick'], ingredients:['Udon noodles','White miso','Butter','Soy sauce','Scallions','Soft-boiled egg','Nori'], steps:['Boil udon. Reserve a little starchy water before draining.','Whisk miso and soft butter with a splash of hot noodle water.','Toss noodles in the miso-butter bath until glossy and clinging.','Top with egg, scallions, and torn nori. Comfort achieved.'], note:'Umami is just a fancy word for "hug".' },
+      { id:'s3', title:'Grilled Cheese Tomato Soup Dippers', time:15, difficulty:'Easy', tags:['Classic','Vegetarian'], ingredients:['Sourdough bread','Sharp cheddar','Canned tomato soup','Whole milk','Butter','Dried basil'], steps:['Butter the bread generously. Layer cheese like you\'re building a mattress.','Grill low and slow until the bread is a deep amber crunch.','Heat soup with a splash of milk. Stir in a pinch of basil.','Dip. Crunch. Repeat. Tonight, carbs are medicine.'], note:'There is no shame in this game. Only cheese.' }
+    ],
+    fatigue: [
+      { id:'f1', title:'Ginger-Soy Salmon Power Bowl', time:20, difficulty:'Medium', tags:['High protein','Omega-3'], ingredients:['Salmon fillet','Brown rice or pre-cooked grain','Edamame','Fresh ginger','Soy sauce','Toasted sesame oil','Cucumber','Avocado'], steps:['Cook rice or use pre-cooked. No shame in shortcuts.','Sear salmon skin-side down. Don\'t touch it for 4 minutes.','Whisk ginger, soy, and sesame oil. Drizzle over everything.','Assemble bowl with edamame, cucumber, and avocado. Power on.'], note:'Iron, fat, and fire — the trinity of "I\'m back".' },
+      { id:'f2', title:'Spicy Peanut Noodles', time:15, difficulty:'Easy', tags:['Vegan adaptable','Fast'], ingredients:['Rice noodles','Peanut butter','Soy sauce','Lime','Chili flakes','Cooked chicken or tofu','Cilantro','Roasted peanuts'], steps:['Whisk peanut butter, soy, lime, and hot water until silky and loose.','Cook noodles. Drain. They don\'t need to be perfect.','Toss noodles with sauce and your protein of choice.','Top with crushed peanuts and cilantro. Energy, delivered.'], note:'These noodles have never met an energy crash they couldn\'t cure.' },
+      { id:'f3', title:'Green Goddess Chicken Wrap', time:10, difficulty:'Easy', tags:['No-cook','Lean'], ingredients:['Rotisserie chicken','Green goddess dressing','Spinach tortilla or wrap','Avocado','Mixed greens','Pickled onions'], steps:['Shred chicken with your hands. Feel the texture.','Warm the tortilla until soft and pliable.','Layer greens, chicken, avocado, and a heavy drizzle of dressing.','Roll tight. Cut on a bias because you deserve nice things.'], note:'Ten minutes to feeling human again.' }
+    ],
+    anxiety: [
+      { id:'a1', title:'Rhythm Stir-Fry: Constant Motion Therapy', time:20, difficulty:'Easy', tags:['Grounding','Repetitive'], ingredients:['Chicken thighs','Broccoli','Bell pepper','Carrots','Soy sauce','Honey','Garlic','Cooked rice'], steps:['Slice everything the same size. Uniformity is the goal.','Heat oil until shimmering. Add protein. Don\'t stir for 2 minutes.','Add vegetables in order of density. Keep things moving now.','Pour in sauce. Toss until glossy. Serve over rice. Breathe.'], note:'The pan sizzles. Your thoughts don\'t have to.' },
+      { id:'a2', title:'Turmeric Chicken Congee', time:25, difficulty:'Easy', tags:['Soothing','One-pot'], ingredients:['Jasmine rice','Chicken broth','Ground chicken','Ginger','Turmeric','Scallions','Soft-boiled egg'], steps:['Simmer rice in broth, stirring often. Repetition is the therapy.','Brown ground chicken with ginger and turmeric.','Stir chicken into the porridge. Watch it turn golden.','Top with egg and scallions. Eat slowly. You are safe here.'], note:'Slow food for a racing mind.' },
+      { id:'a3', title:'Hand-Rolled Sushi Bowl', time:20, difficulty:'Medium', tags:['Mindful','Fresh'], ingredients:['Sushi rice','Rice vinegar','Nori','Cucumber','Avocado','Smoked salmon or crab','Sesame seeds','Soy sauce'], steps:['Season warm rice with vinegar. Fan it while folding. Patience.','Slice vegetables into matchsticks. Precision calms the mind.','Layer rice in a bowl. Arrange toppings in neat quadrants.','Sprinkle sesame seeds. Dip in soy. You made something beautiful.'], note:'Every slice is a small meditation.' }
+    ],
+    boredom: [
+      { id:'b1', title:'Firecracker Shrimp Lettuce Cups', time:20, difficulty:'Medium', tags:['Spicy','Interactive'], ingredients:['Shrimp','Mayo','Sriracha','Honey','Lime','Butter lettuce','Crispy shallots','Cilantro'], steps:['Whisk mayo, sriracha, honey, and lime into a reckless sauce.','Sear shrimp hard and fast. Char is flavor drama.','Toss shrimp in the firecracker sauce until coated and shining.','Nestle into lettuce cups. Top with crispy shallots. Applause.'], note:'Warning: may cause spontaneous kitchen dancing.' },
+      { id:'b2', title:'Deconstructed Gyro Nachos', time:15, difficulty:'Easy', tags:['Fun','Craveable'], ingredients:['Pita chips','Ground lamb or beef','Cumin','Greek yogurt','Cucumber','Tomato','Red onion','Feta'], steps:['Brown meat with cumin. Break it up like you\'re crushing routine.','Scatter pita chips on a platter. Build the mountain.','Layer meat, diced tomato, onion, and crumbled feta.','Drizzle with yogurt-cucumber sauce. Eat with your hands. Rebel.'], note:'Rules are boring. Nachos are not.' },
+      { id:'b3', title:'Breakfast-for-Dinner Shakshuka', time:20, difficulty:'Medium', tags:['Dramatic','Shareable'], ingredients:['Canned tomatoes','Eggs','Cumin','Paprika','Feta','Cilantro','Crusty bread','Olive oil','Onion'], steps:['Sauté onion in oil until sweet. Add spices. Wake up the pan.','Pour in tomatoes. Simmer until thick like a red velvet curtain.','Make wells. Crack eggs into them. Cover and cook until jammy.','Scatter feta and cilantro. Dip bread. Break the rules deliciously.'], note:'Eggs at 8pm taste like freedom.' }
+    ]
+  };
+
+  /* ===== STATE ===== */
+  let state = { mood: null, recipeIndex: 0, view: 'hero' };
+  const TOTAL_SECONDS = 30 * 60;
+  let remaining = TOTAL_SECONDS;
+  let intervalId = null;
+  let isRunning = false;
+
+  /* ===== NAVIGATION ===== */
+  function showView(name) {
+    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+    document.getElementById('view-' + name).classList.add('active');
+    state.view = name;
+    window.scrollTo(0, 0);
+  }
+
+  function goBack() {
+    const backMap = { recipes: 'hero', detail: 'recipes', cook: 'detail' };
+    showView(backMap[state.view] || 'hero');
+  }
+
+  /* ===== MOOD SELECTION ===== */
+  function selectMood(moodKey) {
+    state.mood = moodKey;
+    const m = MOODS[moodKey];
+    document.getElementById('recipes-eyebrow').textContent = m.label + ' Strategy';
+    document.getElementById('recipes-headline').textContent = m.headline;
+    document.getElementById('recipes-sub').textContent = m.sub;
+    document.getElementById('recipes-quote').textContent = m.quote;
+
+    const grid = document.getElementById('recipe-grid');
+    grid.innerHTML = '';
+    RECIPES[moodKey].forEach((r, idx) => {
+      const card = document.createElement('article');
+      card.className = 'recipe-card fx-hover-lift fx-enter';
+      card.style.setProperty('--mood-color', m.color);
+      card.style.animationDelay = (idx * 80) + 'ms';
+      card.innerHTML = `
+        <div class="recipe-visual" data-time="${r.time} min"></div>
+        <div class="recipe-body">
+          <h3>${escapeHtml(r.title)}</h3>
+          <div class="recipe-tags">
+            ${r.tags.map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('')}
+          </div>
+        </div>
+      `;
+      card.onclick = () => selectRecipe(idx);
+      grid.appendChild(card);
+    });
+
+    showView('recipes');
+  }
+
+  /* ===== RECIPE DETAIL ===== */
+  function selectRecipe(idx) {
+    state.recipeIndex = idx;
+    const m = MOODS[state.mood];
+    const r = RECIPES[state.mood][idx];
+
+    document.getElementById('detail-visual').style.setProperty('--mood-color', m.color);
+    document.getElementById('detail-title').textContent = r.title;
+    document.getElementById('detail-time').textContent = r.time + ' min';
+    document.getElementById('detail-difficulty').textContent = r.difficulty;
+    document.getElementById('detail-note').textContent = r.note;
+
+    const ul = document.getElementById('detail-ingredients');
+    ul.innerHTML = r.ingredients.map(i => `<li>${escapeHtml(i)}</li>`).join('');
+
+    showView('detail');
+  }
+
+  /* ===== COOK MODE ===== */
+  function startCooking() {
+    const m = MOODS[state.mood];
+    const r = RECIPES[state.mood][state.recipeIndex];
+
+    document.getElementById('cook-recipe-title').textContent = r.title;
+    const list = document.getElementById('cook-steps-list');
+    list.innerHTML = '';
+    r.steps.forEach((s, i) => {
+      const step = document.createElement('label');
+      step.className = 'step' + (i === 0 ? ' active' : '');
+      step.innerHTML = `
+        <input type="checkbox" onchange="onStepToggle(this, ${i})">
+        <div class="step-number">${i + 1}</div>
+        <p>${escapeHtml(s)}</p>
+      `;
+      list.appendChild(step);
+    });
+
+    resetTimer();
+    rotateChefTip();
+    showView('cook');
+  }
+
+  function onStepToggle(checkbox, idx) {
+    const steps = document.querySelectorAll('.step');
+    if (checkbox.checked) {
+      steps[idx].classList.remove('active');
+      if (idx + 1 < steps.length) steps[idx + 1].classList.add('active');
+    } else {
+      steps[idx].classList.add('active');
+      if (idx + 1 < steps.length) steps[idx + 1].classList.remove('active');
+    }
+  }
+
+  const CHEF_TIPS = [
+    "Taste as you go. You're the boss of this kitchen.",
+    "If it smells good, you're doing it right.",
+    "Messy counter, happy cook. Clean later.",
+    "A little extra garlic is a love letter to yourself.",
+    "No one ever regrets butter.",
+    "Deep breath. Shoulders down. You've got this.",
+    "Cooking is just edible procrastination from your problems.",
+    "When in doubt, add acid. Lemon fixes almost everything."
+  ];
+  let tipIndex = 0;
+  function rotateChefTip() {
+    const bar = document.getElementById('cook-chef-bar');
+    bar.textContent = "👨‍🍳 " + CHEF_TIPS[tipIndex % CHEF_TIPS.length];
+    tipIndex++;
+  }
+  setInterval(rotateChefTip, 12000);
+
+  /* ===== TIMER ===== */
+  function updateTimer() {
+    const m = Math.floor(remaining / 60).toString().padStart(2, '0');
+    const s = (remaining % 60).toString().padStart(2, '0');
+    document.getElementById('timer-display').textContent = `${m}:${s}`;
+
+    const circumference = 339.292;
+    const offset = circumference - (remaining / TOTAL_SECONDS) * circumference;
+    document.getElementById('timer-ring').style.strokeDashoffset = offset;
+  }
+
+  function toggleTimer() {
+    const btn = document.getElementById('timer-toggle');
+    if (isRunning) {
+      clearInterval(intervalId);
+      isRunning = false;
+      btn.textContent = remaining === TOTAL_SECONDS ? 'Start' : 'Resume';
+    } else {
+      intervalId = setInterval(() => {
+        if (remaining > 0) {
+          remaining--;
+          updateTimer();
+        } else {
+          clearInterval(intervalId);
+          isRunning = false;
+          btn.textContent = 'Done!';
+        }
+      }, 1000);
+      isRunning = true;
+      btn.textContent = 'Pause';
+    }
+  }
+
+  function resetTimer() {
+    clearInterval(intervalId);
+    isRunning = false;
+    remaining = TOTAL_SECONDS;
+    updateTimer();
+    document.getElementById('timer-toggle').textContent = 'Start';
+  }
+
+  /* ===== UTILS ===== */
+  function escapeHtml(str) {
+    return str.replace(/[&<>"']/g, c => ({'&':'&','<':'<','>':'>','"':'"','\'':'''}[c]));
+  }
+
+  /* Init */
+  updateTimer();
+</script>
+</body>
+</html>
