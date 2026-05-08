@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mood Meal Planner</title>
+  <link rel="stylesheet" href="tokens.css">
+  <link rel="stylesheet" href="motion.css">
+  <style>
+    body {
+      font-family: var(--body-font);
+      margin: 0;
+      background-color: var(--bg-canvas);
+    }
+    .container {
+      padding: var(--space-4);
+    }
+    .hero {
+      text-align: center;
+      margin-bottom: var(--space-5);
+    }
+    .hero img {
+      max-width: 100%;
+      border-radius: var(--radius-card);
+    }
+    .mood-selection .btn {
+      display: inline-block;
+      margin: var(--space-2) var(--space-1);
+      background-color: var(--accent-secondary);
+      color: var(--fg-inverse);
+      padding: var(--space-2) var(--space-3);
+      border-radius: var(--radius-pill);
+      text-decoration: none;
+    }
+    .mood-recipes, .cook-mode {
+      margin-bottom: var(--space-6);
+    }
+    .recipe-card {
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-card);
+      padding: var(--space-3);
+      box-shadow: var(--shadow-soft);
+      margin-bottom: var(--space-3);
+    }
+    .recipe-card h3 {
+      font-size: var(--heading-1);
+      margin-bottom: var(--space-2);
+    }
+    .cta {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Hero Section -->
+    <section class="hero fx-enter">
+      <img src="/api/attachments/hero-image-id/content" alt="Featured hero artwork">
+      <h1>Mood-Based Meal Planner</h1>
+      <p>Instead of focusing on calories, this app asks, "How are you feeling today?".</p>
+    </section>
+
+    <!-- Mood Selection -->
+    <section class="mood-selection fx-stagger">
+      <h2>Select Your Mood</h2>
+      <a href="#mood-stressed" class="btn" onclick="showRecipes('stressed')">Stressed</a>
+      <a href="#mood-sluggish" class="btn" onclick="showRecipes('sluggish')">Sluggish</a>
+      <a href="#mood-joyful" class="btn" onclick="showRecipes('joyful')">Joyful</a>
+      <a href="#mood-anxious" class="btn" onclick="showRecipes('anxious')">Anxious</a>
+      <a href="#mood-bored" class="btn" onclick="showRecipes('bored')">Bored</a>
+    </section>
+
+    <!-- Mood-Based Recipes -->
+    <section id="mood-recipes" class="mood-recipes fx-enter" style="display: none;">
+      <h2 id="mood-title"></h2>
+      <div id="recipe-list">
+        <!-- Recipe cards will populate here -->
+      </div>
+    </section>
+
+    <!-- Cook Mode -->
+    <section id="cook-mode" class="cook-mode fx-enter" style="display: none;">
+      <h2>Cooking Instructions</h2>
+      <div id="cooking-steps">
+        <!-- Cooking steps will be inserted here -->
+      </div>
+      <div class="cta">
+        <button onclick="startTimer()">Start 30-minute Cook Timer</button>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const recipes = {
+      stressed: [
+        { title: 'Comfort Pasta', description: 'A soothing pasta dish that hugs you from the inside.' },
+        { title: 'Relaxing Soup', description: 'A warm bowl of goodness to melt the stress away.' },
+      ],
+      sluggish: [
+        { title: 'Energy-Boosting Salad', description: 'Revitalize with a burst of green energy.' },
+        { title: 'Power Smoothie', description: 'Packed with nutrients to boost your stamina.' },
+      ],
+      // Other mood recipes go here...
+    };
+
+    function showRecipes(mood) {
+      const recipeList = document.getElementById('recipe-list');
+      const moodTitle = document.getElementById('mood-title');
+      const selectedRecipes = recipes[mood];
+      moodTitle.textContent = `Recipes for feeling ${mood}`;
+      recipeList.innerHTML = '';
+      selectedRecipes.forEach(recipe => {
+        const card = document.createElement('div');
+        card.className = 'recipe-card';
+        card.innerHTML = `<h3>${recipe.title}</h3><p>${recipe.description}</p>`;
+        recipeList.appendChild(card);
+      });
+      document.getElementById('mood-recipes').style.display = 'block';
+      document.getElementById('cook-mode').style.display = 'none';
+    }
+
+    function startTimer() {
+      // Timer logic goes here.
+      alert('Timer started for 30 minutes!');
+    }
+  </script>
+</body>
+</html>
