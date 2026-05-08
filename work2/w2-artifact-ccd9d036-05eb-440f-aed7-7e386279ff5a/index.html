@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mood Meal Planner — Chef Bobby Knows What You Need</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-canvas: #f5efe5;
+      --bg-panel: rgba(255, 252, 247, 0.88);
+      --bg-accent: #17313e;
+      --fg-strong: #1f1a17;
+      --fg-muted: #5e544c;
+      --fg-inverse: #f8f4ee;
+      --line-soft: rgba(36, 31, 27, 0.12);
+      --line-strong: rgba(23, 49, 62, 0.28);
+      --accent-primary: #d5663a;
+      --accent-secondary: #58837a;
+      --accent-highlight: #f3c969;
+      --radius-card: 28px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 18px 44px rgba(27, 31, 36, 0.12);
+      --shadow-strong: 0 24px 64px rgba(16, 19, 24, 0.22);
+      --space-1: 0.375rem;
+      --space-2: 0.75rem;
+      --space-3: 1rem;
+      --space-4: 1.5rem;
+      --space-5: 2rem;
+      --space-6: 3rem;
+      --space-7: 4.5rem;
+      --display-font: "DM Serif Display", Georgia, serif;
+      --body-font: "DM Sans", system-ui, sans-serif;
+      --display-1: clamp(2.9rem, 6vw, 5.8rem);
+      --display-2: clamp(2.2rem, 4vw, 3.6rem);
+      --heading-1: clamp(1.6rem, 2.3vw, 2.4rem);
+      --body-lg: 1.125rem;
+      --body-md: 1rem;
+      --body-sm: 0.92rem;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--body-font);
+      background: var(--bg-canvas);
+      color: var(--fg-strong);
+      min-height: 100vh;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* === CINEMATIC BACKGROUND === */
+    .cinematic-bg {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 30%, rgba(213, 102, 58, 0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 80% 70%, rgba(88, 131, 122, 0.06) 0%, transparent 50%),
+        var(--bg-canvas);
+    }
+
+    .grain-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      opacity: 0.03;
+      pointer-events: none;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-repeat: repeat;
+      background-size: 256px 256px;
+    }
+
+    /* === MOTION === */
+    @media (prefers-reduced-motion: reduce) {
+      .fx-enter, .fx-stagger > *, .fx-hover-lift {
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+      }
+    }
+
+    .fx-enter {
+      animation: fx-enter 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .fx-stagger > * {
+      opacity: 0;
+      animation: fx-enter 560ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .fx-stagger > *:nth-child(1) { animation-delay: 60ms; }
+    .fx-stagger > *:nth-child(2) { animation-delay: 120ms; }
+    .fx-stagger > *:nth-child(3) { animation-delay: 180ms; }
+    .fx-stagger > *:nth-child(4) { animation-delay: 240ms; }
+    .fx-stagger > *:nth-child(5) { animation-delay: 300ms; }
+
+    .fx-hover-lift {
+      transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1), box-shadow 220ms ease;
+    }
+
+    .fx-hover-lift:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--shadow-strong);
+    }
+
+    @keyframes fx-enter {
+      from { opacity: 0; transform: translate3d(0, 24px, 0) scale(0.98); }
+      to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+    }
+
+    @keyframes pulse-soft {
+      0%, 100% { opacity: 0.6; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.05); }
+    }
+
+    @keyframes timer-tick {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.08); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes confetti-fall {
+      0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+
+    /* === LAYOUT === */
+    .app-shell {
+      max-width: 480px;
+      margin: 0 auto;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    .screen {
+      display: none;
+      min-height: 100vh;
+      padding: var(--space-5);
+      padding-bottom: calc(var(--space-5) + 80px);
+    }
+
+    .screen.active {
+      display: block;
+      animation: fx-enter 500ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    /* === TYPOGRAPHY === */
+    .chef-hat {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--body-font);
+      font-size: var(--body-sm);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent-primary);
+      margin-bottom: var(--space-3);
+    }
+
+    .chef-hat::before {
+      content: "👨‍🍳";
+      font-size: 1.2em;
+    }
+
+    h1, h2, h3 {
+      font-family: var(--display-font);
+      font-weight: 400;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    h1 { font-size: var(--display-1); }
+    h2 { font-size: var(--display-2); }
+    h3 { font-size: var(--heading-1); }
+
+    .body-lg {
+      font-size: var(--body-lg);
+      line-height: 1.6;
+      color: var(--fg-muted);
+    }
+
+    .body-md {
+      font-size: var(--body-md);
+      line-height: 1.55;
+    }
+
+    /* === MOOD SCREEN === */
+    .hero-question {
+      margin-bottom: var(--space-6);
+    }
+
+    .hero-question h1 {
+      margin-bottom: var(--space-3);
+      color: var(--fg-strong);
+    }
+
+    .hero-question .chef-quote {
+      font-family: var(--display-font);
+      font-style: italic;
+      font-size: var(--body-lg);
+      color: var(--accent-secondary);
+      padding-left: var(--space-4);
+      border-left: 3px solid var(--accent-highlight);
+      margin-top: var(--space-4);
+    }
+
+    .mood-grid {
+      display: grid;
+      gap: var(--space-3);
+    }
+
+    .mood-card {
+      background: var(--bg-panel);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-card);
+      padding: var(--space-5);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 280ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .mood-card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 300ms ease;
+    }
+
+    .mood-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-soft);
+      border-color: var(--line-strong);
+    }
+
+    .mood-card:hover::before {
+      opacity: 1;
+    }
+
+    .mood-card[data-mood="joy"]::before {
+      background: radial-gradient(circle at 80% 20%, rgba(243, 201, 105, 0.15), transparent 60%);
+    }
+
+    .mood-card[data-mood="stress"]::before {
+      background: radial-gradient(circle at 20% 80%, rgba(213, 102, 58, 0.12), transparent 60%);
+    }
+
+    .mood-card[data-mood="fatigue"]::before {
+      background: radial-gradient(circle at 50% 50%, rgba(88, 131, 122, 0.1), transparent 60%);
+    }
+
+    .mood-card[data-mood="anxiety"]::before {
+      background: radial-gradient(circle at 30% 30%, rgba(88, 131, 122, 0.08), transparent 60%);
+    }
+
+    .mood-card[data-mood="boredom"]::before {
+      background: radial-gradient(circle at 70% 70%, rgba(243, 201, 105, 0.1), transparent 60%);
+    }
+
+    .mood-emoji {
+      font-size: 2.5rem;
+      margin-bottom: var(--space-2);
+      display: block;
+    }
+
+    .mood-label {
+      font-family: var(--display-font);
+      font-size: 1.4rem;
+      color: var(--fg-strong);
+      margin-bottom: 4px;
+    }
+
+    .mood-chef-line {
+      font-size: var(--body-sm);
+      color: var(--fg-muted);
+      font-style: italic;
+    }
+
+    /* === RECIPE LIST SCREEN === */
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: none;
+      border: none;
+      color: var(--fg-muted);
+      font-family: var(--body-font);
+      font-size: var(--body-sm);
+      font-weight: 500;
+      cursor: pointer;
+      margin-bottom: var(--space-4);
+      padding: var(--space-2) 0;
+      transition: color 200ms ease;
+    }
+
+    .back-btn:hover {
+      color: var(--fg-strong);
+    }
+
+    .mood-header {
+      margin-bottom: var(--space-5);
+    }
+
+    .mood-header h2 {
+      margin-bottom: var(--space-2);
+    }
+
+    .mood-header .chef-context {
+      font-style: italic;
+      color: var(--accent-secondary);
+      font-size: var(--body-lg);
+    }
+
+    .recipe-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-3);
+    }
+
+    .recipe-card {
+      background: var(--bg-panel);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 280ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .recipe-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-soft);
+      border-color: var(--line-strong);
+    }
+
+    .recipe-card-visual {
+      height: 180px;
+      background: var(--bg-accent);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .recipe-card-visual::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(213, 102, 58, 0.2), rgba(88, 131, 122, 0.15));
+    }
+
+    .recipe-card-visual .recipe-emoji {
+      font-size: 4rem;
+      z-index: 1;
+      position: relative;
+    }
+
+    .recipe-card-body {
+      padding: var(--space-4);
+    }
+
+    .recipe-meta-row {
+      display: flex;
+      gap: var(--space-3);
+      margin-bottom: var(--space-2);
+      font-size: var(--body-sm);
+      color: var(--fg-muted);
+    }
+
+    .recipe-meta-row span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .recipe-card-body h3 {
+      margin-bottom: var(--space-2);
+      font-size: 1.3rem;
+    }
+
+    .recipe-card-body .chef-tip {
+      font-size: var(--body-sm);
+      color: var(--accent-primary);
+      font-style: italic;
+    }
+
+    .recipe-tag {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: var(--space-2);
+    }
+
+    .tag-comfort { background: rgba(213, 102, 58, 0.12); color: var(--accent-primary); }
+    .tag-energy { background: rgba(88, 131, 122, 0.15); color: var(--accent-secondary); }
+    .tag-celebration { background: rgba(243, 201, 105, 0.2); color: #b8941d; }
+    .tag-calm { background: rgba(88, 131, 122, 0.12); color: var(--accent-secondary); }
+    .tag-fun { background: rgba(213, 102, 58, 0.1); color: var(--accent-primary); }
+
+    /* === RECIPE DETAIL SCREEN === */
+    .recipe-hero {
+      margin: calc(-1 * var(--space-5));
+      margin-bottom: var(--space-5);
+      height: 280px;
+      background: var(--bg-accent);
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .recipe-hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 40%, rgba(23, 49, 62, 0.7) 100%);
+    }
+
+    .recipe-hero .recipe-emoji {
+      font-size: 6rem;
+      z-index: 1;
+    }
+
+    .recipe-hero-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: var(--space-5);
+      z-index: 2;
+      color: var(--fg-inverse);
+    }
+
+    .recipe-hero-info h2 {
+      margin-bottom: var(--space-2);
+    }
+
+    .recipe-hero-meta {
+      display: flex;
+      gap: var(--space-4);
+      font-size: var(--body-sm);
+      opacity: 0.85;
+    }
+
+    .detail-section {
+      margin-bottom: var(--space-5);
+    }
+
+    .detail-section h3 {
+      margin-bottom: var(--space-3);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .ingredient-list {
+      list-style: none;
+    }
+
+    .ingredient-list li {
+      padding: var(--space-2) 0;
+      border-bottom: 1px solid var(--line-soft);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .ingredient-list li::before {
+      content: "•";
+      color: var(--accent-primary);
+      font-weight: 700;
+    }
+
+    .chef-note {
+      background: rgba(243, 201, 105, 0.12);
+      border-left: 3px solid var(--accent-highlight);
+      padding: var(--space-3) var(--space-4);
+      border-radius: 0 12px 12px 0;
+      margin: var(--space-3) 0;
+      font-style: italic;
+      color: var(--fg-muted);
+    }
+
+    .chef-note::before {
+      content: "👨‍🍳 Chef Bobby: ";
+      font-weight: 600;
+      color: var(--accent-primary);
+      font-style: normal;
+    }
+
+    .start-cook-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: var(--space-4);
+      background: var(--accent-primary);
+      color: white;
+      border: none;
+      border-radius: var(--radius-pill);
+      font-family: var(--body-font);
+      font-size: var(--body-lg);
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: var(--space-4);
+      transition: all 220ms ease;
+      box-shadow: 0 8px 24px rgba(213, 102, 58, 0.3);
+    }
+
+    .start-cook-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(213, 102, 58, 0.4);
+    }
+
+    /* === COOK MODE SCREEN === */
+    .cook-header {
+      text-align: center;
+      margin-bottom: var(--space-5);
+    }
+
+    .timer-display {
+      font-family: var(--display-font);
+      font-size: clamp(3rem, 10vw, 5rem);
+      color: var(--accent-primary);
+      line-height: 1;
+      margin: var(--space-3) 0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .timer-display.active {
+      animation: timer-tick 1s ease-in-out infinite;
+    }
+
+    .timer-controls {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-3);
+      margin-bottom: var(--space-5);
+    }
+
+    .timer-btn {
+      padding: var(--space-2) var(--space-4);
+      border-radius: var(--radius-pill);
+      font-family: var(--body-font);
+      font-size: var(--body-sm);
+      font-weight: 600;
+      cursor: pointer;
+      border: 2px solid var(--line-soft);
+      background: var(--bg-panel);
+      color: var(--fg-strong);
+      transition: all 200ms ease;
+    }
+
+    .timer-btn:hover {
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+    }
+
+    .timer-btn.primary {
+      background: var(--accent-primary);
+      color: white;
+      border-color: var(--accent-primary);
+    }
+
+    .timer-btn.primary:hover {
+      background: #c45a30;
+    }
+
+    .progress-tracker {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: var(--space-5);
+      position: relative;
+    }
+
+    .progress-tracker::before {
+      content: "";
+      position: absolute;
+      top: 14px;
+      left: 10%;
+      right: 10%;
+      height: 2px;
+      background: var(--line-soft);
+      z-index: 0;
+    }
+
+    .progress-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .progress-dot {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--bg-panel);
+      border: 2px solid var(--line-soft);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      transition: all 300ms ease;
+    }
+
+    .progress-step.active .progress-dot {
+      background: var(--accent-primary);
+      border-color: var(--accent-primary);
+      color: white;
+      box-shadow: 0 0 0 4px rgba(213, 102, 58, 0.2);
+    }
+
+    .progress-step.completed .progress-dot {
+      background: var(--accent-secondary);
+      border-color: var(--accent-secondary);
+      color: white;
+    }
+
+    .progress-label {
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--fg-muted);
+    }
+
+    .step-card {
+      background: var(--bg-panel);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-card);
+      padding: var(--space-5);
+      margin-bottom: var(--space-3);
+      transition: all 300ms ease;
+    }
+
+    .step-card.active {
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 0 3px rgba(213, 102, 58, 0.1);
+    }
+
+    .step-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      background: var(--accent-primary);
+      color: white;
+      border-radius: 50%;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: var(--space-3);
+    }
+
+    .step-card h4 {
+      font-family: var(--display-font);
+      font-size: 1.2rem;
+      margin-bottom: var(--space-2);
+    }
+
+    .step-card p {
+      color: var(--fg-muted);
+      line-height: 1.6;
+    }
+
+    .step-nav {
+      display: flex;
+      gap: var(--space-3);
+      margin-top: var(--space-5);
+    }
+
+    .step-nav button {
+      flex: 1;
+      padding: var(--space-3) var(--space-4);
+      border-radius: var(--radius-pill);
+      font-family: var(--body-font);
+      font-size: var(--body-md);
+      font-weight: 600;
+      cursor: pointer;
+      border: 2px solid var(--line-soft);
+      background: var(--bg-panel);
+      color: var(--fg-strong);
+      transition: all 200ms ease;
+    }
+
+    .step-nav button.primary {
+      background: var(--accent-primary);
+      color: white;
+      border-color: var(--accent-primary);
+    }
+
+    .step-nav button:hover:not(:disabled) {
+      transform: translateY(-2px);
+    }
+
+    .step-nav button:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    /* === COMPLETION SCREEN === */
+    .completion-screen {
+      text-align: center;
+      padding-top: var(--space-7);
+    }
+
+    .completion-screen .big-emoji {
+      font-size: 5rem;
+      margin-bottom: var(--space-4);
+      display: inline-block;
+      animation: pulse-soft 2s ease-in-out infinite;
+    }
+
+    .completion-screen h2 {
+      margin-bottom: var(--space-3);
+    }
+
+    .completion-stats {
+      display: flex;
+      justify-content: center;
+      gap: var(--space-5);
+      margin: var(--space-5) 0;
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-family: var(--display-font);
+      font-size: 2.5rem;
+      color: var(--accent-primary);
+    }
+
+    .stat-label {
+      font-size: var(--body-sm);
+      color: var(--fg-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .confetti {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    .confetti-piece {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      animation: confetti-fall 3s ease-out forwards;
+    }
+
+    /* === BOTTOM NAV === */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 480px;
+      background: var(--bg-panel);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid var(--line-soft);
+      display: flex;
+      justify-content: space-around;
+      padding: var(--space-2) 0;
+      z-index: 50;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      padding: var(--space-2) var(--space-3);
+      background: none;
+      border: none;
+      color: var(--fg-muted);
+      font-family: var(--body-font);
+      font-size: 0.7rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: color 200ms ease;
+    }
+
+    .nav-item.active {
+      color: var(--accent-primary);
+    }
+
+    .nav-item .nav-icon {
+      font-size: 1.4rem;
+    }
+
+    /* === SPLIT TEST BADGE === */
+    .split-badge {
+      position: fixed;
+      top: var(--space-3);
+      right: var(--space-3);
+      background: var(--bg-accent);
+      color: var(--fg-inverse);
+      padding: 6px 14px;
+      border-radius: var(--radius-pill);
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      z-index: 40;
+      opacity: 0.85;
+    }
+
+    /* === RESPONSIVE === */
+    @media (min-width: 640px) {
+      .app-shell {
+        max-width: 520px;
+      }
+    }
+
+    /* === UTILITY === */
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <div class="cinematic-bg"></div>
+  <div class="grain-overlay"></div>
+
+  <div class="split-badge">Dual Track: v1.0</div>
+
+  <div class="app-shell">
+    <!-- MOOD SELECTION SCREEN -->
+    <div class="screen active" id="mood-screen">
+      <div class="hero-question fx-enter">
+        <div class="chef-hat">Chef Bobby</div>
+        <h1>How are you feeling right now?</h1>
+        <p class="body-lg">No calorie counting. No guilt. Just real food for real moods.</p>
+        <p class="chef-quote">"Tell me your mood, I'll tell you what to cook."</p>
+      </div>
+
+      <div class="mood-grid fx-stagger">
+        <div class="mood-card fx-hover-lift" data-mood="joy" onclick="selectMood('joy')">
+          <span class="mood-emoji">🎉</span>
+          <div class="mood-label">Joyful</div>
+          <div class="mood-chef-line">"Let's celebrate with something amazing!"</div>
+        </div>
+
+        <div class="mood-card fx-hover-lift" data-mood="stress" onclick="selectMood('stress')">
+          <span class="mood-emoji">😮‍💨</span>
+          <div class="mood-label">Stressed</div>
+          <div class="mood-chef-line">"I've got you. Comfort food incoming."</div>
+        </div>
+
+        <div class="mood-card fx-hover-lift" data-mood="fatigue" onclick="selectMood('fatigue')">
+          <span class="mood-emoji">😴</span>
+          <div class="mood-label">Sluggish</div>
+          <div class="mood-chef-line">"Energy boost without the crash."</div>
+        </div>
+
+        <div class="mood-card fx-hover-lift" data-mood="anxiety" onclick="selectMood('anxiety')">
+          <span class="mood-emoji">😰</span>
+          <div class="mood-label">Anxious</div>
+          <div class="mood-chef-line">"Calm, grounding, and totally doable."</div>
+        </div>
+
+        <div class="mood-card fx-hover-lift" data-mood="boredom" onclick="selectMood('boredom')">
+          <span class="mood-emoji">😑</span>
+          <div class="mood-label">Bored</div>
+          <div class="mood-chef-line">"Let's shake things up, yeah?"</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RECIPE LIST SCREEN -->
+    <div class="screen" id="recipe-list-screen">
+      <button class="back-btn" onclick="goBackToMoods()">
+        ← Back to moods
+      </button>
+
+      <div class="mood-header fx-enter">
+        <div class="chef-hat" id="list-chef-hat">Chef Bobby</div>
+        <h2 id="list-title">Recipes for you</h2>
+        <p class="chef-context" id="list-context">Picked these myself.</p>
+      </div>
+
+      <div class="recipe-list fx-stagger" id="recipe-list">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <!-- RECIPE DETAIL SCREEN -->
+    <div class="screen" id="recipe-detail-screen">
+      <button class="back-btn" onclick="goBackToRecipes()">
+        ← Back to recipes
+      </button>
+
+      <div class="recipe-hero">
+        <span class="recipe-emoji" id="detail-emoji">🍳</span>
+        <div class="recipe-hero-info">
+          <h2 id="detail-title">Recipe Title</h2>
+          <div class="recipe-hero-meta">
+            <span id="detail-time">⏱ 20 min</span>
+            <span id="detail-difficulty">📊 Easy</span>
+            <span id="detail-servings">🍽 2 servings</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <div class="chef-note" id="detail-chef-note">Chef Bobby's take on this one...</div>
+      </div>
+
+      <div class="detail-section">
+        <h3>📝 Ingredients</h3>
+        <ul class="ingredient-list" id="detail-ingredients">
+          <!-- Populated by JS -->
+        </ul>
+      </div>
+
+      <div class="detail-section">
+        <h3>👨‍🍳 What You'll Do</h3>
+        <p class="body-md" id="detail-preview" style="color: var(--fg-muted);">Quick preview of the cooking process...</p>
+      </div>
+
+      <button class="start-cook-btn" onclick="startCooking()">
+        🔥 Start Cooking Mode
+      </button>
+    </div>
+
+    <!-- COOK MODE SCREEN -->
+    <div class="screen" id="cook-mode-screen">
+      <div class="cook-header fx-enter">
+        <div class="chef-hat">Chef Bobby</div>
+        <h2 id="cook-title">Cooking</h2>
+        <div class="timer-display" id="timer-display">30:00</div>
+        <div class="timer-controls">
+          <button class="timer-btn" id="timer-toggle" onclick="toggleTimer()">▶ Start</button>
+          <button class="timer-btn" onclick="resetTimer()">↺ Reset</button>
+        </div>
+      </div>
+
+      <div class="progress-tracker" id="progress-tracker">
+        <div class="progress-step active" data-step="0">
+          <div class="progress-dot">1</div>
+          <span class="progress-label">Prep</span>
+        </div>
+        <div class="progress-step" data-step="1">
+          <div class="progress-dot">2</div>
+          <span class="progress-label">Cook</span>
+        </div>
+        <div class="progress-step" data-step="2">
+          <div class="progress-dot">3</div>
+          <span class="progress-label">Finish</span>
+        </div>
+        <div class="progress-step" data-step="3">
+          <div class="progress-dot">4</div>
+          <span class="progress-label">Plate</span>
+        </div>
+      </div>
+
+      <div id="steps-container">
+        <!-- Populated by JS -->
+      </div>
+
+      <div class="step-nav">
+        <button onclick="prevStep()" id="prev-btn" disabled>← Previous</button>
+        <button class="primary" onclick="nextStep()" id="next-btn">Next Step →</button>
+      </div>
+    </div>
+
+    <!-- COMPLETION SCREEN -->
+    <div class="screen" id="completion-screen">
+      <div class="completion-screen fx-enter">
+        <span class="big-emoji">🎉</span>
+        <h2>You did it!</h2>
+        <p class="body-lg">Chef Bobby is proud. Your future self thanks you.</p>
+
+        <div class="completion-stats">
+          <div class="stat">
+            <div class="stat-value" id="completion-time">25</div>
+            <div class="stat-label">Minutes</div>
+          </div>
+          <div class="stat">
+            <div class="stat-value" id="completion-mood">🔥</div>
+            <div class="stat-label">Mood</div>
+          </div>
+        </div>
+
+        <button class="start-cook-btn" onclick="goBackToMoods()">
+          🔄 Cook Something Else
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" onclick="goBackToMoods()">
+      <span class="nav-icon">🏠</span>
+      <span>Moods</span>
+    </button>
+    <button class="nav-item" onclick="showFavorites()">
+      <span class="nav-icon">❤️</span>
+      <span>Saved</span>
+    </button>
+    <button class="nav-item" onclick="showProfile()">
+      <span class="nav-icon">👤</span>
+      <span>Profile</span>
+    </button>
+  </nav>
+
+  <script>
+    // ===== RECIPE DATABASE =====
+    const recipes = {
+      joy: [
+        {
+          id: "j1",
+          title: "Sparkling Citrus Salmon",
+          emoji: "🐟",
+          time: "25 min",
+          difficulty: "Medium",
+          servings: "2",
+          tag: "tag-celebration",
+          tagLabel: "Celebration",
+          chefNote: "This one's for the good days. Bright, bold, and worth savoring.",
+          ingredients: ["2 salmon fillets", "1 orange, sliced", "2 tbsp honey", "1 tbsp soy sauce", "Fresh dill", "Sesame seeds"],
+          steps: [
+            { title: "Prep the Glaze", text: "Mix honey, soy sauce, and orange juice in a small bowl. Don't overthink it." },
+            { title: "Sear the Salmon", text: "Heat pan to medium-high. Sear salmon 3 mins each side until golden." },
+            { title: "Glaze & Finish", text: "Pour glaze over salmon. Let it bubble and caramelize for 2 mins." },
+            { title: "Plate with Joy", text: "Top with dill, sesame seeds, and orange slices. You earned this." }
+          ]
+        },
+        {
+          id: "j2",
+          title: "Golden Celebration Pasta",
+          emoji: "🍝",
+          time: "20 min",
+          difficulty: "Easy",
+          servings: "2",
+          tag: "tag-celebration",
+          tagLabel: "Celebration",
+          chefNote: "Pasta that tastes like a high-five. Simple, rich, and impossible to mess up.",
+          ingredients: ["200g spaghetti", "3 egg yolks", "50g parmesan", "100g pancetta", "Black pepper", "Parsley"],
+          steps: [
+            { title: "Boil Pasta", text: "Salt the water like the sea. Cook pasta until al dente." },
+            { title: "Crisp the Pancetta", text: "Fry pancetta until crispy. Save that rendered fat." },
+            { title: "Mix the Sauce", text: "Whisk egg yolks with grated parmesan and lots of black pepper." },
+            { title: "Toss Everything", text: "Toss hot pasta with pancetta, fat, and egg mixture. The heat cooks the sauce." }
+          ]
+        },
+        {
+          id: "j3",
+          title: "Berry Bliss Bowl",
+          emoji: "🫐",
+          time: "15 min",
+          difficulty: "Easy",
+          servings: "1",
+          tag: "tag-celebration",
+          tagLabel: "Fresh",
+          chefNote: "Sweet, vibrant, and basically happiness in a bowl.",
+          ingredients: ["Greek yogurt", "Mixed berries", "Granola", "Honey", "Chia seeds", "Mint leaves"],
+          steps: [
+            { title: "Layer the Base", text: "Spoon yogurt into a bowl. Smooth it out like you're frosting a cake." },
+            { title: "Pile on Berries", text: "Add a generous handful of fresh or frozen berries." },
+            { title: "Add Crunch", text: "Sprinkle granola and chia seeds for texture." },
+            { title: "Drizzle & Serve", text: "Honey drizzle + mint leaf. Instagram-worthy, but actually good." }
+          ]
+        },
+        {
+          id: "j4",
+          title: "Champagne Chicken",
+          emoji: "🍗",
+          time: "28 min",
+          difficulty: "Medium",
+          servings: "2",
+          tag: "tag-celebration",
+          tagLabel: "Special",
+          chefNote: "Bubbly in the pan, party on the plate. You're living your best life.",
+          ingredients: ["2 chicken thighs", "1/2 cup sparkling wine", "Cream", "Shallots", "Butter", "Thyme"],
+          steps: [
+            { title: "Sear Chicken", text: "Season and sear chicken skin-side down until golden. Don't rush it." },
+            { title: "Sauté Aromatics", text: "Add shallots and thyme to the pan. Cook until soft." },
+            { title: "Deglaze", text: "Pour in sparkling wine. Scrape up the brown bits. That's flavor." },
+            { title: "Finish with Cream", text: "Stir in cream, simmer 5 mins. Plate and feel fancy." }
+          ]
+        }
+      ],
+      stress: [
+        {
+          id: "s1",
+          title: "Hug-in-a-Bowl Mac & Cheese",
+          emoji: "🧀",
+          time: "22 min",
+          difficulty: "Easy",
+          servings: "2",
+          tag: "tag-comfort",
+          tagLabel: "Comfort",
+          chefNote: "No judgment here. Just carbs, cheese, and the emotional support you deserve.",
+          ingredients: ["200g macaroni", "100g cheddar", "50g gruyère", "Butter", "Flour", "Milk", "Breadcrumbs"],
+          steps: [
+            { title: "Boil the Pasta", text: "Cook macaroni until just tender. Drain and set aside." },
+            { title: "Make the Sauce", text: "Melt butter, whisk in flour, slowly add milk. Stir until thick." },
+            { title: "Melt the Cheese", text: "Add grated cheeses off the heat. Stir until silky smooth." },
+            { title: "Broil & Devour", text: "Top with breadcrumbs, broil 3 mins. Eat while wearing sweatpants." }
+          ]
+        },
+        {
+          id: "s2",
+          title: "One-Pot Chicken Soup",
+          emoji: "🍲",
+          time: "25 min",
+          difficulty: "Easy",
+          servings: "3",
+          tag: "tag-comfort",
+          tagLabel: "Comfort",
+          chefNote: "Like a warm blanket, but edible. Minimal cleanup because you have enough going on.",
+          ingredients: ["Chicken breast", "Carrots", "Celery", "Egg noodles", "Chicken broth", "Dill", "Lemon"],
+          steps: [
+            { title: "Simmer the Chicken", text: "Poach chicken in broth for 12 mins. Don't boil aggressively." },
+            { title: "Add Veggies", text: "Toss in chopped carrots and celery. Simmer 8 more mins." },
+            { title: "Shred & Noodle", text: "Pull chicken apart with forks. Add egg noodles, cook 4 mins." },
+            { title: "Finish & Comfort", text: "Squeeze lemon, add dill. Ladle into biggest bowl you own." }
+          ]
+        },
+        {
+          id: "s3",
+          title: "Emergency Grilled Cheese",
+          emoji: "🥪",
+          time: "12 min",
+          difficulty: "Easy",
+          servings: "1",
+          tag: "tag-comfort",
+          tagLabel: "Quick Fix",
+          chefNote: "The 911 of comfort food. Crispy, gooey, and ready before you finish crying.",
+          ingredients: ["2 slices sourdough", "3 cheese slices", "Butter", "Tomato soup (optional)", "Everything bagel seasoning"],
+          steps: [
+            { title: "Butter the Bread", text: "Spread butter on one side of each slice. Be generous." },
+            { title: "Layer the Cheese", text: "Cheese between bread, butter sides out." },
+            { title: "Low & Slow", text: "Medium-low heat, 3-4 mins per side. Patience = crispy perfection." },
+            { title: "Dip & Heal", text: "Cut diagonally. Dip in tomato soup. Everything is okay now." }
+          ]
+        },
+        {
+          id: "s4",
+          title: "Chocolate Lava Mug Cake",
+          emoji: "🍫",
+          time: "8 min",
+          difficulty: "Easy",
+          servings: "1",
+          tag: "tag-comfort",
+          tagLabel: "Emergency",
+          chefNote: "For when you need chocolate NOW. No oven, no problem, no witnesses.",
+          ingredients: ["4 tbsp flour", "3 tbsp sugar", "2 tbsp cocoa", "3 tbsp milk", "2 tbsp oil", "Chocolate square"],
+          steps: [
+            { title: "Mix in Mug", text: "Whisk all ingredients in a mug. Don't overmix." },
+            { title: "Add the Lava", text: "Push chocolate square into the center. Cover with batter." },
+            { title: "Microwave", text: "Microwave 60-70 seconds. Center should still be jiggly." },
+            { title: "Eat Immediately", text: "Let cool 1 min. Then dig in with a spoon. No regrets." }
+          ]
+        }
+      ],
+      fatigue: [
+        {
+          id: "f1",
+          title: "Lightning Bolt Smoothie Bowl",
+          emoji: "⚡",
+          time: "10 min",
+          difficulty: "Easy",
+          servings: "1",
+          tag: "tag-energy",
+          tagLabel: "Energy Boost",
+          chefNote: "This will wake you up better than coffee. And it actually tastes good.",
+          ingredients: ["Frozen banana", "Spinach", "Almond butter", "Oats", "Almond milk", "Cacao nibs"],
+          steps: [
+            { title: "Blend Base", text: "Blend banana, spinach, almond butter, and milk until smooth." },
+            { title: "Add Oats", text: "Toss in oats for staying power. Blend 10 more seconds." },
+            { title: "Pour & Top", text: "Pour into bowl. Top with cacao nibs and extra banana." },
+            { title: "Feel the Buzz", text: "Eat immediately. Your afternoon self will thank you." }
+          ]
+        },
+        {
+          id: "f2",
+          title: "Power-Up Stir Fry",
+          emoji: "🥦",
+          time: "18 min",
+          difficulty: "Easy",
+          servings: "2",
+          tag: "tag-energy",
+          tagLabel: "High Energy",
+          chefNote: "Iron, protein, and flavor. This is your comeback meal.",
+          ingredients: ["Beef strips or tofu", "Broccoli", "Bell peppers", "Soy sauce", "Ginger", "Garlic", "Rice"],
+          steps: [
+            { title: "Prep Everything", text: "Chop veggies, mince ginger and garlic. Have it all ready." },
+            { title: "Sear Protein", text: "High heat, quick sear on beef or tofu. Remove from pan." },
+            { title: "Stir Fry Veggies", text: "Toss in broccoli and peppers. Stir fry 4 mins on high." },
+            { title: "Combine & Serve", text: "Add protein back, pour soy sauce, toss. Serve over rice." }
+          ]
+        },
+        {
+          id: "f3",
+          title: "Sunshine Egg Scramble",
+          emoji: "🍳",
+          time: "12 min",
+          difficulty: "Easy",
+          servings: "1",
+          tag: "tag-energy",
+          tagLabel: "Morning Fuel",
+          chefNote: "Eggs, greens, and good vibes. Breakfast for dinner is always allowed.",
+          ingredients: ["3 eggs", "Spinach", "Cherry tomatoes", "Feta", "Olive oil", "Whole grain toast"],
+          steps: [
+            { title: "Sauté Veggies", text: "Warm oil, add tomatoes until they burst. Add spinach, wilt." },
+            { title: "Scramble Eggs", text: "Pour in whisked eggs. Soft scramble—don't overthink it." },
+            { title: "Add Feta", text: "Crumble feta over top. Fold gently." },
+            { title: "Toast & Eat", text: "Serve with toast. You've got energy now. Use it wisely." }
+          ]
+        },
+        {
+          id: "f4",
+          title: "Quinoa Energy Bowl",
+          emoji: "🥗",
+          time: "20 min",
+          difficulty: "Easy",
+          servings: "2",
+          tag: "tag-energy",
+          tagLabel: "Sustained",
+          chefNote: "Complex carbs and complete protein. This is slow-burn fuel, not a sugar crash.",
+          ingredients: ["Quinoa", "Chickpeas", "Avocado", "Cherry tomatoes", "Lemon dressing", "Pumpkin seeds"],
+          steps: [
+            { title: "Cook Quinoa", text: "Rinse quinoa, simmer in water 15 mins. Fluff with fork." },
+            { title: "Prep Toppings", text: "Drain chickpeas, halve tomatoes, slice avocado." },
+            { title: "Make Dressing", text: "Lemon juice, olive oil, salt, pepper. Shake in a jar." },
+            { title: "Assemble Bowl", text: "Pile quinoa, add toppings, drizzle dressing. Seeds on top for crunch." }
+          ]
+        }
+      ],
+      anxiety: [
+        {
+          id: "a1",
+          title: "Grounding Root Veggie Roast",
+          emoji: "🥕",
+          time: "28 min",
+          difficulty: "Easy",
+          servings: "2",
+          tag: "tag-calm",
+          tagLabel: "Grounding",
+          chefNote: "Slow, steady, and earthy. No rushing, no stress. Just chop and let the oven work.",
+          ingredients: ["Sweet potato", "Carrots", "Beets", "Rosemary", "Olive oil", "Tahini", "Lemon"],
+          steps: [
+            { title: "Chop Rough", text: "Cut veggies into big chunks. Imperfect is perfect here." },
+            { title: "Oil & Season", text: "Toss with olive oil, salt, and rosemary. Spread on sheet pan." },
+            { title: "Roast Slowly", text: "25 mins at 400°F. No need to check constantly." },
+            { title: "Tahini Drizzle", text: "Mix tahini with lemon and water. Drizzle over warm veggies." }
+          ]
+        },
+        {
+          id: "a2",
+          title: "Calm Chamomile Rice",
+          emoji: "🍚",
+          time: "22 min",
+          difficulty: "Easy",
+          servings: "2",
+          tag: "tag-calm",
+          tagLabel: "Soothing",
+          chefNote: "Warm, soft, and gentle on the stomach. Like a lullaby you can eat.",
+          ingredients: ["Jasmine rice", "Coconut milk", "Chamomile tea bag", "Honey", "Salt", "Toasted almonds"],
+          steps: [
+            { title: "Brew the Tea", text: "Steep chamomile in hot water for 5 mins. Remove bag." },
+            { title: "Cook Rice", text: "Use tea instead of water. Add coconut milk and salt." },
+            { title: "Simmer Covered", text: "Low heat, covered, 15 mins. Don't lift the lid." },
+            { title: "Finish Gently", text: "Fluff rice, drizzle honey, top with almonds. Breathe." }
+          ]
+        },
+        {
+          id: "a3",
+          title: "Mindful Miso Soup",
+          emoji: "🍜",
+          time: "15 min",
+          difficulty: "Easy",
+          servings: "1",
+          tag: "tag-calm",
+          tagLabel: "Mindful",
+          chefNote: "One pot, minimal steps, maximum calm. Stir slowly and breathe.",
+          ingredients: ["Dashi or veggie broth", "White miso paste", "Tofu", "Wakame seaweed", "Green onion", "Sesame oil"],
+          steps: [
+            { title: "Warm Broth", text: "Heat broth gently. Don't boil—miso hates boiling." },
+            { title: "Dissolve Miso", text: "Ladle some warm broth into a bowl, whisk in miso paste." },
+            { title: "Add Tofu & Seaweed", text: "Cube tofu, add wakame. Simmer gently 3 mins." },
+            { title: "Finish & Focus", text: "Stir in miso mixture. Top with green onion. Eat slowly." }
+          ]
+        },
+        {
+          id: "a4",
+          title: "Slow-Breath Lentil Dal",
+          emoji: "🥣",
+          time: "25 min",
+          difficulty: "Easy",
+          servings: "3",
+          tag: "tag-calm",
+          tagLabel: "Nourishing",
+          chefNote: "Requires stirring, which is basically meditation. Inhale the spices.",
+          ingredients: ["Red lentils", "Coconut milk", "Turmeric", "Cumin", "Ginger", "Spinach", "Rice"],
+          steps: [
+            { title: "Rinse Lentils", text: "Rinse red lentils until water runs clear." },
+            { title: "Simmer with Spices", text: "Add lentils, turmeric, cumin, ginger, and water. Simmer 15 mins." },
+            { title: "Add Coconut Milk", text: "Stir in coconut milk and spinach. Cook 5 more mins." },
+            { title: "Serve Over Rice", text: "Ladle over rice. Take three deep breaths before eating." }
+          ]
+        }
+      ],
+      boredom: [
+        {
+          id: "b1",
+          title: "Spicy Korean Tacos",
+          emoji: "🌮",
+          time: "22 min",
+          difficulty: "Medium",
+          servings: "2",
+          tag: "tag-fun",
+          tagLabel: "Adventure",
+          chefNote: "Bored? Let's get weird. Korean BBQ in a taco. Trust me.",
+          ingredients: ["Ground beef or mushrooms", "Gochujang", "Soy sauce", "Corn tortillas", "Kimchi", "Cilantro", "Lime"],
+          steps: [
+            { title: "Make the Sauce", text: "Mix gochujang, soy sauce, and a splash of water." },
+            { title: "Cook the Filling", text: "Brown beef or mushrooms. Pour in sauce, simmer 5 mins." },
+            { title: "Warm Tortillas", text: "Char tortillas over flame or in dry pan. Smells amazing." },
+            { title: "Assemble Wildly", text: "Fill tortillas, top with kimchi, cilantro, lime. No rules." }
+          ]
+        },
+        {
+          id: "b2",
+          title: "Rainbow Sushi Bowl",
+          emoji: "🌈",
+          time: "20 min",
+          difficulty: "Medium",
+          servings: "1",
+          tag: "tag-fun",
+          tagLabel: "Playful",
+          chefNote: "All the sushi vibes, zero rolling skill required. Color = instant mood lift.",
+          ingredients: ["Sushi rice", "Salmon or avocado", "Mango", "Cucumber", "Edamame", "Sriracha mayo", "Sesame"],
+          steps: [
+            { title: "Season Rice", text: "Mix warm rice with rice vinegar and pinch of sugar." },
+            { title: "Prep Colorful Toppings", text: "Slice everything into strips. Arrange like a rainbow." },
+            { title: "Pile in Bowl", text: "Rice base, then arrange toppings in sections. Be artistic." },
+            { title: "Drizzle & Enjoy", text: "Sriracha mayo zigzag, sesame seeds. Mix it all up and dig in." }
+          ]
+        },
+        {
+          id: "b3",
+          title: "Mystery Ingredient Pasta",
+          emoji: "🎲",
+          time: "18 min",
+          difficulty: "Easy",
+          servings: "2",
+          tag: "tag-fun",
+          tagLabel: "Surprise",
+          chefNote: "Pick one wildcard ingredient from your fridge. I dare you.",
+          ingredients: ["Pasta", "Olive oil", "Garlic", "Your wildcard ingredient", "Parmesan", "Chili flakes"],
+          steps: [
+            { title: "Boil Pasta", text: "Salt water, cook pasta. Save a cup of pasta water before draining." },
+            { title: "Sauté Garlic", text: "Slowly cook garlic in olive oil until golden. Don't burn it." },
+            { title: "Add Your Wildcard", text: "Toss in whatever you found. Leftover roasted veggies? Canned tuna? Go for it." },
+            { title: "Toss with Pasta", text: "Add pasta to pan with some pasta water. Toss. Add parmesan. Done." }
+          ]
+        },
+        {
+          id: "b4",
+          title: "Breakfast-for-Dinner Stack",
+          emoji: "🥞",
+          time: "20 min",
+          difficulty: "Easy",
+          servings: "2",
+          tag: "tag-fun",
+          tagLabel: "Rebellious",
+          chefNote: "Rules are boring. Pancakes at 8pm are not.",
+          ingredients: ["Pancake mix", "Bacon or veggie alternative", "Fried eggs", "Maple syrup", "Hot sauce", "Chives"],
+          steps: [
+            { title: "Cook Bacon", text: "Crisp up bacon in a pan. Save the fat." },
+            { title: "Make Pancakes", text: "Mix batter, cook in bacon fat for extra flavor. You're welcome." },
+            { title: "Fry Eggs", text: "Fry eggs in same pan. Runny yolks = built-in sauce." },
+            { title: "Stack & Destroy", text: "Pancake, bacon, egg, drizzle syrup and hot sauce. Eat with hands if you want." }
+          ]
+        }
+      ]
+    };
+
+    const moodData = {
+      joy: { title: "Joyful", context: "Let's celebrate with something amazing!", emoji: "🎉" },
+      stress: { title: "Stressed", context: "I've got you. Comfort food incoming.", emoji: "😮‍💨" },
+      fatigue: { title: "Sluggish", context: "Energy boost without the crash.", emoji: "😴" },
+      anxiety: { title: "Anxious", context: "Calm, grounding, and totally doable.", emoji: "😰" },
+      boredom: { title: "Bored", context: "Let's shake things up, yeah?", emoji: "😑" }
+    };
+
+    // ===== STATE =====
+    let currentMood = null;
+    let currentRecipe = null;
+    let currentStep = 0;
+    let timerInterval = null;
+    let timerSeconds = 1800; // 30 minutes
+    let timerRunning = false;
+
+    // ===== NAVIGATION =====
+    function showScreen(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+      window.scrollTo(0, 0);
+    }
+
+    function selectMood(mood) {
+      currentMood = mood;
+      const data = moodData[mood];
+      document.getElementById('list-title').textContent = `${data.emoji} ${data.title}`;
+      document.getElementById('list-context').textContent = `"${data.context}"`;
+
+      const list = document.getElementById('recipe-list');
+      list.innerHTML = '';
+
+      recipes[mood].forEach((recipe, i) => {
+        const card = document.createElement('div');
+        card.className = 'recipe-card fx-hover-lift';
+        card.style.animationDelay = `${i * 80}ms`;
+        card.onclick = () => selectRecipe(recipe);
+        card.innerHTML = `
+          <div class="recipe-card-visual">
+            <span class="recipe-emoji">${recipe.emoji}</span>
+          </div>
+          <div class="recipe-card-body">
+            <div class="recipe-meta-row">
+              <span>⏱ ${recipe.time}</span>
+              <span>📊 ${recipe.difficulty}</span>
+            </div>
+            <h3>${recipe.title}</h3>
+            <p class="chef-tip">${recipe.chefNote}</p>
+            <span class="recipe-tag ${recipe.tag}">${recipe.tagLabel}</span>
+          </div>
+        `;
+        list.appendChild(card);
+      });
+
+      showScreen('recipe-list-screen');
+    }
+
+    function selectRecipe(recipe) {
+      currentRecipe = recipe;
+      currentStep = 0;
+
+      document.getElementById('detail-emoji').textContent = recipe.emoji;
+      document.getElementById('detail-title').textContent = recipe.title;
+      document.getElementById('detail-time').textContent = `⏱ ${recipe.time}`;
+      document.getElementById('detail-difficulty').textContent = `📊 ${recipe.difficulty}`;
+      document.getElementById('detail-servings').textContent = `🍽 ${recipe.servings}`;
+      document.getElementById('detail-chef-note').textContent = recipe.chefNote;
+
+      const ingList = document.getElementById('detail-ingredients');
+      ingList.innerHTML = recipe.ingredients.map(ing => `<li>${ing}</li>`).join('');
+
+      document.getElementById('detail-preview').textContent =
+        `${recipe.steps.length} simple steps. Ready in ${recipe.time}. You've got this.`;
+
+      showScreen('recipe-detail-screen');
+    }
+
+    function startCooking() {
+      document.getElementById('cook-title').textContent = currentRecipe.title;
+      resetTimer();
+
+      // Build steps
+      const container = document.getElementById('steps-container');
+      container.innerHTML = '';
+
+      currentRecipe.steps.forEach((step, i) => {
+        const card = document.createElement('div');
+        card.className = 'step-card' + (i === 0 ? ' active' : '');
+        card.id = `step-${i}`;
+        card.innerHTML = `
+          <div class="step-number">${i + 1}</div>
+          <h4>${step.title}</h4>
+          <p>${step.text}</p>
+        `;
+        container.appendChild(card);
+      });
+
+      updateProgress();
+      updateStepNav();
+      showScreen('cook-mode-screen');
+    }
+
+    function nextStep() {
+      if (currentStep < currentRecipe.steps.length - 1) {
+        document.getElementById(`step-${currentStep}`).classList.remove('active');
+        currentStep++;
+        document.getElementById(`step-${currentStep}`).classList.add('active');
+        updateProgress();
+        updateStepNav();
+
+        if (currentStep === currentRecipe.steps.length - 1) {
+          setTimeout(() => showCompletion(), 800);
+        }
+      }
+    }
+
+    function prevStep() {
+      if (currentStep > 0) {
+        document.getElementById(`step-${currentStep}`).classList.remove('active');
+        currentStep--;
+        document.getElementById(`step-${currentStep}`).classList.add('active');
+        updateProgress();
+        updateStepNav();
+      }
+    }
+
+    function updateProgress() {
+      document.querySelectorAll('.progress-step').forEach((el, i) => {
+        el.classList.remove('active', 'completed');
+        if (i < currentStep) el.classList.add('completed');
+        else if (i === currentStep) el.classList.add('active');
+      });
+    }
+
+    function updateStepNav() {
+      document.getElementById('prev-btn').disabled = currentStep === 0;
+      const nextBtn = document.getElementById('next-btn');
+      if (currentStep === currentRecipe.steps.length - 1) {
+        nextBtn.textContent = '✓ Finish!';
+      } else {
+        nextBtn.textContent = 'Next Step →';
+      }
+    }
+
+    function showCompletion() {
+      const elapsed = Math.floor((1800 - timerSeconds) / 60);
+      document.getElementById('completion-time').textContent = elapsed > 0 ? elapsed : '<1';
+      document.getElementById('completion-mood').textContent = moodData[currentMood].emoji;
+
+      // Confetti
+      const confetti = document.createElement('div');
+      confetti.className = 'confetti';
+      const colors = ['#d5663a', '#58837a', '#f3c969', '#17313e', '#e8ddd0'];
+      for (let i = 0; i < 30; i++) {
+        const piece = document.createElement('div');
+        piece.className = 'confetti-piece';
+        piece.style.left = Math.random() * 100 + '%';
+        piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDelay = Math.random() * 2 + 's';
+        piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '0';
+        confetti.appendChild(piece);
+      }
+      document.body.appendChild(confetti);
+      setTimeout(() => confetti.remove(), 4000);
+
+      showScreen('completion-screen');
+    }
+
+    // ===== TIMER =====
+    function formatTime(seconds) {
+      const m = Math.floor(seconds / 60);
+      const s = seconds % 60;
+      return `${m}:${s.toString().padStart(2, '0')}`;
+    }
+
+    function updateTimerDisplay() {
+      document.getElementById('timer-display').textContent = formatTime(timerSeconds);
+    }
+
+    function toggleTimer() {
+      const btn = document.getElementById('timer-toggle');
+      const display = document.getElementById('timer-display');
+
+      if (timerRunning) {
+        clearInterval(timerInterval);
+        timerRunning = false;
+        btn.textContent = '▶ Resume';
+        display.classList.remove('active');
+      } else {
+        timerInterval = setInterval(() => {
+          if (timerSeconds > 0) {
+            timerSeconds--;
+            updateTimerDisplay();
+          } else {
+            clearInterval(timerInterval);
+            timerRunning = false;
+            btn.textContent = '▶ Start';
+            display.classList.remove('active');
+          }
+        }, 1000);
+        timerRunning = true;
+        btn.textContent = '⏸ Pause';
+        display.classList.add('active');
+      }
+    }
+
+    function resetTimer() {
+      clearInterval(timerInterval);
+      timerRunning = false;
+      timerSeconds = 1800;
+      updateTimerDisplay();
+      document.getElementById('timer-toggle').textContent = '▶ Start';
+      document.getElementById('timer-display').classList.remove('active');
+    }
+
+    // ===== BACK NAVIGATION =====
+    function goBackToMoods() {
+      currentMood = null;
+      currentRecipe = null;
+      resetTimer();
+      showScreen('mood-screen');
+    }
+
+    function goBackToRecipes() {
+      currentRecipe = null;
+      showScreen('recipe-list-screen');
+    }
+
+    function showFavorites() {
+      alert('Saved recipes coming soon! For now, your favorites live in your heart ❤️');
+    }
+
+    function showProfile() {
+      alert('Profile & weekly habit tracking coming in v2! 🚀');
+    }
+
+    // ===== INIT =====
+    updateTimerDisplay();
+  </script>
+</body>
+</html>
