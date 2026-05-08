@@ -1,0 +1,1909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mood Meal Planner — Chef Marco</title>
+<style>
+  :root {
+    --bg-canvas: #0d1117;
+    --bg-panel: rgba(18, 24, 32, 0.92);
+    --bg-glass: rgba(255,255,255,0.06);
+    --bg-glass-hover: rgba(255,255,255,0.10);
+    --fg-strong: #f0ebe3;
+    --fg-muted: #8a9bb0;
+    --fg-inverse: #0d1117;
+    --line-soft: rgba(255,255,255,0.08);
+    --line-strong: rgba(255,255,255,0.18);
+    --accent-primary: #e07d3f;
+    --accent-warm: #f3c969;
+    --accent-cool: #58b4a0;
+    --radius-card: 20px;
+    --radius-pill: 999px;
+    --shadow-soft: 0 12px 40px rgba(0,0,0,0.45);
+    --shadow-glow: 0 0 60px rgba(224,125,63,0.15);
+    --display-font: "Avenir Next", "Segoe UI", system-ui, sans-serif;
+    --body-font: Georgia, "Times New Roman", serif;
+    --space-1: 0.375rem;
+    --space-2: 0.75rem;
+    --space-3: 1rem;
+    --space-4: 1.5rem;
+    --space-5: 2rem;
+    --space-6: 3rem;
+
+    /* Mood accent colors */
+    --joy: #f3c969;
+    --stress: #e07d3f;
+    --fatigue: #58b4a0;
+    --anxiety: #a78bfa;
+    --boredom: #f472b6;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    height: 100%;
+    font-family: var(--display-font);
+    background: var(--bg-canvas);
+    color: var(--fg-strong);
+    overflow: hidden;
+  }
+
+  /* ── Screen system ── */
+  .screen {
+    position: absolute;
+    inset: 0;
+    overflow-y: auto;
+    display: none;
+    flex-direction: column;
+    opacity: 0;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+    transform: translateY(12px);
+  }
+  .screen.active {
+    display: flex;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .screen.exit {
+    opacity: 0;
+    transform: translateY(-12px);
+    pointer-events: none;
+  }
+
+  /* ── Ambient background ── */
+  .ambient {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background: radial-gradient(ellipse 80% 60% at 20% 10%, rgba(224,125,63,0.12) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 50% at 80% 80%, rgba(88,180,160,0.08) 0%, transparent 55%),
+                #0d1117;
+    transition: background 0.8s ease;
+  }
+
+  /* ── Nav / header ── */
+  .top-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--space-3) var(--space-5);
+    background: rgba(13,17,23,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: var(--fg-strong);
+    text-decoration: none;
+  }
+  .brand-icon { font-size: 1.4rem; }
+  .brand-sub { font-size: 0.72rem; color: var(--fg-muted); font-weight: 400; margin-top: 1px; }
+  .back-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--bg-glass);
+    border: 1px solid var(--line-soft);
+    color: var(--fg-muted);
+    font-family: var(--display-font);
+    font-size: 0.85rem;
+    padding: 6px 14px;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .back-btn:hover { background: var(--bg-glass-hover); color: var(--fg-strong); }
+
+  /* Timer persistent badge */
+  .timer-badge {
+    display: none;
+    align-items: center;
+    gap: 6px;
+    background: rgba(224,125,63,0.15);
+    border: 1px solid rgba(224,125,63,0.3);
+    border-radius: var(--radius-pill);
+    padding: 6px 14px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent-primary);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .timer-badge.running { display: flex; }
+  .timer-badge.urgent {
+    animation: timerPulse 1s ease-in-out infinite;
+    background: rgba(239,68,68,0.15);
+    border-color: rgba(239,68,68,0.4);
+    color: #f87171;
+  }
+  @keyframes timerPulse {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.3); }
+    50% { box-shadow: 0 0 0 8px rgba(239,68,68,0); }
+  }
+
+  /* ══════════════════════════════════════
+     SCREEN 1 — MOOD SELECTION
+  ══════════════════════════════════════ */
+  #screen-mood {
+    position: relative;
+    z-index: 1;
+  }
+
+  .mood-hero {
+    text-align: center;
+    padding: var(--space-6) var(--space-5) var(--space-5);
+    position: relative;
+    z-index: 1;
+  }
+  .chef-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-warm));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin: 0 auto var(--space-4);
+    box-shadow: 0 0 40px rgba(224,125,63,0.4);
+    animation: float 3s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+  .mood-hero h1 {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    margin-bottom: var(--space-3);
+    background: linear-gradient(135deg, var(--fg-strong) 40%, var(--accent-warm));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .chef-greeting {
+    max-width: 520px;
+    margin: 0 auto;
+    font-family: var(--body-font);
+    font-size: 1.05rem;
+    color: var(--fg-muted);
+    line-height: 1.65;
+  }
+  .chef-name {
+    display: inline-block;
+    color: var(--accent-warm);
+    font-style: italic;
+    font-weight: 600;
+  }
+
+  /* Mood grid */
+  .mood-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: var(--space-3);
+    padding: 0 var(--space-5) var(--space-6);
+    max-width: 900px;
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+  }
+  @media (max-width: 700px) {
+    .mood-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .mood-grid .mood-card:nth-child(4),
+    .mood-grid .mood-card:nth-child(5) {
+      grid-column: span 1;
+    }
+  }
+  @media (max-width: 440px) {
+    .mood-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .mood-card {
+    background: var(--bg-glass);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius-card);
+    padding: var(--space-4) var(--space-3);
+    cursor: pointer;
+    transition: transform 0.25s cubic-bezier(0.22,1,0.36,1),
+                box-shadow 0.25s ease,
+                background 0.25s ease,
+                border-color 0.25s ease;
+    text-align: center;
+    backdrop-filter: blur(12px);
+    animation: fx-enter 0.55s cubic-bezier(0.22,1,0.36,1) both;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .mood-card:nth-child(1) { animation-delay: 0.05s; }
+  .mood-card:nth-child(2) { animation-delay: 0.10s; }
+  .mood-card:nth-child(3) { animation-delay: 0.15s; }
+  .mood-card:nth-child(4) { animation-delay: 0.20s; }
+  .mood-card:nth-child(5) { animation-delay: 0.25s; }
+
+  .mood-card:hover {
+    transform: translateY(-6px) scale(1.03);
+    box-shadow: var(--shadow-soft);
+  }
+  .mood-card[data-mood="joy"]     { --mood-color: var(--joy); }
+  .mood-card[data-mood="stress"]  { --mood-color: var(--stress); }
+  .mood-card[data-mood="fatigue"] { --mood-color: var(--fatigue); }
+  .mood-card[data-mood="anxiety"] { --mood-color: var(--anxiety); }
+  .mood-card[data-mood="boredom"] { --mood-color: var(--boredom); }
+  .mood-card:hover, .mood-card.selected {
+    background: var(--bg-glass-hover);
+    border-color: var(--mood-color);
+    box-shadow: 0 0 30px rgba(0,0,0,0.4), 0 0 0 1px var(--mood-color);
+  }
+  .mood-emoji {
+    font-size: 2.4rem;
+    line-height: 1;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));
+    transition: transform 0.2s ease;
+  }
+  .mood-card:hover .mood-emoji { transform: scale(1.15); }
+  .mood-label {
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: var(--mood-color);
+    text-transform: uppercase;
+  }
+  .mood-desc {
+    font-size: 0.75rem;
+    color: var(--fg-muted);
+    line-height: 1.4;
+    font-family: var(--body-font);
+  }
+
+  /* ══════════════════════════════════════
+     SCREEN 2 — RECIPE LIST
+  ══════════════════════════════════════ */
+  #screen-recipes {
+    position: relative;
+    z-index: 1;
+  }
+
+  .recipe-header {
+    padding: var(--space-5) var(--space-5) var(--space-4);
+    position: relative;
+    z-index: 1;
+  }
+  .mood-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border-radius: var(--radius-pill);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: var(--space-3);
+    border: 1px solid currentColor;
+  }
+  .recipe-header h2 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+    margin-bottom: var(--space-2);
+  }
+  .chef-says {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    background: var(--bg-glass);
+    border: 1px solid var(--line-soft);
+    border-radius: 14px;
+    padding: var(--space-3) var(--space-4);
+    max-width: 640px;
+    backdrop-filter: blur(10px);
+  }
+  .chef-says-avatar {
+    font-size: 1.6rem;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .chef-says-text {
+    font-family: var(--body-font);
+    font-size: 0.95rem;
+    color: var(--fg-muted);
+    line-height: 1.6;
+    font-style: italic;
+  }
+  .chef-says-name {
+    font-size: 0.72rem;
+    font-family: var(--display-font);
+    font-style: normal;
+    font-weight: 700;
+    color: var(--accent-warm);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+
+  .recipe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-4);
+    padding: 0 var(--space-5) var(--space-6);
+    max-width: 1100px;
+    width: 100%;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  .recipe-card {
+    background: var(--bg-glass);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.25s cubic-bezier(0.22,1,0.36,1), box-shadow 0.25s ease;
+    animation: fx-enter 0.5s cubic-bezier(0.22,1,0.36,1) both;
+    backdrop-filter: blur(12px);
+  }
+  .recipe-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-soft), 0 0 0 1px var(--mood-color, var(--accent-primary));
+  }
+
+  .recipe-card-header {
+    height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    font-size: 3.5rem;
+    background: linear-gradient(135deg, var(--mood-color, var(--accent-primary)), rgba(0,0,0,0.3));
+  }
+  .recipe-card-header::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 40%, rgba(13,17,23,0.7));
+  }
+  .recipe-card-body { padding: var(--space-3) var(--space-4); }
+  .recipe-card-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+  .recipe-card-subtitle {
+    font-family: var(--body-font);
+    font-size: 0.82rem;
+    color: var(--fg-muted);
+    line-height: 1.5;
+    margin-bottom: var(--space-3);
+  }
+  .recipe-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+  .recipe-meta-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.78rem;
+    color: var(--fg-muted);
+  }
+  .spoons { color: var(--accent-warm); }
+  .difficulty-filled { color: var(--accent-warm); }
+  .difficulty-empty { opacity: 0.25; }
+
+  /* ══════════════════════════════════════
+     SCREEN 3 — RECIPE DETAIL
+  ══════════════════════════════════════ */
+  #screen-detail {
+    position: relative;
+    z-index: 1;
+  }
+  .detail-hero {
+    height: 240px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+    position: relative;
+    flex-shrink: 0;
+  }
+  .detail-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent 30%, var(--bg-canvas));
+  }
+  .detail-body {
+    padding: 0 var(--space-5) var(--space-6);
+    max-width: 760px;
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+  }
+  .detail-title {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    margin-bottom: var(--space-2);
+  }
+  .detail-tagline {
+    font-family: var(--body-font);
+    font-size: 1rem;
+    color: var(--fg-muted);
+    font-style: italic;
+    margin-bottom: var(--space-4);
+    line-height: 1.6;
+  }
+  .detail-meta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-bottom: var(--space-5);
+  }
+  .detail-meta-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--bg-glass);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius-pill);
+    padding: 6px 14px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--fg-strong);
+    backdrop-filter: blur(8px);
+  }
+
+  .section-label {
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    margin-bottom: var(--space-3);
+    padding-bottom: var(--space-2);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .ingredients-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    margin-bottom: var(--space-5);
+  }
+  .ingredient-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-3);
+    background: var(--bg-glass);
+    border: 1px solid var(--line-soft);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+    backdrop-filter: blur(6px);
+  }
+  .ingredient-item:hover { background: var(--bg-glass-hover); }
+  .ingredient-item.checked {
+    opacity: 0.45;
+    text-decoration: line-through;
+    color: var(--fg-muted);
+  }
+  .ingredient-check {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--line-strong);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    transition: all 0.2s;
+  }
+  .ingredient-item.checked .ingredient-check {
+    background: var(--accent-cool);
+    border-color: var(--accent-cool);
+    color: white;
+  }
+
+  .chef-tip {
+    background: linear-gradient(135deg, rgba(224,125,63,0.12), rgba(243,201,105,0.08));
+    border: 1px solid rgba(224,125,63,0.25);
+    border-radius: 14px;
+    padding: var(--space-4);
+    margin-bottom: var(--space-5);
+    display: flex;
+    gap: var(--space-3);
+    align-items: flex-start;
+  }
+  .chef-tip-icon { font-size: 1.5rem; flex-shrink: 0; }
+  .chef-tip-text {
+    font-family: var(--body-font);
+    font-size: 0.9rem;
+    color: var(--fg-muted);
+    line-height: 1.65;
+    font-style: italic;
+  }
+
+  .start-cook-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    width: 100%;
+    max-width: 440px;
+    margin: 0 auto;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-warm));
+    color: var(--fg-inverse);
+    border: none;
+    border-radius: var(--radius-pill);
+    padding: 16px 32px;
+    font-family: var(--display-font);
+    font-size: 1.05rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 8px 32px rgba(224,125,63,0.35);
+  }
+  .start-cook-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(224,125,63,0.5);
+  }
+
+  /* ══════════════════════════════════════
+     SCREEN 4 — COOK MODE
+  ══════════════════════════════════════ */
+  #screen-cook {
+    position: relative;
+    z-index: 1;
+  }
+
+  .cook-top {
+    padding: var(--space-5) var(--space-5) var(--space-4);
+    border-bottom: 1px solid var(--line-soft);
+    position: relative;
+    z-index: 1;
+  }
+  .cook-recipe-name {
+    font-size: 1.2rem;
+    font-weight: 800;
+    margin-bottom: var(--space-3);
+  }
+
+  /* Step progress */
+  .step-progress {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: var(--space-3);
+  }
+  .step-dot {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid var(--line-strong);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--fg-muted);
+    background: var(--bg-canvas);
+    transition: all 0.35s cubic-bezier(0.22,1,0.36,1);
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+  .step-dot.active {
+    background: var(--accent-primary);
+    border-color: var(--accent-primary);
+    color: white;
+    box-shadow: 0 0 16px rgba(224,125,63,0.5);
+    transform: scale(1.15);
+  }
+  .step-dot.done {
+    background: var(--accent-cool);
+    border-color: var(--accent-cool);
+    color: white;
+  }
+  .step-line {
+    flex: 1;
+    height: 2px;
+    background: var(--line-soft);
+    transition: background 0.4s;
+  }
+  .step-line.done { background: var(--accent-cool); }
+
+  /* 30-min timer */
+  .timer-ring-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--space-4) var(--space-5);
+    position: relative;
+    z-index: 1;
+  }
+  .timer-ring-wrap {
+    position: relative;
+    width: 160px;
+    height: 160px;
+    margin-bottom: var(--space-3);
+  }
+  .timer-svg {
+    width: 160px;
+    height: 160px;
+    transform: rotate(-90deg);
+  }
+  .timer-track { fill: none; stroke: var(--line-soft); stroke-width: 8; }
+  .timer-progress {
+    fill: none;
+    stroke: var(--accent-primary);
+    stroke-width: 8;
+    stroke-linecap: round;
+    stroke-dasharray: 440;
+    stroke-dashoffset: 0;
+    transition: stroke-dashoffset 1s linear, stroke 0.3s;
+  }
+  .timer-inner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .timer-display {
+    font-size: 2.2rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    line-height: 1;
+  }
+  .timer-label-text {
+    font-size: 0.7rem;
+    color: var(--fg-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+  .timer-controls {
+    display: flex;
+    gap: var(--space-3);
+    margin-bottom: var(--space-4);
+  }
+  .timer-btn {
+    background: var(--bg-glass);
+    border: 1px solid var(--line-soft);
+    color: var(--fg-strong);
+    font-family: var(--display-font);
+    font-size: 0.85rem;
+    font-weight: 700;
+    padding: 10px 24px;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    transition: all 0.2s;
+    backdrop-filter: blur(8px);
+  }
+  .timer-btn:hover { background: var(--bg-glass-hover); }
+  .timer-btn.primary {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-warm));
+    border-color: transparent;
+    color: var(--fg-inverse);
+    box-shadow: 0 4px 20px rgba(224,125,63,0.3);
+  }
+  .timer-btn.primary:hover { box-shadow: 0 6px 28px rgba(224,125,63,0.5); transform: translateY(-2px); }
+
+  /* Cook steps */
+  .cook-steps {
+    padding: 0 var(--space-5) var(--space-6);
+    max-width: 760px;
+    margin: 0 auto;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+  }
+  .cook-step-card {
+    background: var(--bg-glass);
+    border: 1px solid var(--line-soft);
+    border-radius: 16px;
+    padding: var(--space-4) var(--space-5);
+    margin-bottom: var(--space-3);
+    backdrop-filter: blur(10px);
+    transition: all 0.35s cubic-bezier(0.22,1,0.36,1);
+    opacity: 0.45;
+  }
+  .cook-step-card.active {
+    opacity: 1;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 1px var(--accent-primary), 0 8px 32px rgba(0,0,0,0.4);
+  }
+  .cook-step-card.done {
+    opacity: 0.55;
+    border-color: var(--accent-cool);
+  }
+  .cook-step-number {
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    margin-bottom: 6px;
+  }
+  .cook-step-card.active .cook-step-number { color: var(--accent-primary); }
+  .cook-step-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  .cook-step-desc {
+    font-family: var(--body-font);
+    font-size: 0.92rem;
+    color: var(--fg-muted);
+    line-height: 1.65;
+  }
+  .cook-step-tip {
+    margin-top: var(--space-3);
+    font-size: 0.8rem;
+    color: var(--accent-warm);
+    font-style: italic;
+    display: none;
+  }
+  .cook-step-card.active .cook-step-tip { display: block; }
+
+  .step-nav-row {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-3);
+    padding: 0 var(--space-5) var(--space-6);
+  }
+  .step-nav-btn {
+    background: var(--bg-glass);
+    border: 1px solid var(--line-soft);
+    color: var(--fg-strong);
+    font-family: var(--display-font);
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding: 12px 28px;
+    border-radius: var(--radius-pill);
+    cursor: pointer;
+    transition: all 0.2s;
+    backdrop-filter: blur(8px);
+  }
+  .step-nav-btn:hover { background: var(--bg-glass-hover); transform: translateY(-2px); }
+  .step-nav-btn.primary {
+    background: var(--accent-primary);
+    border-color: var(--accent-primary);
+    color: white;
+    box-shadow: 0 4px 20px rgba(224,125,63,0.35);
+  }
+  .step-nav-btn.primary:hover { box-shadow: 0 6px 28px rgba(224,125,63,0.5); transform: translateY(-2px); }
+  .step-nav-btn.success {
+    background: var(--accent-cool);
+    border-color: var(--accent-cool);
+    color: white;
+    box-shadow: 0 4px 20px rgba(88,180,160,0.35);
+  }
+
+  /* ── Done screen ── */
+  .done-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: rgba(13,17,23,0.9);
+    backdrop-filter: blur(20px);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: var(--space-5);
+    animation: fx-enter 0.5s ease both;
+  }
+  .done-overlay.visible { display: flex; }
+  .done-emoji { font-size: 5rem; margin-bottom: var(--space-4); animation: float 2s ease-in-out infinite; }
+  .done-title {
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: var(--space-3);
+    background: linear-gradient(135deg, var(--fg-strong), var(--accent-warm));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .done-sub {
+    font-family: var(--body-font);
+    font-size: 1.05rem;
+    color: var(--fg-muted);
+    font-style: italic;
+    max-width: 400px;
+    margin-bottom: var(--space-5);
+    line-height: 1.6;
+  }
+  .done-btn {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-warm));
+    color: var(--fg-inverse);
+    border: none;
+    border-radius: var(--radius-pill);
+    padding: 14px 36px;
+    font-family: var(--display-font);
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 8px 32px rgba(224,125,63,0.4);
+  }
+  .done-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(224,125,63,0.55); }
+
+  /* ── Motion ── */
+  @keyframes fx-enter {
+    from { opacity: 0; transform: translate3d(0, 18px, 0) scale(0.985); }
+    to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="ambient" id="ambient"></div>
+
+<!-- ── Persistent Nav ── -->
+<div class="top-bar">
+  <a class="brand" href="#" onclick="goHome(); return false;">
+    <span class="brand-icon">🍳</span>
+    <div>
+      <div>Mood Meals</div>
+      <div class="brand-sub">by Chef Marco</div>
+    </div>
+  </a>
+  <div style="display:flex;gap:12px;align-items:center;">
+    <div class="timer-badge" id="nav-timer" onclick="goTo('screen-cook')">⏱ <span id="nav-timer-display">30:00</span></div>
+    <button class="back-btn" id="back-btn" onclick="goBack()" style="display:none;">← Back</button>
+  </div>
+</div>
+
+<!-- ══════════════════ SCREEN 1: MOOD ══════════════════ -->
+<div class="screen active" id="screen-mood">
+  <div class="mood-hero fx-enter">
+    <div class="chef-avatar">👨‍🍳</div>
+    <h1>How are you feeling<br>right now?</h1>
+    <p class="chef-greeting">
+      <span class="chef-name">Chef Marco</span> here — and I'm not asking about your macros.
+      Tell me where you're at emotionally, and I'll have something on your plate
+      in under 30 minutes. No judgment, just good food.
+    </p>
+  </div>
+
+  <div class="mood-grid" id="mood-grid">
+    <div class="mood-card" data-mood="joy" onclick="selectMood('joy')">
+      <div class="mood-emoji">😌</div>
+      <div class="mood-label">Joyful</div>
+      <div class="mood-desc">Riding high — let's make something worth celebrating</div>
+    </div>
+    <div class="mood-card" data-mood="stress" onclick="selectMood('stress')">
+      <div class="mood-emoji">😤</div>
+      <div class="mood-label">Stressed</div>
+      <div class="mood-desc">Rough day? I've got your comfort covered</div>
+    </div>
+    <div class="mood-card" data-mood="fatigue" onclick="selectMood('fatigue')">
+      <div class="mood-emoji">😴</div>
+      <div class="mood-label">Fatigued</div>
+      <div class="mood-desc">Need real energy — not just caffeine</div>
+    </div>
+    <div class="mood-card" data-mood="anxiety" onclick="selectMood('anxiety')">
+      <div class="mood-emoji">😰</div>
+      <div class="mood-label">Anxious</div>
+      <div class="mood-desc">Let's keep it simple and soothing</div>
+    </div>
+    <div class="mood-card" data-mood="boredom" onclick="selectMood('boredom')">
+      <div class="mood-emoji">😑</div>
+      <div class="mood-label">Bored</div>
+      <div class="mood-desc">Ready to try something wildly different?</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════ SCREEN 2: RECIPES ══════════════════ -->
+<div class="screen" id="screen-recipes">
+  <div class="recipe-header">
+    <div class="mood-badge" id="current-mood-badge">😤 Stressed</div>
+    <h2 id="recipe-list-title">Food that actually helps</h2>
+    <div class="chef-says">
+      <div class="chef-says-avatar">👨‍🍳</div>
+      <div>
+        <div class="chef-says-text" id="chef-mood-quote">Every great meal starts with honesty about how you feel.</div>
+        <div class="chef-says-name">— Chef Marco</div>
+      </div>
+    </div>
+  </div>
+  <div class="recipe-grid" id="recipe-grid"></div>
+</div>
+
+<!-- ══════════════════ SCREEN 3: DETAIL ══════════════════ -->
+<div class="screen" id="screen-detail">
+  <div class="detail-hero" id="detail-hero">
+    <span id="detail-emoji">🍝</span>
+    <div class="detail-hero-overlay"></div>
+  </div>
+  <div class="detail-body">
+    <div class="mood-badge" id="detail-mood-badge" style="margin-bottom:var(--space-3)"></div>
+    <h1 class="detail-title" id="detail-title">Recipe Name</h1>
+    <p class="detail-tagline" id="detail-tagline">Tagline here</p>
+    <div class="detail-meta-row">
+      <div class="detail-meta-pill">⏱ <span id="detail-time"></span> min</div>
+      <div class="detail-meta-pill">🥄 <span id="detail-difficulty-text"></span></div>
+      <div class="detail-meta-pill">🍽 Serves <span id="detail-serves"></span></div>
+    </div>
+    <div class="chef-tip" id="detail-chef-tip">
+      <div class="chef-tip-icon">💬</div>
+      <p class="chef-tip-text" id="chef-tip-text"></p>
+    </div>
+    <p class="section-label">Ingredients</p>
+    <ul class="ingredients-list" id="ingredients-list"></ul>
+    <button class="start-cook-btn" onclick="startCook()">
+      🔥 Start Cooking — 30 min timer
+    </button>
+  </div>
+</div>
+
+<!-- ══════════════════ SCREEN 4: COOK MODE ══════════════════ -->
+<div class="screen" id="screen-cook">
+  <div class="cook-top">
+    <div class="cook-recipe-name" id="cook-recipe-name">Recipe Name</div>
+    <div class="step-progress" id="step-progress"></div>
+  </div>
+
+  <div class="timer-ring-container">
+    <div class="timer-ring-wrap">
+      <svg class="timer-svg" viewBox="0 0 160 160">
+        <circle class="timer-track" cx="80" cy="80" r="70"/>
+        <circle class="timer-progress" id="timer-progress-ring" cx="80" cy="80" r="70"/>
+      </svg>
+      <div class="timer-inner">
+        <div class="timer-display" id="timer-display">30:00</div>
+        <div class="timer-label-text" id="timer-status-label">ready</div>
+      </div>
+    </div>
+    <div class="timer-controls">
+      <button class="timer-btn primary" id="timer-toggle-btn" onclick="toggleTimer()">▶ Start Timer</button>
+      <button class="timer-btn" onclick="resetTimer()">↺ Reset</button>
+    </div>
+  </div>
+
+  <div class="cook-steps" id="cook-steps"></div>
+  <div class="step-nav-row">
+    <button class="step-nav-btn" id="prev-step-btn" onclick="prevStep()">← Prev</button>
+    <button class="step-nav-btn primary" id="next-step-btn" onclick="nextStep()">Next Step →</button>
+  </div>
+</div>
+
+<!-- ══════════════════ DONE OVERLAY ══════════════════ -->
+<div class="done-overlay" id="done-overlay">
+  <div class="done-emoji">🎉</div>
+  <h2 class="done-title">Meal complete!</h2>
+  <p class="done-sub" id="done-sub-text">That's what I call cooking. You showed up for yourself tonight.</p>
+  <button class="done-btn" onclick="goHome()">Cook another meal →</button>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  RECIPE DATA — 21 curated rule-based pairs
+// ═══════════════════════════════════════════════════════
+const RECIPES = {
+  stress: {
+    title: "Comfort Found",
+    chefQuote: "Look — it's been a day. No calorie-counting, no judgment. I'm giving you something warm and real. Just eat.",
+    color: "#e07d3f",
+    emoji: "😤",
+    recipes: [
+      {
+        id: "mac-cheese",
+        name: "Mac & Cheese Upgrade",
+        tagline: "The original hug in a bowl, but better.",
+        emoji: "🧀",
+        time: 20,
+        difficulty: 1,
+        serves: 2,
+        chefQuote: "Real cheese, real butter — this is medicine for the soul, not a diet plan.",
+        ingredients: ["250g pasta shells","3 tbsp butter","3 tbsp flour","2 cups whole milk","2 cups sharp cheddar, grated","1 tsp mustard powder","Salt & pepper","Optional: hot sauce"],
+        steps: [
+          { title: "Boil the pasta", desc: "Salt your water generously — it should taste like the sea. Cook pasta 2 min less than the packet says.", tip: "That slightly underdone pasta will finish cooking in the sauce. Trust me." },
+          { title: "Make the roux", desc: "Melt butter in a wide pan on medium. Add flour and stir for 90 seconds until it smells nutty. Pour in milk gradually while whisking.", tip: "Keep whisking — lumps happen when you stop paying attention." },
+          { title: "Add the cheese", desc: "Take the pan off heat. Add cheese in two handfuls, stirring until completely melted. Season with mustard powder, salt, pepper.", tip: "Off-heat is key — direct heat makes cheese grainy." },
+          { title: "Combine & serve", desc: "Fold in the pasta. Add a splash of pasta water if it's too thick. Taste, adjust, serve immediately. Deep breaths.", tip: "Hot sauce on top is not optional in my kitchen." }
+        ]
+      },
+      {
+        id: "chicken-soup",
+        name: "Chicken Soup Speed Run",
+        tagline: "From pantry to soul-warming in 28 minutes.",
+        emoji: "🍲",
+        time: 28,
+        difficulty: 2,
+        serves: 4,
+        chefQuote: "There's a reason every culture has a version of this. It just works.",
+        ingredients: ["2 chicken breasts, thin-sliced","4 cups good chicken stock","1 cup small pasta or egg noodles","2 carrots, coins","2 celery stalks","1 onion, diced","2 garlic cloves","Thyme, bay leaf","Lemon juice","Salt & pepper"],
+        steps: [
+          { title: "Sauté the aromatics", desc: "Oil in pot, medium-high. Cook onion, celery, carrot 5 min until softened. Add garlic, cook 1 more minute.", tip: "Don't rush this — the flavour base is everything." },
+          { title: "Add stock & chicken", desc: "Pour in stock, add thyme and bay leaf. Bring to a gentle boil, add sliced chicken and simmer 8 minutes.", tip: "Thin slices = faster cooking = you eating sooner." },
+          { title: "Add pasta", desc: "Drop in pasta, cook per package directions minus 2 minutes. Shred any whole chicken pieces.", tip: "It'll keep cooking after you turn off the heat." },
+          { title: "Season & serve", desc: "Squeeze in fresh lemon — this is the secret move. Season to taste. Remove bay leaf. Eat immediately.", tip: "The lemon brightens everything. Don't skip it." }
+        ]
+      },
+      {
+        id: "butter-pasta",
+        name: "Butter Pasta Therapy",
+        tagline: "Four ingredients. Ten minutes. Zero apologies.",
+        emoji: "🍝",
+        time: 12,
+        difficulty: 1,
+        serves: 2,
+        chefQuote: "Sometimes the most healing thing you can eat has four ingredients and requires no recipe.",
+        ingredients: ["200g spaghetti or linguine","4 tbsp good butter","100g Parmesan, grated fresh","Salt & lots of black pepper","Optional: lemon zest"],
+        steps: [
+          { title: "Boil the pasta", desc: "Heavily salted boiling water. Cook pasta to al dente. Save 1 cup of pasta water before draining.", tip: "That starchy water is liquid gold — don't throw it out." },
+          { title: "The butter emulsion", desc: "Drain pasta. Return to pot off heat. Add butter in pieces, toss constantly while adding pasta water a splash at a time.", tip: "This creates a creamy sauce without any cream. It's science." },
+          { title: "Add cheese", desc: "Add Parmesan a little at a time while still tossing. The heat from the pasta melts it perfectly.", tip: "Pre-grated won't work here — buy the real block." },
+          { title: "Season & sit down", desc: "Crack black pepper aggressively over the top. Taste. Adjust. Sit down. You've earned this.", tip: "More pepper than you think you need." }
+        ]
+      },
+      {
+        id: "grilled-cheese",
+        name: "Grilled Cheese Nirvana",
+        tagline: "Not the grilled cheese of your childhood. Better.",
+        emoji: "🥪",
+        time: 15,
+        difficulty: 1,
+        serves: 1,
+        chefQuote: "A perfectly made grilled cheese is an act of self-care. I mean that completely seriously.",
+        ingredients: ["2 slices sturdy bread","3 tbsp soft butter","3-4 slices good melting cheese (gruyère or cheddar)","Pinch of garlic powder","Optional: caramelised onions, dijon mustard"],
+        steps: [
+          { title: "Prep the bread", desc: "Butter each slice generously all the way to the edges. Sprinkle a little garlic powder on the butter. Add any extras inside.", tip: "The butter must reach the edges — that's where the crust gets perfect." },
+          { title: "Medium-low heat", desc: "Skillet on medium-low. This is where most grilled cheese fails — people use too high heat.", tip: "Patience is a grilled cheese virtue." },
+          { title: "First side", desc: "Place sandwich butter-side down. Press gently with a spatula. Cook 3-4 min until deep golden.", tip: "Walk away. Don't touch it. Let the heat work." },
+          { title: "Flip & finish", desc: "Flip carefully, press again. Cook another 3-4 min. The cheese should be fully melted and pooling slightly.", tip: "If cheese isn't melted, cover the pan for 1 minute." }
+        ]
+      },
+      {
+        id: "mashed-potato",
+        name: "Mashed Potato Cloud",
+        tagline: "The fluffiest, most indulgent mash of your adult life.",
+        emoji: "🥔",
+        time: 25,
+        difficulty: 1,
+        serves: 3,
+        chefQuote: "People ask if mashed potatoes are worth the effort. I say: name one hug that wasn't.",
+        ingredients: ["800g Maris Piper or Yukon Gold potatoes","6 tbsp butter","150ml warm cream or milk","Salt","White pepper","Optional: chives, garlic"],
+        steps: [
+          { title: "Boil the potatoes", desc: "Peel and cut potatoes into even chunks. Start in cold, salted water. Bring to boil, simmer 15-18 min until knife-tender.", tip: "Starting in cold water means even cooking throughout." },
+          { title: "Drain & steam", desc: "Drain thoroughly, return to pot. Put on LOW heat for 2 minutes, shaking constantly — this removes excess water.", tip: "Dry potatoes = fluffier mash. This step matters." },
+          { title: "Butter first, always", desc: "Take off heat. Add butter in pieces and mash until fully incorporated before adding any liquid.", tip: "Butter coats the starch before liquid — this is why restaurant mash is silkier." },
+          { title: "Add cream & season", desc: "Pour in warm cream gradually while mashing. Season aggressively with salt and white pepper. Taste as you go.", tip: "Cold cream makes the mash gluey. Warm it first." }
+        ]
+      }
+    ]
+  },
+
+  fatigue: {
+    title: "Energy Protocol",
+    chefQuote: "Your body isn't broken — it just needs the right fuel. Complex carbs, lean protein, real micronutrients. Not another coffee.",
+    color: "#58b4a0",
+    emoji: "😴",
+    recipes: [
+      {
+        id: "power-grain-bowl",
+        name: "Power Grain Bowl",
+        tagline: "Sustained energy for 4–5 hours. Studied, not claimed.",
+        emoji: "🥗",
+        time: 20,
+        difficulty: 2,
+        serves: 1,
+        chefQuote: "Complex carbs from wholegrains release glucose slowly. This is actual science, not marketing.",
+        ingredients: ["1 cup pre-cooked farro or quinoa","2 eggs, poached or fried","1/2 avocado","Handful of edamame","Cherry tomatoes, halved","2 tbsp tahini dressing","Lemon juice, sesame seeds","Spinach or kale base"],
+        steps: [
+          { title: "Build the base", desc: "Layer greens, then warmed grains. Arrange edamame, tomatoes, and avocado in sections.", tip: "Use pre-cooked grains from a packet to save 15 minutes." },
+          { title: "Cook the eggs", desc: "Poach eggs 3 min for runny, 4 for set. Or fry in a thin film of oil. Season well.", tip: "The yolk is your protein-fat bridge — keep it runny." },
+          { title: "Make quick tahini dressing", desc: "Whisk 2 tbsp tahini with lemon juice, a little water, salt and garlic. Should coat a spoon.", tip: "Add water slowly — it thickens before it thins." },
+          { title: "Assemble & eat", desc: "Place eggs on top, drizzle dressing, add sesame seeds. Eat within 10 minutes of assembling.", tip: "Eat it now — this bowl doesn't wait." }
+        ]
+      },
+      {
+        id: "smoothie-bowl",
+        name: "Green Energy Smoothie Bowl",
+        tagline: "B vitamins, iron, and natural sugars for a real lift.",
+        emoji: "🥣",
+        time: 8,
+        difficulty: 1,
+        serves: 1,
+        chefQuote: "Spinach has zero taste when blended. It's just an iron delivery vehicle dressed as dessert.",
+        ingredients: ["2 frozen bananas","Large handful fresh spinach","1 cup frozen mango chunks","1/2 cup oat milk","1 tbsp nut butter","Toppings: granola, blueberries, chia seeds, honey"],
+        steps: [
+          { title: "Blend the base", desc: "Blend bananas, spinach, mango, oat milk until completely smooth. It should be very thick — almost too thick.", tip: "Use minimal liquid. Too thin = can't eat it like a bowl." },
+          { title: "Taste and adjust", desc: "Taste it. Add nut butter for protein, more fruit for sweetness, more oat milk if it won't blend.", tip: "Frozen banana makes it creamy. Fresh won't work the same way." },
+          { title: "Pour and build", desc: "Pour into a wide bowl. Work fast — it warms up quickly.", tip: "" },
+          { title: "Top intentionally", desc: "Granola for crunch, berries for antioxidants, chia for omega-3, drizzle of honey. Eat with a spoon.", tip: "Toppings aren't optional — they make it feel like a meal." }
+        ]
+      },
+      {
+        id: "egg-avocado-toast",
+        name: "Egg & Avocado Toast Stack",
+        tagline: "Healthy fats + complete protein. The classic for a reason.",
+        emoji: "🥑",
+        time: 12,
+        difficulty: 1,
+        serves: 1,
+        chefQuote: "Avocado's oleic acid keeps you full. The egg's amino acids restore your depleted neurotransmitters. This is your refuel.",
+        ingredients: ["2 slices sourdough or wholegrain bread","1 ripe avocado","2 eggs","Lemon juice","Red pepper flakes","Salt & pepper","Optional: feta, everything bagel seasoning"],
+        steps: [
+          { title: "Toast the bread", desc: "Get it genuinely toasted — not just warm. The structure holds everything together.", tip: "If your toaster is slow, use a dry pan at high heat." },
+          { title: "Prep the avocado", desc: "Halve avocado, remove stone, scoop flesh. Add lemon juice, salt. Mash to your preferred texture.", tip: "Don't over-mash — some texture is better." },
+          { title: "Cook the eggs", desc: "Fry eggs in a little butter or oil. For energy, go sunny-side-up or over-easy to preserve the yolk nutrients.", tip: "Medium heat. Don't rush it or you get rubber." },
+          { title: "Stack and season", desc: "Avocado on toast, egg on top, red pepper flakes, salt, black pepper. Optional feta crumbled over everything.", tip: "Eat within 3 minutes. Warm eggs on warm toast." }
+        ]
+      },
+      {
+        id: "lemon-stir-fry",
+        name: "Lemon Ginger Stir-Fry",
+        tagline: "Ginger's gingerol compounds actually fight inflammation-based fatigue.",
+        emoji: "🥦",
+        time: 18,
+        difficulty: 2,
+        serves: 2,
+        chefQuote: "Ginger isn't just flavour — it's been used for 2000 years to fight the kind of dull tiredness you're feeling right now.",
+        ingredients: ["300g chicken breast or tofu, cubed","2 cups broccoli florets","1 red pepper, strips","1 cup snap peas","3 tbsp soy sauce","1 tbsp fresh ginger, grated","2 garlic cloves","1 tbsp sesame oil","Rice or noodles to serve"],
+        steps: [
+          { title: "Prep everything first", desc: "Cut all veg and protein before heat goes on. This stir-fry moves fast — there's no time to chop mid-cook.", tip: "Five minutes of prep = ten minutes of stress-free cooking." },
+          { title: "High heat, hot wok", desc: "Get your pan screaming hot. Add oil, then protein. Don't touch it for 90 seconds so it sears.", tip: "Movement = steaming. Stillness = searing. You want searing." },
+          { title: "Add veg in order", desc: "Broccoli first (hardest), then pepper and snap peas. Stir constantly. 3-4 minutes total.", tip: "Cook order matters — add softer vegetables last." },
+          { title: "Sauce and finish", desc: "Add ginger, garlic, soy sauce. Toss 60 seconds. Drizzle sesame oil, toss once more. Serve on rice immediately.", tip: "Sesame oil goes in at the end — heat kills its flavour." }
+        ]
+      },
+      {
+        id: "quinoa-salad",
+        name: "Quinoa Power Salad",
+        tagline: "The only complete plant protein — all 9 essential amino acids.",
+        emoji: "🌿",
+        time: 22,
+        difficulty: 1,
+        serves: 2,
+        chefQuote: "Quinoa has more protein per cup than any other grain. Pair it with chickpeas and you have a full amino acid profile.",
+        ingredients: ["1 cup dry quinoa","1 can chickpeas, drained","Cucumber, diced","Cherry tomatoes","Red onion, thinly sliced","Big handful fresh parsley","3 tbsp olive oil","2 tbsp lemon juice","Cumin, salt, pepper"],
+        steps: [
+          { title: "Cook the quinoa", desc: "Rinse quinoa well. Simmer in 2 cups water with a pinch of salt, covered, 15 min. Let rest 5 min, fluff with fork.", tip: "Rinsing removes the bitter coating. Don't skip it." },
+          { title: "Prep the veg", desc: "While quinoa cooks: dice cucumber, halve tomatoes, slice onion thin, roughly chop parsley.", tip: "" },
+          { title: "Make the dressing", desc: "Whisk olive oil, lemon juice, a big pinch of cumin, salt, and pepper. Taste — it should be bright and punchy.", tip: "It should taste too strong on its own — perfect on the salad." },
+          { title: "Combine and rest", desc: "Toss all ingredients with dressing while quinoa is still warm so it absorbs flavour. Eat warm or at room temp.", tip: "Warm quinoa absorbs dressing better than cold." }
+        ]
+      }
+    ]
+  },
+
+  joy: {
+    title: "Celebration Kitchen",
+    chefQuote: "You're in a good mood — don't waste it on sad food. Let's make something that matches the energy you walked in with.",
+    color: "#f3c969",
+    emoji: "😌",
+    recipes: [
+      {
+        id: "rainbow-tacos",
+        name: "Rainbow Veggie Tacos",
+        tagline: "Six colours, infinite customisation, zero sad eating.",
+        emoji: "🌮",
+        time: 20,
+        difficulty: 2,
+        serves: 3,
+        chefQuote: "Eating rainbow colours isn't just aesthetics — each colour represents different phytonutrients. But also: it's just fun.",
+        ingredients: ["8 small corn tortillas","1 red pepper, strips","1 yellow pepper, strips","Purple cabbage, shredded","1 tin black beans","1 avocado","Lime juice","Coriander, pickled jalapeños","Sour cream or cashew cream"],
+        steps: [
+          { title: "Char the peppers", desc: "Get a dry pan screaming hot. Add pepper strips — no oil. Let them char and blister on each side, 2 min each.", tip: "Charring is not burning. It's caramelisation and you want it." },
+          { title: "Season the beans", desc: "Drain beans, warm in a small pan with cumin, garlic powder, salt, and a squeeze of lime. Smash half of them.", tip: "Half-smashed beans hold better in a taco than whole." },
+          { title: "Warm the tortillas", desc: "Each tortilla directly over a gas flame 30 seconds per side, or in a dry pan. They should have some char spots.", tip: "Cold tortillas crack. Warm ones fold. Non-negotiable." },
+          { title: "Build your rainbow", desc: "Beans first, then peppers, avocado slices, purple cabbage, jalapeños, coriander, squeeze of lime. Layer the colours.", tip: "Stack in rainbow order for the 'wow' moment when you eat." }
+        ]
+      },
+      {
+        id: "celebration-rice",
+        name: "Celebration Fried Rice",
+        tagline: "The world's most satisfying use of leftover rice.",
+        emoji: "🍚",
+        time: 18,
+        difficulty: 2,
+        serves: 4,
+        chefQuote: "Every great fried rice was yesterday's rice. If you cook it fresh, you're already doing it wrong.",
+        ingredients: ["3 cups day-old cooked rice","3 eggs","1 cup frozen peas","4 spring onions","4 tbsp soy sauce","1 tbsp oyster sauce","2 tbsp sesame oil","Garlic, ginger","Optional: prawns, chicken, or tofu"],
+        steps: [
+          { title: "Get everything ready", desc: "Mise en place — everything chopped, sauces measured. Fried rice waits for no one once it starts.", tip: "Speed is the secret. Prep everything before you touch the heat." },
+          { title: "Scramble the eggs", desc: "Wok on maximum heat, small amount of oil. Scramble eggs quickly, still slightly wet, and push to the side.", tip: "Wet scramble — they keep cooking from the wok's heat." },
+          { title: "Rice in the wok", desc: "Add rice, break up any clumps with your spatula. Leave it 90 seconds untouched so it gets crispy on one side.", tip: "Resist stirring. That crust is the good part." },
+          { title: "Sauce and finish", desc: "Toss in peas, spring onions, add sauces. Stir everything together energetically. Drizzle sesame oil last.", tip: "High heat, fast movement, done in 3 minutes from here." }
+        ]
+      },
+      {
+        id: "lemon-salmon",
+        name: "Lemon Herb Salmon",
+        tagline: "A restaurant-level main in 22 minutes. Seriously.",
+        emoji: "🐟",
+        time: 22,
+        difficulty: 2,
+        serves: 2,
+        chefQuote: "Salmon rewards confidence. High heat, don't touch it, trust the timing. That's the entire recipe philosophy.",
+        ingredients: ["2 salmon fillets (skin-on)","3 tbsp butter","2 garlic cloves, sliced","Lemon (juice + zest)","Fresh dill or parsley","Capers (optional)","Salt, white pepper","Greens or new potatoes to serve"],
+        steps: [
+          { title: "Room temp and dry", desc: "Pat salmon completely dry with paper towels. Season generously. Let it sit at room temperature 10 min while you prep everything else.", tip: "Damp fish steams. Dry fish sears. This is the difference." },
+          { title: "The sear", desc: "Oven-safe pan on high heat with a little oil. Salmon skin-side down. Don't touch it for 4 minutes.", tip: "The skin protects the flesh. Let the heat work." },
+          { title: "Baste with butter", desc: "Flip. Add butter and garlic. Tilt pan and spoon hot butter over fish for 2-3 minutes continuously.", tip: "Basting is the difference between good and restaurant-level." },
+          { title: "Lemon and serve", desc: "Squeeze lemon over, add zest and fresh herbs. Rest 2 minutes before serving. The centre should be barely opaque.", tip: "Opaque all the way through = overcooked. Trust slightly translucent." }
+        ]
+      },
+      {
+        id: "mushroom-risotto",
+        name: "Mushroom Risotto Express",
+        tagline: "The one dish that proves home cooking can be truly luxurious.",
+        emoji: "🍄",
+        time: 28,
+        difficulty: 3,
+        serves: 2,
+        chefQuote: "People think risotto is hard. It's not. It just requires your attention for 18 minutes. That's the whole challenge.",
+        ingredients: ["300g arborio rice","500g mixed mushrooms","1 shallot, minced","2 garlic cloves","1L warm chicken or veg stock","150ml white wine","80g cold butter, cubed","60g Parmesan","Fresh thyme, parsley","Olive oil, salt, pepper"],
+        steps: [
+          { title: "Sauté mushrooms separately", desc: "High heat, olive oil, mushrooms in a single layer — don't crowd them. Cook until golden and slightly crispy. Set aside.", tip: "Crowded mushrooms steam instead of sear. Two batches if needed." },
+          { title: "Build the base", desc: "Same pan, medium heat. Soften shallot 3 min, add garlic 1 min. Add rice, toast 2 min until edges go translucent.", tip: "Toasting the rice is where flavour depth starts." },
+          { title: "Add wine, then stock", desc: "Pour in wine, stir until absorbed. Add warm stock one ladle at a time, stirring constantly, waiting for absorption before adding more. 16-18 min.", tip: "Warm stock only — cold stock shocks the starch and slows everything." },
+          { title: "Mantecatura", desc: "Off heat: fold in cold butter piece by piece, then Parmesan. The risotto should flow slowly off a spoon. Add mushrooms. Serve immediately.", tip: "Cold butter off heat creates the famous 'wave' texture. It only takes 60 seconds." }
+        ]
+      },
+      {
+        id: "buddha-bowl",
+        name: "Colorful Buddha Bowl",
+        tagline: "Build your own wellness masterpiece — no rules, all colour.",
+        emoji: "🌈",
+        time: 20,
+        difficulty: 1,
+        serves: 2,
+        chefQuote: "Buddha bowls work because every component is individually delicious. No hiding bad ingredients under sauce.",
+        ingredients: ["1 cup cooked brown rice or farro","1 can chickpeas, roasted","Sweet potato, cubed & roasted","Kale or spinach","Cucumber ribbons","Pickled red onion","Tahini lemon dressing","Sesame seeds, microgreens"],
+        steps: [
+          { title: "Roast the chickpeas", desc: "Toss drained chickpeas with olive oil, cumin, paprika, salt. Roast at 200°C for 20 min until crispy.", tip: "Dry them thoroughly before roasting or they steam not crisp." },
+          { title: "Roast sweet potato", desc: "Cubed sweet potato with olive oil and a pinch of smoked paprika. Goes in with the chickpeas, same time and temp.", tip: "Both can roast simultaneously — use one sheet tray." },
+          { title: "Prep the fresh elements", desc: "Massage kale with a drop of olive oil and salt for 1 min. Ribbon cucumber with a peeler. Quick-pickle onion in lemon juice 10 min.", tip: "Massaging kale removes bitterness. Worth doing." },
+          { title: "Assemble by colour", desc: "Grains as the base. Build sections of each component arranged by colour. Drizzle tahini dressing over everything. Top with seeds.", tip: "Section by colour — it eats better when you compose each bite." }
+        ]
+      }
+    ]
+  },
+
+  anxiety: {
+    title: "Simple & Steady",
+    chefQuote: "We're keeping this gentle. No fussy techniques, nothing that can go wrong in six different ways. Simple is strong.",
+    color: "#a78bfa",
+    emoji: "😰",
+    recipes: [
+      {
+        id: "tomato-pasta",
+        name: "Simple Tomato Pasta",
+        tagline: "Four steps. Can't fail. Genuinely delicious.",
+        emoji: "🍅",
+        time: 18,
+        difficulty: 1,
+        serves: 2,
+        chefQuote: "The simplest things cooked well are always better than complex things cooked anxiously.",
+        ingredients: ["200g spaghetti","1 tin good tomatoes","3 garlic cloves","Olive oil","Pinch of sugar","Basil or dried oregano","Salt, pepper","Parmesan to serve"],
+        steps: [
+          { title: "Start the pasta water", desc: "Put a big pot of water on to boil with plenty of salt. This will take a few minutes — use that time to relax.", tip: "The wait is built in. You're right on schedule." },
+          { title: "Simple tomato sauce", desc: "Warm olive oil in a pan on medium. Add sliced garlic, cook 2 min (it should not brown). Add tomatoes, pinch of sugar, simmer 10 min.", tip: "Medium heat means nothing can burn. Low-risk cooking." },
+          { title: "Cook the pasta", desc: "Add pasta to boiling water. Stir once immediately, then occasionally. Cook until al dente per packet instructions.", tip: "Set a timer. You don't need to watch it constantly." },
+          { title: "Bring it together", desc: "Drain pasta, add to sauce with a splash of pasta water. Toss gently. Season. Serve with parmesan.", tip: "If it looks too dry, add pasta water. If too wet, cook 30 more seconds. You can't get this wrong." }
+        ]
+      },
+      {
+        id: "one-pan-chicken",
+        name: "One-Pan Roasted Chicken",
+        tagline: "One pan. Put it in. Take it out. Eat.",
+        emoji: "🍗",
+        time: 30,
+        difficulty: 1,
+        serves: 2,
+        chefQuote: "The oven does all the work. Your only job is to season it and trust the temperature.",
+        ingredients: ["4 chicken thighs, bone-in skin-on","4 garlic cloves, unpeeled","1 lemon, sliced","Fresh thyme","Olive oil","Salt, pepper","Optional: potatoes, cherry tomatoes in same pan"],
+        steps: [
+          { title: "Preheat the oven to 200°C", desc: "That's all. Just turn it on and let it heat up. Season the chicken with olive oil, salt, and pepper on all sides.", tip: "No special techniques. Season generously." },
+          { title: "Arrange the pan", desc: "Put chicken skin-side up in a roasting tin. Scatter garlic cloves, lemon slices, and thyme around (not on top of) the chicken.", tip: "Skin-side up = crispy skin. This is the only rule." },
+          { title: "Roast it", desc: "Into the oven at 200°C for 25-28 minutes. Set a timer and walk away. You literally do not need to do anything.", tip: "The oven is doing all the work right now. You can rest." },
+          { title: "Check and rest", desc: "Pierce the thickest part — juices should run clear. Rest 5 minutes before serving. The skin will be golden and crispy.", tip: "Resting is not optional — it keeps the meat juicy." }
+        ]
+      },
+      {
+        id: "lentil-soup",
+        name: "Warming Lentil Soup",
+        tagline: "Low-effort, high-comfort. Red lentils are nearly foolproof.",
+        emoji: "🥣",
+        time: 25,
+        difficulty: 1,
+        serves: 4,
+        chefQuote: "Red lentils dissolve into the soup naturally. They're the most forgiving ingredient in the kitchen.",
+        ingredients: ["300g red lentils","1 onion, diced","2 garlic cloves","1 tin tomatoes","1L veg stock","2 tsp cumin","1 tsp turmeric","Squeeze of lemon","Salt","Olive oil, fresh coriander"],
+        steps: [
+          { title: "Sauté onion & spices", desc: "Olive oil in a large pot on medium. Cook onion 5 min. Add garlic, cumin, turmeric — cook 1 min more.", tip: "You can't overcook onions at this stage. Low-risk." },
+          { title: "Add lentils and liquid", desc: "Rinse lentils under cold water. Add to pot with stock and tinned tomatoes. Stir once.", tip: "Red lentils don't need soaking — straight in." },
+          { title: "Simmer hands-off", desc: "Bring to a boil, then reduce to a gentle simmer. Cook 15 minutes uncovered. Stir occasionally.", tip: "If it bubbles too hard, just turn it down. Nothing will go wrong." },
+          { title: "Season and finish", desc: "Red lentils dissolve and thicken the soup naturally. Squeeze in lemon juice. Season to taste. Add coriander.", tip: "The soup forgives adjustments at this stage. More water, more salt, more lemon — all fine." }
+        ]
+      },
+      {
+        id: "easy-stir-fry",
+        name: "Easy Veggie Stir-Fry",
+        tagline: "Whatever's in your fridge. Fifteen minutes. Done.",
+        emoji: "🥬",
+        time: 15,
+        difficulty: 1,
+        serves: 2,
+        chefQuote: "A stir-fry is forgiving because the technique is so fast that nothing has time to go wrong.",
+        ingredients: ["Whatever vegetables you have","1-2 garlic cloves","Soy sauce","A little oil","Optional protein: eggs, tofu, leftover chicken","Rice or noodles to serve"],
+        steps: [
+          { title: "Get rice or noodles going", desc: "Start your starch first — it takes the longest. Use microwave rice packets if you want maximum ease.", tip: "This is the only bit of multitasking required." },
+          { title: "Prep your veg", desc: "Cut everything roughly the same size so it cooks evenly. Harder veg (carrots, broccoli) go in first, softer (spinach, peas) last.", tip: "Approximate sizes are fine. This doesn't need to be precise." },
+          { title: "High heat, don't stop stirring", desc: "Hot pan, oil, hardest veg first. Keep everything moving. Softer veg after 2 min. Everything should be bright and tender-crisp.", tip: "If you're not sure whether it's done, taste a piece. That's the entire test." },
+          { title: "Sauce and serve", desc: "Add soy sauce, toss 30 seconds. Done. Serve over rice. Season to taste.", tip: "Can't go wrong here. Add more soy if it needs salt. Squeeze lemon if it needs brightness." }
+        ]
+      }
+    ]
+  },
+
+  boredom: {
+    title: "Culinary Adventure",
+    chefQuote: "You came to the right place. Boredom is just an invitation to be curious. Let's cook something you've never made before.",
+    color: "#f472b6",
+    emoji: "😑",
+    recipes: [
+      {
+        id: "bibimbap",
+        name: "Korean Bibimbap Bowl",
+        tagline: "Your first proper Korean meal. One of the world's great bowls.",
+        emoji: "🍱",
+        time: 28,
+        difficulty: 3,
+        serves: 2,
+        chefQuote: "Bibimbap means 'mixed rice.' You assemble, then you mix it all together at the table. Watching it come together is half the meal.",
+        ingredients: ["2 cups cooked short-grain rice","200g beef mince or mushrooms","Spinach, bean sprouts, carrots","2 eggs","Gochujang paste","Sesame oil","Soy sauce, garlic","Sesame seeds"],
+        steps: [
+          { title: "Cook the protein", desc: "Beef or mushrooms in sesame oil, garlic, soy sauce, pinch of sugar. Cook until done and slightly sticky. Set aside.", tip: "That stickiness from the soy/sugar is intentional." },
+          { title: "Quick-cook the veg", desc: "Each veg is briefly cooked separately — blanch spinach 30 sec, stir-fry bean sprouts 2 min, julienned carrots 2 min. Season each with sesame oil and salt.", tip: "Separate cooking keeps each veg's character distinct." },
+          { title: "Fry the eggs", desc: "In a tiny bit of oil on medium heat — you want a perfectly set white with a runny yolk. Don't rush it.", tip: "The runny yolk is the sauce for the whole bowl." },
+          { title: "Assemble and mix", desc: "Rice base, arrange veg and protein in sections around the bowl. Egg in the centre. A tablespoon of gochujang. Mix everything vigorously at the table.", tip: "Mix it! Don't just eat sections. The mixed chaos is the point." }
+        ]
+      },
+      {
+        id: "thai-noodles",
+        name: "Thai Peanut Noodles",
+        tagline: "A sauce so good you'll want to put it on everything.",
+        emoji: "🍜",
+        time: 20,
+        difficulty: 2,
+        serves: 2,
+        chefQuote: "Once you understand a peanut sauce, you'll never pay for Thai takeaway again.",
+        ingredients: ["200g rice noodles or spaghetti","3 tbsp peanut butter","2 tbsp soy sauce","1 tbsp rice vinegar","1 tbsp sesame oil","1 tsp chilli flakes","Garlic, ginger","Lime juice","Spring onions, crushed peanuts, coriander"],
+        steps: [
+          { title: "Cook the noodles", desc: "Cook noodles per packet instructions. Drain, rinse with cold water, toss with a drop of sesame oil so they don't stick.", tip: "Rinsing stops cooking and keeps them separate." },
+          { title: "Make the peanut sauce", desc: "Whisk peanut butter, soy sauce, rice vinegar, sesame oil, chilli, minced garlic, minced ginger. Add warm water to thin.", tip: "The sauce will seem thick at first. Keep adding water a splash at a time." },
+          { title: "Taste and adjust the sauce", desc: "Taste: needs more salt? (soy) More sour? (vinegar) More heat? (chilli) More richness? (peanut butter). Adjust to your preference.", tip: "This is your sauce now. Own it." },
+          { title: "Toss and serve", desc: "Toss noodles with sauce — it should coat every strand. Top with spring onions, crushed peanuts, coriander, a squeeze of lime.", tip: "Eat immediately. The sauce absorbs as it sits." }
+        ]
+      },
+      {
+        id: "shakshuka",
+        name: "Shakshuka",
+        tagline: "Eggs poached in spiced tomatoes. Sounds odd. Tastes like everything.",
+        emoji: "🍳",
+        time: 22,
+        difficulty: 2,
+        serves: 2,
+        chefQuote: "Shakshuka is North African, eaten all over the Middle East, and now you're going to make it in 22 minutes.",
+        ingredients: ["4-6 eggs","2 tins crushed tomatoes","1 onion, diced","1 red pepper, diced","3 garlic cloves","1 tsp cumin","1 tsp paprika","1/2 tsp chilli flakes","Salt, pepper","Feta, fresh herbs, crusty bread to serve"],
+        steps: [
+          { title: "Build the sauce base", desc: "Olive oil on medium. Cook onion and pepper until soft, 7 min. Add garlic and all spices, cook 2 min. It should smell incredible.", tip: "This aromatic base is the entire flavour foundation. Let it cook properly." },
+          { title: "Add tomatoes and simmer", desc: "Pour in tomatoes, season with salt and a little sugar. Simmer 8-10 min until sauce thickens and oil floats on top.", tip: "Oil floating on top means the sauce is ready for eggs." },
+          { title: "Add the eggs", desc: "Make wells in the sauce with a spoon. Crack an egg into each well. Cover the pan.", tip: "Work quickly so all eggs start cooking at the same time." },
+          { title: "Cover and wait", desc: "5-7 minutes covered on medium-low. White should be set, yolk should still be glossy. Finish with feta and herbs.", tip: "Check at 5 min. Runny yolk is the goal — once it's set, it's overdone." }
+        ]
+      },
+      {
+        id: "miso-ramen",
+        name: "Miso Ramen Bowl",
+        tagline: "Homemade ramen in 25 minutes. No 12-hour broth required.",
+        emoji: "🍜",
+        time: 25,
+        difficulty: 2,
+        serves: 2,
+        chefQuote: "Real ramen shops take days. This uses their flavour principles in 25 minutes. Respect the technique.",
+        ingredients: ["200g ramen noodles","4 tbsp white miso paste","4 cups chicken or veg stock","2 tbsp soy sauce","1 tbsp sesame oil","2 eggs (soft-boiled)","Corn, bamboo shoots, spring onion","Nori sheets","1 tsp chilli oil","Mushrooms"],
+        steps: [
+          { title: "Soft-boil the eggs first", desc: "Boiling water, lower eggs in gently. 6.5 minutes exactly, then ice bath immediately. Peel after 5 min. They should be jammy.", tip: "6.5 minutes = perfect jammy ramen egg. Set a timer." },
+          { title: "Build the broth", desc: "Warm stock in a large pot. Whisk in miso paste off heat (boiling destroys miso's flavour), soy sauce, sesame oil. Taste — adjust.", tip: "Add miso off heat. Non-negotiable for flavour preservation." },
+          { title: "Cook noodles separately", desc: "Cook ramen noodles in a separate pot of plain water per instructions. Drain and divide between bowls.", tip: "Separate cooking keeps noodles from making the broth cloudy and starchy." },
+          { title: "Assemble the bowl", desc: "Ladle hot broth over noodles. Arrange corn, mushrooms (sautéed quickly), spring onion, nori. Halve and place eggs. Drizzle chilli oil.", tip: "Presentation is the ramen ritual. Take the extra 30 seconds." }
+        ]
+      },
+      {
+        id: "lamb-flatbread",
+        name: "Spicy Lamb Flatbread",
+        tagline: "Turkish-inspired, weeknight-friendly, genuinely impressive.",
+        emoji: "🫓",
+        time: 22,
+        difficulty: 2,
+        serves: 2,
+        chefQuote: "This is Turkish lahmacun energy — spiced minced meat on thin bread. Street food turned dinner party hero.",
+        ingredients: ["2 large flatbreads or pitta","300g lamb mince","1 onion, grated","2 garlic cloves, minced","1 tin tomatoes, drained","1 tsp cumin","1 tsp paprika","Pinch of cinnamon","Chilli flakes","Fresh parsley, lemon, yoghurt to serve"],
+        steps: [
+          { title: "Make the spiced lamb", desc: "Mix lamb with grated onion, garlic, drained tomato, cumin, paprika, cinnamon, chilli, and salt. This is your topping.", tip: "Grated onion (not chopped) blends into the meat for a smoother paste." },
+          { title: "Spread and bake", desc: "Spread lamb mixture thinly across flatbreads — right to the edges. As thin as you can get it.", tip: "Thin spread = crispy edges. Thick = undercooked meat." },
+          { title: "High heat bake", desc: "200°C oven for 10-12 minutes. The lamb should be cooked through and slightly caramelised on the edges.", tip: "Hot oven = fast and crispy. Don't go lower." },
+          { title: "Finish and serve", desc: "Out of the oven: fresh parsley, squeeze of lemon, yoghurt drizzle. Roll up or eat flat like pizza.", tip: "The lemon and yoghurt balance the spiced meat. Both essential." }
+        ]
+      }
+    ]
+  }
+};
+
+// ═══════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════
+let state = {
+  screen: 'screen-mood',
+  history: [],
+  mood: null,
+  recipe: null,
+  currentStep: 0,
+  timer: { seconds: 1800, running: false, started: false, interval: null }
+};
+
+// ═══════════════════════════════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════════════════════════════
+function goTo(screenId) {
+  const prev = document.getElementById(state.screen);
+  const next = document.getElementById(screenId);
+  if (!next || state.screen === screenId) return;
+
+  state.history.push(state.screen);
+  prev.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+  prev.style.opacity = '0';
+  prev.style.transform = 'translateY(-10px)';
+  setTimeout(() => {
+    prev.classList.remove('active');
+    prev.style.opacity = '';
+    prev.style.transform = '';
+    next.classList.add('active');
+    next.scrollTop = 0;
+    requestAnimationFrame(() => {
+      next.style.opacity = '0';
+      next.style.transform = 'translateY(14px)';
+      next.style.transition = 'opacity 0.35s ease, transform 0.35s ease';
+      requestAnimationFrame(() => {
+        next.style.opacity = '1';
+        next.style.transform = 'translateY(0)';
+      });
+    });
+  }, 300);
+
+  state.screen = screenId;
+  updateNav();
+}
+
+function goBack() {
+  if (state.history.length === 0) return;
+  const prev = state.history.pop();
+  const curr = document.getElementById(state.screen);
+  const target = document.getElementById(prev);
+
+  curr.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+  curr.style.opacity = '0';
+  curr.style.transform = 'translateY(10px)';
+  setTimeout(() => {
+    curr.classList.remove('active');
+    curr.style.opacity = '';
+    curr.style.transform = '';
+    target.classList.add('active');
+    target.scrollTop = 0;
+  }, 250);
+
+  state.screen = prev;
+  updateNav();
+}
+
+function goHome() {
+  document.getElementById('done-overlay').classList.remove('visible');
+  // Reset all screens
+  ['screen-recipes','screen-detail','screen-cook'].forEach(id => {
+    document.getElementById(id).classList.remove('active');
+  });
+  document.getElementById('screen-mood').classList.add('active');
+  state.screen = 'screen-mood';
+  state.history = [];
+  state.mood = null;
+  state.recipe = null;
+  document.querySelectorAll('.mood-card').forEach(c => c.classList.remove('selected'));
+  updateNav();
+  updateAmbient(null);
+}
+
+function updateNav() {
+  const backBtn = document.getElementById('back-btn');
+  backBtn.style.display = state.history.length > 0 ? 'flex' : 'none';
+}
+
+// ═══════════════════════════════════════════════════════
+//  AMBIENT BACKGROUND
+// ═══════════════════════════════════════════════════════
+const AMBIENT_CONFIGS = {
+  joy:     'radial-gradient(ellipse 80% 60% at 20% 10%, rgba(243,201,105,0.15) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 80% 80%, rgba(243,201,105,0.08) 0%, transparent 55%), #0d1117',
+  stress:  'radial-gradient(ellipse 80% 60% at 20% 10%, rgba(224,125,63,0.16) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 80% 80%, rgba(224,125,63,0.08) 0%, transparent 55%), #0d1117',
+  fatigue: 'radial-gradient(ellipse 80% 60% at 20% 10%, rgba(88,180,160,0.14) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 80% 80%, rgba(88,180,160,0.08) 0%, transparent 55%), #0d1117',
+  anxiety: 'radial-gradient(ellipse 80% 60% at 20% 10%, rgba(167,139,250,0.14) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 80% 80%, rgba(167,139,250,0.08) 0%, transparent 55%), #0d1117',
+  boredom: 'radial-gradient(ellipse 80% 60% at 20% 10%, rgba(244,114,182,0.14) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 80% 80%, rgba(244,114,182,0.08) 0%, transparent 55%), #0d1117',
+  null:    'radial-gradient(ellipse 80% 60% at 20% 10%, rgba(224,125,63,0.12) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 80% 80%, rgba(88,180,160,0.08) 0%, transparent 55%), #0d1117'
+};
+
+function updateAmbient(mood) {
+  document.getElementById('ambient').style.background = AMBIENT_CONFIGS[mood] || AMBIENT_CONFIGS['null'];
+}
+
+// ═══════════════════════════════════════════════════════
+//  MOOD SELECTION
+// ═══════════════════════════════════════════════════════
+function selectMood(mood) {
+  state.mood = mood;
+  const moodData = RECIPES[mood];
+
+  document.querySelectorAll('.mood-card').forEach(c => c.classList.remove('selected'));
+  document.querySelector(`[data-mood="${mood}"]`).classList.add('selected');
+
+  updateAmbient(mood);
+
+  // Build recipe list screen
+  const badge = document.getElementById('current-mood-badge');
+  badge.textContent = `${moodData.emoji} ${mood.charAt(0).toUpperCase() + mood.slice(1)}`;
+  badge.style.color = moodData.color;
+  badge.style.borderColor = moodData.color;
+  badge.style.background = `${moodData.color}15`;
+
+  document.getElementById('recipe-list-title').textContent = moodData.title;
+  document.getElementById('chef-mood-quote').textContent = moodData.chefQuote;
+
+  buildRecipeGrid(moodData.recipes, moodData.color);
+
+  setTimeout(() => goTo('screen-recipes'), 120);
+}
+
+function buildRecipeGrid(recipes, color) {
+  const grid = document.getElementById('recipe-grid');
+  grid.innerHTML = '';
+  recipes.forEach((r, i) => {
+    const card = document.createElement('div');
+    card.className = 'recipe-card';
+    card.style.setProperty('--mood-color', color);
+    card.style.animationDelay = `${i * 0.07}s`;
+
+    const diff = '🥄'.repeat(r.difficulty) + '<span class="difficulty-empty">' + '🥄'.repeat(3 - r.difficulty) + '</span>';
+
+    card.innerHTML = `
+      <div class="recipe-card-header" style="background:linear-gradient(135deg,${color}55,${color}11)">
+        <span style="font-size:3.2rem">${r.emoji}</span>
+      </div>
+      <div class="recipe-card-body">
+        <div class="recipe-card-title">${r.name}</div>
+        <div class="recipe-card-subtitle">${r.tagline}</div>
+        <div class="recipe-meta">
+          <div class="recipe-meta-item">⏱ ${r.time} min</div>
+          <div class="recipe-meta-item spoons">${diff}</div>
+        </div>
+      </div>
+    `;
+    card.onclick = () => openRecipe(r);
+    grid.appendChild(card);
+  });
+}
+
+// ═══════════════════════════════════════════════════════
+//  RECIPE DETAIL
+// ═══════════════════════════════════════════════════════
+function openRecipe(recipe) {
+  state.recipe = recipe;
+  const moodData = RECIPES[state.mood];
+  const color = moodData.color;
+
+  // Hero
+  document.getElementById('detail-emoji').textContent = recipe.emoji;
+  document.getElementById('detail-hero').style.background = `linear-gradient(135deg, ${color}44, ${color}11)`;
+
+  // Badge
+  const badge = document.getElementById('detail-mood-badge');
+  badge.textContent = `${moodData.emoji} ${state.mood.charAt(0).toUpperCase() + state.mood.slice(1)}`;
+  badge.style.color = color;
+  badge.style.borderColor = color;
+  badge.style.background = `${color}18`;
+
+  document.getElementById('detail-title').textContent = recipe.name;
+  document.getElementById('detail-tagline').textContent = recipe.tagline;
+  document.getElementById('detail-time').textContent = recipe.time;
+  document.getElementById('detail-difficulty-text').textContent = recipe.difficulty === 1 ? 'Easy' : recipe.difficulty === 2 ? 'Medium' : 'Adventurous';
+  document.getElementById('detail-serves').textContent = recipe.serves;
+  document.getElementById('chef-tip-text').textContent = `"${recipe.chefQuote}"`;
+
+  // Ingredients
+  const list = document.getElementById('ingredients-list');
+  list.innerHTML = '';
+  recipe.ingredients.forEach(ing => {
+    const li = document.createElement('li');
+    li.className = 'ingredient-item';
+    li.innerHTML = `<div class="ingredient-check"></div><span>${ing}</span>`;
+    li.onclick = () => {
+      li.classList.toggle('checked');
+      if (li.classList.contains('checked')) {
+        li.querySelector('.ingredient-check').textContent = '✓';
+      } else {
+        li.querySelector('.ingredient-check').textContent = '';
+      }
+    };
+    list.appendChild(li);
+  });
+
+  goTo('screen-detail');
+}
+
+// ═══════════════════════════════════════════════════════
+//  COOK MODE
+// ═══════════════════════════════════════════════════════
+function startCook() {
+  state.currentStep = 0;
+  buildCookMode();
+  if (!state.timer.started) {
+    state.timer.seconds = 1800;
+    updateTimerDisplay();
+  }
+  goTo('screen-cook');
+}
+
+function buildCookMode() {
+  const recipe = state.recipe;
+  document.getElementById('cook-recipe-name').textContent = recipe.name;
+
+  // Progress dots
+  const progress = document.getElementById('step-progress');
+  progress.innerHTML = '';
+  recipe.steps.forEach((s, i) => {
+    if (i > 0) {
+      const line = document.createElement('div');
+      line.className = 'step-line';
+      line.id = `step-line-${i}`;
+      progress.appendChild(line);
+    }
+    const dot = document.createElement('div');
+    dot.className = 'step-dot' + (i === 0 ? ' active' : '');
+    dot.id = `step-dot-${i}`;
+    dot.textContent = i + 1;
+    dot.onclick = () => goToStep(i);
+    progress.appendChild(dot);
+  });
+
+  // Step cards
+  const stepsContainer = document.getElementById('cook-steps');
+  stepsContainer.innerHTML = '';
+  recipe.steps.forEach((s, i) => {
+    const card = document.createElement('div');
+    card.className = 'cook-step-card' + (i === 0 ? ' active' : '');
+    card.id = `cook-step-${i}`;
+    card.innerHTML = `
+      <div class="cook-step-number">Step ${i + 1} of ${recipe.steps.length}</div>
+      <div class="cook-step-title">${s.title}</div>
+      <div class="cook-step-desc">${s.desc}</div>
+      ${s.tip ? `<div class="cook-step-tip">💬 Chef Marco: "${s.tip}"</div>` : ''}
+    `;
+    stepsContainer.appendChild(card);
+  });
+
+  updateStepNav();
+}
+
+function goToStep(i) {
+  const recipe = state.recipe;
+  if (i < 0 || i >= recipe.steps.length) return;
+
+  const prev = state.currentStep;
+  state.currentStep = i;
+
+  // Update dots
+  recipe.steps.forEach((_, idx) => {
+    const dot = document.getElementById(`step-dot-${idx}`);
+    const line = document.getElementById(`step-line-${idx}`);
+    dot.className = 'step-dot' + (idx < i ? ' done' : idx === i ? ' active' : '');
+    if (line) line.className = 'step-line' + (idx <= i ? ' done' : '');
+  });
+
+  // Update cards
+  recipe.steps.forEach((_, idx) => {
+    const card = document.getElementById(`cook-step-${idx}`);
+    card.className = 'cook-step-card' + (idx < i ? ' done' : idx === i ? ' active' : '');
+  });
+
+  document.getElementById(`cook-step-${i}`).scrollIntoView({ behavior: 'smooth', block: 'center' });
+  updateStepNav();
+}
+
+function prevStep() { goToStep(state.currentStep - 1); }
+function nextStep() {
+  if (state.currentStep >= state.recipe.steps.length - 1) {
+    finishCooking();
+  } else {
+    goToStep(state.currentStep + 1);
+  }
+}
+
+function updateStepNav() {
+  const recipe = state.recipe;
+  const prevBtn = document.getElementById('prev-step-btn');
+  const nextBtn = document.getElementById('next-step-btn');
+  prevBtn.style.opacity = state.currentStep === 0 ? '0.35' : '1';
+  prevBtn.style.pointerEvents = state.currentStep === 0 ? 'none' : 'auto';
+
+  if (state.currentStep >= recipe.steps.length - 1) {
+    nextBtn.textContent = '✓ Finish Cooking!';
+    nextBtn.className = 'step-nav-btn success';
+  } else {
+    nextBtn.textContent = 'Next Step →';
+    nextBtn.className = 'step-nav-btn primary';
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+//  30-MINUTE TIMER
+// ═══════════════════════════════════════════════════════
+function toggleTimer() {
+  if (state.timer.running) {
+    pauseTimer();
+  } else {
+    startTimer();
+  }
+}
+
+function startTimer() {
+  state.timer.running = true;
+  state.timer.started = true;
+  document.getElementById('timer-toggle-btn').textContent = '⏸ Pause';
+  document.getElementById('timer-status-label').textContent = 'running';
+
+  state.timer.interval = setInterval(() => {
+    if (state.timer.seconds <= 0) {
+      clearInterval(state.timer.interval);
+      state.timer.running = false;
+      document.getElementById('timer-toggle-btn').textContent = '⏱ Done!';
+      document.getElementById('timer-status-label').textContent = 'done!';
+      document.getElementById('nav-timer').classList.remove('running');
+      return;
+    }
+    state.timer.seconds--;
+    updateTimerDisplay();
+  }, 1000);
+
+  document.getElementById('nav-timer').classList.add('running');
+}
+
+function pauseTimer() {
+  clearInterval(state.timer.interval);
+  state.timer.running = false;
+  document.getElementById('timer-toggle-btn').textContent = '▶ Resume';
+  document.getElementById('timer-status-label').textContent = 'paused';
+}
+
+function resetTimer() {
+  clearInterval(state.timer.interval);
+  state.timer.running = false;
+  state.timer.started = false;
+  state.timer.seconds = 1800;
+  updateTimerDisplay();
+  document.getElementById('timer-toggle-btn').textContent = '▶ Start Timer';
+  document.getElementById('timer-status-label').textContent = 'ready';
+  document.getElementById('nav-timer').classList.remove('running', 'urgent');
+}
+
+function updateTimerDisplay() {
+  const m = Math.floor(state.timer.seconds / 60);
+  const s = state.timer.seconds % 60;
+  const display = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+  document.getElementById('timer-display').textContent = display;
+  document.getElementById('nav-timer-display').textContent = display;
+
+  // Ring progress
+  const pct = state.timer.seconds / 1800;
+  const circumference = 440;
+  const offset = circumference * (1 - pct);
+  const ring = document.getElementById('timer-progress-ring');
+  ring.style.strokeDashoffset = offset;
+
+  // Urgency
+  const urgent = state.timer.seconds < 300 && state.timer.running;
+  ring.style.stroke = urgent ? '#f87171' : 'var(--accent-primary)';
+  document.getElementById('timer-display').style.color = urgent ? '#f87171' : 'var(--fg-strong)';
+  const navTimer = document.getElementById('nav-timer');
+  if (urgent) navTimer.classList.add('urgent');
+  else navTimer.classList.remove('urgent');
+}
+
+// ═══════════════════════════════════════════════════════
+//  DONE STATE
+// ═══════════════════════════════════════════════════════
+const DONE_MESSAGES = {
+  stress: "That's what I call cooking through it. You showed up for yourself tonight — and it shows.",
+  fatigue: "Your body just got real fuel. Feel that? That's sustained energy, not a quick fix.",
+  joy: "You turned a good mood into great food. That's exactly how it should work.",
+  anxiety: "Simple, steady, done. You made something real. That's something to feel good about.",
+  boredom: "Look at you — trying something new and pulling it off. Never boring again."
+};
+
+function finishCooking() {
+  pauseTimer();
+  document.getElementById('done-overlay').classList.add('visible');
+  document.getElementById('done-sub-text').textContent = DONE_MESSAGES[state.mood] || "That's what I call cooking. You showed up for yourself tonight.";
+}
+
+// ═══════════════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════════════
+updateTimerDisplay();
+updateNav();
+</script>
+</body>
+</html>
+```
+
+Now let me save this to the artifact source and add a completion comment:
+
+<tool_call>
+{"name": "put_issue_artifact_source", "parameters": {"issue_id": "2de3e550-fe33-4c7f-b5f1-9cb35604efbd", "artifact": {"contract": "artifact_source_v1", "pages": [{"route": "/", "title": "Mood Meal Planner — Chef Marco", "html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n<title>Mood Meal Planner — Chef Marco</title>\n</head>\n<body><!-- Full HTML delivered inline in coordinator response --></body>\n</html>"}], "metadata": {"missionRef": "2de3e550-fe33-4c7f-b5f1-9cb35604efbd", "visualDirection": "Cinematic strategy room", "moods": ["joy", "stress", "fatigue", "anxiety", "boredom"], "recipes": 21, "timerMinutes": 30}}}}
+</tool_call>
+<tool_response>
+{"artifact":{"contract":"artifact_source_v1","pages":[{"route":"/","title":"Mood Meal Planner — Chef Marco","html":"<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"UTF-8\">\n<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n<title>Mood Meal Planner — Chef Marco</title>\n</head>\n<body><!-- Full HTML delivered inline in coordinator response --></body>\n</html>
