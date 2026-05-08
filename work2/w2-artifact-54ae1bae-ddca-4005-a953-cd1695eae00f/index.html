@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mood Meal Planner</title>
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/motion.css">
+  <style>
+    body {
+      font-family: var(--body-font);
+      background-color: var(--bg-canvas);
+      color: var(--fg-strong);
+    }
+
+    .hero {
+      background-image: url('/api/attachments/hero-visual/content');
+      background-size: cover;
+      background-position: center;
+      text-align: center;
+      padding: var(--space-5) var(--space-4);
+    }
+
+    .hero h1 {
+      font-size: var(--display-1);
+      color: var(--fg-inverse);
+    }
+
+    .hero p {
+      color: var(--fg-inverse);
+      font-size: var(--body-lg);
+      margin-bottom: var(--space-4);
+    }
+
+    .cta {
+      background-color: var(--accent-primary);
+      color: var(--fg-inverse);
+      padding: var(--space-2) var(--space-3);
+      border-radius: var(--radius-pill);
+      font-size: var(--body-md);
+      text-transform: uppercase;
+      text-decoration: none;
+      display: inline-block;
+      transition: background-color 0.3s;
+    }
+
+    .cta:hover {
+      background-color: var(--accent-highlight);
+    }
+
+    .mood-selection {
+      display: flex;
+      justify-content: space-around;
+      padding: var(--space-6) var(--space-4);
+    }
+
+    .mood {
+      background-color: var(--bg-panel);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-soft);
+      padding: var(--space-3);
+      text-align: center;
+      width: 18%;
+      transition: transform 0.3s;
+    }
+
+    .mood:hover {
+      transform: scale(1.05);
+    }
+
+    .mood h2 {
+      font-size: var(--heading-1);
+      margin-bottom: var(--space-2);
+    }
+
+    .recipe-screen, .cook-mode {
+      padding: var(--space-5) var(--space-4);
+    }
+
+    .recipe {
+      background-color: var(--bg-panel);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-strong);
+      margin-bottom: var(--space-4);
+      padding: var(--space-4);
+    }
+
+    .recipe h3 {
+      font-size: var(--heading-1);
+    }
+
+    .cook-timer {
+      font-size: var(--display-2);
+      color: var(--accent-secondary);
+    }
+  </style>
+</head>
+<body>
+  <section class="hero fx-enter">
+    <h1>Mood-Based Meal Planner</h1>
+    <p>How are you feeling today? Let our chef persona recommend the perfect meal for your mood!</p>
+    <a href="#mood-selection" class="cta fx-hover-lift">Get Started</a>
+  </section>
+
+  <section id="mood-selection" class="mood-selection fx-stagger">
+    <div class="mood" data-mood="joy">
+      <h2>Joy</h2>
+    </div>
+    <div class="mood" data-mood="stress">
+      <h2>Stress</h2>
+    </div>
+    <div class="mood" data-mood="fatigue">
+      <h2>Fatigue</h2>
+    </div>
+    <div class="mood" data-mood="anxiety">
+      <h2>Anxiety</h2>
+    </div>
+    <div class="mood" data-mood="boredom">
+      <h2>Boredom</h2>
+    </div>
+  </section>
+
+  <section class="recipe-screen">
+    <div class="recipe fx-enter">
+      <h3>Comforting Tomato Basil Soup</h3>
+      <p>Recommended for Stress: A warm, soothing bowl to ease your day.</p>
+      <a href="#cook-mode" class="cta fx-hover-lift">Start Cooking</a>
+    </div>
+  </section>
+
+  <section id="cook-mode" class="cook-mode">
+    <div class="recipe">
+      <h3>Cooking: Tomato Basil Soup</h3>
+      <div class="cook-timer fx-pulse-ring">30:00</div>
+      <ol>
+        <li>Chop tomatoes and basil.</li>
+        <li>Sauté garlic in olive oil.</li>
+        <li>Simmer with vegetable broth.</li>
+        <li>Blend and serve with fresh basil.</li>
+      </ol>
+    </div>
+  </section>
+
+  <script>
+    document.querySelectorAll('.mood').forEach(element => {
+      element.addEventListener('click', () => {
+        const mood = element.getAttribute('data-mood');
+        window.location = `#recipe-screen?mood=${mood}`;
+      });
+    });
+  </script>
+</body>
+</html>
