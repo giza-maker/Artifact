@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mood Meal Planner</title>
+    <link rel="stylesheet" href="/artifact-design/tokens.css">
+    <link rel="stylesheet" href="/artifact-design/motion.css">
+    <style>
+        body {
+            font-family: var(--body-font);
+            margin: 0;
+            background: var(--bg-canvas);
+            color: var(--fg-strong);
+        }
+
+        header {
+            background: var(--bg-panel);
+            padding: var(--space-4) var(--space-3);
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: var(--display-1);
+            margin: var(--space-4) 0 var(--space-2) 0;
+        }
+
+        header p {
+            font-size: var(--body-md);
+        }
+
+        section {
+            padding: var(--space-5) var(--space-3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .mood-selection {
+            display: flex;
+            gap: var(--space-3);
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: var(--space-6);
+        }
+
+        .mood-option {
+            background: var(--bg-panel);
+            border-radius: var(--radius-card);
+            padding: var(--space-3);
+            box-shadow: var(--shadow-soft);
+            transition: transform 180ms ease;
+            cursor: pointer;
+            text-align: center;
+            font-size: var(--heading-1);
+        }
+
+        .mood-option:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-strong);
+        }
+
+        .cta-section {
+            text-align: center;
+            margin-top: var(--space-6);
+        }
+
+        .cta-section a {
+            display: inline-block;
+            margin: var(--space-2) var(--space-1);
+            padding: var(--space-2) var(--space-4);
+            background: var(--accent-primary);
+            color: var(--fg-inverse);
+            border-radius: var(--radius-pill);
+            text-decoration: none;
+            box-shadow: var(--shadow-soft);
+            transition: background 180ms ease;
+            font-size: var(--body-lg);
+        }
+
+        .cta-section a:hover {
+            background: var(--accent-highlight);
+        }
+
+        footer {
+            background: var(--bg-panel);
+            padding: var(--space-4) var(--space-3);
+            text-align: center;
+        }
+
+    </style>
+</head>
+
+<body>
+    <header class="fx-enter">
+        <h1>Mood-Based Meal Planner</h1>
+        <p>Instead of focusing on calories, we ask, "How are you feeling today?". Whether you're stressed or sluggish, find meals tailored to your mood.</p>
+    </header>
+
+    <section class="fx-enter">
+        <div class="mood-selection fx-stagger">
+            <div class="mood-option" onclick="chooseMood('Joy')">Joy</div>
+            <div class="mood-option" onclick="chooseMood('Stress')">Stress</div>
+            <div class="mood-option" onclick="chooseMood('Fatigue')">Fatigue</div>
+            <div class="mood-option" onclick="chooseMood('Anxiety')">Anxiety</div>
+            <div class="mood-option" onclick="chooseMood('Boredom')">Boredom</div>
+        </div>
+        <div class="cta-section">
+            <a href="#recipes" onclick="showRecipes()">View Recipes</a>
+        </div>
+    </section>
+
+    <footer>
+        <p>Find the perfect meal to match your mood. Meals ready in 30 minutes or less!</p>
+    </footer>
+
+    <script>
+        function chooseMood(mood) {
+            console.log(`Mood selected: ${mood}`);
+            // Add functionality to track mood selection
+        }
+
+        function showRecipes() {
+            console.log("Showing recipes...");
+            // Transition to recipes display based on selected mood
+        }
+    </script>
+</body>
+
+</html>
