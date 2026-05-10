@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blocks Work 3 — Rebuild 3-year Financial Projections</title>
+    <link rel="stylesheet" href="/artifact-design/tokens.css">
+    <link rel="stylesheet" href="/artifact-design/motion.css">
+    <style>
+        body {
+            font-family: var(--body-font);
+            background-color: var(--bg-canvas);
+            color: var(--fg-strong);
+            margin: 0;
+            padding: 0;
+        }
+        .hero-shell {
+            background-color: var(--bg-panel);
+            padding: var(--space-5);
+            text-align: center;
+        }
+        .cta-row {
+            display: flex;
+            justify-content: center;
+            gap: var(--space-4);
+            margin-top: var(--space-4);
+        }
+        .btn-primary, .btn-secondary {
+            padding: var(--space-2) var(--space-3);
+            border-radius: var(--radius-pill);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .btn-primary {
+            background-color: var(--accent-primary);
+            color: var(--fg-inverse);
+        }
+        .btn-secondary {
+            background-color: var(--accent-secondary);
+            color: var(--fg-inverse);
+        }
+        .editorial-grid {
+            display: grid;
+            gap: var(--space-5);
+            padding: var(--space-6);
+        }
+        .feature-card {
+            background-color: var(--bg-panel);
+            padding: var(--space-4);
+            box-shadow: var(--shadow-soft);
+        }
+    </style>
+</head>
+<body>
+    <header class="hero-shell fx-enter">
+        <div class="eyebrow">Blocks Work 3</div>
+        <h1>Rebuild 3-year Financial Projections</h1>
+        <p>Update the #financial-plan tables, bar chart, and sensitivity analysis with the new $20 ARPU baseline.</p>
+        <div class="cta-row fx-stagger">
+            <a class="btn btn-primary" href="#start">Get Started</a>
+            <a class="btn btn-secondary" href="#learn-more">Learn More</a>
+        </div>
+    </header>
+
+    <section class="editorial-grid fx-enter">
+        <article class="feature-card">
+            <h2>Value Proposition</h2>
+            <p>Reduce the seating value, base should be $20, and update the plan with accurate projections.</p>
+        </article>
+        <article class="feature-card">
+            <h2>Financial Metrics</h2>
+            <p>Updated MRR, ARR, gross profit, and net income based on revised assumptions.</p>
+        </article>
+        <article class="feature-card">
+            <h2>Confidence in Future Growth</h2>
+            <p>Our new model projects robust growth with clear seat-price strategies and optimizations.</p>
+        </article>
+    </section>
+
+    <footer style="text-align: center; padding: var(--space-4); background-color: var(--bg-panel);">
+        <p>© 2023 Blocks Work Financial Modelling</p>
+    </footer>
+
+    <script src="/artifact-design/asset-catalog.json"></script>
+</body>
+</html>
