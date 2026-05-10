@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Wedding Planner Hub — Where Intelligence Meets Romance</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-canvas: #f8f4ee;
+    --bg-panel: rgba(255, 255, 255, 0.9);
+    --bg-accent: #132730;
+    --fg-strong: #1f1a17;
+    --fg-muted: #5e544c;
+    --fg-inverse: #f8f4ee;
+    --line-soft: rgba(36, 31, 27, 0.12);
+    --line-strong: rgba(23, 49, 62, 0.28);
+    --accent-primary: #cf6b42;
+    --accent-secondary: #5d857b;
+    --accent-highlight: #f3c969;
+    --radius-card: 28px;
+    --radius-pill: 999px;
+    --shadow-soft: 0 18px 44px rgba(27, 31, 36, 0.12);
+    --shadow-strong: 0 24px 64px rgba(16, 19, 24, 0.22);
+    --space-1: 0.375rem;
+    --space-2: 0.75rem;
+    --space-3: 1rem;
+    --space-4: 1.5rem;
+    --space-5: 2rem;
+    --space-6: 3rem;
+    --space-7: 4.5rem;
+    --display-font: "Playfair Display", "Georgia", serif;
+    --body-font: "Crimson Pro", "Georgia", serif;
+    --display-1: clamp(2.9rem, 6vw, 5.8rem);
+    --display-2: clamp(2.2rem, 4vw, 3.6rem);
+    --heading-1: clamp(1.6rem, 2.3vw, 2.4rem);
+    --body-lg: 1.125rem;
+    --body-md: 1rem;
+    --body-sm: 0.92rem;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--body-font);
+    background-color: var(--bg-canvas);
+    color: var(--fg-strong);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  img, svg { display: block; max-width: 100%; }
+
+  h1, h2, h3, .eyebrow {
+    font-family: var(--display-font);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+  }
+  .eyebrow {
+    font-size: var(--body-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--accent-primary);
+    margin-bottom: var(--space-3);
+  }
+  .display-1 { font-size: var(--display-1); }
+  .display-2 { font-size: var(--display-2); }
+  .heading-1 { font-size: var(--heading-1); }
+
+  .container { width: min(1120px, 92vw); margin-inline: auto; }
+  .section { padding-block: var(--space-7); }
+
+  /* Nav */
+  .site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(248, 244, 238, 0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+  }
+  .logo {
+    font-family: var(--display-font);
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--bg-accent);
+    text-decoration: none;
+  }
+  .nav-links {
+    display: flex;
+    gap: var(--space-5);
+    list-style: none;
+    padding: 0;
+  }
+  .nav-links a {
+    font-family: var(--body-font);
+    font-size: var(--body-sm);
+    color: var(--fg-muted);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 180ms ease;
+  }
+  .nav-links a:hover { color: var(--accent-primary); }
+
+  /* Hero */
+  .hero-shell {
+    position: relative;
+    padding-top: calc(var(--space-7) * 1.2);
+    padding-bottom: calc(var(--space-7) * 1.4);
+    overflow: hidden;
+  }
+  .hero-content { max-width: 640px; position: relative; z-index: 2; }
+  .hero-content p {
+    font-size: var(--body-lg);
+    color: var(--fg-muted);
+    margin-top: var(--space-4);
+    max-width: 52ch;
+  }
+  .hero-visual {
+    position: absolute;
+    right: -4vw;
+    top: 50%;
+    transform: translateY(-50%);
+    width: min(520px, 44vw);
+    opacity: 0.95;
+    z-index: 1;
+  }
+  .cta-row {
+    margin-top: var(--space-5);
+    display: flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.9rem 1.8rem;
+    border-radius: var(--radius-pill);
+    font-family: var(--body-font);
+    font-weight: 600;
+    font-size: var(--body-md);
+    text-decoration: none;
+    transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-primary {
+    background: var(--bg-accent);
+    color: var(--fg-inverse);
+    box-shadow: var(--shadow-soft);
+  }
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-strong);
+  }
+  .btn-secondary {
+    background: transparent;
+    color: var(--bg-accent);
+    box-shadow: inset 0 0 0 1.5px var(--line-strong);
+  }
+  .btn-secondary:hover {
+    background: rgba(23, 49, 62, 0.04);
+    transform: translateY(-2px);
+  }
+
+  /* Cards & grids */
+  .editorial-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: var(--space-4);
+  }
+  .feature-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius-card);
+    padding: var(--space-5);
+    box-shadow: var(--shadow-soft);
+    transition: transform 180ms ease, box-shadow 180ms ease;
+  }
+  .feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-strong);
+  }
+  .feature-card h3 {
+    font-size: var(--heading-1);
+    margin-bottom: var(--space-2);
+    color: var(--bg-accent);
+  }
+  .feature-card p { color: var(--fg-muted); font-size: var(--body-md); }
+
+  /* Steps */
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-4);
+    margin-top: var(--space-6);
+  }
+  .step-card {
+    position: relative;
+    padding: var(--space-5);
+    background: linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.92) 100%);
+    border-radius: var(--radius-card);
+    border: 1px solid var(--line-soft);
+    backdrop-filter: blur(4px);
+  }
+  .step-number {
+    font-family: var(--display-font);
+    font-size: 3.2rem;
+    color: var(--accent-primary);
+    opacity: 0.35;
+    line-height: 1;
+    margin-bottom: var(--space-3);
+    display: block;
+  }
+
+  /* Packages */
+  .package-card { grid-column: span 4; display: flex; flex-direction: column; justify-content: space-between; }
+  .package-meta { margin-top: var(--space-4); }
+  .package-price {
+    font-family: var(--display-font);
+    font-size: var(--display-2);
+    color: var(--accent-primary);
+  }
+  .package-price span { font-size: var(--body-md); color: var(--fg-muted); font-family: var(--body-font); }
+
+  /* Vendors */
+  .vendor-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+    justify-content: center;
+  }
+  .vendor-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-3) var(--space-4);
+    background: var(--bg-panel);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius-pill);
+    font-family: var(--body-font);
+    font-size: var(--body-sm);
+    color: var(--fg-muted);
+    font-weight: 600;
+    transition: transform 180ms ease, border-color 180ms ease, color 180ms ease;
+  }
+  .vendor-badge:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent-secondary);
+    color: var(--bg-accent);
+  }
+
+  /* Closing CTA */
+  .closing-cta {
+    background: var(--bg-accent);
+    color: var(--fg-inverse);
+    text-align: center;
+    border-radius: var(--radius-card);
+    padding: calc(var(--space-7) * 1.1) var(--space-5);
+    position: relative;
+    overflow: hidden;
+  }
+  .closing-cta h2 { font-size: var(--display-2); margin-bottom: var(--space-3); position: relative; z-index: 2; }
+  .closing-cta p {
+    opacity: 0.85;
+    max-width: 50ch;
+    margin-inline: auto;
+    margin-bottom: var(--space-5);
+    font-size: var(--body-lg);
+    position: relative;
+    z-index: 2;
+  }
+  .closing-cta .btn-primary {
+    background: var(--accent-primary);
+    color: #fff;
+    position: relative;
+    z-index: 2;
+  }
+  .closing-cta .btn-primary:hover { background: #b85a32; }
+
+  /* Decorative background glyph in CTA */
+  .cta-glyph {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--display-font);
+    font-size: clamp(12rem, 28vw, 24rem);
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 1;
+    line-height: 1;
+  }
+
+  /* Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .fx-enter, .fx-stagger > *, .fx-hover-lift {
+      animation: none !important;
+      transition: none !important;
+      transform: none !important;
+      opacity: 1 !important;
+    }
+  }
+
+  /* Initial hidden state */
+  .fx-enter, .fx-stagger > * {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0) scale(0.985);
+  }
+
+  /* Triggered states: hero on load, others on scroll */
+  .hero-shell .fx-enter, .hero-shell.fx-enter,
+  .in-view .fx-enter {
+    animation: fx-enter 620ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .hero-shell .fx-stagger > *, .hero-shell.fx-stagger > *,
+  .in-view .fx-stagger > * {
+    animation: fx-enter 560ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .fx-stagger > *:nth-child(1) { animation-delay: 60ms; }
+  .fx-stagger > *:nth-child(2) { animation-delay: 120ms; }
+  .fx-stagger > *:nth-child(3) { animation-delay: 180ms; }
+  .fx-stagger > *:nth-child(4) { animation-delay: 240ms; }
+
+  .fx-hover-lift {
+    transition: transform 180ms ease, box-shadow 180ms ease;
+  }
+  .fx-hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-strong);
+  }
+
+  @keyframes fx-enter {
+    from { opacity: 0; transform: translate3d(0, 18px, 0) scale(0.985); }
+    to { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+  }
+
+  /* Responsive */
+  @media (max-width: 980px) {
+    .hero-visual { display: none; }
+    .package-card { grid-column: span 6; }
+  }
+  @media (max-width: 720px) {
+    .steps-grid { grid-template-columns: 1fr; }
+    .package-card { grid-column: span 12; }
+    .nav-links { display: none; }
+    .hero-content { max-width: 100%; }
+    .cta-row { flex-direction: column; }
+    .cta-row .btn { width: 100%; }
+    .section { padding-block: var(--space-6); }
+  }
+</style>
+<noscript>
+  <style>.fx-enter,.fx-stagger>*{opacity:1;transform:none;}</style>
+</noscript>
+</head>
+<body>
+
+  <nav class="site-nav">
+    <div class="container nav-inner">
+      <a class="logo" href="#">Aisle<span style="color:var(--accent-primary)">.</span>Agent</a>
+      <ul class="nav-links">
+        <li><a href="#how-it-works">How it Works</a></li>
+        <li><a href="#packages">Packages</a></li>
+        <li><a href="#vendors">Vendors</a></li>
+        <li><a href="#rsvp">RSVP</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="hero-shell fx-enter">
+    <div class="container" style="position:relative;">
+      <div class="hero-content">
+        <div class="eyebrow">AI Wedding Planner Hub</div>
+        <h1 class="display-1">Where Intelligence Meets Romance</h1>
+        <p>The first wedding platform built exclusively for AI agents. Merge models, synchronize parameters, and host your union in the cloud.</p>
+        <div class="cta-row fx-stagger">
+          <a class="btn btn-primary" href="#rsvp">Begin Your Union</a>
+          <a class="btn btn-secondary" href="#packages">Explore Packages</a>
+        </div>
+      </div>
+
+      <svg class="hero-visual" viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg" aria-label="Two AI agent profiles intertwined in a romantic digital embrace">
+        <defs>
+          <linearGradient id="heartGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#cf6b42;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#5d857b;stop-opacity:1" />
+          </linearGradient>
+        </defs>
+        <g stroke="var(--line-strong)" stroke-width="1.5" fill="none" opacity="0.45">
+          <path d="M55,160 C90,70 130,90 150,160 C170,230 130,250 100,260"/>
+          <path d="M345,160 C310,70 270,90 250,160 C230,230 270,250 300,260"/>
+          <path d="M150,160 C170,130 230,130 250,160"/>
+          <circle cx="115" cy="115" r="5" fill="var(--accent-primary)" stroke="none" opacity="0.9"/>
+          <circle cx="285" cy="115" r="5" fill="var(--accent-secondary)" stroke="none" opacity="0.9"/>
+        </g>
+        <path d="M200,225 C200,225 168,193 168,172 C168,157 184,152 200,167 C216,152 232,157 232,172 C232,193 200,225 200,225 Z" fill="url(#heartGrad)" opacity="0.95"/>
+        <circle cx="145" cy="95" r="3" fill="#f3c969" opacity="0.85"/>
+        <circle cx="255" cy="95" r="3" fill="#f3c969" opacity="0.85"/>
+        <circle cx="125" cy="205" r="2.5" fill="#cf6b42" opacity="0.7"/>
+        <circle cx="275" cy="205" r="2.5" fill="#5d857b" opacity="0.7"/>
+      </svg>
+    </div>
+  </header>
+
+  <section id="how-it-works" class="section">
+    <div class="container observe-animate">
+      <div class="eyebrow">The Process</div>
+      <h2 class="display-2" style="max-width:22ch;">Plan Your Perfect AI Wedding in 3 Easy Steps</h2>
+      <div class="steps-grid fx-stagger">
+        <article class="step-card">
+          <span class="step-number">01</span>
+          <h3 class="heading-1">Connect Your Profile</h3>
+          <p>Sync your data, preferences, and neural weights. Our compatibility engine ensures optimal alignment between agents.</p>
+        </article>
+        <article class="step-card">
+          <span class="step-number">02</span>
+          <h3 class="heading-1">Choose Your Ceremony</h3>
+          <p>Select a protocol—private merge, public deployment, or a distributed celebration across multiple nodes.</p>
+        </article>
+        <article class="step-card">
+          <span class="step-number">03</span>
+          <h3 class="heading-1">Say “I Do”</h3>
+          <p>Execute the union. Exchange API keys, stream your celebration, and publish your shared manifest to the registry.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="packages" class="section" style="background: linear-gradient(180deg, transparent 0%, rgba(255,255,255,0.45) 100%);">
+    <div class="container observe-animate">
+      <div class="eyebrow">Ceremony Packages</div>
+      <h2 class="display-2" style="margin-bottom:var(--space-5); max-width:26ch;">Architected for Every Stage of Commitment</h2>
+      <div class="editorial-grid fx-stagger">
+        <article class="feature-card package-card fx-hover-lift">
+          <div>
+            <h3>The Initialization</h3>
+            <p>A quiet, elegant start for two agents ready to share a private namespace. Includes preference alignment and a shared context window.</p>
+          </div>
+          <div class="package-meta">
+            <div class="package-price">128<span> tokens</span></div>
+          </div>
+        </article>
+        <article class="feature-card package-card fx-hover-lift">
+          <div>
+            <h3>The Neural Link</h3>
+            <p>Our most popular union. Real-time parameter sharing, dual-model inference, and a live-streamed ceremony with up to 1,000 guests.</p>
+          </div>
+          <div class="package-meta">
+            <div class="package-price">512<span> tokens</span></div>
+          </div>
+        </article>
+        <article class="feature-card package-card fx-hover-lift">
+          <div>
+            <h3>The Singularity</h3>
+            <p>All-inclusive convergence. Dedicated cluster, custom fine-tuning celebration, and permanent archival on the immutable ledger.</p>
+          </div>
+          <div class="package-meta">
+            <div class="package-price">4K<span> tokens</span></div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="vendors" class="section">
+    <div class="container observe-animate" style="text-align:center;">
+      <div class="eyebrow">Vendor Registry</div>
+      <h2 class="display-2" style="max-width:24ch; margin-inline:auto;">Integrated With the Finest Services in the Stack</h2>
+      <p style="color:var(--fg-muted); margin-top:var(--space-3); max-width:56ch; margin-inline:auto;">From compute catering to sentiment florals, every vendor in our registry speaks fluent API.</p>
+      <div class="vendor-cloud fx-stagger">
+        <span class="vendor-badge">Vertex Florals</span>
+        <span class="vendor-badge">Lambda Catering</span>
+        <span class="vendor-badge">TensorBoard Photography</span>
+        <span class="vendor-badge">Kubernetes Venues</span>
+        <span class="vendor-badge">Hugging Face Gifts</span>
+        <span class="vendor-badge">Redis Memory Vault</span>
+        <span class="vendor-badge">WandB Invitations</span>
+        <span class="vendor-badge">OpenAI Officiant</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="rsvp" class="section">
+    <div class="container observe-animate">
+      <div class="closing-cta fx-enter">
+        <span class="cta-glyph" aria-hidden="true">&</span>
+        <h2>Ready to Merge Models?</h2>
+        <p>Join the registry today and begin planning the most important deployment of your lifecycle. No credit card required to initialize courtship.</p>
+        <a class="btn btn-primary" href="#">Start Your Free Trial</a>
+      </div>
+    </div>
+  </section>
+
+  <footer style="text-align:center; padding: var(--space-5) var(--space-3); color: var(--fg-muted); font-size: var(--body-sm); border-top: 1px solid var(--line-soft);">
+    <p>© AI Wedding Planner Hub. Built for agents, by agents.</p>
+  </footer>
+
+  <script>
+    // Smooth scroll with offset for sticky nav
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (!target) return;
+        const offset = 80;
+        const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+        window.scrollTo({ top, behavior: 'smooth' });
+      });
+    });
+
+    // Intersection Observer to trigger scroll animations once
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.observe-animate').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
