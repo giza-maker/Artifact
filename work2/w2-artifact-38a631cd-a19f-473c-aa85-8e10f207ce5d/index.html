@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BLOCKS — Artifact Hardening</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+  /* ── design tokens ── */
+  :root {
+    --bg-canvas: #f8f4ee;
+    --bg-panel: rgba(255,252,247,0.88);
+    --bg-accent: #17313e;
+    --fg-strong: #1f1a17;
+    --fg-muted: #5e544c;
+    --fg-inverse: #f8f4ee;
+    --line-soft: rgba(36,31,27,0.12);
+    --line-strong: rgba(23,49,62,0.28);
+    --accent-primary: #d5663a;
+    --accent-secondary: #58837a;
+    --accent-highlight: #f3c969;
+    --radius-card: 28px;
+    --radius-pill: 999px;
+    --shadow-soft: 0 18px 44px rgba(27,31,36,0.12);
+    --shadow-strong: 0 24px 64px rgba(16,19,24,0.22);
+    --space-1: 0.375rem;
+    --space-2: 0.75rem;
+    --space-3: 1rem;
+    --space-4: 1.5rem;
+    --space-5: 2rem;
+    --space-6: 3rem;
+    --space-7: 4.5rem;
+    --display-font: "DM Serif Display", Georgia, serif;
+    --body-font: "DM Sans", "Segoe UI", sans-serif;
+    --display-1: clamp(2.9rem,6vw,5.8rem);
+    --display-2: clamp(2.2rem,4vw,3.6rem);
+    --heading-1: clamp(1.6rem,2.3vw,2.4rem);
+    --body-lg: 1.125rem;
+    --body-md: 1rem;
+    --body-sm: 0.92rem;
+  }
+
+  /* ── motion presets ── */
+  @media (prefers-reduced-motion: reduce) {
+    .fx-enter,.fx-stagger>*,.fx-hover-lift,.fx-pulse-ring {
+      animation:none!important;transition:none!important;transform:none!important;
+    }
+  }
+  .fx-enter { animation: fx-enter 620ms cubic-bezier(0.22,1,0.36,1) both; }
+  .fx-stagger>* { opacity:0; animation: fx-enter 560ms cubic-bezier(0.22,1,0.36,1) both; }
+  .fx-stagger>*:nth-child(1){animation-delay:60ms}
+  .fx-stagger>*:nth-child(2){animation-delay:140ms}
+  .fx-stagger>*:nth-child(3){animation-delay:220ms}
+  .fx-stagger>*:nth-child(4){animation-delay:300ms}
+  .fx-stagger>*:nth-child(5){animation-delay:380ms}
+  .fx-hover-lift { transition: transform 180ms ease, box-shadow 180ms ease; }
+  .fx-hover-lift:hover { transform: translateY(-5px); box-shadow: var(--shadow-strong); }
+  @keyframes fx-enter {
+    from { opacity:0; transform: translate3d(0,18px,0) scale(0.985); }
+    to   { opacity:1; transform: translate3d(0,0,0)   scale(1); }
+  }
+
+  /* ── reset ── */
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; }
+  body {
+    font-family: var(--body-font);
+    background: var(--bg-canvas);
+    color: var(--fg-strong);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  img { max-width:100%; display:block; }
+  a { color:inherit; text-decoration:none; }
+
+  /* ── nav ── */
+  .nav {
+    position: sticky; top:0; z-index:100;
+    display: flex; align-items:center; justify-content:space-between;
+    padding: var(--space-3) var(--space-6);
+    background: rgba(248,244,238,0.82);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .nav-logo {
+    font-family: var(--display-font);
+    font-size: 1.35rem;
+    letter-spacing: -0.02em;
+    color: var(--fg-strong);
+    display:flex; align-items:center; gap:var(--space-2);
+  }
+  .nav-logo span {
+    display:inline-block;
+    width:8px; height:8px; border-radius:2px;
+    background: var(--accent-primary);
+    box-shadow: 0 0 0 0 rgba(213,102,58,0.4);
+    animation: blink 2.4s ease-in-out infinite;
+  }
+  @keyframes blink {
+    0%,100%{opacity:1} 50%{opacity:0.35}
+  }
+  .nav-pill {
+    font-size: var(--body-sm);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--accent-secondary);
+    border: 1px solid var(--accent-secondary);
+    padding: 0.3rem 0.9rem;
+    border-radius: var(--radius-pill);
+  }
+
+  /* ── hero ── */
+  .hero {
+    padding: var(--space-7) var(--space-6) var(--space-6);
+    max-width: 1180px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+    align-items: center;
+  }
+  .hero-copy { display:flex; flex-direction:column; gap:var(--space-4); }
+  .eyebrow {
+    display: inline-flex; align-items:center; gap:var(--space-2);
+    font-family: var(--body-font);
+    font-size: var(--body-sm);
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent-primary);
+  }
+  .eyebrow::before {
+    content:'';
+    display:inline-block;
+    width:28px; height:2px;
+    background: var(--accent-primary);
+  }
+  .hero h1 {
+    font-family: var(--display-font);
+    font-size: var(--display-1);
+    line-height: 1.05;
+    letter-spacing: -0.03em;
+    color: var(--fg-strong);
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--accent-secondary);
+  }
+  .hero-sub {
+    font-size: var(--body-lg);
+    color: var(--fg-muted);
+    max-width: 44ch;
+    line-height: 1.7;
+  }
+  .cta-row {
+    display: flex; gap: var(--space-3); flex-wrap:wrap; align-items:center;
+    margin-top: var(--space-2);
+  }
+  .btn {
+    display: inline-flex; align-items:center; gap:0.5rem;
+    padding: 0.85rem 1.75rem;
+    border-radius: var(--radius-pill);
+    font-family: var(--body-font);
+    font-size: var(--body-md);
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: transform 150ms ease, box-shadow 150ms ease, background 150ms ease;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-primary {
+    background: var(--accent-primary);
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(213,102,58,0.32);
+  }
+  .btn-primary:hover { box-shadow: 0 10px 30px rgba(213,102,58,0.45); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--fg-strong);
+    border: 1.5px solid var(--line-strong);
+  }
+  .btn-secondary:hover { background: var(--bg-panel); }
+  .hero-visual {
+    position:relative; border-radius: var(--radius-card);
+    overflow: hidden;
+    box-shadow: var(--shadow-strong);
+    aspect-ratio: 16/9;
+    background: var(--bg-accent);
+  }
+  .hero-visual img { width:100%; height:100%; object-fit:cover; }
+  .hero-badge {
+    position:absolute; bottom: var(--space-3); left: var(--space-3);
+    background: rgba(248,244,238,0.92);
+    backdrop-filter: blur(8px);
+    border-radius: var(--radius-pill);
+    padding: 0.4rem 1rem;
+    font-size: var(--body-sm);
+    font-weight: 500;
+    color: var(--fg-strong);
+    display:flex; align-items:center; gap:0.5rem;
+    border: 1px solid var(--line-soft);
+  }
+  .hero-badge::before {
+    content:'';
+    width:8px; height:8px; border-radius:50%;
+    background: #4ade80;
+    box-shadow: 0 0 0 3px rgba(74,222,128,0.25);
+  }
+
+  /* ── divider ── */
+  .section-divider {
+    max-width:1180px; margin:0 auto;
+    border:none; border-top:1px solid var(--line-soft);
+  }
+
+  /* ── proof strip ── */
+  .proof-strip {
+    max-width: 1180px; margin: 0 auto;
+    padding: var(--space-5) var(--space-6);
+    display: flex; gap: var(--space-6); flex-wrap:wrap; justify-content:space-between;
+    align-items: center;
+  }
+  .proof-stat { display:flex; flex-direction:column; }
+  .proof-stat strong {
+    font-family: var(--display-font);
+    font-size: clamp(2rem,3vw,2.8rem);
+    line-height:1;
+    color: var(--fg-strong);
+  }
+  .proof-stat span {
+    font-size: var(--body-sm);
+    color: var(--fg-muted);
+    margin-top: 0.25rem;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+  }
+  .proof-divider { width:1px; height:48px; background:var(--line-soft); flex-shrink:0; }
+
+  /* ── features ── */
+  .features {
+    max-width:1180px; margin:0 auto;
+    padding: var(--space-6) var(--space-6);
+  }
+  .features-header {
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+    align-items:end;
+    margin-bottom: var(--space-6);
+  }
+  .features-header h2 {
+    font-family: var(--display-font);
+    font-size: var(--display-2);
+    line-height:1.1;
+    letter-spacing:-0.025em;
+  }
+  .features-header p {
+    color: var(--fg-muted);
+    font-size: var(--body-lg);
+    line-height:1.65;
+    padding-bottom: 0.25rem;
+  }
+  .feature-grid {
+    display:grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: var(--space-4);
+  }
+  .feature-card {
+    background: var(--bg-panel);
+    border: 1px solid var(--line-soft);
+    border-radius: var(--radius-card);
+    padding: var(--space-5);
+    display:flex; flex-direction:column; gap:var(--space-3);
+    box-shadow: var(--shadow-soft);
+    cursor:default;
+  }
+  .feature-icon {
+    width:44px; height:44px; border-radius:12px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.3rem;
+  }
+  .icon-a { background: rgba(213,102,58,0.12); }
+  .icon-b { background: rgba(88,131,122,0.12); }
+  .icon-c { background: rgba(243,201,105,0.20); }
+  .feature-card h3 {
+    font-family: var(--display-font);
+    font-size: 1.2rem;
+    color: var(--fg-strong);
+  }
+  .feature-card p { font-size: var(--body-sm); color: var(--fg-muted); line-height:1.65; }
+
+  /* ── editorial split ── */
+  .editorial {
+    max-width:1180px; margin:0 auto;
+    padding: var(--space-7) var(--space-6);
+    display:grid; grid-template-columns:1fr 1fr;
+    gap: var(--space-7); align-items:center;
+  }
+  .editorial-visual {
+    border-radius: var(--radius-card);
+    overflow:hidden;
+    aspect-ratio:4/3;
+    background: var(--bg-accent);
+    box-shadow: var(--shadow-strong);
+    position:relative;
+  }
+  .editorial-visual img { width:100%; height:100%; object-fit:cover; }
+  .editorial-overlay {
+    position:absolute; inset:0;
+    background: linear-gradient(135deg,rgba(23,49,62,0.55) 0%,transparent 60%);
+  }
+  .editorial-label {
+    position:absolute; top:var(--space-4); left:var(--space-4);
+    font-size:var(--body-sm); font-weight:500;
+    letter-spacing:0.08em; text-transform:uppercase;
+    color: var(--fg-inverse); opacity:0.85;
+  }
+  .editorial-copy { display:flex; flex-direction:column; gap:var(--space-4); }
+  .editorial-copy h2 {
+    font-family: var(--display-font);
+    font-size: var(--heading-1);
+    line-height:1.15;
+    letter-spacing:-0.02em;
+  }
+  .editorial-copy p { color:var(--fg-muted); font-size:var(--body-lg); line-height:1.7; }
+  .check-list { list-style:none; display:flex; flex-direction:column; gap:var(--space-2); }
+  .check-list li {
+    display:flex; align-items:flex-start; gap:0.6rem;
+    font-size:var(--body-md); color:var(--fg-muted);
+  }
+  .check-list li::before {
+    content:'✓';
+    flex-shrink:0;
+    width:20px; height:20px; border-radius:50%;
+    background: rgba(88,131,122,0.15);
+    color: var(--accent-secondary);
+    display:flex; align-items:center; justify-content:center;
+    font-size:0.75rem; font-weight:700;
+    margin-top:0.15rem;
+  }
+
+  /* ── CTA band ── */
+  .cta-band {
+    background: var(--bg-accent);
+    margin: var(--space-6) var(--space-6);
+    border-radius: var(--radius-card);
+    padding: var(--space-7) var(--space-6);
+    display:flex; align-items:center; justify-content:space-between;
+    gap: var(--space-5); flex-wrap:wrap;
+    position:relative; overflow:hidden;
+    box-shadow: var(--shadow-strong);
+    max-width: calc(1180px - 0px);
+    margin-left:auto; margin-right:auto;
+  }
+  .cta-band::before {
+    content:'';
+    position:absolute; top:-60px; right:-60px;
+    width:320px; height:320px; border-radius:50%;
+    background: radial-gradient(circle, rgba(243,201,105,0.15) 0%, transparent 70%);
+    pointer-events:none;
+  }
+  .cta-band-copy { display:flex; flex-direction:column; gap:var(--space-3); max-width:52ch; }
+  .cta-band-copy h2 {
+    font-family: var(--display-font);
+    font-size: clamp(1.8rem,3vw,2.6rem);
+    color: var(--fg-inverse);
+    line-height:1.1;
+    letter-spacing:-0.02em;
+  }
+  .cta-band-copy p { color: rgba(248,244,238,0.65); font-size:var(--body-lg); line-height:1.6; }
+  .btn-inverse {
+    background: var(--accent-highlight);
+    color: var(--fg-strong);
+    box-shadow: 0 6px 24px rgba(243,201,105,0.35);
+    flex-shrink:0;
+    font-weight:600;
+  }
+  .btn-inverse:hover { box-shadow: 0 10px 32px rgba(243,201,105,0.55); }
+
+  /* ── footer ── */
+  .footer {
+    max-width:1180px; margin:0 auto;
+    padding: var(--space-5) var(--space-6);
+    display:flex; justify-content:space-between; align-items:center;
+    border-top:1px solid var(--line-soft);
+    flex-wrap:wrap; gap:var(--space-3);
+  }
+  .footer p { font-size:var(--body-sm); color:var(--fg-muted); }
+  .footer-links { display:flex; gap:var(--space-4); }
+  .footer-links a { font-size:var(--body-sm); color:var(--fg-muted); transition:color 120ms; }
+  .footer-links a:hover { color: var(--accent-primary); }
+
+  /* ── responsive ── */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns:1fr; gap:var(--space-5); }
+    .features-header { grid-template-columns:1fr; }
+    .feature-grid { grid-template-columns:1fr 1fr; }
+    .editorial { grid-template-columns:1fr; }
+    .proof-strip { justify-content:flex-start; gap:var(--space-5); }
+    .proof-divider { display:none; }
+  }
+  @media (max-width: 600px) {
+    .nav { padding: var(--space-3) var(--space-4); }
+    .hero { padding: var(--space-6) var(--space-4) var(--space-5); }
+    .features { padding: var(--space-5) var(--space-4); }
+    .editorial { padding: var(--space-5) var(--space-4); }
+    .cta-band { margin: var(--space-4); padding: var(--space-6) var(--space-4); flex-direction:column; }
+    .feature-grid { grid-template-columns:1fr; }
+    .proof-strip { padding: var(--space-4); }
+    .footer { padding: var(--space-4); flex-direction:column; align-items:flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- nav -->
+<nav class="nav fx-enter">
+  <div class="nav-logo"><span></span>BLOCKS</div>
+  <div class="nav-pill">Hardening Suite</div>
+</nav>
+
+<!-- hero -->
+<section class="hero">
+  <div class="hero-copy fx-enter">
+    <div class="eyebrow">Smoke Verification</div>
+    <h1>Artifacts built to <em>last</em> under pressure.</h1>
+    <p class="hero-sub">BLOCKS cycles every component through a rigorous hardening loop — catching regressions before they reach production. Confidence is built in, not bolted on.</p>
+    <div class="cta-row fx-stagger">
+      <a href="#start" class="btn btn-primary">Run Smoke Test ↗</a>
+      <a href="#how" class="btn btn-secondary">See how it works</a>
+    </div>
+  </div>
+  <div class="hero-visual fx-hover-lift" style="animation-delay:200ms">
+    <img
+      src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=1200&q=80&auto=format&fit=crop"
+      alt="Featured hero artwork"
+      loading="eager"
+    >
+    <div class="hero-badge">Cycle passing — all green</div>
+  </div>
+</section>
+
+<hr class="section-divider">
+
+<!-- proof strip -->
+<div class="proof-strip fx-stagger">
+  <div class="proof-stat">
+    <strong>99.6%</strong>
+    <span>Smoke pass rate</span>
+  </div>
+  <div class="proof-divider"></div>
+  <div class="proof-stat">
+    <strong>< 1.4s</strong>
+    <span>Median cycle time</span>
+  </div>
+  <div class="proof-divider"></div>
+  <div class="proof-stat">
+    <strong>340+</strong>
+    <span>Artifact variants tested</span>
+  </div>
+  <div class="proof-divider"></div>
+  <div class="proof-stat">
+    <strong>Zero</strong>
+    <span>Silent regressions shipped</span>
+  </div>
+</div>
+
+<hr class="section-divider">
+
+<!-- features -->
+<section class="features" id="how">
+  <div class="features-header fx-enter">
+    <h2>Every edge case. Every time.</h2>
+    <p>The hardening pipeline exercises layout families, motion presets, and responsive breakpoints in one continuous loop — so failures surface locally, not in front of users.</p>
+  </div>
+  <div class="feature-grid fx-stagger">
+    <div class="feature-card fx-hover-lift">
+      <div class="feature-icon icon-a">🔬</div>
+      <h3>Smoke Verification</h3>
+      <p>Instantaneous checks gate every artifact commit. No broken output reaches the delivery queue.</p>
+    </div>
+    <div class="feature-card fx-hover-lift">
+      <div class="feature-icon icon-b">📐</div>
+      <h3>Responsive Coverage</h3>
+      <p>375 px to 1920 px, tested in a single run. Typography, grid, and motion hold at every breakpoint.</p>
+    </div>
+    <div class="feature-card fx-hover-lift">
+      <div class="feature-icon icon-c">⚡</div>
+      <h3>Token Integrity</h3>
+      <p>Design token drift is caught before it compounds. Colors, spacing, and type scale stay in sync.</p>
+    </div>
+  </div>
+</section>
+
+<!-- editorial split -->
+<section class="editorial">
+  <div class="editorial-visual fx-hover-lift">
+    <img
+      src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=900&q=80&auto=format&fit=crop"
+      alt="Supporting section artwork"
+      loading="lazy"
+    >
+    <div class="editorial-overlay"></div>
+    <div class="editorial-label">Hardening in action</div>
+  </div>
+  <div class="editorial-copy fx-enter">
+    <div class="eyebrow">Why it matters</div>
+    <h2>Ship with clarity, not crossed fingers.</h2>
+    <p>Artifact quality erodes in small increments — a stray token override here, a broken breakpoint there. BLOCKS makes every cycle observable and reproducible.</p>
+    <ul class="check-list">
+      <li>Motion presets validated against reduced-motion policy</li>
+      <li>Color contrast checked to WCAG AA on every render</li>
+      <li>Layout families smoke-tested across all viewport tiers</li>
+      <li>CTA interaction paths confirmed before merge</li>
+    </ul>
+  </div>
+</section>
+
+<!-- CTA band -->
+<div class="cta-band fx-enter">
+  <div class="cta-band-copy">
+    <h2>Ready to harden your next artifact?</h2>
+    <p>Start a smoke cycle in under 30 seconds. No configuration required — BLOCKS reads your design bundle and runs.</p>
+  </div>
+  <a href="#start" class="btn btn-inverse fx-hover-lift">Start hardening →</a>
+</div>
+
+<!-- footer -->
+<footer class="footer">
+  <p>© 2025 BLOCKS Hardening Suite · Paperclip</p>
+  <nav class="footer-links">
+    <a href="#">Docs</a>
+    <a href="#">Changelog</a>
+    <a href="#">Status</a>
+  </nav>
+</footer>
+
+</body>
+</html>
