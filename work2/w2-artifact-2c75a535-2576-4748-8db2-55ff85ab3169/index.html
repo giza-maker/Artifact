@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DUCK DASH — Endless Runner</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700&family=Barlow:wght@400;500&display=swap');
+
+  :root {
+    --bg-deep:      #0a1520;
+    --bg-mid:       #0f2035;
+    --bg-panel:     rgba(15, 32, 53, 0.92);
+    --bg-glass:     rgba(255,255,255,0.04);
+    --fg-strong:    #e8f4ff;
+    --fg-muted:     #7aadcc;
+    --fg-dim:       #3a6080;
+    --accent-gold:  #f5c842;
+    --accent-teal:  #30d5c8;
+    --accent-red:   #ff4d4d;
+    --accent-amber: #ff9e2c;
+    --duck-body:    #f5d050;
+    --duck-dark:    #d4a820;
+    --duck-bill:    #ff8c30;
+    --duck-eye:     #1a1a2e;
+    --ground-top:   #1e4d6e;
+    --ground-body:  #153550;
+    --line-soft:    rgba(48, 213, 200, 0.15);
+    --line-glow:    rgba(48, 213, 200, 0.5);
+    --shadow-card:  0 8px 32px rgba(0,0,0,0.4);
+    --radius-card:  16px;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-ui:      'Barlow Condensed', sans-serif;
+    --font-body:    'Barlow', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg-deep);
+    color: var(--fg-strong);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* Cinematic grid overlay */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(48,213,200,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(48,213,200,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Vignette */
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── Header ── */
+  .game-header {
+    position: relative; z-index: 10;
+    width: 100%; max-width: 900px;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 24px 10px;
+    animation: fx-enter 600ms cubic-bezier(0.22,1,0.36,1) both;
+  }
+
+  .logo {
+    font-family: var(--font-display);
+    font-size: 2.6rem;
+    letter-spacing: 0.08em;
+    color: var(--fg-strong);
+    line-height: 1;
+  }
+
+  .logo span {
+    color: var(--accent-gold);
+    text-shadow: 0 0 20px rgba(245,200,66,0.5);
+  }
+
+  .header-badge {
+    font-family: var(--font-ui);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    border: 1px solid var(--line-soft);
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: var(--bg-glass);
+  }
+
+  /* ── Stats bar ── */
+  .stats-bar {
+    position: relative; z-index: 10;
+    width: 100%; max-width: 900px;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 12px; padding: 0 24px 14px;
+    animation: fx-enter 620ms 80ms cubic-bezier(0.22,1,0.36,1) both;
+  }
+
+  .stat-slab {
+    background: var(--bg-glass);
+    border: 1px solid var(--line-soft);
+    border-radius: 12px;
+    padding: 10px 14px;
+    display: flex; flex-direction: column; gap: 2px;
+    transition: transform 180ms ease, box-shadow 180ms ease;
+  }
+
+  .stat-slab:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(48,213,200,0.1);
+  }
+
+  .stat-label {
+    font-family: var(--font-ui);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--fg-dim);
+  }
+
+  .stat-value {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    letter-spacing: 0.04em;
+    color: var(--fg-strong);
+    line-height: 1;
+  }
+
+  .stat-value.accent-gold { color: var(--accent-gold); }
+  .stat-value.accent-teal { color: var(--accent-teal); }
+  .stat-value.accent-red  { color: var(--accent-red); }
+
+  /* ── Canvas wrapper ── */
+  .canvas-wrap {
+    position: relative; z-index: 10;
+    width: 100%; max-width: 900px;
+    padding: 0 24px;
+    animation: fx-enter 640ms 160ms cubic-bezier(0.22,1,0.36,1) both;
+  }
+
+  #gameCanvas {
+    display: block;
+    width: 100%;
+    height: 340px;
+    border-radius: var(--radius-card);
+    border: 1px solid var(--line-soft);
+    box-shadow: 0 0 0 1px rgba(48,213,200,0.08), var(--shadow-card);
+    cursor: pointer;
+    image-rendering: pixelated;
+  }
+
+  /* Scanline overlay on canvas */
+  .canvas-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0 24px;
+    border-radius: var(--radius-card);
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(0,0,0,0.04) 3px,
+      rgba(0,0,0,0.04) 4px
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* ── Controls row ── */
+  .controls-row {
+    position: relative; z-index: 10;
+    width: 100%; max-width: 900px;
+    padding: 14px 24px;
+    display: flex; align-items: center; gap: 12px;
+    animation: fx-enter 660ms 220ms cubic-bezier(0.22,1,0.36,1) both;
+  }
+
+  .btn {
+    font-family: var(--font-ui);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border: none; outline: none;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 8px;
+    transition: transform 150ms ease, box-shadow 150ms ease;
+  }
+
+  .btn-primary {
+    background: var(--accent-teal);
+    color: var(--bg-deep);
+    box-shadow: 0 4px 16px rgba(48,213,200,0.3);
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(48,213,200,0.45);
+  }
+
+  .btn-ghost {
+    background: var(--bg-glass);
+    color: var(--fg-muted);
+    border: 1px solid var(--line-soft);
+  }
+
+  .btn-ghost:hover {
+    color: var(--fg-strong);
+    border-color: rgba(48,213,200,0.3);
+  }
+
+  .control-hint {
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    color: var(--fg-dim);
+    margin-left: auto;
+  }
+
+  .key-badge {
+    display: inline-block;
+    background: var(--bg-glass);
+    border: 1px solid var(--line-soft);
+    border-radius: 5px;
+    padding: 2px 8px;
+    font-family: var(--font-ui);
+    font-size: 0.75rem;
+    color: var(--fg-muted);
+    margin: 0 2px;
+  }
+
+  /* ── Obstacle legend ── */
+  .legend-grid {
+    position: relative; z-index: 10;
+    width: 100%; max-width: 900px;
+    padding: 0 24px 18px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    animation: fx-enter 680ms 300ms cubic-bezier(0.22,1,0.36,1) both;
+  }
+
+  .legend-card {
+    background: var(--bg-glass);
+    border: 1px solid var(--line-soft);
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex; gap: 12px; align-items: flex-start;
+    transition: transform 180ms ease, box-shadow 180ms ease;
+  }
+
+  .legend-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+  }
+
+  .legend-icon {
+    width: 44px; height: 44px;
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 10px;
+    font-size: 1.4rem;
+  }
+
+  .legend-text h3 {
+    font-family: var(--font-ui);
+    font-size: 0.88rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--fg-strong);
+    margin-bottom: 3px;
+  }
+
+  .legend-text p {
+    font-size: 0.78rem;
+    color: var(--fg-muted);
+    line-height: 1.4;
+  }
+
+  .icon-bg-amber { background: rgba(255,158,44,0.15); }
+  .icon-bg-teal  { background: rgba(48,213,200,0.12); }
+  .icon-bg-red   { background: rgba(255,77,77,0.12); }
+
+  /* ── Footer ── */
+  .game-footer {
+    position: relative; z-index: 10;
+    width: 100%; max-width: 900px;
+    padding: 0 24px 28px;
+    display: flex; align-items: center; justify-content: space-between;
+    animation: fx-enter 700ms 360ms cubic-bezier(0.22,1,0.36,1) both;
+  }
+
+  .footer-tagline {
+    font-family: var(--font-ui);
+    font-size: 0.8rem;
+    color: var(--fg-dim);
+    letter-spacing: 0.06em;
+  }
+
+  .pulse-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--accent-teal);
+    box-shadow: 0 0 0 0 rgba(48,213,200,0.4);
+    animation: pulse-ring 2.4s ease-in-out infinite;
+    display: inline-block;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+
+  /* ── Keyframes ── */
+  @keyframes fx-enter {
+    from { opacity: 0; transform: translate3d(0, 16px, 0) scale(0.988); }
+    to   { opacity: 1; transform: translate3d(0, 0, 0) scale(1); }
+  }
+
+  @keyframes pulse-ring {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(48,213,200,0.4); }
+    50%       { box-shadow: 0 0 0 8px rgba(48,213,200,0); }
+  }
+
+  @media (max-width: 600px) {
+    .stats-bar { grid-template-columns: repeat(2, 1fr); }
+    .legend-grid { grid-template-columns: 1fr; }
+    .logo { font-size: 2rem; }
+    #gameCanvas { height: 260px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<header class="game-header">
+  <div class="logo">DUCK <span>DASH</span></div>
+  <div class="header-badge"><span class="pulse-dot"></span>Live · Endless Runner</div>
+</header>
+
+<!-- ── Stats bar ── -->
+<div class="stats-bar" id="statsBar">
+  <div class="stat-slab">
+    <div class="stat-label">Score</div>
+    <div class="stat-value accent-gold" id="ui-score">0</div>
+  </div>
+  <div class="stat-slab">
+    <div class="stat-label">High Score</div>
+    <div class="stat-value accent-teal" id="ui-hiscore">0</div>
+  </div>
+  <div class="stat-slab">
+    <div class="stat-label">Speed</div>
+    <div class="stat-value" id="ui-speed">1.0×</div>
+  </div>
+  <div class="stat-slab">
+    <div class="stat-label">Jumps Left</div>
+    <div class="stat-value accent-red" id="ui-jumps">2</div>
+  </div>
+</div>
+
+<!-- ── Canvas ── -->
+<div class="canvas-wrap">
+  <canvas id="gameCanvas" width="900" height="340"></canvas>
+</div>
+
+<!-- ── Controls ── -->
+<div class="controls-row">
+  <button class="btn btn-primary" id="btnStart">START GAME</button>
+  <button class="btn btn-ghost" id="btnMute">🔇 MUTE</button>
+  <div class="control-hint">
+    <span class="key-badge">SPACE</span> or <span class="key-badge">↑</span> to jump &nbsp;·&nbsp;
+    Double-tap for double jump
+  </div>
+</div>
+
+<!-- ── Obstacle legend ── -->
+<div class="legend-grid">
+  <div class="legend-card">
+    <div class="legend-icon icon-bg-amber">🪨</div>
+    <div class="legend-text">
+      <h3>Ground Rock</h3>
+      <p>Low obstacle. Single jump clears it. Watch for clusters — pace your timing.</p>
+    </div>
+  </div>
+  <div class="legend-card">
+    <div class="legend-icon icon-bg-teal">📦</div>
+    <div class="legend-text">
+      <h3>Floating Crate</h3>
+      <p>Mid-air obstacle. Requires double-jump to clear. Stay airborne longer!</p>
+    </div>
+  </div>
+  <div class="legend-card">
+    <div class="legend-icon icon-bg-red">⚡</div>
+    <div class="legend-text">
+      <h3>Laser Gate</h3>
+      <p>High aerial hazard at speed 2×+. Full double-jump arc needed. Elite territory.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── Footer ── -->
+<footer class="game-footer">
+  <div class="footer-tagline">Flat 2D · Canvas · Zero dependencies · Web-optimized</div>
+  <div class="footer-tagline" style="color: var(--accent-gold);">★ ★ ★ ★ ★ Positive Reviews</div>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  DUCK DASH — Integrated Game Engine
+//  Features: double-jump, 3 obstacle types, speed ramp,
+//            particle FX, cinematic parallax BG, score system
+// ═══════════════════════════════════════════════════════
+
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+
+// ── Resolution scaling ──
+function resizeCanvas() {
+  const wrap = canvas.parentElement;
+  const dpr = window.devicePixelRatio || 1;
+  const cssW = wrap.clientWidth - 48;
+  const cssH = Math.min(340, cssW * 0.378);
+  canvas.style.width  = cssW + 'px';
+  canvas.style.height = cssH + 'px';
+  canvas.width  = cssW * dpr;
+  canvas.height = cssH * dpr;
+  ctx.scale(dpr, dpr);
+  GAME.W = cssW;
+  GAME.H = cssH;
+  GAME.groundY = cssH - 60;
+}
+
+// ── Game state ──
+const GAME = {
+  W: 900, H: 340, groundY: 280,
+  state: 'idle',   // idle | running | dead
+  score: 0,
+  hiscore: 0,
+  frame: 0,
+  speed: 1.0,
+  speedTick: 0,
+  muted: false,
+};
+
+// ── Duck (player) ──
+const duck = {
+  x: 90, y: 0,
+  w: 52, h: 44,
+  vy: 0,
+  jumping: false,
+  jumpsLeft: 2,
+  jumpsMax: 2,
+  grounded: true,
+  GRAVITY: 0.55,
+  JUMP_V: -13.5,
+  DOUBLE_JUMP_V: -11,
+  frame: 0,
+  frameTick: 0,
+  wingUp: false,
+  trail: [],
+};
+
+// ── Obstacles ──
+const obstacles = [];
+let obstacleTimer = 0;
+let obstacleInterval = 110;
+
+// ── Particles ──
+const particles = [];
+
+// ── Stars / parallax layers ──
+const stars = [];
+const clouds = [];
+
+// ── Colors ──
+const C = {
+  skyTop:    '#040d18',
+  skyBot:    '#0d2540',
+  ground:    '#1a4060',
+  groundEdge:'#235070',
+  moonGlow:  'rgba(180,220,255,0.12)',
+  starColor: 'rgba(200,230,255,',
+  cloudCol:  'rgba(30,80,120,',
+  duckBody:  '#f5d050',
+  duckDark:  '#d4a820',
+  duckShad:  '#b88a10',
+  duckBill:  '#ff8c30',
+  duckEye:   '#0a0a1a',
+  duckBlush: 'rgba(255,120,100,0.4)',
+  duckWing:  '#e8c040',
+  // obstacles
+  rockFill:  '#5a7a8a',
+  rockEdge:  '#3a5a6a',
+  rockHighl: '#7a9aaa',
+  crateTop:  '#8b6a3a',
+  crateSide: '#6a4e28',
+  crateEdge: '#c8a050',
+  laserRed:  '#ff3333',
+  laserGlow: 'rgba(255,50,50,',
+  laserBeam: 'rgba(255,80,80,',
+};
+
+// ── Init stars & clouds ──
+function initBG() {
+  stars.length = 0; clouds.length = 0;
+  for (let i = 0; i < 60; i++) {
+    stars.push({
+      x: Math.random() * GAME.W,
+      y: Math.random() * GAME.H * 0.75,
+      r: Math.random() * 1.5 + 0.3,
+      spd: Math.random() * 0.2 + 0.05,
+      alpha: Math.random() * 0.7 + 0.3,
+    });
+  }
+  for (let i = 0; i < 5; i++) {
+    clouds.push({
+      x: Math.random() * GAME.W,
+      y: 30 + Math.random() * 60,
+      w: 80 + Math.random() * 100,
+      h: 18 + Math.random() * 20,
+      spd: 0.3 + Math.random() * 0.4,
+      alpha: 0.06 + Math.random() * 0.08,
+    });
+  }
+}
+
+// ── Spawn obstacles ──
+function spawnObstacle() {
+  const spd = 3.8 * GAME.speed;
+  const roll = Math.random();
+  let obs;
+
+  if (GAME.speed >= 2 && roll < 0.25) {
+    // Laser gate — aerial
+    obs = {
+      type: 'laser',
+      x: GAME.W + 20,
+      y: GAME.groundY - 110,
+      w: 16, h: 90,
+      spd,
+      tick: 0,
+    };
+  } else if (GAME.speed >= 1.4 && roll < 0.45) {
+    // Floating crate
+    obs = {
+      type: 'crate',
+      x: GAME.W + 20,
+      y: GAME.groundY - 95,
+      w: 40, h: 38,
+      spd,
+      tick: 0,
+    };
+  } else {
+    // Ground rock
+    const h = 28 + Math.random() * 22;
+    obs = {
+      type: 'rock',
+      x: GAME.W + 20,
+      y: GAME.groundY - h + 4,
+      w: 36 + Math.random() * 16,
+      h,
+      spd,
+      tick: 0,
+    };
+  }
+  obstacles.push(obs);
+}
+
+// ── Particles ──
+function spawnParticles(x, y, color, count = 8) {
+  for (let i = 0; i < count; i++) {
+    const angle = (Math.PI * 2 / count) * i + Math.random() * 0.4;
+    particles.push({
+      x, y,
+      vx: Math.cos(angle) * (1.5 + Math.random() * 3),
+      vy: Math.sin(angle) * (1.5 + Math.random() * 3) - 2,
+      r: 2 + Math.random() * 3,
+      alpha: 1,
+      color,
+      life: 30 + Math.random() * 20,
+    });
+  }
+}
+
+// ── Jump ──
+function jump() {
+  if (GAME.state !== 'running') return;
+  if (duck.jumpsLeft <= 0) return;
+
+  if (duck.grounded) {
+    duck.vy = duck.JUMP_V;
+    duck.grounded = false;
+    duck.jumping = true;
+    duck.jumpsLeft = duck.jumpsMax - 1;
+    spawnParticles(duck.x, duck.y + duck.h, '#30d5c8', 6);
+  } else if (duck.jumpsLeft > 0) {
+    duck.vy = duck.DOUBLE_JUMP_V;
+    duck.jumpsLeft = 0;
+    spawnParticles(duck.x + duck.w/2, duck.y + duck.h/2, '#f5c842', 10);
+  }
+  updateJumpUI();
+}
+
+function updateJumpUI() {
+  document.getElementById('ui-jumps').textContent = duck.jumpsLeft;
+}
+
+// ── Input ──
+document.addEventListener('keydown', e => {
+  if (e.code === 'Space' || e.code === 'ArrowUp') {
+    e.preventDefault();
+    if (GAME.state === 'idle' || GAME.state === 'dead') startGame();
+    else jump();
+  }
+});
+
+canvas.addEventListener('click', () => {
+  if (GAME.state === 'idle' || GAME.state === 'dead') startGame();
+  else jump();
+});
+
+canvas.addEventListener('touchstart', e => {
+  e.preventDefault();
+  if (GAME.state === 'idle' || GAME.state === 'dead') startGame();
+  else jump();
+}, { passive: false });
+
+document.getElementById('btnStart').addEventListener('click', () => {
+  if (GAME.state !== 'running') startGame();
+});
+
+document.getElementById('btnMute').addEventListener('click', () => {
+  GAME.muted = !GAME.muted;
+  document.getElementById('btnMute').textContent = GAME.muted ? '🔊 SOUND' : '🔇 MUTE';
+});
+
+// ── Start ──
+function startGame() {
+  GAME.state = 'running';
+  GAME.score = 0;
+  GAME.frame = 0;
+  GAME.speed = 1.0;
+  GAME.speedTick = 0;
+  obstacles.length = 0;
+  particles.length = 0;
+  obstacleTimer = 0;
+  obstacleInterval = 110;
+
+  duck.y = GAME.groundY - duck.h;
+  duck.vy = 0;
+  duck.grounded = true;
+  duck.jumping = false;
+  duck.jumpsLeft = duck.jumpsMax;
+  duck.frame = 0; duck.frameTick = 0;
+  duck.trail = [];
+
+  updateJumpUI();
+  document.getElementById('ui-score').textContent = '0';
+  document.getElementById('ui-speed').textContent = '1.0×';
+}
+
+// ── Draw background ──
+function drawBG() {
+  // Sky gradient
+  const grad = ctx.createLinearGradient(0, 0, 0, GAME.groundY);
+  grad.addColorStop(0, C.skyTop);
+  grad.addColorStop(1, C.skyBot);
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, GAME.W, GAME.H);
+
+  // Moon
+  ctx.save();
+  const mx = GAME.W * 0.82, my = GAME.H * 0.18;
+  ctx.beginPath();
+  ctx.arc(mx, my, 28, 0, Math.PI * 2);
+  const moonGrad = ctx.createRadialGradient(mx - 6, my - 6, 4, mx, my, 28);
+  moonGrad.addColorStop(0, 'rgba(240,240,200,0.95)');
+  moonGrad.addColorStop(0.6, 'rgba(200,220,180,0.7)');
+  moonGrad.addColorStop(1, 'rgba(150,180,160,0)');
+  ctx.fillStyle = moonGrad;
+  ctx.fill();
+  // Moon glow
+  ctx.beginPath();
+  ctx.arc(mx, my, 48, 0, Math.PI * 2);
+  const glowG = ctx.createRadialGradient(mx, my, 20, mx, my, 48);
+  glowG.addColorStop(0, 'rgba(180,220,255,0.12)');
+  glowG.addColorStop(1, 'rgba(180,220,255,0)');
+  ctx.fillStyle = glowG;
+  ctx.fill();
+  ctx.restore();
+
+  // Stars
+  ctx.save();
+  for (const s of stars) {
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = C.starColor + s.alpha + ')';
+    ctx.fill();
+  }
+  ctx.restore();
+
+  // Clouds
+  ctx.save();
+  for (const cl of clouds) {
+    ctx.beginPath();
+    ctx.ellipse(cl.x, cl.y, cl.w/2, cl.h/2, 0, 0, Math.PI * 2);
+    ctx.fillStyle = C.cloudCol + cl.alpha + ')';
+    ctx.fill();
+  }
+  ctx.restore();
+}
+
+// ── Draw ground ──
+function drawGround() {
+  // Ground body
+  ctx.fillStyle = C.ground;
+  ctx.fillRect(0, GAME.groundY, GAME.W, GAME.H - GAME.groundY);
+
+  // Ground top edge
+  ctx.fillStyle = C.groundEdge;
+  ctx.fillRect(0, GAME.groundY, GAME.W, 4);
+
+  // Running lane line (animated dashes)
+  ctx.save();
+  ctx.strokeStyle = 'rgba(48,213,200,0.2)';
+  ctx.lineWidth = 1.5;
+  ctx.setLineDash([20, 16]);
+  ctx.lineDashOffset = -(GAME.frame * 3.5 * GAME.speed) % 36;
+  ctx.beginPath();
+  ctx.moveTo(0, GAME.groundY + 22);
+  ctx.lineTo(GAME.W, GAME.groundY + 22);
+  ctx.stroke();
+  ctx.restore();
+}
+
+// ── Draw duck (flat SVG-style) ──
+function drawDuck() {
+  const x = duck.x, y = duck.y, w = duck.w, h = duck.h;
+  ctx.save();
+
+  // Trail
+  if (GAME.state === 'running') {
+    duck.trail.push({ x: x + w * 0.3, y: y + h * 0.5, alpha: 0.35 });
+    if (duck.trail.length > 5) duck.trail.shift();
+  }
+  for (let i = 0; i < duck.trail.length; i++) {
+    const t = duck.trail[i];
+    const a = (i / duck.trail.length) * t.alpha;
+    ctx.beginPath();
+    ctx.ellipse(t.x, t.y, w * 0.22, h * 0.2, 0, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(245,208,80,${a})`;
+    ctx.fill();
+  }
+
+  // Shadow
+  ctx.beginPath();
+  ctx.ellipse(x + w/2, GAME.groundY + 2, w * 0.45, 5, 0, 0, Math.PI * 2);
+  ctx.fillStyle = 'rgba(0,0,0,0.25)';
+  ctx.fill();
+
+  // Body (main oval)
+  ctx.beginPath();
+  ctx.ellipse(x + w * 0.5, y + h * 0.58, w * 0.42, h * 0.38, 0, 0, Math.PI * 2);
+  ctx.fillStyle = C.duckBody;
+  ctx.fill();
+  // Body shading
+  ctx.beginPath();
+  ctx.ellipse(x + w * 0.5, y + h * 0.65, w * 0.3, h * 0.22, 0, 0, Math.PI * 2);
+  ctx.fillStyle = C.duckShad;
+  ctx.fill();
+
+  // Wing (animated)
+  const wingY = duck.wingUp ? -3 : 0;
+  ctx.beginPath();
+  ctx.ellipse(x + w * 0.48, y + h * 0.55 + wingY, w * 0.28, h * 0.16, -0.3, 0, Math.PI * 2);
+  ctx.fillStyle = C.duckWing;
+  ctx.fill();
+
+  // Head
+  ctx.beginPath();
+  ctx.ellipse(x + w * 0.72, y + h * 0.3, w * 0.26, h * 0.26, 0, 0, Math.PI * 2);
+  ctx.fillStyle = C.duckBody;
+  ctx.fill();
+  // Head shading
+  ctx.beginPath();
+  ctx.ellipse(x + w * 0.68, y + h * 0.3, w * 0.12, h * 0.14, 0.4, 0, Math.PI * 2);
+  ctx.fillStyle = C.duckShad;
+  ctx.fill();
+
+  // Eye
+  ctx.beginPath();
+  ctx.arc(x + w * 0.8, y + h * 0.24, 4, 0, Math.PI * 2);
+  ctx.fillStyle = C.duckEye;
+  ctx.fill();
+  // Eye shine
+  ctx.beginPath();
+  ctx.arc(x + w * 0.81, y + h * 0.22, 1.5, 0, Math.PI * 2);
+  ctx.fillStyle = 'rgba(255,255,255,0.9)';
+  ctx.fill();
+
+  // Blush
+  ctx.beginPath();
+  ctx.arc(x + w * 0.76, y + h * 0.3, 5, 0, Math.PI * 2);
+  ctx.fillStyle = C.duckBlush;
+  ctx.fill();
+
+  // Bill
+  ctx.save();
+  ctx.translate(x + w * 0.96, y + h * 0.3);
+  ctx.beginPath();
+  ctx.ellipse(0, 0, 10, 5, 0.15, 0, Math.PI * 2);
+  ctx.fillStyle = C.duckBill;
+  ctx.fill();
+  ctx.restore();
+
+  // Tail feathers
+  ctx.save();
+  ctx.translate(x + w * 0.1, y + h * 0.52);
+  for (let i = 0; i < 3; i++) {
+    ctx.save();
+    ctx.rotate(-0.3 + i * 0.22);
+    ctx.beginPath();
+    ctx.ellipse(0, -8, 4, 10, 0, 0, Math.PI * 2);
+    ctx.fillStyle = i === 1 ? C.duckDark : C.duckBody;
+    ctx.fill();
+    ctx.restore();
+  }
+  ctx.restore();
+
+  // Legs (animated)
+  if (duck.grounded && GAME.state === 'running') {
+    const legPhase = Math.floor(GAME.frame / 6) % 2;
+    ctx.strokeStyle = '#d4a820';
+    ctx.lineWidth = 3;
+    ctx.lineCap = 'round';
+    // Leg 1
+    ctx.beginPath();
+    ctx.moveTo(x + w * 0.4, y + h * 0.9);
+    ctx.lineTo(x + w * 0.35 + (legPhase ? 6 : -2), y + h + 6);
+    ctx.stroke();
+    // Leg 2
+    ctx.beginPath();
+    ctx.moveTo(x + w * 0.56, y + h * 0.9);
+    ctx.lineTo(x + w * 0.52 + (legPhase ? -2 : 6), y + h + 6);
+    ctx.stroke();
+  }
+
+  ctx.restore();
+}
+
+// ── Draw obstacles ──
+function drawRock(o) {
+  ctx.save();
+  const x = o.x, y = o.y, w = o.w, h = o.h;
+
+  // Main shape (irregular polygon)
+  ctx.beginPath();
+  ctx.moveTo(x + w * 0.15, y + h);
+  ctx.lineTo(x, y + h * 0.55);
+  ctx.lineTo(x + w * 0.12, y + h * 0.15);
+  ctx.lineTo(x + w * 0.45, y);
+  ctx.lineTo(x + w * 0.78, y + h * 0.08);
+  ctx.lineTo(x + w, y + h * 0.42);
+  ctx.lineTo(x + w * 0.9, y + h);
+  ctx.closePath();
+  ctx.fillStyle = C.rockFill;
+  ctx.fill();
+  ctx.strokeStyle = C.rockEdge;
+  ctx.lineWidth = 1.5;
+  ctx.stroke();
+
+  // Highlight
+  ctx.beginPath();
+  ctx.moveTo(x + w * 0.2, y + h * 0.2);
+  ctx.lineTo(x + w * 0.45, y + h * 0.08);
+  ctx.lineTo(x + w * 0.65, y + h * 0.15);
+  ctx.strokeStyle = C.rockHighl;
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  ctx.restore();
+}
+
+function drawCrate(o) {
+  ctx.save();
+  const x = o.x, y = o.y, w = o.w, h = o.h;
+
+  // Body
+  ctx.fillStyle = C.crateSide;
+  ctx.strokeStyle = C.crateEdge;
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.roundRect(x, y, w, h, 4);
+  ctx.fill(); ctx.stroke();
+
+  // Top face
+  ctx.fillStyle = C.crateTop;
+  ctx.beginPath();
+  ctx.roundRect(x + 2, y + 2, w - 4, h * 0.35, 3);
+  ctx.fill();
+
+  // X cross
+  ctx.strokeStyle = C.crateEdge;
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(x + 4, y + 4); ctx.lineTo(x + w - 4, y + h - 4);
+  ctx.moveTo(x + w - 4, y + 4); ctx.lineTo(x + 4, y + h - 4);
+  ctx.stroke();
+
+  // Glow outline (floating effect)
+  ctx.shadowColor = '#f5c842';
+  ctx.shadowBlur = 8;
+  ctx.strokeStyle = 'rgba(245,200,66,0.5)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.roundRect(x - 2, y - 2, w + 4, h + 4, 6);
+  ctx.stroke();
+  ctx.shadowBlur = 0;
+
+  ctx.restore();
+}
+
+function drawLaser(o) {
+  ctx.save();
+  const x = o.x, y = o.y, w = o.w, h = o.h;
+  const pulse = 0.6 + 0.4 * Math.sin(o.tick * 0.2);
+
+  // Gate posts
+  ctx.fillStyle = '#2a4060';
+  ctx.strokeStyle = '#4a7090';
+  ctx.lineWidth = 1.5;
+  // Top post
+  ctx.beginPath();
+  ctx.roundRect(x, y, w, 12, 3);
+  ctx.fill(); ctx.stroke();
+  // Bottom post
+  ctx.beginPath();
+  ctx.roundRect(x, y + h - 12, w, 12, 3);
+  ctx.fill(); ctx.stroke();
+
+  // Beam
+  ctx.shadowColor = C.laserRed;
+  ctx.shadowBlur = 14 * pulse;
+  const laserGrad = ctx.createLinearGradient(x, y + 12, x, y + h - 12);
+  laserGrad.addColorStop(0, C.laserRed);
+  laserGrad.addColorStop(0.5, `rgba(255,100,100,${0.5 + 0.5 * pulse})`);
+  laserGrad.addColorStop(1, C.laserRed);
+  ctx.fillStyle = laserGrad;
+  ctx.fillRect(x + w * 0.3, y + 12, w * 0.4, h - 24);
+
+  // Beam glow
+  ctx.fillStyle = C.laserBeam + (0.1 * pulse) + ')';
+  ctx.fillRect(x - 6, y + 12, w + 12, h - 24);
+
+  // Energy indicator dots on posts
+  for (let i = 0; i < 3; i++) {
+    ctx.beginPath();
+    ctx.arc(x + w / 2, y + 3 + i * 3, 2, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255,80,80,${pulse})`;
+    ctx.shadowBlur = 6;
+    ctx.fill();
+  }
+  ctx.shadowBlur = 0;
+  ctx.restore();
+}
+
+// ── Draw particles ──
+function drawParticles() {
+  ctx.save();
+  for (const p of particles) {
+    ctx.globalAlpha = p.alpha;
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = p.color;
+    ctx.fill();
+  }
+  ctx.globalAlpha = 1;
+  ctx.restore();
+}
+
+// ── Draw HUD overlay ──
+function drawHUD() {
+  // Score in-canvas
+  ctx.save();
+  ctx.font = `bold 22px 'Bebas Neue', sans-serif`;
+  ctx.fillStyle = 'rgba(245,200,66,0.9)';
+  ctx.textAlign = 'right';
+  ctx.fillText(Math.floor(GAME.score), GAME.W - 18, 28);
+  ctx.restore();
+}
+
+// ── Draw idle screen ──
+function drawIdle() {
+  ctx.save();
+  // Overlay
+  ctx.fillStyle = 'rgba(4,13,24,0.55)';
+  ctx.fillRect(0, 0, GAME.W, GAME.H);
+
+  // Title
+  ctx.font = `bold 52px 'Bebas Neue', sans-serif`;
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#f5d050';
+  ctx.shadowColor = 'rgba(245,200,66,0.4)';
+  ctx.shadowBlur = 20;
+  ctx.fillText('DUCK DASH', GAME.W / 2, GAME.H * 0.38);
+
+  ctx.shadowBlur = 0;
+  ctx.font = `600 14px 'Barlow Condensed', sans-serif`;
+  ctx.fillStyle = 'rgba(122,173,204,0.9)';
+  ctx.letterSpacing = '0.1em';
+  ctx.fillText('PRESS SPACE  ·  TAP  ·  CLICK TO START', GAME.W / 2, GAME.H * 0.56);
+
+  // Duck silhouette hint
+  ctx.font = '32px serif';
+  ctx.fillStyle = 'rgba(255,255,255,0.15)';
+  ctx.fillText('🦆', GAME.W / 2, GAME.H * 0.75);
+
+  ctx.restore();
+}
+
+// ── Draw game over screen ──
+function drawGameOver() {
+  ctx.save();
+  ctx.fillStyle = 'rgba(4,13,24,0.72)';
+  ctx.fillRect(0, 0, GAME.W, GAME.H);
+
+  ctx.textAlign = 'center';
+
+  ctx.font = `bold 44px 'Bebas Neue', sans-serif`;
+  ctx.fillStyle = '#ff4d4d';
+  ctx.shadowColor = 'rgba(255,77,77,0.5)';
+  ctx.shadowBlur = 18;
+  ctx.fillText('GAME OVER', GAME.W / 2, GAME.H * 0.36);
+
+  ctx.shadowBlur = 0;
+  ctx.font = `bold 24px 'Bebas Neue', sans-serif`;
+  ctx.fillStyle = '#f5c842';
+  ctx.fillText(`SCORE: ${Math.floor(GAME.score)}`, GAME.W / 2, GAME.H * 0.52);
+
+  ctx.font = `500 13px 'Barlow Condensed', sans-serif`;
+  ctx.fillStyle = 'rgba(122,173,204,0.85)';
+  ctx.fillText('SPACE / TAP TO RETRY', GAME.W / 2, GAME.H * 0.68);
+
+  ctx.restore();
+}
+
+// ── AABB collision ──
+function collides(a, b) {
+  const pad = 8; // forgiveness margin
+  return (
+    a.x + pad < b.x + b.w - pad &&
+    a.x + a.w - pad > b.x + pad &&
+    a.y + pad < b.y + b.h - pad &&
+    a.y + a.h - pad > b.y + pad
+  );
+}
+
+// ── Update ──
+function update() {
+  if (GAME.state !== 'running') return;
+
+  GAME.frame++;
+  GAME.score += 0.12 * GAME.speed;
+
+  // Speed ramp every 500 pts
+  GAME.speedTick++;
+  if (GAME.speedTick > 420) {
+    GAME.speedTick = 0;
+    GAME.speed = Math.min(GAME.speed + 0.12, 3.5);
+    obstacleInterval = Math.max(55, obstacleInterval - 6);
+  }
+
+  // Update UI
+  document.getElementById('ui-score').textContent = Math.floor(GAME.score);
+  document.getElementById('ui-speed').textContent = GAME.speed.toFixed(1) + '×';
+
+  // Duck physics
+  duck.vy += duck.GRAVITY;
+  duck.y += duck.vy;
+
+  if (duck.y >= GAME.groundY - duck.h) {
+    duck.y = GAME.groundY - duck.h;
+    duck.vy = 0;
+    if (!duck.grounded) {
+      duck.grounded = true;
+      duck.jumping = false;
+      duck.jumpsLeft = duck.jumpsMax;
+      updateJumpUI();
+    }
+  } else {
+    duck.grounded = false;
+  }
+
+  // Wing animation
+  duck.frameTick++;
+  if (duck.frameTick % 10 === 0) duck.wingUp = !duck.wingUp;
+
+  // Parallax
+  for (const s of stars) {
+    s.x -= s.spd * GAME.speed;
+    if (s.x < 0) { s.x = GAME.W; s.y = Math.random() * GAME.H * 0.75; }
+  }
+  for (const cl of clouds) {
+    cl.x -= cl.spd * GAME.speed;
+    if (cl.x + cl.w / 2 < 0) { cl.x = GAME.W + cl.w / 2; cl.y = 30 + Math.random() * 60; }
+  }
+
+  // Obstacle spawning
+  obstacleTimer++;
+  if (obstacleTimer >= obstacleInterval) {
+    obstacleTimer = 0;
+    spawnObstacle();
+  }
+
+  // Update obstacles
+  for (let i = obstacles.length - 1; i >= 0; i--) {
+    const o = obstacles[i];
+    o.x -= o.spd;
+    o.tick++;
+    if (o.x + o.w < -20) {
+      obstacles.splice(i, 1);
+      continue;
+    }
+    // Collision
+    const duckHB = { x: duck.x, y: duck.y, w: duck.w, h: duck.h };
+    if (collides(duckHB, o)) {
+      GAME.state = 'dead';
+      spawnParticles(duck.x + duck.w/2, duck.y + duck.h/2, '#f5d050', 16);
+      spawnParticles(duck.x + duck.w/2, duck.y + duck.h/2, '#ff4d4d', 10);
+      if (GAME.score > GAME.hiscore) {
+        GAME.hiscore = Math.floor(GAME.score);
+        document.getElementById('ui-hiscore').textContent = GAME.hiscore;
+      }
+      document.getElementById('ui-score').textContent = Math.floor(GAME.score);
+    }
+  }
+
+  // Particles
+  for (let i = particles.length - 1; i >= 0; i--) {
+    const p = particles[i];
+    p.x += p.vx; p.y += p.vy;
+    p.vy += 0.12;
+    p.alpha -= 1 / p.life;
+    p.r *= 0.97;
+    if (p.alpha <= 0) particles.splice(i, 1);
+  }
+}
+
+// ── Render ──
+function render() {
+  ctx.clearRect(0, 0, GAME.W, GAME.H);
+
+  drawBG();
+  drawGround();
+
+  if (GAME.state !== 'idle') {
+    // Obstacles
+    for (const o of obstacles) {
+      if (o.type === 'rock')  drawRock(o);
+      if (o.type === 'crate') drawCrate(o);
+      if (o.type === 'laser') drawLaser(o);
+    }
+
+    // Duck
+    drawDuck();
+
+    // Particles
+    drawParticles();
+
+    // HUD
+    drawHUD();
+
+    if (GAME.state === 'dead') drawGameOver();
+  } else {
+    drawDuck();
+    drawIdle();
+  }
+}
+
+// ── Game loop ──
+function loop() {
+  update();
+  render();
+  requestAnimationFrame(loop);
+}
+
+// ── Boot ──
+window.addEventListener('resize', () => {
+  resizeCanvas();
+  initBG();
+});
+
+resizeCanvas();
+initBG();
+duck.y = GAME.groundY - duck.h;
+loop();
+</script>
+</body>
+</html>
