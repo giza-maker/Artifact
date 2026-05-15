@@ -1,0 +1,2376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4th & Clueless — Learn Football the Fun Way 🏈</title>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Nunito:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #2d6a2f;
+    --green-light: #3a8a3d;
+    --green-bright: #4caf50;
+    --gold: #f5c518;
+    --gold-dark: #d4a10a;
+    --white: #fffef0;
+    --cream: #faf6e4;
+    --red: #d32f2f;
+    --red-light: #ef5350;
+    --blue: #1565c0;
+    --orange: #e65100;
+    --dark: #1a1a1a;
+    --darker: #0d0d0d;
+    --muted: #555;
+    --shadow: 0 8px 32px rgba(0,0,0,0.35);
+    --shadow-card: 0 4px 16px rgba(0,0,0,0.25);
+    --radius: 16px;
+    --radius-sm: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--darker);
+    color: var(--white);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Field background pattern */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 10%),
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 1px, transparent 1px, transparent 10%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ========== HEADER / SCOREBOARD ========== */
+  .scoreboard {
+    background: linear-gradient(135deg, #111 0%, #1c2a1c 50%, #111 100%);
+    border-bottom: 4px solid var(--gold);
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  }
+
+  .score-title {
+    font-family: 'Bangers', cursive;
+    font-size: clamp(1.2rem, 3vw, 1.8rem);
+    color: var(--gold);
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+    white-space: nowrap;
+  }
+
+  .score-stats {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .stat-pill {
+    background: rgba(245,197,24,0.15);
+    border: 2px solid var(--gold);
+    border-radius: 999px;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--gold);
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .stat-pill .val {
+    font-family: 'Bangers', cursive;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+  }
+
+  /* ========== MAIN LAYOUT ========== */
+  .app {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem 4rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ========== SCREENS ========== */
+  .screen { display: none; animation: screenIn 0.5s cubic-bezier(0.22,1,0.36,1) both; }
+  .screen.active { display: block; }
+
+  @keyframes screenIn {
+    from { opacity: 0; transform: translateY(28px) scale(0.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* ========== MASCOT BANTER BOX ========== */
+  .mascot-box {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    background: linear-gradient(135deg, #1a3a1d, #0f2510);
+    border: 3px solid var(--green-bright);
+    border-radius: var(--radius);
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .mascot-box::before {
+    content: '';
+    position: absolute;
+    top: -20px; right: -20px;
+    width: 80px; height: 80px;
+    background: radial-gradient(circle, rgba(76,175,80,0.15), transparent 70%);
+  }
+
+  .mascot-avatar {
+    font-size: 2.8rem;
+    line-height: 1;
+    flex-shrink: 0;
+    filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+    animation: mascotBounce 2s ease-in-out infinite;
+  }
+
+  @keyframes mascotBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+  }
+
+  .mascot-speech { flex: 1; }
+
+  .mascot-name {
+    font-size: 0.75rem;
+    font-weight: 900;
+    color: var(--green-bright);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 0.3rem;
+  }
+
+  .mascot-text {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--cream);
+    font-weight: 600;
+  }
+
+  .mascot-text em {
+    color: var(--gold);
+    font-style: normal;
+    font-weight: 900;
+  }
+
+  /* ========== LEVEL MAP ========== */
+  .level-map-title {
+    font-family: 'Bangers', cursive;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    text-align: center;
+    color: var(--gold);
+    letter-spacing: 3px;
+    text-shadow: 3px 3px 0 rgba(0,0,0,0.5), 0 0 30px rgba(245,197,24,0.3);
+    margin-bottom: 0.5rem;
+    line-height: 1.1;
+  }
+
+  .level-map-sub {
+    text-align: center;
+    color: rgba(255,255,255,0.6);
+    font-size: 0.95rem;
+    margin-bottom: 2rem;
+    font-weight: 600;
+  }
+
+  .levels-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+
+  .level-card {
+    background: linear-gradient(145deg, #1e3320, #152217);
+    border: 3px solid transparent;
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .level-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,255,255,0.03), transparent);
+    pointer-events: none;
+  }
+
+  .level-card.unlocked {
+    border-color: var(--green-bright);
+  }
+
+  .level-card.unlocked:hover {
+    border-color: var(--gold);
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(76,175,80,0.25);
+  }
+
+  .level-card.completed {
+    border-color: var(--gold);
+    background: linear-gradient(145deg, #2a3a15, #1a280d);
+  }
+
+  .level-card.locked {
+    border-color: rgba(255,255,255,0.15);
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  .level-card-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .level-number {
+    font-family: 'Bangers', cursive;
+    font-size: 1.5rem;
+    color: var(--gold);
+    background: rgba(245,197,24,0.15);
+    border-radius: 50%;
+    width: 42px; height: 42px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    border: 2px solid var(--gold);
+  }
+
+  .level-icon { font-size: 1.8rem; }
+
+  .level-name {
+    font-family: 'Bangers', cursive;
+    font-size: 1.3rem;
+    color: var(--white);
+    letter-spacing: 1px;
+  }
+
+  .level-desc {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+  }
+
+  .level-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    font-size: 0.8rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0.2rem 0.7rem;
+    border-radius: 999px;
+  }
+
+  .status-locked { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.4); }
+  .status-play { background: rgba(76,175,80,0.25); color: var(--green-bright); border: 1px solid var(--green-bright); }
+  .status-done { background: rgba(245,197,24,0.2); color: var(--gold); border: 1px solid var(--gold); }
+
+  /* ========== LESSON SCREEN ========== */
+  .lesson-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .back-btn {
+    background: rgba(255,255,255,0.08);
+    border: 2px solid rgba(255,255,255,0.2);
+    color: var(--white);
+    border-radius: var(--radius-sm);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+  }
+
+  .back-btn:hover {
+    background: rgba(255,255,255,0.15);
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  .lesson-title {
+    font-family: 'Bangers', cursive;
+    font-size: clamp(1.6rem, 4vw, 2.5rem);
+    color: var(--gold);
+    letter-spacing: 2px;
+  }
+
+  /* Progress dots */
+  .progress-dots {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    transition: all 0.3s;
+  }
+
+  .dot.done { background: var(--gold); }
+  .dot.active { background: var(--green-bright); transform: scale(1.3); box-shadow: 0 0 8px var(--green-bright); }
+
+  /* ========== CONTENT CARD ========== */
+  .content-card {
+    background: linear-gradient(145deg, #1e3320, #152217);
+    border: 2px solid rgba(76,175,80,0.4);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .content-card h2 {
+    font-family: 'Bangers', cursive;
+    font-size: 1.6rem;
+    color: var(--gold);
+    letter-spacing: 1.5px;
+    margin-bottom: 0.75rem;
+  }
+
+  .content-card p {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: rgba(255,255,255,0.85);
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .content-card p:last-child { margin-bottom: 0; }
+
+  .highlight-box {
+    background: rgba(245,197,24,0.12);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 0.75rem 1rem;
+    margin: 0.75rem 0;
+    font-weight: 700;
+    color: var(--gold);
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .joke-box {
+    background: rgba(213,47,47,0.1);
+    border: 2px dashed rgba(213,47,47,0.5);
+    border-radius: var(--radius-sm);
+    padding: 0.75rem 1rem;
+    margin: 0.75rem 0;
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+  }
+
+  .joke-box .joke-icon { font-size: 1.4rem; flex-shrink: 0; }
+  .joke-box .joke-text { font-size: 0.9rem; color: rgba(255,255,255,0.75); font-style: italic; font-weight: 600; line-height: 1.4; }
+
+  /* ========== FIELD VISUALIZER ========== */
+  .field-viz {
+    background: linear-gradient(180deg, #2d6a2f 0%, #3a8a3d 50%, #2d6a2f 100%);
+    border-radius: var(--radius-sm);
+    padding: 1rem;
+    margin: 1rem 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .field-lines {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding: 0 0.5rem;
+    border-bottom: 2px solid rgba(255,255,255,0.6);
+    margin-bottom: 0.5rem;
+    height: 40px;
+  }
+
+  .yard-marker {
+    font-size: 0.7rem;
+    font-weight: 900;
+    color: rgba(255,255,255,0.9);
+    text-align: center;
+  }
+
+  .field-ball {
+    font-size: 1.5rem;
+    position: absolute;
+    top: 50%;
+    transition: left 0.8s cubic-bezier(0.22,1,0.36,1);
+    transform: translateY(-50%) rotate(45deg);
+  }
+
+  /* ========== QUIZ ========== */
+  .quiz-question {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 1.25rem;
+    line-height: 1.5;
+  }
+
+  .quiz-options {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  .quiz-option {
+    background: rgba(255,255,255,0.06);
+    border: 2px solid rgba(255,255,255,0.15);
+    border-radius: var(--radius-sm);
+    padding: 0.85rem 1.1rem;
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: var(--white);
+    text-align: left;
+    transition: all 0.2s;
+    line-height: 1.4;
+  }
+
+  .quiz-option:hover:not(:disabled) {
+    background: rgba(76,175,80,0.15);
+    border-color: var(--green-bright);
+    transform: translateX(4px);
+  }
+
+  .quiz-option.correct {
+    background: rgba(76,175,80,0.25);
+    border-color: var(--green-bright);
+    color: var(--green-bright);
+    animation: correctFlash 0.5s ease;
+  }
+
+  .quiz-option.wrong {
+    background: rgba(213,47,47,0.2);
+    border-color: var(--red-light);
+    color: var(--red-light);
+    animation: wrongShake 0.4s ease;
+  }
+
+  @keyframes correctFlash {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+  }
+
+  @keyframes wrongShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+
+  .quiz-feedback {
+    margin-top: 1rem;
+    padding: 0.85rem 1.1rem;
+    border-radius: var(--radius-sm);
+    font-weight: 700;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    display: none;
+  }
+
+  .quiz-feedback.show { display: block; animation: screenIn 0.3s ease both; }
+  .quiz-feedback.good { background: rgba(76,175,80,0.2); border: 2px solid var(--green-bright); color: var(--green-bright); }
+  .quiz-feedback.bad { background: rgba(213,47,47,0.2); border: 2px solid var(--red-light); color: var(--red-light); }
+
+  /* ========== MINI CHALLENGE ========== */
+  .challenge-box {
+    background: linear-gradient(145deg, #1a1a2e, #0f0f1e);
+    border: 3px solid var(--gold);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .challenge-box::before {
+    content: '⚡';
+    position: absolute;
+    top: -10px; right: -10px;
+    font-size: 4rem;
+    opacity: 0.08;
+    transform: rotate(20deg);
+  }
+
+  .challenge-title {
+    font-family: 'Bangers', cursive;
+    font-size: 1.4rem;
+    color: var(--gold);
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+  }
+
+  /* Downs tracker challenge */
+  .downs-tracker {
+    display: flex;
+    gap: 0.6rem;
+    margin: 1rem 0;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .down-node {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    font-family: 'Bangers', cursive;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    border: 3px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.05);
+    transition: all 0.3s;
+    color: rgba(255,255,255,0.4);
+    cursor: default;
+  }
+
+  .down-node.used {
+    border-color: var(--green-bright);
+    background: rgba(76,175,80,0.2);
+    color: var(--green-bright);
+  }
+
+  .down-node.current {
+    border-color: var(--gold);
+    background: rgba(245,197,24,0.2);
+    color: var(--gold);
+    box-shadow: 0 0 16px rgba(245,197,24,0.4);
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 16px rgba(245,197,24,0.4); }
+    50% { box-shadow: 0 0 28px rgba(245,197,24,0.7); }
+  }
+
+  .down-node.failed {
+    border-color: var(--red);
+    background: rgba(211,47,47,0.2);
+    color: var(--red-light);
+  }
+
+  /* Yard progress bar */
+  .yard-progress {
+    background: rgba(255,255,255,0.08);
+    border-radius: 999px;
+    height: 20px;
+    margin: 1rem 0;
+    overflow: hidden;
+    position: relative;
+    border: 2px solid rgba(255,255,255,0.1);
+  }
+
+  .yard-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--green-bright), var(--gold));
+    border-radius: 999px;
+    transition: width 0.6s cubic-bezier(0.22,1,0.36,1);
+    position: relative;
+  }
+
+  .yard-fill::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+    animation: shimmer 1.5s infinite;
+  }
+
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(200%); }
+  }
+
+  .yard-label {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.75rem;
+    font-weight: 900;
+    color: var(--white);
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    white-space: nowrap;
+    z-index: 1;
+  }
+
+  /* ========== SCORING SCOREBOARD ========== */
+  .scoring-board {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 0.75rem;
+    margin: 1rem 0;
+  }
+
+  .score-type-card {
+    background: rgba(255,255,255,0.05);
+    border: 2px solid rgba(255,255,255,0.12);
+    border-radius: var(--radius-sm);
+    padding: 0.85rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .score-type-card:hover {
+    border-color: var(--gold);
+    background: rgba(245,197,24,0.08);
+    transform: translateY(-2px);
+  }
+
+  .score-type-card.selected {
+    border-color: var(--gold);
+    background: rgba(245,197,24,0.15);
+  }
+
+  .score-type-pts {
+    font-family: 'Bangers', cursive;
+    font-size: 2.2rem;
+    color: var(--gold);
+    line-height: 1;
+  }
+
+  .score-type-name {
+    font-size: 0.8rem;
+    font-weight: 900;
+    color: var(--white);
+    margin: 0.2rem 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .score-type-desc {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.3;
+  }
+
+  /* ========== FLAG / PENALTY ========== */
+  .flag-animation {
+    display: inline-block;
+    font-size: 2rem;
+    animation: flagDrop 0.8s ease both;
+    transform-origin: top;
+  }
+
+  @keyframes flagDrop {
+    0% { transform: translateY(-30px) rotate(-20deg); opacity: 0; }
+    60% { transform: translateY(4px) rotate(5deg); }
+    100% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  }
+
+  /* ========== DRAG CHALLENGE ========== */
+  .drag-zone {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    min-height: 60px;
+    background: rgba(255,255,255,0.04);
+    border: 2px dashed rgba(255,255,255,0.2);
+    border-radius: var(--radius-sm);
+    padding: 0.75rem;
+    transition: border-color 0.2s;
+  }
+
+  .drag-zone.dragover { border-color: var(--gold); background: rgba(245,197,24,0.06); }
+
+  .drag-chip {
+    background: rgba(76,175,80,0.2);
+    border: 2px solid var(--green-bright);
+    border-radius: 999px;
+    padding: 0.35rem 0.9rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--green-bright);
+    cursor: grab;
+    transition: all 0.15s;
+    user-select: none;
+  }
+
+  .drag-chip:hover { background: rgba(76,175,80,0.35); transform: scale(1.05); }
+  .drag-chip.dragging { opacity: 0.4; cursor: grabbing; }
+
+  /* ========== NEXT BUTTON ========== */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    color: var(--darker);
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 0.85rem 1.75rem;
+    font-family: 'Bangers', cursive;
+    font-size: 1.2rem;
+    letter-spacing: 1.5px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 16px rgba(245,197,24,0.3);
+    width: 100%;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(245,197,24,0.45);
+  }
+
+  .btn-primary:active { transform: translateY(0); }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255,255,255,0.08);
+    color: var(--white);
+    border: 2px solid rgba(255,255,255,0.2);
+    border-radius: var(--radius-sm);
+    padding: 0.75rem 1.5rem;
+    font-family: 'Bangers', cursive;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+
+  .btn-secondary:hover {
+    background: rgba(255,255,255,0.15);
+    border-color: var(--white);
+    transform: translateY(-1px);
+  }
+
+  /* ========== WIN SCREEN ========== */
+  .win-screen {
+    text-align: center;
+    padding: 2rem 1rem;
+  }
+
+  .trophy { font-size: 5rem; animation: trophyBounce 1s cubic-bezier(0.22,1,0.36,1) both; margin-bottom: 1rem; }
+
+  @keyframes trophyBounce {
+    0% { transform: scale(0) rotate(-20deg); opacity: 0; }
+    80% { transform: scale(1.15) rotate(5deg); }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+
+  .win-title {
+    font-family: 'Bangers', cursive;
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    color: var(--gold);
+    letter-spacing: 3px;
+    text-shadow: 3px 3px 0 rgba(0,0,0,0.4);
+    margin-bottom: 0.5rem;
+  }
+
+  .win-sub {
+    color: rgba(255,255,255,0.7);
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+
+  .xp-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+    color: var(--darker);
+    font-family: 'Bangers', cursive;
+    font-size: 1.6rem;
+    letter-spacing: 2px;
+    padding: 0.5rem 1.5rem;
+    border-radius: 999px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 20px rgba(245,197,24,0.4);
+    animation: xpPop 0.5s 0.4s cubic-bezier(0.22,1,0.36,1) both;
+  }
+
+  @keyframes xpPop {
+    from { transform: scale(0.5); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  /* ========== PENALTY CHALLENGE ========== */
+  .penalty-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    margin: 1rem 0;
+  }
+
+  @media (min-width: 500px) {
+    .penalty-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .penalty-card {
+    background: rgba(255,255,255,0.05);
+    border: 2px solid rgba(255,255,255,0.12);
+    border-radius: var(--radius-sm);
+    padding: 0.75rem 0.6rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .penalty-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(255,255,255,0.3);
+  }
+
+  .penalty-card.flagged {
+    border-color: var(--red-light);
+    background: rgba(213,47,47,0.2);
+    animation: flagDrop 0.4s ease;
+  }
+
+  .penalty-card.clean {
+    border-color: var(--green-bright);
+    background: rgba(76,175,80,0.15);
+  }
+
+  .penalty-icon { font-size: 2rem; margin-bottom: 0.3rem; }
+  .penalty-name { font-size: 0.8rem; font-weight: 900; color: var(--white); text-transform: uppercase; letter-spacing: 0.5px; line-height: 1.2; }
+
+  /* ========== GAME CLOCK ========== */
+  .game-clock {
+    background: linear-gradient(135deg, #111, #1a1a1a);
+    border: 3px solid var(--gold);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    text-align: center;
+    margin: 1rem 0;
+    box-shadow: 0 0 30px rgba(245,197,24,0.1);
+  }
+
+  .clock-display {
+    font-family: 'Bangers', cursive;
+    font-size: 3.5rem;
+    color: var(--gold);
+    letter-spacing: 4px;
+    text-shadow: 0 0 20px rgba(245,197,24,0.5);
+    line-height: 1;
+  }
+
+  .clock-label { font-size: 0.75rem; font-weight: 900; letter-spacing: 2px; color: rgba(255,255,255,0.5); text-transform: uppercase; margin-top: 0.25rem; }
+
+  .quarter-info {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .q-badge {
+    background: rgba(255,255,255,0.08);
+    border: 2px solid rgba(255,255,255,0.15);
+    border-radius: var(--radius-sm);
+    padding: 0.35rem 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 900;
+    color: rgba(255,255,255,0.7);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .q-badge.active-q {
+    background: rgba(245,197,24,0.2);
+    border-color: var(--gold);
+    color: var(--gold);
+  }
+
+  .q-badge:hover { border-color: var(--gold); }
+
+  /* ========== CONFETTI ========== */
+  .confetti-piece {
+    position: fixed;
+    width: 10px; height: 10px;
+    animation: confettiFall linear forwards;
+    z-index: 9999;
+    border-radius: 2px;
+    pointer-events: none;
+  }
+
+  @keyframes confettiFall {
+    0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* ========== INTRO SCREEN ========== */
+  .intro-hero {
+    text-align: center;
+    padding: 2rem 1rem 1rem;
+  }
+
+  .intro-field {
+    font-size: 5rem;
+    animation: fieldFloat 3s ease-in-out infinite;
+    display: inline-block;
+    filter: drop-shadow(0 8px 16px rgba(0,0,0,0.4));
+  }
+
+  @keyframes fieldFloat {
+    0%, 100% { transform: translateY(0) rotate(-3deg); }
+    50% { transform: translateY(-12px) rotate(3deg); }
+  }
+
+  .intro-title {
+    font-family: 'Bangers', cursive;
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    color: var(--gold);
+    letter-spacing: 4px;
+    text-shadow: 4px 4px 0 rgba(0,0,0,0.5), 0 0 40px rgba(245,197,24,0.3);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .intro-subtitle {
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    color: rgba(255,255,255,0.75);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .intro-tagline {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 2rem;
+    font-style: italic;
+    font-weight: 600;
+  }
+
+  .feature-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+  }
+
+  .feature-pill {
+    background: rgba(255,255,255,0.07);
+    border: 1.5px solid rgba(255,255,255,0.15);
+    border-radius: 999px;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.7);
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  /* ========== SCROLL-ORDER CHALLENGE ========== */
+  .sortable-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 1rem 0;
+  }
+
+  .sortable-item {
+    background: rgba(255,255,255,0.06);
+    border: 2px solid rgba(255,255,255,0.15);
+    border-radius: var(--radius-sm);
+    padding: 0.7rem 1rem;
+    cursor: grab;
+    font-weight: 700;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    transition: all 0.2s;
+    user-select: none;
+  }
+
+  .sortable-item:hover { border-color: var(--gold); background: rgba(245,197,24,0.07); }
+  .sortable-item .handle { color: rgba(255,255,255,0.3); font-size: 1.1rem; }
+
+  /* Responsive */
+  @media (max-width: 480px) {
+    .scoreboard { padding: 0.5rem 0.75rem; }
+    .score-stats { gap: 0.5rem; }
+    .stat-pill { padding: 0.2rem 0.5rem; font-size: 0.75rem; }
+    .scoring-board { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- SCOREBOARD HEADER -->
+<header class="scoreboard">
+  <div class="score-title">🏈 4TH & CLUELESS</div>
+  <div class="score-stats">
+    <div class="stat-pill">⭐ <span class="val" id="total-xp">0</span> XP</div>
+    <div class="stat-pill">🏆 <span class="val" id="levels-done">0</span>/6</div>
+    <div class="stat-pill">🔥 <span class="val" id="streak-count">0</span></div>
+  </div>
+</header>
+
+<main class="app">
+
+  <!-- ========== INTRO SCREEN ========== -->
+  <div id="screen-intro" class="screen active">
+    <div class="intro-hero">
+      <div class="intro-field">🏈</div>
+      <div class="intro-title">4TH & CLUELESS</div>
+      <div class="intro-subtitle">American Football for the Totally Lost</div>
+      <div class="intro-tagline">"You've watched it. You've eaten the wings. Now actually understand it."</div>
+      <div class="feature-pills">
+        <span class="feature-pill">🎮 6 Arcade Levels</span>
+        <span class="feature-pill">🤣 Coach Jokes</span>
+        <span class="feature-pill">🦅 Mascot Banter</span>
+        <span class="feature-pill">⚡ Mini Challenges</span>
+        <span class="feature-pill">🏆 Scoreboard</span>
+        <span class="feature-pill">🧠 Quiz Unlocks</span>
+      </div>
+    </div>
+
+    <div class="mascot-box">
+      <div class="mascot-avatar">🦅</div>
+      <div class="mascot-speech">
+        <div class="mascot-name">Eagle Eddie — Your Mascot Coach</div>
+        <div class="mascot-text">
+          Heyyy rookie! I'm <em>Eagle Eddie</em> 🦅 and I'll be your guide through the glorious madness of American football.<br><br>
+          Fair warning: I studied the rulebook for 20 years and I still Google "<em>what's a touchback</em>" sometimes. Don't worry — by the end of this, you'll know more than most people in the stands!
+        </div>
+      </div>
+    </div>
+
+    <button class="btn-primary" onclick="showMap()">⚡ LET'S PLAY BALL!</button>
+  </div>
+
+  <!-- ========== LEVEL MAP ========== -->
+  <div id="screen-map" class="screen">
+    <div class="mascot-box">
+      <div class="mascot-avatar">🦅</div>
+      <div class="mascot-speech">
+        <div class="mascot-name">Eagle Eddie</div>
+        <div class="mascot-text" id="map-mascot-text">Pick a level, rookie! Complete them in order to unlock the next. No skipping — just like in actual football, <em>you can't score a touchdown before getting a first down.</em> Probably.</div>
+      </div>
+    </div>
+
+    <div class="level-map-title">CHOOSE YOUR LEVEL</div>
+    <div class="level-map-sub">Complete each level to unlock the next 🔓</div>
+    <div class="levels-grid" id="levels-grid"></div>
+  </div>
+
+  <!-- ========== LESSON SCREEN ========== -->
+  <div id="screen-lesson" class="screen">
+    <div class="lesson-header">
+      <button class="back-btn" onclick="showMap()">← MAP</button>
+      <div class="lesson-title" id="lesson-title">LEVEL 1</div>
+    </div>
+    <div class="progress-dots" id="progress-dots"></div>
+    <div id="lesson-content"></div>
+  </div>
+
+  <!-- ========== WIN SCREEN ========== -->
+  <div id="screen-win" class="screen">
+    <div class="win-screen">
+      <div class="trophy" id="win-trophy">🏆</div>
+      <div class="win-title" id="win-title">LEVEL CLEARED!</div>
+      <div class="win-sub" id="win-sub">Nice work, rookie!</div>
+      <div class="xp-badge" id="win-xp">+100 XP</div>
+
+      <div class="mascot-box" style="text-align:left">
+        <div class="mascot-avatar">🦅</div>
+        <div class="mascot-speech">
+          <div class="mascot-name">Eagle Eddie</div>
+          <div class="mascot-text" id="win-mascot"></div>
+        </div>
+      </div>
+
+      <button class="btn-primary" id="win-next-btn" onclick="winNext()">NEXT LEVEL →</button>
+      <button class="btn-secondary" onclick="showMap()">← BACK TO MAP</button>
+    </div>
+  </div>
+
+</main>
+
+<script>
+// ============================================================
+// STATE
+// ============================================================
+const state = {
+  xp: 0,
+  streak: 0,
+  levelsCompleted: new Set(),
+  currentLevel: 0,
+  currentStep: 0,
+  currentScore: 0,
+  wrongAnswers: 0,
+};
+
+// ============================================================
+// LEVELS DATA
+// ============================================================
+const levels = [
+  {
+    id: 1,
+    name: "THE FIELD",
+    icon: "🏟️",
+    desc: "What is this giant grass rectangle for, anyway?",
+    xp: 80,
+    trophy: "🏟️",
+    steps: [
+      { type: "learn", content: learnField },
+      { type: "quiz", content: quizField },
+      { type: "challenge", content: challengeFieldViz },
+    ]
+  },
+  {
+    id: 2,
+    name: "DOWNS & YARDS",
+    icon: "📏",
+    desc: "The most confusing thing in football. We'll fix that.",
+    xp: 100,
+    trophy: "📏",
+    steps: [
+      { type: "learn", content: learnDowns },
+      { type: "challenge", content: challengeDowns },
+      { type: "quiz", content: quizDowns },
+    ]
+  },
+  {
+    id: 3,
+    name: "SCORING",
+    icon: "🎯",
+    desc: "Touchdowns! Field goals! Extra points! A safety?!",
+    xp: 100,
+    trophy: "🎯",
+    steps: [
+      { type: "learn", content: learnScoring },
+      { type: "challenge", content: challengeScoring },
+      { type: "quiz", content: quizScoring },
+    ]
+  },
+  {
+    id: 4,
+    name: "PENALTIES",
+    icon: "🚩",
+    desc: "Yellow flags! Angry refs! Confused fans!",
+    xp: 100,
+    trophy: "🚩",
+    steps: [
+      { type: "learn", content: learnPenalties },
+      { type: "challenge", content: challengePenalties },
+      { type: "quiz", content: quizPenalties },
+    ]
+  },
+  {
+    id: 5,
+    name: "GAME FLOW",
+    icon: "⏱️",
+    desc: "Quarters, halftime, timeouts, and why it takes 4 hours.",
+    xp: 120,
+    trophy: "⏱️",
+    steps: [
+      { type: "learn", content: learnGameFlow },
+      { type: "challenge", content: challengeGameFlow },
+      { type: "quiz", content: quizGameFlow },
+    ]
+  },
+  {
+    id: 6,
+    name: "FINAL EXAM",
+    icon: "🏆",
+    desc: "Prove you're no longer clueless. Coach Eddie is watching.",
+    xp: 150,
+    trophy: "🏆",
+    steps: [
+      { type: "quiz", content: quizFinal1 },
+      { type: "quiz", content: quizFinal2 },
+      { type: "quiz", content: quizFinal3 },
+      { type: "quiz", content: quizFinal4 },
+    ]
+  }
+];
+
+// ============================================================
+// CONTENT FUNCTIONS
+// ============================================================
+
+function learnField() {
+  return `
+    <div class="mascot-box">
+      <div class="mascot-avatar">🦅</div>
+      <div class="mascot-speech">
+        <div class="mascot-name">Eagle Eddie</div>
+        <div class="mascot-text">First things first — the <em>field</em>! It's 100 yards long. That's about 91 meters, or roughly 20 times the length of your attention span for football so far. 😂</div>
+      </div>
+    </div>
+
+    <div class="content-card">
+      <h2>🏟️ THE FOOTBALL FIELD</h2>
+      <p>The field is <strong>100 yards long</strong> and 53 yards wide. Each team attacks toward the opposite <strong>end zone</strong> — a 10-yard painted area at each end.</p>
+      <div class="highlight-box">
+        🎯 Score a touchdown = carry/catch the ball INTO the other team's end zone.<br>
+        Simple concept. Wildly complicated to actually do.
+      </div>
+      <p>The field is marked every 10 yards with big numbers: <strong>10, 20, 30, 40, 50, 40, 30, 20, 10</strong>. They count up to midfield (50-yard line) then count back down. Why? Because football.</p>
+      <div class="joke-box">
+        <div class="joke-icon">🤣</div>
+        <div class="joke-text">Coach joke: "Our offense gained 200 yards today." "Wow!" "…over the entire season."</div>
+      </div>
+      <p>At each end of the field stand two <strong>goalposts</strong> — the yellow fork-looking things. You can kick the ball through them to score.</p>
+    </div>
+
+    <div class="content-card">
+      <h2>👥 THE TEAMS</h2>
+      <p>Each team has <strong>11 players on the field</strong> at a time. One team is on <strong>offense</strong> (they have the ball and try to score). The other is on <strong>defense</strong> (they try to stop them).</p>
+      <div class="highlight-box">
+        ⚡ Offense = the team with the ball, trying to move forward.<br>
+        🛡️ Defense = the team without the ball, trying to stop them.
+      </div>
+      <div class="joke-box">
+        <div class="joke-icon">😅</div>
+        <div class="joke-text">Fun fact: there are also "special teams" for kicking plays. They're the third team nobody ever explains. Don't worry about them yet. Even most fans forget they exist until something goes wrong.</div>
+      </div>
+    </div>
+
+    <div class="field-viz">
+      <div class="field-lines">
+        <div class="yard-marker">END<br>ZONE</div>
+        <div class="yard-marker">10</div>
+        <div class="yard-marker">20</div>
+        <div class="yard-marker">30</div>
+        <div class="yard-marker">40</div>
+        <div class="yard-marker">50</div>
+        <div class="yard-marker">40</div>
+        <div class="yard-marker">30</div>
+        <div class="yard-marker">20</div>
+        <div class="yard-marker">10</div>
+        <div class="yard-marker">END<br>ZONE</div>
+      </div>
+      <div style="text-align:center; font-size:0.75rem; color:rgba(255,255,255,0.6); margin-top:0.5rem; font-weight:700; letter-spacing:1px;">← 100 YARDS TOTAL →</div>
+    </div>
+  `;
+}
+
+function quizField() {
+  return buildQuiz({
+    mascot: "Okay rookie, first quiz! If you get this wrong, I'm making you run laps. (I can't actually do that. But still.)",
+    question: "Where does a team score a touchdown?",
+    options: [
+      { text: "By kicking the ball through the goalposts", correct: false },
+      { text: "By carrying or catching the ball in the opponent's end zone", correct: true },
+      { text: "By running to the 50-yard line", correct: false },
+      { text: "By tackling the quarterback", correct: false },
+    ],
+    feedbackGood: "✅ CORRECT! The end zone is the promised land. Get in there with the ball = touchdown!",
+    feedbackBad: "❌ Nope! The goalposts are for field goals, not touchdowns. The END ZONE is the goal!",
+    xp: 15
+  });
+}
+
+function challengeFieldViz() {
+  const html = `
+    <div class="mascot-box">
+      <div class="mascot-avatar">🦅</div>
+      <div class="mascot-speech">
+        <div class="mascot-name">Eagle Eddie</div>
+        <div class="mascot-text">Mini challenge! I'll describe a location on the field. You tap it on the field below. Easy-peasy. (I say that now...)</div>
+      </div>
+    </div>
+
+    <div class="challenge-box">
+      <div class="challenge-title">⚡ MINI CHALLENGE: FIND THE SPOT</div>
+      <div id="field-chal-question" style="font-weight:700; font-size:1rem; margin-bottom:1rem; color:var(--cream);">
+        Click the <span id="field-target" style="color:var(--gold)">END ZONE</span> on the field!
+      </div>
+
+      <div style="background: linear-gradient(180deg, #2d6a2f 0%, #3a8a3d 50%, #2d6a2f 100%); border-radius:8px; padding:0.75rem 0.5rem; user-select:none;">
+        <div style="display:flex; justify-content:space-between; border-bottom:2px solid rgba(255,255,255,0.5); padding-bottom:0.5rem; margin-bottom:0.5rem;">
+          ${['END ZONE','10','20','30','40','50','40','30','20','10','END ZONE'].map((m,i) => 
+            `<div class="yard-marker" data-zone="${m}" onclick="fieldChalClick(this)" style="cursor:pointer; padding:0.3rem; border-radius:4px; transition:all 0.2s; font-size:0.65rem;">${m}</div>`
+          ).join('')}
+        </div>
+        <div style="text-align:center; font-size:0.7rem; color:rgba(255,255,255,0.5); font-weight:700;">TAP A SECTION ↑</div>
+      </div>
+
+      <div id="field-chal-feedback" class="quiz-feedback"></div>
+    </div>
+  `;
+  return html;
+}
+
+function learnDowns() {
+  return `
+    <div class="mascot-box">
+      <div class="mascot-avatar">🦅</div>
+      <div class="mascot-speech">
+        <div class="mascot-name">Eagle Eddie</div>
+        <div class="mascot-text">Okay. <em>Downs</em>. This is THE thing that confuses everyone. But I promise — it's actually really logical once you get it. Ready? Take a deep breath. Here we go.</div>
+      </div>
+    </div>
+
+    <div class="content-card">
+      <h2>📏 WHAT IS A "DOWN"?</h2>
+      <p>A "down" is basically a <strong>play attempt</strong>. Think of it like a turn in a board game.</p>
+      <p>The offense gets <strong>4 downs (attempts)</strong> to move the ball forward <strong>10 yards</strong>. If they do it, they get a fresh set of 4 downs and keep going. If they don't… well, that's where it gets dramatic.</p>
+      <div class="highlight-box">
+        🏈 DOWNS ARE BASICALLY: "You get 4 tries to move 10 yards. Go!"
+      </div>
+    </div>
+
+    <div class="content-card">
+      <h2>🔢 THE DOWN COUNTER</h2>
+      <p>You'll hear announcers say things like <strong>"It's 1st and 10"</strong>, <strong>"3rd and 7"</strong>, etc. Here's the code:</p>
+      <div class="highlight-box">
+        📣 "1st and 10" = It's the 1st down, and they need 10 more yards.<br>
+        📣 "2nd and 6" = It's the 2nd down, they gained 4 yards, need 6 more.<br>
+        📣 "3rd and 15" = Uh oh, 3rd try, still need 15 yards. Not great.
+      </div>
+      <div class="joke-box">
+        <div class="joke-icon">😂</div>
+        <div class="joke-text">Coach joke: My team got to 4th and 1. I called timeout. Then another timeout. Then a commercial break. Then I considered early retirement. Eventually we punted.</div>
+      </div>
+    </div>
+
+    <div class="content-card">
+      <h2>🤔 WHAT HAPPENS ON 4TH DOWN?</h2>
+      <p>On 4th down, teams usually have 3 choices:</p>
+      <div class="highlight-box">
+        🦵 <strong>Punt</strong> — kick the ball far away so the opponent starts farther back<br>
+        🥅 <strong>Field goal</strong> — kick it through the goalposts for 3 points<br>
+        💪 <strong>Go for it</strong> — try to get those yards and keep the drive alive (risky!)
+      </div>
+      <div class="joke-box">
+        <div class="joke-icon">🤣</div>
+        <div class="joke-text">Fun fact: When a coach "goes for it" on 4th and 20, sports commentators spend the next week debating if he's a genius or a lunatic. Sometimes both. Usually both.</div>
+      </div>
+    </div>
+  `;
+}
+
+function challengeDowns() {
+  const html = `
+    <div class="mascot-box">
+      <div class="mascot-avatar">🦅</div>
+      <div class="mascot-speech">
+        <div class="mascot-name">Eagle Eddie</div>
+        <div class="mascot-text">Interactive challenge time! You're the offense. Click <em>SNAP</em> to run a play and gain yards. Try to reach <em>10 yards</em> before you use all 4 downs! Also try NOT to panic. (You will panic.)</div>
+      </div>
+    </div>
+
+    <div class="challenge-box">
+      <div class="challenge-title">⚡ MINI CHALLENGE: DRIVE THE BALL</div>
+      
+      <div class="downs-tracker" id="downs-nodes">
+        <div class="down-node current" id="dn-1">1ST<br>DOWN</div>
+        <div class="down-node" id="dn-2">2ND<br>DOWN</div>
+        <div class="down-node" id="dn-3">3RD<br>DOWN</div>
+        <div class="down-node" id="dn-4">4TH<br>DOWN</div>
+      </div>
+
+      <div style="margin:1rem 0; font-family:'Bangers',cursive; font-size:1.4rem; color:var(--gold); text-align:center; letter-spacing:2px;" id="down-display">1st & 10</div>
+
+      <div class="yard-progress">
+        <div class="yard-fill" id="yard-fill" style="width:0%"></div>
+        <div class="yard-label" id="yard-label">0 / 10 yards</div>
+      </div>
+
+      <div id="last-play" style="min-height:2rem; text-align:center; color:rgba(255,255,255,0.6); font-size:0.85rem; font-weight:600; margin:0.5rem 0;"></div>
+
+      <button class="btn-primary" id="snap-btn" onclick="snapPlay()" style="margin-top:0.5rem">🏈 SNAP THE BALL!</button>
+      <div id="downs-feedback" class="quiz-feedback"></div>
+    </div>
+  `;
+  return html;
+}
+
+function quizDowns() {
+  return buildQuiz({
+    mascot: "Knowledge check! If you get this, you officially know more about football than 40% of people at Super Bowl parties.",
+    question: "It's 3rd and 6. The offense runs a play and gains exactly 6 yards. What happens next?",
+    options: [
+      { text: "Turnover — the other team gets the ball", correct: false },
+      { text: "They punt the ball away", correct: false },
+      { text: "They get a new 1st down and 4 fresh attempts!", correct: true },
+      { text: "The play is reviewed by the referee", correct: false },
+    ],
+    feedbackGood: "✅ FIRST DOWN BABY! Gain 10 yards (or more), reset the clock, and get 4 fresh downs. It's like respawning in a video game!",
+    feedbackBad: "❌ Nope! They gained the 6 yards they needed, so they get a FIRST DOWN — a fresh set of 4 downs. The game continues!",
+    xp: 20
+  });
+}
+
+function learnScoring() {
+  return `
+    <div class="mascot-box">
+      <div class="mascot-avatar">🦅</div>
+      <div class="mascot-speech">
+        <div class="mascot-name">Eagle Eddie</div>
+        <div class="mascot-text">Ah, scoring! This is why people watch. Points! <em>Drama!</em> Grown men crying! Let me break down ALL the ways to score so you know what to scream about.</div>
+      </div>
+    </div>
+
+    <div class="scoring-board">
+      <div class="score-type-card">
+        <div class="score-type-pts">6</div>
+        <div class="score-type-name">Touchdown</div>
+        <div class="score-type-desc">Ball reaches/crosses the end zone</div>
+      </div>
+      <div class="score-type-card">
+        <div class="score-type-pts">3</div>
+        <div class="score-type-name">Field Goal</div>
+        <div class="score-type-desc">Kick through the uprights</div>
+      </div>
+      <div class="score-type-card">
+        <div class="score-type-pts">1</div>
+        <div class="score-type-name">Extra Point</div>
+        <div class="score-type-desc">Kick after a TD (PAT)</div>
+      </div>
+      <div class="score-type-card">
+        <div class="score-type-pts">2</div>
+        <div class="score-type-name">Two-Point Conv.</div>
+        <div class="score-type-desc">Run/pass into end zone after TD</div>
+      </div>
+      <div class="score-type-card">
+        <div class="score-type-pts">2</div>
+        <div class="score-type-name">Safety</div>
+        <div class="score-type-desc">Defense tackles offense in THEIR OWN end zone</div>
+      </div>
+    </div>
+
+    <div class="content-card">
+      <h2>🏈 TOUCHDOWN (6 POINTS)</h2>
+      <p>The big daddy of all scores. Carry or catch the ball into the end zone. Easy concept, brutally hard execution. After a TD, the scoring team gets to attempt an <strong>extra point</strong>.</p>
+      <div class="joke-box">
+        <div class="joke-icon">🎉</div>
+        <div class="joke-text">Fun fact: Touchdown celebrations are now an art form. Players have had full choreographed dances, fake proposal skits, and one guy pretended to take a selfie with himself. Football: where athletes also get to be theater kids.</div>
+      </div>
+    </div>
+
+    <div class="content-card">
+      <h2>🥅 FIELD GOAL (3 POINTS)</h2>
+      <p>When you can't get a touchdown, kick the ball through the goalposts. Usually done on 4th down when close enough to attempt it (roughly within 50 yards).</p>
+      <div class="highlight-box">
+        🤔 Think of it as: "We tried, we couldn't score big, so here's a consolation prize."
+      </div>
+    </div>
+
+    <div class="content-card">
+      <h2>🤯 THE SAFETY (2 POINTS)</h2>
+      <p>The weirdest score in football. If a player with the ball is tackled <em>in their own end zone</em>, the opposing team gets 2 points. AND the team that gave up the safety has to kick the ball too. Double punishment.</p>
+      <div class="joke-box">
+        <div class="joke-icon">😬</div>
+        <div class="joke-text">Safety announcer voice: "And the quarterback… is sacked… in his own end zone. A SAFETY. Somewhere, a coach is eating an entire stress donut right now."</div>
+      </div>
+    </div>
+  `;
+}
+
+function challengeScoring() {
+  const html = `
+    <div class="mascot-box">
+      <div class="mascot-avatar">🦅</div>
+      <div class="mascot-speech">
+        <div class="mascot-name">Eagle Eddie</div>
+        <div class="mascot-text">Scoring challenge! I'll describe a play, you pick what score it is. Quick — like a running back hitting a gap. (But slower is fine too, I'm not actually timing you.)</div>
+      </div>
+    </div>
+
+    <div class="challenge-box">
+      <div class="challenge-title">⚡ MINI CHALLENGE: SCOREBOARD MASTER</div>
+      <div id="score-challenge-content">
+        <div id="score-scenario" style="font-size:1.05rem; font-weight:700; color:var(--cream); margin-bottom:1.25rem; line-height:1.5;"></div>
+        <div class="scoring-board" id="score-options"></div>
+        <div id="score-feedback" class="quiz-feedback"></div>
+      </div>
+    </div>
+  `;
+  setTimeout(() => initScoreChallenge(), 50);
+  return html;
+}
+
+function quizScoring() {
+  return buildQuiz({
+    mascot: "Scoring quiz! Get it right and I'll do my happy eagle dance. (You won't see it. But it'll happen.)",
+    question: "After scoring a touchdown, a team tries to kick through the goalposts and succeeds. How many total points did they score on that possession?",
+    options: [
+      { text: "6 points", correct: false },
+      { text: "7 points (6 TD + 1 extra point)", correct: true },
+      { text: "8 points", correct: false },
+      { text: "9 points", correct: false },
+    ],
+    feedbackGood: "✅ PERFECT! 6 for the touchdown + 1 for the PAT (Point After Touchdown) = 7 points. That's why scores always seem to end in 7 or 14!",
+    feedbackBad: "❌ Not quite! It's 6 for the touchdown PLUS 1 for kicking the extra point = 7 total! Mystery of football scoring, solved.",
+    xp: 20
+  });
+}
+
+function learnPenalties() {
+  return `
+    <div class="mascot-box">
+      <div class="mascot-avatar">🦅</div>
+      <div class="mascot-speech">
+        <div class="mascot-name">Eagle Eddie</div>
+        <div class="mascot-text">Ah, penalties! Yellow flags everywhere! Fans booing! Nobody quite sure what happened! Welcome to the <em>most confusing 3 minutes</em> of every football game. I will now explain the most important ones.</div>
+      </div>
+    </div>
+
+    <div class="content-card">
+      <h2>🚩 HOW PENALTIES WORK</h2>
+      <p>When a player breaks a rule, a referee throws a <strong>yellow flag</strong> on the field. Then everyone waits while he talks into a microphone for 45 seconds. Time resumes. You still don't know what happened.</p>
+      <div class="highlight-box">
+        ⚠️ Most penalties = the other team gains yards (or the offending team loses yards).<br>
+        Some penalties also allow the play to be redone.
+      </div>
+      <div class="joke-box">
+        <div class="joke-icon">🤣</div>
+        <div class="joke-text">The referee announcing a penalty is the closest thing football has to improv theater. "There is a foul. On the offense. Number 72. Holding. 10 yard penalty. Repeat of 2nd down." *Crowd: WE STILL DON'T KNOW WHAT HOLDING IS.*</div>
+      </div>
+    </div>
+
+    <div class="content-card">
+      <h2>📋 KEY PENALTIES TO KNOW</h2>
+      <div class="highlight-box">
+        🤲 <strong>Holding (10 yards)</strong> — Grabbing a player who doesn't have the ball. Illegal hug.<br><br>
+        🏃 <strong>False Start (5 yards)</strong> — An offensive player moves before the ball is snapped. Jumping the gun.<br><br>
+        ⏰ <strong>Offside (5 yards)</strong> — A player lines up on the wrong side of the line before the play. Oops.<br><br>
+        🦿 <strong>Pass Interference</strong> — Illegally blocking a receiver trying to catch the ball. Big penalty!<br><br>
+        🦺 <strong>Unnecessary Roughness</strong> — Basically being way too violent, even by football standards.
+      </div>
+      <div class="joke-box">
+        <div class="joke-icon">😤</div>
+        <div class="joke-text">True story: "Holding" gets called so often that NFL Twitter has a running joke: "They could call holding on every play." Referees: 😐 (They know.)</div>
+      </div>
+    </div>
+  `;
+}
+
+function challengePenalties() {
+  const html = `
+    <div class="mascot-box">
+      <div class="mascot-avatar">🦅</div>
+      <div class="mascot-speech">
+        <div class="mascot-name">Eagle Eddie</div>
+        <div class="mascot-text">Penalty challenge! I'll show you plays. Some are <em>legal</em>, some are <em>penalties</em>. Tap the ones that deserve a flag! Think like a ref. (Don't actually think like a ref — refs are mysterious and unknowable.)</div>
+      </div>
+    </div>
+
+    <div class="challenge-box">
+      <div class="challenge-title">⚡ MINI CHALLENGE: FLAG THE PLAY!</div>
+      <div style="font-weight:700; font-size:0.9rem; color:rgba(255,255,255,0.7); margin-bottom:1rem;">Tap on the plays that are PENALTIES 🚩</div>
+      <div class="penalty-grid" id="penalty-grid"></div>
+      <button class="btn-primary" id="penalty-check-btn" onclick="checkPenalties()" style="display:none; margin-top:1rem">🚩 CHECK FLAGS</button>
+      <div id="penalty-feedback" class="quiz-feedback"></div>
+    </div>
+  `;
+  setTimeout(() => initPenaltyChallenge(), 50);
+  return html;
+}
+
+function quizPenalties() {
+  return buildQuiz({
+    mascot: "Penalty quiz! No yellow flags allowed for wrong answers. That would be a flag for 'incorrect answer' — 10 yards and a re-quiz.",
+    question: "A wide receiver is running to catch a pass. A defensive player pushes the receiver before the ball arrives, knocking him off his route. What penalty is this?",
+    options: [
+      { text: "Holding — 10 yard penalty on offense", correct: false },
+      { text: "False Start — 5 yards", correct: false },
+      { text: "Pass Interference — can be a major penalty for the defense", correct: true },
+      { text: "Unnecessary Roughness — 15 yards", correct: false },
+    ],
+    feedbackGood: "✅ CORRECT! Pass Interference means the defender illegally prevented the receiver from catching the ball. Defensive PI gives the offense BIG yardage!",
+    feedbackBad: "❌ Not quite! Pushing a receiver before the ball arrives is Pass Interference — the defense can't mess with receivers until the ball is thrown!",
+    xp: 20
+  });
+}
+
+function learnGameFlow() {
+  return `
+    <div class="mascot-box">
+      <div class="mascot-avatar">🦅</div>
+      <div class="mascot-speech">
+        <div class="mascot-name">Eagle Eddie</div>
+        <div class="mascot-text">Okay, last big topic: <em>how the game actually flows</em>! Spoiler: an NFL game takes 3–4 hours but only has about 11 minutes of actual action. The other 3 hours are commercials, huddles, and replays of things that happened 8 seconds ago.</div>
+      </div>
+    </div>
+
+    <div class="content-card">
+      <h2>⏱️ GAME STRUCTURE</h2>
+      <p>An NFL game is split into <strong>4 quarters</strong>, each 15 minutes long (on the clock). There's a long <strong>halftime</strong> after the 2nd quarter.</p>
+      <div class="highlight-box">
+        Q1 → Q2 → [HALFTIME 🎶] → Q3 → Q4<br><br>
+        If tied after Q4: <strong>Overtime</strong> — sudden death (ish). One team scores, game over.
+      </div>
+      <div class="joke-box">
+        <div class="joke-icon">😂</div>
+        <div class="joke-text">Fun fact: A "15 minute" quarter takes about 45 real minutes because the clock stops constantly. For: incomplete passes, out-of-bounds plays, penalties, timeouts, and staring dramatically at the sky.</div>
+      </div>
+    </div>
+
+    <div class="content-card">
+      <h2>⏸️ TIMEOUTS & CLOCK STOPS</h2>
+      <p>Each team gets <strong>3 timeouts per half</strong>. When used, the clock stops and everyone catches their breath and argues strategy. There are also MANY situations where the clock stops automatically.</p>
+      <div class="highlight-box">
+        🛑 Clock stops when: ball goes out of bounds, incomplete pass, timeout called, penalty flag, player injured, end of a quarter, and approximately 47 other situations.
+      </div>
+    </div>
+
+    <div class="content-card">
+      <h2>🔄 POSSESSION CHANGES</h2>
+      <p>The ball changes teams when:</p>
+      <div class="highlight-box">
+        🦵 <strong>Punt</strong> — 4th down, kick it away<br>
+        ❌ <strong>Turnover on downs</strong> — fail to get 10 yards in 4 tries<br>
+        🙌 <strong>Interception</strong> — defense catches a pass<br>
+        💥 <strong>Fumble</strong> — ball carrier drops it and defense gets it<br>
+        ✅ <strong>Score</strong> — after scoring, opponent gets the ball
+      </div>
+      <div class="joke-box">
+        <div class="joke-icon">😬</div>
+        <div class="joke-text">A "fumble" is when a player drops the ball mid-play and suddenly everyone dives on it like it's the last slice of pizza at an office party. Pure chaos. Very entertaining.</div>
+      </div>
+    </div>
+  `;
+}
+
+function challengeGameFlow() {
+  const html = `
+    <div class="mascot-box">
+      <div class="mascot-avatar">🦅</div>
+      <div class="mascot-speech">
+        <div class="mascot-name">Eagle Eddie</div>
+        <div class="mascot-text">Game flow challenge! I'll show you a game situation. Click the quarters in order and then answer what happens. You've got this. <em>Probably.</em></div>
+      </div>
+    </div>
+
+    <div class="challenge-box">
+      <div class="challenge-title">⚡ MINI CHALLENGE: GAME CLOCK</div>
+
+      <div class="game-clock">
+        <div class="clock-display" id="clock-display">15:00</div>
+        <div class="clock-label" id="clock-qtr-label">1ST QUARTER</div>
+      </div>
+
+      <div class="quarter-info">
+        <div class="q-badge active-q" data-q="1" onclick="setQuarter(1)">Q1</div>
+        <div class="q-badge" data-q="2" onclick="setQuarter(2)">Q2</div>
+        <div class="q-badge" data-q="HT" onclick="setQuarter('HT')">½TIME</div>
+        <div class="q-badge" data-q="3" onclick="setQuarter(3)">Q3</div>
+        <div class="q-badge" data-q="4" onclick="setQuarter(4)">Q4</div>
+        <div class="q-badge" data-q="OT" onclick="setQuarter('OT')">OT</div>
+      </div>
+
+      <div id="clock-challenge-q" style="margin-top:1.25rem; font-weight:700; font-size:1rem; color:var(--cream); line-height:1.5;"></div>
+      <div class="quiz-options" id="clock-challenge-opts" style="margin-top:0.75rem;"></div>
+      <div id="clock-feedback" class="quiz-feedback"></div>
+    </div>
+  `;
+  setTimeout(() => initClockChallenge(), 50);
+  return html;
+}
+
+function quizGameFlow() {
+  return buildQuiz({
+    mascot: "Game flow quiz! You're nearly at the end, rookie. Don't fumble now! (That's a football joke. You're required by law to laugh.)",
+    question: "A team is losing by 4 points with 2 minutes left. They intercept a pass and get the ball. What should they probably do?",
+    options: [
+      { text: "Punt the ball immediately to save time", correct: false },
+      { text: "Take 3 timeouts in a row for a team meeting", correct: false },
+      { text: "Run plays toward the end zone as fast as possible, managing the clock", correct: true },
+      { text: "Challenge the last referee decision", correct: false },
+    ],
+    feedbackGood: "✅ CORRECT! When you're down late in the game and get the ball, you GO! Score to take the lead! Clock management and urgency — that's football IQ right there.",
+    feedbackBad: "❌ Wrong! When you're down with 2 minutes left and get the ball, you push toward the end zone ASAP! That's the whole point of clock management!",
+    xp: 25
+  });
+}
+
+// FINAL QUIZ QUESTIONS
+function quizFinal1() {
+  return buildQuiz({
+    mascot: "FINAL EXAM, Question 1! You've trained hard. This is your Super Bowl moment. Kind of. Not literally. But emotionally.",
+    question: "A team starts at their own 20-yard line. After 3 plays they've gained 12 yards total. What is their current situation?",
+    options: [
+      { text: "3rd and 8 — they still need 8 more yards for a first down", correct: false },
+      { text: "1st and 10 — they earned a new set of downs!", correct: true },
+      { text: "4th and 2 — risky spot", correct: false },
+      { text: "2nd and 10 — back to square one", correct: false },
+    ],
+    feedbackGood: "✅ YES! They gained 12 yards (more than 10), so they got a FIRST DOWN! New set of 4 downs, and they're at their own 32-yard line now!",
+    feedbackBad: "❌ They gained 12 yards in 3 plays — that's more than 10! First down! Reset the count back to 1st and 10!",
+    xp: 25,
+    isFinal: true
+  });
+}
+
+function quizFinal2() {
+  return buildQuiz({
+    mascot: "Question 2 of 4! You're doing great. I mean it. Not just saying that. Well, I can't actually see you but statistically you're probably doing great.",
+    question: "The offense scores a touchdown, then successfully kicks the ball through the goalposts for the extra point. Then on the next drive, their defense gets a safety. What's the total points added?",
+    options: [
+      { text: "6 points (just the TD)", correct: false },
+      { text: "7 points (TD + kick)", correct: false },
+      { text: "9 points (TD + kick + safety)", correct: true },
+      { text: "8 points", correct: false },
+    ],
+    feedbackGood: "✅ ABSOLUTELY RIGHT! 6 (TD) + 1 (PAT kick) + 2 (safety) = 9 points! You are a scoring expert!",
+    feedbackBad: "❌ Let's add it up: 6 for the TD + 1 for the extra point kick + 2 for the safety = 9 points total!",
+    xp: 25,
+    isFinal: true
+  });
+}
+
+function quizFinal3() {
+  return buildQuiz({
+    mascot: "Question 3! This is the 3rd quarter of the Final Exam. See what I did there? No? Fine. FOCUS.",
+    question: "It's 4th and 1, and the team is at the opponent's 35-yard line. They're down by 2 points with 1 minute left. What's their BEST option?",
+    options: [
+      { text: "Punt — kick it far away", correct: false },
+      { text: "Attempt a field goal — 35 yards is kick-able!", correct: true },
+      { text: "Take all 3 remaining timeouts", correct: false },
+      { text: "Kneel down to run out the clock", correct: false },
+    ],
+    feedbackGood: "✅ SMART CALL! They're down by 2, and a field goal = 3 points. That would put them ahead! A 35-yard kick is very doable for NFL kickers. Go for the FG!",
+    feedbackBad: "❌ Think about it: down by 2, a field goal is WORTH 3 POINTS — that would put them AHEAD. A 35-yard kick is totally doable. Kick away!",
+    xp: 25,
+    isFinal: true
+  });
+}
+
+function quizFinal4() {
+  return buildQuiz({
+    mascot: "FINAL QUESTION! This is it. The last question between you and championship glory. And by glory I mean an XP badge and my sincere admiration.",
+    question: "Which of these correctly describes the order of football possession changes during a normal offensive drive that fails?",
+    options: [
+      { text: "Kickoff → offense gets ball → runs 4 plays → scores OR turns ball over", correct: false },
+      { text: "Coin toss → both teams play offense simultaneously → whoever scores first wins", correct: false },
+      { text: "Offense has ball → gets 4 downs to gain 10 yards → if successful, gets new 4 downs; if not, other team gets ball", correct: true },
+      { text: "Teams alternate plays one-for-one regardless of scoring", correct: false },
+    ],
+    feedbackGood: "✅ THAT'S THE GAME! You nailed it! Offense keeps earning new sets of 4 downs by gaining 10 yards. Fail to get 10 in 4 tries, and the ball changes hands. That's football!",
+    feedbackBad: "❌ The correct answer: offense gets 4 downs to gain 10 yards, succeed and get 4 more, fail and the opponent takes over. That's the core loop of American football!",
+    xp: 30,
+    isFinal: true
+  });
+}
+
+// ============================================================
+// QUIZ BUILDER
+// ============================================================
+function buildQuiz({ mascot, question, options, feedbackGood, feedbackBad, xp, isFinal }) {
+  const id = 'quiz_' + Math.random().toString(36).substr(2,8);
+  window[id + '_data'] = { options, feedbackGood, feedbackBad, xp, answered: false };
+
+  const optHtml = options.map((o, i) =>
+    `<button class="quiz-option" id="${id}_opt_${i}" onclick="answerQuiz('${id}',${i})">${o.text}</button>`
+  ).join('');
+
+  return `
+    <div class="mascot-box">
+      <div class="mascot-avatar">🦅</div>
+      <div class="mascot-speech">
+        <div class="mascot-name">Eagle Eddie</div>
+        <div class="mascot-text">${mascot}</div>
+      </div>
+    </div>
+
+    <div class="challenge-box">
+      <div class="challenge-title">📋 QUIZ TIME</div>
+      <div class="quiz-question">${question}</div>
+      <div class="quiz-options">${optHtml}</div>
+      <div class="quiz-feedback" id="${id}_feedback"></div>
+      <button class="btn-primary" id="${id}_next" onclick="nextStep()" style="display:none;">NEXT →</button>
+    </div>
+  `;
+}
+
+// ============================================================
+// INTERACTIVE CHALLENGE LOGIC
+// ============================================================
+
+// Field challenge
+let fieldChalState = { step: 0, questions: [
+  { target: 'END ZONE', desc: 'END ZONE' },
+  { target: '50', desc: '50-YARD LINE (midfield)' },
+  { target: '20', desc: 'the 20-YARD LINE' },
+]};
+
+window.fieldChalClick = function(el) {
+  const zone = el.getAttribute('data-zone');
+  const q = fieldChalState.questions[fieldChalState.step];
+  const fb = document.getElementById('field-chal-feedback');
+  if (!fb) return;
+
+  if (zone === q.target || (q.target === 'END ZONE' && zone === 'END ZONE')) {
+    el.style.background = 'rgba(76,175,80,0.5)';
+    el.style.color = '#fff';
+    fb.className = 'quiz-feedback show good';
+    fb.textContent = '✅ Correct! ' + (fieldChalState.step < fieldChalState.questions.length - 1 ? 'Now find the next one!' : 'Field navigation complete! 🏟️');
+
+    fieldChalState.step++;
+    if (fieldChalState.step < fieldChalState.questions.length) {
+      const next = fieldChalState.questions[fieldChalState.step];
+      document.getElementById('field-target').textContent = next.desc;
+    } else {
+      // All done
+      setTimeout(() => {
+        document.getElementById('field-target').textContent = 'ALL FOUND! 🏆';
+        addXP(20);
+        setTimeout(nextStep, 1200);
+      }, 800);
+    }
+  } else {
+    fb.className = 'quiz-feedback show bad';
+    fb.textContent = '❌ Not quite! Look for the ' + q.desc;
+    el.style.animation = 'wrongShake 0.4s ease';
+    setTimeout(() => { el.style.animation = ''; }, 500);
+  }
+};
+
+// Downs challenge
+let downsState = { currentDown: 1, yardsGained: 0, yardsNeeded: 10, done: false };
+const snapPlays = [
+  { gain: 3, desc: '🏃 Run play! Gained 3 yards.' },
+  { gain: 7, desc: '🏈 Short pass! 7 yards!' },
+  { gain: 0, desc: '🛑 Stuffed at the line! No gain.' },
+  { gain: 2, desc: '🙅 Quick pass for 2 yards.' },
+  { gain: 5, desc: '⚡ Fast run! 5 yards!' },
+  { gain: 9, desc: '🎯 Big pass play! 9 yards!' },
+  { gain: 1, desc: '💪 Pushed forward for 1 yard.' },
+  { gain: 4, desc: '🔄 Scramble for 4 yards.' },
+];
+
+window.snapPlay = function() {
+  if (downsState.done) return;
+  const play = snapPlays[Math.floor(Math.random() * snapPlays.length)];
+  downsState.yardsGained += play.gain;
+
+  const lastPlay = document.getElementById('last-play');
+  const fill = document.getElementById('yard-fill');
+  const label = document.getElementById('yard-label');
+  const downDisplay = document.getElementById('down-display');
+  const feedback = document.getElementById('downs-feedback');
+
+  if (lastPlay) lastPlay.textContent = play.desc;
+
+  const pct = Math.min(100, (downsState.yardsGained / downsState.yardsNeeded) * 100);
+  if (fill) fill.style.width = pct + '%';
+
+  if (downsState.yardsGained >= downsState.yardsNeeded) {
+    // FIRST DOWN
+    if (label) label.textContent = '✅ FIRST DOWN!';
+    if (downDisplay) downDisplay.textContent = '🎉 FIRST DOWN!';
+    if (feedback) {
+      feedback.className = 'quiz-feedback show good';
+      feedback.innerHTML = '🎉 <strong>FIRST DOWN!</strong> You gained 10+ yards in ' + downsState.currentDown + ' down(s)! That\'s how you drive down the field!';
+    }
+    downsState.done = true;
+    document.getElementById('snap-btn').disabled = true;
+    addXP(25);
+    const nodes = document.querySelectorAll('.down-node');
+    nodes.forEach((n, i) => {
+      if (i < downsState.currentDown) n.className = 'down-node used';
+    });
+    setTimeout(nextStep, 2000);
+  } else {
+    // Update down
+    const remaining = downsState.yardsNeeded - downsState.yardsGained;
+    if (label) label.textContent = downsState.yardsGained + ' / ' + downsState.yardsNeeded + ' yards';
+
+    if (downsState.currentDown < 4) {
+      const curNode = document.getElementById('dn-' + downsState.currentDown);
+      if (curNode) curNode.className = 'down-node used';
+      downsState.currentDown++;
+      const nextNode = document.getElementById('dn-' + downsState.currentDown);
+      if (nextNode) nextNode.className = 'down-node current';
+      const suffixes = ['','st','nd','rd','th'];
+      const s = downsState.currentDown <= 4 ? suffixes[downsState.currentDown] : 'th';
+      if (downDisplay) downDisplay.textContent = downsState.currentDown + s + ' & ' + remaining;
+    } else {
+      // 4th down exhausted
+      const curNode = document.getElementById('dn-4');
+      if (curNode) curNode.className = 'down-node failed';
+      if (downDisplay) downDisplay.innerHTML = '😱 TURNOVER ON DOWNS!';
+      if (feedback) {
+        feedback.className = 'quiz-feedback show bad';
+        feedback.innerHTML = '😱 <strong>Turnover on downs!</strong> You used all 4 tries without gaining 10 yards. The other team gets the ball! <br><small>Don\'t worry — it\'s part of learning. Now you KNOW why 4th down matters!</small>';
+      }
+      downsState.done = true;
+      document.getElementById('snap-btn').disabled = true;
+      addXP(15);
+      setTimeout(nextStep, 2500);
+    }
+  }
+};
+
+// Score challenge
+let scoreChalState = { step: 0, done: false };
+const scoreScenarios = [
+  {
+    scenario: "The running back catches a short pass and fights his way into the end zone! Both feet are in! Ball is in! TOUCHDOWN! 🎉",
+    correct: "Touchdown",
+    pts: 6,
+    options: ["Touchdown", "Field Goal", "Safety", "Extra Point"]
+  },
+  {
+    scenario: "4th and 5 at the opponent's 28-yard line. The kicker comes out, the snap is perfect, the kick is... GOOD! Through the uprights! 🥅",
+    correct: "Field Goal",
+    pts: 3,
+    options: ["Touchdown", "Field Goal", "Safety", "Two-Point Conversion"]
+  },
+  {
+    scenario: "The quarterback drops back to pass in his own end zone. He's SACKED! He's down in his own end zone! Wait — is that...?! 😱",
+    correct: "Safety",
+    pts: 2,
+    options: ["Touchdown", "Field Goal", "Safety", "Extra Point"]
+  },
+];
+
+function initScoreChallenge() {
+  scoreChalState = { step: 0, done: false };
+  renderScoreChallenge();
+}
+
+function renderScoreChallenge() {
+  const sc = scoreScenarios[scoreChalState.step];
+  const scenEl = document.getElementById('score-scenario');
+  const optsEl = document.getElementById('score-options');
+  if (!scenEl || !optsEl) return;
+
+  scenEl.textContent = sc.scenario;
+  optsEl.innerHTML = sc.options.map(o => `
+    <div class="score-type-card" onclick="scoreAnswer('${o}')">
+      <div class="score-type-name">${o}</div>
+    </div>
+  `).join('');
+}
+
+window.scoreAnswer = function(choice) {
+  const sc = scoreScenarios[scoreChalState.step];
+  const fb = document.getElementById('score-feedback');
+  if (!fb || scoreChalState.done) return;
+
+  if (choice === sc.correct) {
+    fb.className = 'quiz-feedback show good';
+    fb.textContent = '✅ Correct! That\'s a ' + sc.correct + ' — ' + sc.pts + ' points!';
+    addXP(15);
+    scoreChalState.step++;
+    if (scoreChalState.step < scoreScenarios.length) {
+      setTimeout(() => {
+        fb.className = 'quiz-feedback';
+        renderScoreChallenge();
+      }, 1500);
+    } else {
+      scoreChalState.done = true;
+      fb.textContent += ' 🏆 All scenarios correct! Scoring expert unlocked!';
+      setTimeout(nextStep, 2000);
+    }
+  } else {
+    fb.className = 'quiz-feedback show bad';
+    fb.textContent = '❌ Not quite! Think about what happened — is the ball in the end zone? Through the posts? In a weird place?';
+  }
+};
+
+// Penalty challenge
+const penaltyPlays = [
+  { name: "Holding", icon: "🤲", penalty: true, desc: "Grabbing a non-ball-carrier" },
+  { name: "Legal Block", icon: "🛡️", penalty: false, desc: "Blocking with arms extended" },
+  { name: "False Start", icon: "🚀", penalty: true, desc: "WR moved before snap" },
+  { name: "Clean Run", icon: "🏃", penalty: false, desc: "Normal carry through hole" },
+  { name: "Pass Interference", icon: "🙅", penalty: true, desc: "Pushed receiver before catch" },
+  { name: "Fair Catch", icon: "✋", penalty: false, desc: "Signal to catch punt safely" },
+];
+
+let penaltySelected = new Set();
+
+function initPenaltyChallenge() {
+  const grid = document.getElementById('penalty-grid');
+  if (!grid) return;
+  penaltySelected.clear();
+  grid.innerHTML = penaltyPlays.map((p, i) => `
+    <div class="penalty-card" id="penalty_${i}" onclick="togglePenalty(${i})">
+      <div class="penalty-icon">${p.icon}</div>
+      <div class="penalty-name">${p.name}</div>
+    </div>
+  `).join('');
+  const btn = document.getElementById('penalty-check-btn');
+  if (btn) btn.style.display = 'flex';
+}
+
+window.togglePenalty = function(i) {
+  const card = document.getElementById('penalty_' + i);
+  if (!card) return;
+  if (penaltySelected.has(i)) {
+    penaltySelected.delete(i);
+    card.classList.remove('selected');
+    card.style.borderColor = '';
+    card.style.background = '';
+  } else {
+    penaltySelected.add(i);
+    card.style.borderColor = 'var(--red-light)';
+    card.style.background = 'rgba(213,47,47,0.15)';
+  }
+};
+
+window.checkPenalties = function() {
+  const fb = document.getElementById('penalty-feedback');
+  if (!fb) return;
+  let correct = 0;
+  penaltyPlays.forEach((p, i) => {
+    const card = document.getElementById('penalty_' + i);
+    const selected = penaltySelected.has(i);
+    if (p.penalty && selected) { card.classList.add('flagged'); correct++; }
+    else if (!p.penalty && !selected) { card.classList.add('clean'); correct++; }
+    else if (p.penalty && !selected) { card.style.borderColor = 'var(--gold)'; card.style.opacity = '0.6'; }
+    else { card.classList.add('clean'); card.style.opacity = '0.6'; }
+  });
+
+  const total = penaltyPlays.length;
+  if (correct === total) {
+    fb.className = 'quiz-feedback show good';
+    fb.textContent = '✅ PERFECT REF! You flagged all ' + penaltyPlays.filter(p=>p.penalty).length + ' penalties and let the clean plays go. Flag correctly, rookie!';
+    addXP(25);
+    setTimeout(nextStep, 2000);
+  } else {
+    fb.className = 'quiz-feedback show bad';
+    fb.textContent = '❌ ' + correct + '/' + total + ' correct. Red flags = illegal actions, green = legal plays. Review and try again!';
+    document.getElementById('penalty-check-btn').style.display = 'none';
+    setTimeout(() => { initPenaltyChallenge(); fb.className = 'quiz-feedback'; }, 2500);
+  }
+};
+
+// Clock challenge
+let clockQtrSolved = false;
+function initClockChallenge() {
+  const q = document.getElementById('clock-challenge-q');
+  const opts = document.getElementById('clock-challenge-opts');
+  if (!q || !opts) return;
+  q.textContent = "The score is tied 14-14. The clock shows 0:45 left in the 4th quarter. A team has the ball at midfield. What's the clock situation?";
+  opts.innerHTML = [
+    { text: "They have all the time in the world — no rush needed", correct: false },
+    { text: "They're in 2-minute warning territory — critical clock management time!", correct: true },
+    { text: "The game is already over", correct: false },
+    { text: "Overtime automatically starts now", correct: false },
+  ].map((o, i) =>
+    `<button class="quiz-option" id="clock_opt_${i}" onclick="answerClock(${i},${o.correct})">${o.text}</button>`
+  ).join('');
+}
+
+window.answerClock = function(i, correct) {
+  if (clockQtrSolved) return;
+  clockQtrSolved = true;
+  const fb = document.getElementById('clock-feedback');
+  document.querySelectorAll('[id^="clock_opt_"]').forEach(b => b.disabled = true);
+  const btn = document.getElementById('clock_opt_' + i);
+  if (correct) {
+    btn.classList.add('correct');
+    fb.className = 'quiz-feedback show good';
+    fb.textContent = '✅ Exactly! 45 seconds left in the 4th quarter, tied game — every play is critical. Drive for the field goal or TD!';
+    addXP(25);
+    setTimeout(nextStep, 1800);
+  } else {
+    btn.classList.add('wrong');
+    fb.className = 'quiz-feedback show bad';
+    fb.textContent = '❌ 45 seconds left, tied score — this is CRUNCH TIME. Every play, every second matters!';
+    setTimeout(() => {
+      clockQtrSolved = false;
+      fb.className = 'quiz-feedback';
+      document.querySelectorAll('[id^="clock_opt_"]').forEach(b => { b.disabled = false; b.className = 'quiz-option'; });
+    }, 2000);
+  }
+};
+
+window.setQuarter = function(q) {
+  document.querySelectorAll('.q-badge').forEach(b => b.classList.remove('active-q'));
+  event.target.classList.add('active-q');
+  const times = {1:'15:00',2:'15:00','HT':'HALF',3:'15:00',4:'15:00','OT':'∞'};
+  const labels = {1:'1ST QUARTER',2:'2ND QUARTER','HT':'HALFTIME 🎶',3:'3RD QUARTER',4:'4TH QUARTER','OT':'OVERTIME ⚡'};
+  const cd = document.getElementById('clock-display');
+  const cl = document.getElementById('clock-qtr-label');
+  if (cd) cd.textContent = times[q] || '15:00';
+  if (cl) cl.textContent = labels[q] || '';
+};
+
+// ============================================================
+// QUIZ ANSWER HANDLER
+// ============================================================
+window.answerQuiz = function(id, i) {
+  const data = window[id + '_data'];
+  if (!data || data.answered) return;
+  data.answered = true;
+
+  const fb = document.getElementById(id + '_feedback');
+  const nextBtn = document.getElementById(id + '_next');
+  document.querySelectorAll('[id^="' + id + '_opt_"]').forEach(b => b.disabled = true);
+
+  const opt = document.getElementById(id + '_opt_' + i);
+  if (data.options[i].correct) {
+    opt.classList.add('correct');
+    fb.className = 'quiz-feedback show good';
+    fb.textContent = data.feedbackGood;
+    addXP(data.xp);
+    state.streak++;
+    updateScoreboard();
+  } else {
+    opt.classList.add('wrong');
+    fb.className = 'quiz-feedback show bad';
+    fb.textContent = data.feedbackBad;
+    // Show correct
+    data.options.forEach((o, j) => {
+      if (o.correct) document.getElementById(id + '_opt_' + j).classList.add('correct');
+    });
+    state.wrongAnswers++;
+    state.streak = 0;
+    updateScoreboard();
+  }
+
+  if (nextBtn) nextBtn.style.display = 'flex';
+};
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const s = document.getElementById('screen-' + id);
+  if (s) {
+    s.classList.remove('active');
+    void s.offsetWidth; // reflow for animation
+    s.classList.add('active');
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+window.showMap = function() {
+  renderLevels();
+  showScreen('map');
+  const quotes = [
+    "Pick a level! Complete them in order to unlock the next. No shortcuts!",
+    "Coming back for more? That's the spirit, rookie!",
+    "Remember: in football, preparation beats talent. Well... except when talent is enormous.",
+    "Which level needs work? Even pros watch game tape!",
+    "You're building a football brain, play by play! 🧠🏈",
+  ];
+  const el = document.getElementById('map-mascot-text');
+  if (el) el.innerHTML = quotes[Math.floor(Math.random() * quotes.length)].replace(/(['"](.+?)['"])/g, '<em>$2</em>');
+};
+
+function renderLevels() {
+  const grid = document.getElementById('levels-grid');
+  if (!grid) return;
+  grid.innerHTML = levels.map(level => {
+    const done = state.levelsCompleted.has(level.id);
+    const unlocked = level.id === 1 || state.levelsCompleted.has(level.id - 1) || done;
+    const cls = done ? 'completed' : unlocked ? 'unlocked' : 'locked';
+    const statusCls = done ? 'status-done' : unlocked ? 'status-play' : 'status-locked';
+    const statusTxt = done ? '✅ COMPLETE' : unlocked ? '▶ PLAY' : '🔒 LOCKED';
+    const onclick = unlocked ? `onclick="startLevel(${level.id})"` : '';
+    return `
+      <div class="level-card ${cls}" ${onclick}>
+        <div class="level-card-header">
+          <div class="level-number">${level.id}</div>
+          <div class="level-icon">${level.icon}</div>
+          <div class="level-name">${level.name}</div>
+        </div>
+        <div class="level-desc">${level.desc}</div>
+        <div class="level-status ${statusCls}">${statusTxt}</div>
+      </div>
+    `;
+  }).join('');
+}
+
+window.startLevel = function(id) {
+  state.currentLevel = id;
+  state.currentStep = 0;
+  // Reset challenge states
+  fieldChalState.step = 0;
+  downsState = { currentDown: 1, yardsGained: 0, yardsNeeded: 10, done: false };
+  scoreChalState = { step: 0, done: false };
+  penaltySelected.clear();
+  clockQtrSolved = false;
+
+  const level = levels.find(l => l.id === id);
+  document.getElementById('lesson-title').textContent = `LVL ${id}: ${level.name}`;
+  renderStep();
+  showScreen('lesson');
+};
+
+function renderStep() {
+  const level = levels.find(l => l.id === state.currentLevel);
+  if (!level) return;
+
+  // Update progress dots
+  const dots = document.getElementById('progress-dots');
+  if (dots) {
+    dots.innerHTML = level.steps.map((_, i) => {
+      const cls = i < state.currentStep ? 'done' : i === state.currentStep ? 'active' : '';
+      return `<div class="dot ${cls}"></div>`;
+    }).join('');
+  }
+
+  // Render content
+  const content = document.getElementById('lesson-content');
+  if (!content) return;
+
+  const step = level.steps[state.currentStep];
+  let html = step.content();
+
+  // Add next button for learn steps
+  if (step.type === 'learn') {
+    html += `<button class="btn-primary" onclick="nextStep()">NEXT →</button>`;
+  }
+
+  content.innerHTML = html;
+  content.style.animation = 'none';
+  void content.offsetWidth;
+  content.style.animation = 'screenIn 0.4s ease both';
+}
+
+window.nextStep = function() {
+  const level = levels.find(l => l.id === state.currentLevel);
+  if (!level) return;
+
+  state.currentStep++;
+
+  if (state.currentStep >= level.steps.length) {
+    // Level complete!
+    completeLevel();
+  } else {
+    renderStep();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+};
+
+function completeLevel() {
+  const level = levels.find(l => l.id === state.currentLevel);
+  state.levelsCompleted.add(level.id);
+  addXP(level.xp);
+  updateScoreboard();
+  spawnConfetti();
+
+  const winMessages = [
+    { title: "LEVEL CLEARED! 🏆", sub: "You just graduated from 'totally clueless' to 'confidently confused'. Progress!" },
+    { title: "FIRST DOWN! 🎉", sub: "You gained the mental yards needed! Keep moving down the field of knowledge." },
+    { title: "TOUCHDOWN! 🏈", sub: "End zone reached! Your football IQ just went through the uprights." },
+    { title: "GREAT DRIVE! 🚀", sub: "No turnovers, no penalties, all the right answers. That's a clean drive!" },
+    { title: "GAME CHANGER! ⚡", sub: "You're starting to think like a football player. Terrifying. Impressive." },
+    { title: "FINAL EXAM PASSED! 🎓", sub: "You're officially not clueless anymore. Welcome to football fandom!" },
+  ];
+
+  const msg = winMessages[Math.min(level.id - 1, winMessages.length - 1)];
+  document.getElementById('win-title').textContent = msg.title;
+  document.getElementById('win-sub').textContent = msg.sub;
+  document.getElementById('win-trophy').textContent = level.trophy;
+  document.getElementById('win-xp').textContent = '+' + level.xp + ' XP';
+
+  const mascotWins = [
+    "See?! That wasn't so bad! You actually know what yards and downs are now. Go impress someone at a party!",
+    "You learned DOWNS. The thing that confuses literally everyone. You're already ahead of half the people watching games!",
+    "Touchdown knowledge! You can now participate in scoring conversations without faking it. HUGE win.",
+    "You flagged those penalties like a proper ref. Except you won't throw 47 flags on every play. Progress!",
+    "GAME FLOW mastered! You now understand why football takes 4 hours. It's not a bug, it's a feature. (It's a bug.)",
+    "YOU PASSED THE FINAL EXAM! Go watch a game. You'll actually understand what's happening. I'm proud of you, rookie! 🦅",
+  ];
+
+  document.getElementById('win-mascot').textContent = mascotWins[Math.min(level.id - 1, mascotWins.length - 1)];
+
+  const nextBtn = document.getElementById('win-next-btn');
+  const hasNext = levels.find(l => l.id === state.currentLevel + 1);
+  nextBtn.style.display = hasNext ? 'flex' : 'none';
+  if (!hasNext) {
+    nextBtn.textContent = '🏆 YOU WIN!';
+    nextBtn.style.display = 'flex';
+    nextBtn.onclick = showMap;
+  }
+
+  showScreen('win');
+}
+
+window.winNext = function() {
+  const nextId = state.currentLevel + 1;
+  if (nextId <= levels.length) {
+    startLevel(nextId);
+  } else {
+    showMap();
+  }
+};
+
+// ============================================================
+// XP & SCOREBOARD
+// ============================================================
+function addXP(amount) {
+  state.xp += amount;
+  updateScoreboard();
+}
+
+function updateScoreboard() {
+  const xpEl = document.getElementById('total-xp');
+  const lvlEl = document.getElementById('levels-done');
+  const strEl = document.getElementById('streak-count');
+  if (xpEl) xpEl.textContent = state.xp;
+  if (lvlEl) lvlEl.textContent = state.levelsCompleted.size;
+  if (strEl) strEl.textContent = state.streak;
+}
+
+// ============================================================
+// CONFETTI
+// ============================================================
+function spawnConfetti() {
+  const colors = ['#f5c518','#4caf50','#ef5350','#2196f3','#ff9800','#e91e63','#fff'];
+  for (let i = 0; i < 60; i++) {
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random() * 100 + 'vw';
+    piece.style.top = '-20px';
+    piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+    piece.style.width = (Math.random() * 8 + 4) + 'px';
+    piece.style.height = (Math.random() * 8 + 4) + 'px';
+    piece.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
+    piece.style.animationDelay = (Math.random() * 0.8) + 's';
+    piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+    document.body.appendChild(piece);
+    piece.addEventListener('animationend', () => piece.remove());
+  }
+}
+
+// ============================================================
+// INIT
+// ============================================================
+showScreen('intro');
+</script>
+</body>
+</html>
