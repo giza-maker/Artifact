@@ -1,0 +1,1608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GRIDIRON ACADEMY 🏈 — Football for Beginners</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Boogaloo&family=Nunito:wght@400;600;700;800;900&family=Press+Start+2P&display=swap" rel="stylesheet">
+<style>
+/* ===== DESIGN TOKENS ===== */
+:root {
+  --bg-canvas: #0a1628;
+  --bg-field: #1a4a2e;
+  --bg-panel: rgba(15, 25, 50, 0.92);
+  --bg-card: rgba(20, 35, 65, 0.9);
+  --fg-strong: #f0e6c8;
+  --fg-muted: #9bacc8;
+  --fg-inverse: #0a1628;
+  --accent-gold: #f5c842;
+  --accent-green: #4ade80;
+  --accent-red: #f87171;
+  --accent-blue: #60a5fa;
+  --accent-orange: #fb923c;
+  --accent-purple: #c084fc;
+  --line-soft: rgba(245, 200, 66, 0.2);
+  --line-strong: rgba(245, 200, 66, 0.5);
+  --shadow-soft: 0 8px 32px rgba(0,0,0,0.4);
+  --shadow-gold: 0 0 20px rgba(245, 200, 66, 0.3);
+  --radius-card: 16px;
+  --radius-pill: 999px;
+  --font-arcade: 'Press Start 2P', monospace;
+  --font-display: 'Boogaloo', cursive;
+  --font-body: 'Nunito', sans-serif;
+}
+
+/* ===== RESET & BASE ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg-canvas);
+  color: var(--fg-strong);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ===== MOTION PRESETS ===== */
+@media (prefers-reduced-motion: reduce) {
+  .fx-enter, .fx-stagger > *, .fx-hover-lift, .bounce, .pulse { animation: none !important; transition: none !important; }
+}
+.fx-enter { animation: enterAnim 600ms cubic-bezier(0.22,1,0.36,1) both; }
+.fx-stagger > * { opacity: 0; animation: enterAnim 560ms cubic-bezier(0.22,1,0.36,1) both; }
+.fx-stagger > *:nth-child(1) { animation-delay: 60ms; }
+.fx-stagger > *:nth-child(2) { animation-delay: 120ms; }
+.fx-stagger > *:nth-child(3) { animation-delay: 180ms; }
+.fx-stagger > *:nth-child(4) { animation-delay: 240ms; }
+.fx-stagger > *:nth-child(5) { animation-delay: 300ms; }
+.fx-stagger > *:nth-child(6) { animation-delay: 360ms; }
+.fx-hover-lift { transition: transform 180ms ease, box-shadow 180ms ease; cursor: pointer; }
+.fx-hover-lift:hover { transform: translateY(-4px); box-shadow: var(--shadow-gold); }
+@keyframes enterAnim { from { opacity: 0; transform: translate3d(0,18px,0) scale(0.985); } to { opacity: 1; transform: translate3d(0,0,0) scale(1); } }
+@keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(245,200,66,0.4); } 50% { box-shadow: 0 0 0 12px rgba(245,200,66,0); } }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes slideIn { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+@keyframes celebrate { 0% { transform: scale(1); } 50% { transform: scale(1.15) rotate(5deg); } 100% { transform: scale(1); } }
+@keyframes starBurst { 0% { transform: scale(0) rotate(0deg); opacity: 1; } 100% { transform: scale(2) rotate(180deg); opacity: 0; } }
+
+/* ===== SCANLINES OVERLAY ===== */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* ===== HEADER ===== */
+#app-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  background: linear-gradient(135deg, #0a1628 0%, #0f2040 100%);
+  border-bottom: 2px solid var(--accent-gold);
+  padding: 0.6rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.header-logo {
+  font-family: var(--font-arcade);
+  font-size: clamp(0.5rem, 2vw, 0.75rem);
+  color: var(--accent-gold);
+  text-shadow: 0 0 10px rgba(245,200,66,0.5);
+  line-height: 1.4;
+}
+.header-logo span { color: var(--accent-green); }
+.header-stats {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+.stat-chip {
+  font-family: var(--font-arcade);
+  font-size: 0.55rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: var(--radius-pill);
+  background: rgba(245,200,66,0.1);
+  border: 1px solid var(--line-strong);
+  color: var(--accent-gold);
+  white-space: nowrap;
+}
+.stat-chip.lives { color: var(--accent-red); border-color: rgba(248,113,113,0.4); background: rgba(248,113,113,0.1); }
+.stat-chip.score { color: var(--accent-green); border-color: rgba(74,222,128,0.4); background: rgba(74,222,128,0.1); }
+
+/* ===== MAIN LAYOUT ===== */
+#main-app {
+  padding-top: 70px;
+  min-height: 100vh;
+}
+
+/* ===== SCREEN SYSTEM ===== */
+.screen { display: none; min-height: calc(100vh - 70px); }
+.screen.active { display: block; animation: fadeIn 400ms ease both; }
+
+/* ===== HERO / TITLE SCREEN ===== */
+#screen-title {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  min-height: calc(100vh - 70px);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+#screen-title.active { display: flex; }
+.title-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(74,222,128,0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(245,200,66,0.06) 0%, transparent 60%),
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23f5c842' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+}
+.field-stripes {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 30%;
+  background: repeating-linear-gradient(90deg, rgba(26,74,46,0.3) 0px, rgba(26,74,46,0.3) 40px, rgba(30,90,54,0.2) 40px, rgba(30,90,54,0.2) 80px);
+  clip-path: polygon(0 30%, 100% 0, 100% 100%, 0 100%);
+}
+.mascot-hero {
+  font-size: clamp(4rem, 12vw, 8rem);
+  animation: bounce 2s ease-in-out infinite;
+  filter: drop-shadow(0 8px 16px rgba(0,0,0,0.5));
+  position: relative;
+  z-index: 1;
+}
+.title-main {
+  font-family: var(--font-arcade);
+  font-size: clamp(1.2rem, 5vw, 2.5rem);
+  color: var(--accent-gold);
+  text-shadow: 0 0 20px rgba(245,200,66,0.6), 3px 3px 0 rgba(0,0,0,0.5);
+  line-height: 1.3;
+  position: relative;
+  z-index: 1;
+  margin: 1rem 0 0.5rem;
+}
+.title-sub {
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 3vw, 1.8rem);
+  color: var(--fg-muted);
+  position: relative;
+  z-index: 1;
+  max-width: 500px;
+  margin-bottom: 2rem;
+}
+.coach-bubble {
+  background: var(--bg-card);
+  border: 2px solid var(--accent-gold);
+  border-radius: var(--radius-card);
+  padding: 1rem 1.5rem;
+  max-width: 420px;
+  position: relative;
+  z-index: 1;
+  margin-bottom: 2rem;
+}
+.coach-bubble::before {
+  content: '';
+  position: absolute;
+  top: -12px; left: 30px;
+  border: 12px solid transparent;
+  border-bottom-color: var(--accent-gold);
+}
+.coach-bubble::after {
+  content: '';
+  position: absolute;
+  top: -9px; left: 31px;
+  border: 11px solid transparent;
+  border-bottom-color: var(--bg-card);
+}
+.coach-text {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--fg-strong);
+  font-style: italic;
+}
+.coach-name {
+  font-size: 0.8rem;
+  color: var(--accent-gold);
+  font-weight: 700;
+  margin-top: 0.5rem;
+}
+.btn-start {
+  font-family: var(--font-arcade);
+  font-size: clamp(0.6rem, 2vw, 0.8rem);
+  padding: 1rem 2.5rem;
+  background: linear-gradient(135deg, var(--accent-gold), #e6a800);
+  color: var(--fg-inverse);
+  border: none;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: all 200ms ease;
+  animation: pulse 2s ease-in-out infinite;
+  position: relative;
+  z-index: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.btn-start:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(245,200,66,0.6); }
+
+/* ===== LEVEL SELECT ===== */
+#screen-levels {
+  padding: 2rem 1rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.section-title {
+  font-family: var(--font-arcade);
+  font-size: clamp(0.7rem, 2vw, 1rem);
+  color: var(--accent-gold);
+  text-align: center;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 10px rgba(245,200,66,0.4);
+}
+.section-sub {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--fg-muted);
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.levels-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.2rem;
+}
+.level-card {
+  background: var(--bg-card);
+  border: 2px solid var(--line-soft);
+  border-radius: var(--radius-card);
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 200ms ease;
+}
+.level-card.unlocked { border-color: var(--line-strong); cursor: pointer; }
+.level-card.unlocked:hover { border-color: var(--accent-gold); transform: translateY(-4px); box-shadow: var(--shadow-gold); }
+.level-card.locked { opacity: 0.5; cursor: not-allowed; }
+.level-card.completed { border-color: var(--accent-green); }
+.level-card.completed::after { content: '✓'; position: absolute; top: 1rem; right: 1rem; font-size: 1.5rem; color: var(--accent-green); font-weight: 900; }
+.level-num {
+  font-family: var(--font-arcade);
+  font-size: 0.6rem;
+  color: var(--fg-muted);
+  margin-bottom: 0.3rem;
+}
+.level-emoji { font-size: 2.5rem; margin-bottom: 0.5rem; display: block; }
+.level-name {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: var(--fg-strong);
+  margin-bottom: 0.3rem;
+}
+.level-desc { font-size: 0.85rem; color: var(--fg-muted); line-height: 1.5; }
+.level-stars { margin-top: 0.8rem; font-size: 1rem; }
+.lock-icon { position: absolute; top: 1rem; right: 1rem; font-size: 1.5rem; opacity: 0.5; }
+
+/* ===== GAME SCREEN ===== */
+#screen-game {
+  display: none;
+  flex-direction: column;
+  padding: 1rem;
+  max-width: 800px;
+  margin: 0 auto;
+  gap: 1rem;
+}
+#screen-game.active { display: flex; }
+
+/* Progress bar */
+.progress-bar-wrap {
+  background: rgba(255,255,255,0.1);
+  border-radius: var(--radius-pill);
+  height: 8px;
+  overflow: hidden;
+}
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-green), var(--accent-gold));
+  border-radius: var(--radius-pill);
+  transition: width 500ms ease;
+}
+
+/* Mascot panel */
+.mascot-panel {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  background: var(--bg-card);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-card);
+  padding: 1rem;
+}
+.mascot-avatar { font-size: 2.5rem; flex-shrink: 0; animation: bounce 3s ease-in-out infinite; }
+.mascot-speech {
+  flex: 1;
+  background: rgba(245,200,66,0.06);
+  border: 1px solid var(--line-soft);
+  border-radius: 12px;
+  padding: 0.8rem 1rem;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--fg-strong);
+  line-height: 1.5;
+}
+.mascot-name { font-size: 0.75rem; color: var(--accent-gold); font-weight: 700; margin-bottom: 0.3rem; }
+
+/* Content card */
+.content-card {
+  background: var(--bg-card);
+  border: 2px solid var(--line-soft);
+  border-radius: var(--radius-card);
+  padding: 1.5rem;
+}
+.content-card h2 {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  color: var(--accent-gold);
+  margin-bottom: 1rem;
+}
+.content-card p {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--fg-strong);
+  margin-bottom: 0.8rem;
+}
+.content-card .highlight {
+  background: rgba(245,200,66,0.12);
+  border-left: 3px solid var(--accent-gold);
+  padding: 0.6rem 1rem;
+  border-radius: 0 8px 8px 0;
+  margin: 0.8rem 0;
+  font-weight: 700;
+}
+
+/* Quiz */
+.quiz-question {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: var(--fg-strong);
+  margin-bottom: 1.2rem;
+  line-height: 1.4;
+}
+.quiz-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.quiz-option {
+  background: rgba(255,255,255,0.05);
+  border: 2px solid var(--line-soft);
+  border-radius: 12px;
+  padding: 0.9rem 1.2rem;
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--fg-strong);
+  transition: all 150ms ease;
+  text-align: left;
+}
+.quiz-option:hover:not(:disabled) { border-color: var(--accent-blue); background: rgba(96,165,250,0.1); transform: translateX(4px); }
+.quiz-option.correct { border-color: var(--accent-green); background: rgba(74,222,128,0.15); color: var(--accent-green); }
+.quiz-option.wrong { border-color: var(--accent-red); background: rgba(248,113,113,0.15); color: var(--accent-red); animation: shake 400ms ease; }
+.quiz-option:disabled { cursor: default; }
+
+/* Field visualization */
+.field-viz {
+  background: linear-gradient(180deg, #1a4a2e 0%, #1e5a36 100%);
+  border: 3px solid #2d7a44;
+  border-radius: 12px;
+  padding: 1rem;
+  position: relative;
+  overflow: hidden;
+  margin: 1rem 0;
+}
+.field-viz::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(90deg, transparent, transparent 9.09%, rgba(255,255,255,0.06) 9.09%, rgba(255,255,255,0.06) calc(9.09% + 2px));
+}
+.field-labels {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-arcade);
+  font-size: 0.45rem;
+  color: rgba(255,255,255,0.5);
+  position: relative;
+  z-index: 1;
+  padding: 0 5px;
+}
+.field-ball {
+  font-size: 1.5rem;
+  position: absolute;
+  transition: left 600ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 2;
+  top: 50%;
+  transform: translateY(-50%);
+  filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));
+}
+.field-marker {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 3px;
+  background: var(--accent-gold);
+  opacity: 0.6;
+  z-index: 2;
+  transition: left 600ms ease;
+}
+.yards-display {
+  text-align: center;
+  font-family: var(--font-arcade);
+  font-size: 0.6rem;
+  color: var(--accent-gold);
+  margin-top: 0.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+/* Down tracker */
+.down-tracker {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  margin: 0.5rem 0;
+}
+.down-dot {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--line-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-arcade);
+  font-size: 0.5rem;
+  color: var(--fg-muted);
+  transition: all 200ms ease;
+}
+.down-dot.active { border-color: var(--accent-gold); color: var(--accent-gold); background: rgba(245,200,66,0.15); }
+.down-dot.used { border-color: var(--accent-red); background: rgba(248,113,113,0.15); }
+.down-label { font-family: var(--font-arcade); font-size: 0.5rem; color: var(--fg-muted); margin-right: 0.5rem; }
+
+/* Score board */
+.scoreboard {
+  background: linear-gradient(135deg, #0a1628, #0f1f3a);
+  border: 3px solid var(--accent-gold);
+  border-radius: var(--radius-card);
+  padding: 1.2rem;
+  font-family: var(--font-arcade);
+  box-shadow: var(--shadow-gold);
+}
+.sb-header { text-align: center; font-size: 0.5rem; color: var(--accent-gold); margin-bottom: 0.8rem; letter-spacing: 0.1em; }
+.sb-teams { display: flex; align-items: center; justify-content: space-around; gap: 1rem; }
+.sb-team { text-align: center; }
+.sb-team-name { font-size: 0.45rem; color: var(--fg-muted); margin-bottom: 0.3rem; }
+.sb-score { font-size: clamp(1.5rem, 4vw, 2.5rem); color: var(--fg-strong); text-shadow: 0 0 10px rgba(245,200,66,0.3); }
+.sb-divider { color: var(--fg-muted); font-size: 1.5rem; }
+.sb-meta { display: flex; justify-content: center; gap: 1.5rem; margin-top: 0.8rem; font-size: 0.4rem; color: var(--fg-muted); }
+.sb-meta span { color: var(--accent-gold); }
+
+/* Buttons */
+.btn {
+  font-family: var(--font-arcade);
+  font-size: 0.6rem;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: all 150ms ease;
+  letter-spacing: 0.05em;
+}
+.btn-primary { background: linear-gradient(135deg, var(--accent-gold), #e6a800); color: var(--fg-inverse); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(245,200,66,0.4); }
+.btn-secondary { background: rgba(245,200,66,0.1); color: var(--accent-gold); border: 2px solid var(--line-strong); }
+.btn-secondary:hover { background: rgba(245,200,66,0.2); }
+.btn-green { background: linear-gradient(135deg, #22c55e, #16a34a); color: white; }
+.btn-green:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(74,222,128,0.4); }
+.btn-row { display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center; margin-top: 1rem; }
+
+/* Feedback banner */
+.feedback-banner {
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 0.5rem 0;
+  animation: enterAnim 300ms ease both;
+  display: none;
+}
+.feedback-banner.correct { background: rgba(74,222,128,0.2); border: 2px solid var(--accent-green); color: var(--accent-green); }
+.feedback-banner.wrong { background: rgba(248,113,113,0.2); border: 2px solid var(--accent-red); color: var(--accent-red); }
+.feedback-banner.active { display: block; }
+
+/* XP popup */
+.xp-popup {
+  position: fixed;
+  top: 80px;
+  right: 1rem;
+  font-family: var(--font-arcade);
+  font-size: 0.7rem;
+  color: var(--accent-green);
+  background: rgba(74,222,128,0.15);
+  border: 2px solid var(--accent-green);
+  border-radius: var(--radius-pill);
+  padding: 0.5rem 1rem;
+  animation: enterAnim 300ms ease both, fadeOut 1s 1.5s ease both;
+  z-index: 200;
+  pointer-events: none;
+}
+@keyframes fadeOut { from { opacity: 1; transform: translateY(0); } to { opacity: 0; transform: translateY(-20px); } }
+
+/* Challenge: Downs */
+.play-area {
+  background: linear-gradient(180deg, #1a4a2e 0%, #1e5a36 100%);
+  border: 3px solid #2d7a44;
+  border-radius: 12px;
+  padding: 1.5rem 1rem;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+.play-choices {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+.play-btn {
+  background: rgba(255,255,255,0.08);
+  border: 2px solid rgba(255,255,255,0.15);
+  border-radius: 12px;
+  padding: 0.9rem;
+  cursor: pointer;
+  color: var(--fg-strong);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  transition: all 150ms ease;
+}
+.play-btn:hover { border-color: var(--accent-green); background: rgba(74,222,128,0.1); transform: scale(1.02); }
+.play-btn .gain { font-size: 0.8rem; color: var(--accent-green); display: block; margin-top: 0.2rem; }
+.play-btn .loss { font-size: 0.8rem; color: var(--accent-red); display: block; margin-top: 0.2rem; }
+
+/* Penalty cards */
+.penalty-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.8rem;
+  margin-top: 1rem;
+}
+.penalty-card {
+  background: var(--bg-card);
+  border: 2px solid rgba(248,113,113,0.2);
+  border-radius: 12px;
+  padding: 1rem;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+.penalty-card:hover { border-color: var(--accent-red); transform: scale(1.02); }
+.penalty-card.selected { border-color: var(--accent-red); background: rgba(248,113,113,0.1); }
+.penalty-flag { font-size: 1.5rem; display: block; margin-bottom: 0.3rem; }
+.penalty-name { font-weight: 700; color: var(--fg-strong); font-size: 0.95rem; margin-bottom: 0.2rem; }
+.penalty-yds { font-size: 0.8rem; color: var(--accent-red); font-weight: 700; }
+
+/* Scoring categories */
+.score-types {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.8rem;
+}
+.score-type-card {
+  background: var(--bg-card);
+  border: 2px solid var(--line-soft);
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 150ms ease;
+}
+.score-type-card:hover { transform: translateY(-2px); border-color: var(--accent-gold); }
+.score-type-card.selected { border-color: var(--accent-gold); background: rgba(245,200,66,0.1); }
+.score-emoji { font-size: 2rem; display: block; margin-bottom: 0.3rem; }
+.score-name { font-weight: 800; color: var(--fg-strong); font-size: 0.95rem; }
+.score-pts { font-family: var(--font-arcade); font-size: 0.7rem; color: var(--accent-gold); margin-top: 0.2rem; }
+
+/* Scoreboard practice */
+.practice-sb {
+  background: linear-gradient(135deg, #0a1628, #0d1e3a);
+  border: 3px solid var(--accent-gold);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: var(--shadow-gold);
+}
+.practice-sb-header {
+  background: var(--accent-gold);
+  color: var(--fg-inverse);
+  text-align: center;
+  padding: 0.5rem;
+  font-family: var(--font-arcade);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+}
+.practice-sb-body { padding: 1rem; }
+.practice-sb-row {
+  display: grid;
+  grid-template-columns: 2fr repeat(5, 1fr);
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--line-soft);
+  font-family: var(--font-arcade);
+  font-size: 0.55rem;
+}
+.practice-sb-row.header { color: var(--accent-gold); font-size: 0.45rem; }
+.practice-sb-row:last-child { border-bottom: none; }
+.team-cell { font-size: 0.65rem; color: var(--fg-strong); }
+.score-cell { text-align: center; color: var(--accent-green); font-size: 0.75rem; }
+.score-cell.total { font-size: 0.9rem; color: var(--accent-gold); }
+.score-input-cell { text-align: center; }
+.score-input-cell input {
+  width: 40px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid var(--line-soft);
+  border-radius: 6px;
+  color: var(--fg-strong);
+  font-family: var(--font-arcade);
+  font-size: 0.55rem;
+  text-align: center;
+  padding: 0.3rem;
+}
+.score-input-cell input:focus { outline: none; border-color: var(--accent-gold); }
+
+/* Level complete */
+#screen-complete {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  text-align: center;
+  min-height: calc(100vh - 70px);
+}
+#screen-complete.active { display: flex; }
+.complete-emoji { font-size: 5rem; animation: celebrate 1s ease-in-out infinite; }
+.complete-title {
+  font-family: var(--font-arcade);
+  font-size: clamp(0.8rem, 3vw, 1.4rem);
+  color: var(--accent-gold);
+  margin: 1rem 0 0.5rem;
+  text-shadow: 0 0 20px rgba(245,200,66,0.5);
+}
+.complete-stars { font-size: 2rem; margin: 0.5rem 0; letter-spacing: 0.3rem; }
+.xp-earned {
+  font-family: var(--font-arcade);
+  font-size: 0.7rem;
+  color: var(--accent-green);
+  background: rgba(74,222,128,0.1);
+  border: 2px solid rgba(74,222,128,0.3);
+  padding: 0.7rem 1.5rem;
+  border-radius: var(--radius-pill);
+  margin: 1rem 0;
+}
+.complete-joke {
+  background: var(--bg-card);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-card);
+  padding: 1rem 1.5rem;
+  max-width: 400px;
+  margin: 1rem 0 2rem;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-style: italic;
+  color: var(--fg-muted);
+}
+
+/* Stars display */
+.stars-display { font-size: 1.2rem; margin-top: 0.3rem; }
+
+/* Tooltip */
+.tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: help;
+}
+.tooltip-text {
+  display: none;
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-card);
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  padding: 0.5rem 0.8rem;
+  font-size: 0.8rem;
+  color: var(--fg-strong);
+  white-space: nowrap;
+  z-index: 10;
+  box-shadow: var(--shadow-soft);
+}
+.tooltip:hover .tooltip-text { display: block; }
+
+/* Tag pills */
+.tag {
+  display: inline-block;
+  padding: 0.2rem 0.7rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 700;
+  margin: 0.2rem;
+}
+.tag-green { background: rgba(74,222,128,0.15); color: var(--accent-green); border: 1px solid rgba(74,222,128,0.3); }
+.tag-red { background: rgba(248,113,113,0.15); color: var(--accent-red); border: 1px solid rgba(248,113,113,0.3); }
+.tag-gold { background: rgba(245,200,66,0.15); color: var(--accent-gold); border: 1px solid rgba(245,200,66,0.3); }
+.tag-blue { background: rgba(96,165,250,0.15); color: var(--accent-blue); border: 1px solid rgba(96,165,250,0.3); }
+
+/* Info table */
+.info-table { width: 100%; border-collapse: collapse; margin: 0.8rem 0; }
+.info-table th { background: rgba(245,200,66,0.1); color: var(--accent-gold); padding: 0.5rem 0.8rem; font-family: var(--font-arcade); font-size: 0.5rem; text-align: left; border-bottom: 2px solid var(--line-strong); }
+.info-table td { padding: 0.5rem 0.8rem; border-bottom: 1px solid var(--line-soft); font-size: 0.9rem; color: var(--fg-strong); }
+.info-table tr:last-child td { border-bottom: none; }
+.info-table tr:hover td { background: rgba(255,255,255,0.03); }
+
+/* ===== OVERALL PROGRESS ===== */
+.overall-progress {
+  background: var(--bg-card);
+  border: 1px solid var(--line-soft);
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.overall-progress h3 { font-family: var(--font-arcade); font-size: 0.55rem; color: var(--fg-muted); margin-bottom: 0.8rem; }
+.xp-bar-wrap { background: rgba(255,255,255,0.08); border-radius: var(--radius-pill); height: 12px; overflow: hidden; margin-bottom: 0.4rem; }
+.xp-bar-fill { height: 100%; border-radius: var(--radius-pill); background: linear-gradient(90deg, var(--accent-green), var(--accent-gold)); transition: width 800ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+.xp-text { font-family: var(--font-arcade); font-size: 0.5rem; color: var(--fg-muted); text-align: right; }
+
+/* Responsive */
+@media (max-width: 600px) {
+  .play-choices { grid-template-columns: 1fr; }
+  .penalty-grid { grid-template-columns: 1fr 1fr; }
+  .practice-sb-row { grid-template-columns: 1.5fr repeat(5, 1fr); font-size: 0.45rem; }
+  .score-input-cell input { width: 32px; font-size: 0.45rem; }
+  .header-stats { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="app-header">
+  <div class="header-logo">GRIDIRON<br><span>ACADEMY</span> 🏈</div>
+  <div class="header-stats">
+    <div class="stat-chip score">⭐ XP: <span id="hdr-xp">0</span></div>
+    <div class="stat-chip lives">❤️ <span id="hdr-lives">3</span></div>
+    <div class="stat-chip">🏆 LVL: <span id="hdr-level">1</span></div>
+  </div>
+</header>
+
+<div id="main-app">
+
+<!-- ============================================================
+     TITLE SCREEN
+============================================================ -->
+<section id="screen-title" class="screen active">
+  <div class="title-bg"></div>
+  <div class="field-stripes"></div>
+  <div class="mascot-hero">🏈</div>
+  <h1 class="title-main fx-enter">GRIDIRON ACADEMY</h1>
+  <p class="title-sub fx-enter">Football for Total Beginners (& Confused Fans)</p>
+  <div class="coach-bubble fx-enter">
+    <div class="coach-text" id="title-joke">"Why don't football players get hot? Because they have lots of fans! …Also, the stadium is open-air. Mostly the fans thing."</div>
+    <div class="coach-name">— Coach Clint 🎽</div>
+  </div>
+  <button class="btn-start" onclick="showScreen('levels')">🏟️ KICK IT OFF!</button>
+</section>
+
+<!-- ============================================================
+     LEVEL SELECT
+============================================================ -->
+<section id="screen-levels" class="screen">
+  <div style="max-width:900px;margin:0 auto;padding:2rem 1rem;">
+    <div class="section-title fx-enter">🏟️ CHOOSE YOUR LEVEL</div>
+    <p class="section-sub fx-enter">Master each module to unlock the next. No pads required.</p>
+
+    <div class="overall-progress fx-enter">
+      <h3>OVERALL PROGRESS</h3>
+      <div class="xp-bar-wrap"><div class="xp-bar-fill" id="overall-xp-bar" style="width:0%"></div></div>
+      <div class="xp-text"><span id="overall-xp-text">0 / 600 XP</span></div>
+    </div>
+
+    <div class="levels-grid fx-stagger" id="levels-grid">
+      <!-- Dynamically rendered -->
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     GAME SCREEN
+============================================================ -->
+<section id="screen-game" class="screen">
+  <div class="progress-bar-wrap">
+    <div class="progress-bar-fill" id="game-progress" style="width:0%"></div>
+  </div>
+
+  <div class="mascot-panel fx-enter">
+    <div class="mascot-avatar" id="mascot-avatar">🦅</div>
+    <div class="mascot-speech">
+      <div class="mascot-name" id="mascot-name">TOUCHDOWN TERRY</div>
+      <div id="mascot-speech-text">Let's learn some football! 🏈</div>
+    </div>
+  </div>
+
+  <div id="feedback-banner" class="feedback-banner"></div>
+  <div id="game-content"></div>
+
+  <div class="btn-row" id="game-nav-row" style="display:none;">
+    <button class="btn btn-secondary" onclick="showScreen('levels')">◀ Levels</button>
+    <button class="btn btn-primary" id="btn-next" onclick="nextStep()">NEXT ▶</button>
+  </div>
+</section>
+
+<!-- ============================================================
+     LEVEL COMPLETE
+============================================================ -->
+<section id="screen-complete" class="screen">
+  <div class="complete-emoji" id="complete-emoji">🏆</div>
+  <div class="complete-title" id="complete-title">LEVEL COMPLETE!</div>
+  <div class="complete-stars" id="complete-stars">⭐⭐⭐</div>
+  <div class="xp-earned" id="complete-xp">+100 XP EARNED!</div>
+  <div class="complete-joke" id="complete-joke">"You're on a roll! …Or a rush. In football, it's a rush."</div>
+  <div class="btn-row">
+    <button class="btn btn-secondary" onclick="showScreen('levels')">◀ Level Select</button>
+    <button class="btn btn-primary" id="btn-next-level" onclick="goNextLevel()">NEXT LEVEL ▶</button>
+  </div>
+</section>
+
+</div><!-- end #main-app -->
+
+<script>
+/* ===================================================================
+   GAME DATA — Curriculum, Jokes, Mascot Lines
+=================================================================== */
+const MASCOTS = [
+  { name: "TOUCHDOWN TERRY", emoji: "🦅", color: "#60a5fa" },
+  { name: "BLITZ BERTHA", emoji: "🐻", color: "#f87171" },
+  { name: "FUMBLE FRANK", emoji: "🐸", color: "#4ade80" },
+  { name: "PENALTY PETE", emoji: "🐧", color: "#c084fc" },
+  { name: "QUARTERBACK QUEENIE", emoji: "🦁", color: "#fb923c" },
+  { name: "SPECIAL TEAMS SAM", emoji: "🦊", color: "#f5c842" },
+];
+
+const COACH_JOKES = [
+  "Why don't football players get hot? Because they have lots of fans!",
+  "I told my team to run a 4-3 defense. They ran a 4-minute mile instead. Close enough.",
+  "Why did the football go to therapy? It kept getting kicked around.",
+  "What do you call a lineman's kid? A chip off the old blocker.",
+  "Why can't you play cards in the jungle? Too many cheetahs. Wait, wrong sport. Uh... why can't you play football in the jungle? Because the end zones are full of lions. ...I'll see myself out.",
+  "I asked a ref for the time. He threw a flag. Apparently that's illegal procedure.",
+  "My GPS said 'take the snap and go 10 yards.' I'm never driving again.",
+  "Why did the receiver go to art school? He wanted to learn how to draw a flag.",
+  "Football is 80% mental and 40% physical. I know that's 120%. That's why coaches count differently.",
+];
+
+const COMPLETE_JOKES = [
+  "You're playing better than my offensive line on Taco Tuesday!",
+  "That performance deserves a Gatorade shower. Virtual Gatorade, anyway.",
+  "Coach is doing a happy dance. It's embarrassing for everyone, but he means it.",
+  "You just earned more yards than our punter's entire career.",
+  "The scoreboard operator is crying tears of joy. Or maybe just regular tears. Hard to tell.",
+  "If you were a play, you'd be the Flea Flicker — unexpected and somehow it worked!",
+];
+
+/* ===================================================================
+   LEVELS DATA
+=================================================================== */
+const LEVELS = [
+  {
+    id: 1, name: "The Basics", emoji: "📖",
+    desc: "What IS football? The field, the players, and the basic goal.",
+    xp: 80, mascotIdx: 0,
+    steps: [
+      { type: "teach", title: "Welcome to Football! 🏈",
+        content: `<p>American football is played between <strong>two teams of 11 players</strong> on a <strong>100-yard field</strong> with end zones at each end.</p>
+        <p>The goal? Simple: <em>get the ball into the other team's end zone more times than they do.</em></p>
+        <div class="highlight">🏟️ The field is 100 yards long, 53 yards wide, with two 10-yard end zones. That's bigger than your living room. Probably.</div>
+        <p>One team is on <strong>offense</strong> (trying to score) and one is on <strong>defense</strong> (trying to stop them). They swap roles constantly.</p>`,
+        mascotLine: "Welcome to Gridiron Academy! I'm Terry. I once tried to explain football to my grandma. She thought a 'tight end' was a yoga move. Let's start from scratch!" },
+      { type: "teach", title: "The Teams 🎽",
+        content: `<p>Each team has <strong>three units</strong>:</p>
+        <table class="info-table">
+          <tr><th>Unit</th><th>Job</th><th>Fun Fact</th></tr>
+          <tr><td>⚔️ Offense</td><td>Move the ball and score</td><td>The glamour squad</td></tr>
+          <tr><td>🛡️ Defense</td><td>Stop the offense from scoring</td><td>They tackle people for fun</td></tr>
+          <tr><td>🦵 Special Teams</td><td>Kicks, punts, and returns</td><td>The forgotten heroes</td></tr>
+        </table>
+        <p>Fun fact: NFL rosters have <strong>53 players</strong>, but only 11 play at a time. The other 42 are standing on the sideline looking intense.</p>`,
+        mascotLine: "I'm on Special Teams! We kick, punt, and return kicks. People forget about us until something goes wrong. Then suddenly everyone's an expert." },
+      { type: "quiz", question: "How many players from each team are on the field at one time?",
+        options: ["7", "10", "11", "15"], correct: 2, feedback: ["Nope! That's not enough people to block anyone.", "Close but no cigar — or football.", "CORRECT! 11 vs 11. Twenty-two very large humans.", "That's too many! The field would be way too crowded."],
+        mascotLine: "Quiz time! Don't worry — I'll still be your friend if you get it wrong. Mostly." },
+      { type: "quiz", question: "What is the goal of the offense in American football?",
+        options: ["Tackle the quarterback", "Get the ball into the end zone", "Kick the ball out of bounds", "Run the clock out immediately"], correct: 1, feedback: ["That's what the defense does! Switch teams, buddy.", "YES! Score in that end zone! 🏆", "That's... not a strategy. That's a mistake.", "Bold strategy, but no."],
+        mascotLine: "Almost done with Level 1! You're smarter than half my teammates already." },
+    ]
+  },
+  {
+    id: 2, name: "Downs & Yards", emoji: "📏",
+    desc: "The 4-down system. Why 10 yards matters more than you think.",
+    xp: 100, mascotIdx: 1,
+    steps: [
+      { type: "teach", title: "What Are Downs? 🔢",
+        content: `<p>The offense gets <strong>4 tries (called "downs")</strong> to advance the ball <strong>10 yards</strong>.</p>
+        <div class="highlight">📏 If they gain 10+ yards in those 4 attempts, they get a fresh set of 4 downs. This is called a <strong>First Down</strong>.</div>
+        <p>If they don't make 10 yards in 4 downs, the other team gets the ball where it stopped.</p>
+        <p>That's why you'll hear: <strong>"1st and 10"</strong> (1st down, need 10 yards), <strong>"3rd and 2"</strong> (3rd down, need 2 yards), etc.</p>`,
+        mascotLine: "Okay, downs! This is the CORE of football. Once you understand downs, you understand 80% of the game. The other 20% is just very large men yelling." },
+      { type: "downs_challenge", title: "Drive the Ball! 🏃",
+        mascotLine: "Let's simulate a drive! Pick plays wisely. Gain 10 yards before you run out of downs!" },
+      { type: "teach", title: "4th Down Strategy 🤔",
+        content: `<p>On <strong>4th down</strong>, teams face a crucial decision:</p>
+        <table class="info-table">
+          <tr><th>Option</th><th>When</th><th>Risk</th></tr>
+          <tr><td>🦵 Punt</td><td>Far from opponent's end zone</td><td>Low — give ball away with field position</td></tr>
+          <tr><td>🥅 Field Goal</td><td>Within ~55 yards of goal posts</td><td>Medium — 3 points or turnover</td></tr>
+          <tr><td>😤 Go For It</td><td>Short yardage + bold coach</td><td>High — score or lose the ball there</td></tr>
+        </table>
+        <p>4th down decisions cause more heated debates than pineapple on pizza. Choose wisely.</p>`,
+        mascotLine: "4th down is where coaches earn their money. Or lose their jobs. Usually both at some point." },
+      { type: "quiz", question: "The offense is on '3rd and 7.' What does this mean?",
+        options: ["3rd down, need 7 touchdowns", "3rd down, need 7 yards for a first down", "3 players need 7 minutes", "3rd quarter, 7 minutes left"], correct: 1, feedback: ["Seven TOUCHDOWNS?! That would take forever.", "EXACTLY RIGHT! 3rd try, need 7 more yards. 🎯", "That's not how downs work. Or time.", "Good guess, wrong scoreboard!"],
+        mascotLine: "You're getting it! I can feel it. That's not just gas from the pre-game nachos." },
+    ]
+  },
+  {
+    id: 3, name: "Scoring", emoji: "🏆",
+    desc: "Touchdowns, field goals, safeties — learn how teams rack up points.",
+    xp: 110, mascotIdx: 2,
+    steps: [
+      { type: "teach", title: "Ways to Score 🏆",
+        content: `<table class="info-table">
+          <tr><th>Score Type</th><th>Points</th><th>How</th></tr>
+          <tr><td>🏈 Touchdown</td><td>6 pts</td><td>Carry/catch ball in opponent's end zone</td></tr>
+          <tr><td>✅ Extra Point (PAT)</td><td>1 pt</td><td>Kick through the uprights after TD</td></tr>
+          <tr><td>💪 2-Point Conv.</td><td>2 pts</td><td>Run/pass into end zone after TD (risky!)</td></tr>
+          <tr><td>🥅 Field Goal</td><td>3 pts</td><td>Kick ball through upright posts anytime</td></tr>
+          <tr><td>🛡️ Safety</td><td>2 pts</td><td>Tackle offense in THEIR OWN end zone</td></tr>
+        </table>
+        <div class="highlight">🧮 After a touchdown (6 pts), teams kick the extra point (1 pt) making it 7. That's why scores jump in 7s most of the time!</div>`,
+        mascotLine: "Safeties are my favorite. Imagine scoring by getting tackled in your own end zone. Football is weird and I love it." },
+      { type: "scoring_match", title: "Point Values Challenge! 🧮",
+        mascotLine: "Match the play to the points! This is basically math with helmets." },
+      { type: "quiz", question: "A team scores a TD and kicks the extra point. How many points did they score total?",
+        options: ["6", "7", "8", "3"], correct: 1, feedback: ["Don't forget the extra point! 6 + 1 = 7.", "PERFECT! TD (6) + PAT (1) = 7 points! 🎉", "8 would be if they got a 2-point conversion. But nice try!", "3 is a field goal. Try again!"],
+        mascotLine: "Quick maths! Coach always says 'football is 40% mental.' That math is also wrong, but here we are." },
+      { type: "quiz", question: "Which score is worth the MOST points?",
+        options: ["Safety (2)", "Field Goal (3)", "Touchdown (6)", "Extra Point (1)"], correct: 2, feedback: ["Safeties are rare and worth only 2.", "Field goals are 3 — great but not the most.", "YES! Touchdown = 6 points = the big prize! 🏈", "Extra points are only 1. Bonus, not main event."],
+        mascotLine: "Last quiz for this level! You've been more focused than my wide receiver who keeps watching the cheerleaders." },
+    ]
+  },
+  {
+    id: 4, name: "Penalties", emoji: "🚩",
+    desc: "Yellow flags, embarrassing fouls, and why the ref is always right.",
+    xp: 100, mascotIdx: 3,
+    steps: [
+      { type: "teach", title: "What Are Penalties? 🚩",
+        content: `<p>When a player breaks a rule, the referee throws a <strong>yellow flag</strong> (literally a little yellow beanbag). The team that broke the rule loses yards.</p>
+        <div class="highlight">🚩 Common penalty results: -5 yards, -10 yards, or -15 yards. The bigger the crime, the bigger the penalty!</div>
+        <p>Some key penalties:</p>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:0.5rem;margin-top:0.5rem;">
+          <li>🏃 <strong>Offside</strong> (5 yds) — Moving before the snap</li>
+          <li>✋ <strong>Holding</strong> (10 yds) — Grabbing a player's jersey illegally</li>
+          <li>🤕 <strong>Personal Foul</strong> (15 yds) — Dirty/dangerous play</li>
+          <li>🛑 <strong>Pass Interference</strong> (spot of foul!) — Illegally stopping a catch</li>
+        </ul>`,
+        mascotLine: "Penalties! I've been flagged for False Start three times this season. In my defense, the quarterback sneezed and it sounded like the snap count." },
+      { type: "penalty_sort", title: "Flag It or Play On? 🚩",
+        mascotLine: "Can you spot the penalty? Pick the correct call for each situation!" },
+      { type: "quiz", question: "A holding penalty costs an offense how many yards?",
+        options: ["5 yards", "10 yards", "15 yards", "Touchdown taken away"], correct: 1, feedback: ["5 yards is Offside or False Start. Holding is worse!", "Correct! Holding = -10 yards. That's a bad time.", "15 is a Personal Foul. Holding is expensive but not THAT bad.", "Now that would be brutal. But no."],
+        mascotLine: "Refs remember every single penalty. Coaches say refs never remember anything. Coaches and refs don't really get along." },
+      { type: "quiz", question: "What does a referee throw to signal a penalty?",
+        options: ["A red card", "A yellow flag", "A whistle", "A challenge flag (red)"], correct: 1, feedback: ["Red cards are for soccer! Different sport, friend.", "YES! A little yellow beanbag/flag. Very satisfying to throw, apparently.", "Whistles stop play but don't signal penalties.", "Red flags are for coach challenges. Different thing!"],
+        mascotLine: "You're a penalty-spotting MACHINE. Refs make $200k a year. Just saying." },
+    ]
+  },
+  {
+    id: 5, name: "Game Flow", emoji: "⏱️",
+    desc: "Quarters, halftime, clock tricks, and how a game unfolds.",
+    xp: 110, mascotIdx: 4,
+    steps: [
+      { type: "teach", title: "Game Structure ⏱️",
+        content: `<p>An NFL game has <strong>four 15-minute quarters</strong>, with a <strong>halftime break</strong> after the 2nd quarter.</p>
+        <table class="info-table">
+          <tr><th>Period</th><th>Time</th><th>What Happens</th></tr>
+          <tr><td>1st Quarter</td><td>15 min</td><td>Coin flip, kickoff, first drives</td></tr>
+          <tr><td>2nd Quarter</td><td>15 min</td><td>Both teams hustle before halftime</td></tr>
+          <tr><td>Halftime</td><td>~12 min</td><td>Show, adjustments, snacks</td></tr>
+          <tr><td>3rd Quarter</td><td>15 min</td><td>Kickoff again, chess match intensifies</td></tr>
+          <tr><td>4th Quarter</td><td>15 min</td><td>Desperation, drama, heart attacks</td></tr>
+        </table>
+        <div class="highlight">⏳ The game clock stops for incomplete passes, out-of-bounds, and penalties. A "15-minute" quarter can take 45+ real minutes!</div>`,
+        mascotLine: "4th quarters are wild. The 2-minute warning (official stoppage at 2 mins left) might be the most dramatic two words in sports. More dramatic than 'free nachos.' Almost." },
+      { type: "teach", title: "The Coin Flip & Kickoff 🪙",
+        content: `<p>Every game starts with a <strong>coin flip</strong>. The winner chooses to receive the kickoff (get the ball first) or defer to the 2nd half.</p>
+        <p>The <strong>kickoff</strong> is a free kick where one team boots the ball down the field. The other team tries to return it as far as possible.</p>
+        <div class="highlight">📌 If the kick goes into the end zone, the returner can take a "touchback" — they just get the ball at their own 25-yard line automatically. Smart play!</div>
+        <p>After any score, the scoring team kicks off again. The game "resets" after every score.</p>`,
+        mascotLine: "Kickoffs are chaos and I love them. 22 large humans running full speed at each other. Beautiful. Probably fine medically. Probably." },
+      { type: "quiz", question: "How many quarters are in a regulation NFL game?",
+        options: ["2", "3", "4", "5"], correct: 2, feedback: ["2 would just be halves. That's a different sport.", "3 is close but no! Baseball has innings.", "YES! Four quarters of 15 minutes each. 🏈", "5 only happens in overtime. Usually."],
+        mascotLine: "Clock management coming up. Coaches spend YEARS learning this. You'll learn it in about 30 seconds." },
+      { type: "quiz", question: "If a kickoff goes into the end zone and the returner stays there, what happens?",
+        options: ["Safety — 2 points for the kicking team", "Touchdown — 6 points!", "Touchback — ball placed at the 25-yard line", "The game restarts"], correct: 2, feedback: ["Safety means you're tackled in your OWN end zone by defense. Different thing!", "Touchdowns need the ball-carrier to choose to go forward!", "CORRECT! Touchback = automatic ball placement at the 25. No harm done.", "The game doesn't restart! It just continues from the 25."],
+        mascotLine: "You're basically a football genius at this point. Don't let it go to your helmet." },
+    ]
+  },
+  {
+    id: 6, name: "Scoreboard Pro", emoji: "📊",
+    desc: "Read a real scoreboard, track quarters, and practice like a stat-head.",
+    xp: 100, mascotIdx: 5,
+    steps: [
+      { type: "teach", title: "Reading the Scoreboard 📊",
+        content: `<p>NFL scoreboards show teams, quarter-by-quarter scores, and totals. Here's how to read them:</p>
+        <div class="highlight">📺 On TV you'll see: Team Name | Q1 | Q2 | Q3 | Q4 | Total — and usually time, down, and yards to go.</div>
+        <p>Example: The Chickens are winning 21-14 in the 3rd quarter, down 8-7 after Q1.</p>
+        <p>The <strong>home team</strong> is typically listed on the bottom. The <strong>visiting team</strong> on top. Networks vary, but this is the convention!</p>
+        <p>During a game you'll also see: <strong>Down</strong> (1st/2nd/3rd/4th), <strong>Distance</strong> (yards to go for first down), and <strong>Field Position</strong> (yard line).</p>`,
+        mascotLine: "I've been on a scoreboard once. It said '0 return yards.' They forgot the negative sign. Allegedly." },
+      { type: "scoreboard_practice", title: "Scoreboard Practice 📊",
+        mascotLine: "Fill in the final scores! Add up each quarter to find the totals. This is basically fancy addition with shoulder pads." },
+      { type: "quiz", question: "On TV, which team's score is usually shown on the bottom row?",
+        options: ["The losing team", "The team with fewer players", "The home team", "The visiting team"], correct: 2, feedback: ["The bottom row isn't for losers — it's for hosts!", "Both teams always have 11 players... usually.", "CORRECT! Home team on the bottom, visitors on top. 🏠", "Visitors go on top! Home team gets the cozy bottom spot."],
+        mascotLine: "Almost done! One more and you're a certified Gridiron Academy Graduate. The certificate is imaginary but very prestigious." },
+      { type: "quiz", question: "The game shows: '3rd & 5 | OAK 35.' What does 'OAK 35' mean?",
+        options: ["Oakland scored 35 points", "The ball is on the Oakland 35-yard line", "There are 35 seconds left", "Oakland has 35 players"], correct: 1, feedback: ["Scores show as numbers in the quarter boxes, not in the field position display.", "YES! Field position — the ball is at the 35-yard line in Oakland's territory. 📍", "Time is shown separately! This is the location of the ball.", "Teams always have 11 on the field. 35 would be chaos."],
+        mascotLine: "YOU DID IT! You're a football literacy legend! *blows airhorn* Sorry neighbors." },
+    ]
+  },
+];
+
+/* ===================================================================
+   GAME STATE
+=================================================================== */
+let state = {
+  xp: 0,
+  lives: 3,
+  completedLevels: [],
+  levelStars: {},
+  currentLevel: null,
+  currentStep: 0,
+  stepScore: 0,
+  wrongAnswers: 0,
+};
+
+/* ===================================================================
+   UI HELPERS
+=================================================================== */
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById(`screen-${name}`);
+  if (el) el.classList.add('active');
+  if (name === 'levels') renderLevelSelect();
+  updateHeader();
+}
+
+function updateHeader() {
+  document.getElementById('hdr-xp').textContent = state.xp;
+  document.getElementById('hdr-lives').textContent = state.lives;
+  document.getElementById('hdr-level').textContent = Math.min(state.completedLevels.length + 1, 6);
+}
+
+function showXPPopup(amount) {
+  const el = document.createElement('div');
+  el.className = 'xp-popup';
+  el.textContent = `+${amount} XP!`;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 2500);
+}
+
+function showFeedback(type, text) {
+  const el = document.getElementById('feedback-banner');
+  el.className = `feedback-banner ${type} active`;
+  el.textContent = text;
+  setTimeout(() => el.classList.remove('active'), 2800);
+}
+
+/* ===================================================================
+   LEVEL SELECT
+=================================================================== */
+function renderLevelSelect() {
+  const grid = document.getElementById('levels-grid');
+  grid.innerHTML = '';
+  const totalXP = LEVELS.reduce((s, l) => s + l.xp, 0);
+  document.getElementById('overall-xp-bar').style.width = `${Math.min(100, (state.xp / totalXP) * 100)}%`;
+  document.getElementById('overall-xp-text').textContent = `${state.xp} / ${totalXP} XP`;
+
+  LEVELS.forEach((level, idx) => {
+    const isCompleted = state.completedLevels.includes(level.id);
+    const isUnlocked = idx === 0 || state.completedLevels.includes(LEVELS[idx-1].id);
+    const stars = state.levelStars[level.id] || 0;
+    const starStr = '⭐'.repeat(stars) + '☆'.repeat(3 - stars);
+
+    const card = document.createElement('div');
+    card.className = `level-card fx-hover-lift ${isCompleted ? 'completed' : ''} ${isUnlocked ? 'unlocked' : 'locked'}`;
+    card.innerHTML = `
+      <div class="level-num">LEVEL ${level.id}</div>
+      <span class="level-emoji">${level.emoji}</span>
+      <div class="level-name">${level.name}</div>
+      <div class="level-desc">${level.desc}</div>
+      <div class="level-stars">${starStr}</div>
+      ${!isUnlocked ? '<span class="lock-icon">🔒</span>' : ''}
+    `;
+    if (isUnlocked) card.onclick = () => startLevel(level.id);
+    grid.appendChild(card);
+  });
+}
+
+/* ===================================================================
+   LEVEL FLOW
+=================================================================== */
+function startLevel(levelId) {
+  const level = LEVELS.find(l => l.id === levelId);
+  if (!level) return;
+  state.currentLevel = levelId;
+  state.currentStep = 0;
+  state.stepScore = 0;
+  state.wrongAnswers = 0;
+  showScreen('game');
+  renderStep();
+}
+
+function renderStep() {
+  const level = LEVELS.find(l => l.id === state.currentLevel);
+  const step = level.steps[state.currentStep];
+  const mascot = MASCOTS[level.mascotIdx];
+  const progress = ((state.currentStep) / level.steps.length) * 100;
+
+  document.getElementById('game-progress').style.width = `${progress}%`;
+  document.getElementById('mascot-avatar').textContent = mascot.emoji;
+  document.getElementById('mascot-name').textContent = mascot.name;
+  document.getElementById('mascot-speech-text').textContent = step.mascotLine;
+  document.getElementById('feedback-banner').className = 'feedback-banner';
+
+  const navRow = document.getElementById('game-nav-row');
+  navRow.style.display = 'none';
+
+  const content = document.getElementById('game-content');
+  content.className = 'content-card fx-enter';
+  content.style.animation = 'none';
+  content.offsetHeight; // reflow
+  content.style.animation = '';
+
+  if (step.type === 'teach') {
+    renderTeachStep(step, content, navRow);
+  } else if (step.type === 'quiz') {
+    renderQuizStep(step, content);
+  } else if (step.type === 'downs_challenge') {
+    renderDownsChallenge(step, content);
+  } else if (step.type === 'scoring_match') {
+    renderScoringMatch(step, content);
+  } else if (step.type === 'penalty_sort') {
+    renderPenaltySort(step, content);
+  } else if (step.type === 'scoreboard_practice') {
+    renderScoreboardPractice(step, content);
+  }
+}
+
+function renderTeachStep(step, content, navRow) {
+  content.innerHTML = `<h2>${step.title}</h2>${step.content}`;
+  navRow.style.display = 'flex';
+  document.getElementById('btn-next').textContent = 'GOT IT! ▶';
+  document.getElementById('btn-next').onclick = nextStep;
+}
+
+function nextStep() {
+  const level = LEVELS.find(l => l.id === state.currentLevel);
+  state.currentStep++;
+  if (state.currentStep >= level.steps.length) {
+    completeLevel();
+  } else {
+    renderStep();
+  }
+}
+
+function completeLevel() {
+  const level = LEVELS.find(l => l.id === state.currentLevel);
+  if (!state.completedLevels.includes(level.id)) {
+    state.completedLevels.push(level.id);
+  }
+  const stars = Math.max(1, 3 - state.wrongAnswers);
+  state.levelStars[level.id] = Math.max(state.levelStars[level.id] || 0, stars);
+  const xpGained = Math.floor(level.xp * (stars / 3));
+  state.xp += xpGained;
+
+  document.getElementById('complete-emoji').textContent = ['🏆','🎉','🏈','⭐','🦅','🎊'][level.id % 6];
+  document.getElementById('complete-title').textContent = `LEVEL ${level.id} COMPLETE!`;
+  document.getElementById('complete-stars').textContent = '⭐'.repeat(stars) + '☆'.repeat(3-stars);
+  document.getElementById('complete-xp').textContent = `+${xpGained} XP EARNED!`;
+  document.getElementById('complete-joke').textContent = `"${COMPLETE_JOKES[Math.floor(Math.random() * COMPLETE_JOKES.length)]}"`;
+
+  const nextBtn = document.getElementById('btn-next-level');
+  const nextLevel = LEVELS.find(l => l.id === state.currentLevel + 1);
+  if (nextLevel) {
+    nextBtn.style.display = 'inline-block';
+    nextBtn.textContent = `LEVEL ${nextLevel.id}: ${nextLevel.name} ▶`;
+  } else {
+    nextBtn.style.display = 'none';
+  }
+
+  showScreen('complete');
+  updateHeader();
+  showXPPopup(xpGained);
+}
+
+function goNextLevel() {
+  const nextId = state.currentLevel + 1;
+  if (LEVELS.find(l => l.id === nextId)) {
+    startLevel(nextId);
+  } else {
+    showScreen('levels');
+  }
+}
+
+/* ===================================================================
+   QUIZ STEP
+=================================================================== */
+function renderQuizStep(step, content) {
+  content.innerHTML = `
+    <h2>🧠 Quick Quiz!</h2>
+    <div class="quiz-question">${step.question}</div>
+    <div class="quiz-options" id="quiz-opts"></div>
+  `;
+  const opts = document.getElementById('quiz-opts');
+  step.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-option';
+    btn.textContent = opt;
+    btn.onclick = () => handleQuizAnswer(i, step, btn, opts);
+    opts.appendChild(btn);
+  });
+}
+
+function handleQuizAnswer(idx, step, btn, opts) {
+  const allBtns = opts.querySelectorAll('.quiz-option');
+  allBtns.forEach(b => b.disabled = true);
+
+  if (idx === step.correct) {
+    btn.classList.add('correct');
+    showFeedback('correct', `✅ ${step.feedback[idx]}`);
+    state.stepScore++;
+    showXPPopup(10);
+  } else {
+    btn.classList.add('wrong');
+    allBtns[step.correct].classList.add('correct');
+    showFeedback('wrong', `❌ ${step.feedback[idx]}`);
+    state.wrongAnswers++;
+    state.lives = Math.max(0, state.lives - 1);
+  }
+
+  setTimeout(nextStep, 2000);
+}
+
+/* ===================================================================
+   DOWNS CHALLENGE
+=================================================================== */
+function renderDownsChallenge(step, content) {
+  const gameState = { down: 1, toGo: 10, fieldPos: 20, maxDowns: 4, plays: [
+    { name: "Short Pass", emoji: "🏈", gainMin: 3, gainMax: 8, risk: 0.1 },
+    { name: "Run Up Middle", emoji: "🏃", gainMin: 1, gainMax: 5, risk: 0.05 },
+    { name: "Long Bomb", emoji: "🚀", gainMin: 0, gainMax: 25, risk: 0.35 },
+    { name: "QB Scramble", emoji: "🏇", gainMin: 0, gainMax: 12, risk: 0.2 },
+  ]};
+
+  function render() {
+    const pct = (gameState.fieldPos / 100) * 100;
+    content.innerHTML = `
+      <h2>${step.title}</h2>
+      <div class="down-tracker">
+        <span class="down-label">DOWN:</span>
+        ${[1,2,3,4].map(d => `<div class="down-dot ${d < gameState.down ? 'used' : d === gameState.down ? 'active' : ''}">${d}</div>`).join('')}
+        <span style="font-family:var(--font-arcade);font-size:0.55rem;color:var(--fg-muted);margin-left:0.5rem">& ${gameState.toGo} YDS</span>
+      </div>
+      <div class="field-viz" style="height:80px;">
+        <div class="field-labels">
+          <span>OWN 0</span><span>10</span><span>20</span><span>30</span><span>40</span>
+          <span>50</span><span>40</span><span>30</span><span>20</span><span>10</span><span>END ZONE</span>
+        </div>
+        <div class="field-ball" style="left:${pct}%">🏈</div>
+        <div class="field-marker" style="left:${Math.min(100, pct + (gameState.toGo))}%"></div>
+        <div class="yards-display">📍 Your team's ${gameState.fieldPos} | Goal: ${gameState.fieldPos + gameState.toGo}</div>
+      </div>
+      <div class="play-choices">
+        ${gameState.plays.map((p,i) => `
+          <button class="play-btn" onclick="runPlay(${i})">
+            ${p.emoji} ${p.name}
+            <span class="gain">Gain: ${p.gainMin}–${p.gainMax} yds</span>
+            <span class="loss">Risk: ${Math.round(p.risk*100)}% incomplete</span>
+          </button>
+        `).join('')}
+      </div>
+      <div id="play-result" style="text-align:center;font-family:var(--font-display);font-size:1.1rem;margin-top:0.5rem;min-height:1.5rem;color:var(--accent-gold)"></div>
+    `;
+
+    window.runPlay = (playIdx) => {
+      const play = gameState.plays[playIdx];
+      const incomplete = Math.random() < play.risk;
+      let gain = 0;
+      if (!incomplete) {
+        gain = Math.floor(Math.random() * (play.gainMax - play.gainMin + 1)) + play.gainMin;
+      }
+      const resultEl = document.getElementById('play-result');
+      if (incomplete) {
+        resultEl.textContent = `❌ Incomplete pass! No gain.`;
+        resultEl.style.color = 'var(--accent-red)';
+      } else {
+        gameState.fieldPos = Math.min(100, gameState.fieldPos + gain);
+        gameState.toGo = Math.max(0, gameState.toGo - gain);
+        resultEl.textContent = `${play.emoji} ${gain} yards gained!`;
+        resultEl.style.color = 'var(--accent-green)';
+      }
+
+      if (gameState.toGo <= 0) {
+        gameState.toGo = 10;
+        gameState.down = 1;
+        resultEl.textContent += ` 🎉 FIRST DOWN! Reset to 10 yards.`;
+        resultEl.style.color = 'var(--accent-gold)';
+        if (gameState.fieldPos >= 100) {
+          setTimeout(() => {
+            showFeedback('correct', '🏆 TOUCHDOWN! You drove the ball into the end zone!');
+            showXPPopup(20);
+            setTimeout(nextStep, 2000);
+          }, 500);
+          return;
+        }
+      } else {
+        gameState.down++;
+        if (gameState.down > 4) {
+          setTimeout(() => {
+            showFeedback('wrong', `😬 Turnover on downs! Didn't get the 10 yards in 4 tries. Try again!`);
+            gameState.down = 1; gameState.toGo = 10; gameState.fieldPos = 20;
+            setTimeout(render, 2000);
+          }, 500);
+          return;
+        }
+      }
+      setTimeout(render, 600);
+    };
+  }
+  render();
+  document.getElementById('game-nav-row').style.display = 'none';
+}
+
+/* ===================================================================
+   SCORING MATCH
+=================================================================== */
+function renderScoringMatch(step, content) {
+  const scores = [
+    { name: "Touchdown", emoji: "🏈", pts: 6 },
+    { name: "Extra Point", emoji: "🥅", pts: 1 },
+    { name: "2-Point Conv.", emoji: "💪", pts: 2 },
+    { name: "Field Goal", emoji: "⚽", pts: 3 },
+    { name: "Safety", emoji: "🛡️", pts: 2 },
+  ];
+  let selected = null;
+  let matched = [];
+
+  function render() {
+    content.innerHTML = `
+      <h2>${step.title}</h2>
+      <p style="color:var(--fg-muted);margin-bottom:0.5rem;font-size:0.9rem">Click a scoring play, then click the matching point value!</p>
+      <div class="score-types">
+        ${scores.map((s,i) => `
+          <div class="score-type-card ${matched.includes(i) ? 'completed' : ''}" id="score-card-${i}" onclick="selectScore(${i})">
+            <span class="score-emoji">${matched.includes(i) ? '✅' : s.emoji}</span>
+            <div class="score-name">${s.name}</div>
+            <div class="score-pts">${matched.includes(i) ? s.pts + ' pts' : '? pts'}</div>
+          </div>
+        `).join('')}
+      </div>
+      <div style="display:flex;gap:0.8rem;flex-wrap:wrap;justify-content:center;margin-top:1rem;" id="pts-row">
+        ${[1,2,3,6].map(p => `<button class="btn btn-secondary" onclick="matchPts(${p})" id="pts-btn-${p}">${p} pts</button>`).join('')}
+      </div>
+      <div id="match-result" style="text-align:center;font-family:var(--font-display);font-size:1.1rem;margin-top:0.8rem;min-height:1.5rem"></div>
+    `;
+
+    window.selectScore = (i) => {
+      if (matched.includes(i)) return;
+      selected = i;
+      document.querySelectorAll('.score-type-card').forEach((c,j) => {
+        c.classList.toggle('selected', j === i);
+      });
+      document.getElementById('match-result').textContent = `Selected: ${scores[i].name}. Now pick the points!`;
+      document.getElementById('match-result').style.color = 'var(--accent-gold)';
+    };
+
+    window.matchPts = (pts) => {
+      if (selected === null) {
+        document.getElementById('match-result').textContent = 'Pick a scoring play first!';
+        document.getElementById('match-result').style.color = 'var(--accent-red)';
+        return;
+      }
+      const resultEl = document.getElementById('match-result');
+      if (scores[selected].pts === pts) {
+        matched.push(selected);
+        selected = null;
+        showXPPopup(8);
+        resultEl.textContent = `✅ Correct! ${scores[matched[matched.length-1]].name} = ${pts} pts!`;
+        resultEl.style.color = 'var(--accent-green)';
+        if (matched.length === scores.length) {
+          setTimeout(() => {
+            showFeedback('correct', '🏆 ALL MATCHED! You know your scoring cold!');
+            showXPPopup(20);
+            setTimeout(nextStep, 2000);
+          }, 800);
+        } else {
+          setTimeout(render, 1200);
+        }
+      } else {
+        resultEl.textContent = `❌ Nope! ${scores[selected].name} is NOT ${pts} points. Try again!`;
+        resultEl.style.color = 'var(--accent-red)';
+        state.wrongAnswers++;
+      }
+    };
+  }
+  render();
+  document.getElementById('game-nav-row').style.display = 'none';
+}
+
+/* ===================================================================
+   PENALTY SORT
+=================================================================== */
+function renderPenaltySort(step, content) {
+  const situations = [
+    { desc: "A defensive player lines up 2 inches past the line of scrimmage before the snap.", penalty: "Offside", yds: "5 yards", flag: true },
+    { desc: "An offensive lineman wraps both arms around a defender's jersey to stop him.", penalty: "Holding", yds: "10 yards", flag: true },
+    { desc: "A receiver runs a perfect route and catches the ball in bounds.", penalty: "No Flag", yds: "Legal play!", flag: false },
+    { desc: "A corner grabs a receiver's arm before the ball arrives to prevent a catch.", penalty: "Pass Interference", yds: "Spot of foul", flag: true },
+    { desc: "The QB throws a completion and both teams shake hands.", penalty: "No Flag", yds: "Good sportsmanship!", flag: false },
+  ];
+  let current = 0;
+  let correct = 0;
+
+  function render() {
+    if (current >= situations.length) {
+      content.innerHTML = `<h2>Flag Report 🚩</h2>
+        <div style="text-align:center;padding:2rem;">
+          <div style="font-size:3rem;margin-bottom:1rem">${correct >= 4 ? '🏆' : '📚'}</div>
+          <div style="font-family:var(--font-display);font-size:1.5rem;color:var(--accent-gold)">${correct}/${situations.length} Correct!</div>
+          <div style="color:var(--fg-muted);margin-top:0.5rem">${correct >= 4 ? "You've got the ref's eye!" : "Keep studying those rule books!"}</div>
+        </div>`;
+      document.getElementById('game-nav-row').style.display = 'flex';
+      document.getElementById('btn-next').textContent = 'CONTINUE ▶';
+      document.getElementById('btn-next').onclick = nextStep;
+      return;
+    }
+
+    const sit = situations[current];
+    content.innerHTML = `
+      <h2>Flag It or Play On? (${current+1}/${situations.length})</h2>
+      <div style="background:rgba(245,200,66,0.06);border:1px solid var(--line-soft);border-radius:12px;padding:1rem;margin:1rem 0;font-family:var(--font-display);font-size:1.1rem;color:var(--fg-strong)">
+        📋 ${sit.desc}
+      </div>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-top:1rem;">
+        <button class="btn btn-primary" onclick="callPenalty(true)">🚩 THROW THE FLAG!</button>
+        <button class="btn btn-secondary" onclick="callPenalty(false)">✅ NO FLAG — Legal Play</button>
+      </div>
+      <div id="penalty-result" style="text-align:center;font-family:var(--font-display);font-size:1.1rem;margin-top:1rem;min-height:2rem"></div>
+    `;
+
+    window.callPenalty = (calledFlag) => {
+      const resultEl = document.getElementById('penalty-result');
+      document.querySelectorAll('button').forEach(b => b.disabled = true);
+      if (calledFlag === sit.flag) {
+        correct++;
+        showXPPopup(10);
+        resultEl.innerHTML = `✅ <strong>Correct!</strong> ${sit.flag ? `🚩 ${sit.penalty} — ${sit.yds}` : 'Legal play! No flag needed.'}`;
+        resultEl.style.color = 'var(--accent-green)';
+      } else {
+        state.wrongAnswers++;
+        resultEl.innerHTML = `❌ <strong>Wrong!</strong> ${sit.flag ? `Should be: 🚩 ${sit.penalty} — ${sit.yds}` : 'No foul here! Legal play.'}`;
+        resultEl.style.color = 'var(--accent-red)';
+      }
+      current++;
+      setTimeout(render, 2000);
+    };
+  }
+  render();
+  document.getElementById('game-nav-row').style.display = 'none';
+}
+
+/* ===================================================================
+   SCOREBOARD PRACTICE
+=================================================================== */
+function renderScoreboardPractice(step, content) {
+  const teams = [
+    { name: "🦅 Eagles", q: [7, 0, 14, 7] },
+    { name: "🐻 Bears", q: [3, 10, 0, 13] },
+  ];
+  teams.forEach(t => { t.total = t.q.reduce((a,b) => a+b, 0); });
+
+  content.innerHTML = `
+    <h2>${step.title}</h2>
+    <p style="color:var(--fg-muted);font-size:0.9rem;margin-bottom:1rem">Add each team's quarter scores and fill in the TOTAL column!</p>
+    <div class="practice-sb">
+      <div class="practice-sb-header">🏟️ GRIDIRON ACADEMY — FINAL SCORE</div>
+      <div class="practice-sb-body">
+        <div class="practice-sb-row header">
+          <div>TEAM</div><div>Q1</div><div>Q2</div><div>Q3</div><div>Q4</div><div>TOTAL</div>
+        </div>
+        ${teams.map((t,ti) => `
+          <div class="practice-sb-row">
+            <div class="team-cell">${t.name}</div>
+            ${t.q.map(q => `<div class="score-cell">${q}</div>`).join('')}
+            <div class="score-input-cell score-cell total">
+              <input type="number" id="total-${ti}" placeholder="?" min="0" max="99">
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+    <div class="btn-row" style="margin-top:1rem">
+      <button class="btn btn-primary" onclick="checkSBTotals()">✅ Check Answers</button>
+    </div>
+    <div id="sb-result" style="text-align:center;font-family:var(--font-display);font-size:1.1rem;margin-top:1rem;min-height:1.5rem"></div>
+  `;
+
+  window.checkSBTotals = () => {
+    let allCorrect = true;
+    teams.forEach((t, ti) => {
+      const input = document.getElementById(`total-${ti}`);
+      const val = parseInt(input.value, 10);
+      if (val === t.total) {
+        input.style.borderColor = 'var(--accent-green)';
+        input.style.color = 'var(--accent-green)';
+      } else {
+        input.style.borderColor = 'var(--accent-red)';
+        input.style.color = 'var(--accent-red)';
+        allCorrect = false;
+      }
+    });
+    const resultEl = document.getElementById('sb-result');
+    if (allCorrect) {
+      resultEl.textContent = `🏆 Perfect! Eagles ${teams[0].total} — Bears ${teams[1].total}. You can read any scoreboard now!`;
+      resultEl.style.color = 'var(--accent-green)';
+      showXPPopup(25);
+      showFeedback('correct', '📊 Scoreboard master! You nailed it!');
+      setTimeout(nextStep, 2500);
+    } else {
+      resultEl.textContent = `❌ Check the highlighted scores. Hint: just add the quarters!`;
+      resultEl.style.color = 'var(--accent-red)';
+      state.wrongAnswers++;
+    }
+  };
+  document.getElementById('game-nav-row').style.display = 'none';
+}
+
+/* ===================================================================
+   INIT
+=================================================================== */
+document.addEventListener('DOMContentLoaded', () => {
+  // Random coach joke on title
+  const joke = COACH_JOKES[Math.floor(Math.random() * COACH_JOKES.length)];
+  document.getElementById('title-joke').textContent = `"${joke}"`;
+  showScreen('title');
+  renderLevelSelect();
+});
+</script>
+</body>
+</html>
