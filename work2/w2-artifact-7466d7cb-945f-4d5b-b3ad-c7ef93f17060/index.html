@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Duck Deck — Quirky Card Game Landing Page</title>
+  <meta name="description" content="Duck Deck is a quirky desktop-first landing page for a fun card game about ducks, with prominent rules, playful mission-control visuals, and engagement-focused calls to action." />
+  <style>
+    :root {
+      --bg-canvas: #f8f4ee;
+      --bg-panel: rgba(255, 255, 255, 0.9);
+      --bg-accent: #132730;
+      --fg-strong: #1f1a17;
+      --fg-muted: #5e544c;
+      --fg-inverse: #f8f4ee;
+      --line-soft: rgba(36, 31, 27, 0.12);
+      --line-strong: rgba(23, 49, 62, 0.28);
+      --accent-primary: #cf6b42;
+      --accent-secondary: #5d857b;
+      --accent-highlight: #f3c969;
+      --radius-card: 28px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 18px 44px rgba(27, 31, 36, 0.12);
+      --shadow-strong: 0 24px 64px rgba(16, 19, 24, 0.22);
+      --space-1: 0.375rem;
+      --space-2: 0.75rem;
+      --space-3: 1rem;
+      --space-4: 1.5rem;
+      --space-5: 2rem;
+      --space-6: 3rem;
+      --space-7: 4.5rem;
+      --display-font: "Avenir Next", "Segoe UI", sans-serif;
+      --body-font: Georgia, "Times New Roman", serif;
+      --display-1: clamp(3.25rem, 6vw, 6.25rem);
+      --display-2: clamp(2.2rem, 4vw, 3.6rem);
+      --heading-1: clamp(1.6rem, 2.3vw, 2.4rem);
+      --body-lg: 1.125rem;
+      --body-md: 1rem;
+      --body-sm: 0.92rem;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 18% 12%, rgba(243, 201, 105, 0.35), transparent 28rem),
+        radial-gradient(circle at 82% 18%, rgba(93, 133, 123, 0.2), transparent 26rem),
+        linear-gradient(135deg, rgba(19, 39, 48, 0.06) 0 1px, transparent 1px 42px),
+        var(--bg-canvas);
+      color: var(--fg-strong);
+      font-family: var(--body-font);
+      font-size: var(--body-md);
+      line-height: 1.6;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(31, 26, 23, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(31, 26, 23, 0.035) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,0.8), transparent 78%);
+      z-index: -1;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .page-shell {
+      width: min(1180px, calc(100% - 48px));
+      margin: 0 auto;
+    }
+
+    .fx-enter {
+      animation: fx-enter 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .fx-stagger > * {
+      opacity: 0;
+      animation: fx-enter 560ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .fx-stagger > *:nth-child(1) { animation-delay: 60ms; }
+    .fx-stagger > *:nth-child(2) { animation-delay: 120ms; }
+    .fx-stagger > *:nth-child(3) { animation-delay: 180ms; }
+    .fx-stagger > *:nth-child(4) { animation-delay: 240ms; }
+
+    .fx-hover-lift {
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+    }
+
+    .fx-hover-lift:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-strong);
+    }
+
+    .fx-pulse-ring {
+      animation: fx-pulse 2.6s ease-in-out infinite;
+    }
+
+    @keyframes fx-enter {
+      from {
+        opacity: 0;
+        transform: translate3d(0, 18px, 0) scale(0.985);
+      }
+      to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+    }
+
+    @keyframes fx-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(207, 107, 66, 0.25); }
+      50% { box-shadow: 0 0 0 12px rgba(207, 107, 66, 0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      .fx-enter,
+      .fx-stagger > *,
+      .fx-hover-lift,
+      .fx-pulse-ring {
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+      }
+    }
+
+    .skip-link {
+      position: absolute;
+      left: 1rem;
+      top: 1rem;
+      transform: translateY(-160%);
+      background: var(--bg-accent);
+      color: var(--fg-inverse);
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-pill);
+      z-index: 10;
+    }
+
+    .skip-link:focus {
+      transform: translateY(0);
+      outline: 3px solid var(--accent-highlight);
+      outline-offset: 3px;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      backdrop-filter: blur(18px);
+      background: rgba(248, 244, 238, 0.82);
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    .nav {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-family: var(--display-font);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      text-decoration: none;
+      color: var(--fg-strong);
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      background: var(--accent-highlight);
+      border: 1px solid rgba(31, 26, 23, 0.15);
+      border-radius: 14px;
+      box-shadow: 0 10px 24px rgba(31, 26, 23, 0.12);
+      font-size: 1.35rem;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: var(--space-3);
+      font-family: var(--display-font);
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--fg-muted);
+      padding: 0.55rem 0.8rem;
+      border-radius: var(--radius-pill);
+    }
+
+    .nav-links a:hover,
+    .nav-links a:focus-visible {
+      background: rgba(93, 133, 123, 0.13);
+      color: var(--fg-strong);
+      outline: none;
+    }
+
+    .nav-links .nav-cta {
+      background: var(--bg-accent);
+      color: var(--fg-inverse);
+      border: 1px solid rgba(19, 39, 48, 0.24);
+    }
+
+    .nav-links .nav-cta:hover,
+    .nav-links .nav-cta:focus-visible {
+      background: #203d49;
+      color: var(--fg-inverse);
+      outline: 3px solid rgba(243, 201, 105, 0.85);
+      outline-offset: 3px;
+    }
+
+    main {
+      overflow: hidden;
+    }
+
+    .hero {
+      padding: var(--space-7) 0 var(--space-6);
+      display: grid;
+      grid-template-columns: minmax(0, 1.03fr) minmax(380px, 0.97fr);
+      gap: var(--space-6);
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      width: fit-content;
+      margin-bottom: var(--space-4);
+      padding: 0.45rem 0.8rem;
+      border: 1px solid var(--line-strong);
+      border-radius: var(--radius-pill);
+      background: rgba(255, 255, 255, 0.65);
+      color: var(--fg-muted);
+      font-family: var(--display-font);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 0.62rem;
+      height: 0.62rem;
+      border-radius: 50%;
+      background: var(--accent-primary);
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: var(--display-font);
+      line-height: 0.96;
+      letter-spacing: -0.06em;
+      margin: 0;
+    }
+
+    h1 {
+      max-width: 10.2ch;
+      font-size: var(--display-1);
+    }
+
+    .hero-copy {
+      max-width: 660px;
+      margin: var(--space-4) 0 0;
+      color: var(--fg-muted);
+      font-size: clamp(1.12rem, 1.4vw, 1.35rem);
+    }
+
+    .cta-row {
+      margin-top: var(--space-5);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      min-height: 52px;
+      padding: 0.9rem 1.2rem;
+      border-radius: var(--radius-pill);
+      border: 1px solid transparent;
+      font-family: var(--display-font);
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--accent-primary);
+      color: #fffaf6;
+      box-shadow: 0 15px 34px rgba(207, 107, 66, 0.28);
+    }
+
+    .btn-primary:hover,
+    .btn-primary:focus-visible {
+      background: #b95a37;
+      outline: 3px solid rgba(243, 201, 105, 0.85);
+      outline-offset: 4px;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.75);
+      color: var(--fg-strong);
+      border-color: var(--line-strong);
+    }
+
+    .btn-secondary:hover,
+    .btn-secondary:focus-visible {
+      background: var(--bg-panel);
+      border-color: rgba(19, 39, 48, 0.42);
+      outline: 3px solid rgba(93, 133, 123, 0.32);
+      outline-offset: 4px;
+    }
+
+    .hero-note {
+      margin-top: var(--space-4);
+      color: var(--fg-muted);
+      font-size: var(--body-sm);
+    }
+
+    .mission-card {
+      position: relative;
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.94), rgba(255,255,255,0.72)),
+        var(--bg-panel);
+      border: 1px solid var(--line-soft);
+      border-radius: calc(var(--radius-card) + 10px);
+      box-shadow: var(--shadow-soft);
+      padding: var(--space-4);
+      isolation: isolate;
+    }
+
+    .mission-card::before {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border: 1px dashed rgba(19, 39, 48, 0.18);
+      border-radius: var(--radius-card);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .control-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-3);
+      margin-bottom: var(--space-4);
+      font-family: var(--display-font);
+    }
+
+    .status-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      padding: 0.45rem 0.7rem;
+      border-radius: var(--radius-pill);
+      background: rgba(93, 133, 123, 0.14);
+      color: #294f48;
+      font-weight: 800;
+      font-size: 0.78rem;
+    }
+
+    .status-chip::before {
+      content: "";
+      width: 0.65rem;
+      height: 0.65rem;
+      border-radius: 50%;
+      background: var(--accent-secondary);
+    }
+
+    .window-dots {
+      display: flex;
+      gap: 0.45rem;
+    }
+
+    .window-dots span {
+      width: 0.74rem;
+      height: 0.74rem;
+      border-radius: 50%;
+      background: var(--line-strong);
+    }
+
+    .window-dots span:nth-child(1) { background: var(--accent-primary); }
+    .window-dots span:nth-child(2) { background: var(--accent-highlight); }
+    .window-dots span:nth-child(3) { background: var(--accent-secondary); }
+
+    .dashboard-visual {
+      display: grid;
+      grid-template-columns: 1fr 0.86fr;
+      gap: var(--space-3);
+      min-height: 390px;
+    }
+
+    .radar-panel,
+    .brief-panel,
+    .mini-panel {
+      border: 1px solid var(--line-soft);
+      border-radius: 24px;
+      background: rgba(248, 244, 238, 0.82);
+      padding: var(--space-3);
+    }
+
+    .radar-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background:
+        radial-gradient(circle at 50% 42%, rgba(243, 201, 105, 0.42), transparent 29%),
+        radial-gradient(circle at 50% 42%, transparent 0 42%, rgba(93, 133, 123, 0.16) 43% 44%, transparent 45%),
+        radial-gradient(circle at 50% 42%, transparent 0 60%, rgba(19, 39, 48, 0.1) 61% 62%, transparent 63%),
+        rgba(255,255,255,0.64);
+    }
+
+    .radar-map {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      display: grid;
+      place-items: center;
+    }
+
+    .duck-badge {
+      width: 72%;
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(19, 39, 48, 0.92);
+      color: var(--fg-inverse);
+      border: 10px solid rgba(255, 255, 255, 0.55);
+      box-shadow: inset 0 0 0 1px rgba(243, 201, 105, 0.25), var(--shadow-soft);
+    }
+
+    .duck-badge svg {
+      width: 76%;
+      height: auto;
+    }
+
+    .panel-label {
+      margin: 0 0 0.35rem;
+      color: var(--fg-muted);
+      font-family: var(--display-font);
+      font-size: 0.76rem;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .panel-value {
+      margin: 0;
+      font-family: var(--display-font);
+      font-size: clamp(1.4rem, 2vw, 2.1rem);
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      line-height: 1;
+    }
+
+    .visual-stack {
+      display: grid;
+      gap: var(--space-3);
+    }
+
+    .brief-panel {
+      background: var(--bg-accent);
+      color: var(--fg-inverse);
+    }
+
+    .brief-panel .panel-label {
+      color: rgba(248, 244, 238, 0.7);
+    }
+
+    .meter {
+      height: 12px;
+      overflow: hidden;
+      border-radius: var(--radius-pill);
+      background: rgba(255, 255, 255, 0.16);
+      margin-top: var(--space-3);
+    }
+
+    .meter span {
+      display: block;
+      width: 84%;
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent-highlight), var(--accent-primary));
+      border-radius: inherit;
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-3);
+    }
+
+    .mini-panel strong {
+      display: block;
+      font-family: var(--display-font);
+      font-size: 1.65rem;
+      letter-spacing: -0.05em;
+      line-height: 1;
+      margin-bottom: 0.35rem;
+    }
+
+    .mini-panel span {
+      color: var(--fg-muted);
+      font-family: var(--display-font);
+      font-size: 0.8rem;
+      font-weight: 800;
+    }
+
+    section {
+      padding: var(--space-6) 0;
+    }
+
+    .section-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: var(--space-5);
+      margin-bottom: var(--space-5);
+    }
+
+    .section-heading h2 {
+      font-size: var(--display-2);
+      max-width: 11ch;
+    }
+
+    .section-heading p {
+      max-width: 520px;
+      margin: 0;
+      color: var(--fg-muted);
+      font-size: var(--body-lg);
+    }
+
+    .dashboard-slab {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--space-3);
+    }
+
+    .dashboard-stat {
+      min-height: 210px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: var(--space-4);
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-card);
+      background: var(--bg-panel);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .dashboard-stat .label {
+      color: var(--fg-muted);
+      font-family: var(--display-font);
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .dashboard-stat strong {
+      display: block;
+      margin-top: var(--space-4);
+      font-family: var(--display-font);
+      font-size: clamp(2.2rem, 4vw, 4.4rem);
+      line-height: 0.9;
+      letter-spacing: -0.08em;
+    }
+
+    .dashboard-stat p {
+      margin: var(--space-3) 0 0;
+      color: var(--fg-muted);
+    }
+
+    .dashboard-stat.featured {
+      background: var(--bg-accent);
+      color: var(--fg-inverse);
+      border-color: rgba(248, 244, 238, 0.16);
+    }
+
+    .dashboard-stat.featured .label,
+    .dashboard-stat.featured p {
+      color: rgba(248, 244, 238, 0.72);
+    }
+
+    .rules-wrap {
+      display: grid;
+      grid-template-columns: 0.82fr 1.18fr;
+      gap: var(--space-5);
+      align-items: start;
+    }
+
+    .rules-card {
+      padding: var(--space-5);
+      border: 1px solid var(--line-soft);
+      border-radius: calc(var(--radius-card) + 8px);
+      background: var(--bg-panel);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .rules-card h2 {
+      font-size: var(--display-2);
+      max-width: 9ch;
+    }
+
+    .rules-card p {
+      color: var(--fg-muted);
+      font-size: var(--body-lg);
+      margin: var(--space-3) 0 var(--space-4);
+    }
+
+    .rule-steps {
+      margin: var(--space-4) 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: var(--space-3);
+    }
+
+    .rule-steps li {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: var(--space-3);
+      align-items: start;
+      color: var(--fg-muted);
+    }
+
+    .step-num {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 14px;
+      background: rgba(207, 107, 66, 0.14);
+      color: #8f3f25;
+      font-family: var(--display-font);
+      font-weight: 900;
+    }
+
+    .accordion {
+      display: grid;
+      gap: var(--space-3);
+    }
+
+    details {
+      border: 1px solid var(--line-soft);
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.72);
+      box-shadow: 0 12px 30px rgba(27, 31, 36, 0.08);
+      overflow: hidden;
+    }
+
+    details[open] {
+      border-color: rgba(93, 133, 123, 0.34);
+      background: rgba(255, 255, 255, 0.9);
+    }
+
+    summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      padding: var(--space-4);
+      font-family: var(--display-font);
+      font-size: 1.08rem;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    summary::-webkit-details-marker {
+      display: none;
+    }
+
+    summary::after {
+      content: "+";
+      flex: 0 0 auto;
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: rgba(93, 133, 123, 0.14);
+      color: var(--bg-accent);
+      font-size: 1.4rem;
+      line-height: 1;
+    }
+
+    details[open] summary::after {
+      content: "–";
+      background: var(--accent-highlight);
+    }
+
+    summary:focus-visible {
+      outline: 3px solid rgba(207, 107, 66, 0.65);
+      outline-offset: -6px;
+      border-radius: 22px;
+    }
+
+    .rule-body {
+      padding: 0 var(--space-4) var(--space-4);
+      color: var(--fg-muted);
+    }
+
+    .rule-body ul {
+      margin: 0;
+      padding-left: 1.25rem;
+    }
+
+    .rule-body li + li {
+      margin-top: 0.45rem;
+    }
+
+    .engagement {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: var(--space-4);
+      align-items: stretch;
+    }
+
+    .engagement-card {
+      border-radius: calc(var(--radius-card) + 10px);
+      padding: var(--space-5);
+      background:
+        linear-gradient(135deg, rgba(19, 39, 48, 0.94), rgba(19, 39, 48, 0.86)),
+        var(--bg-accent);
+      color: var(--fg-inverse);
+      box-shadow: var(--shadow-strong);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .engagement-card::after {
+      content: "QUACK";
+      position: absolute;
+      right: -0.24em;
+      bottom: -0.34em;
+      font-family: var(--display-font);
+      font-weight: 900;
+      font-size: clamp(5rem, 13vw, 12rem);
+      letter-spacing: -0.12em;
+      color: rgba(248, 244, 238, 0.055);
+      pointer-events: none;
+    }
+
+    .engagement-card h2 {
+      position: relative;
+      z-index: 1;
+      max-width: 11ch;
+      font-size: var(--display-2);
+    }
+
+    .engagement-card p {
+      position: relative;
+      z-index: 1;
+      max-width: 610px;
+      color: rgba(248, 244, 238, 0.76);
+      font-size: var(--body-lg);
+    }
+
+    .checklist {
+      display: grid;
+      gap: var(--space-3);
+    }
+
+    .check-item {
+      padding: var(--space-4);
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-card);
+      background: var(--bg-panel);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .check-item strong {
+      display: block;
+      font-family: var(--display-font);
+      font-size: 1.12rem;
+      letter-spacing: -0.04em;
+      margin-bottom: 0.35rem;
+    }
+
+    .check-item p {
+      margin: 0;
+      color: var(--fg-muted);
+    }
+
+    .final-cta {
+      margin-bottom: var(--space-6);
+      padding: var(--space-5);
+      border: 1px solid rgba(19, 39, 48, 0.16);
+      border-radius: calc(var(--radius-card) + 12px);
+      background:
+        linear-gradient(110deg, rgba(243, 201, 105, 0.34), rgba(255,255,255,0.82) 42%, rgba(93, 133, 123, 0.16)),
+        var(--bg-panel);
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-5);
+    }
+
+    .final-cta h2 {
+      font-size: clamp(2rem, 3vw, 3.2rem);
+      max-width: 14ch;
+    }
+
+    .final-cta p {
+      margin: var(--space-2) 0 0;
+      color: var(--fg-muted);
+      max-width: 620px;
+    }
+
+    footer {
+      padding: var(--space-5) 0;
+      border-top: 1px solid var(--line-soft);
+      color: var(--fg-muted);
+      font-family: var(--display-font);
+      font-size: 0.9rem;
+    }
+
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      gap: var(--space-4);
+      align-items: center;
+    }
+
+    :focus-visible {
+      outline: 3px solid rgba(207, 107, 66, 0.72);
+      outline-offset: 4px;
+    }
+
+    @media (max-width: 980px) {
+      .page-shell {
+        width: min(100% - 32px, 760px);
+      }
+
+      .hero,
+      .rules-wrap,
+      .engagement,
+      .final-cta {
+        grid-template-columns: 1fr;
+      }
+
+      .dashboard-visual {
+        grid-template-columns: 1fr;
+      }
+
+      .dashboard-slab {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      h1 {
+        max-width: 12ch;
+      }
+
+      .section-heading {
+        display: block;
+      }
+
+      .section-heading p {
+        margin-top: var(--space-3);
+      }
+
+      .final-cta {
+        display: grid;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .nav {
+        min-height: auto;
+        padding: var(--space-3) 0;
+        align-items: flex-start;
+      }
+
+      .nav-links {
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: var(--space-1);
+      }
+
+      .nav-links a {
+        padding: 0.45rem 0.58rem;
+      }
+
+      .hero {
+        padding-top: var(--space-5);
+      }
+
+      .dashboard-slab,
+      .mini-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .dashboard-stat {
+        min-height: 170px;
+      }
+
+      .rules-card,
+      .engagement-card,
+      .final-cta {
+        padding: var(--space-4);
+      }
+
+      .cta-row {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to Duck Deck content</a>
+
+  <header>
+    <nav class="page-shell nav" aria-label="Primary navigation">
+      <a class="brand" href="#top" aria-label="Duck Deck home">
+        <span class="brand-mark" aria-hidden="true">🦆</span>
+        <span>Duck Deck</span>
+      </a>
+
+      <div class="nav-links">
+        <a href="#mission">Mission</a>
+        <a href="#rules">Rules</a>
+        <a href="#engagement">Engagement</a>
+        <a class="nav-cta fx-pulse-ring" href="#rules">Read the Rules</a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section id="top" class="page-shell hero fx-enter" aria-labelledby="hero-title">
+      <div>
+        <div class="eyebrow">Clean mission control for casual card chaos</div>
+        <h1 id="hero-title">Launch the duck deck.</h1>
+        <p class="hero-copy">
+          A quirky desktop landing page for a fun card game about ducks—built to get casual players smiling,
+          skimming the rules, and waddling straight into their first round.
+        </p>
+
+        <div class="cta-row fx-stagger" aria-label="Hero actions">
+          <a class="btn btn-primary fx-hover-lift" href="#rules">Learn the Rules <span aria-hidden="true">→</span></a>
+          <a class="btn btn-secondary fx-hover-lift" href="#mission">Scan the Mission</a>
+        </div>
+
+        <p class="hero-note">
+          Budget-aware, one-week-ready, and focused on engagement-critical moments: the hero hook and the rules CTA.
+        </p>
+      </div>
+
+      <aside class="mission-card fx-hover-lift" aria-label="Duck Deck mission control dashboard">
+        <div class="control-top">
+          <span class="status-chip">Engagement systems online</span>
+          <span class="window-dots" aria-hidden="true"><span></span><span></span><span></span></span>
+        </div>
+
+        <div class="dashboard-visual">
+          <div class="radar-panel">
+            <div>
+              <p class="panel-label">Duck command</p>
+              <p class="panel-value">Round 01: Deal the pond.</p>
+            </div>
+
+            <div class="radar-map" role="img" aria-label="Illustrated duck mission dashboard preview">
+              <div class="duck-badge">
+                <svg viewBox="0 0 240 190" aria-hidden="true" focusable="false">
+                  <path d="M69 108c-12-8-21-20-21-35 0-29 27-52 61-52 29 0 54 17 60 40 7-3 15-5 24-5 21 0 38 13 38 29 0 14-12 26-29 29-7 29-38 50-76 50-27 0-50-10-64-25L33 151c-8 3-16-5-12-13l18-36c5-9 18-7 21 3l9 3z" fill="#f3c969"/>
+                  <path d="M171 63c9-10 22-15 36-13 17 2 30 13 33 26-17 3-34 1-50-6-8-3-14-5-19-7z" fill="#cf6b42"/>
+                  <circle cx="111" cy="70" r="7" fill="#132730"/>
+                  <path d="M82 112c27 14 65 12 94-3" fill="none" stroke="#132730" stroke-width="8" stroke-linecap="round"/>
+                  <path d="M61 128c17 20 44 31 75 29" fill="none" stroke="#fff8ef" stroke-width="5" stroke-linecap="round" opacity=".75"/>
+                </svg>
+              </div>
+            </div>
+
+            <p class="panel-label">Current mood: suspiciously buoyant</p>
+          </div>
+
+          <div class="visual-stack">
+            <div class="brief-panel">
+              <p class="panel-label">Primary objective</p>
+              <p class="panel-value">Make rules irresistible.</p>
+              <div class="meter" aria-label="Engagement readiness meter at 84 percent">
+                <span></span>
+              </div>
+            </div>
+
+            <div class="mini-grid">
+              <div class="mini-panel">
+                <strong>1w</strong>
+                <span>Launch timeline</span>
+              </div>
+              <div class="mini-panel">
+                <strong>$$</strong>
+                <span>Budget mindful</span>
+              </div>
+              <div class="mini-panel">
+                <strong>Desktop</strong>
+                <span>Primary platform</span>
+              </div>
+              <div class="mini-panel">
+                <strong>Casual</strong>
+                <span>Player audience</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section id="mission" class="page-shell" aria-labelledby="mission-title">
+      <div class="section-heading">
+        <h2 id="mission-title">Mission stats, minus the stiff feathers.</h2>
+        <p>
+          The page uses clear slabs, strong hierarchy, and playful copy so casual players can understand the game quickly
+          without feeling like they wandered into a rulebook swamp.
+        </p>
+      </div>
+
+      <div class="dashboard-slab fx-stagger">
+        <article class="dashboard-stat featured fx-hover-lift">
+          <span class="label">Success criteria</span>
+          <div>
+            <strong>Engage</strong>
+            <p>Every section nudges players toward understanding and trying the game.</p>
+          </div>
+        </article>
+
+        <article class="dashboard-stat fx-hover-lift">
+          <span class="label">Audience</span>
+          <div>
+            <strong>Casual</strong>
+            <p>Quick scanning, friendly humor, and no heavy strategy jargon.</p>
+          </div>
+        </article>
+
+        <article class="dashboard-stat fx-hover-lift">
+          <span class="label">Tone</span>
+          <div>
+            <strong>Quirky</strong>
+            <p>Ducks, mission pings, pond panic, and just enough nonsense.</p>
+          </div>
+        </article>
+
+        <article class="dashboard-stat fx-hover-lift">
+          <span class="label">Constraint</span>
+          <div>
+            <strong>Lean</strong>
+            <p>Budget-conscious page structure using copy, layout, and CSS polish.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="rules" class="page-shell" aria-labelledby="rules-title">
+      <div class="rules-wrap">
+        <aside class="rules-card fx-enter">
+          <div class="eyebrow">Rules priority</div>
+          <h2 id="rules-title">How to play without ruffling feathers.</h2>
+          <p>
+            Duck Deck is easy to explain: collect useful cards, dodge ridiculous pond problems,
+            and out-quack your friends before the final flap.
+          </p>
+
+          <a class="btn btn-primary fx-hover-lift" href="#quick-start">Start with Quick Rules <span aria-hidden="true">↓</span></a>
+
+          <ol class="rule-steps" id="quick-start" aria-label="Quick play steps">
+            <li>
+              <span class="step-num">1</span>
+              <span><strong>Deal five cards.</strong> Every player gets a starting hand and one dramatic duck face.</span>
+            </li>
+            <li>
+              <span class="step-num">2</span>
+              <span><strong>Play one card per turn.</strong> Build your flock, trigger pond effects, or sabotage a rival nest.</span>
+            </li>
+            <li>
+              <span class="step-num">3</span>
+              <span><strong>Score when the deck runs dry.</strong> Biggest, weirdest, best-managed flock wins.</span>
+            </li>
+          </ol>
+        </aside>
+
+        <div class="accordion" aria-label="Detailed Duck Deck rules">
+          <details open>
+            <summary>Objective: build the boldest flock</summary>
+            <div class="rule-body">
+              <ul>
+                <li>Collect duck cards to grow your flock score.</li>
+                <li>Use action cards to swap, shield, steal, or cause harmless pond mayhem.</li>
+                <li>Win by having the highest flock score when the draw deck is empty.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details>
+            <summary>Turn flow: draw, play, quack</summary>
+            <div class="rule-body">
+              <ul>
+                <li>Draw one card from the deck.</li>
+                <li>Play one card from your hand, then resolve its effect.</li>
+                <li>Discard down to seven cards if your hand gets too splashy.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details>
+            <summary>Special cards: pond events and duck tricks</summary>
+            <div class="rule-body">
+              <ul>
+                <li><strong>Pond Event:</strong> affects all players for one round.</li>
+                <li><strong>Duck Trick:</strong> creates a one-time surprise like a swap or shield.</li>
+                <li><strong>Bread Crumb Bonus:</strong> adds points, but may attract chaos.</li>
+              </ul>
+            </div>
+          </details>
+
+          <details>
+            <summary>Winning: count the flock, crown the quack</summary>
+            <div class="rule-body">
+              <ul>
+                <li>Add visible duck values, bonuses, and end-game effects.</li>
+                <li>Break ties by most Duck Trick cards played.</li>
+                <li>If still tied, the player with the best duck impression wins the moral victory.</li>
+              </ul>
+            </div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section id="engagement" class="page-shell" aria-labelledby="engagement-title">
+      <div class="engagement">
+        <article class="engagement-card fx-hover-lift">
+          <div class="eyebrow">Engagement critical</div>
+          <h2 id="engagement-title">The rules CTA stays in the flight path.</h2>
+          <p>
+            Casual players should never hunt for what matters. The hero leads with the game premise, the navigation keeps
+            Rules visible, and repeated CTAs guide players to the quickest path for learning the game.
+          </p>
+          <div class="cta-row">
+            <a class="btn btn-primary fx-pulse-ring" href="#rules">Review Rules Again</a>
+            <a class="btn btn-secondary" href="#top">Back to Launch</a>
+          </div>
+        </article>
+
+        <div class="checklist fx-stagger" aria-label="Engagement readiness checklist">
+          <article class="check-item fx-hover-lift">
+            <strong>Hero prominence</strong>
+            <p>Large headline, clear duck-card premise, and immediate action buttons above the fold.</p>
+          </article>
+          <article class="check-item fx-hover-lift">
+            <strong>Rules prominence</strong>
+            <p>Rules appear in the primary nav, hero CTA, dedicated slab, and final engagement CTA.</p>
+          </article>
+          <article class="check-item fx-hover-lift">
+            <strong>Desktop polish</strong>
+            <p>Mission-control dashboard layout uses wide-screen spacing, panels, status chips, and hierarchy.</p>
+          </article>
+          <article class="check-item fx-hover-lift">
+            <strong>Budget fit</strong>
+            <p>No dependency-heavy visuals required; illustration, animation, and polish are CSS/SVG driven.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="page-shell final-cta" aria-labelledby="final-title">
+      <div>
+        <h2 id="final-title">Ready to brief the flock?</h2>
+        <p>
+          Duck Deck keeps the pitch simple, the rules close, and the vibe unmistakably quirky—perfect for casual players
+          deciding whether this pond is worth jumping into.
+        </p>
+      </div>
+      <a class="btn btn-primary fx-hover-lift" href="#rules">Open the Rules</a>
+    </section>
+  </main>
+
+  <footer>
+    <div class="page-shell footer-row">
+      <span>Duck Deck landing concept · Clean mission control</span>
+      <span>Built for desktop engagement</span>
+    </div>
+  </footer>
+</body>
+</html>
