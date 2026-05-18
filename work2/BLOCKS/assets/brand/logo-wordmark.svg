@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 292 82" fill="none">
+  <defs>
+    <linearGradient id="blocksLogoPurple" x1="0" y1="0" x2="92" y2="76" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#B34CFF"/>
+      <stop offset="1" stop-color="#7C4DFF"/>
+    </linearGradient>
+    <linearGradient id="blocksLogoBlue" x1="145" y1="0" x2="246" y2="82" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#B7C7FF"/>
+      <stop offset="0.55" stop-color="#6AB9FF"/>
+      <stop offset="1" stop-color="#4E72FF"/>
+    </linearGradient>
+    <linearGradient id="blocksLogoOrange" x1="246" y1="0" x2="292" y2="82" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFD77E"/>
+      <stop offset="1" stop-color="#FF8B2F"/>
+    </linearGradient>
+    <filter id="logoGlow" x="-16" y="-16" width="324" height="114" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="2.2" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0.47 0 0 0 0 0.28 0 0 0 0 1 0 0 0 .45 0"/>
+      <feBlend in="SourceGraphic"/>
+    </filter>
+  </defs>
+  <g filter="url(#logoGlow)">
+    <text x="0" y="58" font-family="Sora, Arial, system-ui, sans-serif" font-weight="900" font-size="58" letter-spacing="-0.075em" fill="url(#blocksLogoPurple)">BL</text>
+    <g transform="translate(82 14)">
+      <path d="M29 0 L55 14 L55 44 L29 58 L3 44 L3 14 Z" fill="#FFF5E8"/>
+      <path d="M29 7 L48 17 L48 39 L29 49 L10 39 L10 17 Z" fill="#9E5522"/>
+      <path d="M29 7 L48 17 L29 27 L10 17 Z" fill="#FFE6B8"/>
+      <path d="M29 27 L48 17 L48 39 L29 49 Z" fill="#C7772A"/>
+      <path d="M29 27 L10 17 L10 39 L29 49 Z" fill="#6F371D"/>
+      <path d="M29 16 L39 21 L39 33 L29 39 L19 33 L19 21 Z" fill="#FFF6E9"/>
+      <path d="M29 16 L39 21 L29 27 L19 21 Z" fill="#FFE0A2"/>
+      <path d="M29 27 L39 21 L39 33 L29 39 Z" fill="#E18D32"/>
+    </g>
+    <text x="145" y="58" font-family="Sora, Arial, system-ui, sans-serif" font-weight="900" font-size="58" letter-spacing="-0.075em" fill="url(#blocksLogoBlue)">CK</text>
+    <text x="238" y="58" font-family="Sora, Arial, system-ui, sans-serif" font-weight="900" font-size="58" letter-spacing="-0.075em" fill="url(#blocksLogoOrange)">S</text>
+  </g>
+</svg>

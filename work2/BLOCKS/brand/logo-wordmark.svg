@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 88" fill="none">
+  
+  <g transform="translate(8 12)">
+    
+    <path d="M32 0 L56 12 L56 40 L32 52 L8 40 L8 12 Z" fill="#FFB547"></path>
+    <path d="M32 0 L56 12 L32 24 L8 12 Z" fill="#FFD28A"></path>
+    <path d="M32 24 L56 12 L56 40 L32 52 Z" fill="#D48A1C"></path>
+    
+    <path d="M44 30 L60 38 L60 56 L44 64 L28 56 L28 38 Z" fill="#FF6B4A"></path>
+    <path d="M44 30 L60 38 L44 46 L28 38 Z" fill="#FF8A6E"></path>
+    <path d="M44 46 L60 38 L60 56 L44 64 Z" fill="#D94428"></path>
+  </g>
+  
+  <text x="84" y="58" font-family="Space Grotesk, system-ui, sans-serif" font-weight="700" font-size="44" letter-spacing="-0.02em" fill="#1B0F2B">BLOCKS</text>
+</svg>
