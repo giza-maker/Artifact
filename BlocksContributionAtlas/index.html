@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="BlocksContributionAtlas: interactive portfolio analysis of Ahmed Moustafa's contributions to Virtual Work V2."
+    />
+    <title>BlocksContributionAtlas</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <canvas id="constellation" aria-hidden="true"></canvas>
+
+    <header class="site-header" data-reveal>
+      <a class="brand-mark" href="#top" aria-label="BlocksContributionAtlas home">
+        <span class="brand-glyph">AM</span>
+        <span>
+          <strong>BlocksContributionAtlas</strong>
+          <small>Virtual Work V2</small>
+        </span>
+      </a>
+      <nav aria-label="Page sections">
+        <a href="#timeline">Timeline</a>
+        <a href="#features">Feature Atlas</a>
+        <a href="#analysis">Analysis</a>
+        <a href="#commits">Commits</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section id="top" class="hero-section">
+        <div class="hero-grid">
+          <div class="hero-copy" data-reveal>
+            <p class="eyebrow">BlocksContributionAtlas, generated from git history</p>
+            <h1>One month of product acceleration, mapped feature by feature.</h1>
+            <p class="hero-lede">
+              An interactive portfolio site for Ahmed Moustafa's contributions: every authored commit,
+              grouped into the systems it created, the product value it unlocked, and the proof behind it.
+            </p>
+            <div class="hero-actions" aria-label="Primary actions">
+              <a class="button button-primary" href="#features">Explore features</a>
+              <a class="button button-secondary" href="#commits">Inspect commits</a>
+            </div>
+          </div>
+
+          <div class="hero-console" data-reveal>
+            <div class="console-topbar">
+              <span></span>
+              <span></span>
+              <span></span>
+              <strong>portfolio.signal</strong>
+            </div>
+            <div id="heroMetrics" class="metric-grid" aria-live="polite">
+              <div class="loading-line">Loading contribution data...</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-tight" aria-labelledby="milestone-title" data-reveal>
+        <div class="section-heading">
+          <p class="eyebrow">Narrative arc</p>
+          <h2 id="milestone-title">From stripped baseline to intelligent operating system</h2>
+        </div>
+        <div id="milestoneRail" class="milestone-rail"></div>
+      </section>
+
+      <section id="timeline" class="section" aria-labelledby="timeline-title" data-reveal>
+        <div class="section-heading split-heading">
+          <div>
+            <p class="eyebrow">Timeline</p>
+            <h2 id="timeline-title">Commit velocity and cumulative momentum</h2>
+          </div>
+          <p>
+            Daily commits are shown as heat bars. The brass line tracks cumulative progress across all reachable refs.
+          </p>
+        </div>
+        <div class="chart-shell">
+          <div id="timelineChart" class="chart-panel" role="img" aria-label="Contribution timeline chart"></div>
+        </div>
+      </section>
+
+      <section id="features" class="section" aria-labelledby="features-title" data-reveal>
+        <div class="section-heading split-heading">
+          <div>
+            <p class="eyebrow">Feature atlas</p>
+            <h2 id="features-title">Importance-ranked systems Ahmed added</h2>
+          </div>
+          <div class="filter-row" aria-label="Feature filters">
+            <label>
+              <span>Domain</span>
+              <select id="domainFilter"></select>
+            </label>
+            <label>
+              <span>Search</span>
+              <input id="featureSearch" type="search" placeholder="Memory, world, artifacts..." />
+            </label>
+          </div>
+        </div>
+        <div class="atlas-layout">
+          <div id="featureAtlas" class="feature-atlas"></div>
+          <aside id="featureDetail" class="feature-detail" aria-live="polite"></aside>
+        </div>
+      </section>
+
+      <section id="analysis" class="section" aria-labelledby="analysis-title" data-reveal>
+        <div class="section-heading split-heading">
+          <div>
+            <p class="eyebrow">Analysis</p>
+            <h2 id="analysis-title">Where the work concentrated</h2>
+          </div>
+          <p>
+            These charts turn commit metadata into a portfolio lens: product areas, engineering surface area, and branch coverage.
+          </p>
+        </div>
+        <div class="analysis-grid">
+          <article class="analysis-card">
+            <div class="card-heading">
+              <h3>Commit category mix</h3>
+              <span id="categoryTotal"></span>
+            </div>
+            <div id="categoryChart" class="bar-chart"></div>
+          </article>
+          <article class="analysis-card">
+            <div class="card-heading">
+              <h3>Subsystem impact</h3>
+              <span>files touched</span>
+            </div>
+            <div id="directoryChart" class="bar-chart"></div>
+          </article>
+          <article class="analysis-card matrix-card">
+            <div class="card-heading">
+              <h3>Importance matrix</h3>
+              <span>value x commit weight</span>
+            </div>
+            <div id="matrixChart" class="matrix-chart" role="img" aria-label="Feature importance matrix"></div>
+          </article>
+          <article class="analysis-card">
+            <div class="card-heading">
+              <h3>Branch and ref coverage</h3>
+              <span id="refSummary"></span>
+            </div>
+            <div id="refChart" class="bar-chart"></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="commits" class="section" aria-labelledby="commits-title" data-reveal>
+        <div class="section-heading split-heading">
+          <div>
+            <p class="eyebrow">Complete evidence</p>
+            <h2 id="commits-title">Full Ahmed-authored commit explorer</h2>
+          </div>
+          <p>
+            Search every included commit. No public email address is shipped in this dataset.
+          </p>
+        </div>
+
+        <div class="commit-tools">
+          <label>
+            <span>Search commits</span>
+            <input id="commitSearch" type="search" placeholder="routing, mission, memory, e857ba55..." />
+          </label>
+          <label>
+            <span>Feature</span>
+            <select id="commitFeatureFilter"></select>
+          </label>
+          <label>
+            <span>Category</span>
+            <select id="commitCategoryFilter"></select>
+          </label>
+          <button id="sortCommits" class="button button-secondary" type="button">Newest first</button>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>SHA</th>
+                <th>Feature</th>
+                <th>Category</th>
+                <th>Commit</th>
+                <th>Impact</th>
+              </tr>
+            </thead>
+            <tbody id="commitTable"></tbody>
+          </table>
+        </div>
+        <p id="commitCount" class="commit-count"></p>
+        <div class="load-more-row">
+          <button id="loadMoreCommits" class="button button-secondary" type="button">Load more commits</button>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>
+        Generated from local git history for portfolio review. Publishing to GitHub Pages is held until approval.
+      </p>
+    </footer>
+
+    <script src="./data/contributions.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
