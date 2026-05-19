@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FrameForge — Cleaner, Continuous AI Video Frames</title>
+  <meta name="description" content="Professional frame generation for filmmakers building cleaner, more continuous AI video output." />
+  <style>
+    :root {
+      --bg-canvas: #eef2f6;
+      --bg-panel: rgba(255, 255, 255, 0.96);
+      --bg-accent: #0f2133;
+      --fg-strong: #1f1a17;
+      --fg-muted: #5e544c;
+      --fg-inverse: #f8f4ee;
+      --line-soft: rgba(36, 31, 27, 0.12);
+      --line-strong: rgba(23, 49, 62, 0.28);
+      --accent-primary: #2563eb;
+      --accent-secondary: #0891b2;
+      --accent-highlight: #f59e0b;
+      --radius-card: 28px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 18px 44px rgba(27, 31, 36, 0.12);
+      --shadow-strong: 0 24px 64px rgba(16, 19, 24, 0.22);
+      --space-1: 0.375rem;
+      --space-2: 0.75rem;
+      --space-3: 1rem;
+      --space-4: 1.5rem;
+      --space-5: 2rem;
+      --space-6: 3rem;
+      --space-7: 4.5rem;
+      --display-font: "Avenir Next", "Segoe UI Variable", "Segoe UI", sans-serif;
+      --body-font: "Segoe UI Variable Text", "Segoe UI", sans-serif;
+      --display-1: clamp(2.8rem, 6vw, 5.6rem);
+      --display-2: clamp(2.1rem, 4vw, 3.4rem);
+      --heading-1: clamp(1.45rem, 2.3vw, 2.3rem);
+      --body-lg: 1.125rem;
+      --body-md: 1rem;
+      --body-sm: 0.92rem;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 20% 0%, rgba(37, 99, 235, 0.16), transparent 32rem),
+        radial-gradient(circle at 85% 18%, rgba(8, 145, 178, 0.16), transparent 28rem),
+        linear-gradient(180deg, #eef2f6 0%, #f7f3ec 100%);
+      color: var(--fg-strong);
+      font-family: var(--body-font);
+      line-height: 1.55;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .fx-enter,
+      .fx-stagger > *,
+      .fx-hover-lift,
+      .fx-pulse-ring {
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+      }
+    }
+
+    .fx-enter {
+      animation: fx-enter 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .fx-stagger > * {
+      opacity: 0;
+      animation: fx-enter 560ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .fx-stagger > *:nth-child(1) { animation-delay: 60ms; }
+    .fx-stagger > *:nth-child(2) { animation-delay: 120ms; }
+    .fx-stagger > *:nth-child(3) { animation-delay: 180ms; }
+    .fx-stagger > *:nth-child(4) { animation-delay: 240ms; }
+
+    .fx-hover-lift {
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+    }
+
+    .fx-hover-lift:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-strong);
+    }
+
+    .fx-pulse-ring {
+      animation: fx-pulse 2.6s ease-in-out infinite;
+    }
+
+    @keyframes fx-enter {
+      from {
+        opacity: 0;
+        transform: translate3d(0, 18px, 0) scale(0.985);
+      }
+      to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+    }
+
+    @keyframes fx-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.24); }
+      50% { box-shadow: 0 0 0 12px rgba(37, 99, 235, 0); }
+    }
+
+    a, button, input {
+      font: inherit;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible {
+      outline: 3px solid var(--accent-highlight);
+      outline-offset: 4px;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: 1rem;
+      top: -4rem;
+      z-index: 50;
+      background: var(--bg-accent);
+      color: var(--fg-inverse);
+      padding: var(--space-2) var(--space-3);
+      border-radius: var(--radius-pill);
+      text-decoration: none;
+    }
+
+    .skip-link:focus {
+      top: 1rem;
+    }
+
+    .shell {
+      width: min(1180px, calc(100% - 2rem));
+      margin: 0 auto;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(16px);
+      background: rgba(238, 242, 246, 0.84);
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    .nav {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-4);
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      text-decoration: none;
+      font-family: var(--display-font);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+    }
+
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      display: grid;
+      place-items: center;
+      color: var(--fg-inverse);
+      background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+      border-radius: 14px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      color: var(--fg-muted);
+      font-size: var(--body-sm);
+    }
+
+    .nav-links a {
+      text-decoration: none;
+    }
+
+    .nav-links a:hover {
+      color: var(--fg-strong);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-2);
+      min-height: 48px;
+      border: 0;
+      border-radius: var(--radius-pill);
+      padding: 0.85rem 1.15rem;
+      text-decoration: none;
+      cursor: pointer;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+    }
+
+    .btn-primary {
+      background: var(--bg-accent);
+      color: var(--fg-inverse);
+    }
+
+    .btn-primary:hover {
+      background: #14324d;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.7);
+      color: var(--fg-strong);
+      border: 1px solid var(--line-soft);
+    }
+
+    main {
+      overflow: hidden;
+    }
+
+    .hero {
+      padding: var(--space-7) 0 var(--space-6);
+      display: grid;
+      grid-template-columns: minmax(0, 1.02fr) minmax(340px, 0.98fr);
+      align-items: center;
+      gap: var(--space-6);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      width: fit-content;
+      border: 1px solid rgba(37, 99, 235, 0.22);
+      background: rgba(255, 255, 255, 0.72);
+      color: #174ea6;
+      border-radius: var(--radius-pill);
+      padding: 0.42rem 0.72rem;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .eyebrow-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-secondary);
+    }
+
+    h1, h2, h3 {
+      font-family: var(--display-font);
+      line-height: 1;
+      letter-spacing: -0.055em;
+      margin: 0;
+    }
+
+    h1 {
+      margin-top: var(--space-4);
+      max-width: 11ch;
+      font-size: var(--display-1);
+    }
+
+    .hero-copy {
+      max-width: 650px;
+      margin: var(--space-4) 0 0;
+      color: var(--fg-muted);
+      font-size: var(--body-lg);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+      margin-top: var(--space-5);
+    }
+
+    .hero-note {
+      margin-top: var(--space-3);
+      color: var(--fg-muted);
+      font-size: var(--body-sm);
+    }
+
+    .mission-panel {
+      position: relative;
+      background: linear-gradient(180deg, rgba(15, 33, 51, 0.98), rgba(19, 43, 65, 0.96));
+      color: var(--fg-inverse);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: calc(var(--radius-card) + 8px);
+      padding: var(--space-4);
+      box-shadow: var(--shadow-strong);
+      isolation: isolate;
+    }
+
+    .mission-panel::before {
+      content: "";
+      position: absolute;
+      inset: 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-card);
+      pointer-events: none;
+    }
+
+    .panel-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      margin-bottom: var(--space-4);
+      color: rgba(248, 244, 238, 0.78);
+      font-size: 0.82rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-2);
+      border: 1px solid rgba(245, 158, 11, 0.44);
+      border-radius: var(--radius-pill);
+      padding: 0.35rem 0.6rem;
+      color: #ffd27a;
+    }
+
+    .dashboard-preview {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 24px;
+      padding: var(--space-3);
+    }
+
+    .dashboard-preview svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .timeline-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-2);
+      margin-top: var(--space-4);
+    }
+
+    .frame-chip {
+      min-height: 72px;
+      border-radius: 18px;
+      padding: var(--space-2);
+      background:
+        linear-gradient(145deg, rgba(255,255,255,0.16), rgba(255,255,255,0.05)),
+        radial-gradient(circle at 28% 25%, rgba(245, 158, 11, 0.45), transparent 28px);
+      border: 1px solid rgba(255,255,255,0.1);
+      color: rgba(248,244,238,0.82);
+      font-size: 0.78rem;
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-3);
+      margin-top: var(--space-5);
+    }
+
+    .metric {
+      background: var(--bg-panel);
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-card);
+      padding: var(--space-4);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .metric span {
+      display: block;
+      color: var(--fg-muted);
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .metric strong {
+      display: block;
+      margin-top: var(--space-1);
+      font-family: var(--display-font);
+      font-size: clamp(1.6rem, 3vw, 2.5rem);
+      letter-spacing: -0.05em;
+    }
+
+    section {
+      padding: var(--space-6) 0;
+    }
+
+    .section-head {
+      display: grid;
+      grid-template-columns: minmax(0, 0.85fr) minmax(260px, 0.45fr);
+      gap: var(--space-5);
+      align-items: end;
+      margin-bottom: var(--space-5);
+    }
+
+    .section-head h2 {
+      font-size: var(--display-2);
+    }
+
+    .section-head p {
+      margin: 0;
+      color: var(--fg-muted);
+      font-size: var(--body-lg);
+    }
+
+    .slab-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-4);
+    }
+
+    .slab {
+      min-height: 270px;
+      background: var(--bg-panel);
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-card);
+      padding: var(--space-4);
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .slab-number {
+      width: 46px;
+      height: 46px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: rgba(37, 99, 235, 0.1);
+      color: #174ea6;
+      font-weight: 900;
+    }
+
+    .slab h3 {
+      margin-top: var(--space-4);
+      font-size: var(--heading-1);
+    }
+
+    .slab p {
+      margin: var(--space-3) 0 0;
+      color: var(--fg-muted);
+    }
+
+    .dark-band {
+      background: var(--bg-accent);
+      color: var(--fg-inverse);
+      border-radius: calc(var(--radius-card) + 12px);
+      padding: var(--space-5);
+      box-shadow: var(--shadow-strong);
+    }
+
+    .dark-band .section-head p,
+    .dark-band .muted {
+      color: rgba(248, 244, 238, 0.72);
+    }
+
+    .workflow {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: var(--space-5);
+      align-items: center;
+    }
+
+    .workflow-list {
+      display: grid;
+      gap: var(--space-3);
+    }
+
+    .workflow-item {
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: var(--space-3);
+      align-items: start;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 22px;
+      padding: var(--space-3);
+    }
+
+    .workflow-item strong {
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+
+    .workflow-item p {
+      margin: 0;
+      color: rgba(248, 244, 238, 0.7);
+    }
+
+    .mini-icon {
+      width: 44px;
+      height: 44px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      color: var(--bg-accent);
+      background: var(--accent-highlight);
+      font-weight: 900;
+    }
+
+    .signup-card {
+      display: grid;
+      grid-template-columns: 0.86fr 1.14fr;
+      gap: var(--space-5);
+      align-items: center;
+      background: rgba(255,255,255,0.94);
+      border: 1px solid var(--line-soft);
+      border-radius: calc(var(--radius-card) + 12px);
+      padding: var(--space-5);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .signup-card h2 {
+      font-size: var(--display-2);
+    }
+
+    .signup-card p {
+      color: var(--fg-muted);
+      font-size: var(--body-lg);
+    }
+
+    form {
+      display: grid;
+      gap: var(--space-3);
+    }
+
+    label {
+      display: grid;
+      gap: var(--space-1);
+      color: var(--fg-strong);
+      font-weight: 800;
+    }
+
+    label span {
+      color: var(--fg-muted);
+      font-weight: 600;
+      font-size: var(--body-sm);
+    }
+
+    input {
+      width: 100%;
+      min-height: 54px;
+      border: 1px solid var(--line-strong);
+      border-radius: 18px;
+      padding: 0.85rem 1rem;
+      color: var(--fg-strong);
+      background: #fff;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: var(--space-3);
+      align-items: end;
+    }
+
+    .form-status {
+      min-height: 1.5rem;
+      color: #0f6f39;
+      font-weight: 800;
+    }
+
+    .privacy {
+      margin: 0;
+      color: var(--fg-muted);
+      font-size: var(--body-sm);
+    }
+
+    .faq-wrap {
+      display: grid;
+      gap: var(--space-3);
+    }
+
+    .faq-item {
+      background: var(--bg-panel);
+      border: 1px solid var(--line-soft);
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .faq-question {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      gap: var(--space-3);
+      align-items: center;
+      min-height: 64px;
+      border: 0;
+      background: transparent;
+      color: var(--fg-strong);
+      padding: var(--space-3) var(--space-4);
+      cursor: pointer;
+      text-align: left;
+      font-weight: 900;
+    }
+
+    .faq-question .symbol {
+      width: 32px;
+      height: 32px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      background: rgba(8, 145, 178, 0.1);
+      color: #086f86;
+      flex: 0 0 auto;
+    }
+
+    .faq-answer {
+      padding: 0 var(--space-4) var(--space-4);
+      color: var(--fg-muted);
+    }
+
+    .faq-answer[hidden] {
+      display: none;
+    }
+
+    footer {
+      padding: var(--space-5) 0;
+      color: var(--fg-muted);
+      border-top: 1px solid var(--line-soft);
+    }
+
+    .footer-grid {
+      display: flex;
+      justify-content: space-between;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    @media (max-width: 900px) {
+      .hero,
+      .workflow,
+      .signup-card,
+      .section-head {
+        grid-template-columns: 1fr;
+      }
+
+      .metrics,
+      .slab-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .nav-links {
+        display: none;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .shell {
+        width: min(100% - 1rem, 1180px);
+      }
+
+      .hero {
+        padding-top: var(--space-5);
+      }
+
+      .mission-panel,
+      .dark-band,
+      .signup-card {
+        padding: var(--space-3);
+        border-radius: 24px;
+      }
+
+      .timeline-strip {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header>
+    <nav class="shell nav" aria-label="Primary navigation">
+      <a class="brand" href="#main" aria-label="FrameForge home">
+        <span class="brand-mark" aria-hidden="true">FF</span>
+        <span>FrameForge</span>
+      </a>
+      <div class="nav-links" aria-label="Page sections">
+        <a href="#frame-generation">Frame Generation</a>
+        <a href="#workflow">Workflow</a>
+        <a href="#signup">Signups</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <a class="btn btn-primary fx-pulse-ring" href="#signup">Join the web beta</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="shell hero">
+      <div class="fx-enter">
+        <div class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Clean mission control for AI video</div>
+        <h1>Build the missing frames your AI video needs.</h1>
+        <p class="hero-copy">
+          FrameForge gives filmmakers a professional web workflow for generating cleaner, more continuous movie frames between AI video shots, so sequences feel intentional instead of stitched together.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary fx-hover-lift" href="#signup">Request access</a>
+          <a class="btn btn-secondary fx-hover-lift" href="#frame-generation">See frame workflow</a>
+        </div>
+        <p class="hero-note">Budget-conscious launch plan: focused landing page, lightweight assets, and signup-first analytics.</p>
+      </div>
+
+      <aside class="mission-panel fx-enter" aria-label="Illustrated dashboard preview">
+        <div class="panel-top">
+          <span>Sequence continuity console</span>
+          <span class="status-pill"><span class="eyebrow-dot" aria-hidden="true"></span> Web beta</span>
+        </div>
+        <div class="dashboard-preview" role="img" aria-label="Illustrated dashboard preview showing frame generation continuity controls and timeline health">
+          <svg viewBox="0 0 720 520" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+            <rect width="720" height="520" rx="28" fill="#132B41"/>
+            <rect x="28" y="28" width="664" height="78" rx="20" fill="#F8F4EE" opacity="0.08"/>
+            <rect x="54" y="55" width="156" height="16" rx="8" fill="#F8F4EE" opacity="0.82"/>
+            <rect x="525" y="50" width="112" height="26" rx="13" fill="#F59E0B" opacity="0.92"/>
+            <rect x="28" y="130" width="308" height="250" rx="24" fill="#F8F4EE" opacity="0.1"/>
+            <rect x="58" y="160" width="248" height="138" rx="18" fill="#0891B2" opacity="0.35"/>
+            <path d="M58 270 C110 224 144 236 185 204 C226 171 255 178 306 137 L306 298 L58 298Z" fill="#2563EB" opacity="0.55"/>
+            <circle cx="142" cy="204" r="34" fill="#F59E0B" opacity="0.9"/>
+            <rect x="58" y="324" width="96" height="14" rx="7" fill="#F8F4EE" opacity="0.8"/>
+            <rect x="58" y="348" width="204" height="10" rx="5" fill="#F8F4EE" opacity="0.32"/>
+            <rect x="366" y="130" width="326" height="250" rx="24" fill="#F8F4EE" opacity="0.1"/>
+            <rect x="396" y="164" width="92" height="150" rx="16" fill="#2563EB" opacity="0.64"/>
+            <rect x="510" y="198" width="92" height="116" rx="16" fill="#0891B2" opacity="0.76"/>
+            <rect x="624" y="236" width="38" height="78" rx="16" fill="#F59E0B" opacity="0.88"/>
+            <rect x="396" y="334" width="218" height="12" rx="6" fill="#F8F4EE" opacity="0.52"/>
+            <rect x="28" y="408" width="664" height="70" rx="20" fill="#F8F4EE" opacity="0.08"/>
+            <rect x="58" y="435" width="96" height="16" rx="8" fill="#F59E0B" opacity="0.88"/>
+            <rect x="176" y="435" width="96" height="16" rx="8" fill="#0891B2" opacity="0.8"/>
+            <rect x="294" y="435" width="96" height="16" rx="8" fill="#2563EB" opacity="0.84"/>
+            <rect x="412" y="435" width="96" height="16" rx="8" fill="#0891B2" opacity="0.8"/>
+            <rect x="530" y="435" width="96" height="16" rx="8" fill="#F8F4EE" opacity="0.32"/>
+          </svg>
+        </div>
+        <div class="timeline-strip" aria-hidden="true">
+          <div class="frame-chip">Input shot</div>
+          <div class="frame-chip">Frame map</div>
+          <div class="frame-chip">Continuity pass</div>
+          <div class="frame-chip">Clean export</div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="shell metrics fx-stagger" aria-label="Proof modules">
+      <div class="metric fx-hover-lift">
+        <span>North star</span>
+        <strong>Signups</strong>
+      </div>
+      <div class="metric fx-hover-lift">
+        <span>Platform</span>
+        <strong>Web</strong>
+      </div>
+      <div class="metric fx-hover-lift">
+        <span>Launch shape</span>
+        <strong>Medium</strong>
+      </div>
+    </section>
+
+    <section id="frame-generation" class="shell">
+      <div class="section-head">
+        <h2>Frame generation built around continuity.</h2>
+        <p>Designed for filmmakers who need a controlled bridge between AI video outputs, not another bloated production suite.</p>
+      </div>
+
+      <div class="slab-grid fx-stagger">
+        <article class="slab fx-hover-lift">
+          <div>
+            <div class="slab-number">01</div>
+            <h3>Map the gap</h3>
+            <p>Upload or reference two moments in a sequence and define the intended motion bridge between them.</p>
+          </div>
+          <p><strong>Outcome:</strong> fewer abrupt cuts and fewer continuity breaks.</p>
+        </article>
+
+        <article class="slab fx-hover-lift">
+          <div>
+            <div class="slab-number">02</div>
+            <h3>Generate clean frames</h3>
+            <p>Create intermediate movie frames that support smoother AI video output while preserving the shot’s visual intent.</p>
+          </div>
+          <p><strong>Outcome:</strong> cleaner frame-to-frame progression.</p>
+        </article>
+
+        <article class="slab fx-hover-lift">
+          <div>
+            <div class="slab-number">03</div>
+            <h3>Export for review</h3>
+            <p>Keep the web workflow focused: generate, compare, and capture signup interest before expanding the toolset.</p>
+          </div>
+          <p><strong>Outcome:</strong> budget-aware validation.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="workflow" class="shell">
+      <div class="dark-band">
+        <div class="workflow">
+          <div>
+            <div class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Professional workflow</div>
+            <h2 style="margin-top: var(--space-4); font-size: var(--display-2);">A lean mission-control layer for AI video teams.</h2>
+            <p class="muted">The page is intentionally conversion-focused: show the frame-generation value, make the audience feel seen, and route qualified filmmakers into the signup flow.</p>
+          </div>
+
+          <div class="workflow-list">
+            <div class="workflow-item">
+              <div class="mini-icon" aria-hidden="true">A</div>
+              <div>
+                <strong>Continuity preview</strong>
+                <p>Compare generated frames against the intended sequence before committing.</p>
+              </div>
+            </div>
+            <div class="workflow-item">
+              <div class="mini-icon" aria-hidden="true">B</div>
+              <div>
+                <strong>Clean output focus</strong>
+                <p>Keep messaging centered on frame quality, consistency, and practical filmmaker control.</p>
+              </div>
+            </div>
+            <div class="workflow-item">
+              <div class="mini-icon" aria-hidden="true">C</div>
+              <div>
+                <strong>Signup instrumentation</strong>
+                <p>Every form submission fires a signup event for launch measurement.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="signup" class="shell">
+      <div class="signup-card fx-enter">
+        <div>
+          <div class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> Signups open</div>
+          <h2 style="margin-top: var(--space-4);">Get early access to FrameForge.</h2>
+          <p>Join the web beta for filmmakers testing frame generation for cleaner, continuous AI video output.</p>
+        </div>
+
+        <form id="signup-form" aria-describedby="signup-status privacy-note">
+          <div class="form-row">
+            <label for="email">
+              Work email
+              <span>Used only for beta access updates.</span>
+              <input id="email" name="email" type="email" autocomplete="email" placeholder="you@studio.com" required />
+            </label>
+            <button class="btn btn-primary fx-hover-lift" type="submit">Request access</button>
+          </div>
+          <p id="signup-status" class="form-status" role="status" aria-live="polite"></p>
+          <p id="privacy-note" class="privacy">No heavy onboarding, no budget-draining stack: this launch page measures interest before product expansion.</p>
+        </form>
+      </div>
+    </section>
+
+    <section id="faq" class="shell">
+      <div class="section-head">
+        <h2>FAQ</h2>
+        <p>Practical answers for filmmakers evaluating whether frame generation fits their AI video pipeline.</p>
+      </div>
+
+      <div class="faq-wrap">
+        <article class="faq-item">
+          <h3>
+            <button class="faq-question" type="button" aria-expanded="true" aria-controls="faq-a1" id="faq-q1">
+              What does FrameForge generate?
+              <span class="symbol" aria-hidden="true">−</span>
+            </button>
+          </h3>
+          <div class="faq-answer" id="faq-a1" role="region" aria-labelledby="faq-q1">
+            It focuses on intermediate movie frames that help AI video sequences feel cleaner and more continuous between key visual moments.
+          </div>
+        </article>
+
+        <article class="faq-item">
+          <h3>
+            <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-a2" id="faq-q2">
+              Is this built for professional filmmakers?
+              <span class="symbol" aria-hidden="true">+</span>
+            </button>
+          </h3>
+          <div class="faq-answer" id="faq-a2" role="region" aria-labelledby="faq-q2" hidden>
+            Yes. The landing page speaks to filmmakers, editors, and AI video creators who care about continuity, reviewability, and production discipline.
+          </div>
+        </article>
+
+        <article class="faq-item">
+          <h3>
+            <button class="faq-question" type="button" aria-expanded="false" aria-controls="faq-a3" id="faq-q3">
+              Why start with signups?
+              <span class="symbol" aria-hidden="true">+</span>
+            </button>
+          </h3>
+          <div class="faq-answer" id="faq-a3" role="region" aria-labelledby="faq-q3" hidden>
+            Signups are the clearest budget-conscious success metric for this launch. They validate filmmaker demand before investing in heavier product surfaces.
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-grid">
+      <p>© 2026 FrameForge. Built for cleaner AI video continuity.</p>
+      <a href="#signup">Request access</a>
+    </div>
+  </footer>
+
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    const signupForm = document.getElementById("signup-form");
+    const signupStatus = document.getElementById("signup-status");
+
+    signupForm.addEventListener("submit", function handleSignupSubmit(event) {
+      event.preventDefault();
+
+      const email = new FormData(signupForm).get("email");
+
+      window.dataLayer.push({
+        event: "signup_submit",
+        form: "frameforge_beta_signup",
+        audience: "filmmakers",
+        platform: "web",
+        value: email ? "email_provided" : "missing_email"
+      });
+
+      window.dispatchEvent(new CustomEvent("frameforge:signup", {
+        detail: {
+          event: "signup_submit",
+          form: "frameforge_beta_signup"
+        }
+      }));
+
+      signupStatus.textContent = "Signup event fired. Thanks — you’re on the early access list.";
+      signupForm.reset();
+    });
+
+    document.querySelectorAll(".faq-question").forEach((button) => {
+      button.addEventListener("click", () => {
+        const answer = document.getElementById(button.getAttribute("aria-controls"));
+        const expanded = button.getAttribute("aria-expanded") === "true";
+        const symbol = button.querySelector(".symbol");
+
+        button.setAttribute("aria-expanded", String(!expanded));
+        answer.hidden = expanded;
+        symbol.textContent = expanded ? "+" : "−";
+      });
+    });
+  </script>
+</body>
+</html>
