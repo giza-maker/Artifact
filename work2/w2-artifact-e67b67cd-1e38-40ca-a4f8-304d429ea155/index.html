@@ -1,0 +1,1453 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Arcade Planning Lounge — Etsy Store Page Implementation Brief</title>
+  <style>
+    :root {
+      --bg-canvas: #f8f4ee;
+      --bg-panel: rgba(255, 255, 255, 0.9);
+      --bg-accent: #132730;
+      --fg-strong: #1f1a17;
+      --fg-muted: #5e544c;
+      --fg-inverse: #f8f4ee;
+      --line-soft: rgba(36, 31, 27, 0.12);
+      --line-strong: rgba(23, 49, 62, 0.28);
+      --accent-primary: #cf6b42;
+      --accent-secondary: #5d857b;
+      --accent-highlight: #f3c969;
+      --radius-card: 28px;
+      --radius-pill: 999px;
+      --shadow-soft: 0 18px 44px rgba(27, 31, 36, 0.12);
+      --shadow-strong: 0 24px 64px rgba(16, 19, 24, 0.22);
+      --space-1: 0.375rem;
+      --space-2: 0.75rem;
+      --space-3: 1rem;
+      --space-4: 1.5rem;
+      --space-5: 2rem;
+      --space-6: 3rem;
+      --space-7: 4.5rem;
+      --display-font: "Avenir Next", "Segoe UI", sans-serif;
+      --body-font: "Georgia", "Times New Roman", serif;
+      --display-1: clamp(2.8rem, 7vw, 6.8rem);
+      --display-2: clamp(2rem, 4.2vw, 4rem);
+      --heading-1: clamp(1.35rem, 2.2vw, 2.35rem);
+      --body-lg: 1.125rem;
+      --body-md: 1rem;
+      --body-sm: 0.92rem;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .fx-enter,
+      .fx-stagger > *,
+      .fx-hover-lift,
+      .fx-pulse-ring,
+      .marquee-track {
+        animation: none !important;
+        transition: none !important;
+        transform: none !important;
+      }
+    }
+
+    .fx-enter {
+      animation: fx-enter 620ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .fx-stagger > * {
+      opacity: 0;
+      animation: fx-enter 560ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    .fx-stagger > *:nth-child(1) { animation-delay: 60ms; }
+    .fx-stagger > *:nth-child(2) { animation-delay: 120ms; }
+    .fx-stagger > *:nth-child(3) { animation-delay: 180ms; }
+    .fx-stagger > *:nth-child(4) { animation-delay: 240ms; }
+    .fx-stagger > *:nth-child(5) { animation-delay: 300ms; }
+    .fx-stagger > *:nth-child(6) { animation-delay: 360ms; }
+
+    .fx-hover-lift {
+      transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+    }
+
+    .fx-hover-lift:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-strong);
+      border-color: rgba(207, 107, 66, 0.45);
+    }
+
+    .fx-pulse-ring {
+      animation: fx-pulse 2.6s ease-in-out infinite;
+    }
+
+    @keyframes fx-enter {
+      from {
+        opacity: 0;
+        transform: translate3d(0, 18px, 0) scale(0.985);
+      }
+      to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+      }
+    }
+
+    @keyframes fx-pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(207, 107, 66, 0.22); }
+      50% { box-shadow: 0 0 0 12px rgba(207, 107, 66, 0); }
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--fg-strong);
+      background:
+        radial-gradient(circle at 14% 6%, rgba(243, 201, 105, 0.32), transparent 34rem),
+        radial-gradient(circle at 86% 12%, rgba(93, 133, 123, 0.28), transparent 30rem),
+        linear-gradient(135deg, rgba(19, 39, 48, 0.05) 25%, transparent 25%) 0 0 / 42px 42px,
+        var(--bg-canvas);
+      font-family: var(--body-font);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.42;
+      mix-blend-mode: multiply;
+      background-image:
+        linear-gradient(rgba(31, 26, 23, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(31, 26, 23, 0.035) 1px, transparent 1px);
+      background-size: 18px 18px;
+      mask-image: linear-gradient(to bottom, black, transparent 85%);
+      z-index: -1;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .page {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(18px);
+      background: rgba(248, 244, 238, 0.78);
+      border-bottom: 1px solid var(--line-soft);
+    }
+
+    .topbar-inner {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      min-height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      font-family: var(--display-font);
+    }
+
+    .brandmark {
+      display: flex;
+      align-items: center;
+      gap: var(--space-2);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .coin {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 35% 30%, #fff7d7, var(--accent-highlight) 36%, var(--accent-primary) 76%);
+      border: 2px solid rgba(19, 39, 48, 0.22);
+      box-shadow: 0 7px 0 rgba(19, 39, 48, 0.16);
+      position: relative;
+    }
+
+    .coin::after {
+      content: "";
+      position: absolute;
+      inset: 9px;
+      border-radius: 50%;
+      border: 2px solid rgba(19, 39, 48, 0.24);
+    }
+
+    .nav {
+      display: flex;
+      gap: var(--space-2);
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--fg-muted);
+    }
+
+    .nav a {
+      text-decoration: none;
+      padding: 0.55rem 0.75rem;
+      border-radius: var(--radius-pill);
+      border: 1px solid transparent;
+    }
+
+    .nav a:hover,
+    .nav a:focus-visible {
+      border-color: var(--line-strong);
+      background: rgba(255, 255, 255, 0.65);
+      outline: none;
+    }
+
+    .hero-shell {
+      min-height: 78vh;
+      padding: clamp(4rem, 9vw, 7.8rem) 0 var(--space-6);
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
+      align-items: center;
+      gap: clamp(2rem, 5vw, 5rem);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      width: fit-content;
+      padding: 0.52rem 0.78rem;
+      border-radius: var(--radius-pill);
+      background: rgba(19, 39, 48, 0.92);
+      color: var(--fg-inverse);
+      font-family: var(--display-font);
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      box-shadow: 0 12px 30px rgba(19, 39, 48, 0.18);
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 0.72rem;
+      height: 0.72rem;
+      border-radius: 50%;
+      background: var(--accent-highlight);
+      box-shadow: 0 0 0 4px rgba(243, 201, 105, 0.2);
+    }
+
+    h1, h2, h3 {
+      font-family: var(--display-font);
+      line-height: 0.96;
+      letter-spacing: -0.055em;
+      margin: 0;
+    }
+
+    h1 {
+      font-size: var(--display-1);
+      max-width: 11ch;
+      margin-top: var(--space-4);
+    }
+
+    .hero-lede {
+      max-width: 650px;
+      margin: var(--space-4) 0 0;
+      font-size: clamp(1.12rem, 2vw, 1.42rem);
+      color: var(--fg-muted);
+    }
+
+    .hero-lede strong {
+      color: var(--fg-strong);
+    }
+
+    .goal-card {
+      margin-top: var(--space-4);
+      padding: var(--space-4);
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-card);
+      background: rgba(255, 255, 255, 0.58);
+      box-shadow: var(--shadow-soft);
+      max-width: 680px;
+    }
+
+    .goal-card p {
+      margin: 0;
+    }
+
+    .goal-card .label {
+      display: block;
+      margin-bottom: var(--space-1);
+      font-family: var(--display-font);
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--accent-primary);
+      font-weight: 900;
+    }
+
+    .cta-row {
+      margin-top: var(--space-5);
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-3);
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0.9rem 1.18rem;
+      border-radius: var(--radius-pill);
+      text-decoration: none;
+      font-family: var(--display-font);
+      font-weight: 850;
+      letter-spacing: -0.02em;
+      border: 1px solid transparent;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      color: var(--fg-inverse);
+      background: var(--accent-primary);
+      box-shadow: 0 16px 34px rgba(207, 107, 66, 0.28);
+    }
+
+    .btn-secondary {
+      color: var(--fg-strong);
+      background: rgba(255, 255, 255, 0.74);
+      border-color: var(--line-soft);
+    }
+
+    .arcade-cabinet {
+      position: relative;
+      min-height: 600px;
+      border-radius: 42px;
+      background:
+        linear-gradient(145deg, rgba(19, 39, 48, 0.98), rgba(15, 30, 38, 0.92));
+      color: var(--fg-inverse);
+      box-shadow: var(--shadow-strong);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.18);
+      transform: rotate(1.2deg);
+    }
+
+    .arcade-cabinet::before {
+      content: "";
+      position: absolute;
+      inset: 20px;
+      border: 1px solid rgba(248, 244, 238, 0.16);
+      border-radius: 31px;
+      pointer-events: none;
+    }
+
+    .marquee {
+      margin: 28px;
+      padding: 1rem;
+      border-radius: 24px;
+      background: rgba(248, 244, 238, 0.08);
+      border: 1px solid rgba(248, 244, 238, 0.18);
+      overflow: hidden;
+      font-family: var(--display-font);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-weight: 900;
+      color: var(--accent-highlight);
+      white-space: nowrap;
+    }
+
+    .marquee-track {
+      display: inline-block;
+      animation: marquee 18s linear infinite;
+    }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to { transform: translateX(-50%); }
+    }
+
+    .screen {
+      margin: 0 34px;
+      min-height: 300px;
+      border-radius: 28px;
+      background:
+        radial-gradient(circle at 52% 30%, rgba(243, 201, 105, 0.23), transparent 26%),
+        linear-gradient(180deg, rgba(248,244,238,0.98), rgba(248,244,238,0.84));
+      border: 10px solid rgba(6, 14, 18, 0.56);
+      box-shadow: inset 0 0 38px rgba(19, 39, 48, 0.26);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .screen::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: linear-gradient(rgba(19,39,48,0.07) 1px, transparent 1px);
+      background-size: 100% 9px;
+      opacity: 0.42;
+    }
+
+    .necklace-illustration {
+      position: absolute;
+      left: 50%;
+      top: 44%;
+      width: min(72%, 330px);
+      aspect-ratio: 1;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      border: 7px dotted rgba(207, 107, 66, 0.66);
+    }
+
+    .necklace-illustration::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 70%;
+      width: 82px;
+      height: 100px;
+      transform: translate(-50%, -50%) rotate(45deg);
+      background: linear-gradient(145deg, var(--accent-highlight), var(--accent-primary));
+      border-radius: 50% 50% 14px 50%;
+      box-shadow: 0 16px 32px rgba(207, 107, 66, 0.26);
+      border: 3px solid rgba(19,39,48,0.16);
+    }
+
+    .screen-label {
+      position: absolute;
+      left: 28px;
+      right: 28px;
+      bottom: 24px;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      gap: var(--space-3);
+      align-items: end;
+      color: var(--fg-strong);
+      font-family: var(--display-font);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+    }
+
+    .screen-label strong {
+      font-size: clamp(1.65rem, 3vw, 2.6rem);
+      line-height: 0.9;
+    }
+
+    .screen-label span {
+      max-width: 145px;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--fg-muted);
+    }
+
+    .controls {
+      margin: 34px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: var(--space-4);
+      align-items: center;
+    }
+
+    .joystick {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 35% 30%, #fff1ce, var(--accent-highlight) 36%, var(--accent-primary) 80%);
+      box-shadow: inset -9px -10px 0 rgba(19,39,48,0.16), 0 14px 0 rgba(0,0,0,0.24);
+    }
+
+    .button-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 44px);
+      gap: 12px;
+    }
+
+    .button-grid span {
+      height: 44px;
+      border-radius: 50%;
+      background: var(--accent-secondary);
+      box-shadow: inset -5px -6px 0 rgba(19,39,48,0.2), 0 8px 0 rgba(0,0,0,0.18);
+    }
+
+    .button-grid span:nth-child(2) {
+      background: var(--accent-primary);
+    }
+
+    .button-grid span:nth-child(3) {
+      background: var(--accent-highlight);
+    }
+
+    .section {
+      padding: var(--space-7) 0;
+    }
+
+    .section-header {
+      display: grid;
+      grid-template-columns: minmax(0, 0.72fr) minmax(280px, 0.88fr);
+      gap: var(--space-5);
+      align-items: end;
+      margin-bottom: var(--space-5);
+    }
+
+    .section-kicker {
+      font-family: var(--display-font);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-size: 0.78rem;
+      font-weight: 900;
+      color: var(--accent-primary);
+      margin-bottom: var(--space-2);
+    }
+
+    h2 {
+      font-size: var(--display-2);
+    }
+
+    .section-header p {
+      color: var(--fg-muted);
+      font-size: var(--body-lg);
+      margin: 0;
+    }
+
+    .dashboard-slab {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: var(--space-3);
+    }
+
+    .dashboard-stat {
+      padding: var(--space-4);
+      border: 1px solid var(--line-soft);
+      border-radius: var(--radius-card);
+      background: var(--bg-panel);
+      box-shadow: var(--shadow-soft);
+      min-height: 180px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .dashboard-stat .label {
+      font-family: var(--display-font);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 0.74rem;
+      font-weight: 900;
+      color: var(--fg-muted);
+    }
+
+    .dashboard-stat strong {
+      font-family: var(--display-font);
+      font-size: clamp(2.2rem, 4vw, 4.2rem);
+      letter-spacing: -0.07em;
+      line-height: 0.88;
+    }
+
+    .dashboard-stat p {
+      margin: var(--space-2) 0 0;
+      color: var(--fg-muted);
+      font-size: var(--body-sm);
+    }
+
+    .content-map {
+      display: grid;
+      gap: var(--space-4);
+      counter-reset: contentStep;
+    }
+
+    .map-item {
+      counter-increment: contentStep;
+      display: grid;
+      grid-template-columns: 90px minmax(0, 1fr);
+      gap: var(--space-4);
+      padding: var(--space-4);
+      border-radius: var(--radius-card);
+      background: var(--bg-panel);
+      border: 1px solid var(--line-soft);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .map-num {
+      width: 72px;
+      height: 72px;
+      border-radius: 24px;
+      background: var(--bg-accent);
+      color: var(--fg-inverse);
+      display: grid;
+      place-items: center;
+      font-family: var(--display-font);
+      font-size: 1.8rem;
+      font-weight: 900;
+      letter-spacing: -0.08em;
+    }
+
+    .map-num::before {
+      content: counter(contentStep, decimal-leading-zero);
+    }
+
+    .map-copy h3 {
+      font-size: var(--heading-1);
+      margin-bottom: var(--space-2);
+    }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-2);
+      margin-bottom: var(--space-3);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.42rem 0.7rem;
+      border-radius: var(--radius-pill);
+      background: rgba(93, 133, 123, 0.12);
+      color: #264d46;
+      border: 1px solid rgba(93, 133, 123, 0.22);
+      font-family: var(--display-font);
+      font-size: 0.76rem;
+      font-weight: 850;
+      letter-spacing: 0.01em;
+    }
+
+    .copy-block {
+      padding: var(--space-4);
+      border-radius: 24px;
+      background:
+        linear-gradient(90deg, rgba(243, 201, 105, 0.22), transparent 42%),
+        rgba(248, 244, 238, 0.72);
+      border: 1px solid var(--line-soft);
+      margin-top: var(--space-3);
+    }
+
+    .copy-block p,
+    .copy-block ul {
+      margin: 0;
+    }
+
+    .copy-block p + p,
+    .copy-block ul + p,
+    .copy-block p + ul {
+      margin-top: var(--space-2);
+    }
+
+    .placeholder {
+      font-family: var(--display-font);
+      font-weight: 900;
+      color: var(--accent-primary);
+      white-space: nowrap;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(280px, 0.72fr);
+      gap: var(--space-4);
+      align-items: stretch;
+    }
+
+    .feature-card {
+      padding: var(--space-5);
+      border-radius: var(--radius-card);
+      background: var(--bg-panel);
+      border: 1px solid var(--line-soft);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .feature-card.dark {
+      background:
+        radial-gradient(circle at 78% 15%, rgba(243, 201, 105, 0.22), transparent 18rem),
+        var(--bg-accent);
+      color: var(--fg-inverse);
+      border-color: rgba(248, 244, 238, 0.14);
+    }
+
+    .feature-card h3 {
+      font-size: clamp(1.5rem, 2.5vw, 2.45rem);
+      margin-bottom: var(--space-3);
+    }
+
+    .feature-card p,
+    .feature-card li {
+      color: var(--fg-muted);
+    }
+
+    .feature-card.dark p,
+    .feature-card.dark li {
+      color: rgba(248, 244, 238, 0.78);
+    }
+
+    .feature-card ul,
+    .map-item ul {
+      padding-left: 1.1rem;
+      margin: var(--space-2) 0 0;
+    }
+
+    .image-specs {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: var(--space-3);
+    }
+
+    .image-card {
+      position: relative;
+      min-height: 270px;
+      padding: var(--space-4);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      color: var(--fg-inverse);
+      background:
+        linear-gradient(135deg, rgba(19,39,48,0.8), rgba(19,39,48,0.45)),
+        radial-gradient(circle at 25% 18%, rgba(243, 201, 105, 0.82), transparent 15rem),
+        radial-gradient(circle at 82% 62%, rgba(207, 107, 66, 0.72), transparent 14rem),
+        var(--accent-secondary);
+      box-shadow: var(--shadow-soft);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 1px solid rgba(255,255,255,0.14);
+    }
+
+    .image-card::after {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border-radius: 22px;
+      border: 1px dashed rgba(248,244,238,0.42);
+      pointer-events: none;
+    }
+
+    .image-card h3 {
+      position: relative;
+      z-index: 1;
+      font-size: 1.55rem;
+      max-width: 10ch;
+    }
+
+    .image-card p {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      color: rgba(248, 244, 238, 0.78);
+    }
+
+    .policy-grid,
+    .checklist-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-3);
+    }
+
+    .policy-card,
+    .check-card {
+      padding: var(--space-4);
+      border-radius: var(--radius-card);
+      background: rgba(255,255,255,0.74);
+      border: 1px solid var(--line-soft);
+      box-shadow: var(--shadow-soft);
+    }
+
+    .policy-card h3,
+    .check-card h3 {
+      font-size: 1.45rem;
+      margin-bottom: var(--space-2);
+    }
+
+    .policy-card p,
+    .check-card p {
+      margin: 0;
+      color: var(--fg-muted);
+    }
+
+    .check-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: var(--space-2);
+    }
+
+    .check-list li {
+      display: grid;
+      grid-template-columns: 28px 1fr;
+      gap: var(--space-2);
+      align-items: start;
+      color: var(--fg-muted);
+    }
+
+    .check-list li::before {
+      content: "✓";
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--accent-secondary);
+      color: white;
+      font-family: var(--display-font);
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .closing {
+      margin: var(--space-7) 0;
+      padding: clamp(2rem, 6vw, 5rem);
+      border-radius: 46px;
+      color: var(--fg-inverse);
+      background:
+        radial-gradient(circle at 15% 15%, rgba(243, 201, 105, 0.3), transparent 18rem),
+        radial-gradient(circle at 82% 28%, rgba(207, 107, 66, 0.35), transparent 20rem),
+        var(--bg-accent);
+      box-shadow: var(--shadow-strong);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: var(--space-4);
+      align-items: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .closing::after {
+      content: "";
+      position: absolute;
+      right: -80px;
+      bottom: -90px;
+      width: 260px;
+      height: 260px;
+      border-radius: 50%;
+      border: 30px dotted rgba(248,244,238,0.12);
+    }
+
+    .closing h2 {
+      max-width: 10ch;
+    }
+
+    .closing p {
+      max-width: 680px;
+      color: rgba(248,244,238,0.76);
+      font-size: var(--body-lg);
+    }
+
+    .footer {
+      padding: var(--space-5) 0 var(--space-6);
+      color: var(--fg-muted);
+      font-size: var(--body-sm);
+      border-top: 1px solid var(--line-soft);
+    }
+
+    .footer strong {
+      color: var(--fg-strong);
+      font-family: var(--display-font);
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 920px) {
+      .hero-shell,
+      .section-header,
+      .two-col,
+      .closing {
+        grid-template-columns: 1fr;
+      }
+
+      .arcade-cabinet {
+        min-height: 520px;
+        transform: none;
+      }
+
+      .dashboard-slab,
+      .image-specs {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .policy-grid,
+      .checklist-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .closing .btn {
+        width: fit-content;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .topbar-inner {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: var(--space-3) 0;
+      }
+
+      .nav {
+        justify-content: flex-start;
+      }
+
+      .hero-shell {
+        padding-top: var(--space-5);
+      }
+
+      .arcade-cabinet {
+        min-height: 460px;
+        border-radius: 32px;
+      }
+
+      .screen {
+        margin: 0 22px;
+        min-height: 250px;
+      }
+
+      .controls {
+        margin: 24px;
+        grid-template-columns: 1fr;
+      }
+
+      .dashboard-slab,
+      .image-specs {
+        grid-template-columns: 1fr;
+      }
+
+      .map-item {
+        grid-template-columns: 1fr;
+      }
+
+      .map-num {
+        width: 60px;
+        height: 60px;
+        border-radius: 20px;
+        font-size: 1.4rem;
+      }
+
+      .cta-row .btn {
+        width: 100%;
+      }
+
+      .placeholder {
+        white-space: normal;
+      }
+    }
+  </style>
+</head>
+
+<body class="theme-editorial">
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brandmark" aria-label="Arcade Planning Lounge">
+        <span class="coin" aria-hidden="true"></span>
+        <span>Arcade Planning Lounge</span>
+      </div>
+      <nav class="nav" aria-label="Page navigation">
+        <a href="#map">Content Map</a>
+        <a href="#brand">Brand Voice</a>
+        <a href="#images">Images</a>
+        <a href="#policies">Policies</a>
+        <a href="#launch">Launch Checklist</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="page">
+    <section class="hero-shell fx-enter" aria-labelledby="hero-title">
+      <div>
+        <div class="eyebrow">Etsy-ready implementation brief</div>
+        <h1 id="hero-title">Handmade necklaces, staged for recognition.</h1>
+        <p class="hero-lede">
+          A polished Etsy Store Page plan for <strong>women’s fashion shoppers</strong>: artistic, memorable, and organized so the shop can launch with a clear recognition-first story.
+        </p>
+        <div class="goal-card fx-hover-lift">
+          <span class="label">Canonical goal preserved</span>
+          <p>“i want to create an etsy store page tot sell jewelry” → refined into an Etsy storefront for <strong>artistic handmade necklaces</strong> with a success target of <strong>Recognition</strong>.</p>
+        </div>
+        <div class="cta-row fx-stagger">
+          <a class="btn btn-primary fx-pulse-ring" href="#map">Use this launch map</a>
+          <a class="btn btn-secondary" href="#launch">Check readiness</a>
+        </div>
+      </div>
+
+      <aside class="arcade-cabinet fx-hover-lift" aria-label="Arcade-inspired planning lounge illustration for the Etsy store brief">
+        <div class="marquee">
+          <span class="marquee-track">Recognition Mode • Artistic Handmade Necklaces • Women Fashion • Etsy Store Page • Recognition Mode • Artistic Handmade Necklaces • Women Fashion • Etsy Store Page • </span>
+        </div>
+        <div class="screen" role="img" aria-label="Stylized necklace inside an arcade planning screen">
+          <div class="necklace-illustration" aria-hidden="true"></div>
+          <div class="screen-label">
+            <strong>Store<br />Launch</strong>
+            <span>Visual hierarchy, copy, policies, image plan</span>
+          </div>
+        </div>
+        <div class="controls" aria-hidden="true">
+          <div class="joystick"></div>
+          <div class="button-grid">
+            <span></span><span></span><span></span>
+            <span></span><span></span><span></span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section class="section" aria-labelledby="brief-title">
+      <div class="section-header">
+        <div>
+          <div class="section-kicker">Mission snapshot</div>
+          <h2 id="brief-title">What this Etsy page must do.</h2>
+        </div>
+        <p>
+          The store should feel like a small gallery inside Etsy: artistic, feminine, easy to trust, and immediately recognizable through a consistent necklace style, banner language, listing rhythm, and customer-friendly policies.
+        </p>
+      </div>
+
+      <div class="dashboard-slab fx-stagger">
+        <article class="dashboard-stat fx-hover-lift">
+          <span class="label">Audience</span>
+          <strong>Women Fashion</strong>
+          <p>Speak to shoppers seeking expressive, wearable art pieces.</p>
+        </article>
+        <article class="dashboard-stat fx-hover-lift">
+          <span class="label">Product focus</span>
+          <strong>Necklaces</strong>
+          <p>Handmade necklaces only for a sharper, more recognizable niche.</p>
+        </article>
+        <article class="dashboard-stat fx-hover-lift">
+          <span class="label">Tone</span>
+          <strong>Artistic</strong>
+          <p>Poetic but clear; crafted, visual, and never generic.</p>
+        </article>
+        <article class="dashboard-stat fx-hover-lift">
+          <span class="label">Success metric</span>
+          <strong>Recognition</strong>
+          <p>Consistent visuals, naming, packaging, and listing presentation.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="map" class="section" aria-labelledby="map-title">
+      <div class="section-header">
+        <div>
+          <div class="section-kicker">Single ordered content map</div>
+          <h2 id="map-title">Exact Etsy Store Page sections and final copy.</h2>
+        </div>
+        <p>
+          Use this order when building the Etsy shop. Placeholders are marked in orange brackets and should be replaced before launch.
+        </p>
+      </div>
+
+      <div class="content-map">
+        <article class="map-item fx-hover-lift">
+          <div class="map-num" aria-hidden="true"></div>
+          <div class="map-copy">
+            <h3>Shop Header / Store Banner</h3>
+            <div class="meta-row">
+              <span class="pill">Etsy placement: Shop banner</span>
+              <span class="pill">Goal: first-glance recognition</span>
+            </div>
+            <div class="copy-block">
+              <p><strong>Final banner headline:</strong> Wearable art, handmade one necklace at a time.</p>
+              <p><strong>Banner subline:</strong> Sculptural handmade necklaces for women who dress with feeling, detail, and quiet confidence.</p>
+              <p><strong>Small banner note:</strong> New limited pieces added seasonally.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="map-item fx-hover-lift">
+          <div class="map-num" aria-hidden="true"></div>
+          <div class="map-copy">
+            <h3>Shop Title</h3>
+            <div class="meta-row">
+              <span class="pill">Etsy placement: Shop title field</span>
+              <span class="pill">Keep concise</span>
+            </div>
+            <div class="copy-block">
+              <p>Artistic handmade necklaces for expressive women’s fashion.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="map-item fx-hover-lift">
+          <div class="map-num" aria-hidden="true"></div>
+          <div class="map-copy">
+            <h3>Shop Announcement</h3>
+            <div class="meta-row">
+              <span class="pill">Etsy placement: Announcement</span>
+              <span class="pill">Goal: trust + momentum</span>
+            </div>
+            <div class="copy-block">
+              <p>Welcome to <span class="placeholder">[SHOP NAME]</span> — a small handmade necklace studio creating artistic pieces for everyday outfits, special moments, and personal style statements. Each necklace is made in thoughtful small batches, so every detail feels intentional from clasp to pendant. Follow the shop to see new designs as they arrive.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="map-item fx-hover-lift">
+          <div class="map-num" aria-hidden="true"></div>
+          <div class="map-copy">
+            <h3>Featured Listing Hero</h3>
+            <div class="meta-row">
+              <span class="pill">Etsy placement: Featured items</span>
+              <span class="pill">Choose 3–4 strongest necklaces</span>
+            </div>
+            <div class="copy-block">
+              <p><strong>Featured collection title:</strong> Signature Handmade Necklaces</p>
+              <p><strong>Featured collection copy:</strong> Start with the pieces that define the shop: artful silhouettes, soft movement, and details designed to be noticed without shouting.</p>
+              <p><strong>Primary listing title template:</strong> Handmade <span class="placeholder">[MATERIAL/COLOR]</span> Necklace, Artistic Women’s Necklace, <span class="placeholder">[PENDANT/STYLE]</span> Jewelry Gift</p>
+              <p><strong>Listing opening sentence template:</strong> This handmade necklace is designed as a small wearable artwork — a piece that brings texture, color, and a considered focal point to your outfit.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="map-item fx-hover-lift">
+          <div class="map-num" aria-hidden="true"></div>
+          <div class="map-copy">
+            <h3>About the Shop</h3>
+            <div class="meta-row">
+              <span class="pill">Etsy placement: About section</span>
+              <span class="pill">Tone: artistic, human, specific</span>
+            </div>
+            <div class="copy-block">
+              <p>At <span class="placeholder">[SHOP NAME]</span>, necklaces are treated as small compositions: line, color, texture, and balance come together in pieces made to feel personal. Every design begins with a mood — a glimmer of color, an interesting shape, a vintage-inspired detail, or the way a pendant rests against fabric.</p>
+              <p>Our focus is handmade necklaces for women who see jewelry as part of their self-expression. Pieces are created in small batches using carefully selected components, with an emphasis on comfort, wearability, and recognizable artistic character.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="map-item fx-hover-lift">
+          <div class="map-num" aria-hidden="true"></div>
+          <div class="map-copy">
+            <h3>Shop Story</h3>
+            <div class="meta-row">
+              <span class="pill">Etsy placement: Story / bio</span>
+              <span class="pill">Goal: make the maker memorable</span>
+            </div>
+            <div class="copy-block">
+              <p>I’m <span class="placeholder">[MAKER NAME]</span>, the hands behind <span class="placeholder">[SHOP NAME]</span>. I create handmade necklaces for women who love expressive details — jewelry that can turn a simple neckline into a finished look. My process is slow, visual, and guided by the feeling of each piece: feminine, artistic, and made to be recognized.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="map-item fx-hover-lift">
+          <div class="map-num" aria-hidden="true"></div>
+          <div class="map-copy">
+            <h3>Product Categories / Shop Sections</h3>
+            <div class="meta-row">
+              <span class="pill">Etsy placement: Shop sections</span>
+              <span class="pill">Avoid scattered categories</span>
+            </div>
+            <div class="copy-block">
+              <ul>
+                <li>Statement Necklaces</li>
+                <li>Everyday Art Necklaces</li>
+                <li>Layering Necklaces</li>
+                <li>Gift-Ready Necklaces</li>
+                <li>Limited Seasonal Pieces</li>
+              </ul>
+            </div>
+          </div>
+        </article>
+
+        <article class="map-item fx-hover-lift">
+          <div class="map-num" aria-hidden="true"></div>
+          <div class="map-copy">
+            <h3>Recognition Promise</h3>
+            <div class="meta-row">
+              <span class="pill">Etsy placement: About or announcement</span>
+              <span class="pill">Success criterion made visible</span>
+            </div>
+            <div class="copy-block">
+              <p><strong>Recognition promise:</strong> Every necklace is styled, photographed, packaged, and described with one consistent visual language, so shoppers remember the shop even after they leave Etsy.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="map-item fx-hover-lift">
+          <div class="map-num" aria-hidden="true"></div>
+          <div class="map-copy">
+            <h3>Primary Call to Action</h3>
+            <div class="meta-row">
+              <span class="pill">Etsy placement: Banner + announcement + listings</span>
+              <span class="pill">One dominant CTA</span>
+            </div>
+            <div class="copy-block">
+              <p><strong>Main CTA:</strong> Favorite the shop to follow new handmade necklace drops.</p>
+              <p><strong>Secondary CTA for listings:</strong> Add this piece to your cart, or message me if you’d like help choosing a necklace for a specific outfit or gift.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="brand" class="section" aria-labelledby="brand-title">
+      <div class="section-header">
+        <div>
+          <div class="section-kicker">Branding + tone guide</div>
+          <h2 id="brand-title">Artistic, feminine, recognizable.</h2>
+        </div>
+        <p>
+          The brand should feel like an editorial jewelry sketchbook meets a playful arcade strategy room: polished, tactile, expressive, and easy to remember.
+        </p>
+      </div>
+
+      <div class="two-col">
+        <article class="feature-card dark fx-hover-lift">
+          <h3>Brand essence</h3>
+          <p><strong>Positioning:</strong> Handmade necklaces as wearable art for women’s fashion shoppers who want expressive, outfit-defining details.</p>
+          <p><strong>Brand personality:</strong> Artistic, warm, observant, confident, feminine, detail-led.</p>
+          <p><strong>Do not sound:</strong> Mass-produced, overly luxury, vague, trend-chasing, or artificially urgent.</p>
+        </article>
+
+        <article class="feature-card fx-hover-lift">
+          <h3>Voice rules</h3>
+          <ul>
+            <li>Use sensory language: glimmer, texture, curve, movement, weight, soft shine.</li>
+            <li>Keep Etsy copy clear and searchable; pair poetic lines with practical details.</li>
+            <li>Repeat recognition anchors: handmade, artistic, necklaces, women’s fashion, small batch.</li>
+            <li>Use “I” or “we” naturally depending on maker preference; keep the studio human.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="images" class="section" aria-labelledby="images-title">
+      <div class="section-header">
+        <div>
+          <div class="section-kicker">Suggested images to upload</div>
+          <h2 id="images-title">Upload visuals that make the shop memorable.</h2>
+        </div>
+        <p>
+          Since no brand assets were provided, use original product photography and simple custom graphics. The image style should be editorial, warm, artistic, and consistent across the shop.
+        </p>
+      </div>
+
+      <div class="image-specs fx-stagger">
+        <article class="image-card fx-hover-lift">
+          <h3>Shop banner image</h3>
+          <p>Wide 16:9 collage: 2–3 necklaces on textured fabric, warm light, one handwritten-style accent, and room for the banner headline.</p>
+        </article>
+        <article class="image-card fx-hover-lift">
+          <h3>Featured listing hero</h3>
+          <p>Vertical necklace close-up on a neutral neckline or linen surface; pendant centered, clasp detail visible in secondary photo.</p>
+        </article>
+        <article class="image-card fx-hover-lift">
+          <h3>Maker / process image</h3>
+          <p>Hands arranging beads, chain, charms, or pendant components on a work table to prove handmade quality.</p>
+        </article>
+        <article class="image-card fx-hover-lift">
+          <h3>Scale reference</h3>
+          <p>Necklace worn on model or mannequin with neckline visible, showing length and styling context for women’s fashion shoppers.</p>
+        </article>
+        <article class="image-card fx-hover-lift">
+          <h3>Packaging image</h3>
+          <p>Gift-ready packaging with tissue, card, pouch, or box; keep it recognizable and repeatable for customer memory.</p>
+        </article>
+        <article class="image-card fx-hover-lift">
+          <h3>Collection mood image</h3>
+          <p>Small flat-lay of seasonal pieces with consistent palette, showing the shop’s artistic identity at a glance.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="layout-title">
+      <div class="section-header">
+        <div>
+          <div class="section-kicker">Visual layout mock specs</div>
+          <h2 id="layout-title">How the Etsy page should look when assembled.</h2>
+        </div>
+        <p>
+          Etsy has fixed modules, so recognition comes from disciplined image rhythm, copy hierarchy, and repeated brand cues across every section.
+        </p>
+      </div>
+
+      <div class="two-col">
+        <article class="feature-card fx-hover-lift">
+          <h3>Top-of-shop hierarchy</h3>
+          <ul>
+            <li><strong>Banner:</strong> Full-width, artistic necklace composition with headline readable on mobile.</li>
+            <li><strong>Shop icon:</strong> Simple mark using necklace curve, pendant shape, or initials from <span class="placeholder">[SHOP NAME]</span>.</li>
+            <li><strong>Featured items:</strong> 3–4 strongest listings only; avoid visually weak or unfinished photos.</li>
+            <li><strong>Announcement:</strong> Recognition-first welcome and follow-shop CTA.</li>
+          </ul>
+        </article>
+
+        <article class="feature-card fx-hover-lift">
+          <h3>Listing grid rhythm</h3>
+          <ul>
+            <li>Use the same crop family for main listing images so the shop grid feels curated.</li>
+            <li>Alternate close-up, worn, detail, packaging, and scale shots inside each listing.</li>
+            <li>Keep backgrounds warm neutral with one repeating accent color from the shop palette.</li>
+            <li>Make title first words searchable: “Handmade [Material/Color] Necklace.”</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section id="policies" class="section" aria-labelledby="policies-title">
+      <div class="section-header">
+        <div>
+          <div class="section-kicker">Policies copy</div>
+          <h2 id="policies-title">Clear policies for handmade necklace shoppers.</h2>
+        </div>
+        <p>
+          These policies are Etsy-ready starting copy. Replace placeholders, align with actual Etsy settings, and comply with local consumer laws before publishing.
+        </p>
+      </div>
+
+      <div class="policy-grid">
+        <article class="policy-card fx-hover-lift">
+          <h3>Processing Time</h3>
+          <p>Most necklaces are handmade or finished to order and ship within <span class="placeholder">[PROCESSING TIME, e.g., 3–5 business days]</span>. If your piece requires additional time, I will message you with an update before shipping.</p>
+        </article>
+
+        <article class="policy-card fx-hover-lift">
+          <h3>Shipping</h3>
+          <p>Orders ship from <span class="placeholder">[CITY/COUNTRY]</span> using <span class="placeholder">[CARRIER/METHOD]</span>. Tracking will be provided when available. Delivery times vary by destination, season, and carrier conditions.</p>
+        </article>
+
+        <article class="policy-card fx-hover-lift">
+          <h3>Returns & Exchanges</h3>
+          <p>I want you to love your necklace. Please contact me within <span class="placeholder">[RETURN CONTACT WINDOW]</span> of delivery if there is an issue. Returns must be unworn, undamaged, and sent back in original packaging unless the item arrived damaged or incorrect.</p>
+        </article>
+
+        <article class="policy-card fx-hover-lift">
+          <h3>Cancellations</h3>
+          <p>Cancellations are accepted within <span class="placeholder">[CANCELLATION WINDOW, e.g., 12 hours]</span> of purchase, unless the order has already been shipped or customized.</p>
+        </article>
+
+        <article class="policy-card fx-hover-lift">
+          <h3>Custom Requests</h3>
+          <p>Custom or adjusted necklace requests may be available depending on materials. Message me before ordering with your preferred length, color direction, or styling need, and I’ll confirm what is possible.</p>
+        </article>
+
+        <article class="policy-card fx-hover-lift">
+          <h3>Packaging</h3>
+          <p>Each necklace is packaged with care for a gift-ready arrival. Packaging may include <span class="placeholder">[BOX/POUCH/TISSUE/CARD]</span>. If your order is a gift, leave a note at checkout and I can include a short message.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="constraints-title">
+      <div class="section-header">
+        <div>
+          <div class="section-kicker">Owner-approved constraints: you_decide</div>
+          <h2 id="constraints-title">Practical operating decisions.</h2>
+        </div>
+        <p>
+          Because the constraint answer was “you_decide,” the launch plan assumes a focused, manageable handmade operation that protects quality and supports recognition.
+        </p>
+      </div>
+
+      <div class="two-col">
+        <article class="feature-card fx-hover-lift">
+          <h3>Material sourcing decisions</h3>
+          <ul>
+            <li>Start with small-batch materials to avoid overstock and keep designs limited.</li>
+            <li>Prefer nickel-safe or hypoallergenic findings when possible; state exact materials in each listing.</li>
+            <li>Use repeatable signature components so customers recognize the shop style.</li>
+            <li>Keep backup suppliers for chain, clasps, packaging, and bestselling pendant types.</li>
+          </ul>
+        </article>
+
+        <article class="feature-card dark fx-hover-lift">
+          <h3>Default launch timing</h3>
+          <p>Use a standard 4-week launch runway: Week 1 product selection, Week 2 photography, Week 3 listing copy and policies, Week 4 final Etsy setup and soft launch. If launching near seasonal gifting periods, publish at least 6–8 weeks before the holiday.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="launch" class="section" aria-labelledby="launch-title">
+      <div class="section-header">
+        <div>
+          <div class="section-kicker">Acceptance checklist</div>
+          <h2 id="launch-title">Launch readiness for Recognition.</h2>
+        </div>
+        <p>
+          The store is ready when it visibly satisfies the full brief: handmade necklaces, women’s fashion audience, artistic tone, Arcade Planning Lounge polish, and recognition-focused consistency.
+        </p>
+      </div>
+
+      <div class="checklist-grid">
+        <article class="check-card fx-hover-lift">
+          <h3>Content readiness</h3>
+          <ul class="check-list">
+            <li>Shop banner uses final headline: “Wearable art, handmade one necklace at a time.”</li>
+            <li>Shop title says: “Artistic handmade necklaces for expressive women’s fashion.”</li>
+            <li>Announcement includes <span class="placeholder">[SHOP NAME]</span>, handmade necklace focus, and follow-shop CTA.</li>
+            <li>About section and maker story are filled with real maker details.</li>
+            <li>All placeholders are replaced before publishing.</li>
+          </ul>
+        </article>
+
+        <article class="check-card fx-hover-lift">
+          <h3>Visual readiness</h3>
+          <ul class="check-list">
+            <li>Banner, icon, listings, and packaging share one artistic visual system.</li>
+            <li>At least 3–4 featured necklace listings are polished and photo-complete.</li>
+            <li>Each listing includes close-up, worn/scale, detail, and packaging imagery.</li>
+            <li>Mobile crop is checked for banner readability and product clarity.</li>
+            <li>Images support recognition rather than feeling like unrelated one-off photos.</li>
+          </ul>
+        </article>
+
+        <article class="check-card fx-hover-lift">
+          <h3>Trust readiness</h3>
+          <ul class="check-list">
+            <li>Materials, necklace length, clasp type, and care notes are listed on every product.</li>
+            <li>Processing time, shipping method, returns, cancellations, and custom request policies are complete.</li>
+            <li>Packaging expectations are clear for gift shoppers.</li>
+            <li>Customer message response expectations are set inside Etsy settings or announcement.</li>
+          </ul>
+        </article>
+
+        <article class="check-card fx-hover-lift">
+          <h3>Recognition readiness</h3>
+          <ul class="check-list">
+            <li>Store repeats the same keywords: handmade necklaces, artistic jewelry, women’s fashion.</li>
+            <li>Shop sections are focused on necklace types, not scattered jewelry categories.</li>
+            <li>Main CTA is consistent: “Favorite the shop to follow new handmade necklace drops.”</li>
+            <li>Packaging includes a card or mark that reinforces <span class="placeholder">[SHOP NAME]</span>.</li>
+            <li>New designs are released in small, recognizable drops rather than random uploads.</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="closing fx-enter" aria-labelledby="closing-title">
+      <div>
+        <div class="section-kicker">Confident closing CTA</div>
+        <h2 id="closing-title">Launch the shop like a tiny gallery.</h2>
+        <p>
+          Build the Etsy page in this order, replace every placeholder, upload cohesive necklace photography, and keep the message focused: artistic handmade necklaces for women who want their jewelry to be remembered.
+        </p>
+      </div>
+      <a class="btn btn-primary fx-pulse-ring" href="#map">Return to content map</a>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="page">
+      <p><strong>Whiteboard summary:</strong> This integrated brief turns the jewelry-store request into a recognition-focused Etsy implementation map for artistic handmade necklaces. It consolidates sitemap, brand voice, banner/listing copy, visual layout specs, suggested images, policies, operating constraints, and a launch checklist into one responsive artifact.</p>
+    </div>
+  </footer>
+</body>
+</html>
