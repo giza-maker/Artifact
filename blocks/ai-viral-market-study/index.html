@@ -1,0 +1,2225 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BLOCKS Cinema AI Viral Content Revenue Study</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: oklch(0.145 0.012 72);
+      --shell: oklch(0.185 0.014 72);
+      --panel: oklch(0.225 0.014 72);
+      --panel-2: oklch(0.265 0.016 72);
+      --panel-3: oklch(0.31 0.018 72);
+      --line: oklch(0.385 0.018 72);
+      --line-strong: oklch(0.49 0.032 78);
+      --text: oklch(0.925 0.012 78);
+      --muted: oklch(0.715 0.018 78);
+      --faint: oklch(0.57 0.015 78);
+      --gold: oklch(0.79 0.13 82);
+      --gold-dim: oklch(0.55 0.075 78);
+      --green: oklch(0.72 0.12 154);
+      --amber: oklch(0.77 0.13 78);
+      --rose: oklch(0.7 0.15 28);
+      --blue: oklch(0.74 0.08 226);
+      --violet: oklch(0.72 0.09 300);
+      --shadow: 0 18px 56px oklch(0.08 0.006 72 / 0.34);
+      --radius: 8px;
+      --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, system-ui, sans-serif;
+      --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      background:
+        linear-gradient(180deg, oklch(0.17 0.014 72), var(--bg) 36rem),
+        linear-gradient(90deg, oklch(0.18 0.012 72 / 0.36) 1px, transparent 1px),
+        linear-gradient(180deg, oklch(0.18 0.012 72 / 0.25) 1px, transparent 1px),
+        var(--bg);
+      background-size: auto, 42px 42px, 42px 42px, auto;
+      color: var(--text);
+      font-family: var(--font);
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    a {
+      color: var(--gold);
+      text-underline-offset: 2px;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
+    }
+
+    .app {
+      display: grid;
+      grid-template-columns: 320px minmax(0, 1fr);
+      min-height: 100vh;
+    }
+
+    .side {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      padding: 20px 16px;
+      overflow: auto;
+      background: oklch(0.165 0.012 72);
+      border-right: 1px solid var(--line);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      margin-bottom: 16px;
+    }
+
+    .mark {
+      display: grid;
+      place-items: center;
+      width: 38px;
+      height: 38px;
+      border-radius: 7px;
+      border: 1px solid oklch(0.62 0.085 82);
+      background: oklch(0.25 0.026 74);
+      color: var(--gold);
+      font-weight: 850;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 1.05rem;
+      line-height: 1.1;
+      letter-spacing: 0;
+    }
+
+    .brand p {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: 0.78rem;
+    }
+
+    .control-stack {
+      display: grid;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .mobile-filter-toggle {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      width: 100%;
+      min-height: 40px;
+      margin-top: 12px;
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--panel);
+      color: var(--text);
+      font-weight: 760;
+      text-align: left;
+    }
+
+    .mobile-filter-toggle .filter-state {
+      color: var(--gold);
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .mobile-controls {
+      display: contents;
+    }
+
+    label {
+      display: grid;
+      gap: 6px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      font-weight: 720;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    input,
+    select,
+    .toggle {
+      min-height: 38px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: var(--panel);
+      color: var(--text);
+      padding: 8px 10px;
+    }
+
+    input:hover,
+    select:hover,
+    .toggle:hover {
+      border-color: var(--line-strong);
+      background: var(--panel-2);
+    }
+
+    input:focus-visible,
+    select:focus-visible,
+    button:focus-visible,
+    a:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 2px;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      min-height: auto;
+      padding: 0;
+      accent-color: var(--gold);
+    }
+
+    .toggle {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      text-align: left;
+    }
+
+    .toggle span {
+      color: var(--text);
+      text-transform: none;
+      letter-spacing: 0;
+      font-weight: 650;
+      font-size: 0.9rem;
+    }
+
+    .toggle i {
+      width: 34px;
+      height: 18px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: oklch(0.15 0.01 72);
+      position: relative;
+      flex: 0 0 auto;
+    }
+
+    .toggle i::after {
+      content: "";
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--muted);
+      transition: transform 180ms ease-out, background 180ms ease-out;
+    }
+
+    .toggle[aria-pressed="true"] i::after {
+      transform: translateX(16px);
+      background: var(--gold);
+    }
+
+    .nav {
+      display: grid;
+      gap: 6px;
+      margin-top: 16px;
+    }
+
+    .nav a {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      min-height: 34px;
+      padding: 7px 9px;
+      border: 1px solid transparent;
+      border-radius: 7px;
+      color: var(--muted);
+      text-decoration: none;
+    }
+
+    .nav a:hover {
+      color: var(--text);
+      background: var(--panel);
+      border-color: var(--line);
+    }
+
+    .nav b {
+      color: var(--gold);
+      font-size: 0.76rem;
+      font-weight: 760;
+    }
+
+    .main {
+      min-width: 0;
+      padding: 22px 22px 80px;
+    }
+
+    .topbar {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: end;
+      gap: 18px;
+      min-height: 118px;
+      padding: 22px 22px 20px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background:
+        linear-gradient(180deg, oklch(0.235 0.014 72 / 0.98), oklch(0.175 0.012 72 / 0.98)),
+        var(--shell);
+      box-shadow: var(--shadow);
+      margin-bottom: 16px;
+    }
+
+    .topbar::before {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold), oklch(0.62 0.075 82 / 0.42), transparent 82%);
+      pointer-events: none;
+    }
+
+    .topbar > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      display: block;
+      margin-bottom: 5px;
+      color: var(--gold);
+      font-size: 0.78rem;
+      font-weight: 780;
+      letter-spacing: 0.08em;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+
+    .topbar h2 {
+      margin: 0;
+      font-size: 2.55rem;
+      line-height: 1.02;
+      letter-spacing: 0;
+    }
+
+    .topbar p {
+      max-width: 760px;
+      margin: 7px 0 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 7px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 26px;
+      padding: 4px 9px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--panel);
+      color: var(--muted);
+      font-size: 0.76rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .badge.good {
+      color: var(--green);
+      border-color: oklch(0.5 0.075 154);
+      background: oklch(0.21 0.03 154);
+    }
+
+    .badge.warn {
+      color: var(--amber);
+      border-color: oklch(0.53 0.085 78);
+      background: oklch(0.22 0.032 78);
+    }
+
+    .badge.risk {
+      color: var(--rose);
+      border-color: oklch(0.52 0.085 28);
+      background: oklch(0.22 0.034 28);
+    }
+
+    .section {
+      margin-top: 22px;
+    }
+
+    .visual-evidence {
+      margin-top: 20px;
+    }
+
+    .visual-strip {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .visual-card {
+      display: grid;
+      overflow: hidden;
+      min-height: 250px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      color: var(--text);
+      text-decoration: none;
+      box-shadow: 0 1px 0 oklch(0.43 0.02 72 / 0.26) inset;
+      transition: transform 180ms ease-out, border-color 180ms ease-out, background 180ms ease-out;
+    }
+
+    .visual-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--line-strong);
+      background: var(--panel-2);
+    }
+
+    .visual-card:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 2px;
+    }
+
+    .visual-card .poster-frame {
+      width: 100%;
+      height: 156px;
+      border: 0;
+      border-bottom: 1px solid var(--line);
+      border-radius: 0;
+    }
+
+    .visual-copy {
+      display: grid;
+      gap: 6px;
+      padding: 11px;
+    }
+
+    .visual-copy strong {
+      line-height: 1.15;
+    }
+
+    .visual-copy span,
+    .visual-credit {
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+
+    .visual-credit {
+      font-family: var(--mono);
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 16px;
+      margin-bottom: 12px;
+    }
+
+    .section-head h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+
+    .section-head p {
+      max-width: 820px;
+      margin: 5px 0 0;
+      color: var(--muted);
+    }
+
+    .map-grid,
+    .risk-grid,
+    .case-grid,
+    .source-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .map-grid {
+      grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+    }
+
+    .risk-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .case-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .source-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .tile,
+    .panel,
+    .casefile,
+    .source-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+      box-shadow: 0 1px 0 oklch(0.43 0.02 72 / 0.26) inset;
+    }
+
+    .tile {
+      padding: 14px;
+      min-height: 118px;
+    }
+
+    .tile small,
+    .panel small {
+      display: block;
+      color: var(--muted);
+      font-size: 0.75rem;
+      font-weight: 760;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .tile strong {
+      display: block;
+      margin-top: 7px;
+      font-size: 1.65rem;
+      line-height: 1.08;
+      letter-spacing: 0;
+    }
+
+    .tile p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .panel {
+      padding: 15px;
+      overflow: hidden;
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-bottom: 12px;
+    }
+
+    .tab {
+      min-height: 34px;
+      padding: 7px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: var(--panel);
+      color: var(--muted);
+      font-weight: 760;
+    }
+
+    .tab[aria-selected="true"] {
+      color: oklch(0.96 0.018 82);
+      border-color: oklch(0.62 0.09 82);
+      background: oklch(0.36 0.052 78);
+    }
+
+    .chart-wrap {
+      min-height: 300px;
+    }
+
+    svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--panel);
+    }
+
+    table {
+      width: 100%;
+      min-width: 1380px;
+      table-layout: fixed;
+      border-collapse: collapse;
+    }
+
+    th:nth-child(1),
+    td:nth-child(1) {
+      width: 250px;
+    }
+
+    th:nth-child(2),
+    td:nth-child(2) {
+      width: 210px;
+    }
+
+    th:nth-child(3),
+    td:nth-child(3) {
+      width: 120px;
+    }
+
+    th:nth-child(4),
+    td:nth-child(4) {
+      width: 170px;
+    }
+
+    th:nth-child(5),
+    td:nth-child(5) {
+      width: 100px;
+    }
+
+    th:nth-child(6),
+    td:nth-child(6) {
+      width: 230px;
+    }
+
+    th:nth-child(7),
+    td:nth-child(7) {
+      width: 130px;
+    }
+
+    th:nth-child(8),
+    td:nth-child(8) {
+      width: 230px;
+    }
+
+    th,
+    td {
+      padding: 11px 12px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: top;
+      text-align: left;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: var(--panel-3);
+      color: var(--muted);
+      font-size: 0.76rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    tr:hover td {
+      background: oklch(0.245 0.016 72);
+    }
+
+    td strong {
+      display: block;
+      font-size: 0.96rem;
+    }
+
+    td span {
+      color: var(--muted);
+      font-size: 0.84rem;
+    }
+
+    .account-cell {
+      display: grid;
+      grid-template-columns: 62px minmax(0, 1fr);
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .account-copy,
+    .account-copy strong,
+    .account-copy span {
+      min-width: 0;
+    }
+
+    .account-copy {
+      display: grid;
+      gap: 4px;
+    }
+
+    .account-name {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-width: 0;
+    }
+
+    .account-name a {
+      overflow-wrap: anywhere;
+    }
+
+    .account-meta,
+    .source-line,
+    .format-sub {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .source-line {
+      color: var(--faint);
+      font-size: 0.78rem;
+      font-family: var(--mono);
+    }
+
+    .dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--gold-dim);
+    }
+
+    .avatar-shell {
+      position: relative;
+      width: 62px;
+      height: 62px;
+    }
+
+    .visual-frame {
+      position: relative;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background:
+        linear-gradient(135deg, oklch(0.28 0.035 78), oklch(0.17 0.012 72)),
+        var(--panel);
+      isolation: isolate;
+    }
+
+    .visual-frame::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(90deg, transparent 0 9px, oklch(0.75 0.05 82 / 0.12) 9px 10px),
+        linear-gradient(180deg, transparent, oklch(0.07 0.005 72 / 0.42));
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .visual-frame img {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .visual-fallback {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      place-items: center;
+      gap: 2px;
+      color: var(--gold);
+      font-weight: 850;
+      letter-spacing: 0.02em;
+    }
+
+    .visual-fallback .icon {
+      width: 20px;
+      height: 20px;
+      color: oklch(0.84 0.11 82);
+      opacity: 0.92;
+    }
+
+    .fallback-initials {
+      font-size: 0.74rem;
+      font-family: var(--mono);
+    }
+
+    .visual-frame.has-image:not(.image-failed) .visual-fallback {
+      opacity: 0;
+    }
+
+    .thumb-frame {
+      width: 62px;
+      height: 62px;
+      flex: 0 0 auto;
+    }
+
+    .icon {
+      width: 15px;
+      height: 15px;
+      display: inline-block;
+      color: currentColor;
+      flex: 0 0 auto;
+      vertical-align: -2px;
+    }
+
+    .icon * {
+      stroke: currentColor;
+    }
+
+    .icon path:not([fill="none"]),
+    .icon rect:not([fill="none"]),
+    .icon circle:not([fill="none"]) {
+      fill: currentColor;
+    }
+
+    .icon [fill="none"] {
+      fill: none;
+    }
+
+    .platform-mini {
+      position: absolute;
+      right: -4px;
+      bottom: -4px;
+      z-index: 3;
+      display: grid;
+      place-items: center;
+      width: 24px;
+      height: 24px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: oklch(0.13 0.01 72);
+      box-shadow: 0 4px 14px oklch(0.06 0.004 72 / 0.44);
+    }
+
+    .platform-mini.youtube {
+      color: oklch(0.72 0.16 29);
+      border-color: oklch(0.48 0.12 29);
+    }
+
+    .platform-mini.instagram {
+      color: oklch(0.76 0.11 325);
+      border-color: oklch(0.5 0.09 325);
+    }
+
+    .platform-mini.tiktok {
+      color: oklch(0.76 0.08 218);
+      border-color: oklch(0.5 0.07 218);
+    }
+
+    .format-cell {
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr);
+      gap: 9px;
+      min-width: 0;
+    }
+
+    .format-icon {
+      display: grid;
+      place-items: center;
+      width: 34px;
+      height: 34px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: oklch(0.18 0.012 72);
+      color: var(--gold);
+    }
+
+    .format-icon .icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    .format-copy {
+      display: grid;
+      gap: 4px;
+      min-width: 0;
+    }
+
+    .format-title {
+      color: var(--text);
+      font-size: 0.9rem;
+      font-weight: 760;
+      line-height: 1.2;
+    }
+
+    .mini-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 2px;
+      max-width: 100%;
+    }
+
+    .mini-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      max-width: 100%;
+      min-height: 21px;
+      padding: 2px 7px;
+      border: 1px solid oklch(0.38 0.018 72);
+      border-radius: 6px;
+      background: oklch(0.16 0.011 72);
+      color: oklch(0.76 0.02 78);
+      font-size: 0.72rem;
+      font-family: var(--mono);
+      line-height: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .mini-chip .icon {
+      width: 12px;
+      height: 12px;
+      color: var(--gold);
+    }
+
+    .score {
+      display: inline-grid;
+      place-items: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 7px;
+      border: 1px solid var(--line);
+      background: oklch(0.18 0.012 72);
+      font-weight: 850;
+    }
+
+    .score.high {
+      color: var(--green);
+      border-color: oklch(0.52 0.08 154);
+    }
+
+    .score.mid {
+      color: var(--amber);
+      border-color: oklch(0.53 0.08 78);
+    }
+
+    .score.low {
+      color: var(--rose);
+      border-color: oklch(0.52 0.08 28);
+    }
+
+    .meter {
+      height: 8px;
+      border-radius: 999px;
+      background: oklch(0.15 0.01 72);
+      overflow: hidden;
+      border: 1px solid var(--line);
+      min-width: 98px;
+    }
+
+    .meter i {
+      display: block;
+      height: 100%;
+      width: 0;
+      background: linear-gradient(90deg, var(--gold-dim), var(--gold));
+    }
+
+    .casefile {
+      padding: 14px;
+    }
+
+    .case-frame {
+      width: 100%;
+      height: 152px;
+      margin-bottom: 12px;
+    }
+
+    .casefile h3,
+    .source-card h3 {
+      margin: 0;
+      font-size: 1.02rem;
+      letter-spacing: 0;
+    }
+
+    .casefile p,
+    .source-card p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .case-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 11px 0;
+    }
+
+    .revenue-lab {
+      display: grid;
+      grid-template-columns: minmax(280px, 0.86fr) minmax(0, 1.14fr);
+      gap: 12px;
+    }
+
+    .lab-controls {
+      display: grid;
+      gap: 13px;
+    }
+
+    .lab-result {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .lab-result .tile {
+      min-height: 96px;
+      background: var(--shell);
+    }
+
+    .source-card {
+      padding: 14px;
+    }
+
+    .source-date {
+      display: block;
+      margin-top: 4px;
+      color: var(--faint);
+      font-size: 0.78rem;
+      font-family: var(--mono);
+    }
+
+    .source-card a {
+      display: inline-block;
+      margin-top: 9px;
+      font-size: 0.86rem;
+    }
+
+    .note {
+      padding: 12px 14px;
+      border: 1px solid oklch(0.5 0.055 78);
+      border-radius: var(--radius);
+      background: oklch(0.23 0.024 78);
+      color: var(--muted);
+    }
+
+    .note strong {
+      color: var(--text);
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    @media (max-width: 1120px) {
+      .app {
+        grid-template-columns: 1fr;
+      }
+
+      .side {
+        position: relative;
+        height: auto;
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .control-stack {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .nav {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .map-grid,
+      .risk-grid,
+      .case-grid,
+      .source-grid,
+      .visual-strip,
+      .revenue-lab {
+        grid-template-columns: 1fr;
+      }
+
+      .visual-strip {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 720px) {
+      body {
+        font-size: 14px;
+      }
+
+      .side {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        max-height: 86vh;
+        padding: 12px;
+        overflow: auto;
+        border-bottom: 1px solid var(--line);
+        box-shadow: 0 16px 34px oklch(0.06 0.005 72 / 0.28);
+      }
+
+      .brand {
+        margin-bottom: 0;
+      }
+
+      .mark {
+        width: 34px;
+        height: 34px;
+      }
+
+      .brand h1 {
+        font-size: 0.98rem;
+      }
+
+      .brand p {
+        font-size: 0.72rem;
+      }
+
+      .mobile-filter-toggle {
+        display: flex;
+      }
+
+      .mobile-controls {
+        display: none;
+      }
+
+      .side.controls-open .mobile-controls {
+        display: grid;
+        gap: 12px;
+        margin-top: 12px;
+      }
+
+      .side.controls-open .control-stack,
+      .side.controls-open .nav {
+        display: grid;
+      }
+
+      .main {
+        padding: 16px 12px 56px;
+      }
+
+      .section,
+      .visual-evidence {
+        scroll-margin-top: 126px;
+      }
+
+      .section-head {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .topbar {
+        grid-template-columns: 1fr;
+        align-items: start;
+        min-height: auto;
+        padding: 18px;
+      }
+
+      .badges {
+        justify-content: flex-start;
+      }
+
+      .topbar h2 {
+        font-size: 1.9rem;
+      }
+
+      .control-stack,
+      .nav,
+      .lab-result {
+        grid-template-columns: 1fr;
+        margin-top: 0;
+      }
+
+      .nav {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .nav a {
+        min-height: 40px;
+      }
+
+      .visual-strip {
+        display: flex;
+        gap: 10px;
+        overflow-x: auto;
+        padding: 0 2px 8px;
+        scroll-snap-type: x mandatory;
+        scrollbar-width: thin;
+      }
+
+      .visual-card {
+        min-width: min(82vw, 320px);
+        min-height: 0;
+        scroll-snap-align: start;
+      }
+
+      .visual-card .poster-frame {
+        height: 176px;
+      }
+
+      .map-grid,
+      .risk-grid,
+      .case-grid,
+      .source-grid,
+      .revenue-lab {
+        grid-template-columns: 1fr;
+      }
+
+      .table-wrap {
+        overflow: visible;
+        border: 0;
+        background: transparent;
+      }
+
+      table,
+      tbody,
+      tr,
+      td {
+        display: block;
+        width: 100%;
+      }
+
+      th:nth-child(n),
+      td:nth-child(n) {
+        width: 100%;
+      }
+
+      table {
+        min-width: 0;
+      }
+
+      thead {
+        display: none;
+      }
+
+      tbody {
+        display: grid;
+        gap: 12px;
+      }
+
+      tr {
+        display: grid;
+        gap: 11px;
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--panel);
+        box-shadow: 0 1px 0 oklch(0.43 0.02 72 / 0.24) inset;
+      }
+
+      tr:hover td {
+        background: transparent;
+      }
+
+      td {
+        display: grid;
+        grid-template-columns: 92px minmax(0, 1fr);
+        gap: 10px;
+        padding: 0;
+        border-bottom: 0;
+      }
+
+      td::before {
+        content: attr(data-label);
+        color: var(--faint);
+        font-size: 0.7rem;
+        font-weight: 780;
+        line-height: 1.25;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      td:first-child {
+        grid-template-columns: 1fr;
+        padding-bottom: 3px;
+      }
+
+      td:first-child::before {
+        display: none;
+      }
+
+      td:nth-child(8) {
+        grid-template-columns: 1fr;
+      }
+
+      td[data-label="Estimate"],
+      td[data-label="Risk"],
+      td[data-label="Fit"],
+      td[data-label="Sources"] {
+        grid-template-columns: 1fr;
+      }
+
+      td[data-label="Estimate"] span,
+      td[data-label="Risk"] span,
+      td[data-label="Sources"] span {
+        line-height: 1.45;
+      }
+
+      .account-cell {
+        grid-template-columns: 54px minmax(0, 1fr);
+        gap: 10px;
+      }
+
+      .avatar-shell,
+      .thumb-frame {
+        width: 54px;
+        height: 54px;
+      }
+
+      .platform-mini {
+        width: 22px;
+        height: 22px;
+      }
+
+      .format-cell {
+        grid-template-columns: 30px minmax(0, 1fr);
+      }
+
+      .format-icon {
+        width: 30px;
+        height: 30px;
+      }
+
+      .chart-wrap {
+        min-height: 220px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="side" aria-label="Study controls">
+      <div class="brand">
+        <div class="mark">BC</div>
+        <div>
+          <h1>AI Viral Revenue Study</h1>
+          <p>Public-only market cockpit</p>
+        </div>
+      </div>
+
+      <button class="mobile-filter-toggle" id="mobileFilterToggle" type="button" aria-expanded="false" aria-controls="mobileControls">
+        <span>Filters and sections</span>
+        <span class="filter-state" id="filterState">Open</span>
+      </button>
+
+      <div class="mobile-controls" id="mobileControls">
+      <div class="control-stack">
+        <label>
+          Search accounts
+          <input id="searchInput" type="search" placeholder="Try cat, Instagram, slop, TikTok" />
+        </label>
+
+        <label>
+          Platform
+          <select id="platformFilter">
+            <option value="all">All platforms</option>
+            <option value="YouTube">YouTube</option>
+            <option value="Instagram">Instagram</option>
+            <option value="TikTok">TikTok</option>
+          </select>
+        </label>
+
+        <label>
+          Format
+          <select id="formatFilter">
+            <option value="all">All formats</option>
+          </select>
+        </label>
+
+        <label>
+          Payout evidence filter
+          <select id="confidenceFilter">
+            <option value="0">0: Show all rows</option>
+            <option value="1">1: Modeled or unknown revenue</option>
+            <option value="2">2: Third-party estimates</option>
+            <option value="3">3: Exact secondary report</option>
+            <option value="4">4: Credible exact payout</option>
+            <option value="5">5: Platform dashboard payout</option>
+          </select>
+        </label>
+
+        <label>
+          Sort quest board
+          <select id="sortSelect">
+            <option value="opportunity">Opportunity score</option>
+            <option value="views">Views or reach</option>
+            <option value="confidence">Payout evidence</option>
+            <option value="risk">Lowest policy risk</option>
+            <option value="repro">BLOCKS reproducibility</option>
+          </select>
+        </label>
+
+        <button id="estimateToggle" class="toggle" type="button" aria-pressed="true">
+          <span>Show estimate model</span>
+          <i aria-hidden="true"></i>
+        </button>
+      </div>
+
+      <nav class="nav" aria-label="Report sections">
+        <a href="#market-map">Market Map <b>01</b></a>
+        <a href="#quest-board">Quest Board <b>02</b></a>
+        <a href="#casefiles">Casefiles <b>03</b></a>
+        <a href="#revenue-lab">Revenue Lab <b>04</b></a>
+        <a href="#risk-gate">Risk Gate <b>05</b></a>
+        <a href="#evidence-ledger">Evidence Ledger <b>06</b></a>
+      </nav>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <span class="eyebrow">BLOCKS Cinema Research Cockpit</span>
+          <h2>AI Viral Market Case Study</h2>
+          <p>50 public AI-content accounts across YouTube, Instagram, and TikTok, with modeled upside kept separate from verified payouts.</p>
+        </div>
+        <div class="badges" aria-label="Study status">
+          <span class="badge good">50 accounts</span>
+          <span class="badge warn">public-only</span>
+          <span class="badge risk">actual revenue scarce</span>
+        </div>
+      </header>
+
+      <section class="visual-evidence" aria-label="Public visual evidence">
+        <div class="section-head">
+          <div>
+            <h2>Signal Frames</h2>
+            <p>Public source imagery for rows with reliable thumbnails. Captions carry the evidence source, not a claim of platform-verified revenue.</p>
+          </div>
+        </div>
+        <div class="visual-strip" id="visualTrack"></div>
+      </section>
+
+      <section id="market-map" class="section">
+        <div class="section-head">
+          <div>
+            <h2>Market Map</h2>
+            <p>Public evidence says viral AI content is already large, but the strongest business signal is not raw reach. It is whether the format can survive platform originality checks and earn outside native ad programs.</p>
+          </div>
+          <div class="badges" id="platformBadges"></div>
+        </div>
+
+        <div class="map-grid">
+          <div class="panel">
+            <small>Filtered reach by platform</small>
+            <div id="platformChart" class="chart-wrap" aria-label="Platform reach chart"></div>
+          </div>
+          <div class="panel">
+            <small>Format density</small>
+            <div id="formatChart" class="chart-wrap" aria-label="Format density chart"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="quest-board" class="section">
+        <div class="section-head">
+          <div>
+            <h2>Quest Board</h2>
+            <p>Each row is scored for public evidence, payout evidence, policy risk, and how naturally BLOCKS Cinema could reproduce the production pattern.</p>
+          </div>
+          <span class="badge" id="resultCount">0 visible</span>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Account</th>
+                <th>Format</th>
+                <th>Reach Signal</th>
+                <th>Estimate</th>
+                <th>Cost</th>
+                <th>Risk</th>
+                <th>BLOCKS Fit</th>
+                <th>Sources</th>
+              </tr>
+            </thead>
+            <tbody id="accountRows"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="casefiles" class="section">
+        <div class="section-head">
+          <div>
+            <h2>Casefiles</h2>
+            <p>Top accounts are not all recommendations. Some are useful because they reveal what not to build: copyright-adjacent formats, disaster slop, deepfakes, and child-targeted loops.</p>
+          </div>
+        </div>
+        <div class="case-grid" id="casefilesGrid"></div>
+      </section>
+
+      <section id="revenue-lab" class="section">
+        <div class="section-head">
+          <div>
+            <h2>Revenue Lab</h2>
+            <p>This calculator is intentionally separate from actual revenue. It models what a BLOCKS Cinema creator would need to clear production cost under different RPM and cadence assumptions.</p>
+          </div>
+        </div>
+
+        <div class="revenue-lab">
+          <div class="panel">
+            <div class="lab-controls">
+              <label>
+                Platform RPM model
+                <select id="labPlatform">
+                  <option value="youtubeShorts">YouTube Shorts, conservative</option>
+                  <option value="youtubeLong">YouTube long-form, mid</option>
+                  <option value="tiktok">TikTok Creator Rewards, eligible</option>
+                  <option value="instagram">Instagram native, uncertain</option>
+                  <option value="sponsor">Brand/sponsor CPM model</option>
+                </select>
+              </label>
+              <label>
+                Views per post: <span id="viewsLabel">1,000,000</span>
+                <input id="viewsSlider" type="range" min="50000" max="20000000" step="50000" value="1000000" />
+              </label>
+              <label>
+                Posts per month: <span id="postsLabel">12</span>
+                <input id="postsSlider" type="range" min="1" max="90" step="1" value="12" />
+              </label>
+              <label>
+                BLOCKS production cost per post: <span id="costLabel">$90</span>
+                <input id="costSlider" type="range" min="5" max="900" step="5" value="90" />
+              </label>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="lab-result">
+              <article class="tile">
+                <small>Modeled monthly revenue</small>
+                <strong id="labMonthlyRevenue">$0</strong>
+                <p id="labRpmNote">Assumption only.</p>
+              </article>
+              <article class="tile">
+                <small>Modeled monthly cost</small>
+                <strong id="labMonthlyCost">$0</strong>
+                <p>Provider calls, editing, voice, music, and retries.</p>
+              </article>
+              <article class="tile">
+                <small>Break-even views/post</small>
+                <strong id="labBreakEven">0</strong>
+                <p>Native ad revenue needs this many qualifying views per post.</p>
+              </article>
+            </div>
+            <div class="note" style="margin-top: 12px;">
+              <strong>Market read:</strong> short-form native payouts alone rarely justify premium cinematic generation. The healthier BLOCKS angle is higher-quality recurring IP, compilations, long-form packaging, brand integrations, and owned-audience offers.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="risk-gate" class="section">
+        <div class="section-head">
+          <div>
+            <h2>Risk Gate</h2>
+            <p>The opportunity is real, but the failure modes are also public: unoriginal-content enforcement, GenAI labeling, deepfake and likeness risk, child-audience quality rules, and unstable payout access.</p>
+          </div>
+        </div>
+
+        <div class="risk-grid">
+          <article class="panel">
+            <small>YouTube</small>
+            <h3>Originality beats automation</h3>
+            <p>YouTube YPP requires eligibility thresholds, policy review, and ongoing compliance. YouTube says Watch Page ads pay 55% of net revenue and Shorts pay 45% of allocated Shorts revenue, but earnings are not guaranteed and final amounts live in YouTube Analytics/AdSense.</p>
+            <p><a href="https://support.google.com/youtube/answer/72902?hl=en-EN" target="_blank" rel="noreferrer">YouTube earnings overview</a></p>
+          </article>
+          <article class="panel">
+            <small>TikTok</small>
+            <h3>Qualified views are narrower than views</h3>
+            <p>TikTok Creator Rewards requires eligible region, 10,000 followers, 100,000 views in 30 days, original content, and videos at least one minute long. AI content can be labeled, but unoriginal or low-quality content can lose rewards.</p>
+            <p><a href="https://support.tiktok.com/en/business-and-creator/creator-rewards-program/creator-rewards-program?invalid_lang=fi" target="_blank" rel="noreferrer">TikTok Creator Rewards</a></p>
+          </article>
+          <article class="panel">
+            <small>Instagram</small>
+            <h3>Reach does not imply payout</h3>
+            <p>Instagram monetization requires Partner and Content Monetization Policies. Unoriginal or reproduced content without meaningful enhancement cannot be monetized. Public Reels views do not expose creator payout.</p>
+            <p><a href="https://www.facebook.com/help/instagram/2635536099905516" target="_blank" rel="noreferrer">Instagram content monetization policies</a></p>
+          </article>
+        </div>
+      </section>
+
+      <section id="evidence-ledger" class="section">
+        <div class="section-head">
+          <div>
+            <h2>Evidence Ledger</h2>
+            <p>These sources are the report spine. Rows also link to platform pages or public ranked lists when available.</p>
+          </div>
+        </div>
+        <div class="source-grid" id="sourceGrid"></div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const SOURCES = {
+      youtubeYpp: { title: "YouTube Partner Program eligibility", date: "accessed 2026-06-07", url: "https://support.google.com/youtube/answer/72851?hl=en", note: "YPP thresholds and policy review." },
+      youtubeEarn: { title: "YouTube partner earnings overview", date: "accessed 2026-06-07", url: "https://support.google.com/youtube/answer/72902?hl=en-EN", note: "Revenue share and where earnings are visible." },
+      youtubeAi: { title: "YouTube GenAI disclosure", date: "accessed 2026-06-07", url: "https://support.google.com/youtube/answer/14328491?hl=en-ca", note: "AI labeling and disclosure rules." },
+      youtubePolicy: { title: "YouTube monetization policies", date: "accessed 2026-06-07", url: "https://support.google.com/youtube/answer/1311392?hl=en-CA", note: "Reused, inauthentic, and low-quality content risk." },
+      tiktokRewards: { title: "TikTok Creator Rewards", date: "accessed 2026-06-07", url: "https://support.tiktok.com/en/business-and-creator/creator-rewards-program/creator-rewards-program?invalid_lang=fi", note: "Eligibility, original content, qualified views, RPM." },
+      tiktokAi: { title: "TikTok AI-generated content", date: "accessed 2026-06-07", url: "https://support.tiktok.com/en/using-tiktok/creating-videos/ai-generated-content?authuser=0", note: "AIGC labeling and prohibited uses." },
+      instagramPolicy: { title: "Instagram Content Monetization Policies", date: "accessed 2026-06-07", url: "https://www.facebook.com/help/instagram/2635536099905516", note: "Originality and monetization restrictions." },
+      kapwing: { title: "Kapwing AI Slop Report", date: "accessed 2026-06-07", url: "https://www.kapwing.com/blog/ai-slop-report-the-global-rise-of-low-quality-ai-videos/", note: "YouTube AI slop methodology, views, subscribers, revenue estimates." },
+      guardian: { title: "Guardian coverage of Kapwing study", date: "accessed 2026-06-07", url: "https://www.theguardian.com/p/x4vq29", note: "Adds Pouty Frenchie, The AI World, and platform response context." },
+      statesmanBandar: { title: "The Statesman on Bandar Apna Dost", date: "published 2025-12", url: "https://www.thestatesman.com/entertainment/bandar-apna-dost-mixes-monkey-and-ai-to-become-most-viewed-ai-generated-youtube-channel-earning-crores-annually-1503533379.html", note: "Public article image and summary for the Bandar Apna Dost AI channel." },
+      promptYoutube: { title: "PromptieX YouTube AI Shorts ranking", date: "published 2026-05; accessed 2026-06-07", url: "https://promptiex.com/most-watched-ai-videos-on-youtube/", note: "44 ranked AI-generated YouTube Shorts by view count." },
+      promptInstagram: { title: "PromptieX Instagram AI Reels ranking", date: "published 2026-05; accessed 2026-06-07", url: "https://promptiex.com/most-watched-ai-videos-on-instagram/", note: "98 ranked AI-generated Instagram Reels by view count." },
+      fruitOfficial: { title: "Fruit Love Island public site", date: "accessed 2026-06-07", url: "https://fruitloveisland.ai/", note: "Public episode stills and show context for AI Cinema's Fruit Love Island." },
+      fruitBlinque: { title: "Fruit Love Island case report", date: "published 2026-03-29", url: "https://blinque.news/ai-generated-fruit-love-island-tiktok-series-averages-10m-views-per-episode", note: "10M+ average views, 3.3M followers in 10 days." },
+      fruitForbes: { title: "Forbes on Fruit Love Island", date: "published 2026-03-23", url: "https://www.forbes.com/sites/conormurray/2026/03/23/bizarre-ai-generated-fruit-love-island-tiktok-videos-drive-massive-engagement/", note: "300M account views, 23M likes, AI label." },
+      funtastic: { title: "FUNTASTIC YT revenue reporting", date: "published 2025-08-29", url: "https://www.dexerto.com/youtube/youtuber-reveals-staggering-amount-of-money-he-makes-posting-quick-ai-slop-3244136/", note: "Credible secondary report of a creator saying $9,000 in one month." },
+      granny: { title: "TIME on Granny Spills", date: "published 2025-11-18", url: "https://time.com/7329699/ai-influencers-tiktok-granny-spills/", note: "400K TikTok followers, 1M Instagram followers, TikTok demonetization claim." },
+      aiInfluencers: { title: "AI influencer 2026 ranking", date: "accessed 2026-06-07", url: "https://aiinfluencer.cc/ai-influencers-2026/", note: "Follower bands and brand examples for synthetic influencers." },
+      fsSecure: { title: "F-Secure on AI influencers", date: "accessed 2026-06-07", url: "https://www.f-secure.com/us-en/partners/insights/are-ai-influencers-the-new-face-of-social-media-scams", note: "Trust and fraud risk context for synthetic personas." },
+      museon: { title: "MuseOn TikTok AI leaderboard", date: "accessed 2026-06-07", url: "https://www.museon.ai/leaderboard/tiktok", note: "Monthly TikTok AI-video leaderboard with view and engagement counts." },
+      techLead: { title: "Unreal Keanu TikTok deepfake", date: "accessed 2026-06-07", url: "https://techthelead.com/facepalm-tiktok-users-believe-keanu-reeves-ai-deepfake-is-actually-the-actor-himself/", note: "AI Keanu deepfake account with millions of views." }
+    };
+
+    const VISUALS = {
+      "Bandar Apna Dost": {
+        src: "assets/ai-market-study/bandar-apna-dost.webp",
+        alt: "Bandar Apna Dost public AI monkey thumbnail still",
+        credit: "The Statesman source image",
+        source: "statesmanBandar"
+      },
+      "FUNTASTIC YT": {
+        src: "assets/ai-market-study/funtastic-yt.webp",
+        alt: "FUNTASTIC YT public AI kitten thumbnail still",
+        credit: "Dexerto source image",
+        source: "funtastic"
+      },
+      "@ai.cinema021 / @ai.cinema012": {
+        src: "assets/ai-market-study/fruit-love-island.webp",
+        alt: "Fruit Love Island public episode still",
+        credit: "Fruit Love Island public episode still",
+        source: "fruitOfficial"
+      },
+      "Granny Spills": {
+        src: "assets/ai-market-study/granny-spills.webp",
+        alt: "Granny Spills public AI influencer image",
+        credit: "TIME source image",
+        source: "granny"
+      },
+      "@unreal_keanu": {
+        src: "assets/ai-market-study/unreal-keanu.webp",
+        alt: "Unreal Keanu public deepfake account image",
+        credit: "TechTheLead source image",
+        source: "techLead"
+      }
+    };
+
+    const ACCOUNTS = [
+      account("YouTube", "Bandar Apna Dost", "https://www.youtube.com/@BandarApnaDost", "AI-only monkey and Hulk-like scenario shorts, identified by Kapwing and press coverage as a top AI slop channel.", "AI slop", "India / global", 2760000, 2070000000, 2070000000, "Monkey and muscular hero in absurd repeated scenarios.", "High-volume shorts", ["Ads estimate", "Facebook/Instagram cross-posting"], null, 4251500, 18, "Very high modeled margin if monetized, but public number is SocialBlade/Kapwing estimate.", "High", 78, ["kapwing", "guardian", "statesmanBandar"], 2),
+      account("YouTube", "Three Minutes Wisdom", "https://www.youtube.com/results?search_query=Three+Minutes+Wisdom+AI+slop", "Kapwing identifies a South Korean AI slop channel with animal-vs-pet scenes and affiliate-link signals.", "AI slop", "South Korea", null, 2020000000, 2020000000, "Photorealistic-ish wild animals defeated by cute pets.", "High-volume shorts", ["Ads estimate", "Affiliate link"], null, 4036500, 14, "High reach and possible affiliate layer, but estimated only.", "High", 66, ["kapwing"], 2),
+      account("YouTube", "Cuentos Facinantes", "https://www.youtube.com/results?search_query=Cuentos+Facinantes+AI+Dragon+Ball", "Kapwing/Guardian identify it as a Spanish-language AI slop channel with Dragon Ball-themed videos.", "AI story shorts", "United States / Spanish", 5950000, 1280000000, 1280000000, "Dragon Ball-style synthetic cartoon stories.", "Daily-ish shorts", ["Ads estimate"], null, 2660000, 16, "Huge subscriber base, but clear IP/style risk.", "High", 48, ["kapwing", "guardian"], 2),
+      account("YouTube", "Imperio de jesus", "https://www.youtube.com/results?search_query=Imperio+de+jesus+AI+slop", "Kapwing cites the channel as a Spanish religious quiz-style AI slop channel.", "Religious quiz AI", "Spain / Spanish", 5870000, null, null, "Jesus in either-or quiz scenarios against villains.", "High-volume shorts", ["Ads estimate"], null, null, 12, "Large audience but exact reach and revenue are not public in the cited text.", "Medium", 58, ["kapwing"], 1),
+      account("YouTube", "Pouty Frenchie", "https://www.youtube.com/results?search_query=Pouty+Frenchie+AI", "Guardian coverage says this Singapore-based AI channel targets children with French bulldog fantasy scenes.", "AI animal loops", "Singapore / global", null, 2000000000, 2000000000, "French bulldog candy forest and crystal sushi adventures.", "High-volume shorts", ["Ads estimate"], null, 4000000, 10, "Estimated nearly $4M/year, but child-audience and low-quality risk are severe.", "High", 62, ["guardian"], 2),
+      account("YouTube", "The AI World", "https://www.youtube.com/results?search_query=The+AI+World+Pakistan+AI+flood+shorts", "Guardian coverage describes Pakistan-based AI disaster shorts with flooding and poverty themes.", "AI disaster shorts", "Pakistan", null, 1300000000, 1300000000, "Flood Kitchen, Poor People, Poor Family style disaster shorts.", "High-volume shorts", ["Ads estimate"], null, null, 12, "Reach is large, but disaster/misinformation adjacency makes this a warning case.", "High", 35, ["guardian"], 1),
+      account("YouTube", "FUNTASTIC YT", "https://www.youtube.com/results?search_query=FUNTASTIC+YT+AI+kitten", "Creator Mark Lawrence I Garilao reportedly uses ChatGPT, KlingAI, and editing tools for kitten/father surreal shorts.", "AI animal stories", "Philippines / global", 600000, 500000000, 2000000, "Cartoon kitten and father in surreal scenarios.", "1-2 videos/day", ["YouTube ads"], { amount: 9000, period: "one month", source: "funtastic" }, null, 9, "Only strong exact payout case in this sample, still self-disclosed via reporting.", "Medium", 86, ["funtastic", "youtubePolicy"], 4),
+      account("YouTube", "toon stories", "https://www.youtube.com/results?search_query=toon+stories+AI+shorts", "PromptieX ranks a primarily AI-generated Short from toon stories at 700M views.", "AI story shorts", "Global", null, null, 700000000, "Top listed AI Short with 700M views.", "Shorts", ["Ads estimate"], null, null, 8, "Massive single-video proof of reach, revenue unknown.", "Medium", 82, ["promptYoutube"], 1),
+      account("YouTube", "crazy kozak", "https://www.youtube.com/results?search_query=crazy+kozak+AI+shorts", "PromptieX ranks a primarily AI-generated Short at 263M views.", "AI story shorts", "Global", null, null, 263000000, "High-view AI Short.", "Shorts", ["Ads estimate"], null, null, 8, "Strong reach signal, no payout proof.", "Medium", 80, ["promptYoutube"], 1),
+      account("YouTube", "kitten narrative", "https://www.youtube.com/results?search_query=kitten+narrative+AI+shorts", "PromptieX ranks a primarily AI-generated Short at 257M views.", "AI animal stories", "Global", null, null, 257000000, "Kitten story AI Short.", "Shorts", ["Ads estimate"], null, null, 8, "Closest low-cost template to BLOCKS only if upgraded with character continuity.", "Medium", 83, ["promptYoutube"], 1),
+      account("YouTube", "ani mahal", "https://www.youtube.com/results?search_query=ani+mahal+AI+shorts", "PromptieX ranks a primarily AI-generated Short at 245M views.", "AI story shorts", "South Asia / global", null, null, 245000000, "Regional AI short-form narrative.", "Shorts", ["Ads estimate"], null, null, 8, "Regional-language reach is a useful BLOCKS lesson.", "Medium", 76, ["promptYoutube"], 1),
+      account("YouTube", "aistory 2.0", "https://www.youtube.com/results?search_query=aistory+2.0+AI+shorts", "PromptieX ranks a primarily AI-generated Short at 222M views.", "AI story shorts", "Global", null, null, 222000000, "Short-form AI story format.", "Shorts", ["Ads estimate"], null, null, 8, "Repeatable story brand, revenue unknown.", "Medium", 82, ["promptYoutube"], 1),
+      account("YouTube", "ai byte studio", "https://www.youtube.com/results?search_query=ai+byte+studio+AI+shorts", "PromptieX ranks a primarily AI-generated Short at 192M views.", "Cinematic AI", "Global", null, null, 192000000, "AI short in viral ranking.", "Shorts", ["Ads estimate"], null, null, 14, "More cinematic angle fits BLOCKS better than raw slop.", "Medium", 84, ["promptYoutube"], 1),
+      account("YouTube", "Krishiv the boss baby", "https://www.youtube.com/results?search_query=Krishiv+the+boss+baby+AI+shorts", "PromptieX ranks a primarily AI-generated Short at 178M views.", "AI character comedy", "South Asia / global", null, null, 178000000, "Baby-character AI short.", "Shorts", ["Ads estimate"], null, null, 8, "Character hook is replicable, but child/baby framing needs care.", "Medium", 67, ["promptYoutube"], 1),
+      account("YouTube", "gen-z bandar", "https://www.youtube.com/results?search_query=gen-z+bandar+AI+shorts", "PromptieX ranks a primarily AI-generated Short at 167M views.", "AI animal stories", "South Asia / global", null, null, 167000000, "Monkey/bandar AI short.", "Shorts", ["Ads estimate"], null, null, 8, "Animal IP-free character premise is a cheap test lane.", "Medium", 81, ["promptYoutube"], 1),
+      account("YouTube", "buffotoons", "https://www.youtube.com/results?search_query=buffotoons+AI+shorts", "PromptieX ranks a primarily AI-generated Short at 153M views.", "AI animation", "Global", null, null, 153000000, "Animated AI short.", "Shorts", ["Ads estimate"], null, null, 10, "Animation brand could be BLOCKS-friendly if original.", "Medium", 79, ["promptYoutube"], 1),
+      account("YouTube", "kitten story", "https://www.youtube.com/results?search_query=kitten+story+AI+shorts", "PromptieX ranks a primarily AI-generated Short at 152M views.", "AI animal stories", "Global", null, null, 152000000, "AI kitten short.", "Shorts", ["Ads estimate"], null, null, 8, "Same low-cost animal lane as FUNTASTIC YT.", "Medium", 84, ["promptYoutube"], 1),
+      account("YouTube", "cat realm ai", "https://www.youtube.com/results?search_query=cat+realm+ai+shorts", "PromptieX ranks a primarily AI-generated Short at 135M views.", "AI animal stories", "Global", null, null, 135000000, "AI cat story short.", "Shorts", ["Ads estimate"], null, null, 8, "Strong fit for recurring character packs.", "Medium", 84, ["promptYoutube"], 1),
+      account("YouTube", "story arc paws", "https://www.youtube.com/results?search_query=story+arc+paws+AI+shorts", "PromptieX ranks a primarily AI-generated Short at 133M views.", "AI animal stories", "Global", null, null, 133000000, "Animal story arc short.", "Shorts", ["Ads estimate"], null, null, 9, "Name implies serialized animal story, useful for BLOCKS.", "Medium", 86, ["promptYoutube"], 1),
+      account("YouTube", "charmbusters", "https://www.youtube.com/results?search_query=charmbusters+AI+shorts", "PromptieX ranks a primarily AI-generated Short at 128M views.", "AI fantasy comedy", "Global", null, null, 128000000, "Fantasy/comedy AI short.", "Shorts", ["Ads estimate"], null, null, 12, "Original fantasy shorts can become a safer premium lane.", "Medium", 78, ["promptYoutube"], 1),
+      account("YouTube", "AI videos Ronaldo", "https://www.youtube.com/results?search_query=AI+videos+Ronaldo+shorts", "PromptieX ranks a primarily AI-generated Ronaldo-themed Short at 104M views.", "Celebrity AI", "Global", null, null, 104000000, "Ronaldo-themed AI video.", "Shorts", ["Ads estimate"], null, null, 8, "High reach, but real-person likeness and rights risk make it a negative model.", "High", 22, ["promptYoutube", "tiktokAi"], 1),
+      account("YouTube", "jesus wold", "https://www.youtube.com/results?search_query=jesus+wold+AI+shorts", "PromptieX ranks a primarily AI-generated Short at 98M views.", "Religious AI", "Global", null, null, 98000000, "Religious AI short.", "Shorts", ["Ads estimate"], null, null, 8, "Reach signal only; brand safety and audience sensitivity need review.", "Medium", 54, ["promptYoutube"], 1),
+
+      account("Instagram", "@bennettwaisbren", "https://www.instagram.com/bennettwaisbren/", "PromptieX ranks this account's AI-generated or heavily AI-enhanced Reel at 1B+ views.", "Surreal AI loops", "United States / global", null, null, 1000000000, "Absurdist loop listed as Instagram's most-watched AI Reel.", "Reels", ["Brand work", "Native monetization uncertain"], null, null, 35, "Huge reach, likely high creative value, but native payout not visible.", "Low", 70, ["promptInstagram"], 1),
+      account("Instagram", "@gorunmez_kazalar", "https://www.instagram.com/gorunmez_kazalar/", "PromptieX ranks an AI-generated or heavily AI-enhanced Reel at 865M views.", "Surreal AI loops", "Turkey / global", null, null, 865000000, "High-view AI Reel.", "Reels", ["Native monetization uncertain"], null, null, 25, "Scale signal, revenue unknown.", "Medium", 62, ["promptInstagram"], 1),
+      account("Instagram", "@fiske.ai", "https://www.instagram.com/fiske.ai/", "PromptieX ranks an AI-generated or heavily AI-enhanced Reel at 521M views.", "AI art video", "Global", null, null, 521000000, "AI Reel in top-three Instagram ranking.", "Reels", ["Brand work", "Native monetization uncertain"], null, null, 30, "Good creative-lab benchmark for visual hooks.", "Low", 76, ["promptInstagram"], 1),
+      account("Instagram", "@cat_vlog365", "https://www.instagram.com/cat_vlog365/", "PromptieX ranks this AI cat account with a 502M-view Reel and multiple 100M+ entries.", "AI animal stories", "Global", null, null, 502000000, "AI cat content with repeated top-ranked Reels.", "Reels", ["Native monetization uncertain", "Merch potential"], null, null, 12, "Very close to repeatable animal-character production.", "Medium", 88, ["promptInstagram"], 1),
+      account("Instagram", "@stat.us.ai", "https://www.instagram.com/stat.us.ai/", "PromptieX says this account appears more than any other in the ranked Instagram AI-video list.", "High-production AI", "Global", null, null, 360000000, "Fast-paced, high-production AI content across topics.", "Frequent Reels", ["Brand work", "Native monetization uncertain"], null, null, 45, "Strong process benchmark for repeatable testing.", "Low", 82, ["promptInstagram"], 1),
+      account("Instagram", "@wonderful_midjourney", "https://www.instagram.com/wonderful_midjourney/", "PromptieX ranks an AI-generated or heavily AI-enhanced Reel at 330M views.", "AI art video", "Global", null, null, 330000000, "Midjourney-branded AI Reel.", "Reels", ["Native monetization uncertain"], null, null, 18, "Useful for still-to-video visual hooks.", "Low", 74, ["promptInstagram"], 1),
+      account("Instagram", "@lexraym", "https://www.instagram.com/lexraym/", "PromptieX says @lexraym consistently posts high-view AI cinematic content.", "Cinematic AI", "Global", null, null, 284000000, "Multiple entries above 100M views.", "Reels", ["Brand work", "Native monetization uncertain"], null, null, 80, "Closest Instagram match for BLOCKS cinematic quality.", "Low", 90, ["promptInstagram"], 1),
+      account("Instagram", "@ai.cosmic", "https://www.instagram.com/ai.cosmic/", "PromptieX ranks multiple AI-generated Reels from this account.", "AI cosmic loops", "Global", null, null, 264000000, "Cosmic/visual AI Reel.", "Reels", ["Native monetization uncertain"], null, null, 28, "Strong visual lane, less direct narrative fit.", "Low", 72, ["promptInstagram"], 1),
+      account("Instagram", "@cursedcontenttv", "https://www.instagram.com/cursedcontenttv/", "PromptieX ranks multiple horror/disturbing AI Reels from this account.", "AI horror", "Global", null, null, 262000000, "Horror and disturbing AI clips.", "Reels", ["Native monetization uncertain"], null, null, 40, "Horror can travel, but advertiser safety is fragile.", "High", 68, ["promptInstagram"], 1),
+      account("Instagram", "@best_of_ai_", "https://www.instagram.com/best_of_ai_/", "PromptieX ranks several AI-generated or heavily AI-enhanced Reels.", "AI compilation", "Global", null, null, 231000000, "AI compilation and highlight account.", "Reels", ["Native monetization uncertain"], null, null, 8, "Compilation may face originality risk unless it is owned work.", "High", 44, ["promptInstagram", "instagramPolicy"], 1),
+      account("Instagram", "@infiniteunreality", "https://www.instagram.com/infiniteunreality/", "PromptieX ranks multiple AI-generated or heavily AI-enhanced Reels.", "Surreal AI loops", "Global", null, null, 204000000, "Unreal visual loop content.", "Reels", ["Brand work", "Native monetization uncertain"], null, null, 35, "Good visual experimentation lane.", "Low", 76, ["promptInstagram"], 1),
+      account("Instagram", "@minimal_macbeth", "https://www.instagram.com/minimal_macbeth/", "PromptieX ranks AI-generated or heavily AI-enhanced Reels at 202M and 71M views.", "AI art video", "Global", null, null, 202000000, "Stylized AI art and video.", "Reels", ["Brand work", "Native monetization uncertain"], null, null, 35, "Art-led but not necessarily story-led.", "Low", 70, ["promptInstagram"], 1),
+      account("Instagram", "@realisticaivid", "https://www.instagram.com/realisticaivid/", "PromptieX identifies it as a hyper-realistic AI footage account with multiple 100M+ entries.", "Hyperreal AI", "Global", null, null, 198000000, "Hyperreal AI footage that blurs real/artificial.", "Reels", ["Brand work", "Native monetization uncertain"], null, null, 75, "High-quality visual benchmark for BLOCKS outputs.", "Medium", 88, ["promptInstagram"], 1),
+      account("Instagram", "@artiexhouse", "https://www.instagram.com/artiexhouse/", "PromptieX lists multiple horror-focused AI Reels from the account, including 163M views.", "AI horror", "Global", null, null, 163000000, "Horror-focused AI content with multiple entries.", "Reels", ["Prompt/tool funnel", "Brand work"], null, null, 35, "Good example of content plus tool/prompt funnel.", "Medium", 78, ["promptInstagram"], 1),
+      account("Instagram", "@aliaboutine", "https://www.instagram.com/aliaboutine/", "PromptieX ranks multiple AI-generated or heavily AI-enhanced Reels.", "Cinematic AI", "Global", null, null, 151000000, "High-view AI Reel entries.", "Reels", ["Brand work", "Native monetization uncertain"], null, null, 60, "Useful cinematic benchmark.", "Low", 84, ["promptInstagram"], 1),
+      account("Instagram", "@valentinloiseau.ai", "https://www.instagram.com/valentinloiseau.ai/", "PromptieX says the account has eight ranked Reels between 60M and 127M views.", "Cinematic AI", "France / global", null, null, 127000000, "Consistent mid-viral performer in AI Reels.", "Frequent Reels", ["Brand work", "Native monetization uncertain"], null, null, 65, "Strong consistency benchmark for BLOCKS workflow.", "Low", 89, ["promptInstagram"], 1),
+      account("Instagram", "@nimo_ai_art", "https://www.instagram.com/nimo_ai_art/", "PromptieX ranks AI-generated or heavily AI-enhanced Reels at 127M and 76M views.", "AI art video", "Global", null, null, 127000000, "AI art Reels.", "Reels", ["Native monetization uncertain"], null, null, 25, "Art-led visual reach, not direct payout evidence.", "Low", 70, ["promptInstagram"], 1),
+      account("Instagram", "@fullwarp", "https://www.instagram.com/fullwarp/", "PromptieX ranks multiple AI-generated or heavily AI-enhanced Reels.", "Surreal AI loops", "Global", null, null, 116000000, "Loopable AI visual clips.", "Reels", ["Native monetization uncertain"], null, null, 35, "Good loop benchmark, less narrative depth.", "Low", 68, ["promptInstagram"], 1),
+      account("Instagram", "@lilmiquela", "https://www.instagram.com/lilmiquela/", "Synthetic influencer cited by AI-influencer and security sources as a major virtual persona with brand partnerships.", "Synthetic influencer", "United States / global", 2500000, null, null, "Virtual fashion/music influencer with paid partnerships.", "Posts/Reels", ["Brand deals", "Music", "Merch"], null, null, 180, "Strong business model, less aligned with short-film automation.", "Medium", 46, ["aiInfluencers", "fsSecure"], 1),
+      account("Instagram", "@fit_aitana", "https://www.instagram.com/fit_aitana/", "AI fitness/lifestyle influencer with reported monetization by a Barcelona AI modelling agency.", "Synthetic influencer", "Spain / global", 450000, null, null, "Hyper-realistic AI fitness and lifestyle model.", "Posts/Reels", ["Brand deals"], null, 132000, 120, "Reported agency income is a useful brand-deal signal, but the exact platform dashboard payout is not public.", "Medium", 40, ["aiInfluencers", "fsSecure"], 2),
+      account("Instagram", "@imma.gram", "https://www.instagram.com/imma.gram/", "AI-influencer ranking cites Imma as a Tokyo-style virtual influencer with brand campaigns.", "Synthetic influencer", "Japan / global", 390000, null, null, "Fashion and Tokyo-style virtual persona.", "Posts/Reels", ["Brand deals"], null, null, 160, "Brandable but not enough public revenue data.", "Low", 45, ["aiInfluencers"], 1),
+      account("Instagram", "@noonoouri", "https://www.instagram.com/noonoouri/", "AI-influencer ranking cites Noonoouri as a luxury fashion virtual influencer.", "Synthetic influencer", "Global", 480000, null, null, "Luxury fashion virtual persona and artist collaborations.", "Posts/Reels", ["Brand deals", "Music"], null, null, 180, "High brand path, lower relevance to BLOCKS short-film pipeline.", "Low", 42, ["aiInfluencers"], 1),
+      account("Instagram", "@magazineluiza", "https://www.instagram.com/magazineluiza/", "Kapwing research index and AI-influencer sources cite Lu do Magalu as a top virtual influencer tied to retail.", "Synthetic influencer", "Brazil", 7000000, null, null, "Retail mascot/virtual influencer integrated with Magazine Luiza.", "Posts/Reels", ["Retail conversion", "Brand media"], null, 2540000, 220, "Commercially powerful, but it is brand-owned retail, not creator-native ad revenue.", "Low", 32, ["kapwing", "aiInfluencers"], 2),
+
+      account("TikTok", "@ai.cinema021 / @ai.cinema012", "https://www.tiktok.com/@ai.cinema021", "Fruit Love Island is an AI-generated microdrama/parody series; public reports conflict on final handle spelling.", "AI microdrama", "United States / global", 3300000, 300000000, 10000000, "Anthropomorphic fruit dating-show episodes, 2-4 minutes.", "Daily episodes during run", ["Potential sponsorship", "Cross-post to YouTube"], null, null, 80, "Closest proof that AI microdrama can create appointment viewing, but IP parody and removal risk are high.", "High", 92, ["fruitOfficial", "fruitBlinque", "fruitForbes", "tiktokAi"], 1),
+      account("TikTok", "Granny Spills", "https://www.tiktok.com/search?q=Granny%20Spills", "TIME reports Granny Spills is an AI creation with large TikTok and Instagram audiences, but TikTok flags some content as unoriginal.", "Synthetic influencer", "United States / global", 400000, null, null, "AI grandma advice/interview-style persona.", "Dozens/month", ["Brand deals", "Cameo", "Cross-platform"], null, null, 55, "Great brand-character test, but TikTok native rewards appear blocked.", "Medium", 58, ["granny", "tiktokRewards"], 1),
+      account("TikTok", "@unreal_keanu", "https://www.tiktok.com/@unreal_keanu", "TechTheLead reports an AI-generated Keanu Reeves deepfake account getting millions of views.", "Celebrity deepfake", "Global", null, null, null, "Keanu Reeves synthetic likeness clips.", "Short videos", ["Native monetization uncertain"], null, null, 20, "Negative model. Real-person likeness risk is incompatible with BLOCKS safest path.", "High", 8, ["techLead", "tiktokAi"], 1),
+      account("TikTok", "Nora Animation", "https://www.tiktok.com/search?q=Nora%20Animation%20AI%20dance", "MuseOn search results expose a Nora Animation AI-dance item in TikTok AI-video tracking.", "AI dance animation", "Global", null, null, 122400000, "Cute AI dance animation tracked by MuseOn.", "TikTok video", ["Creator Rewards if eligible"], null, null, 12, "Dance loops are cheap, but weak fit for BLOCKS cinematic value.", "Medium", 44, ["museon", "tiktokRewards"], 1),
+      account("TikTok", "nanhatoonworld", "https://www.tiktok.com/search?q=nanhatoonworld%20AI", "MuseOn leaderboard includes a nanhatoonworld-tagged AI cartoon story with 8M views.", "AI cartoon story", "Global", null, null, 8000000, "Aloo cartoon story: setback to support.", "TikTok video", ["Creator Rewards if eligible"], null, null, 12, "Cartoon story format is closer to BLOCKS than generic dance loops.", "Medium", 72, ["museon", "tiktokRewards"], 1)
+    ];
+
+    const LAB_MODELS = {
+      youtubeShorts: { label: "YouTube Shorts conservative", rpm: 0.05, note: "$0.05 RPM model. Actual Shorts earnings depend on allocated Creator Pool share." },
+      youtubeLong: { label: "YouTube long-form mid", rpm: 3.50, note: "$3.50 RPM model. Long-form watch-page ads can be materially better than Shorts." },
+      tiktok: { label: "TikTok eligible reward", rpm: 0.45, note: "$0.45 RPM model. Only qualified For You views count, and content must pass review." },
+      instagram: { label: "Instagram native uncertain", rpm: 0.03, note: "$0.03 RPM model. Public Reels reach often has no clear native payout." },
+      sponsor: { label: "Brand/sponsor CPM", rpm: 12.00, note: "$12 CPM model. Requires audience trust and brand-safe original IP." }
+    };
+
+    let showEstimates = true;
+
+    const elements = {
+      search: document.getElementById("searchInput"),
+      platform: document.getElementById("platformFilter"),
+      format: document.getElementById("formatFilter"),
+      confidence: document.getElementById("confidenceFilter"),
+      sort: document.getElementById("sortSelect"),
+      toggle: document.getElementById("estimateToggle"),
+      side: document.querySelector(".side"),
+      mobileFilterToggle: document.getElementById("mobileFilterToggle"),
+      filterState: document.getElementById("filterState"),
+      rows: document.getElementById("accountRows"),
+      resultCount: document.getElementById("resultCount"),
+      platformBadges: document.getElementById("platformBadges"),
+      visualTrack: document.getElementById("visualTrack"),
+      platformChart: document.getElementById("platformChart"),
+      formatChart: document.getElementById("formatChart"),
+      casefiles: document.getElementById("casefilesGrid"),
+      sourceGrid: document.getElementById("sourceGrid"),
+      labPlatform: document.getElementById("labPlatform"),
+      viewsSlider: document.getElementById("viewsSlider"),
+      postsSlider: document.getElementById("postsSlider"),
+      costSlider: document.getElementById("costSlider"),
+      viewsLabel: document.getElementById("viewsLabel"),
+      postsLabel: document.getElementById("postsLabel"),
+      costLabel: document.getElementById("costLabel"),
+      labMonthlyRevenue: document.getElementById("labMonthlyRevenue"),
+      labMonthlyCost: document.getElementById("labMonthlyCost"),
+      labBreakEven: document.getElementById("labBreakEven"),
+      labRpmNote: document.getElementById("labRpmNote")
+    };
+
+    function account(platform, handle, url, ai_only_evidence, format, language_region, followers, total_views, top_post_views, recent_post_sample, cadence, monetization_paths, verified_revenue, estimated_revenue, production_cost_estimate, gross_margin_model, policy_risk, blocks_reproducibility, sources, confidence_score) {
+      return {
+        platform,
+        handle,
+        url,
+        ai_only_evidence,
+        format,
+        language_region,
+        followers,
+        total_views,
+        top_post_views,
+        recent_post_sample,
+        cadence,
+        monetization_paths,
+        verified_revenue,
+        estimated_revenue,
+        production_cost_estimate,
+        gross_margin_model,
+        policy_risk,
+        blocks_reproducibility,
+        sources,
+        confidence_score
+      };
+    }
+
+    function money(value) {
+      if (value == null || Number.isNaN(value)) return "Unknown";
+      return new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: value < 1000 ? 0 : 0 }).format(value);
+    }
+
+    function compact(value) {
+      if (value == null || Number.isNaN(value)) return "Unknown";
+      return new Intl.NumberFormat("en-US", { notation: "compact", maximumFractionDigits: 1 }).format(value);
+    }
+
+    function percent(value) {
+      return `${Math.round(value)}%`;
+    }
+
+    function sourceLinks(keys) {
+      return keys.map((key) => {
+        const source = SOURCES[key];
+        if (!source) return "";
+        return `<a href="${source.url}" target="_blank" rel="noreferrer">${escapeHtml(source.title)}</a><span>${escapeHtml(source.date)}</span>`;
+      }).filter(Boolean).join("<br>");
+    }
+
+    function sourceName(key) {
+      return SOURCES[key]?.title ?? "Page model";
+    }
+
+    function sourceDate(key) {
+      return SOURCES[key]?.date ?? "calculated 2026-06-07";
+    }
+
+    function revenueMeta(row, type, sourceKey) {
+      return `${type}; source: ${sourceName(sourceKey)}; date: ${sourceDate(sourceKey)}`;
+    }
+
+    function estimateMeta(row, type, sourceKey) {
+      return `${type}; source: ${sourceName(sourceKey)}; date: ${sourceDate(sourceKey)}`;
+    }
+
+    function escapeHtml(value) {
+      return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function iconSvg(name) {
+      const paths = {
+        youtube: '<path d="M4.2 6.4c.2-.9.9-1.5 1.8-1.6 1.4-.1 2.8-.2 4-.2s2.6.1 4 .2c.9.1 1.6.7 1.8 1.6.2 1 .3 2.1.3 3.1s-.1 2.1-.3 3.1c-.2.9-.9 1.5-1.8 1.6-1.4.1-2.8.2-4 .2s-2.6-.1-4-.2c-.9-.1-1.6-.7-1.8-1.6-.2-1-.3-2.1-.3-3.1s.1-2.1.3-3.1Z"/><path d="m8.7 7.2 3.9 2.3-3.9 2.3V7.2Z" fill="currentColor" opacity=".45"/>',
+        instagram: '<rect x="4" y="4" width="12" height="12" rx="4"/><circle cx="10" cy="10" r="2.7" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="13.8" cy="6.3" r=".8"/>',
+        tiktok: '<path d="M11.7 4.2v6.5a3.2 3.2 0 1 1-2.2-3v2.1a1.2 1.2 0 1 0 .8 1.1V3.8h2.1c.2 1.4 1.2 2.5 2.7 2.8v2.1c-1.3-.1-2.5-.6-3.4-1.4Z"/>',
+        story: '<path d="M5 4.5h5.1c1.1 0 2 .9 2 2v9H7c-1.1 0-2-.9-2-2v-9Z" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M12.1 6.5H15v9h-2.9M7.2 7.2h2.6M7.2 10h2.6"/>',
+        character: '<circle cx="10" cy="7.2" r="3.1" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M4.7 16c.8-2.6 2.6-4 5.3-4s4.5 1.4 5.3 4" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>',
+        cinematic: '<path d="M4 7h12v8H4z" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="m7 7 2-3h3l-2 3M12 7l2-3M6.8 11h6.4"/>',
+        art: '<path d="M10 3.8 11.4 8l4.2 1.4-4.2 1.4L10 15l-1.4-4.2-4.2-1.4L8.6 8 10 3.8Z" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M15.2 3.8v2.5M14 5h2.5"/>',
+        loop: '<path d="M7.4 8.1c1.1 0 1.8.9 2.6 1.9.8-1 1.5-1.9 2.6-1.9a2.6 2.6 0 1 1 0 5.2c-1.1 0-1.8-.9-2.6-1.9-.8 1-1.5 1.9-2.6 1.9a2.6 2.6 0 1 1 0-5.2Z" fill="none" stroke="currentColor" stroke-width="1.4"/>',
+        risk: '<path d="M10 4.2 16 15H4l6-10.8Z" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M10 8v3M10 13.6v.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>',
+        audio: '<path d="M8.6 5.2v7.2a2 2 0 1 1-1.2-1.8V6.2l6-1.2v6.2a2 2 0 1 1-1.2-1.8V4.4L8.6 5.2Z"/>',
+        stack: '<path d="m10 4 6 3-6 3-6-3 6-3Z" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="m4 10 6 3 6-3M4 13l6 3 6-3" fill="none" stroke="currentColor" stroke-width="1.4"/>',
+        estimate: '<path d="M5 15V5h10v10H5Z" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M7.2 8h5.6M7.2 11h3.3"/>',
+        source: '<path d="M7.5 11.5h-1A3.5 3.5 0 0 1 6.5 4h3M12.5 8.5h1a3.5 3.5 0 0 1 0 7h-3M8.4 10h3.2" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>',
+        default: '<path d="M10 4 15 7v6l-5 3-5-3V7l5-3Z" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M10 7.2v5.6M7.6 8.6l4.8 2.8M12.4 8.6l-4.8 2.8" fill="none" stroke="currentColor" stroke-width="1.2"/>'
+      };
+      return `<svg class="icon" viewBox="0 0 20 20" aria-hidden="true">${paths[name] ?? paths.default}</svg>`;
+    }
+
+    function platformSlug(platform) {
+      return String(platform).toLowerCase();
+    }
+
+    function platformIcon(platform) {
+      if (platform === "YouTube") return iconSvg("youtube");
+      if (platform === "Instagram") return iconSvg("instagram");
+      if (platform === "TikTok") return iconSvg("tiktok");
+      return iconSvg("default");
+    }
+
+    function formatIconName(format) {
+      const value = String(format).toLowerCase();
+      if (value.includes("cinematic") || value.includes("hyperreal")) return "cinematic";
+      if (value.includes("story") || value.includes("religious") || value.includes("microdrama")) return "story";
+      if (value.includes("animal") || value.includes("cat") || value.includes("kitten")) return "character";
+      if (value.includes("influencer") || value.includes("celebrity") || value.includes("character")) return "character";
+      if (value.includes("art") || value.includes("surreal") || value.includes("cosmic")) return "art";
+      if (value.includes("loop")) return "loop";
+      if (value.includes("horror") || value.includes("deepfake") || value.includes("disaster")) return "risk";
+      if (value.includes("music") || value.includes("voice") || value.includes("dance")) return "audio";
+      if (value.includes("slop") || value.includes("compilation")) return "stack";
+      return "default";
+    }
+
+    function formatIcon(format) {
+      return iconSvg(formatIconName(format));
+    }
+
+    function monetizationIcon(path) {
+      const value = String(path).toLowerCase();
+      if (value.includes("brand") || value.includes("sponsor")) return iconSvg("source");
+      if (value.includes("ads") || value.includes("reward") || value.includes("native")) return iconSvg("estimate");
+      if (value.includes("music") || value.includes("voice")) return iconSvg("audio");
+      if (value.includes("affiliate") || value.includes("store") || value.includes("retail") || value.includes("merch")) return iconSvg("stack");
+      return iconSvg("default");
+    }
+
+    function monetizationLabel(path) {
+      const value = String(path).toLowerCase();
+      if (value.includes("native")) return "Native";
+      if (value.includes("brand")) return "Brand";
+      if (value.includes("sponsor")) return "Sponsor";
+      if (value.includes("ads")) return "Ads";
+      if (value.includes("reward")) return "Rewards";
+      if (value.includes("affiliate")) return "Affiliate";
+      if (value.includes("storefront") || value.includes("store")) return "Store";
+      if (value.includes("retail")) return "Retail";
+      if (value.includes("merch")) return "Merch";
+      if (value.includes("music")) return "Music";
+      if (value.includes("prompt") || value.includes("tool")) return "Tool funnel";
+      if (value.includes("cameo")) return "Cameo";
+      if (value.includes("cross")) return "Cross-post";
+      return String(path).replace(" uncertain", "").slice(0, 18);
+    }
+
+    function monetizationChips(row) {
+      return row.monetization_paths.slice(0, 2).map((path) => (
+        `<span class="mini-chip" title="${escapeHtml(path)}">${monetizationIcon(path)}${escapeHtml(monetizationLabel(path))}</span>`
+      )).join("");
+    }
+
+    function initials(value) {
+      const clean = String(value)
+        .replaceAll("@", " ")
+        .replaceAll("_", " ")
+        .replaceAll(".", " ")
+        .replaceAll("/", " ");
+      const parts = clean.split(/\s+/).filter(Boolean);
+      return parts.slice(0, 2).map((part) => part[0]?.toUpperCase()).join("") || "AI";
+    }
+
+    function visualFor(row) {
+      return VISUALS[row.handle] ?? {
+        src: null,
+        alt: "",
+        credit: "Designed fallback frame",
+        source: row.sources[0] ?? null
+      };
+    }
+
+    function visualFrame(row, className = "", decorative = true) {
+      const visual = visualFor(row);
+      const classes = ["visual-frame", className, visual.src ? "has-image" : "image-fallback"].filter(Boolean).join(" ");
+      const img = visual.src
+        ? `<img src="${escapeHtml(visual.src)}" alt="${decorative ? "" : escapeHtml(visual.alt)}" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentElement.classList.add('image-failed'); this.remove();" />`
+        : "";
+      return `<span class="${classes}" aria-hidden="${decorative ? "true" : "false"}">${img}<span class="visual-fallback">${formatIcon(row.format)}<span class="fallback-initials">${escapeHtml(initials(row.handle))}</span></span></span>`;
+    }
+
+    function riskValue(row) {
+      return row.policy_risk === "High" ? 3 : row.policy_risk === "Medium" ? 2 : 1;
+    }
+
+    function reachValue(row) {
+      return row.total_views ?? row.top_post_views ?? row.followers ?? 0;
+    }
+
+    function platformRpm(row) {
+      if (row.platform === "YouTube") return row.format.includes("Cinematic") ? 0.08 : 0.05;
+      if (row.platform === "TikTok") return 0.35;
+      if (row.platform === "Instagram") return 0.03;
+      return 0.03;
+    }
+
+    function modeledAnnual(row) {
+      if (row.estimated_revenue) return row.estimated_revenue;
+      const views = row.total_views ?? row.top_post_views;
+      if (!views) return 0;
+      const annualizedViews = row.total_views ? Math.min(row.total_views, views) : row.top_post_views * 8;
+      return (annualizedViews / 1000) * platformRpm(row);
+    }
+
+    function opportunity(row) {
+      const reach = Math.log10(Math.max(10, reachValue(row))) * 9;
+      const fit = row.blocks_reproducibility * 0.42;
+      const confidence = row.confidence_score * 4.5;
+      const riskPenalty = riskValue(row) * 10;
+      const costPenalty = Math.min(18, row.production_cost_estimate / 30);
+      return Math.max(0, Math.min(100, reach + fit + confidence - riskPenalty - costPenalty));
+    }
+
+    function filteredRows() {
+      const q = elements.search.value.trim().toLowerCase();
+      const platform = elements.platform.value;
+      const format = elements.format.value;
+      const minConfidence = Number(elements.confidence.value);
+      return ACCOUNTS.filter((row) => {
+        const haystack = [
+          row.platform,
+          row.handle,
+          row.format,
+          row.language_region,
+          row.ai_only_evidence,
+          row.recent_post_sample,
+          row.monetization_paths.join(" ")
+        ].join(" ").toLowerCase();
+        return (!q || haystack.includes(q))
+          && (platform === "all" || row.platform === platform)
+          && (format === "all" || row.format === format)
+          && row.confidence_score >= minConfidence;
+      }).sort((a, b) => {
+        const sort = elements.sort.value;
+        if (sort === "views") return reachValue(b) - reachValue(a);
+        if (sort === "confidence") return b.confidence_score - a.confidence_score;
+        if (sort === "risk") return riskValue(a) - riskValue(b);
+        if (sort === "repro") return b.blocks_reproducibility - a.blocks_reproducibility;
+        return opportunity(b) - opportunity(a);
+      });
+    }
+
+    function render() {
+      const rows = filteredRows();
+      renderSummary(rows);
+      renderVisuals(rows);
+      renderTable(rows);
+      renderCharts(rows);
+      renderCasefiles(rows);
+    }
+
+    function renderSummary(rows) {
+      elements.resultCount.textContent = `${rows.length} visible`;
+
+      const counts = groupBy(rows, (row) => row.platform);
+      elements.platformBadges.innerHTML = ["YouTube", "Instagram", "TikTok"].map((platform) => {
+        const count = counts[platform]?.length ?? 0;
+        return `<span class="badge">${platform}: ${count}</span>`;
+      }).join("");
+    }
+
+    function renderTable(rows) {
+      elements.rows.innerHTML = rows.map((row) => {
+        const score = Math.round(opportunity(row));
+        const scoreClass = score >= 72 ? "high" : score >= 48 ? "mid" : "low";
+        const riskClass = row.policy_risk === "High" ? "risk" : row.policy_risk === "Medium" ? "warn" : "good";
+        const estimate = showEstimates
+          ? `${money(modeledAnnual(row))}<br><span>${escapeHtml(estimateMeta(row, row.estimated_revenue ? "Estimate" : "Revenue Lab model", row.estimated_revenue ? row.sources[0] : null))}</span>`
+          : `<span>Hidden</span>`;
+        return `
+          <tr>
+            <td data-label="Account">
+              <div class="account-cell">
+                <span class="avatar-shell">
+                  ${visualFrame(row, "thumb-frame")}
+                  <span class="platform-mini ${platformSlug(row.platform)}" title="${escapeHtml(row.platform)}">${platformIcon(row.platform)}</span>
+                </span>
+                <div class="account-copy">
+                  <strong class="account-name"><a href="${row.url}" target="_blank" rel="noreferrer">${escapeHtml(row.handle)}</a></strong>
+                  <span class="account-meta">${platformIcon(row.platform)}${escapeHtml(row.platform)}<span class="dot"></span>${escapeHtml(row.language_region)}</span>
+                  <span class="source-line">${iconSvg("source")}${row.sources.length} sources<span class="dot"></span>${row.monetization_paths.length} paths</span>
+                </div>
+              </div>
+            </td>
+            <td data-label="Format">
+              <div class="format-cell">
+                <span class="format-icon">${formatIcon(row.format)}</span>
+                <div class="format-copy">
+                  <span class="format-title">${escapeHtml(row.format)}</span>
+                  <span class="format-sub">${escapeHtml(row.cadence)}</span>
+                  <span class="mini-chips">${monetizationChips(row)}</span>
+                </div>
+              </div>
+            </td>
+            <td data-label="Reach">
+              <strong>${compact(reachValue(row))}</strong>
+              <span>${row.total_views ? "total/channel views" : row.top_post_views ? "top post views" : "followers only"}</span>
+            </td>
+            <td data-label="Estimate">${estimate}</td>
+            <td data-label="Cost">
+              <strong>${money(row.production_cost_estimate)}</strong>
+              <span>per post estimate</span>
+            </td>
+            <td data-label="Risk">
+              <span class="badge ${riskClass}">${row.policy_risk}</span>
+              <br><span>${escapeHtml(row.gross_margin_model)}</span>
+            </td>
+            <td data-label="Fit">
+              <span class="score ${scoreClass}">${score}</span>
+              <div class="meter" aria-hidden="true"><i style="width:${percent(row.blocks_reproducibility)}"></i></div>
+              <span>${row.blocks_reproducibility}/100 reproducible</span>
+            </td>
+            <td data-label="Sources">${sourceLinks(row.sources)}</td>
+          </tr>
+        `;
+      }).join("");
+    }
+
+    function renderVisuals(rows) {
+      const direct = rows.filter((row) => VISUALS[row.handle]);
+      const fallback = rows.filter((row) => !VISUALS[row.handle]);
+      const picks = [...direct, ...fallback].slice(0, 5);
+      elements.visualTrack.innerHTML = picks.map((row) => {
+        const visual = visualFor(row);
+        const source = sourceName(visual.source);
+        return `
+          <a class="visual-card" href="${row.url}" target="_blank" rel="noreferrer">
+            ${visualFrame(row, "poster-frame", false)}
+            <span class="visual-copy">
+              <strong>${escapeHtml(row.handle)}</strong>
+              <span>${escapeHtml(row.format)} / ${compact(reachValue(row))} reach signal</span>
+              <span class="visual-credit">${escapeHtml(visual.credit)} / ${escapeHtml(source)}</span>
+            </span>
+          </a>
+        `;
+      }).join("");
+    }
+
+    function renderCharts(rows) {
+      renderBarChart(elements.platformChart, groupReach(rows, "platform"), "Reach signal");
+      renderBarChart(elements.formatChart, groupCount(rows, "format"), "Accounts");
+    }
+
+    function renderBarChart(target, data, label) {
+      const entries = Object.entries(data).sort((a, b) => b[1] - a[1]).slice(0, 10);
+      const width = 760;
+      const rowHeight = 34;
+      const height = Math.max(160, entries.length * rowHeight + 44);
+      const max = Math.max(1, ...entries.map((entry) => entry[1]));
+      const bars = entries.map(([name, value], index) => {
+        const y = 30 + index * rowHeight;
+        const barWidth = Math.max(4, (value / max) * 430);
+        return `
+          <text x="0" y="${y + 15}" fill="oklch(0.715 0.018 78)" font-size="13">${escapeHtml(name)}</text>
+          <rect x="205" y="${y}" width="${barWidth}" height="18" rx="4" fill="oklch(0.79 0.13 82)"></rect>
+          <text x="${215 + barWidth}" y="${y + 14}" fill="oklch(0.925 0.012 78)" font-size="13">${label === "Reach signal" ? compact(value) : value}</text>
+        `;
+      }).join("");
+      target.innerHTML = `
+        <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${label} bar chart">
+          <text x="0" y="16" fill="oklch(0.79 0.13 82)" font-size="13" font-weight="700">${label}</text>
+          ${bars}
+        </svg>
+      `;
+    }
+
+    function renderCasefiles(rows) {
+      const top = [...rows].sort((a, b) => opportunity(b) - opportunity(a)).slice(0, 10);
+      elements.casefiles.innerHTML = top.map((row, index) => {
+        const actual = row.verified_revenue
+          ? `${money(row.verified_revenue.amount)} actual signal (${revenueMeta(row, "Actual/reported exact payout", row.verified_revenue.source)})`
+          : "Actual payout not public";
+        const estimate = showEstimates
+          ? `${money(modeledAnnual(row))} (${revenueMeta(row, row.estimated_revenue ? "Estimate" : "Revenue Lab model", row.estimated_revenue ? row.sources[0] : null)})`
+          : "Estimate hidden";
+        return `
+          <article class="casefile">
+            ${visualFrame(row, "case-frame", false)}
+            <h3>${index + 1}. ${escapeHtml(row.handle)}</h3>
+            <div class="case-meta">
+              <span class="badge">${row.platform}</span>
+              <span class="badge">${escapeHtml(row.format)}</span>
+              <span class="badge ${row.policy_risk === "High" ? "risk" : row.policy_risk === "Medium" ? "warn" : "good"}">${row.policy_risk} risk</span>
+            </div>
+            <p><strong>Signal:</strong> ${escapeHtml(row.recent_post_sample)} Reach marker: ${compact(reachValue(row))}.</p>
+            <p><strong>Money:</strong> ${actual}. ${estimate}.</p>
+            <p><strong>BLOCKS read:</strong> ${escapeHtml(row.gross_margin_model)}</p>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function renderSources() {
+      elements.sourceGrid.innerHTML = Object.entries(SOURCES).map(([key, source]) => `
+        <article class="source-card">
+          <h3>${escapeHtml(source.title)}</h3>
+          <span class="source-date">${escapeHtml(source.date)}</span>
+          <p>${escapeHtml(source.note)}</p>
+          <a href="${source.url}" target="_blank" rel="noreferrer">Open source</a>
+        </article>
+      `).join("");
+    }
+
+    function groupBy(rows, getter) {
+      return rows.reduce((groups, row) => {
+        const key = getter(row);
+        groups[key] ??= [];
+        groups[key].push(row);
+        return groups;
+      }, {});
+    }
+
+    function groupReach(rows, prop) {
+      return rows.reduce((acc, row) => {
+        const key = row[prop];
+        acc[key] = (acc[key] ?? 0) + reachValue(row);
+        return acc;
+      }, {});
+    }
+
+    function groupCount(rows, prop) {
+      return rows.reduce((acc, row) => {
+        const key = row[prop];
+        acc[key] = (acc[key] ?? 0) + 1;
+        return acc;
+      }, {});
+    }
+
+    function populateFormats() {
+      const formats = [...new Set(ACCOUNTS.map((row) => row.format))].sort();
+      elements.format.innerHTML += formats.map((format) => `<option value="${escapeHtml(format)}">${escapeHtml(format)}</option>`).join("");
+    }
+
+    function renderLab() {
+      const model = LAB_MODELS[elements.labPlatform.value];
+      const views = Number(elements.viewsSlider.value);
+      const posts = Number(elements.postsSlider.value);
+      const cost = Number(elements.costSlider.value);
+      const monthlyRevenue = (views * posts / 1000) * model.rpm;
+      const monthlyCost = posts * cost;
+      const breakEvenViews = model.rpm <= 0 ? Infinity : Math.ceil((cost / model.rpm) * 1000);
+      elements.viewsLabel.textContent = compact(views);
+      elements.postsLabel.textContent = String(posts);
+      elements.costLabel.textContent = money(cost);
+      elements.labMonthlyRevenue.textContent = money(monthlyRevenue);
+      elements.labMonthlyCost.textContent = money(monthlyCost);
+      elements.labBreakEven.textContent = Number.isFinite(breakEvenViews) ? compact(breakEvenViews) : "No native path";
+      elements.labRpmNote.textContent = model.note;
+    }
+
+    function setMobileControls(open) {
+      elements.side?.classList.toggle("controls-open", open);
+      elements.mobileFilterToggle?.setAttribute("aria-expanded", String(open));
+      if (elements.filterState) elements.filterState.textContent = open ? "Close" : "Open";
+    }
+
+    function syncMobileControls() {
+      if (window.matchMedia("(min-width: 721px)").matches) setMobileControls(false);
+    }
+
+    function bind() {
+      [elements.search, elements.platform, elements.format, elements.confidence, elements.sort].forEach((input) => {
+        input.addEventListener("input", render);
+      });
+      elements.toggle.addEventListener("click", () => {
+        showEstimates = !showEstimates;
+        elements.toggle.setAttribute("aria-pressed", String(showEstimates));
+        render();
+      });
+      [elements.labPlatform, elements.viewsSlider, elements.postsSlider, elements.costSlider].forEach((input) => {
+        input.addEventListener("input", renderLab);
+      });
+      elements.mobileFilterToggle?.addEventListener("click", () => {
+        setMobileControls(!elements.side?.classList.contains("controls-open"));
+      });
+      elements.side?.querySelectorAll(".nav a").forEach((link) => {
+        link.addEventListener("click", () => {
+          if (window.matchMedia("(max-width: 720px)").matches) setMobileControls(false);
+        });
+      });
+      window.addEventListener("resize", syncMobileControls);
+      syncMobileControls();
+    }
+
+    populateFormats();
+    renderSources();
+    bind();
+    render();
+    renderLab();
+  </script>
+</body>
+</html>
