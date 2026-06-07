@@ -1,0 +1,1413 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BLOCKS Cinema VLM and Video Generation API Case Study</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --ink: oklch(0.91 0.015 82);
+      --muted: oklch(0.71 0.018 86);
+      --paper: oklch(0.16 0.012 82);
+      --panel: oklch(0.205 0.014 82);
+      --panel-2: oklch(0.245 0.018 82);
+      --panel-3: oklch(0.285 0.022 82);
+      --line: oklch(0.36 0.019 82);
+      --accent: oklch(0.78 0.125 78);
+      --accent-2: oklch(0.73 0.11 174);
+      --accent-3: oklch(0.72 0.12 24);
+      --accent-soft: oklch(0.28 0.038 78);
+      --warn: oklch(0.79 0.13 80);
+      --risk: oklch(0.72 0.13 28);
+      --ok: oklch(0.76 0.12 154);
+      --code: oklch(0.245 0.018 82);
+      --shadow: 0 22px 80px oklch(0.08 0.01 82 / 0.28);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        linear-gradient(180deg, oklch(0.18 0.016 82) 0%, var(--paper) 320px),
+        var(--paper);
+      font: 16px/1.55 Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    a {
+      color: var(--accent-2);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 2px;
+    }
+
+    code {
+      background: var(--code);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0.08rem 0.28rem;
+      font: 0.92em/1.45 ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+    }
+
+    .page {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 36px 24px 86px;
+    }
+
+    header {
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: linear-gradient(135deg, oklch(0.205 0.018 82), oklch(0.18 0.016 82));
+      box-shadow: var(--shadow);
+      padding: 26px 24px 28px;
+    }
+
+    .eyebrow {
+      color: var(--accent);
+      font-size: 0.82rem;
+      font-weight: 750;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      margin: 8px 0 10px;
+      max-width: 980px;
+      font-size: 3.7rem;
+      line-height: 1.04;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      margin: 48px 0 14px;
+      font-size: 2.05rem;
+      line-height: 1.16;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 28px 0 10px;
+      font-size: 1.18rem;
+      line-height: 1.25;
+    }
+
+    p {
+      margin: 0 0 14px;
+    }
+
+    ul, ol {
+      padding-left: 1.25rem;
+    }
+
+    li + li {
+      margin-top: 0.35rem;
+    }
+
+    .lede {
+      max-width: 900px;
+      color: var(--muted);
+      font-size: 1.1rem;
+    }
+
+    .meta-grid,
+    .score-grid,
+    .recommendation-grid,
+    .provider-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .meta-grid {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      margin-top: 24px;
+    }
+
+    .score-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-top: 18px;
+    }
+
+    .recommendation-grid {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      margin-top: 18px;
+    }
+
+    .provider-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-top: 16px;
+    }
+
+    .tile,
+    .callout,
+    .provider-card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .tile,
+    .provider-card {
+      box-shadow: 0 1px 0 oklch(0.42 0.02 82 / 0.36) inset;
+    }
+
+    .tile strong,
+    .provider-card strong {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .tile span {
+      color: var(--muted);
+      display: block;
+      font-size: 0.94rem;
+    }
+
+    .callout {
+      background: var(--panel-2);
+      border-color: oklch(0.48 0.05 78);
+      margin: 20px 0;
+    }
+
+    .callout.warning {
+      border-color: oklch(0.55 0.07 82);
+      background: oklch(0.23 0.03 78);
+    }
+
+    .callout.risk {
+      border-color: oklch(0.52 0.07 28);
+      background: oklch(0.23 0.032 28);
+    }
+
+    .callout h3 {
+      margin-top: 0;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      margin: 16px 0 28px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 920px;
+    }
+
+    th,
+    td {
+      border-bottom: 1px solid var(--line);
+      padding: 12px 13px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      background: var(--panel-3);
+      font-size: 0.78rem;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .tag,
+    .source-tag,
+    .fit {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      border-radius: 999px;
+      padding: 0.12rem 0.5rem;
+      font-size: 0.78rem;
+      font-weight: 680;
+      white-space: nowrap;
+    }
+
+    .tag {
+      background: var(--accent-soft);
+      color: var(--accent);
+      margin: 0 0.15rem 0.25rem 0;
+    }
+
+    .source-tag {
+      background: oklch(0.27 0.03 24);
+      color: oklch(0.82 0.09 26);
+      text-decoration: none;
+      margin: 0.12rem 0.12rem 0.12rem 0;
+    }
+
+    .fit.good {
+      background: oklch(0.27 0.04 154);
+      color: var(--ok);
+    }
+
+    .fit.medium {
+      background: oklch(0.28 0.04 80);
+      color: var(--warn);
+    }
+
+    .fit.low {
+      background: oklch(0.27 0.04 28);
+      color: var(--risk);
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .verdict {
+      font-size: 1.35rem;
+      font-weight: 800;
+      line-height: 1.2;
+      margin: 0 0 6px;
+    }
+
+    .toc {
+      columns: 2;
+      margin: 24px 0 0;
+    }
+
+    .toc a {
+      display: block;
+      break-inside: avoid;
+      padding: 3px 0;
+    }
+
+    .formula {
+      background: var(--code);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      margin: 16px 0;
+      padding: 14px 16px;
+      font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+      overflow-x: auto;
+    }
+
+    .bibliography li {
+      margin-bottom: 0.55rem;
+    }
+
+    @media (max-width: 980px) {
+      .meta-grid,
+      .score-grid,
+      .recommendation-grid,
+      .provider-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .toc {
+        columns: 1;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        padding: 22px 15px 64px;
+      }
+
+      .meta-grid,
+      .score-grid,
+      .recommendation-grid,
+      .provider-grid {
+        grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: 2.35rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header>
+      <div class="eyebrow">BLOCKS Cinema provider research - issue #6 support</div>
+      <h1>VLM and Video Generation API Case Study</h1>
+      <p class="lede">
+        A source-backed comparison of vision-language APIs and video generation providers for BLOCKS Cinema verification,
+        reference-video intake, render routing, post-render QA, and provider cost control. Researched live on 2026-06-04;
+        key official pricing/source pages were spot-checked again on 2026-06-07. Treat all model aliases and prices as a
+        research snapshot and recheck vendor pages at implementation time.
+      </p>
+      <div class="meta-grid">
+        <div class="tile">
+          <strong>Primary v1 job</strong>
+          <span>Identity-only render verification against character reference sheets.</span>
+        </div>
+        <div class="tile">
+          <strong>Best default</strong>
+          <span>Gemini Flash family, starting with Gemini 2.5 Flash where available.</span>
+        </div>
+        <div class="tile">
+          <strong>Best judge</strong>
+          <span>Claude Opus/Sonnet or OpenAI GPT frontier model as escalation judge.</span>
+        </div>
+        <div class="tile">
+          <strong>Video specialist</strong>
+          <span>Twelve Labs for reference-video search, summaries, and pacing signals.</span>
+        </div>
+        <div class="tile">
+          <strong>Render stack</strong>
+          <span>Veo for premium audio/dialogue shots; Seedance, Kling, Runway, Hailuo, Wan, Luma, and Pika by playbook.</span>
+        </div>
+      </div>
+    </header>
+
+    <nav class="toc" aria-label="Table of contents">
+      <a href="#executive-summary">Executive Summary</a>
+      <a href="#decision">Recommended Provider Stack</a>
+      <a href="#fit-table">Provider Comparison Table</a>
+      <a href="#video-generation">Video Generation Providers</a>
+      <a href="#pricing">Pricing Table and Example Costs</a>
+      <a href="#quality">Quality and Benchmarks</a>
+      <a href="#community">Community Sentiment</a>
+      <a href="#providers">Strengths and Weaknesses</a>
+      <a href="#implementation">Implementation Recommendation</a>
+      <a href="#risks">Risks and Unknowns</a>
+      <a href="#bibliography">Source Bibliography</a>
+    </nav>
+
+    <section id="executive-summary">
+      <h2>Executive Summary</h2>
+      <div class="callout">
+        <h3>Decision in one paragraph</h3>
+        <p>
+          BLOCKS Cinema should implement the verifier as a provider-neutral playbook contract, not as a hard-coded
+          vendor choice. For v1 identity verification, use a low-latency Gemini Flash model as the default image
+          comparator, validate strict JSON locally, and escalate low-confidence or expensive shots to Claude Opus/Sonnet
+          or an OpenAI GPT frontier model. Keep Twelve Labs separate as a video-understanding specialist for reference
+          clips, pacing summaries, and search; it should not be the default per-frame identity judge. Treat video
+          generation as a separate render-router problem: Veo is the premium audio/dialogue route, Seedance/Kling are
+          strong cinematic/reference routes, Runway is the mature creative-control route, and Hailuo/Wan/Pika/Luma are
+          budget or specialty lanes behind provider playbooks.
+        </p>
+      </div>
+
+      <div class="score-grid">
+        <div class="tile">
+          <strong>Default VLM</strong>
+          <span>Gemini 2.5 Flash or current Flash equivalent. Strong image/video support, structured output, low cost.</span>
+        </div>
+        <div class="tile">
+          <strong>Cheap fallback</strong>
+          <span>Qwen3.5 Flash/Plus via Alibaba Model Studio, or Qwen via OpenRouter/Together/Fireworks.</span>
+        </div>
+        <div class="tile">
+          <strong>High-quality judge</strong>
+          <span>Claude Opus/Sonnet for visual judgment; OpenAI GPT frontier when strict schema reliability is paramount.</span>
+        </div>
+        <div class="tile">
+          <strong>Video specialist</strong>
+          <span>Twelve Labs Pegasus/Marengo, with Gemini/Nova as inline video-capable generalists.</span>
+        </div>
+        <div class="tile">
+          <strong>Self-host route</strong>
+          <span>Qwen2.5-VL/Qwen3-VL, InternVL, Mistral Large 3/Ministral 3, or Molmo through vLLM/llama.cpp after evals.</span>
+        </div>
+        <div class="tile">
+          <strong>Render default</strong>
+          <span>Start with Veo 3.1 Fast for audio-aware finals and Seedance/Kling for cinematic reference-heavy shots.</span>
+        </div>
+      </div>
+
+      <h3>What this means for BLOCKS Cinema</h3>
+      <ul>
+        <li>
+          V1 should stay narrow: one rendered image, one character at a time, one or more reference images, one strict JSON
+          report. This follows <a href="08_VERIFICATION_AGENT.md">08_VERIFICATION_AGENT.md</a>.
+        </li>
+        <li>
+          Provider wrappers should expose capability flags, limits, cost estimation, validation, and source URLs as playbook
+          metadata. This follows <a href="14_RESEARCH_NOTES.md">14_RESEARCH_NOTES.md</a>.
+        </li>
+        <li>
+          Human preference and academic benchmarks are directional only. They do not directly test "does this rendered
+          character preserve the promise of this reference sheet?" A BLOCKS-specific eval set is mandatory.
+        </li>
+        <li>
+          Pricing is cheap enough for advisory checks if images are downsampled and v1 avoids frame-by-frame video judging.
+          The expensive part is repeated video intake or high-quality second-pass judging.
+        </li>
+        <li>
+          Render-provider pricing is a different cost class. A single 10-second generated clip can cost more than hundreds
+          of still-image verification checks, so BLOCKS should estimate render cost before approval and track retry yield.
+        </li>
+      </ul>
+    </section>
+
+    <section id="decision">
+      <h2>Recommended Provider Stack</h2>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Role</th>
+              <th>Recommended provider/model family</th>
+              <th>Why it fits BLOCKS Cinema</th>
+              <th>Guardrails</th>
+              <th>Sources</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Best default VLM</strong></td>
+              <td>Google Gemini Flash family. Start with <code>gemini-2.5-flash</code> where available; evaluate current Flash models before rollout.</td>
+              <td>Native image, multi-image, video, long-file workflows, context caching for long videos, JSON schema structured outputs, and low first-pass cost.</td>
+              <td>Use the native Gemini SDK/REST structured-output path. Validate JSON against BLOCKS schema and retry once on malformed output.</td>
+              <td>
+                <a class="source-tag" href="#src-gemini-pricing">pricing</a>
+                <a class="source-tag" href="#src-gemini-video">video</a>
+                <a class="source-tag" href="#src-gemini-structured">JSON</a>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Cheapest reliable fallback</strong></td>
+              <td>Alibaba Qwen3.5 Flash/Plus direct, or Qwen3.x via OpenRouter/Together/Fireworks.</td>
+              <td>Very low published input/output prices, image/video-capable Qwen3.5 Plus in Alibaba Model Studio, and strong open-model momentum.</td>
+              <td>Only enable after the golden eval passes. Store deployment region and data-residency mode in the provider playbook.</td>
+              <td>
+                <a class="source-tag" href="#src-alibaba-models">Alibaba</a>
+                <a class="source-tag" href="#src-openrouter-models">OpenRouter</a>
+                <a class="source-tag" href="#src-together-pricing">Together</a>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Best high-quality judge</strong></td>
+              <td>Claude Opus/Sonnet first; OpenAI GPT frontier as alternate strict-schema judge.</td>
+              <td>LMArena Vision currently places Claude Opus variants at the top, with OpenAI frontier models and Gemini Pro near the top cluster. Claude supports many images per request; OpenAI has strong schema tooling.</td>
+              <td>Use only for warn/fail adjudication or premium modes. Downsample images and keep reference sheets cached/uploaded when provider supports it.</td>
+              <td>
+                <a class="source-tag" href="#src-lmarena">LMArena</a>
+                <a class="source-tag" href="#src-claude-vision">Claude vision</a>
+                <a class="source-tag" href="#src-openai-structured">OpenAI JSON</a>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Best video-understanding specialist</strong></td>
+              <td>Twelve Labs Pegasus/Marengo.</td>
+              <td>Purpose-built video foundation models for temporal relationships, search, embeddings, summaries, and video-to-text analysis.</td>
+              <td>Use for reference-video intake and asset search, not per-shot identity checks. Keep minute-based costs visible before upload.</td>
+              <td>
+                <a class="source-tag" href="#src-twelvelabs-pricing">pricing</a>
+                <a class="source-tag" href="#src-twelvelabs-docs">docs</a>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Best enterprise/governed route</strong></td>
+              <td>Amazon Bedrock Nova, Azure-hosted OpenAI/vision services, or Google Cloud/Vertex equivalents.</td>
+              <td>Strong governance, regions, account controls, marketplace procurement, and production support. Nova has native image/video input.</td>
+              <td>Use when procurement, residency, or cloud alignment matters more than direct model API simplicity.</td>
+              <td>
+                <a class="source-tag" href="#src-aws-nova">Nova</a>
+                <a class="source-tag" href="#src-bedrock-pricing">Bedrock</a>
+                <a class="source-tag" href="#src-azure-openai">Azure</a>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Best open/self-host route</strong></td>
+              <td>Qwen2.5-VL/Qwen3-VL, InternVL, Mistral Large 3/Ministral 3, Molmo, Florence-style specialists.</td>
+              <td>Maximum privacy and long-term control, useful for local-first workflows and offline asset review.</td>
+              <td>Expect higher integration burden, GPU planning, image preprocessing latency, and model-specific prompt tuning.</td>
+              <td>
+                <a class="source-tag" href="#src-qwen-report">Qwen report</a>
+                <a class="source-tag" href="#src-mistral-models">Mistral</a>
+                <a class="source-tag" href="#src-vllm-qwen">vLLM report</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="fit-table">
+      <h2>Provider Comparison Table</h2>
+      <p class="small">
+        Ratings are for BLOCKS Cinema v1/v2 fit, not for general chatbot quality. "Video" means native video input or a
+        first-class video-understanding API, not video generation.
+      </p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Provider/API</th>
+              <th>Relevant models</th>
+              <th>Image and multi-image</th>
+              <th>Video</th>
+              <th>Structured JSON</th>
+              <th>BLOCKS fit</th>
+              <th>Main caution</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>OpenAI</strong></td>
+              <td>Current GPT frontier and mini models, including GPT-5.x/GPT-4.1/GPT-4o families where available.</td>
+              <td><span class="fit good">Strong</span> Image inputs through Responses/Chat Completions, high payload/image-count limits.</td>
+              <td><span class="fit medium">Indirect</span> Analyze sampled frames or use separate video tooling.</td>
+              <td><span class="fit good">Strong</span> Strict JSON schema structured outputs.</td>
+              <td>Excellent fallback or high-quality judge when schema reliability matters.</td>
+              <td>Frontier model cost can be high; video understanding is not as clean as Gemini/Twelve Labs.</td>
+            </tr>
+            <tr>
+              <td><strong>Google Gemini API</strong></td>
+              <td>Gemini 3.5/3.1/2.5 Flash, Flash-Lite, Pro, and image/video-capable Gemini models.</td>
+              <td><span class="fit good">Strong</span> Images, files, long context, multimodal prompt parts.</td>
+              <td><span class="fit good">Strong</span> Native video file, inline video, YouTube URL preview, timestamps, context caching.</td>
+              <td><span class="fit good">Strong</span> JSON schema structured outputs in native API.</td>
+              <td>Best default because it covers both identity checks and near-term reference-video workflows.</td>
+              <td>Use native structured output, not just OpenAI-compatible shims, and always validate output.</td>
+            </tr>
+            <tr>
+              <td><strong>Anthropic Claude</strong></td>
+              <td>Claude Opus 4.8, Sonnet 4.6/4.5, Haiku 4.5.</td>
+              <td><span class="fit good">Strong</span> Multiple images per request; explicit image token math and limits.</td>
+              <td><span class="fit low">No native video</span> Use sampled frames; animations only first frame.</td>
+              <td><span class="fit good">Strong</span> Tool use and structured-output guidance.</td>
+              <td>Best second-pass visual judge for nuanced identity or promise-preservation cases.</td>
+              <td>No native video intake; higher cost for Opus; people identification policies require careful prompt wording.</td>
+            </tr>
+            <tr>
+              <td><strong>Mistral / Pixtral lineage</strong></td>
+              <td>Mistral Large 3, Medium 3.5, Small 4, Ministral 3; Pixtral legacy replaced by newer multimodal families.</td>
+              <td><span class="fit good">Strong</span> Vision via Chat Completions, URL/base64 images, compare/transcribe/OCR examples.</td>
+              <td><span class="fit low">Limited</span> Not the main video-understanding pick.</td>
+              <td><span class="fit medium">Good</span> Structured-output docs exist; validate locally.</td>
+              <td>Good open-weight and EU-friendly option; promising self-host route.</td>
+              <td>Quality for identity verification needs local eval; current model names changed since Pixtral.</td>
+            </tr>
+            <tr>
+              <td><strong>xAI Grok</strong></td>
+              <td>Grok 4.3, Grok Build 0.1; Imagine API for generation.</td>
+              <td><span class="fit medium">Good</span> Image inputs, 20 MiB max image, no listed image-count cap.</td>
+              <td><span class="fit low">Generation API</span> Video generation/editing exists, not the right analysis path.</td>
+              <td><span class="fit medium">Good</span> Structured outputs supported.</td>
+              <td>Cost-effective image judge candidate once benchmarked against BLOCKS evals.</td>
+              <td>Less proven in this domain; no native video-understanding story comparable to Gemini/Twelve Labs.</td>
+            </tr>
+            <tr>
+              <td><strong>Amazon Bedrock / Nova</strong></td>
+              <td>Nova Premier, Pro, Lite; also Bedrock-hosted Anthropic, Meta, Mistral, Qwen, TwelveLabs.</td>
+              <td><span class="fit good">Strong</span> Nova understanding models accept text, image, and documents.</td>
+              <td><span class="fit good">Strong</span> Premier/Pro/Lite accept video input.</td>
+              <td><span class="fit medium">Provider-dependent</span> Use model/tool-specific schema support and local validation.</td>
+              <td>Best governed-cloud route if BLOCKS deployment is already AWS-heavy.</td>
+              <td>Pricing and regions depend on model/provider/tier; Bedrock adds integration overhead.</td>
+            </tr>
+            <tr>
+              <td><strong>Azure AI Vision / Azure OpenAI</strong></td>
+              <td>Azure-hosted OpenAI multimodal models; Azure Vision in Foundry Tools.</td>
+              <td><span class="fit medium">Mixed</span> Azure OpenAI for VLMs; Azure Vision for OCR, image analysis, object/face metadata.</td>
+              <td><span class="fit medium">Mixed</span> Use Azure OpenAI video/frame path or separate media services.</td>
+              <td><span class="fit good">Strong via Azure OpenAI</span></td>
+              <td>Enterprise route for Microsoft customers; classic CV can support black-frame/OCR checks.</td>
+              <td>Azure Vision is not a semantic VLM judge by itself.</td>
+            </tr>
+            <tr>
+              <td><strong>Google Cloud Vision API</strong></td>
+              <td>Classic Vision API features, separate from Gemini.</td>
+              <td><span class="fit medium">Specialist</span> OCR, labels, object localization, image properties, SafeSearch, web detection.</td>
+              <td><span class="fit low">No VLM video judge</span></td>
+              <td><span class="fit medium">Structured API response</span></td>
+              <td>Useful for subtitles/OCR, image properties, black-frame heuristics, and safety metadata.</td>
+              <td>Not enough for character identity or promise-preservation judgment.</td>
+            </tr>
+            <tr>
+              <td><strong>Twelve Labs</strong></td>
+              <td>Marengo for embeddings/search; Pegasus for video-to-text analysis.</td>
+              <td><span class="fit medium">Specialist</span> Image/text embeddings and search are present, but not a generic still-image judge.</td>
+              <td><span class="fit good">Best</span> Video-first search, summaries, indexing, analyze, segment.</td>
+              <td><span class="fit medium">Task output</span> Validate returned analysis.</td>
+              <td>Best for reference video intake, pacing/keyframes, and querying long media.</td>
+              <td>Minute-based cost; overkill for per-render identity checks.</td>
+            </tr>
+            <tr>
+              <td><strong>Together AI</strong></td>
+              <td>Qwen, MiniMax, GLM, Kimi, Gemma and other hosted open/proprietary models.</td>
+              <td><span class="fit good">Good</span> Vision-language docs support image+text and structured replies.</td>
+              <td><span class="fit medium">Catalog-dependent</span> Some models expose video/generation options.</td>
+              <td><span class="fit medium">Model-dependent</span></td>
+              <td>Good open-model experimentation and fallback host.</td>
+              <td>Catalog shifts quickly; model-specific pricing and capabilities must be loaded at runtime.</td>
+            </tr>
+            <tr>
+              <td><strong>Fireworks AI</strong></td>
+              <td>Kimi/Qwen/Llama/open VLMs depending on catalog.</td>
+              <td><span class="fit good">Good</span> OpenAI-compatible image URL/base64 API; 30-image note in docs.</td>
+              <td><span class="fit medium">Model-dependent</span></td>
+              <td><span class="fit good">Strong</span> JSON schema and grammar mode support.</td>
+              <td>Good production host for open-model verifier variants.</td>
+              <td>Need per-model eval and current catalog check.</td>
+            </tr>
+            <tr>
+              <td><strong>OpenRouter</strong></td>
+              <td>Aggregator for OpenAI, Gemini, Claude, xAI, Qwen, MiniMax, StepFun, Perceptron, and others.</td>
+              <td><span class="fit good">Good</span> Unified multimodal routing across model catalogs.</td>
+              <td><span class="fit medium">Good for tests</span> Some catalog models expose video inputs.</td>
+              <td><span class="fit medium">Provider-dependent</span></td>
+              <td>Best for rapid bake-offs and fallback routing, not first choice for privacy-critical media.</td>
+              <td>Aggregator adds dependency, policy, and pricing abstraction risk.</td>
+            </tr>
+            <tr>
+              <td><strong>Replicate</strong></td>
+              <td>Hosted OSS VLMs and custom containers.</td>
+              <td><span class="fit medium">Experimental</span> Depends on selected model/container.</td>
+              <td><span class="fit medium">Experimental</span> Can host models or pipelines.</td>
+              <td><span class="fit low">Model-dependent</span></td>
+              <td>Useful for prototypes and measuring self-host candidates before infrastructure work.</td>
+              <td>Per-second hardware billing makes cost per check empirical, not known upfront.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="video-generation">
+      <h2>Video Generation Provider Stack</h2>
+      <p class="small">
+        This section covers render providers, not verification VLMs. BLOCKS Cinema should route these through a
+        separate render playbook because costs, retry yield, input references, native audio, and clip duration limits
+        matter more than JSON reliability.
+      </p>
+      <div class="callout">
+        <h3>Render-router decision</h3>
+        <p>
+          Use Veo 3.1 Fast or Lite as the first premium audio-aware default when Google access is available, then test
+          Seedance 2.0 and Kling 3.0 for cinematic motion, character references, and multi-shot control. Keep Runway for
+          mature creative-control and editor-like workflows. Use Hailuo, Wan, Pika, Luma, and Grok Imagine as cheaper or
+          specialty lanes, selected by shot type. Do not build new work on Sora 2 unless it is only a migration bridge:
+          OpenAI's own video docs mark Sora 2 and the Videos API as deprecated with shutdown on 2026-09-24.
+        </p>
+      </div>
+
+      <div class="recommendation-grid">
+        <div class="tile">
+          <strong>Premium final</strong>
+          <span>Veo 3.1 for high-stakes dialogue, native audio, and Google production governance.</span>
+        </div>
+        <div class="tile">
+          <strong>Cinematic refs</strong>
+          <span>Seedance 2.0 for reference images, video, audio, native audio, and 15-second clips through fal.</span>
+        </div>
+        <div class="tile">
+          <strong>Storyboard control</strong>
+          <span>Kling 3.0 for multi-shot storyboarding, element references, native audio, and 3-15 second outputs.</span>
+        </div>
+        <div class="tile">
+          <strong>Creative editor</strong>
+          <span>Runway for Gen-4/Gen-4.5 routes, references, edits, and creator-facing production tooling.</span>
+        </div>
+        <div class="tile">
+          <strong>Cheap iteration</strong>
+          <span>Hailuo 2.3 Fast, Wan 2.5, Pika 2.2, Luma Ray, and Grok Imagine for cheaper shot exploration.</span>
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Provider/model</th>
+              <th>Access path</th>
+              <th>Inputs and controls</th>
+              <th>Listed pricing mechanics</th>
+              <th>10-second budget signal</th>
+              <th>BLOCKS fit</th>
+              <th>Sources</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Google Veo 3.1 / Veo 3</strong></td>
+              <td>Gemini Developer API paid tier.</td>
+              <td>Text/image-to-video workflows, native audio on Veo 3.x, Fast and Lite tiers, 720p/1080p/4K price bands.</td>
+              <td>Veo 3.1 Standard with audio: $0.40/sec at 720p or 1080p and $0.60/sec at 4K. Fast: $0.10/sec 720p, $0.12/sec 1080p, $0.30/sec 4K. Lite: $0.05/sec 720p and $0.08/sec 1080p.</td>
+              <td>Fast 1080p about $1.20; Standard 1080p about $4.00; Standard 4K about $6.00.</td>
+              <td>Best premium default for final shots that need audio, dialogue, and Google governance.</td>
+              <td><a class="source-tag" href="#src-gemini-veo-pricing">Veo pricing</a></td>
+            </tr>
+            <tr>
+              <td><strong>OpenAI Sora 2</strong></td>
+              <td>OpenAI Videos API while available.</td>
+              <td>Text-to-video, image references, character assets, extensions, and edits; human-likeness character uploads require eligibility.</td>
+              <td>OpenAI pricing lists Sora 2 per-second rates, including $0.10/sec for 720p and Sora 2 Pro higher-resolution tiers. The video guide says the Sora 2 models and Videos API are deprecated and shut down on 2026-09-24.</td>
+              <td>Starting tier about $1.00 for 10 seconds; Pro tiers can be several dollars per 10 seconds depending on resolution.</td>
+              <td>Do not choose as the BLOCKS default. Use only for migration testing or legacy projects already built around Sora.</td>
+              <td>
+                <a class="source-tag" href="#src-openai-sora-docs">docs</a>
+                <a class="source-tag" href="#src-openai-sora-pricing">pricing</a>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Runway Gen-4 Turbo / Gen-4.5</strong></td>
+              <td>Runway API developer portal; API credits are separate from app subscriptions.</td>
+              <td>Gen-4 Turbo image-to-video, Gen-4.5 text/image-to-video, references, edits, and mature creator tooling.</td>
+              <td>API credits are purchased at $0.01/credit. Runway lists Gen-4 Turbo at 5 credits/sec; the help credit table lists Gen-4.5 at 12 credits/sec.</td>
+              <td>Gen-4 Turbo about $0.50; Gen-4.5 about $1.20 if billed at 12 credits/sec.</td>
+              <td>Best mature creative-control route and a strong option when creators need hands-on iteration rather than one-click render.</td>
+              <td>
+                <a class="source-tag" href="#src-runway-api-pricing">API pricing</a>
+                <a class="source-tag" href="#src-runway-credit-table">credits</a>
+                <a class="source-tag" href="#src-runway-models">models</a>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>ByteDance Seedance 2.0</strong></td>
+              <td>fal partner API, with text-to-video, image-to-video, and reference-to-video endpoints.</td>
+              <td>Up to 15 seconds, native audio, multi-shot behavior, up to 9 image references, 3 video clips, and 3 audio clips on reference-to-video.</td>
+              <td>fal text-to-video lists 720p with audio at $0.3034/sec; Fast at $0.2419/sec. Reference-to-video lists $0.3024/sec standard, $0.2419/sec Fast, and 0.6x pricing when video input is used.</td>
+              <td>Text-to-video Standard about $3.03; Fast about $2.42; reference Fast with video input about $1.45.</td>
+              <td>Strong cinematic candidate for reference-heavy shots. Require IP, safety, and provider-access review before production defaulting.</td>
+              <td>
+                <a class="source-tag" href="#src-seedance-fal">fal</a>
+                <a class="source-tag" href="#src-seedance-reference">refs</a>
+                <a class="source-tag" href="#src-seedance-paper">paper</a>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Kling 3.0 / Kling 3.0 Omni</strong></td>
+              <td>fal API endpoints for V3 and O3 variants; official Kling app subscriptions remain separate.</td>
+              <td>Text-to-video, image-to-video, start/end frame control, element references, video character references, multi-shot storyboarding, native audio, 3-15 second outputs.</td>
+              <td>fal describes pay-per-second pricing from $0.168/sec for Standard audio-off to $0.392/sec for higher-control V3 Pro modes; examples include $1.12 for 5 seconds on O3 Standard with audio.</td>
+              <td>About $1.68 to $3.92 depending on tier, audio, and control mode.</td>
+              <td>Best fit for structured scene control, recurring characters inside a generation, and director-like shot decomposition.</td>
+              <td><a class="source-tag" href="#src-kling-fal">Kling on fal</a></td>
+            </tr>
+            <tr>
+              <td><strong>MiniMax Hailuo 2.3 / 2.3 Fast</strong></td>
+              <td>MiniMax API video packages; also available through aggregators.</td>
+              <td>Text-to-video and image-to-video, 768p/1080p, 6-second and 10-second outputs; Fast and quality tiers.</td>
+              <td>MiniMax sells video units in packages. Example deductions: Hailuo 2.3 Fast uses 0.7 unit for 768p 6s, 1.1 units for 768p 10s, and 1.3 units for 1080p 6s; Hailuo 2.3 uses 1 unit for 768p 6s and 2 units for 768p 10s.</td>
+              <td>Using the public package math, 768p 10s Fast is roughly $0.25-$0.29, depending on pack discount.</td>
+              <td>Excellent cheap iteration route. Use for draft shots, B-roll, and batch exploration where premium audio/dialogue quality is not mandatory.</td>
+              <td>
+                <a class="source-tag" href="#src-minimax-video-pricing">packages</a>
+                <a class="source-tag" href="#src-minimax-video-docs">docs</a>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Luma Ray 2 / Ray 2 Modify</strong></td>
+              <td>Luma Dream Machine API or fal endpoints.</td>
+              <td>Text-to-video, image-to-video, loop mode, aspect-ratio control, 540p/720p/1080p, and Modify video workflows.</td>
+              <td>fal lists Ray 2 at $0.50 per 5-second base clip, with 720p at 2x and 1080p at 4x. Luma docs list Modify Video examples such as Ray 2, 720p, 5s at $1.75.</td>
+              <td>Base 10s about $1.00; 720p about $2.00; 1080p about $4.00. Modify is more expensive.</td>
+              <td>Good natural-motion and video-edit candidate, especially when the shot needs believable physics more than the cheapest render.</td>
+              <td>
+                <a class="source-tag" href="#src-luma-ray2-fal">Ray 2</a>
+                <a class="source-tag" href="#src-luma-modify">Modify</a>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>Pika 2.2</strong></td>
+              <td>fal API endpoints for text-to-video and image-to-video.</td>
+              <td>5-10 second clips, 720p/1080p, broad aspect ratios, Pika Scenes and effects routes through related endpoints.</td>
+              <td>fal lists Pika v2.2 at $0.20 per 5-second 720p video and $0.45 per 5-second 1080p video.</td>
+              <td>About $0.40 for 720p or $0.90 for 1080p 10-second output.</td>
+              <td>Useful for inexpensive social-format tests and stylized motion. Not the first premium cinema-default pick.</td>
+              <td><a class="source-tag" href="#src-pika-fal">Pika on fal</a></td>
+            </tr>
+            <tr>
+              <td><strong>Alibaba Wan 2.5 / Wan 2.2</strong></td>
+              <td>fal Wan 2.5 Preview, WaveSpeedAI Wan 2.2 variants, and open-weight/self-host experiments.</td>
+              <td>Text-to-video, image-to-video variants, audio URL conditioning on fal Wan 2.5, and open model paths for Wan 2.2 A14B.</td>
+              <td>fal lists Wan 2.5 at $0.05/sec for 480p, $0.10/sec for 720p, and $0.15/sec for 1080p. WaveSpeed describes Wan 2.2 variants starting from image-to-video around $0.15 per generated unit depending on route.</td>
+              <td>Wan 2.5 about $0.50, $1.00, or $1.50 by resolution for 10 seconds.</td>
+              <td>Best open/self-hostable render lane to evaluate. Use as the long-term cost-control path if quality passes BLOCKS evals.</td>
+              <td>
+                <a class="source-tag" href="#src-wan25-fal">Wan 2.5</a>
+                <a class="source-tag" href="#src-wan22-wavespeed">Wan 2.2</a>
+                <a class="source-tag" href="#src-arena-video-open">open leaderboard</a>
+              </td>
+            </tr>
+            <tr>
+              <td><strong>xAI Grok Imagine Video</strong></td>
+              <td>xAI API, Replicate official model, and other gateways.</td>
+              <td>Text, image, and video inputs to video; 480p/720p output; image/video conditioning has separate input fees.</td>
+              <td>xAI docs list output at $0.05/sec for 480p and $0.07/sec for 720p, plus image input at $0.002 and video input at $0.01/sec. Replicate lists $0.05/sec for output video.</td>
+              <td>About $0.50 at 480p or $0.70 at 720p, plus conditioning inputs.</td>
+              <td>Promising cheap experimental lane, but keep it behind evals and policy review.</td>
+              <td>
+                <a class="source-tag" href="#src-xai-video-pricing">xAI pricing</a>
+                <a class="source-tag" href="#src-replicate-grok-video">Replicate</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>How to route shots</h3>
+      <ul>
+        <li><strong>Dialogue with native audio:</strong> Veo first, then Seedance/Kling when character reference or multi-shot structure matters more than polished dialogue.</li>
+        <li><strong>Character continuity:</strong> Kling O3 or Seedance reference-to-video, then verify the output with the VLM verifier. Do not trust the generator's own self-rating.</li>
+        <li><strong>Cheap exploration:</strong> Hailuo 2.3 Fast, Wan 2.5 480p/720p, Pika 720p, or Grok 480p. Promote only winning drafts to a premium route.</li>
+        <li><strong>Open/self-host path:</strong> Start with Wan 2.2/Wan 2.5 and LTX/Hunyuan-class models through hosted APIs, then test local GPUs once the prompt format stabilizes.</li>
+        <li><strong>Manual creator control:</strong> Runway remains valuable when the user wants a production surface, edits, references, and art-direction tools rather than a raw API output.</li>
+      </ul>
+    </section>
+
+    <section id="pricing">
+      <h2>VLM Pricing Table and Example Costs</h2>
+      <p>
+        The example check below assumes one rendered frame plus one reference sheet, about 4,000 input token-equivalent
+        units after image tokenization/downsampling, and 220 output tokens for the JSON report. Real media tokenization
+        differs by provider, image size, cache state, region, service tier, and aggregator markup.
+      </p>
+      <div class="formula">
+        example_cost = (4,000 / 1,000,000 * input_price_per_MTok) + (220 / 1,000,000 * output_price_per_MTok)
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Provider/model family</th>
+              <th>Listed pricing mechanics</th>
+              <th>Approx. identity check</th>
+              <th>Notes for BLOCKS</th>
+              <th>Source</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>OpenAI GPT-5.5</strong></td>
+              <td>$5.00 / 1M input tokens, $30.00 / 1M output tokens. Images are converted into tokens; text models price image tokens at text token rates.</td>
+              <td>About $0.0266/check under the example formula.</td>
+              <td>Use as high-quality judge, not default. Batch/flex can lower cost when latency is flexible.</td>
+              <td><a class="source-tag" href="#src-openai-pricing">OpenAI pricing</a></td>
+            </tr>
+            <tr>
+              <td><strong>OpenAI GPT-5.4 mini</strong></td>
+              <td>$0.75 / 1M input tokens, $4.50 / 1M output tokens.</td>
+              <td>About $0.0040/check.</td>
+              <td>Potential cost/performance default if OpenAI is already configured; compare against Gemini Flash on the eval set.</td>
+              <td><a class="source-tag" href="#src-openai-pricing">OpenAI pricing</a></td>
+            </tr>
+            <tr>
+              <td><strong>Gemini 2.5 Flash</strong></td>
+              <td>$0.30 / 1M text/image/video input tokens and $2.50 / 1M output tokens in the paid tier shown.</td>
+              <td>About $0.0018/check.</td>
+              <td>Best first implementation target if available; native video path keeps v2 simple.</td>
+              <td><a class="source-tag" href="#src-gemini-pricing">Gemini pricing</a></td>
+            </tr>
+            <tr>
+              <td><strong>Gemini 2.5 Flash-Lite Preview</strong></td>
+              <td>$0.10 / 1M text/image/video input tokens and $0.40 / 1M output tokens in Standard paid tier; Batch input $0.05 and output $0.20.</td>
+              <td>About $0.00049/check Standard; about $0.00024/check Batch.</td>
+              <td>Cheapest Google-owned fallback, but preview/rate-limit caveats mean it should not be the only route.</td>
+              <td><a class="source-tag" href="#src-gemini-pricing">Gemini pricing</a></td>
+            </tr>
+            <tr>
+              <td><strong>Claude Sonnet 4.6</strong></td>
+              <td>$3 / 1M input tokens and $15 / 1M output tokens; prompt cache hits at 10% of base input price.</td>
+              <td>About $0.0153/check, plus exact image tokenization.</td>
+              <td>Best second-pass judge for nuanced mismatch explanations.</td>
+              <td><a class="source-tag" href="#src-claude-pricing">Claude pricing</a></td>
+            </tr>
+            <tr>
+              <td><strong>Claude Opus 4.8</strong></td>
+              <td>$5 / 1M input tokens and $25 / 1M output tokens; high-resolution images can use more image tokens.</td>
+              <td>About $0.0255/check before high-res image effects.</td>
+              <td>Reserve for low-confidence adjudication and premium review.</td>
+              <td><a class="source-tag" href="#src-claude-pricing">Claude pricing</a></td>
+            </tr>
+            <tr>
+              <td><strong>Mistral Large 3</strong></td>
+              <td>Official page lists $0.50 / 1M input tokens and $1.50 / 1M output tokens; Mistral charges per million input and output tokens.</td>
+              <td>About $0.0023/check.</td>
+              <td>Attractive open-weight multimodal route; verify identity quality before defaulting.</td>
+              <td><a class="source-tag" href="#src-mistral-pricing">Mistral pricing</a></td>
+            </tr>
+            <tr>
+              <td><strong>Mistral Medium 3.5</strong></td>
+              <td>Official page lists $1.50 / 1M input tokens and $7.50 / 1M output tokens.</td>
+              <td>About $0.0077/check.</td>
+              <td>Better reasoning/coding profile, less compelling than Large 3 for low-cost identity checks.</td>
+              <td><a class="source-tag" href="#src-mistral-pricing">Mistral pricing</a></td>
+            </tr>
+            <tr>
+              <td><strong>xAI Grok 4.3</strong></td>
+              <td>$1.25 / 1M input tokens and $2.50 / 1M output tokens; 1M context; image inputs up to 20 MiB.</td>
+              <td>About $0.0056/check.</td>
+              <td>Good price for a judge candidate; less proven for BLOCKS media QA than top three.</td>
+              <td><a class="source-tag" href="#src-xai-models">xAI models</a></td>
+            </tr>
+            <tr>
+              <td><strong>Amazon Nova</strong></td>
+              <td>Bedrock pricing is model/provider/modality/tier dependent; Nova Premier/Pro/Lite are text-image-video understanding models.</td>
+              <td>Compute from the Bedrock regional model table at runtime.</td>
+              <td>Good governed-cloud option; do not hard-code costs because AWS region/tier/marketplace settings matter.</td>
+              <td><a class="source-tag" href="#src-bedrock-pricing">Bedrock pricing</a></td>
+            </tr>
+            <tr>
+              <td><strong>Qwen3.5 Flash / Plus on Alibaba</strong></td>
+              <td>Global deployment page lists Qwen3.5 Flash at $0.029 / 1M input and $0.287 / 1M output; Qwen3.5 Plus at $0.115 / 1M input and $0.688 / 1M output.</td>
+              <td>Flash about $0.00018/check; Plus about $0.00061/check.</td>
+              <td>Excellent cheap fallback if data-region and reliability checks pass.</td>
+              <td><a class="source-tag" href="#src-alibaba-models">Alibaba models</a></td>
+            </tr>
+            <tr>
+              <td><strong>OpenRouter Qwen3.7 Plus</strong></td>
+              <td>Model API listed prompt $0.0000004/token and completion $0.0000016/token, i.e. $0.40/$1.60 per 1M tokens.</td>
+              <td>About $0.0020/check.</td>
+              <td>Great for bake-offs; avoid as the sole production path for private media unless policy is accepted.</td>
+              <td><a class="source-tag" href="#src-openrouter-models">OpenRouter models</a></td>
+            </tr>
+            <tr>
+              <td><strong>Together AI hosted VLMs</strong></td>
+              <td>Serverless prices are model-specific. The public page lists examples such as Qwen3.6-Plus at $0.50/$3.00 per 1M tokens and MiniMax M2.7 at $0.30/$1.20.</td>
+              <td>Qwen3.6-Plus example about $0.0027/check.</td>
+              <td>Good host for open-model variants; capability catalog should be loaded into playbooks.</td>
+              <td><a class="source-tag" href="#src-together-pricing">Together pricing</a></td>
+            </tr>
+            <tr>
+              <td><strong>Fireworks hosted VLMs</strong></td>
+              <td>Serverless model-specific pricing; docs support OpenAI-compatible VLM calls and structured JSON/grammar mode.</td>
+              <td>Measure with selected model and usage telemetry.</td>
+              <td>Good production open-model host when JSON schema support is needed.</td>
+              <td><a class="source-tag" href="#src-fireworks-vision">Fireworks docs</a></td>
+            </tr>
+            <tr>
+              <td><strong>Twelve Labs Pegasus/Marengo</strong></td>
+              <td>Developer plan: Marengo video indexing $0.042/min, search $4/1,000 queries; Pegasus Analyze input video $0.0292/min and output text $0.0075/1k tokens.</td>
+              <td>Example 2-minute reference clip plus 1k output: about $0.066 for Pegasus Analyze.</td>
+              <td>Use for reference-video intake, not every still-frame identity check.</td>
+              <td><a class="source-tag" href="#src-twelvelabs-pricing">Twelve Labs pricing</a></td>
+            </tr>
+            <tr>
+              <td><strong>Replicate OSS VLMs</strong></td>
+              <td>Some models bill by input/output; others by hardware time. Example hardware rates include T4 at $0.000225/sec and H100 at $0.001525/sec.</td>
+              <td>Measure runtime per model. A 4-second H100 check would be about $0.0061 before model-specific overhead.</td>
+              <td>Good experiment platform; less predictable as a verifier default.</td>
+              <td><a class="source-tag" href="#src-replicate-pricing">Replicate pricing</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="quality">
+      <h2>Quality and Benchmark Read</h2>
+      <div class="callout warning">
+        <h3>Benchmark caveat</h3>
+        <p>
+          None of the public leaderboards directly measure BLOCKS Cinema's core question: "Does this rendered character
+          still match the approved reference promise?" Use public rankings to select candidates, then run a local
+          pass/fail set built from BLOCKS assets.
+        </p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Source</th>
+              <th>What it says</th>
+              <th>BLOCKS relevance</th>
+              <th>How to use it</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>LMArena Vision</strong></td>
+              <td>As of the June 3, 2026 page, 968,721 votes across 128 models. Claude Opus 4.7 thinking variants led the overall table; Gemini 3 Pro, GPT-5.5, Gemini Flash, Qwen3.7 Plus, Grok 4.3, Gemini 2.5, Qwen3-VL, and GPT-4.1 all appeared in the visible top cluster.</td>
+              <td>Best live human-preference signal for general visual reasoning and OCR categories.</td>
+              <td>Use it to choose judge candidates and spot regressions, not to set production thresholds.</td>
+            </tr>
+            <tr>
+              <td><strong><a href="#src-artificial-video">Artificial Analysis Text to Video</a></strong></td>
+              <td>The live crowdsourced text-to-video table places Seedance 2.0, Veo 3.1, Kling 3.0 variants, Sora 2, Grok Imagine, Vidu, and Veo Lite in the visible top group, with API pricing shown per minute for several providers.</td>
+              <td>Best broad quality signal for render-provider candidates, but it does not measure BLOCKS-specific continuity or usable-clip yield.</td>
+              <td>Use it to shortlist render providers, then run the same shot prompts and references through BLOCKS' own verifier.</td>
+            </tr>
+            <tr>
+              <td><strong>Artificial Analysis</strong></td>
+              <td>Tracks model/provider analysis across quality, price, speed, and availability.</td>
+              <td>Useful operational sanity check for cost and latency drift.</td>
+              <td>Compare against provider pricing before changing defaults.</td>
+            </tr>
+            <tr>
+              <td><strong>MMMU / MMMU-Pro</strong></td>
+              <td>Expert multimodal reasoning benchmarks across disciplines.</td>
+              <td>Useful for difficult visual reasoning, less direct for stylized identity continuity.</td>
+              <td>Prefer models that are strong here for second-pass judging.</td>
+            </tr>
+            <tr>
+              <td><strong>MathVista</strong></td>
+              <td>Visual math and diagram reasoning.</td>
+              <td>Low direct relevance except for layout/spatial reasoning weaknesses.</td>
+              <td>Use only as a proxy for visual reasoning robustness.</td>
+            </tr>
+            <tr>
+              <td><strong>OCRBench / MultimodalOCR</strong></td>
+              <td>Measures OCR ability in large multimodal models.</td>
+              <td>Relevant to subtitles, credits, signage, call sheets, and document/image text extraction.</td>
+              <td>Pair a VLM with classic OCR when exact text matters.</td>
+            </tr>
+            <tr>
+              <td><strong>Video-MME</strong></td>
+              <td>Video understanding and temporal reasoning benchmark.</td>
+              <td>Relevant to reference-video intake, pacing, shot continuity, and post-render video QA.</td>
+              <td>Use it to shortlist video-capable generalists, then run BLOCKS clips.</td>
+            </tr>
+            <tr>
+              <td><strong>CompareBench</strong></td>
+              <td>Focuses on visual comparison reasoning across closed and open VLMs.</td>
+              <td>Highly relevant because BLOCKS identity verification is a visual comparison task.</td>
+              <td>Use its task framing when designing the internal eval set.</td>
+            </tr>
+            <tr>
+              <td><strong>Qwen2.5-VL technical report</strong></td>
+              <td>Documents Qwen vision-language model capabilities and evaluation claims.</td>
+              <td>Supports Qwen as the leading open-source/self-host candidate family.</td>
+              <td>Treat as model-family evidence; still test the exact hosted checkpoint.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="community">
+      <h2>Community Sentiment Summary</h2>
+      <p>
+        Community sources are anecdotal, biased toward vocal builders, and often refer to older model versions. They are
+        still useful for finding integration pain before it hits production.
+      </p>
+      <div class="provider-grid">
+        <div class="provider-card">
+          <strong>Qwen/open VLMs</strong>
+          <p>
+            Builder sentiment around Qwen2.5-VL/Qwen3-VL is unusually strong for OCR and structured visual tasks, with
+            LocalLLaMA posts comparing Qwen favorably against closed models in narrow tests. The downside is operational:
+            local inference can be slow or inconsistent depending on quantization, vision projector, GPU memory, and
+            preprocessing.
+          </p>
+          <a class="source-tag" href="#src-reddit-qwen-ocr">Reddit OCR</a>
+          <a class="source-tag" href="#src-reddit-qwen-compare">Reddit comparison</a>
+          <a class="source-tag" href="#src-vllm-qwen">vLLM latency</a>
+        </div>
+        <div class="provider-card">
+          <strong>Gemini</strong>
+          <p>
+            Builders consistently cite Gemini Flash as strong price/performance, especially for multimodal/video work.
+            The caution is structured extraction reliability through compatibility layers: forum reports describe schema
+            drift or ignored fields, so BLOCKS should use the native schema path and validate/retry.
+          </p>
+          <a class="source-tag" href="#src-gemini-forum-schema">Forum schema</a>
+          <a class="source-tag" href="#src-gemini-forum-openai">OpenAI layer issue</a>
+        </div>
+        <div class="provider-card">
+          <strong>OpenAI and Claude</strong>
+          <p>
+            Community and benchmark sentiment treat these as high-quality, production-mature options, but cost is the
+            recurring concern. Claude is liked for nuanced judgment; OpenAI is attractive when strict structured outputs
+            and SDK maturity matter.
+          </p>
+          <a class="source-tag" href="#src-lmarena">LMArena</a>
+          <a class="source-tag" href="#src-openai-structured">OpenAI JSON</a>
+          <a class="source-tag" href="#src-claude-vision">Claude vision</a>
+        </div>
+        <div class="provider-card">
+          <strong>Twelve Labs</strong>
+          <p>
+            Independent tool directories and reviews describe Twelve Labs as developer-oriented and video-first. The
+            useful signal is not generic "best VLM" quality; it is that indexing, semantic search, summaries, and temporal
+            video querying are first-class product concepts.
+          </p>
+          <a class="source-tag" href="#src-twelvelabs-pricing">Pricing</a>
+          <a class="source-tag" href="#src-twelvelabs-review">Review</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="providers">
+      <h2>Strengths and Weaknesses by Provider</h2>
+      <div class="provider-grid">
+        <article class="provider-card">
+          <strong>OpenAI</strong>
+          <p><b>Strengths:</b> mature API, high-quality vision, strict JSON schema path, high image payload limits, good SDKs, strong production posture.</p>
+          <p><b>Weaknesses:</b> frontier models are costly for high-volume checks; native long-video understanding is weaker than Gemini/Twelve Labs.</p>
+          <p><b>Best use:</b> schema-reliable judge, premium adjudication, fallback for providers that drift.</p>
+        </article>
+        <article class="provider-card">
+          <strong>Google Gemini</strong>
+          <p><b>Strengths:</b> best full-stack fit: still images, multi-image, videos, files, YouTube preview, timestamps, context caching, structured outputs.</p>
+          <p><b>Weaknesses:</b> model lineup and pricing tiers are moving; structured JSON needs native implementation and local validation.</p>
+          <p><b>Best use:</b> default v1 verifier and v2 reference-video intake generalist.</p>
+        </article>
+        <article class="provider-card">
+          <strong>Anthropic Claude</strong>
+          <p><b>Strengths:</b> top-tier visual judgment in LMArena, many-image support, clear image token math, careful qualitative explanations.</p>
+          <p><b>Weaknesses:</b> no native video clip analysis; high-quality Opus is expensive; policies around identifying people require prompt care.</p>
+          <p><b>Best use:</b> second-pass identity judge and narrative-quality review.</p>
+        </article>
+        <article class="provider-card">
+          <strong>Mistral</strong>
+          <p><b>Strengths:</b> strong open-weight multimodal lineup, attractive Large 3 pricing, EU/enterprise story, OpenAI-like vision calls.</p>
+          <p><b>Weaknesses:</b> public naming shifted from Pixtral to newer Mistral/Ministral families; not a video specialist.</p>
+          <p><b>Best use:</b> open-model host/self-host option and cost-effective image judge candidate.</p>
+        </article>
+        <article class="provider-card">
+          <strong>xAI Grok</strong>
+          <p><b>Strengths:</b> simple pricing, image support, large context, OpenAI-compatible usage path.</p>
+          <p><b>Weaknesses:</b> less evidence for BLOCKS-specific identity QA; video product is generation-oriented.</p>
+          <p><b>Best use:</b> experimental low-cost judge after eval pass.</p>
+        </article>
+        <article class="provider-card">
+          <strong>Amazon Nova / Bedrock</strong>
+          <p><b>Strengths:</b> native text-image-video understanding models, AWS governance, cross-region inference, model marketplace breadth.</p>
+          <p><b>Weaknesses:</b> pricing and capability details are region/provider/tier-specific; integration more complex than direct APIs.</p>
+          <p><b>Best use:</b> enterprise deployments, AWS procurement, governed data routing.</p>
+        </article>
+        <article class="provider-card">
+          <strong>Azure AI Vision / Azure OpenAI</strong>
+          <p><b>Strengths:</b> Azure OpenAI for GPT-family multimodal models; Azure Vision for OCR/object/image-property services.</p>
+          <p><b>Weaknesses:</b> classic Vision API is not a semantic VLM judge; model availability/pricing is regional.</p>
+          <p><b>Best use:</b> Microsoft-aligned enterprise deployments and auxiliary OCR/black-frame checks.</p>
+        </article>
+        <article class="provider-card">
+          <strong>Google Cloud Vision</strong>
+          <p><b>Strengths:</b> stable classic CV API for OCR, labels, objects, image properties, web matches, and SafeSearch.</p>
+          <p><b>Weaknesses:</b> not a creative continuity judge.</p>
+          <p><b>Best use:</b> deterministic-ish post-render QA helpers: OCR, subtitles, dominant-color/black-frame heuristics, logos/labels.</p>
+        </article>
+        <article class="provider-card">
+          <strong>Twelve Labs</strong>
+          <p><b>Strengths:</b> video-first indexing, search, embeddings, analyze, segment, temporal relationships, speech/audio/visual integration.</p>
+          <p><b>Weaknesses:</b> not ideal for cheap per-shot still-image verification; minute-based pricing can add up on long clips.</p>
+          <p><b>Best use:</b> reference video intake, pacing/keyframe notes, querying long video libraries.</p>
+        </article>
+        <article class="provider-card">
+          <strong>Hosted open-model aggregators</strong>
+          <p><b>Strengths:</b> Together, Fireworks, OpenRouter, and Replicate make Qwen/MiniMax/Mistral/Gemma/Kimi-style VLMs easy to test.</p>
+          <p><b>Weaknesses:</b> catalog churn, per-model capability drift, privacy and SLA differences, and inconsistent JSON support.</p>
+          <p><b>Best use:</b> bake-offs, cheap fallback, eventual self-host migration path.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="implementation">
+      <h2>Implementation Recommendation for Issue #6</h2>
+      <h3>Provider interface</h3>
+      <p>
+        Add a small, explicit interface for the verification provider instead of leaking provider-specific SDK details
+        into render approval flows.
+      </p>
+      <div class="formula">
+        verifyIdentity({ renderedImage, referenceImages, characterContract, threshold, schema })
+        -> { score, status, explanation, traitMismatches, usage, providerMetadata }
+      </div>
+      <h3>Render provider interface</h3>
+      <p>
+        Keep video generation behind a different interface. A verifier returns evidence; a render provider spends money
+        and creates media, so approval gates and retry accounting must be explicit.
+      </p>
+      <div class="formula">
+        generateShot({ prompt, references, durationSeconds, resolution, aspectRatio, audioMode, routeBudget })
+        -> { asset, status, usage, normalizedCost, retryHints, providerMetadata }
+      </div>
+      <h3>Playbook metadata</h3>
+      <ul>
+        <li><code>supportsImageInput</code>, <code>supportsMultiImage</code>, <code>supportsVideoInput</code>, <code>supportsJsonSchema</code>.</li>
+        <li><code>maxImages</code>, <code>maxImageBytes</code>, <code>maxVideoBytes</code>, <code>maxVideoDurationSeconds</code>, and <code>contextWindowTokens</code>.</li>
+        <li><code>estimateVerificationCost(input)</code> with cited per-token/per-minute price and date checked.</li>
+        <li><code>validateVerificationInput(input)</code> that rejects unsupported image/video/reference combinations before approval.</li>
+        <li><code>privacyMode</code>, <code>dataRegion</code>, <code>retentionPolicyUrl</code>, and <code>sourceUrls</code>.</li>
+      </ul>
+      <h3>Render playbook metadata</h3>
+      <ul>
+        <li><code>supportsTextToVideo</code>, <code>supportsImageToVideo</code>, <code>supportsVideoToVideo</code>, <code>supportsStartEndFrames</code>, <code>supportsNativeAudio</code>.</li>
+        <li><code>supportsCharacterReference</code>, <code>supportsMultiShot</code>, <code>maxReferenceImages</code>, <code>maxReferenceVideos</code>, <code>maxDurationSeconds</code>.</li>
+        <li><code>pricingUnit</code> as <code>perSecond</code>, <code>perClip</code>, <code>credit</code>, <code>unitPack</code>, or <code>computeSecond</code>.</li>
+        <li><code>estimateRenderCost(route)</code> with resolution, audio, duration, reference mode, retry count, and source URL.</li>
+        <li><code>refundPolicy</code>, <code>moderationFeePolicy</code>, <code>watermarkPolicy</code>, <code>commercialUsePolicy</code>, and <code>likenessPolicy</code>.</li>
+      </ul>
+      <h3>V1 execution path</h3>
+      <ol>
+        <li>Extract one rendered frame for the shot or still render output.</li>
+        <li>For each character, send one rendered image plus one to three reference images, not the entire production bible.</li>
+        <li>Ask for the existing v1 JSON only: <code>score</code>, <code>status</code>, <code>explanation</code>, <code>traitMismatches</code>.</li>
+        <li>Validate JSON with a local schema. If invalid, retry once with a repair prompt or provider-native schema mode.</li>
+        <li>If the default provider returns <code>warn</code>, <code>fail</code>, or low confidence, optionally escalate to the high-quality judge.</li>
+        <li>Store report, raw provider usage, normalized cost estimate, and prompt/model version for audit.</li>
+        <li>Never auto-regenerate or auto-spend. The report remains advisory, matching the v1 contract.</li>
+      </ol>
+      <h3>Golden eval set</h3>
+      <ul>
+        <li>At least 30 pass pairs: same character, different pose/lighting/style within accepted range.</li>
+        <li>At least 30 fail pairs: wrong character, swapped outfit, missing must-keep trait, forbidden accessory, incorrect silhouette.</li>
+        <li>At least 20 warn pairs: stylization drift, partial occlusion, low light, minor wardrobe mismatch.</li>
+        <li>At least 10 malformed-output tests per provider: timeout, non-JSON, truncated JSON, safety refusal, oversized image.</li>
+        <li>Record per-provider score distributions; set provider-specific calibration thresholds instead of assuming one universal score scale.</li>
+      </ul>
+      <h3>Concrete rollout</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Phase</th>
+              <th>Work</th>
+              <th>Provider</th>
+              <th>Exit criteria</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Mock provider and schema validation.</td>
+              <td>Local/mock only.</td>
+              <td>Existing tests from <code>08_VERIFICATION_AGENT.md</code> pass.</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Direct Gemini Flash adapter with cost estimates and source metadata.</td>
+              <td>Gemini 2.5 Flash or current Flash equivalent.</td>
+              <td>Golden eval JSON validity >= 99%; pass/fail separation acceptable for advisory use.</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Escalation judge adapter.</td>
+              <td>Claude Sonnet/Opus or OpenAI GPT frontier.</td>
+              <td>Warn/fail adjudication improves human agreement without excessive cost.</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>Cheap fallback and open-model bake-off.</td>
+              <td>Qwen via Alibaba/OpenRouter/Together/Fireworks.</td>
+              <td>Cost is lower and false-pass rate does not exceed default route.</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>Reference-video intake.</td>
+              <td>Twelve Labs plus Gemini/Nova comparison.</td>
+              <td>Can produce pacing/keyframe/search notes with auditable minute-based cost.</td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td>Render-provider bake-off and budget estimator.</td>
+              <td>Veo, Seedance, Kling, Runway, Hailuo, Wan, Pika, Luma, Grok.</td>
+              <td>Every route exposes pre-approval cost, duration/resolution limits, retry yield, and post-render verifier score.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="risks">
+      <h2>Risks and Unknowns</h2>
+      <div class="callout risk">
+        <h3>Do not overfit to a leaderboard</h3>
+        <p>
+          The top model on a public vision leaderboard can still be bad at stylized character continuity, and a cheaper
+          open VLM can be good enough if the prompt and reference sheet format are stable. BLOCKS needs its own eval loop.
+        </p>
+      </div>
+      <ul>
+        <li><strong>Pricing churn:</strong> Vendors changed model names and prices frequently in this research window. Store source URLs and checked dates with every playbook.</li>
+        <li><strong>Image tokenization mismatch:</strong> The same two images can be 500 tokens on one provider and several thousand on another. Downsample intentionally and track usage.</li>
+        <li><strong>Schema fragility:</strong> Even with structured-output features, malformed or truncated JSON happens. Local validation and retry must be mandatory.</li>
+        <li><strong>Identity policy boundaries:</strong> Do not ask a model to identify real people. BLOCKS should frame verification as fictional character/reference consistency.</li>
+        <li><strong>Video cost surprise:</strong> Video minute pricing, storage, indexing, and cache charges differ from image checks. Require explicit cost estimates before video upload.</li>
+        <li><strong>Render retry waste:</strong> The real cost per usable clip is often several times the listed generation cost because failed motion, bad hands/faces, wrong wardrobe, or policy rejections require reruns.</li>
+        <li><strong>Rights and likeness risk:</strong> Video generators can preserve or imitate references too well. BLOCKS should keep fictional-character consent, source ownership, and IP restrictions visible before rendering.</li>
+        <li><strong>Sora deprecation:</strong> OpenAI's Sora 2 API is not a stable long-term provider choice if the documented 2026-09-24 shutdown still applies.</li>
+        <li><strong>Community reports are anecdotal:</strong> Reddit/forum posts are useful warning lights, not definitive evidence.</li>
+        <li><strong>Aggregator privacy:</strong> OpenRouter-style routing is convenient for tests, but production media privacy and retention requirements need explicit approval.</li>
+        <li><strong>Self-host latency:</strong> Open VLMs can bottleneck on image preprocessing and TTFT; measure with real BLOCKS image sizes.</li>
+      </ul>
+    </section>
+
+    <section id="bibliography">
+      <h2>Source Bibliography</h2>
+      <ol class="bibliography">
+        <li id="src-openai-pricing"><a href="https://openai.com/api/pricing/">OpenAI API pricing</a> - model pricing, image token pricing mechanics, batch/flex notes.</li>
+        <li id="src-openai-models"><a href="https://developers.openai.com/api/docs/models">OpenAI model docs</a> - current model families and modalities.</li>
+        <li id="src-openai-vision"><a href="https://developers.openai.com/api/docs/guides/images-vision">OpenAI images and vision guide</a> - image inputs, endpoints, file limits, image cost note.</li>
+        <li id="src-openai-structured"><a href="https://developers.openai.com/api/docs/guides/structured-outputs">OpenAI structured outputs guide</a> - strict JSON schema usage.</li>
+        <li id="src-openai-sora-docs"><a href="https://developers.openai.com/api/docs/guides/video-generation">OpenAI Sora video generation guide</a> - Videos API capabilities, references, characters, extensions, edits, and deprecation notice.</li>
+        <li id="src-openai-sora-pricing"><a href="https://openai.com/api/pricing/">OpenAI Sora Video API pricing</a> - listed Sora 2 per-second pricing table on the OpenAI pricing page.</li>
+        <li id="src-gemini-pricing"><a href="https://ai.google.dev/gemini-api/docs/pricing">Google Gemini API pricing</a> - Gemini 2.5/3.x pricing, Flash/Flash-Lite tiers, caching/tool pricing.</li>
+        <li id="src-gemini-veo-pricing"><a href="https://ai.google.dev/gemini-api/docs/pricing#veo-31">Google Gemini API Veo pricing</a> - Veo 3.1, Veo 3, and Veo 2 per-second video generation pricing.</li>
+        <li id="src-gemini-models"><a href="https://ai.google.dev/gemini-api/docs/models">Google Gemini model docs</a> - current Gemini model list and modalities.</li>
+        <li id="src-gemini-video"><a href="https://ai.google.dev/gemini-api/docs/video-understanding">Google Gemini video understanding</a> - video input methods, File API, YouTube URLs, timestamps, caching.</li>
+        <li id="src-gemini-structured"><a href="https://ai.google.dev/gemini-api/docs/structured-output">Google Gemini structured outputs</a> - JSON schema response configuration.</li>
+        <li id="src-runway-api-pricing"><a href="https://docs.dev.runwayml.com/guides/pricing">Runway API pricing</a> - API credit mechanics and $0.01 per credit.</li>
+        <li id="src-runway-credit-table"><a href="https://help.runwayml.com/hc/en-us/articles/15124877443219-How-do-credits-work">Runway credit table</a> - generation credit burn rates such as Gen-4.5 and Gen-4 Turbo.</li>
+        <li id="src-runway-models"><a href="https://docs.dev.runwayml.com/guides/models">Runway API models</a> - available video generation models and API model list.</li>
+        <li id="src-claude-pricing"><a href="https://platform.claude.com/docs/en/about-claude/pricing">Anthropic Claude pricing</a> - Opus/Sonnet/Haiku pricing, cache and batch modifiers.</li>
+        <li id="src-claude-vision"><a href="https://platform.claude.com/docs/en/build-with-claude/vision">Anthropic Claude vision docs</a> - multiple images, image limits, token estimation, limitations.</li>
+        <li id="src-claude-models"><a href="https://docs.anthropic.com/en/docs/about-claude/models/overview">Anthropic model overview</a> - current Claude model families and context.</li>
+        <li id="src-mistral-vision"><a href="https://docs.mistral.ai/studio-api/conversations/vision">Mistral vision docs</a> - image URL/base64 vision calls and recommended vision models.</li>
+        <li id="src-mistral-models"><a href="https://docs.mistral.ai/models/overview">Mistral models overview</a> - Large 3, Medium 3.5, Ministral 3, and multimodal model lineup.</li>
+        <li id="src-mistral-pricing"><a href="https://mistral.ai/pricing/">Mistral pricing</a> - per-million-token API pricing examples and current multimodal model prices.</li>
+        <li id="src-xai-models"><a href="https://docs.x.ai/developers/models">xAI models and pricing</a> - Grok 4.3 pricing, context, image input limits, model guidance.</li>
+        <li id="src-xai-image"><a href="https://docs.x.ai/developers/model-capabilities/images/understanding">xAI image understanding docs</a> - image prompt format and examples.</li>
+        <li id="src-xai-structured"><a href="https://docs.x.ai/developers/model-capabilities/text/structured-outputs">xAI structured outputs docs</a> - structured output capability.</li>
+        <li id="src-xai-video-pricing"><a href="https://docs.x.ai/models/grok-imagine-video">xAI Grok Imagine Video docs</a> - text/image/video-to-video model details and output/input pricing.</li>
+        <li id="src-aws-nova"><a href="https://docs.aws.amazon.com/nova/latest/userguide/what-is-nova.html">Amazon Nova docs</a> - Nova Premier/Pro/Lite multimodal understanding specs.</li>
+        <li id="src-bedrock-pricing"><a href="https://aws.amazon.com/bedrock/pricing/">Amazon Bedrock pricing</a> - model/provider/modality/tier pricing mechanics.</li>
+        <li id="src-azure-openai"><a href="https://azure.microsoft.com/en-us/pricing/details/azure-openai/">Azure OpenAI pricing</a> - Azure-hosted model pricing.</li>
+        <li id="src-azure-vision"><a href="https://learn.microsoft.com/en-us/azure/ai-services/computer-vision/overview">Azure Vision overview</a> - Azure Vision feature positioning.</li>
+        <li id="src-azure-vision-pricing"><a href="https://azure.microsoft.com/en-us/pricing/details/computer-vision/">Azure Vision pricing</a> - classic computer vision pricing.</li>
+        <li id="src-gcv-features"><a href="https://cloud.google.com/vision/docs/features-list">Google Cloud Vision features</a> - OCR, object, label, image-property, web, face, SafeSearch APIs.</li>
+        <li id="src-gcv-pricing"><a href="https://cloud.google.com/vision/pricing">Google Cloud Vision pricing</a> - classic CV pricing.</li>
+        <li id="src-twelvelabs-pricing"><a href="https://www.twelvelabs.io/pricing">Twelve Labs pricing</a> - Marengo/Pegasus free/developer/enterprise pricing.</li>
+        <li id="src-twelvelabs-docs"><a href="https://docs.twelvelabs.io/docs/get-started/introduction">Twelve Labs docs</a> - platform and API documentation.</li>
+        <li id="src-seedance-fal"><a href="https://fal.ai/models/bytedance/seedance-2.0/text-to-video">Seedance 2.0 text-to-video on fal</a> - endpoint list, input schema, duration/resolution options, and per-second pricing.</li>
+        <li id="src-seedance-reference"><a href="https://fal.ai/models/bytedance/seedance-2.0/reference-to-video">Seedance 2.0 reference-to-video on fal</a> - reference image/video/audio inputs and per-second pricing variants.</li>
+        <li id="src-seedance-paper"><a href="https://arxiv.org/abs/2604.14148">Seedance 2.0 technical paper</a> - multimodal audio-video generation capabilities and model positioning.</li>
+        <li id="src-kling-fal"><a href="https://fal.ai/kling-3">Kling 3.0 on fal</a> - V3/O3 capabilities, native audio, multi-shot storyboarding, reference controls, and pricing range.</li>
+        <li id="src-minimax-video-pricing"><a href="https://platform.minimax.io/docs/guides/pricing-video">MiniMax video package pricing</a> - Hailuo 2.3 video unit packages and per-generation unit deductions.</li>
+        <li id="src-minimax-video-docs"><a href="https://platform.minimax.io/docs/guides/video-generation">MiniMax video generation docs</a> - API workflow and model usage.</li>
+        <li id="src-luma-ray2-fal"><a href="https://fal.ai/models/fal-ai/luma-dream-machine/ray-2">Luma Ray 2 on fal</a> - Ray 2 text-to-video pricing, duration, resolution multipliers, and API details.</li>
+        <li id="src-luma-modify"><a href="https://docs.lumalabs.ai/docs/modify-video">Luma Modify Video docs</a> - Ray 2 video-to-video modification pricing examples.</li>
+        <li id="src-pika-fal"><a href="https://fal.ai/models/fal-ai/pika/v2.2/text-to-video">Pika 2.2 on fal</a> - Pika v2.2 text-to-video pricing and supported resolutions.</li>
+        <li id="src-wan25-fal"><a href="https://fal.ai/models/fal-ai/wan-25-preview/text-to-video/playground">Wan 2.5 on fal</a> - Wan 2.5 text-to-video pricing by resolution and audio input support.</li>
+        <li id="src-wan22-wavespeed"><a href="https://wavespeed.ai/wan-2-2-api">Wan 2.2 on WaveSpeedAI</a> - Alibaba Wan 2.2 hosted variants, image-to-video routes, and API positioning.</li>
+        <li id="src-together-pricing"><a href="https://www.together.ai/pricing">Together AI pricing</a> - serverless model prices and modality categories.</li>
+        <li id="src-together-vision"><a href="https://docs.together.ai/docs/inference/vision/overview">Together AI vision docs</a> - image inputs, structured replies, model catalog pointers.</li>
+        <li id="src-fireworks-pricing"><a href="https://fireworks.ai/pricing">Fireworks pricing</a> - serverless/dedicated pricing page.</li>
+        <li id="src-fireworks-vision"><a href="https://docs.fireworks.ai/guides/querying-vision-language-models">Fireworks VLM docs</a> - OpenAI-compatible image URL/base64 calls, image handling notes.</li>
+        <li id="src-fireworks-structured"><a href="https://docs.fireworks.ai/structured-responses/structured-response-formatting">Fireworks structured outputs</a> - JSON schema and grammar mode.</li>
+        <li id="src-openrouter-models"><a href="https://openrouter.ai/api/v1/models">OpenRouter models API</a> - live catalog, modalities, context, and per-token pricing used for aggregator examples.</li>
+        <li id="src-openrouter-multimodal"><a href="https://openrouter.ai/docs/features/multimodal">OpenRouter multimodal docs</a> - multimodal usage and cost/usage accounting.</li>
+        <li id="src-replicate-pricing"><a href="https://replicate.com/pricing">Replicate pricing</a> - per-second GPU pricing and billing modes.</li>
+        <li id="src-replicate-grok-video"><a href="https://replicate.com/xai/grok-imagine-video/api">Replicate xAI Grok Imagine Video</a> - official Replicate model page and per-second output pricing.</li>
+        <li id="src-alibaba-models"><a href="https://www.alibabacloud.com/help/en/model-studio/models">Alibaba Cloud Model Studio model list</a> - Qwen3.5 Plus/Flash modalities, deployment modes, prices.</li>
+        <li id="src-alibaba-billing"><a href="https://www.alibabacloud.com/help/en/model-studio/billing-for-model-studio">Alibaba Model Studio billing</a> - billing mechanics.</li>
+        <li id="src-lmarena"><a href="https://arena.ai/leaderboard/vision/overall">LMArena Vision leaderboard</a> - human preference leaderboard, visible June 3, 2026 rankings and prices.</li>
+        <li id="src-artificial-video"><a href="https://artificialanalysis.ai/embed/text-to-video-leaderboard/leaderboard/text-to-video">Artificial Analysis Text to Video leaderboard</a> - crowdsourced video-generation preference leaderboard and listed API pricing.</li>
+        <li id="src-arena-video-open"><a href="https://arena.ai/leaderboard/text-to-video?license=open-source">LMArena Text-to-Video open-source leaderboard</a> - open model text-to-video rankings including Wan and Hunyuan families.</li>
+        <li id="src-artificial-analysis"><a href="https://artificialanalysis.ai/">Artificial Analysis</a> - independent model/provider analysis for price, quality, and speed.</li>
+        <li id="src-mmmu"><a href="https://mmmu-benchmark.github.io/">MMMU benchmark</a> - expert multimodal reasoning benchmark.</li>
+        <li id="src-mmmu-pro"><a href="https://mmmu-pro.github.io/">MMMU-Pro benchmark</a> - harder expert multimodal benchmark.</li>
+        <li id="src-mathvista"><a href="https://mathvista.github.io/">MathVista benchmark</a> - visual mathematical reasoning benchmark.</li>
+        <li id="src-videomme"><a href="https://video-mme.github.io/home_page.html">Video-MME benchmark</a> - video understanding benchmark.</li>
+        <li id="src-opencompass"><a href="https://opencompass.org.cn/leaderboard-multimodal">OpenCompass multimodal leaderboard</a> - MMBench-style multimodal evaluation.</li>
+        <li id="src-ocrbench"><a href="https://github.com/Yuliang-Liu/MultimodalOCR">OCRBench / MultimodalOCR</a> - OCR benchmark for multimodal models.</li>
+        <li id="src-comparebench"><a href="https://arxiv.org/abs/2509.22737">CompareBench</a> - visual comparison reasoning benchmark.</li>
+        <li id="src-qwen-report"><a href="https://arxiv.org/abs/2502.13923">Qwen2.5-VL technical report</a> - Qwen vision-language model report.</li>
+        <li id="src-reddit-qwen-ocr"><a href="https://www.reddit.com/r/LocalLLaMA/comments/1jm4agx/qwen2572b_is_now_the_best_open_source_ocr_model/">LocalLLaMA Qwen OCR discussion</a> - anecdotal builder reports on Qwen VLM OCR.</li>
+        <li id="src-reddit-qwen-compare"><a href="https://www.reddit.com/r/LocalLLaMA/comments/1jpez1o">LocalLLaMA Qwen/Mistral closed-model comparison</a> - anecdotal model comparison.</li>
+        <li id="src-reddit-qwen-sota"><a href="https://www.reddit.com/r/LocalLLaMA/comments/1nk4jrw">LocalLLaMA SOTA VLM discussion</a> - anecdotal open/closed VLM sentiment.</li>
+        <li id="src-gemini-forum-schema"><a href="https://discuss.ai.google.dev/t/structured-output-ignoring-schema-field-names/110880">Google AI Developers Forum structured output issue</a> - community report on schema field-name behavior.</li>
+        <li id="src-gemini-forum-openai"><a href="https://discuss.ai.google.dev/t/structured-output-not-working-via-the-openai-compatible-layer/108341">Gemini OpenAI-compatible structured output issue</a> - community report on compatibility-layer structured output.</li>
+        <li id="src-vllm-qwen"><a href="https://discuss.vllm.ai/t/why-is-inference-for-qwen-2-5-vl-so-slow-when-we-send-an-image/1438">vLLM forum Qwen2.5-VL image latency discussion</a> - image preprocessing and TTFT caution.</li>
+        <li id="src-twelvelabs-review"><a href="https://www.needaitool.com/tools/twelve-labs">Independent Twelve Labs tool review</a> - non-official sentiment about video-understanding API positioning.</li>
+        <li id="src-local-verification"><a href="08_VERIFICATION_AGENT.md">BLOCKS Cinema verification agent contract</a> - v1 identity-only contract and JSON prompt shape.</li>
+        <li id="src-local-research"><a href="14_RESEARCH_NOTES.md">BLOCKS Cinema research notes</a> - provider playbook and source metadata rule.</li>
+      </ol>
+    </section>
+  </main>
+</body>
+</html>
