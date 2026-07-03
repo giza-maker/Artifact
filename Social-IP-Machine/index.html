@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI Social IP Machine</title>
+    <meta
+      name="description"
+      content="Interactive pitch deck for AI-generated character accounts, content engines, and monetization paths."
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to deck</a>
+
+    <header class="topbar" aria-label="Primary navigation">
+      <a class="brand" href="#top" aria-label="AI Social IP Machine home">
+        <span class="brand-mark" aria-hidden="true">AI</span>
+        <span>Social IP Machine</span>
+      </a>
+      <nav>
+        <a href="#lab">Lab</a>
+        <a href="#simulator">Model</a>
+        <a href="#gallery">Assets</a>
+        <a href="#roadmap">Plan</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <img
+          class="hero-backdrop"
+          src="./assets/images/snack-court-01.webp"
+          alt=""
+          decoding="async"
+        />
+        <div class="hero-shade" aria-hidden="true"></div>
+        <div class="hero-content">
+          <p class="eyebrow">AI character IP deck</p>
+          <h1 id="hero-title">Turn daily AI episodes into sellable social IP.</h1>
+          <p class="hero-copy">
+            Recurring non-human casts, serialized cliffhangers, fan voting, and merch-ready characters.
+            Build audience first, then flip from views into IP, products, sponsors, and licensing.
+          </p>
+          <div class="hero-actions" aria-label="Presentation actions">
+            <a class="button primary" href="#lab">Open concept lab</a>
+            <a class="button secondary" href="#gallery">View 54 assets</a>
+          </div>
+          <dl class="hero-stats">
+            <div>
+              <dt>54</dt>
+              <dd>generated visuals</dd>
+            </div>
+            <div>
+              <dt>11</dt>
+              <dd>IP concepts</dd>
+            </div>
+            <div>
+              <dt>30d</dt>
+              <dd>pilot sprint</dd>
+            </div>
+          </dl>
+        </div>
+        <div class="hero-strip" aria-label="Sample generated assets">
+          <img src="./assets/images/pocket-planet-zoo-01.webp" alt="Pocket Planet Zoo sample" />
+          <img src="./assets/images/mood-mart-02.webp" alt="Mood Mart sample" />
+          <img src="./assets/images/lost-and-found-agency-01.webp" alt="Lost and Found Agency sample" />
+          <img src="./assets/images/byte-bites-diner-01.webp" alt="Byte Bites Diner sample" />
+        </div>
+      </section>
+
+      <section class="thesis" aria-labelledby="thesis-title">
+        <div class="section-head">
+          <p class="eyebrow">Core thesis</p>
+          <h2 id="thesis-title">Do not sell AI art. Sell a show people can join.</h2>
+        </div>
+        <div class="proof-grid">
+          <article>
+            <span class="proof-kicker">Format</span>
+            <h3>Daily microdrama</h3>
+            <p>30 to 45 second episodes, recurring cast, cliffhanger, comment vote.</p>
+          </article>
+          <article>
+            <span class="proof-kicker">Moat</span>
+            <h3>Original characters</h3>
+            <p>No real brands, no stolen IP, no fake humans. Cleaner for sponsors and licensing.</p>
+          </article>
+          <article>
+            <span class="proof-kicker">Money path</span>
+            <h3>Merch before exit</h3>
+            <p>Use plush, pins, stickers, digital packs, sponsor skits, and YouTube compilations.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="lab" id="lab" aria-labelledby="lab-title">
+        <div class="section-head compact">
+          <p class="eyebrow">Interactive lab</p>
+          <h2 id="lab-title">Pick a universe. See pitch, assets, episode engine.</h2>
+        </div>
+
+        <div class="lab-grid">
+          <aside class="concept-rail" aria-label="Concept selector">
+            <div id="conceptButtons" class="concept-buttons"></div>
+          </aside>
+
+          <article class="showcase" aria-live="polite">
+            <div class="showcase-media">
+              <img id="featureImage" src="./assets/images/snack-court-01.webp" alt="" />
+              <div class="score-chip">
+                <span id="featureScore">94</span>
+                <small>IP score</small>
+              </div>
+            </div>
+            <div class="showcase-body">
+              <p id="featureRank" class="eyebrow">Flagship</p>
+              <h3 id="featureTitle">Snack Court</h3>
+              <p id="featureHandle" class="handle">@SnackCourtTV</p>
+              <p id="featureHook" class="feature-hook">
+                Courtroom drama where snack characters stand trial.
+              </p>
+              <div class="pill-row" id="featurePills"></div>
+              <div class="thumbnail-row" id="featureThumbs"></div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="episode-machine" aria-labelledby="episode-title">
+        <div class="section-head compact">
+          <p class="eyebrow">Episode machine</p>
+          <h2 id="episode-title">One button, new daily post angle.</h2>
+        </div>
+        <div class="machine-grid">
+          <div class="episode-output">
+            <span class="proof-kicker">Generated beat</span>
+            <h3 id="episodeConcept">Snack Court</h3>
+            <p id="episodeLine">
+              Donut defendant finds missing sprinkle evidence before jury vote.
+            </p>
+            <button class="button primary" id="spinEpisode" type="button">Spin episode</button>
+          </div>
+          <div class="beat-stack" aria-label="Pilot content pattern">
+            <div><b>1. Hook</b><span>Accusation, reveal, disaster, or rescue.</span></div>
+            <div><b>2. Twist</b><span>New clue flips who audience trusts.</span></div>
+            <div><b>3. Vote</b><span>Audience decides next episode.</span></div>
+            <div><b>4. Loop</b><span>Comment winners become canon.</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="simulator" id="simulator" aria-labelledby="sim-title">
+        <div class="section-head compact">
+          <p class="eyebrow">Flip model</p>
+          <h2 id="sim-title">Views are fuel. IP proof makes buyer care.</h2>
+        </div>
+        <div class="sim-grid">
+          <div class="controls" aria-label="Revenue model controls">
+            <label>
+              <span>Followers</span>
+              <output id="followersOut">1.0M</output>
+              <input id="followers" type="range" min="100000" max="5000000" step="100000" value="1000000" />
+            </label>
+            <label>
+              <span>Average view rate</span>
+              <output id="viewsOut">25%</output>
+              <input id="viewRate" type="range" min="5" max="80" step="5" value="25" />
+            </label>
+            <label>
+              <span>Merch conversion</span>
+              <output id="merchOut">0.6%</output>
+              <input id="merchRate" type="range" min="1" max="25" step="1" value="6" />
+            </label>
+            <label>
+              <span>Sponsor slots / month</span>
+              <output id="sponsorOut">4</output>
+              <input id="sponsorSlots" type="range" min="0" max="10" step="1" value="4" />
+            </label>
+          </div>
+          <div class="results" aria-live="polite">
+            <div>
+              <span>Avg views / post</span>
+              <strong id="avgViews">$0</strong>
+            </div>
+            <div>
+              <span>Monthly sponsor model</span>
+              <strong id="sponsorRevenue">$0</strong>
+            </div>
+            <div>
+              <span>Monthly merch margin model</span>
+              <strong id="merchRevenue">$0</strong>
+            </div>
+            <div class="total">
+              <span>Modeled monthly upside</span>
+              <strong id="totalRevenue">$0</strong>
+            </div>
+            <p>Model, not guarantee. Real outcome depends on retention, platform policy, fulfillment, and audience trust.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="gallery-section" id="gallery" aria-labelledby="gallery-title">
+        <div class="section-head compact">
+          <p class="eyebrow">Generated asset wall</p>
+          <h2 id="gallery-title">Scroll concepts like a toy shelf.</h2>
+        </div>
+        <div class="filter-row" id="galleryFilters" aria-label="Filter gallery by concept"></div>
+        <div class="gallery" id="galleryGrid"></div>
+      </section>
+
+      <section class="roadmap" id="roadmap" aria-labelledby="roadmap-title">
+        <div class="section-head compact">
+          <p class="eyebrow">30 day sprint</p>
+          <h2 id="roadmap-title">Launch lean, learn brutal, scale winner.</h2>
+        </div>
+        <div class="timeline">
+          <article>
+            <span>Week 1</span>
+            <h3>Publish pilots</h3>
+            <p>Post 3 concepts daily. Track follow rate, comments per 1K views, saves, and rewatch clues.</p>
+          </article>
+          <article>
+            <span>Week 2</span>
+            <h3>Kill weak casts</h3>
+            <p>Keep only characters people quote. Rewrite around strongest fan reactions.</p>
+          </article>
+          <article>
+            <span>Week 3</span>
+            <h3>Merch smoke test</h3>
+            <p>Drop sticker/pin waitlist, wallpapers, and sample plush renders. Measure purchase intent.</p>
+          </article>
+          <article>
+            <span>Week 4</span>
+            <h3>Package IP</h3>
+            <p>Build pitch kit: metrics, episode bible, character bible, assets, sponsor demos, shop proof.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <dialog class="lightbox" id="lightbox" aria-label="Asset preview">
+      <button class="lightbox-close" id="closeLightbox" type="button" aria-label="Close preview">X</button>
+      <img id="lightboxImage" src="./assets/images/snack-court-01.webp" alt="" />
+      <p id="lightboxCaption"></p>
+    </dialog>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
