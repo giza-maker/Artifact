@@ -39,6 +39,7 @@ body {
     sans-serif;
   line-height: 1.5;
   letter-spacing: 0;
+  overflow-x: hidden;
 }
 
 img {
@@ -786,32 +787,70 @@ section[id] {
   .topbar {
     align-items: flex-start;
     flex-direction: column;
+    gap: 0.55rem;
+    padding: 0.6rem 0.75rem;
+  }
+
+  .brand {
+    font-size: 0.95rem;
+  }
+
+  .brand-mark {
+    width: 1.85rem;
+    height: 1.85rem;
   }
 
   nav {
+    display: grid;
     width: 100%;
-    justify-content: space-between;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.35rem;
   }
 
   nav a {
-    padding-inline: 0.45rem;
+    display: grid;
+    min-height: 2.45rem;
+    place-items: center;
+    background: rgba(255, 248, 232, 0.06);
+    padding: 0.5rem 0.35rem;
+    text-align: center;
   }
 
   .hero {
-    min-height: 84svh;
-    padding-top: 8rem;
+    min-height: auto;
+    padding: 2.25rem 1rem 1.25rem;
   }
 
   section[id] {
-    scroll-margin-top: 8.5rem;
+    scroll-margin-top: 7.25rem;
+  }
+
+  section:not(.hero) {
+    padding: 3rem 0.85rem;
   }
 
   h1 {
     font-size: 2.35rem;
+    line-height: 1.02;
   }
 
   h2 {
     font-size: 1.75rem;
+  }
+
+  .hero-copy {
+    font-size: 1rem;
+  }
+
+  .hero-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .button {
+    min-height: 3rem;
+    padding-inline: 0.7rem;
+    text-align: center;
   }
 
   .hero-stats,
@@ -823,8 +862,56 @@ section[id] {
     grid-template-columns: 1fr;
   }
 
+  .hero-stats {
+    gap: 0.55rem;
+  }
+
+  .hero-stats div {
+    padding: 0.75rem;
+  }
+
+  .hero-stats dt {
+    font-size: 1.55rem;
+  }
+
+  .section-head {
+    margin-bottom: 1rem;
+  }
+
+  .concept-rail,
+  .showcase,
+  .episode-output,
+  .beat-stack,
+  .controls,
+  .results {
+    border-radius: 7px;
+  }
+
+  .concept-rail {
+    padding: 0.55rem;
+  }
+
+  .concept-button {
+    grid-template-columns: 58px minmax(0, 1fr) auto;
+    min-height: 76px;
+  }
+
   .showcase-media {
-    min-height: 380px;
+    min-height: 0;
+    aspect-ratio: 4 / 5;
+  }
+
+  .score-chip {
+    width: 72px;
+    height: 72px;
+  }
+
+  .score-chip span {
+    font-size: 1.35rem;
+  }
+
+  .showcase-body {
+    padding: 1rem;
   }
 
   .showcase-body h3 {
@@ -838,6 +925,68 @@ section[id] {
 
   .beat-stack span {
     text-align: left;
+  }
+
+  .thumbnail-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(54px, 1fr));
+  }
+
+  .thumb-button {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+  }
+
+  .controls label {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-row {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 0.4rem;
+    scroll-snap-type: x proximity;
+  }
+
+  .filter-button {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+  }
+
+  .gallery {
+    columns: 2 140px;
+    column-gap: 0.55rem;
+  }
+
+  .gallery-card {
+    margin-bottom: 0.55rem;
+  }
+}
+
+@media (max-width: 380px) {
+  h1 {
+    font-size: 2.05rem;
+  }
+
+  h2 {
+    font-size: 1.55rem;
+  }
+
+  nav a {
+    font-size: 0.9rem;
+  }
+
+  .hero-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .concept-button {
+    grid-template-columns: 52px minmax(0, 1fr);
+  }
+
+  .concept-button small {
+    display: none;
   }
 }
 
