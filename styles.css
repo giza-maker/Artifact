@@ -499,26 +499,28 @@ section[id] {
 
 .showcase-body {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 1.1rem;
+  right: 1.1rem;
   z-index: 3;
   display: grid;
-  align-content: center;
-  gap: 0.9rem;
-  width: min(390px, 42%);
-  min-height: 360px;
-  border: 1px solid rgba(255, 248, 232, 0.2);
+  align-content: start;
+  gap: 0.68rem;
+  width: min(315px, 34%);
+  min-height: 0;
+  border: 1px solid rgba(255, 248, 232, 0.16);
   border-radius: var(--radius);
   background:
-    linear-gradient(135deg, rgba(17, 16, 13, 0.86), rgba(17, 16, 13, 0.58)),
-    radial-gradient(circle at 15% 15%, color-mix(in srgb, var(--concept-a), transparent 62%), transparent 44%);
-  padding: 1.25rem;
-  backdrop-filter: blur(18px);
+    linear-gradient(135deg, rgba(17, 16, 13, 0.46), rgba(17, 16, 13, 0.22)),
+    radial-gradient(circle at 90% 0%, color-mix(in srgb, var(--concept-a), transparent 70%), transparent 48%);
+  padding: 0.95rem;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.74);
+  backdrop-filter: blur(8px) saturate(1.15);
+  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.18);
 }
 
 .showcase-body h3 {
   margin-bottom: 0;
-  font-size: 2.5rem;
+  font-size: 2.15rem;
 }
 
 .handle {
@@ -528,13 +530,13 @@ section[id] {
 
 .feature-hook {
   color: var(--muted);
-  font-size: 1.04rem;
+  font-size: 0.96rem;
 }
 
 .pill {
   border: 1px solid rgba(255, 248, 232, 0.18);
   border-radius: 999px;
-  background: rgba(255, 248, 232, 0.07);
+  background: rgba(17, 16, 13, 0.28);
   color: var(--ink);
   padding: 0.42rem 0.68rem;
   font-size: 0.84rem;
@@ -1053,8 +1055,8 @@ section[id] {
   }
 
   .showcase-body {
-    width: min(360px, 46%);
-    min-height: 320px;
+    width: min(300px, 38%);
+    min-height: 0;
   }
 
   .hero-strip {
@@ -1273,9 +1275,9 @@ section[id] {
     left: 0.75rem;
     width: auto;
     min-height: 0;
-    max-height: 45%;
+    max-height: 38%;
     overflow: auto;
-    padding: 0.9rem;
+    padding: 0.82rem;
   }
 
   .score-chip {
