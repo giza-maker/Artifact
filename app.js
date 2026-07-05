@@ -17,7 +17,7 @@ const concepts = [
       "Apple judge receives a mystery note from vending machine alley.",
       "Soda reporter leaks footage that flips the whole trial."
     ],
-    images: [1, 2, 3].map((n) => imagePath("snack-court", n))
+    images: [1, 2, 3, 4, 5].map((n) => imagePath("snack-court", n))
   },
   {
     slug: "orbit-office",
