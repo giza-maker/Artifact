@@ -659,7 +659,7 @@ section[id] {
 
 .pipeline-shell {
   display: grid;
-  grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
+  grid-template-columns: 1fr;
   gap: 1rem;
   align-items: start;
 }
@@ -675,19 +675,24 @@ section[id] {
 
 .pipeline-copy-panel {
   display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(260px, 0.55fr) auto;
+  align-items: end;
   align-content: start;
-  gap: 0.65rem;
-  padding: 1rem;
+  gap: 1rem;
+  width: min(1160px, 100%);
+  margin: 0 auto 0.85rem;
+  padding: 0.95rem 1rem;
 }
 
 .pipeline-copy-panel h2 {
   margin-bottom: 0;
-  font-size: 1.72rem;
+  font-size: 1.75rem;
 }
 
 .pipeline-copy-panel p {
   color: var(--muted);
   font-size: 0.93rem;
+  margin-bottom: 0;
 }
 
 .pipeline-metrics {
@@ -1047,6 +1052,10 @@ section[id] {
     grid-template-columns: 1fr;
   }
 
+  .pipeline-copy-panel {
+    grid-template-columns: 1fr;
+  }
+
   .pipeline-motion {
     grid-template-columns: 1fr;
   }
@@ -1326,7 +1335,7 @@ section[id] {
   }
 
   .pipeline-copy-panel h2 {
-    font-size: 2rem;
+    font-size: 1.85rem;
   }
 
   .pipeline-motion {

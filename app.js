@@ -204,8 +204,7 @@ const concepts = [
 const state = {
   concept: concepts[0],
   image: 0,
-  pipelineStage: 0,
-  pipelineTimer: null
+  pipelineStage: 0
 };
 
 const $ = (selector) => document.querySelector(selector);
@@ -470,15 +469,6 @@ function setPipelineStage(index) {
   renderPipelineStage();
 }
 
-function startPipelineMotion() {
-  window.clearInterval(state.pipelineTimer);
-  state.pipelineTimer = window.setInterval(() => setPipelineStage(state.pipelineStage + 1), 4200);
-}
-
-function resetPipelineMotion() {
-  startPipelineMotion();
-}
-
 function init() {
   setTheme(state.concept);
   renderConceptButtons();
@@ -505,17 +495,12 @@ function init() {
   $("#nextConcept")?.addEventListener("click", () => setConceptByOffset(1));
   $("#pipelineNext").addEventListener("click", () => {
     setPipelineStage(state.pipelineStage + 1);
-    resetPipelineMotion();
   });
   document.querySelectorAll(".pipeline-tab").forEach((button) => {
     button.addEventListener("click", () => {
       setPipelineStage(Number(button.dataset.stage));
-      resetPipelineMotion();
     });
   });
-  $("#simulator").addEventListener("mouseenter", () => window.clearInterval(state.pipelineTimer));
-  $("#simulator").addEventListener("mouseleave", startPipelineMotion);
-  startPipelineMotion();
 }
 
 init();
