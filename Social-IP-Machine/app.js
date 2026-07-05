@@ -204,10 +204,50 @@ const concepts = [
 const state = {
   concept: concepts[0],
   image: 0,
-  galleryFilter: "all"
+  pipelineStage: 0,
+  pipelineTimer: null
 };
 
 const $ = (selector) => document.querySelector(selector);
+
+const pipelineStages = [
+  {
+    step: "01 / Idea generation",
+    title: "Seed worlds people can follow",
+    body: "Generate universes, recurring characters, episode engines, and fan-vote loops.",
+    outputs: ["World concepts", "Character hooks", "Episode arcs"]
+  },
+  {
+    step: "02 / Prompt factory",
+    title: "Turn winners into reusable prompts",
+    body: "Build character, scene, thumbnail, product, caption, and video prompts from the same canon.",
+    outputs: ["Character prompts", "Scene prompts", "Caption prompts"]
+  },
+  {
+    step: "03 / Bulk image runs",
+    title: "Generate asset batches fast",
+    body: "Produce hero frames, thumbnails, character sheets, merch mockups, and continuity references.",
+    outputs: ["Hero images", "Reference sheets", "Merch previews"]
+  },
+  {
+    step: "04 / Bulk video runs",
+    title: "Render short-form variants",
+    body: "Create hooks, endings, platform crops, motion tests, and episode alternates in batches.",
+    outputs: ["Hook cuts", "Episode clips", "Platform crops"]
+  },
+  {
+    step: "05 / Human review",
+    title: "Only review the strongest batch",
+    body: "Rank outputs, approve keepers, reject weak work, and feed notes back into the prompt system.",
+    outputs: ["Keeper list", "Reject notes", "Prompt updates"]
+  },
+  {
+    step: "06 / Auto publishing",
+    title: "Queue posts with the right package",
+    body: "Attach captions, hashtags, schedule windows, asset links, and channel-specific export rules.",
+    outputs: ["Scheduled posts", "Asset packs", "Next-run memory"]
+  }
+];
 
 function setTheme(concept) {
   document.documentElement.style.setProperty("--concept-a", concept.accent);
@@ -327,6 +367,7 @@ function renderEpisode() {
 
 function renderGalleryFilters() {
   const wrap = $("#galleryFilters");
+  if (!wrap) return;
   wrap.innerHTML = "";
 
   const filters = [{ slug: "all", title: "All assets" }, ...concepts.map(({ slug, title }) => ({ slug, title }))];
@@ -347,6 +388,7 @@ function renderGalleryFilters() {
 
 function renderGallery() {
   const wrap = $("#galleryGrid");
+  if (!wrap) return;
   wrap.innerHTML = "";
   const active = state.galleryFilter;
   const galleryConcepts = active === "all" ? concepts : concepts.filter((item) => item.slug === active);
@@ -378,6 +420,42 @@ function openLightbox(src, caption) {
   }
 }
 
+function renderPipelineStage() {
+  const stage = pipelineStages[state.pipelineStage];
+  if (!stage) return;
+
+  $("#pipelineStep").textContent = stage.step;
+  $("#pipelineStageTitle").textContent = stage.title;
+  $("#pipelineStageBody").textContent = stage.body;
+  $("#pipelineProgress").style.width = `${((state.pipelineStage + 1) / pipelineStages.length) * 100}%`;
+
+  const outputs = $("#pipelineOutputs");
+  outputs.innerHTML = "";
+  stage.outputs.forEach((output) => {
+    const item = document.createElement("li");
+    item.textContent = output;
+    outputs.appendChild(item);
+  });
+
+  document.querySelectorAll(".pipeline-tab").forEach((button) => {
+    button.setAttribute("aria-pressed", Number(button.dataset.stage) === state.pipelineStage ? "true" : "false");
+  });
+}
+
+function setPipelineStage(index) {
+  state.pipelineStage = (index + pipelineStages.length) % pipelineStages.length;
+  renderPipelineStage();
+}
+
+function startPipelineMotion() {
+  window.clearInterval(state.pipelineTimer);
+  state.pipelineTimer = window.setInterval(() => setPipelineStage(state.pipelineStage + 1), 4200);
+}
+
+function resetPipelineMotion() {
+  startPipelineMotion();
+}
+
 function init() {
   setTheme(state.concept);
   renderConceptButtons();
@@ -385,11 +463,36 @@ function init() {
   renderGalleryFilters();
   renderGallery();
   renderEpisode();
+  renderPipelineStage();
 
   $("#spinEpisode").addEventListener("click", renderEpisode);
   $("#closeLightbox").addEventListener("click", () => $("#lightbox").close());
+  $("#lightbox").addEventListener("click", (event) => {
+    if (event.target === event.currentTarget) {
+      event.currentTarget.close();
+    }
+  });
+  $("#featureImage").addEventListener("click", () => {
+    openLightbox(state.concept.images[state.image], `${state.concept.title} asset ${state.image + 1}`);
+  });
+  $("#openFeatureImage").addEventListener("click", () => {
+    openLightbox(state.concept.images[state.image], `${state.concept.title} asset ${state.image + 1}`);
+  });
   $("#prevConcept")?.addEventListener("click", () => setConceptByOffset(-1));
   $("#nextConcept")?.addEventListener("click", () => setConceptByOffset(1));
+  $("#pipelineNext").addEventListener("click", () => {
+    setPipelineStage(state.pipelineStage + 1);
+    resetPipelineMotion();
+  });
+  document.querySelectorAll(".pipeline-tab").forEach((button) => {
+    button.addEventListener("click", () => {
+      setPipelineStage(Number(button.dataset.stage));
+      resetPipelineMotion();
+    });
+  });
+  $("#simulator").addEventListener("mouseenter", () => window.clearInterval(state.pipelineTimer));
+  $("#simulator").addEventListener("mouseleave", startPipelineMotion);
+  startPipelineMotion();
 }
 
 init();

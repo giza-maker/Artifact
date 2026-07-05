@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Social IP Machine">
+  <defs>
+    <linearGradient id="bg" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ff6b5f"/>
+      <stop offset="0.48" stop-color="#f7c948"/>
+      <stop offset="1" stop-color="#26d0a8"/>
+    </linearGradient>
+    <linearGradient id="ink" x1="18" y1="16" x2="48" y2="48" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#11100d"/>
+      <stop offset="1" stop-color="#26312c"/>
+    </linearGradient>
+  </defs>
+  <rect x="4" y="4" width="56" height="56" rx="14" fill="url(#bg)"/>
+  <path d="M18 39c8-17 20-17 28 0" fill="none" stroke="url(#ink)" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="20" cy="24" r="5" fill="#11100d"/>
+  <circle cx="44" cy="24" r="5" fill="#11100d"/>
+  <path d="M24 42h16" stroke="#11100d" stroke-width="5" stroke-linecap="round"/>
+  <path d="M32 13v10m-10 5h20M22 28l-6 8m26-8 6 8" stroke="#fff8e8" stroke-opacity="0.72" stroke-width="2.5" stroke-linecap="round"/>
+</svg>

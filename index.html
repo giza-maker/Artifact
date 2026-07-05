@@ -8,20 +8,23 @@
       name="description"
       content="Interactive pitch deck for AI-generated character accounts, content engines, and monetization paths."
     />
-    <link rel="stylesheet" href="./styles.css?v=pipeline-1" />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./styles.css?v=revamp-2" />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to deck</a>
 
     <header class="topbar" aria-label="Primary navigation">
-      <a class="brand" href="#top" aria-label="AI Social IP Machine home">
-        <span class="brand-mark" aria-hidden="true">AI</span>
-        <span>Social IP Machine</span>
+      <a class="brand" href="#top" aria-label="Social IP Machine home">
+        <img class="brand-logo" src="./favicon.svg" alt="" width="40" height="40" />
+        <span class="brand-copy">
+          <strong>Social IP Machine</strong>
+          <small>Autonomous IP Studio</small>
+        </span>
       </a>
       <nav>
         <a href="#lab">Lab</a>
         <a href="#simulator">Pipeline</a>
-        <a href="#gallery">Assets</a>
         <a href="#roadmap">Plan</a>
       </nav>
     </header>
@@ -44,7 +47,7 @@
           </p>
           <div class="hero-actions" aria-label="Presentation actions">
             <a class="button primary" href="#lab">Open concept lab</a>
-            <a class="button secondary" href="#gallery">View 56 assets</a>
+            <a class="button secondary" href="#simulator">See pipeline</a>
           </div>
           <dl class="hero-stats">
             <div>
@@ -115,6 +118,7 @@
                 <span id="featureScore">94</span>
                 <small>IP score</small>
               </div>
+              <button class="image-open" id="openFeatureImage" type="button">Full view</button>
               <div class="thumbnail-row" id="featureThumbs"></div>
             </div>
             <div class="showcase-body">
@@ -154,63 +158,53 @@
       </section>
 
       <section class="pipeline" id="simulator" aria-labelledby="pipeline-title">
-        <div class="section-head compact pipeline-head">
-          <div>
+        <div class="pipeline-shell">
+          <div class="pipeline-copy-panel">
             <p class="eyebrow">Automated pipeline</p>
-            <h2 id="pipeline-title">A social IP machine that turns ideas into publishable batches.</h2>
+            <h2 id="pipeline-title">A social IP machine that turns ideas into scheduled content batches.</h2>
+            <p>
+              The loop expands one creative brief into concepts, prompts, images, videos, review packs, and
+              platform-ready publishing queues.
+            </p>
+            <div class="pipeline-metrics" aria-label="Pipeline outputs">
+              <span><b>40+</b> idea seeds</span>
+              <span><b>100+</b> prompt variants</span>
+              <span><b>Bulk</b> video runs</span>
+            </div>
           </div>
-          <p class="pipeline-copy">
-            One operating loop produces concept seeds, prompt packs, image batches, video variants,
-            review queues, and scheduled posts without rebuilding the process each time.
-          </p>
-        </div>
-        <div class="pipeline-grid">
-          <article class="pipeline-stage">
-            <span class="stage-number">01</span>
-            <h3>Idea generation</h3>
-            <p>Generate worlds, character hooks, episode arcs, and fan-vote loops from one brief.</p>
-          </article>
-          <article class="pipeline-stage">
-            <span class="stage-number">02</span>
-            <h3>Prompt factory</h3>
-            <p>Turn winners into reusable prompts for characters, scenes, thumbnails, captions, and variants.</p>
-          </article>
-          <article class="pipeline-stage">
-            <span class="stage-number">03</span>
-            <h3>Bulk image runs</h3>
-            <p>Generate asset walls, hero shots, merch mockups, and continuity references in organized batches.</p>
-          </article>
-          <article class="pipeline-stage">
-            <span class="stage-number">04</span>
-            <h3>Bulk video runs</h3>
-            <p>Create short-form episode variants, motion tests, hooks, endings, and platform crops at scale.</p>
-          </article>
-          <article class="pipeline-stage">
-            <span class="stage-number">05</span>
-            <h3>Human review</h3>
-            <p>Review only strongest batches, approve keepers, reject weak outputs, and feed notes back into prompts.</p>
-          </article>
-          <article class="pipeline-stage">
-            <span class="stage-number">06</span>
-            <h3>Auto publishing</h3>
-            <p>Package approved posts with captions, hashtags, schedules, and channel-specific export rules.</p>
-          </article>
-        </div>
-        <div class="pipeline-board" aria-label="Automation run sequence">
-          <div><b>Brief in</b><span>Concept seeds, audience target, tone, channel rules.</span></div>
-          <div><b>Batch run</b><span>Prompts, images, videos, captions, alternates.</span></div>
-          <div><b>Review queue</b><span>Ranked outputs, notes, rejects, reusable winners.</span></div>
-          <div><b>Publish out</b><span>Scheduled posts, asset packs, next-run learning.</span></div>
-        </div>
-      </section>
 
-      <section class="gallery-section" id="gallery" aria-labelledby="gallery-title">
-        <div class="section-head compact">
-          <p class="eyebrow">Generated asset wall</p>
-          <h2 id="gallery-title">Scroll concepts like a toy shelf.</h2>
+          <div class="pipeline-motion" aria-live="polite">
+            <div class="motion-orbit" aria-hidden="true">
+              <span class="motion-node node-a"></span>
+              <span class="motion-node node-b"></span>
+              <span class="motion-node node-c"></span>
+              <span class="motion-core"></span>
+            </div>
+            <div class="motion-card">
+              <span id="pipelineStep">01 / Idea generation</span>
+              <h3 id="pipelineStageTitle">Seed worlds people can follow</h3>
+              <p id="pipelineStageBody">Generate universes, recurring characters, episode engines, and fan-vote loops.</p>
+            </div>
+          </div>
         </div>
-        <div class="filter-row" id="galleryFilters" aria-label="Filter gallery by concept"></div>
-        <div class="gallery" id="galleryGrid"></div>
+
+        <div class="pipeline-controls" aria-label="Automation stages">
+          <button class="pipeline-tab" type="button" data-stage="0" aria-pressed="true">Ideas</button>
+          <button class="pipeline-tab" type="button" data-stage="1" aria-pressed="false">Prompts</button>
+          <button class="pipeline-tab" type="button" data-stage="2" aria-pressed="false">Images</button>
+          <button class="pipeline-tab" type="button" data-stage="3" aria-pressed="false">Videos</button>
+          <button class="pipeline-tab" type="button" data-stage="4" aria-pressed="false">Review</button>
+          <button class="pipeline-tab" type="button" data-stage="5" aria-pressed="false">Publish</button>
+        </div>
+
+        <div class="pipeline-runner">
+          <div class="runner-head">
+            <span>Batch run</span>
+            <button id="pipelineNext" type="button">Next stage</button>
+          </div>
+          <div class="runner-track" aria-hidden="true"><span id="pipelineProgress"></span></div>
+          <ul id="pipelineOutputs" class="pipeline-outputs"></ul>
+        </div>
       </section>
 
       <section class="roadmap" id="roadmap" aria-labelledby="roadmap-title">
@@ -249,6 +243,6 @@
       <p id="lightboxCaption"></p>
     </dialog>
 
-    <script src="./app.js?v=pipeline-1"></script>
+    <script src="./app.js?v=revamp-2"></script>
   </body>
 </html>
