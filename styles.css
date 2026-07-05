@@ -653,15 +653,15 @@ section[id] {
 .pipeline-shell,
 .pipeline-controls,
 .pipeline-runner {
-  width: min(1100px, 100%);
+  width: min(1160px, 100%);
   margin: 0 auto;
 }
 
 .pipeline-shell {
   display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(420px, 1.1fr);
+  grid-template-columns: minmax(240px, 300px) minmax(0, 1fr);
   gap: 1rem;
-  align-items: stretch;
+  align-items: start;
 }
 
 .pipeline-copy-panel,
@@ -675,76 +675,81 @@ section[id] {
 
 .pipeline-copy-panel {
   display: grid;
-  align-content: center;
-  gap: 1rem;
-  padding: 1.25rem;
+  align-content: start;
+  gap: 0.65rem;
+  padding: 1rem;
 }
 
 .pipeline-copy-panel h2 {
   margin-bottom: 0;
-  font-size: 2.7rem;
+  font-size: 1.72rem;
 }
 
 .pipeline-copy-panel p {
   color: var(--muted);
+  font-size: 0.93rem;
 }
 
 .pipeline-metrics {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.55rem;
+  gap: 0.4rem;
 }
 
 .pipeline-metrics span {
   border: 1px solid rgba(255, 248, 232, 0.14);
   border-radius: var(--radius);
   background: rgba(255, 248, 232, 0.06);
-  padding: 0.7rem;
+  padding: 0.58rem;
   color: var(--muted);
-  font-size: 0.84rem;
+  font-size: 0.72rem;
 }
 
 .pipeline-metrics b {
   display: block;
   color: var(--accent-3);
-  font-size: 1.15rem;
+  font-size: 1rem;
 }
 
 .pipeline-motion {
-  isolation: isolate;
-  position: relative;
-  min-height: 460px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(240px, 0.34fr);
+  gap: 0.85rem;
+  align-items: start;
   overflow: hidden;
-  background: #11100d;
+  padding: 0.85rem;
+  background:
+    linear-gradient(135deg, rgba(255, 248, 232, 0.055), transparent 38%),
+    rgba(17, 16, 13, 0.9);
 }
 
-.pipeline-stage-image,
-.pipeline-image-vignette {
-  position: absolute;
-  inset: 0;
+.pipeline-visual-frame {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+  margin: 0;
+  overflow: hidden;
+  border: 1px solid rgba(255, 248, 232, 0.14);
+  border-radius: var(--radius);
+  background: #11100d;
+  aspect-ratio: 16 / 9;
+  box-shadow: inset 0 0 0 1px rgba(255, 248, 232, 0.03);
 }
 
 .pipeline-stage-image {
-  z-index: -2;
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transform: scale(1.015);
+  transform: scale(1.01);
   transition: transform var(--slow), opacity var(--slow), filter var(--slow);
   animation: stage-drift 12s ease-in-out infinite alternate;
 }
 
 .pipeline-motion:hover .pipeline-stage-image {
-  transform: scale(1.055);
+  transform: scale(1.035);
   filter: saturate(1.08) contrast(1.04);
-}
-
-.pipeline-image-vignette {
-  z-index: -1;
-  background:
-    linear-gradient(180deg, rgba(17, 16, 13, 0.06) 0%, rgba(17, 16, 13, 0.22) 42%, rgba(17, 16, 13, 0.88) 100%),
-    linear-gradient(90deg, rgba(17, 16, 13, 0.52), transparent 34%, rgba(17, 16, 13, 0.38)),
-    radial-gradient(circle at 78% 18%, transparent 0 38%, rgba(17, 16, 13, 0.52) 82%);
 }
 
 .pipeline-stage-badge {
@@ -763,18 +768,16 @@ section[id] {
 }
 
 .motion-card {
-  position: absolute;
-  right: 1rem;
-  bottom: 1rem;
-  left: 1rem;
+  display: grid;
+  align-content: center;
+  min-width: 0;
   border: 1px solid rgba(255, 248, 232, 0.24);
   border-radius: var(--radius);
   background:
-    linear-gradient(135deg, rgba(17, 16, 13, 0.9), rgba(17, 16, 13, 0.7)),
-    radial-gradient(circle at 18% 0%, color-mix(in srgb, var(--concept-a), transparent 70%), transparent 42%);
-  padding: 1.05rem;
-  backdrop-filter: blur(20px);
-  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.35);
+    linear-gradient(135deg, rgba(28, 26, 21, 0.88), rgba(17, 16, 13, 0.78)),
+    radial-gradient(circle at 15% 12%, color-mix(in srgb, var(--concept-a), transparent 74%), transparent 46%);
+  padding: 1rem;
+  box-shadow: inset 0 1px 0 rgba(255, 248, 232, 0.06);
 }
 
 .motion-card span {
@@ -785,7 +788,7 @@ section[id] {
 
 .motion-card h3 {
   margin-top: 0.35rem;
-  font-size: 2rem;
+  font-size: 1.72rem;
 }
 
 .motion-card p {
@@ -805,18 +808,20 @@ section[id] {
 .pipeline-controls {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 0.55rem;
-  margin-top: 1rem;
+  gap: 0.45rem;
+  margin-top: 0.85rem;
 }
 
 .pipeline-tab {
-  min-height: 3rem;
+  min-height: 3.25rem;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  background: rgba(255, 248, 232, 0.06);
+  background:
+    linear-gradient(180deg, rgba(255, 248, 232, 0.07), rgba(255, 248, 232, 0.035));
   color: var(--muted);
   cursor: pointer;
   font-weight: 900;
+  transition: border-color var(--fast), background var(--fast), color var(--fast), transform var(--fast);
 }
 
 .pipeline-tab:hover,
@@ -824,6 +829,10 @@ section[id] {
   border-color: var(--accent-3);
   background: rgba(255, 248, 232, 0.12);
   color: var(--ink);
+}
+
+.pipeline-tab:hover {
+  transform: translateY(-1px);
 }
 
 .pipeline-runner {
@@ -1035,6 +1044,10 @@ section[id] {
   }
 
   .pipeline-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .pipeline-motion {
     grid-template-columns: 1fr;
   }
 
@@ -1317,7 +1330,8 @@ section[id] {
   }
 
   .pipeline-motion {
-    min-height: 380px;
+    min-height: 0;
+    padding: 0.7rem;
   }
 
   .pipeline-stage-badge {
@@ -1327,9 +1341,6 @@ section[id] {
   }
 
   .motion-card {
-    right: 0.75rem;
-    bottom: 0.75rem;
-    left: 0.75rem;
     padding: 0.85rem;
   }
 
