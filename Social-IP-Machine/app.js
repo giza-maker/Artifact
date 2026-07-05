@@ -209,17 +209,6 @@ const state = {
 
 const $ = (selector) => document.querySelector(selector);
 
-const formatCompact = new Intl.NumberFormat("en-US", {
-  notation: "compact",
-  maximumFractionDigits: 1
-});
-
-const formatMoney = new Intl.NumberFormat("en-US", {
-  style: "currency",
-  currency: "USD",
-  maximumFractionDigits: 0
-});
-
 function setTheme(concept) {
   document.documentElement.style.setProperty("--concept-a", concept.accent);
   document.documentElement.style.setProperty("--concept-b", concept.accent2);
@@ -389,28 +378,6 @@ function openLightbox(src, caption) {
   }
 }
 
-function updateModel() {
-  const followers = Number($("#followers").value);
-  const viewRate = Number($("#viewRate").value) / 100;
-  const merchRate = Number($("#merchRate").value) / 1000;
-  const sponsorSlots = Number($("#sponsorSlots").value);
-  const avgViews = followers * viewRate;
-  const cpm = 18;
-  const merchMargin = 8;
-  const sponsorRevenue = (avgViews / 1000) * cpm * sponsorSlots;
-  const merchRevenue = followers * merchRate * merchMargin;
-  const total = sponsorRevenue + merchRevenue;
-
-  $("#followersOut").textContent = formatCompact.format(followers);
-  $("#viewsOut").textContent = `${Math.round(viewRate * 100)}%`;
-  $("#merchOut").textContent = `${(merchRate * 100).toFixed(1)}%`;
-  $("#sponsorOut").textContent = sponsorSlots;
-  $("#avgViews").textContent = formatCompact.format(avgViews);
-  $("#sponsorRevenue").textContent = formatMoney.format(sponsorRevenue);
-  $("#merchRevenue").textContent = formatMoney.format(merchRevenue);
-  $("#totalRevenue").textContent = formatMoney.format(total);
-}
-
 function init() {
   setTheme(state.concept);
   renderConceptButtons();
@@ -418,15 +385,11 @@ function init() {
   renderGalleryFilters();
   renderGallery();
   renderEpisode();
-  updateModel();
 
   $("#spinEpisode").addEventListener("click", renderEpisode);
   $("#closeLightbox").addEventListener("click", () => $("#lightbox").close());
   $("#prevConcept")?.addEventListener("click", () => setConceptByOffset(-1));
   $("#nextConcept")?.addEventListener("click", () => setConceptByOffset(1));
-  ["followers", "viewRate", "merchRate", "sponsorSlots"].forEach((id) => {
-    $(`#${id}`).addEventListener("input", updateModel);
-  });
 }
 
 init();

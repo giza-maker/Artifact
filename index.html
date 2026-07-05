@@ -8,7 +8,7 @@
       name="description"
       content="Interactive pitch deck for AI-generated character accounts, content engines, and monetization paths."
     />
-    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./styles.css?v=pipeline-1" />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to deck</a>
@@ -20,7 +20,7 @@
       </a>
       <nav>
         <a href="#lab">Lab</a>
-        <a href="#simulator">Model</a>
+        <a href="#simulator">Pipeline</a>
         <a href="#gallery">Assets</a>
         <a href="#roadmap">Plan</a>
       </nav>
@@ -153,53 +153,54 @@
         </div>
       </section>
 
-      <section class="simulator" id="simulator" aria-labelledby="sim-title">
-        <div class="section-head compact">
-          <p class="eyebrow">Flip model</p>
-          <h2 id="sim-title">Views are fuel. IP proof makes buyer care.</h2>
+      <section class="pipeline" id="simulator" aria-labelledby="pipeline-title">
+        <div class="section-head compact pipeline-head">
+          <div>
+            <p class="eyebrow">Automated pipeline</p>
+            <h2 id="pipeline-title">A social IP machine that turns ideas into publishable batches.</h2>
+          </div>
+          <p class="pipeline-copy">
+            One operating loop produces concept seeds, prompt packs, image batches, video variants,
+            review queues, and scheduled posts without rebuilding the process each time.
+          </p>
         </div>
-        <div class="sim-grid">
-          <div class="controls" aria-label="Revenue model controls">
-            <label>
-              <span>Followers</span>
-              <output id="followersOut">1.0M</output>
-              <input id="followers" type="range" min="100000" max="5000000" step="100000" value="1000000" />
-            </label>
-            <label>
-              <span>Average view rate</span>
-              <output id="viewsOut">25%</output>
-              <input id="viewRate" type="range" min="5" max="80" step="5" value="25" />
-            </label>
-            <label>
-              <span>Merch conversion</span>
-              <output id="merchOut">0.6%</output>
-              <input id="merchRate" type="range" min="1" max="25" step="1" value="6" />
-            </label>
-            <label>
-              <span>Sponsor slots / month</span>
-              <output id="sponsorOut">4</output>
-              <input id="sponsorSlots" type="range" min="0" max="10" step="1" value="4" />
-            </label>
-          </div>
-          <div class="results" aria-live="polite">
-            <div>
-              <span>Avg views / post</span>
-              <strong id="avgViews">$0</strong>
-            </div>
-            <div>
-              <span>Monthly sponsor model</span>
-              <strong id="sponsorRevenue">$0</strong>
-            </div>
-            <div>
-              <span>Monthly merch margin model</span>
-              <strong id="merchRevenue">$0</strong>
-            </div>
-            <div class="total">
-              <span>Modeled monthly upside</span>
-              <strong id="totalRevenue">$0</strong>
-            </div>
-            <p>Model, not guarantee. Real outcome depends on retention, platform policy, fulfillment, and audience trust.</p>
-          </div>
+        <div class="pipeline-grid">
+          <article class="pipeline-stage">
+            <span class="stage-number">01</span>
+            <h3>Idea generation</h3>
+            <p>Generate worlds, character hooks, episode arcs, and fan-vote loops from one brief.</p>
+          </article>
+          <article class="pipeline-stage">
+            <span class="stage-number">02</span>
+            <h3>Prompt factory</h3>
+            <p>Turn winners into reusable prompts for characters, scenes, thumbnails, captions, and variants.</p>
+          </article>
+          <article class="pipeline-stage">
+            <span class="stage-number">03</span>
+            <h3>Bulk image runs</h3>
+            <p>Generate asset walls, hero shots, merch mockups, and continuity references in organized batches.</p>
+          </article>
+          <article class="pipeline-stage">
+            <span class="stage-number">04</span>
+            <h3>Bulk video runs</h3>
+            <p>Create short-form episode variants, motion tests, hooks, endings, and platform crops at scale.</p>
+          </article>
+          <article class="pipeline-stage">
+            <span class="stage-number">05</span>
+            <h3>Human review</h3>
+            <p>Review only strongest batches, approve keepers, reject weak outputs, and feed notes back into prompts.</p>
+          </article>
+          <article class="pipeline-stage">
+            <span class="stage-number">06</span>
+            <h3>Auto publishing</h3>
+            <p>Package approved posts with captions, hashtags, schedules, and channel-specific export rules.</p>
+          </article>
+        </div>
+        <div class="pipeline-board" aria-label="Automation run sequence">
+          <div><b>Brief in</b><span>Concept seeds, audience target, tone, channel rules.</span></div>
+          <div><b>Batch run</b><span>Prompts, images, videos, captions, alternates.</span></div>
+          <div><b>Review queue</b><span>Ranked outputs, notes, rejects, reusable winners.</span></div>
+          <div><b>Publish out</b><span>Scheduled posts, asset packs, next-run learning.</span></div>
         </div>
       </section>
 
@@ -248,6 +249,6 @@
       <p id="lightboxCaption"></p>
     </dialog>
 
-    <script src="./app.js?v=snack-5"></script>
+    <script src="./app.js?v=pipeline-1"></script>
   </body>
 </html>

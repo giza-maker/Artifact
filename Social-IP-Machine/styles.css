@@ -327,6 +327,8 @@ section[id] {
 .proof-grid,
 .lab-grid,
 .machine-grid,
+.pipeline-grid,
+.pipeline-board,
 .sim-grid,
 .timeline {
   width: min(1100px, 100%);
@@ -341,6 +343,8 @@ section[id] {
 
 .proof-grid article,
 .timeline article,
+.pipeline-stage,
+.pipeline-board,
 .episode-output,
 .beat-stack,
 .controls,
@@ -591,61 +595,99 @@ section[id] {
   text-align: right;
 }
 
-.simulator {
-  background: linear-gradient(180deg, rgba(38, 208, 168, 0.08), transparent 45%);
+.pipeline {
+  background:
+    linear-gradient(180deg, rgba(38, 208, 168, 0.1), transparent 44%),
+    linear-gradient(90deg, rgba(247, 201, 72, 0.08), transparent 52%);
 }
 
-.controls,
-.results {
-  padding: 1.1rem;
+.pipeline-head {
+  align-items: start;
 }
 
-.controls {
-  display: grid;
-  gap: 1rem;
+.pipeline-head h2 {
+  max-width: 720px;
 }
 
-.controls label {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 0.35rem 1rem;
+.pipeline-copy {
+  max-width: 360px;
+  margin: 1.35rem 0 0;
   color: var(--muted);
-  font-weight: 800;
+  font-weight: 650;
 }
 
-.controls input {
-  grid-column: 1 / -1;
-  accent-color: var(--concept-a);
-}
-
-.controls output {
-  color: var(--ink);
-}
-
-.results {
+.pipeline-grid {
   display: grid;
-  gap: 0.7rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.9rem;
 }
 
-.results div {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  border-bottom: 1px solid var(--line);
-  padding-bottom: 0.7rem;
+.pipeline-stage {
+  position: relative;
+  min-height: 190px;
+  overflow: hidden;
+  padding: 1rem;
 }
 
-.results .total {
-  border-bottom: 0;
-  border-radius: var(--radius);
+.pipeline-stage::after {
+  content: "";
+  position: absolute;
+  right: -28px;
+  bottom: -28px;
+  width: 92px;
+  height: 92px;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--concept-a), transparent 28%), transparent 68%);
+  opacity: 0.55;
+}
+
+.stage-number {
+  display: inline-grid;
+  width: 2.25rem;
+  height: 2.25rem;
+  place-items: center;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(255, 248, 232, 0.22);
+  border-radius: 50%;
   background: linear-gradient(135deg, var(--concept-a), var(--concept-b));
   color: #11100d;
-  padding: 0.9rem;
+  font-weight: 950;
 }
 
-.results strong {
-  font-size: 1.55rem;
+.pipeline-stage p {
+  color: var(--muted);
+}
+
+.pipeline-board {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0;
+  margin-top: 1rem;
+  overflow: hidden;
+}
+
+.pipeline-board div {
+  padding: 1rem;
+  border-right: 1px solid var(--line);
+}
+
+.pipeline-board div:last-child {
+  border-right: 0;
+}
+
+.pipeline-board b,
+.pipeline-board span {
+  display: block;
+}
+
+.pipeline-board b {
+  margin-bottom: 0.35rem;
+  color: var(--accent-3);
+}
+
+.pipeline-board span {
+  color: var(--muted);
+  font-size: 0.92rem;
 }
 
 .gallery-section {
@@ -780,6 +822,8 @@ section[id] {
 
   .proof-grid,
   .machine-grid,
+  .pipeline-grid,
+  .pipeline-board,
   .sim-grid,
   .timeline {
     grid-template-columns: 1fr 1fr;
@@ -880,6 +924,8 @@ section[id] {
   .hero-stats,
   .proof-grid,
   .machine-grid,
+  .pipeline-grid,
+  .pipeline-board,
   .sim-grid,
   .timeline,
   .concept-buttons {
@@ -913,6 +959,8 @@ section[id] {
   .showcase,
   .episode-output,
   .beat-stack,
+  .pipeline-stage,
+  .pipeline-board,
   .controls,
   .results {
     border-radius: 7px;
@@ -1018,8 +1066,18 @@ section[id] {
   }
 
   .beat-stack div,
+  .pipeline-board div,
   .results div {
     display: grid;
+  }
+
+  .pipeline-board div {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .pipeline-board div:last-child {
+    border-bottom: 0;
   }
 
   .beat-stack span {
