@@ -709,76 +709,55 @@ section[id] {
 }
 
 .pipeline-motion {
+  isolation: isolate;
   position: relative;
-  min-height: 430px;
+  min-height: 460px;
   overflow: hidden;
+  background: #11100d;
+}
+
+.pipeline-stage-image,
+.pipeline-image-vignette {
+  position: absolute;
+  inset: 0;
+}
+
+.pipeline-stage-image {
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.015);
+  transition: transform var(--slow), opacity var(--slow), filter var(--slow);
+  animation: stage-drift 12s ease-in-out infinite alternate;
+}
+
+.pipeline-motion:hover .pipeline-stage-image {
+  transform: scale(1.055);
+  filter: saturate(1.08) contrast(1.04);
+}
+
+.pipeline-image-vignette {
+  z-index: -1;
   background:
-    radial-gradient(circle at 50% 40%, rgba(38, 208, 168, 0.22), transparent 28%),
-    radial-gradient(circle at 75% 75%, rgba(255, 90, 95, 0.18), transparent 32%),
-    rgba(17, 16, 13, 0.84);
+    linear-gradient(180deg, rgba(17, 16, 13, 0.06) 0%, rgba(17, 16, 13, 0.22) 42%, rgba(17, 16, 13, 0.88) 100%),
+    linear-gradient(90deg, rgba(17, 16, 13, 0.52), transparent 34%, rgba(17, 16, 13, 0.38)),
+    radial-gradient(circle at 78% 18%, transparent 0 38%, rgba(17, 16, 13, 0.52) 82%);
 }
 
-.motion-orbit {
+.pipeline-stage-badge {
   position: absolute;
-  inset: 1.2rem;
-  border: 1px solid rgba(255, 248, 232, 0.12);
-  border-radius: 50%;
-  animation: slow-spin 18s linear infinite;
-}
-
-.motion-orbit::before,
-.motion-orbit::after {
-  content: "";
-  position: absolute;
-  inset: 17%;
-  border: 1px dashed rgba(255, 248, 232, 0.12);
-  border-radius: 50%;
-}
-
-.motion-orbit::after {
-  inset: 33%;
-}
-
-.motion-node,
-.motion-core {
-  position: absolute;
-  display: block;
-  border-radius: 50%;
-}
-
-.motion-node {
-  width: 24px;
-  height: 24px;
-  background: var(--accent-3);
-  box-shadow: 0 0 24px color-mix(in srgb, var(--accent-3), transparent 25%);
-}
-
-.node-a {
-  left: 12%;
-  top: 22%;
-}
-
-.node-b {
-  right: 15%;
-  top: 38%;
-  background: var(--concept-a);
-}
-
-.node-c {
-  left: 45%;
-  bottom: 12%;
-  background: var(--concept-b);
-}
-
-.motion-core {
-  left: 50%;
-  top: 50%;
-  width: 108px;
-  height: 108px;
-  transform: translate(-50%, -50%);
-  background:
-    radial-gradient(circle, rgba(255, 248, 232, 0.95), rgba(247, 201, 72, 0.76) 42%, rgba(38, 208, 168, 0.26) 70%, transparent 72%);
-  animation: core-pulse 2.4s ease-in-out infinite;
+  top: 1rem;
+  left: 1rem;
+  border: 1px solid rgba(255, 248, 232, 0.22);
+  border-radius: 999px;
+  background: rgba(17, 16, 13, 0.66);
+  color: var(--accent-3);
+  padding: 0.45rem 0.65rem;
+  font-size: 0.78rem;
+  font-weight: 950;
+  text-transform: uppercase;
+  backdrop-filter: blur(14px);
 }
 
 .motion-card {
@@ -786,11 +765,14 @@ section[id] {
   right: 1rem;
   bottom: 1rem;
   left: 1rem;
-  border: 1px solid rgba(255, 248, 232, 0.16);
+  border: 1px solid rgba(255, 248, 232, 0.24);
   border-radius: var(--radius);
-  background: rgba(17, 16, 13, 0.78);
-  padding: 1rem;
-  backdrop-filter: blur(18px);
+  background:
+    linear-gradient(135deg, rgba(17, 16, 13, 0.9), rgba(17, 16, 13, 0.7)),
+    radial-gradient(circle at 18% 0%, color-mix(in srgb, var(--concept-a), transparent 70%), transparent 42%);
+  padding: 1.05rem;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 18px 46px rgba(0, 0, 0, 0.35);
 }
 
 .motion-card span {
@@ -807,6 +789,15 @@ section[id] {
 .motion-card p {
   margin-bottom: 0;
   color: var(--muted);
+}
+
+@keyframes stage-drift {
+  from {
+    object-position: 48% 50%;
+  }
+  to {
+    object-position: 54% 52%;
+  }
 }
 
 .pipeline-controls {
@@ -895,22 +886,6 @@ section[id] {
   padding: 0.75rem;
   color: var(--ink);
   font-weight: 800;
-}
-
-@keyframes slow-spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes core-pulse {
-  0%,
-  100% {
-    transform: translate(-50%, -50%) scale(0.92);
-  }
-  50% {
-    transform: translate(-50%, -50%) scale(1.06);
-  }
 }
 
 .gallery-section {
@@ -1340,7 +1315,24 @@ section[id] {
   }
 
   .pipeline-motion {
-    min-height: 360px;
+    min-height: 380px;
+  }
+
+  .pipeline-stage-badge {
+    top: 0.75rem;
+    left: 0.75rem;
+    font-size: 0.68rem;
+  }
+
+  .motion-card {
+    right: 0.75rem;
+    bottom: 0.75rem;
+    left: 0.75rem;
+    padding: 0.85rem;
+  }
+
+  .motion-card h3 {
+    font-size: 1.45rem;
   }
 
   .pipeline-controls {

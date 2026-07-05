@@ -9,7 +9,7 @@
       content="Interactive pitch deck for AI-generated character accounts, content engines, and monetization paths."
     />
     <link rel="icon" href="./favicon.svg?v=chili-1" type="image/svg+xml" />
-    <link rel="stylesheet" href="./styles.css?v=revamp-2" />
+    <link rel="stylesheet" href="./styles.css?v=pipeline-visuals-1" />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to deck</a>
@@ -174,12 +174,16 @@
           </div>
 
           <div class="pipeline-motion" aria-live="polite">
-            <div class="motion-orbit" aria-hidden="true">
-              <span class="motion-node node-a"></span>
-              <span class="motion-node node-b"></span>
-              <span class="motion-node node-c"></span>
-              <span class="motion-core"></span>
-            </div>
+            <img
+              class="pipeline-stage-image"
+              id="pipelineStageImage"
+              src="./assets/images/pipeline-ideas.webp"
+              alt="Snack characters brainstorming new social IP ideas around a concept table."
+              loading="lazy"
+              decoding="async"
+            />
+            <div class="pipeline-image-vignette" aria-hidden="true"></div>
+            <span class="pipeline-stage-badge" id="pipelineStageBadge">Concept board</span>
             <div class="motion-card">
               <span id="pipelineStep">01 / Idea generation</span>
               <h3 id="pipelineStageTitle">Seed worlds people can follow</h3>
@@ -243,6 +247,6 @@
       <p id="lightboxCaption"></p>
     </dialog>
 
-    <script src="./app.js?v=revamp-2"></script>
+    <script src="./app.js?v=pipeline-visuals-1"></script>
   </body>
 </html>

@@ -215,36 +215,54 @@ const pipelineStages = [
     step: "01 / Idea generation",
     title: "Seed worlds people can follow",
     body: "Generate universes, recurring characters, episode engines, and fan-vote loops.",
+    image: "./assets/images/pipeline-ideas.webp",
+    alt: "Snack characters brainstorming new social IP universes around a table of concept cards.",
+    badge: "Concept board",
     outputs: ["World concepts", "Character hooks", "Episode arcs"]
   },
   {
     step: "02 / Prompt factory",
     title: "Turn winners into reusable prompts",
     body: "Build character, scene, thumbnail, product, caption, and video prompts from the same canon.",
+    image: "./assets/images/pipeline-prompts.webp",
+    alt: "A chili character operating a prompt factory that turns character cards into reusable prompt packs.",
+    badge: "Prompt stack",
     outputs: ["Character prompts", "Scene prompts", "Caption prompts"]
   },
   {
     step: "03 / Bulk image runs",
     title: "Generate asset batches fast",
     body: "Produce hero frames, thumbnails, character sheets, merch mockups, and continuity references.",
+    image: "./assets/images/pipeline-images.webp",
+    alt: "A cinematic machine producing batches of snack character hero frames, thumbnails, and reference sheets.",
+    badge: "Asset wall",
     outputs: ["Hero images", "Reference sheets", "Merch previews"]
   },
   {
     step: "04 / Bulk video runs",
     title: "Render short-form variants",
     body: "Create hooks, endings, platform crops, motion tests, and episode alternates in batches.",
+    image: "./assets/images/pipeline-videos.webp",
+    alt: "A video production bay rendering many short-form snack character episode variants.",
+    badge: "Video bay",
     outputs: ["Hook cuts", "Episode clips", "Platform crops"]
   },
   {
     step: "05 / Human review",
     title: "Only review the strongest batch",
     body: "Rank outputs, approve keepers, reject weak work, and feed notes back into the prompt system.",
+    image: "./assets/images/pipeline-review.webp",
+    alt: "Snack characters reviewing generated assets and selecting winners from a wall of candidates.",
+    badge: "Keeper review",
     outputs: ["Keeper list", "Reject notes", "Prompt updates"]
   },
   {
     step: "06 / Auto publishing",
     title: "Queue posts with the right package",
     body: "Attach captions, hashtags, schedule windows, asset links, and channel-specific export rules.",
+    image: "./assets/images/pipeline-publish.webp",
+    alt: "A publishing control room scheduling approved snack character posts into launch channels.",
+    badge: "Publish queue",
     outputs: ["Scheduled posts", "Asset packs", "Next-run memory"]
   }
 ];
@@ -428,6 +446,11 @@ function renderPipelineStage() {
   $("#pipelineStageTitle").textContent = stage.title;
   $("#pipelineStageBody").textContent = stage.body;
   $("#pipelineProgress").style.width = `${((state.pipelineStage + 1) / pipelineStages.length) * 100}%`;
+
+  const image = $("#pipelineStageImage");
+  image.src = stage.image;
+  image.alt = stage.alt;
+  $("#pipelineStageBadge").textContent = stage.badge;
 
   const outputs = $("#pipelineOutputs");
   outputs.innerHTML = "";
