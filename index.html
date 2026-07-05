@@ -101,6 +101,10 @@
 
         <div class="lab-grid">
           <aside class="concept-rail" aria-label="Concept selector">
+            <div class="project-controls" aria-label="Project browsing controls">
+              <button id="prevConcept" type="button" aria-label="Previous project">&#8592;</button>
+              <button id="nextConcept" type="button" aria-label="Next project">&#8594;</button>
+            </div>
             <div id="conceptButtons" class="concept-buttons"></div>
           </aside>
 
@@ -111,6 +115,7 @@
                 <span id="featureScore">94</span>
                 <small>IP score</small>
               </div>
+              <div class="thumbnail-row" id="featureThumbs"></div>
             </div>
             <div class="showcase-body">
               <p id="featureRank" class="eyebrow">Flagship</p>
@@ -120,7 +125,6 @@
                 Courtroom drama where snack characters stand trial.
               </p>
               <div class="pill-row" id="featurePills"></div>
-              <div class="thumbnail-row" id="featureThumbs"></div>
             </div>
           </article>
         </div>

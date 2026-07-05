@@ -239,9 +239,21 @@ function renderConceptButtons() {
       <span><strong>${concept.title}</strong><span>${concept.handle}</span></span>
       <small>${concept.score}</small>
     `;
+    button.dataset.concept = concept.slug;
     button.addEventListener("click", () => setConcept(concept.slug));
     wrap.appendChild(button);
   });
+}
+
+function updateConceptButtonState() {
+  document.querySelectorAll(".concept-button").forEach((button) => {
+    button.setAttribute("aria-pressed", button.dataset.concept === state.concept.slug ? "true" : "false");
+  });
+}
+
+function scrollActiveConceptIntoView() {
+  const activeButton = document.querySelector(`.concept-button[data-concept="${state.concept.slug}"]`);
+  activeButton?.scrollIntoView({ block: "nearest", inline: "center" });
 }
 
 function setConcept(slug) {
@@ -249,17 +261,33 @@ function setConcept(slug) {
   state.concept = concept;
   state.image = 0;
   setTheme(concept);
-  renderConceptButtons();
+  updateConceptButtonState();
   renderFeature();
   renderEpisode();
+  requestAnimationFrame(scrollActiveConceptIntoView);
 }
 
-function renderFeature() {
+function setConceptByOffset(offset) {
+  const currentIndex = concepts.findIndex((concept) => concept.slug === state.concept.slug);
+  const nextIndex = (currentIndex + offset + concepts.length) % concepts.length;
+  setConcept(concepts[nextIndex].slug);
+}
+
+function updateFeatureImage() {
   const concept = state.concept;
   const image = concept.images[state.image];
 
   $("#featureImage").src = image;
   $("#featureImage").alt = `${concept.title} generated asset`;
+  document.querySelectorAll(".thumb-button").forEach((button) => {
+    button.setAttribute("aria-pressed", Number(button.dataset.imageIndex) === state.image ? "true" : "false");
+  });
+}
+
+function renderFeature() {
+  const concept = state.concept;
+
+  updateFeatureImage();
   $("#featureScore").textContent = concept.score;
   $("#featureRank").textContent = concept.rank;
   $("#featureTitle").textContent = concept.title;
@@ -281,12 +309,13 @@ function renderFeature() {
     const button = document.createElement("button");
     button.className = "thumb-button";
     button.type = "button";
+    button.dataset.imageIndex = String(index);
     button.setAttribute("aria-pressed", index === state.image ? "true" : "false");
     button.setAttribute("aria-label", `Show ${concept.title} asset ${index + 1}`);
     button.innerHTML = `<img src="${src}" alt="" loading="lazy" decoding="async">`;
     button.addEventListener("click", () => {
       state.image = index;
-      renderFeature();
+      updateFeatureImage();
     });
     thumbs.appendChild(button);
   });
@@ -393,6 +422,8 @@ function init() {
 
   $("#spinEpisode").addEventListener("click", renderEpisode);
   $("#closeLightbox").addEventListener("click", () => $("#lightbox").close());
+  $("#prevConcept")?.addEventListener("click", () => setConceptByOffset(-1));
+  $("#nextConcept")?.addEventListener("click", () => setConceptByOffset(1));
   ["followers", "viewRate", "merchRate", "sponsorSlots"].forEach((id) => {
     $(`#${id}`).addEventListener("input", updateModel);
   });
