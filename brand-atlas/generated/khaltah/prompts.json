@@ -1,0 +1,15 @@
+{
+  "id": "khaltah",
+  "prompts": {
+    "logo": "Bilingual Khaltah / خلطة logo combining a cherry arc, buttercream bar, and cobalt capsule into one disciplined symbol; transparent background.",
+    "identity": "Landscape vivid creative-tech identity environment preserving the approved mark across cards, stationery, slide, social cover, app icon, signage, publication, fabric, and pattern.",
+    "landing": "Portrait full-page English-led desktop creative-tech website preserving the approved mark, with hero, disciplines, featured work, method, studio, CTA, and footer."
+  },
+  "revisions": [
+    {
+      "kind": "landing",
+      "prompt": "Use case: precise-object-edit. Edit target: attached Khaltah / خلطة full-page landing concept. Preserve complete composition, full aspect ratio, photography, exact logo, typography, every English/Arabic word, all sections and positions. Change ONLY the dark purple/gradient background behind the 'Our Studio / People who make the mix real.' text panel to a solid flat deep cherry #A51F41. Keep this panel's text white and readable. Remove any purple gradient treatment from that panel. All other cream, cherry, butter yellow and cobalt elements must stay unchanged. Do not crop, add sections, alter logo or rewrite text. Return the entire complete full-page image.",
+      "sourceImageFile": "exec-32c45ca0-dc16-45fa-be86-a85583106a29.png"
+    }
+  ]
+}

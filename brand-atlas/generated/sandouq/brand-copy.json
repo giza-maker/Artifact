@@ -1,0 +1,202 @@
+{
+  "pronunciation": "san-DOOQ | صُنْدُوق",
+  "meaningAr": "حاوية أو صندوق، وقد يعني صندوقًا استثماريًا.",
+  "strengthsAr": [
+    "يتسع لمحفظة أعمال",
+    "رمز ملموس غني",
+    "سهل الشرح",
+    "استعارة قوية للعلامة الأم"
+  ],
+  "concernsAr": [
+    "كلمة عامة ومزدحمة",
+    "قد توحي بالاستثمار",
+    "قد توحي بالشحن والتخزين",
+    "التمييز التجاري قد يكون صعبًا"
+  ],
+  "concernsEn": [
+    "Generic noun and crowded search likely",
+    "Fund/investment connotations may mislead",
+    "May sound like shipping/storage",
+    "Commercial-name clearance could be difficult"
+  ],
+  "bestFitAr": "محفظة استوديوهات أو حاضنة تبني مشاريع متعددة.",
+  "worstFitAr": "منتج ترفيهي واحد يحتاج شخصية محددة جدًا.",
+  "naturalnessAr": "عربي فصيح وشائع، مع اختلاف إقليمي في نطق القاف.",
+  "concept": {
+    "ar": "حاوية مرنة تحتفظ بأفكار مختلفة وتمنح كل واحدة مساحة للنمو.",
+    "en": "A flexible container that gives different ideas room to grow."
+  },
+  "promise": {
+    "ar": "نبني بيتًا للمنتجات والمشاريع التي تستحق أن تصبح أعمالًا.",
+    "en": "We create a home for products and ventures worth turning into businesses."
+  },
+  "story": {
+    "ar": "صندوق يحوّل تنوع الشركة إلى ميزة مفهومة: مكان واحد يحمل أشياء مختلفة. يناسب حاضنة أو محفظة استوديوهات، لكنه يحمل أيضًا معنى الصندوق الاستثماري أو التخزين، لذلك يجب أن يحدد الوصف نوع النشاط من أول ظهور.",
+    "en": "Sandouq makes portfolio diversity easy to grasp: one place that can hold different things. It suits an incubator or studio portfolio, but also suggests an investment fund or storage, so the descriptor must establish the business immediately."
+  },
+  "mission": {
+    "ar": "اكتشاف الأفكار الواعدة وبناؤها واختبار طريقها إلى سوق واضح.",
+    "en": "Find promising ideas, build them, and test their path to a clear market."
+  },
+  "pitch15": {
+    "ar": "صندوق استوديو مشاريع مقترح. نبني بيتًا للمنتجات والمشاريع التي تستحق أن تصبح أعمالًا. والغاية هي اكتشاف الأفكار الواعدة وبناؤها واختبار طريقها إلى سوق واضح.",
+    "en": "Sandouq is a proposed venture studio. We create a home for products and ventures worth turning into businesses. Its purpose is to find promising ideas, build them, and test their path to a clear market."
+  },
+  "pitch60": {
+    "ar": "صندوق تصور استوديو مشاريع يخدم المؤسسين والمبدعين الذين يملكون فكرة واعدة تحتاج طريقًا واضحًا إلى السوق. ينطلق من فكرة بسيطة: حاوية مرنة تحتفظ بأفكار مختلفة وتمنح كل واحدة مساحة للنمو. ويقدم بيئة لبناء المنتجات واختبارها وتكوين فرقها وتحويل الأنسب منها إلى مشاريع مستقلة. يعمل الفريق بجمع الخبرة في المنتج والتقنية والتصميم والنمو حول كل فرصة في وقتها، مع بقاء الهدف واضحًا في كل مرحلة. تبدأ المشاريع بفهم العمل القائم والقرار الذي يحتاجه العميل، ثم تتحول إلى نموذج يمكن اختباره قبل التوسع. الرؤية هي بناء محفظة متنوعة من الأعمال الأصلية، لكل منها هويتها ومسارها، ويجمعها بيت بناء واحد. بهذا الوعد، يصبح اسم صندوق تعبيرًا عن طريقة الشركة في العمل، لا مجرد عنوان لها.",
+    "en": "Sandouq is conceived as a proposed venture studio for founders and makers with a promising idea that needs a clear route to market. It starts with a simple idea: A flexible container that gives different ideas room to grow. The company would create an environment for building products, testing demand, forming teams, and turning the strongest concepts into independent ventures. Its team would work by bringing product, technology, design, and growth expertise around each opportunity when it needs it, keeping the intended outcome visible at every stage. Work would move into a usable prototype before wider investment. The long-term aim is a diverse portfolio of original businesses, each with its own identity and path, supported by one building home. In this model, Sandouq becomes a clear expression of how the company works and what customers can expect from the experience."
+  },
+  "about30": {
+    "ar": "صندوق استوديو مشاريع مقترح يخدم المؤسسين والمبدعين الذين يملكون فكرة واعدة تحتاج طريقًا واضحًا إلى السوق. نبني بيتًا للمنتجات والمشاريع التي تستحق أن تصبح أعمالًا.",
+    "en": "Sandouq is a proposed venture studio for founders and makers with a promising idea that needs a clear route to market. We create a home for products and ventures worth turning into businesses."
+  },
+  "about120": {
+    "ar": "صندوق تصور استوديو مشاريع صُمم لخدمة المؤسسين والمبدعين الذين يملكون فكرة واعدة تحتاج طريقًا واضحًا إلى السوق. تتمثل فكرته في حاوية مرنة تحتفظ بأفكار مختلفة وتمنح كل واحدة مساحة للنمو. ومن هذا المنطلق، يبني بيئة لبناء المنتجات واختبارها وتكوين فرقها وتحويل الأنسب منها إلى مشاريع مستقلة. تبدأ طريقة العمل بفهم السياق الحقيقي وما يحتاجه المستخدم أو الفريق، ثم تستمر بجمع الخبرة في المنتج والتقنية والتصميم والنمو حول كل فرصة في وقتها. تُختبر الفكرة في صورة ملموسة قبل إضافة نطاق أو تعقيد جديد، وتبقى المسؤولية والقرار واضحين طوال المشروع. مع الوقت، يمكن أن يتوسع صندوق ليصبح محفظة متنوعة من الأعمال الأصلية، لكل منها هويتها ومسارها، ويجمعها بيت بناء واحد. الاسم والنظام اللفظي المقترحان يقدمان وعدًا بسيطًا: نبني بيتًا للمنتجات والمشاريع التي تستحق أن تصبح أعمالًا.",
+    "en": "Sandouq is a proposed venture studio designed for founders and makers with a promising idea that needs a clear route to market. Its central idea is a flexible container that gives different ideas room to grow. From that position, it would build an environment for building products, testing demand, forming teams, and turning the strongest concepts into independent ventures. The working method begins with the real context and the outcome a user or team needs, then proceeds by bringing product, technology, design, and growth expertise around each opportunity when it needs it. Ideas move into tangible form before more complexity is added. Over time, Sandouq could grow into a diverse portfolio of original businesses, each with its own identity and path, supported by one building home."
+  },
+  "taglines": {
+    "ar": [
+      "كل فكرة لها مكان.",
+      "افتح باب الإمكانيات.",
+      "بيت لما يستحق البناء."
+    ],
+    "en": [
+      "Where ideas take shape.",
+      "Open to what is next.",
+      "A home for ventures."
+    ]
+  },
+  "personality": [
+    {
+      "ar": "رحب",
+      "en": "generous"
+    },
+    {
+      "ar": "ريادي",
+      "en": "entrepreneurial"
+    },
+    {
+      "ar": "فضولي",
+      "en": "curious"
+    },
+    {
+      "ar": "واسع",
+      "en": "expansive"
+    }
+  ],
+  "archetype": {
+    "ar": "الحاضن",
+    "en": "The Steward"
+  },
+  "vision": {
+    "en": "A future where promising ideas gain the shelter, resources, and patient structure needed to become independent ventures. Sandouq would hold a growing portfolio of experiments, giving each one room to prove its value before it leaves the container.",
+    "ar": "مستقبل تجد فيه الأفكار الواعدة الحماية والموارد والبنية الصبورة التي تحتاجها لتصبح مشاريع مستقلة. يحتضن صندوق محفظة متنامية من التجارب، ويمنح كل تجربة مساحة لإثبات قيمتها قبل أن تغادر الحاضنة."
+  },
+  "brandApproach": {
+    "en": "Frame Sandouq as a venture container that reveals value over time. Layered forms, an unexpected interior, and stewardly language communicate patient building without resembling a financial fund.",
+    "ar": "يُصاغ صندوق كحاضنة مشاريع تكشف القيمة مع الوقت. تنقل الطبقات والداخل المفاجئ ولغة الرعاية معنى البناء الصبور، من دون أن تبدو العلامة صندوقًا استثماريًا ماليًا."
+  },
+  "headers": {
+    "en": [
+      "Give the next venture room to emerge",
+      "A home for ideas becoming independent companies",
+      "Open a better path from concept to company"
+    ],
+    "ar": [
+      "امنح المشروع القادم مساحة للظهور",
+      "بيت لأفكار تصبح شركات مستقلة",
+      "افتح طريقًا أفضل من الفكرة إلى الشركة"
+    ]
+  },
+  "headerSubline": {
+    "en": "Sandouq gives early ventures a structured place to test, learn, and grow until the strongest ideas are ready to stand alone.",
+    "ar": "يمنح صندوق المشاريع المبكرة مكانًا منظمًا للاختبار والتعلم والنمو، حتى تصبح أقوى الأفكار جاهزة للاستقلال."
+  },
+  "visualStory": {
+    "en": "Aubergine layers open onto an apricot interior across warm white. The revealed space gives the container depth, suggesting patient incubation and the surprise of an idea taking form.",
+    "ar": "تنفتح طبقات بنفسجية داكنة على داخل مشمشي فوق أبيض دافئ. يمنح الفراغ المكشوف الحاوية عمقًا، ويوحي بحضانة صبورة ومفاجأة الفكرة وهي تتشكل."
+  },
+  "pillars": [
+    {
+      "ar": "مساحة للتجربة",
+      "en": "Room to experiment"
+    },
+    {
+      "ar": "محفظة متنوعة",
+      "en": "Portfolio breadth"
+    },
+    {
+      "ar": "بناء الأعمال",
+      "en": "Venture building"
+    },
+    {
+      "ar": "اختيار مقصود",
+      "en": "Intentional selection"
+    }
+  ],
+  "tone": {
+    "enterprise": {
+      "ar": "لغة دقيقة وهادئة تربط صندوق بنتيجة تشغيلية واضحة، من دون وعود ضخمة أو ادعاءات تفوق.",
+      "en": "Use precise, calm language that ties Sandouq to an operational outcome without inflated claims."
+    },
+    "conversational": {
+      "ar": "جمل قصيرة وفعلية تستمد نبرتها من معنى صندوق وتشرح الفائدة بكلام يومي.",
+      "en": "Use short, active sentences grounded in the meaning of Sandouq, with everyday explanations of value."
+    }
+  },
+  "avoid": [
+    "Generic noun and crowded search likely",
+    "Fund/investment connotations may mislead",
+    "May sound like shipping/storage",
+    "Commercial-name clearance could be difficult",
+    "Do not imply trademark, trade-name, domain, or social-handle availability.",
+    "Do not present the meaning hypothesis as settled without native-language validation."
+  ],
+  "wouldChangeMind": {
+    "ar": "إذا ظن أغلب الجمهور أنه صندوق استثمار، يتراجع. فهمه كبيت لصناعة المنتجات بعد شرح واحد سيرفعه.",
+    "en": "If most audiences assume an investment fund, it falls. Understanding it as a product-building home after one explanation would raise it."
+  },
+  "commercial": {
+    "ar": "ممتاز لمظلة مشاريع متعددة ويمكنه احتواء شركات فرعية مستقلة. الالتباس مع الاستثمار والشحن يضيف عبئًا تفسيريًا وقانونيًا.",
+    "en": "Excellent as an umbrella for multiple ventures and independent sub-brands. Fund and logistics associations add explanatory and legal burden."
+  },
+  "portfolio": {
+    "ar": "صندوق ألعاب، صندوق برمجيات، صندوق تجارب؛ المرونة عالية، لكن الوصف قد يبدو أقسامًا داخل حاوية.",
+    "en": "Sandouq Games, Sandouq Software, and Sandouq Experiences stretch widely, though extensions can sound like compartments."
+  },
+  "proofPoints": [
+    "HYPOTHESIS: Multi-studio product portfolio or venture incubator. Validate with target buyers.",
+    "HYPOTHESIS: the layered container with surprising revealed space territory can remain recognizable at product and parent-brand scales. Test visually.",
+    "HYPOTHESIS: We create a home for products and ventures worth turning into businesses. Validate with a prototype offer and customer interviews."
+  ],
+  "proofToBuild": [
+    {
+      "ar": "نموذج تفاعلي يوضح كيف يقدم صندوق بيئة لبناء المنتجات واختبارها وتكوين فرقها وتحويل الأنسب منها إلى مشاريع مستقلة.",
+      "en": "An interactive prototype showing how Sandouq could deliver an environment for building products, testing demand, forming teams, and turning the strongest concepts into independent ventures."
+    },
+    {
+      "ar": "نموذج منتج منشور قابل للاستخدام مع سجل قرارات البناء وما تغير بعد الاختبار.",
+      "en": "A usable published product prototype with a build-decision log and the changes made after testing."
+    },
+    {
+      "ar": "اختبار مسمى ونطق ومفهوم مع الجمهور المستهدف، يتبعه ملخص مجهول الهوية لما فهموه وما التبس عليهم.",
+      "en": "A name, pronunciation, and concept test with the target audience, followed by an anonymized summary of what they understood and confused."
+    }
+  ],
+  "forbiddenClaims": {
+    "ar": [
+      "الاسم متاح أو فريد أو قابل للتسجيل من دون فحص رسمي ومشورة قانونية.",
+      "العائد أو خفض التكلفة أو سرعة التنفيذ مضمونة قبل وجود نتائج موثقة.",
+      "وصف صندوق بأنه صندوق استثماري مرخص أو أنه يدير أموالًا."
+    ],
+    "en": [
+      "The name is available, unique, or registrable without official searches and legal advice.",
+      "ROI, cost reduction, or delivery speed is guaranteed before documented results exist.",
+      "Describing Sandouq as a licensed investment fund or money manager."
+    ]
+  },
+  "pronunciationRisks": {
+    "ar": "Sandouq طويلة نسبيًا ولها تهجئات Sanduq وSandooq؛ القاف قد تُنطق بطرق إقليمية مختلفة.",
+    "en": "Sandouq has competing spellings such as Sanduq and Sandooq; qāf also varies by region."
+  }
+}

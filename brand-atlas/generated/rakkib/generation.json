@@ -1,0 +1,25 @@
+{
+  "id": "rakkib",
+  "method": "built-in image_gen",
+  "assets": [
+    {
+      "kind": "logo",
+      "file": "logo.png",
+      "prompt": "Create a transparent bilingual Rakkib logo: exact-fit teal interlocking modules, coral connector, subtle R, exact text Rakkib and ركّب; crisp vector-like identity.",
+      "sourceImageFile": "exec-4c819ef4-0fd8-4f6c-bc78-d176cfa59322.png"
+    },
+    {
+      "kind": "identity",
+      "file": "identity-kit.png",
+      "prompt": "Using the approved logo, create a premium 16:9 identity board with cards, stationery, deck, social cover, app icon, signage and modular pattern in teal, coral and off-white.",
+      "sourceImageFile": "exec-a4b1c3e2-67e6-456b-8feb-9c568cc5c32f.png"
+    },
+    {
+      "kind": "landing",
+      "file": "landing-page.png",
+      "prompt": "Using the approved logo, create a portrait full-page English desktop site with bilingual name, connected-module hero, services, method, product UI, CTA and footer.",
+      "sourceImageFile": "exec-30d17300-4879-4138-a5af-bbbfdd732e2d.png"
+    }
+  ],
+  "notes": "Logo inspected before reference-based identity and landing generation. Small Arabic text in mockups may contain generative variation."
+}

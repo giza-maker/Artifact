@@ -1,0 +1,25 @@
+{
+  "id": "uddah",
+  "method": "built-in image_gen",
+  "assets": [
+    {
+      "kind": "logo",
+      "file": "logo.png",
+      "prompt": "Create a distinctive bilingual logo for Uddah / عُدّة: modular graphite tool components lock around a bright citrus joint; vector-like; transparent; exact spelling.",
+      "sourceImageFile": "exec-995d6358-564c-4372-b68c-e73065352c4d.png"
+    },
+    {
+      "kind": "identity",
+      "file": "identity-kit.png",
+      "prompt": "Preserve supplied Uddah logo; comprehensive landscape identity/application board; tactile graphite modules and citrus joints; exact bilingual name and Equipped to build.; no invented clients or stats.",
+      "sourceImageFile": "exec-479725cf-76f1-4317-b950-c22bb71f9893.png"
+    },
+    {
+      "kind": "landing",
+      "file": "landing-page.png",
+      "prompt": "Preserve supplied Uddah logo; portrait full-page desktop page with navigation, engineered hero, three product modules, Assemble–Test–Operate process, CTA and footer; exact bilingual name and Arabic tagline; no invented stats or clients.",
+      "sourceImageFile": "exec-25455651-e01a-4489-b023-6fb5da38de0c.png"
+    }
+  ],
+  "notes": "Logo generated first with transparent background, inspected locally, then referenced for both follow-on assets. Arabic name and diacritics appear legible at primary scale."
+}

@@ -1,0 +1,27 @@
+{
+  "id": "khaltah",
+  "method": "built-in image_gen",
+  "assets": [
+    {
+      "kind": "logo",
+      "file": "logo.png",
+      "prompt": "Bilingual Khaltah / خلطة logo combining a cherry arc, buttercream bar, and cobalt capsule into one disciplined symbol; transparent background.",
+      "sourceImageFile": "exec-f93e0db5-52bc-4574-be81-8089650a847b.png"
+    },
+    {
+      "kind": "identity",
+      "file": "identity-kit.png",
+      "prompt": "Landscape vivid creative-tech identity environment preserving the approved mark across cards, stationery, slide, social cover, app icon, signage, publication, fabric, and pattern.",
+      "sourceImageFile": "exec-0abe5234-d1b2-4d2a-87ab-cb24e35d3c76.png"
+    },
+    {
+      "kind": "landing",
+      "file": "landing-page.png",
+      "prompt": "Portrait full-page English-led desktop creative-tech website preserving the approved mark, with hero, disciplines, featured work, method, studio, CTA, and footer.",
+      "sourceImageFile": "exec-32c45ca0-dc16-45fa-be86-a85583106a29.png",
+      "previousSourceImageFile": "exec-2611aab4-4bff-47cb-89b1-1e6399a31672.png",
+      "revisionPrompt": "Use case: precise-object-edit. Edit target: attached Khaltah / خلطة full-page landing concept. Preserve complete composition, full aspect ratio, photography, exact logo, typography, every English/Arabic word, all sections and positions. Change ONLY the dark purple/gradient background behind the 'Our Studio / People who make the mix real.' text panel to a solid flat deep cherry #A51F41. Keep this panel's text white and readable. Remove any purple gradient treatment from that panel. All other cream, cherry, butter yellow and cobalt elements must stay unchanged. Do not crop, add sections, alter logo or rewrite text. Return the entire complete full-page image."
+    }
+  ],
+  "notes": "Logo inspected before reference-driven identity and landing generation. Exact bilingual name preserved; food associations excluded."
+}

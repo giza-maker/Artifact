@@ -1,0 +1,25 @@
+{
+  "id": "sanah",
+  "method": "built-in image_gen",
+  "assets": [
+    {
+      "kind": "logo",
+      "file": "logo.png",
+      "prompt": "Bilingual San'ah / صَنْعة maker-stamp logo built from precise interlocking joinery; umber and clay; transparent background.",
+      "sourceImageFile": "exec-45db68c1-c7f3-4cc7-bd0f-a302c3bbb254.png"
+    },
+    {
+      "kind": "identity",
+      "file": "identity-kit.png",
+      "prompt": "Landscape premium identity board preserving the approved mark across tactile stationery, cards, slides, social cover, app icon, signage, packaging, and pattern.",
+      "sourceImageFile": "exec-9bcc1243-b7ff-4e65-85a6-12dc430a6bdf.png"
+    },
+    {
+      "kind": "landing",
+      "file": "landing-page.png",
+      "prompt": "Portrait full-page English-led desktop marketing concept preserving the approved mark, with hero, services, product story, process, CTA, and footer.",
+      "sourceImageFile": "exec-c8f9ac8a-1fd0-445c-9f92-db876be62949.png"
+    }
+  ],
+  "notes": "Logo inspected before reference-driven identity and landing generation. Canonical Latin name San'ah and Arabic صَنْعة used."
+}

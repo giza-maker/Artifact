@@ -1,0 +1,520 @@
+{
+  "wameed": {
+    "assets": {
+      "logo": {
+        "original": "/generated/wameed/logo.png",
+        "preview": "/generated/wameed/logo.webp",
+        "width": 2172,
+        "height": 724,
+        "hasAlpha": true
+      },
+      "identity": {
+        "original": "/generated/wameed/identity-kit.png",
+        "preview": "/generated/wameed/identity-kit.webp",
+        "width": 1536,
+        "height": 1024,
+        "hasAlpha": false
+      },
+      "landing": {
+        "original": "/generated/wameed/landing-page.png",
+        "preview": "/generated/wameed/landing-page.webp",
+        "width": 1024,
+        "height": 1536,
+        "hasAlpha": false
+      }
+    },
+    "kitPath": "/generated/wameed/wameed-image-kit.zip",
+    "applications": [
+      "business-card",
+      "letterhead",
+      "presentation-cover",
+      "social-square",
+      "social-banner",
+      "email-signature",
+      "mobile-screen",
+      "signage"
+    ],
+    "method": "Built-in image_gen; individual applications rendered from HTML"
+  },
+  "rakkib": {
+    "assets": {
+      "logo": {
+        "original": "/generated/rakkib/logo.png",
+        "preview": "/generated/rakkib/logo.webp",
+        "width": 2172,
+        "height": 724,
+        "hasAlpha": true
+      },
+      "identity": {
+        "original": "/generated/rakkib/identity-kit.png",
+        "preview": "/generated/rakkib/identity-kit.webp",
+        "width": 1672,
+        "height": 941,
+        "hasAlpha": false
+      },
+      "landing": {
+        "original": "/generated/rakkib/landing-page.png",
+        "preview": "/generated/rakkib/landing-page.webp",
+        "width": 1024,
+        "height": 1536,
+        "hasAlpha": false
+      }
+    },
+    "kitPath": "/generated/rakkib/rakkib-image-kit.zip",
+    "applications": [
+      "business-card",
+      "letterhead",
+      "presentation-cover",
+      "social-square",
+      "social-banner",
+      "email-signature",
+      "mobile-screen",
+      "signage"
+    ],
+    "method": "Built-in image_gen; individual applications rendered from HTML"
+  },
+  "sanah": {
+    "assets": {
+      "logo": {
+        "original": "/generated/sanah/logo.png",
+        "preview": "/generated/sanah/logo.webp",
+        "width": 1774,
+        "height": 887,
+        "hasAlpha": true
+      },
+      "identity": {
+        "original": "/generated/sanah/identity-kit.png",
+        "preview": "/generated/sanah/identity-kit.webp",
+        "width": 1774,
+        "height": 887,
+        "hasAlpha": false
+      },
+      "landing": {
+        "original": "/generated/sanah/landing-page.png",
+        "preview": "/generated/sanah/landing-page.webp",
+        "width": 848,
+        "height": 1855,
+        "hasAlpha": false
+      }
+    },
+    "kitPath": "/generated/sanah/sanah-image-kit.zip",
+    "applications": [
+      "business-card",
+      "letterhead",
+      "presentation-cover",
+      "social-square",
+      "social-banner",
+      "email-signature",
+      "mobile-screen",
+      "signage"
+    ],
+    "method": "Built-in image_gen; individual applications rendered from HTML"
+  },
+  "warsha": {
+    "assets": {
+      "logo": {
+        "original": "/generated/warsha/logo.png",
+        "preview": "/generated/warsha/logo.webp",
+        "width": 1774,
+        "height": 887,
+        "hasAlpha": true
+      },
+      "identity": {
+        "original": "/generated/warsha/identity-kit.png",
+        "preview": "/generated/warsha/identity-kit.webp",
+        "width": 1774,
+        "height": 887,
+        "hasAlpha": false
+      },
+      "landing": {
+        "original": "/generated/warsha/landing-page.png",
+        "preview": "/generated/warsha/landing-page.webp",
+        "width": 748,
+        "height": 2103,
+        "hasAlpha": false
+      }
+    },
+    "kitPath": "/generated/warsha/warsha-image-kit.zip",
+    "applications": [
+      "business-card",
+      "letterhead",
+      "presentation-cover",
+      "social-square",
+      "social-banner",
+      "email-signature",
+      "mobile-screen",
+      "signage"
+    ],
+    "method": "Built-in image_gen; individual applications rendered from HTML"
+  },
+  "sanni": {
+    "assets": {
+      "logo": {
+        "original": "/generated/sanni/logo.png",
+        "preview": "/generated/sanni/logo.webp",
+        "width": 1942,
+        "height": 809,
+        "hasAlpha": true
+      },
+      "identity": {
+        "original": "/generated/sanni/identity-kit.png",
+        "preview": "/generated/sanni/identity-kit.webp",
+        "width": 1672,
+        "height": 941,
+        "hasAlpha": false
+      },
+      "landing": {
+        "original": "/generated/sanni/landing-page.png",
+        "preview": "/generated/sanni/landing-page.webp",
+        "width": 779,
+        "height": 2020,
+        "hasAlpha": false
+      }
+    },
+    "kitPath": "/generated/sanni/sanni-image-kit.zip",
+    "applications": [
+      "business-card",
+      "letterhead",
+      "presentation-cover",
+      "social-square",
+      "social-banner",
+      "email-signature",
+      "mobile-screen",
+      "signage"
+    ],
+    "method": "Built-in image_gen; individual applications rendered from HTML"
+  },
+  "khaltah": {
+    "assets": {
+      "logo": {
+        "original": "/generated/khaltah/logo.png",
+        "preview": "/generated/khaltah/logo.webp",
+        "width": 1774,
+        "height": 887,
+        "hasAlpha": true
+      },
+      "identity": {
+        "original": "/generated/khaltah/identity-kit.png",
+        "preview": "/generated/khaltah/identity-kit.webp",
+        "width": 1774,
+        "height": 887,
+        "hasAlpha": false
+      },
+      "landing": {
+        "original": "/generated/khaltah/landing-page.png",
+        "preview": "/generated/khaltah/landing-page.webp",
+        "width": 736,
+        "height": 2138,
+        "hasAlpha": false
+      }
+    },
+    "kitPath": "/generated/khaltah/khaltah-image-kit.zip",
+    "applications": [
+      "business-card",
+      "letterhead",
+      "presentation-cover",
+      "social-square",
+      "social-banner",
+      "email-signature",
+      "mobile-screen",
+      "signage"
+    ],
+    "method": "Built-in image_gen; individual applications rendered from HTML"
+  },
+  "mirba": {
+    "assets": {
+      "logo": {
+        "original": "/generated/mirba/logo.png",
+        "preview": "/generated/mirba/logo.webp",
+        "width": 1774,
+        "height": 887,
+        "hasAlpha": true
+      },
+      "identity": {
+        "original": "/generated/mirba/identity-kit.png",
+        "preview": "/generated/mirba/identity-kit.webp",
+        "width": 1774,
+        "height": 887,
+        "hasAlpha": false
+      },
+      "landing": {
+        "original": "/generated/mirba/landing-page.png",
+        "preview": "/generated/mirba/landing-page.webp",
+        "width": 752,
+        "height": 2092,
+        "hasAlpha": false
+      }
+    },
+    "kitPath": "/generated/mirba/mirba-image-kit.zip",
+    "applications": [
+      "business-card",
+      "letterhead",
+      "presentation-cover",
+      "social-square",
+      "social-banner",
+      "email-signature",
+      "mobile-screen",
+      "signage"
+    ],
+    "method": "Built-in image_gen; individual applications rendered from HTML"
+  },
+  "dabbir": {
+    "assets": {
+      "logo": {
+        "original": "/generated/dabbir/logo.png",
+        "preview": "/generated/dabbir/logo.webp",
+        "width": 1774,
+        "height": 887,
+        "hasAlpha": true
+      },
+      "identity": {
+        "original": "/generated/dabbir/identity-kit.png",
+        "preview": "/generated/dabbir/identity-kit.webp",
+        "width": 1536,
+        "height": 1024,
+        "hasAlpha": false
+      },
+      "landing": {
+        "original": "/generated/dabbir/landing-page.png",
+        "preview": "/generated/dabbir/landing-page.webp",
+        "width": 1024,
+        "height": 1536,
+        "hasAlpha": false
+      }
+    },
+    "kitPath": "/generated/dabbir/dabbir-image-kit.zip",
+    "applications": [
+      "business-card",
+      "letterhead",
+      "presentation-cover",
+      "social-square",
+      "social-banner",
+      "email-signature",
+      "mobile-screen",
+      "signage"
+    ],
+    "method": "Built-in image_gen; individual applications rendered from HTML"
+  },
+  "uddah": {
+    "assets": {
+      "logo": {
+        "original": "/generated/uddah/logo.png",
+        "preview": "/generated/uddah/logo.webp",
+        "width": 1774,
+        "height": 887,
+        "hasAlpha": true
+      },
+      "identity": {
+        "original": "/generated/uddah/identity-kit.png",
+        "preview": "/generated/uddah/identity-kit.webp",
+        "width": 1536,
+        "height": 1024,
+        "hasAlpha": false
+      },
+      "landing": {
+        "original": "/generated/uddah/landing-page.png",
+        "preview": "/generated/uddah/landing-page.webp",
+        "width": 1024,
+        "height": 1536,
+        "hasAlpha": false
+      }
+    },
+    "kitPath": "/generated/uddah/uddah-image-kit.zip",
+    "applications": [
+      "business-card",
+      "letterhead",
+      "presentation-cover",
+      "social-square",
+      "social-banner",
+      "email-signature",
+      "mobile-screen",
+      "signage"
+    ],
+    "method": "Built-in image_gen; individual applications rendered from HTML"
+  },
+  "waseed": {
+    "assets": {
+      "logo": {
+        "original": "/generated/waseed/logo.png",
+        "preview": "/generated/waseed/logo.webp",
+        "width": 1774,
+        "height": 887,
+        "hasAlpha": true
+      },
+      "identity": {
+        "original": "/generated/waseed/identity-kit.png",
+        "preview": "/generated/waseed/identity-kit.webp",
+        "width": 1536,
+        "height": 1024,
+        "hasAlpha": false
+      },
+      "landing": {
+        "original": "/generated/waseed/landing-page.png",
+        "preview": "/generated/waseed/landing-page.webp",
+        "width": 809,
+        "height": 1942,
+        "hasAlpha": false
+      }
+    },
+    "kitPath": "/generated/waseed/waseed-image-kit.zip",
+    "applications": [
+      "business-card",
+      "letterhead",
+      "presentation-cover",
+      "social-square",
+      "social-banner",
+      "email-signature",
+      "mobile-screen",
+      "signage"
+    ],
+    "method": "Built-in image_gen; individual applications rendered from HTML"
+  },
+  "samlah": {
+    "assets": {
+      "logo": {
+        "original": "/generated/samlah/logo.png",
+        "preview": "/generated/samlah/logo.webp",
+        "width": 1862,
+        "height": 845,
+        "hasAlpha": true
+      },
+      "identity": {
+        "original": "/generated/samlah/identity-kit.png",
+        "preview": "/generated/samlah/identity-kit.webp",
+        "width": 1536,
+        "height": 1024,
+        "hasAlpha": false
+      },
+      "landing": {
+        "original": "/generated/samlah/landing-page.png",
+        "preview": "/generated/samlah/landing-page.webp",
+        "width": 745,
+        "height": 2110,
+        "hasAlpha": false
+      }
+    },
+    "kitPath": "/generated/samlah/samlah-image-kit.zip",
+    "applications": [
+      "business-card",
+      "letterhead",
+      "presentation-cover",
+      "social-square",
+      "social-banner",
+      "email-signature",
+      "mobile-screen",
+      "signage"
+    ],
+    "method": "Built-in image_gen; individual applications rendered from HTML"
+  },
+  "rabt": {
+    "assets": {
+      "logo": {
+        "original": "/generated/rabt/logo.png",
+        "preview": "/generated/rabt/logo.webp",
+        "width": 1983,
+        "height": 793,
+        "hasAlpha": true
+      },
+      "identity": {
+        "original": "/generated/rabt/identity-kit.png",
+        "preview": "/generated/rabt/identity-kit.webp",
+        "width": 1672,
+        "height": 941,
+        "hasAlpha": false
+      },
+      "landing": {
+        "original": "/generated/rabt/landing-page.png",
+        "preview": "/generated/rabt/landing-page.webp",
+        "width": 752,
+        "height": 2091,
+        "hasAlpha": false
+      }
+    },
+    "kitPath": "/generated/rabt/rabt-image-kit.zip",
+    "applications": [
+      "business-card",
+      "letterhead",
+      "presentation-cover",
+      "social-square",
+      "social-banner",
+      "email-signature",
+      "mobile-screen",
+      "signage"
+    ],
+    "method": "Built-in image_gen; individual applications rendered from HTML"
+  },
+  "sandouq": {
+    "assets": {
+      "logo": {
+        "original": "/generated/sandouq/logo.png",
+        "preview": "/generated/sandouq/logo.webp",
+        "width": 1983,
+        "height": 793,
+        "hasAlpha": true
+      },
+      "identity": {
+        "original": "/generated/sandouq/identity-kit.png",
+        "preview": "/generated/sandouq/identity-kit.webp",
+        "width": 1672,
+        "height": 941,
+        "hasAlpha": false
+      },
+      "landing": {
+        "original": "/generated/sandouq/landing-page.png",
+        "preview": "/generated/sandouq/landing-page.webp",
+        "width": 1024,
+        "height": 1536,
+        "hasAlpha": false
+      }
+    },
+    "kitPath": "/generated/sandouq/sandouq-image-kit.zip",
+    "applications": [
+      "business-card",
+      "letterhead",
+      "presentation-cover",
+      "social-square",
+      "social-banner",
+      "email-signature",
+      "mobile-screen",
+      "signage"
+    ],
+    "method": "Built-in image_gen; individual applications rendered from HTML"
+  },
+  "tafrah": {
+    "assets": {
+      "logo": {
+        "original": "/generated/tafrah/logo.png",
+        "preview": "/generated/tafrah/logo.webp",
+        "width": 2172,
+        "height": 724,
+        "hasAlpha": true
+      },
+      "identity": {
+        "original": "/generated/tafrah/identity-kit.png",
+        "preview": "/generated/tafrah/identity-kit.webp",
+        "width": 1672,
+        "height": 941,
+        "hasAlpha": false
+      },
+      "landing": {
+        "original": "/generated/tafrah/landing-page.png",
+        "preview": "/generated/tafrah/landing-page.webp",
+        "width": 860,
+        "height": 1828,
+        "hasAlpha": false
+      }
+    },
+    "kitPath": "/generated/tafrah/tafrah-image-kit.zip",
+    "applications": [
+      "business-card",
+      "letterhead",
+      "presentation-cover",
+      "social-square",
+      "social-banner",
+      "email-signature",
+      "mobile-screen",
+      "signage"
+    ],
+    "method": "Built-in image_gen; individual applications rendered from HTML"
+  }
+}

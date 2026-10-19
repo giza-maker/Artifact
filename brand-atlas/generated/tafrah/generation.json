@@ -1,0 +1,25 @@
+{
+  "id": "tafrah",
+  "method": "built-in image_gen",
+  "assets": [
+    {
+      "kind": "logo",
+      "file": "logo.png",
+      "prompt": "See prompts.json#logo (exact prompt)",
+      "sourceImageFile": "exec-f5a7985a-eb7b-4dce-84be-5f34ff041c33.png"
+    },
+    {
+      "kind": "identity",
+      "file": "identity-kit.png",
+      "prompt": "See prompts.json#identity (exact prompt)",
+      "sourceImageFile": "exec-5757b057-3517-42f9-a662-726026a69827.png"
+    },
+    {
+      "kind": "landing",
+      "file": "landing-page.png",
+      "prompt": "See prompts.json#landing (exact prompt)",
+      "sourceImageFile": "exec-dc5c542f-0c1a-409e-b382-a14404101648.png"
+    }
+  ],
+  "notes": "Logo inspected before reference-based identity and landing generation; small rendered text may vary."
+}

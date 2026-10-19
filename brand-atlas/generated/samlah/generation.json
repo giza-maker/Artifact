@@ -1,0 +1,25 @@
+{
+  "id": "samlah",
+  "method": "built-in image_gen",
+  "assets": [
+    {
+      "kind": "logo",
+      "file": "logo.png",
+      "prompt": "Create a distinctive bilingual logo for Samlah / صملة: reinforced navy structural base with a deliberate saffron forward angle; resilient, vector-like, transparent; exact spelling.",
+      "sourceImageFile": "exec-f80cd24c-22a6-4798-bdc9-dc55fc705f94.png"
+    },
+    {
+      "kind": "identity",
+      "file": "identity-kit.png",
+      "prompt": "Preserve supplied Samlah logo; comprehensive landscape identity/application board; reinforced navy structures braced with saffron; exact bilingual name and Commit to the build.; no invented clients or stats.",
+      "sourceImageFile": "exec-9da43760-a709-4973-95e0-e617e6da0e75.png"
+    },
+    {
+      "kind": "landing",
+      "file": "landing-page.png",
+      "prompt": "Preserve supplied Samlah logo; portrait full-page desktop page with navigation, engineering hero, three services, Design–Test–Harden process, CTA and footer; exact bilingual name and Arabic tagline; no invented stats or clients. Revision: change only footer year from © 2024 to © 2026 while preserving all other content.",
+      "sourceImageFile": "exec-7caa5e50-9f32-409a-83e3-df03a5bec3a2.png"
+    }
+  ],
+  "notes": "Logo generated first with transparent background, inspected locally, then referenced for both follow-on assets. Primary Arabic name appears legible. Landing footer year corrected to 2026 with a targeted built-in imagegen edit; previous selected raster archived in workspace work/."
+}

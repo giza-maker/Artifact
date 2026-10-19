@@ -1,0 +1,202 @@
+{
+  "pronunciation": "KHAL-tah | خَلْطَة",
+  "meaningAr": "مزيج أو تركيبة من عناصر مختلفة.",
+  "strengthsAr": [
+    "قصة قوية للاختراع متعدد التخصصات",
+    "لغة بصرية مرحة",
+    "إنساني وسهل التذكر",
+    "جذاب للجمهور الإبداعي"
+  ],
+  "concernsAr": [
+    "ارتباط بالطعام والوصفات",
+    "قد لا يبدو مؤسسيًا",
+    "قد يوحي بالعشوائية",
+    "اختلاف في اللاتنة"
+  ],
+  "concernsEn": [
+    "Food/recipe associations",
+    "Potentially insufficiently corporate",
+    "May feel random without rigorous brand system",
+    "English transliteration variance"
+  ],
+  "bestFitAr": "استوديو تقنية إبداعية أو مختبر مشاريع استهلاكية مرح.",
+  "worstFitAr": "علامة حكومية أو مؤسسية محافظة.",
+  "naturalnessAr": "دارج ومفهوم، لكنه يحمل ارتباطًا غذائيًا قويًا.",
+  "concept": {
+    "ar": "مزج محسوب بين تخصصات لا تجتمع عادةً.",
+    "en": "A controlled blend of disciplines that rarely meet."
+  },
+  "promise": {
+    "ar": "نركّب فرقًا وأفكارًا مختلفة لإنتاج شيء لا يأتي من تخصص واحد.",
+    "en": "We combine different teams and ideas to create what no single discipline could produce."
+  },
+  "story": {
+    "ar": "خلطة تمنح الاستوديو طاقة اجتماعية ومرحة. قصتها ليست العشوائية، بل معرفة المكونات والنسب التي تنتج فكرة جديدة. تناسب المنتجات الاستهلاكية والتقنية الإبداعية، لكنها تحتاج نظامًا صارمًا حتى لا تبدو مطبخًا أو تجربة بلا اتجاه.",
+    "en": "Khaltah gives the studio social, playful energy. Its story is about knowing the ingredients and proportions that create something new. It suits consumer products and creative technology, but needs a disciplined system to avoid feeling culinary or directionless."
+  },
+  "mission": {
+    "ar": "جمع المهارات والثقافات والتقنيات في فرق تبني منتجات غير متوقعة ومتماسكة.",
+    "en": "Combine skills, cultures, and technologies in teams that build unexpected, coherent products."
+  },
+  "pitch15": {
+    "ar": "خلطة استوديو مشاريع مقترح. نركّب فرقًا وأفكارًا مختلفة لإنتاج شيء لا يأتي من تخصص واحد. والغاية هي جمع المهارات والثقافات والتقنيات في فرق تبني منتجات غير متوقعة ومتماسكة.",
+    "en": "Khaltah is a proposed venture studio. We combine different teams and ideas to create what no single discipline could produce. Its purpose is to combine skills, cultures, and technologies in teams that build unexpected, coherent products."
+  },
+  "pitch60": {
+    "ar": "خلطة تصور استوديو مشاريع يخدم العلامات والمبدعين الذين يريدون منتجًا لا يأتي من تخصص واحد. ينطلق من فكرة بسيطة: مزج محسوب بين تخصصات لا تجتمع عادةً. ويقدم تجارب وألعاب ومنتجات تقنية تمزج السرد والتصميم والبرمجيات والثقافة. يعمل الفريق باختيار المكونات حول فكرة محددة وضبط النسب حتى تبقى النتيجة مفاجئة ومتماسكة، مع بقاء الهدف واضحًا في كل مرحلة. تبدأ المشاريع بفهم العمل القائم والقرار الذي يحتاجه العميل، ثم تتحول إلى نموذج يمكن اختباره قبل التوسع. الرؤية هي بناء استوديو إبداعي تقني معروف بخلطات مدروسة تنتج أعمالًا لها شخصية واضحة. بهذا الوعد، يصبح اسم خلطة تعبيرًا عن طريقة الشركة في العمل، لا مجرد عنوان لها.",
+    "en": "Khaltah is conceived as a proposed venture studio for brands and makers seeking a product that cannot come from one discipline alone. It starts with a simple idea: A controlled blend of disciplines that rarely meet. The company would create experiences, games, and technology products blending narrative, design, software, and culture. Its team would work by selecting ingredients around one idea and tuning their proportions until the result feels surprising and coherent, keeping the intended outcome visible at every stage. Work would move into a usable prototype before wider investment. The long-term aim is a creative technology studio known for considered combinations that produce work with a clear character. In this model, Khaltah becomes a clear expression of how the company works and what customers can expect from the experience."
+  },
+  "about30": {
+    "ar": "خلطة استوديو مشاريع مقترح يخدم العلامات والمبدعين الذين يريدون منتجًا لا يأتي من تخصص واحد. نركّب فرقًا وأفكارًا مختلفة لإنتاج شيء لا يأتي من تخصص واحد.",
+    "en": "Khaltah is a proposed venture studio for brands and makers seeking a product that cannot come from one discipline alone. We combine different teams and ideas to create what no single discipline could produce."
+  },
+  "about120": {
+    "ar": "خلطة تصور استوديو مشاريع صُمم لخدمة العلامات والمبدعين الذين يريدون منتجًا لا يأتي من تخصص واحد. تتمثل فكرته في مزج محسوب بين تخصصات لا تجتمع عادةً. ومن هذا المنطلق، يبني تجارب وألعاب ومنتجات تقنية تمزج السرد والتصميم والبرمجيات والثقافة. تبدأ طريقة العمل بفهم السياق الحقيقي وما يحتاجه المستخدم أو الفريق، ثم تستمر باختيار المكونات حول فكرة محددة وضبط النسب حتى تبقى النتيجة مفاجئة ومتماسكة. تُختبر الفكرة في صورة ملموسة قبل إضافة نطاق أو تعقيد جديد، وتبقى المسؤولية والقرار واضحين طوال المشروع. مع الوقت، يمكن أن يتوسع خلطة ليصبح استوديو إبداعي تقني معروف بخلطات مدروسة تنتج أعمالًا لها شخصية واضحة. الاسم والنظام اللفظي المقترحان يقدمان وعدًا بسيطًا: نركّب فرقًا وأفكارًا مختلفة لإنتاج شيء لا يأتي من تخصص واحد.",
+    "en": "Khaltah is a proposed venture studio designed for brands and makers seeking a product that cannot come from one discipline alone. Its central idea is a controlled blend of disciplines that rarely meet. From that position, it would build experiences, games, and technology products blending narrative, design, software, and culture. The working method begins with the real context and the outcome a user or team needs, then proceeds by selecting ingredients around one idea and tuning their proportions until the result feels surprising and coherent. Ideas move into tangible form before more complexity is added. Over time, Khaltah could grow into a creative technology studio known for considered combinations that produce work with a clear character."
+  },
+  "taglines": {
+    "ar": [
+      "كل جديد يبدأ بخلطة.",
+      "اخلطها صح.",
+      "مكونات مختلفة، نتيجة واحدة."
+    ],
+    "en": [
+      "A different kind of mix.",
+      "Blend with intent.",
+      "Many disciplines, one result."
+    ]
+  },
+  "personality": [
+    {
+      "ar": "مرح",
+      "en": "playful"
+    },
+    {
+      "ar": "مفاجئ",
+      "en": "surprising"
+    },
+    {
+      "ar": "منضبط",
+      "en": "disciplined"
+    },
+    {
+      "ar": "اجتماعي",
+      "en": "social"
+    }
+  ],
+  "archetype": {
+    "ar": "المولّف",
+    "en": "The Synthesizer"
+  },
+  "vision": {
+    "en": "A future where unexpected Saudi products emerge from disciplines that rarely share the same table. Khaltah would assemble technologists, storytellers, designers, and cultural thinkers around a clear idea, then tune the mix until it becomes coherent and useful.",
+    "ar": "مستقبل تظهر فيه منتجات سعودية غير متوقعة من تخصصات قلما تجتمع حول طاولة واحدة. تجمع خلطة التقنيين والكتّاب والمصممين والمفكرين الثقافيين حول فكرة واضحة، ثم تضبط المزيج حتى يصبح متماسكًا ونافعًا."
+  },
+  "brandApproach": {
+    "en": "Build Khaltah as a disciplined creative blend with a lively social edge. Distinct ingredients, bold color relationships, and playful precision show that surprising outcomes come from considered composition.",
+    "ar": "تُبنى خلطة كمزيج إبداعي منضبط بطابع اجتماعي حي. تظهر المكونات المتمايزة والعلاقات اللونية الجريئة والدقة المرحة أن النتائج المفاجئة تأتي من تركيب مدروس."
+  },
+  "headers": {
+    "en": [
+      "Mix the disciplines the idea actually needs",
+      "Unexpected products start with the right combination",
+      "Bring different minds into one coherent result"
+    ],
+    "ar": [
+      "امزج التخصصات التي تحتاجها الفكرة فعلًا",
+      "تبدأ المنتجات المفاجئة بالتركيبة الصحيحة",
+      "اجمع العقول المختلفة في نتيجة متماسكة"
+    ]
+  },
+  "headerSubline": {
+    "en": "Khaltah builds custom teams across design, culture, storytelling, and technology to create original products no single discipline could make alone.",
+    "ar": "تبني خلطة فرقًا مخصصة تجمع التصميم والثقافة والسرد والتقنية، لصنع منتجات لا يستطيع تخصص واحد إنجازها بمفرده."
+  },
+  "visualStory": {
+    "en": "Cherry, buttercream, and cobalt shapes retain their identities inside one controlled composition. The geometry celebrates contrast while measured spacing keeps the mix coherent, deliberate, and usable.",
+    "ar": "تحافظ أشكال كرزية وكريمية وزرقاء على هويتها داخل تركيب منضبط. تحتفي الهندسة بالتباين، وتحفظ المسافات المحسوبة المزيج متماسكًا ومقصودًا وقابلًا للاستخدام."
+  },
+  "pillars": [
+    {
+      "ar": "مزج مقصود",
+      "en": "Intentional mixing"
+    },
+    {
+      "ar": "تخصصات متعددة",
+      "en": "Multiple disciplines"
+    },
+    {
+      "ar": "مفاجأة مفيدة",
+      "en": "Useful surprise"
+    },
+    {
+      "ar": "تماسك النتيجة",
+      "en": "Coherent result"
+    }
+  ],
+  "tone": {
+    "enterprise": {
+      "ar": "لغة دقيقة وهادئة تربط خلطة بنتيجة تشغيلية واضحة، من دون وعود ضخمة أو ادعاءات تفوق.",
+      "en": "Use precise, calm language that ties Khaltah to an operational outcome without inflated claims."
+    },
+    "conversational": {
+      "ar": "جمل قصيرة وفعلية تستمد نبرتها من معنى خلطة وتشرح الفائدة بكلام يومي.",
+      "en": "Use short, active sentences grounded in the meaning of Khaltah, with everyday explanations of value."
+    }
+  },
+  "avoid": [
+    "Food/recipe associations",
+    "Potentially insufficiently corporate",
+    "May feel random without rigorous brand system",
+    "English transliteration variance",
+    "Do not imply trademark, trade-name, domain, or social-handle availability.",
+    "Do not present the meaning hypothesis as settled without native-language validation."
+  ],
+  "wouldChangeMind": {
+    "ar": "إذا قرأ الجمهور الاسم كعشوائية أو وصفة طعام فقط، يتراجع. فهم الانضباط خلف المزج سيرفعه.",
+    "en": "If audiences read the name as randomness or only a food recipe, it falls. Recognition of disciplined combination would raise it."
+  },
+  "commercial": {
+    "ar": "مميز للعلامات الاستهلاكية والتجارب والألعاب والشراكات الإبداعية. أقل ملاءمة للمشترين المؤسسيين المحافظين.",
+    "en": "Distinctive for consumer brands, experiences, games, and creative partnerships. Less suited to conservative institutional buyers."
+  },
+  "portfolio": {
+    "ar": "خلطة ألعاب، خلطة صوت، خلطة مختبر؛ ممتعة وقابلة للتوسع، مع خطر الاقتراب من الطعام.",
+    "en": "Khaltah Games, Khaltah Sound, and Khaltah Lab are playful and extensible, with persistent food associations."
+  },
+  "proofPoints": [
+    "HYPOTHESIS: Playful global creative-tech studio or consumer venture lab. Validate with target buyers.",
+    "HYPOTHESIS: the distinct geometric ingredients in controlled composition territory can remain recognizable at product and parent-brand scales. Test visually.",
+    "HYPOTHESIS: We combine different teams and ideas to create what no single discipline could produce. Validate with a prototype offer and customer interviews."
+  ],
+  "proofToBuild": [
+    {
+      "ar": "نموذج تفاعلي يوضح كيف يقدم خلطة تجارب وألعاب ومنتجات تقنية تمزج السرد والتصميم والبرمجيات والثقافة.",
+      "en": "An interactive prototype showing how Khaltah could deliver experiences, games, and technology products blending narrative, design, software, and culture."
+    },
+    {
+      "ar": "نموذج منتج منشور قابل للاستخدام مع سجل قرارات البناء وما تغير بعد الاختبار.",
+      "en": "A usable published product prototype with a build-decision log and the changes made after testing."
+    },
+    {
+      "ar": "اختبار مسمى ونطق ومفهوم مع الجمهور المستهدف، يتبعه ملخص مجهول الهوية لما فهموه وما التبس عليهم.",
+      "en": "A name, pronunciation, and concept test with the target audience, followed by an anonymized summary of what they understood and confused."
+    }
+  ],
+  "forbiddenClaims": {
+    "ar": [
+      "الاسم متاح أو فريد أو قابل للتسجيل من دون فحص رسمي ومشورة قانونية.",
+      "العائد أو خفض التكلفة أو سرعة التنفيذ مضمونة قبل وجود نتائج موثقة.",
+      "وصف المزج الإبداعي كبديل عن الاستراتيجية والاختبار."
+    ],
+    "en": [
+      "The name is available, unique, or registrable without official searches and legal advice.",
+      "ROI, cost reduction, or delivery speed is guaranteed before documented results exist.",
+      "Presenting creative mixing as a substitute for strategy and testing."
+    ]
+  },
+  "pronunciationRisks": {
+    "ar": "حرف الخاء صعب إنجليزيًا؛ Khalta وKhaltah وKhaltaah قد تتوزع في الاستخدام.",
+    "en": "The Arabic kh sound is difficult in English; Khalta and Khaltah may split usage."
+  }
+}

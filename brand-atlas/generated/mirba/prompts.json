@@ -1,0 +1,15 @@
+{
+  "id": "mirba",
+  "prompts": {
+    "logo": "Bilingual Mirba' / مرباع architectural logo with four forest modules around a sand central void; transparent background.",
+    "identity": "Landscape cultured venture-studio identity environment preserving the approved mark across cards, stationery, slide, social cover, app icon, signage, publication, wayfinding, and pattern.",
+    "landing": "Portrait full-page English-led desktop venture-studio website preserving the approved mark, with hero, capabilities, opportunity story, process, CTA, and footer."
+  },
+  "revisions": [
+    {
+      "kind": "landing",
+      "prompt": "Use case: precise-object-edit. Edit target: the attached Mirba' full-page landing concept. Make exactly one correction: the footer copyright year currently reads 2024; change it to 2026. Preserve the exact full-page composition, aspect ratio, all imagery, mark, bilingual Mirba' / مرباع wordmark, all other English/Arabic text, typography, colors, positioning and section sizes. Do not crop or redesign anything. Return the complete full-page image with only that tiny footer-year correction.",
+      "sourceImageFile": "exec-a03148e2-edf7-4cb5-bb66-f50f2b1fb15f.png"
+    }
+  ]
+}

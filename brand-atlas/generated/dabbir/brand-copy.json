@@ -1,0 +1,202 @@
+{
+  "pronunciation": "DAB-bir | دَبِّر",
+  "meaningAr": "صيغة أمر تعني تولّي المهمة وترتيبها حتى تنجز.",
+  "strengthsAr": [
+    "فعل مناسب للوكلاء والأتمتة",
+    "قريب من الكلام اليومي",
+    "سهل التذكر",
+    "يفتح منصة كتابة حول الإنجاز"
+  ],
+  "concernsAr": [
+    "قد يبدو عاميًا للمؤسسات",
+    "الشدة والتهجئة تختلفان",
+    "فعل عام يصعب تملكه",
+    "يحتاج اختبارًا سعوديًا"
+  ],
+  "concernsEn": [
+    "May feel too casual for regulated enterprise",
+    "Pronunciation/spelling without shadda varies",
+    "Potential broad generic uses",
+    "Needs native Saudi language panel"
+  ],
+  "bestFitAr": "وكلاء الذكاء الاصطناعي وأتمتة العمليات الموجهة للتنفيذ.",
+  "worstFitAr": "شركة قابضة رسمية تخاطب مشتريات شديدة التحفظ.",
+  "naturalnessAr": "خليجي دارج يحتاج تحققًا من الاستعمال السعودي الدقيق.",
+  "concept": {
+    "ar": "فعل يومي يوحي بأن المهمة ستُدار حتى تكتمل.",
+    "en": "An everyday command that says the task will be handled through completion."
+  },
+  "promise": {
+    "ar": "نعطي الفرق وكلاء وأنظمة تتولى العمل المتكرر وتعيد لهم وقتهم.",
+    "en": "We give teams agents and systems that handle repeat work and return their time."
+  },
+  "story": {
+    "ar": "دبّر اسم يبدأ بالفعل، لا بالوصف. يحمل دفء العبارة اليومية وسرعة التكليف، ما يجعله مناسبًا لوكلاء الذكاء والأتمتة التي تنتقل من الطلب إلى الإنجاز. يحتاج ضبطًا في البيئات الرسمية حتى لا يبدو خفيفًا أكثر من اللازم.",
+    "en": "Dabbir starts with a verb. Its everyday warmth and sense of delegation fit AI agents and automation that move from request to completion. Formal settings need careful treatment so the name does not feel too casual."
+  },
+  "mission": {
+    "ar": "تبسيط العمل المعقد عبر أنظمة تتولى التفاصيل وتُبقي الإنسان مسيطرًا.",
+    "en": "Simplify complex work through systems that handle details while keeping people in control."
+  },
+  "pitch15": {
+    "ar": "دبّر شركة تقنية مقترحة. نعطي الفرق وكلاء وأنظمة تتولى العمل المتكرر وتعيد لهم وقتهم. والغاية هي تبسيط العمل المعقد عبر أنظمة تتولى التفاصيل وتُبقي الإنسان مسيطرًا.",
+    "en": "Dabbir is a proposed technology company. We give teams agents and systems that handle repeat work and return their time. Its purpose is to simplify complex work through systems that handle details while keeping people in control."
+  },
+  "pitch60": {
+    "ar": "دبّر تصور شركة تقنية تخدم الفرق التي تستهلك المهام المتكررة وقتها. ينطلق من فكرة بسيطة: فعل يومي يوحي بأن المهمة ستُدار حتى تكتمل. ويقدم وكلاء ذكية وأتمتة تنقل الطلب من التكليف إلى الإنجاز مع نقاط تحكم واضحة. يعمل الفريق بتحويل الإجراءات اليومية إلى خطوات مفهومة يمكن متابعتها وتعديلها وتسليمها للإنسان عند الحاجة، مع بقاء الهدف واضحًا في كل مرحلة. تبدأ المشاريع بفهم العمل القائم والقرار الذي يحتاجه العميل، ثم تتحول إلى نموذج يمكن اختباره قبل التوسع. الرؤية هي بناء طبقة تشغيل تجعل تفويض العمل الرقمي بسيطًا مثل طلبه من زميل موثوق. بهذا الوعد، يصبح اسم دبّر تعبيرًا عن طريقة الشركة في العمل، لا مجرد عنوان لها.",
+    "en": "Dabbir is conceived as a proposed technology company for teams whose time is consumed by repeat tasks. It starts with a simple idea: An everyday command that says the task will be handled through completion. The company would create intelligent agents and automations that carry a request from assignment to completion with clear control points. Its team would work by turning daily procedures into visible steps that people can monitor, adjust, and take over when needed, keeping the intended outcome visible at every stage. Work would move into a usable prototype before wider investment. The long-term aim is an operating layer that makes delegating digital work as simple as asking a trusted colleague. In this model, Dabbir becomes a clear expression of how the company works and what customers can expect from the experience."
+  },
+  "about30": {
+    "ar": "دبّر شركة تقنية مقترحة يخدم الفرق التي تستهلك المهام المتكررة وقتها. نعطي الفرق وكلاء وأنظمة تتولى العمل المتكرر وتعيد لهم وقتهم.",
+    "en": "Dabbir is a proposed technology company for teams whose time is consumed by repeat tasks. We give teams agents and systems that handle repeat work and return their time."
+  },
+  "about120": {
+    "ar": "دبّر تصور شركة تقنية صُمم لخدمة الفرق التي تستهلك المهام المتكررة وقتها. تتمثل فكرته في فعل يومي يوحي بأن المهمة ستُدار حتى تكتمل. ومن هذا المنطلق، يبني وكلاء ذكية وأتمتة تنقل الطلب من التكليف إلى الإنجاز مع نقاط تحكم واضحة. تبدأ طريقة العمل بفهم السياق الحقيقي وما يحتاجه المستخدم أو الفريق، ثم تستمر بتحويل الإجراءات اليومية إلى خطوات مفهومة يمكن متابعتها وتعديلها وتسليمها للإنسان عند الحاجة. تُختبر الفكرة في صورة ملموسة قبل إضافة نطاق أو تعقيد جديد، وتبقى المسؤولية والقرار واضحين طوال المشروع. مع الوقت، يمكن أن يتوسع دبّر ليصبح طبقة تشغيل تجعل تفويض العمل الرقمي بسيطًا مثل طلبه من زميل موثوق. الاسم والنظام اللفظي المقترحان يقدمان وعدًا بسيطًا: نعطي الفرق وكلاء وأنظمة تتولى العمل المتكرر وتعيد لهم وقتهم.",
+    "en": "Dabbir is a proposed technology company designed for teams whose time is consumed by repeat tasks. Its central idea is an everyday command that says the task will be handled through completion. From that position, it would build intelligent agents and automations that carry a request from assignment to completion with clear control points. The working method begins with the real context and the outcome a user or team needs, then proceeds by turning daily procedures into visible steps that people can monitor, adjust, and take over when needed. Ideas move into tangible form before more complexity is added. Over time, Dabbir could grow into an operating layer that makes delegating digital work as simple as asking a trusted colleague."
+  },
+  "taglines": {
+    "ar": [
+      "دبّرها بذكاء.",
+      "من الطلب إلى الإنجاز.",
+      "الشغل ما يتعطّل."
+    ],
+    "en": [
+      "Work, handled.",
+      "From task to done.",
+      "Keep work moving."
+    ]
+  },
+  "personality": [
+    {
+      "ar": "مبادر",
+      "en": "active"
+    },
+    {
+      "ar": "مطمئن",
+      "en": "reassuring"
+    },
+    {
+      "ar": "إنساني",
+      "en": "human"
+    },
+    {
+      "ar": "متمكن",
+      "en": "capable"
+    }
+  ],
+  "archetype": {
+    "ar": "المشغّل",
+    "en": "The Operator"
+  },
+  "vision": {
+    "en": "A future where teams hand routine coordination to trusted systems and keep their attention for judgment, relationships, and growth. Dabbir would make capable digital agents feel practical, supervised, and easy to direct across everyday business operations.",
+    "ar": "مستقبل تسند فيه الفرق تنسيق الأعمال المتكررة إلى أنظمة موثوقة، وتحتفظ باهتمامها للحكم والعلاقات والنمو. يجعل دبّر الوكلاء الرقميين عمليين، خاضعين للإشراف، وسهلين في توجيه أعمال المؤسسة اليومية."
+  },
+  "brandApproach": {
+    "en": "Build Dabbir around delegation people can understand and control. Direct verbs, converging paths, and a warm operational tone turn automation from an abstract promise into a clear working relationship.",
+    "ar": "تُبنى علامة دبّر حول تفويض مفهوم وتحت السيطرة. تحوّل الأفعال المباشرة والمسارات المتلاقية والنبرة التشغيلية الدافئة الأتمتة من وعد مجرد إلى علاقة عمل واضحة."
+  },
+  "headers": {
+    "en": [
+      "Give the task a clear way forward",
+      "Your repeat work has somewhere to go",
+      "Delegate the workflow, keep the judgment"
+    ],
+    "ar": [
+      "امنح المهمة طريقًا واضحًا إلى الإنجاز",
+      "للعمل المتكرر وجهة أفضل وأكثر وضوحًا",
+      "فوّض سير العمل واحتفظ بالقرار"
+    ]
+  },
+  "headerSubline": {
+    "en": "Dabbir helps teams assign repeatable work to supervised digital agents, with clear handoffs, visible progress, and people firmly in control.",
+    "ar": "يساعد دبّر الفرق على إسناد العمل القابل للتكرار إلى وكلاء رقميين تحت الإشراف، مع تسليمات واضحة وتقدم مرئي وبقاء القرار بيد الإنسان."
+  },
+  "visualStory": {
+    "en": "Copper paths converge against midnight blue, resolving into a single purposeful line. The geometry expresses delegated work becoming orderly while the warm accent keeps the system approachable.",
+    "ar": "تتلاقى مسارات نحاسية فوق أزرق ليلي وتستقر في خط واحد هادف. تعبّر الهندسة عن انتظام العمل المفوّض، فيما يبقي اللون الدافئ النظام قريبًا من الناس."
+  },
+  "pillars": [
+    {
+      "ar": "إنجاز واضح",
+      "en": "Clear completion"
+    },
+    {
+      "ar": "تفويض ذكي",
+      "en": "Smart delegation"
+    },
+    {
+      "ar": "سهولة يومية",
+      "en": "Everyday ease"
+    },
+    {
+      "ar": "تحكم بشري",
+      "en": "Human control"
+    }
+  ],
+  "tone": {
+    "enterprise": {
+      "ar": "لغة دقيقة وهادئة تربط دبّر بنتيجة تشغيلية واضحة، من دون وعود ضخمة أو ادعاءات تفوق.",
+      "en": "Use precise, calm language that ties Dabbir to an operational outcome without inflated claims."
+    },
+    "conversational": {
+      "ar": "جمل قصيرة وفعلية تستمد نبرتها من معنى دبّر وتشرح الفائدة بكلام يومي.",
+      "en": "Use short, active sentences grounded in the meaning of Dabbir, with everyday explanations of value."
+    }
+  },
+  "avoid": [
+    "May feel too casual for regulated enterprise",
+    "Pronunciation/spelling without shadda varies",
+    "Potential broad generic uses",
+    "Needs native Saudi language panel",
+    "Do not imply trademark, trade-name, domain, or social-handle availability.",
+    "Do not present the meaning hypothesis as settled without native-language validation."
+  ],
+  "wouldChangeMind": {
+    "ar": "إذا رأى المشترون المؤسسيون أنه غير جاد أو اختلف المتحدثون السعوديون على معناه، تتراجع صلاحيته. نجاحه في اختبار تكليف حي سيرفعه.",
+    "en": "If enterprise buyers find it unserious or Saudi speakers disagree on usage, its fit falls. Strong performance in a live task-delegation test would raise it."
+  },
+  "commercial": {
+    "ar": "واضح جدًا لخدمات الوكلاء والأتمتة ويسهل تحويله إلى دعوة للتجربة. قد يحتاج واصفًا رسميًا عند بيع حلول حساسة أو منظمة.",
+    "en": "Highly legible for agents and automation, with a natural call-to-action. It may need a formal descriptor when selling sensitive or regulated solutions."
+  },
+  "portfolio": {
+    "ar": "دبّر الموارد، دبّر الخدمة، دبّر العمليات؛ نظام توسعة عملي لكنه قد يجعل كل منتج يبدو أمرًا لغويًا.",
+    "en": "Dabbir People, Dabbir Service, and Dabbir Operations create a practical extension system, though every product can start to sound like a command."
+  },
+  "proofPoints": [
+    "HYPOTHESIS: Action-first AI agents and operations automation. Validate with target buyers.",
+    "HYPOTHESIS: the converging paths resolving into one smart line territory can remain recognizable at product and parent-brand scales. Test visually.",
+    "HYPOTHESIS: We give teams agents and systems that handle repeat work and return their time. Validate with a prototype offer and customer interviews."
+  ],
+  "proofToBuild": [
+    {
+      "ar": "نموذج تفاعلي يوضح كيف يقدم دبّر وكلاء ذكية وأتمتة تنقل الطلب من التكليف إلى الإنجاز مع نقاط تحكم واضحة.",
+      "en": "An interactive prototype showing how Dabbir could deliver intelligent agents and automations that carry a request from assignment to completion with clear control points."
+    },
+    {
+      "ar": "بيئة تجريب موثقة تعرض سير عمل كاملًا، ونقاط التحكم، وحالات الفشل والاستعادة.",
+      "en": "A documented sandbox demonstrating one end-to-end workflow, its control points, failure cases, and recovery path."
+    },
+    {
+      "ar": "اختبار مسمى ونطق ومفهوم مع الجمهور المستهدف، يتبعه ملخص مجهول الهوية لما فهموه وما التبس عليهم.",
+      "en": "A name, pronunciation, and concept test with the target audience, followed by an anonymized summary of what they understood and confused."
+    }
+  ],
+  "forbiddenClaims": {
+    "ar": [
+      "الاسم متاح أو فريد أو قابل للتسجيل من دون فحص رسمي ومشورة قانونية.",
+      "العائد أو خفض التكلفة أو سرعة التنفيذ مضمونة قبل وجود نتائج موثقة.",
+      "القول إن الوكلاء ينجزون العمل بلا إشراف أو حدود."
+    ],
+    "en": [
+      "The name is available, unique, or registrable without official searches and legal advice.",
+      "ROI, cost reduction, or delivery speed is guaranteed before documented results exist.",
+      "Saying agents complete work without oversight or boundaries."
+    ]
+  },
+  "pronunciationRisks": {
+    "ar": "الشدة مهمة في العربية، وتهجئات Daber وDabir وDabbir قد تتنافس في الإنجليزية.",
+    "en": "The shadda matters in Arabic, while Daber, Dabir, and Dabbir may compete in English."
+  }
+}

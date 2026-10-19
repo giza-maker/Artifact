@@ -1,0 +1,25 @@
+{
+  "id": "sanni",
+  "method": "built-in image_gen",
+  "assets": [
+    {
+      "kind": "logo",
+      "file": "logo.png",
+      "prompt": "Create a transparent bilingual Sanni logo: four forest components aligned through a bronze center join, exact text Sanni and سنّع.",
+      "sourceImageFile": "exec-22b8fee3-814e-4083-b6dd-484038555a00.png"
+    },
+    {
+      "kind": "identity",
+      "file": "identity-kit.png",
+      "prompt": "Using the approved logo, create a premium craft-led identity board with stationery, deck, social cover, app icon, signage and pattern in forest, bronze and pearl.",
+      "sourceImageFile": "exec-4611c2e2-8f0a-4a7c-925f-795dda029259.png"
+    },
+    {
+      "kind": "landing",
+      "file": "landing-page.png",
+      "prompt": "Using the approved logo, create a full desktop site showing scattered operations resolving into ordered workflows, with services, before-after story, method, CTA and footer. Revised only footer year from 2024 to 2026; exact revision prompt stored in prompts.json.",
+      "sourceImageFile": "exec-85511068-c749-48f0-9cf5-fbe6d61376ea.png"
+    }
+  ],
+  "notes": "Logo inspected before reference-based identity and landing generation. Small Arabic text in mockups may contain generative variation."
+}

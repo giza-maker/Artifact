@@ -1,0 +1,202 @@
+{
+  "pronunciation": "OOD-dah | عُدَّة",
+  "meaningAr": "أدوات وتجهيز واستعداد للعمل؛ يختلف المعنى باختلاف التشكيل.",
+  "strengthsAr": [
+    "يركز على المنفعة",
+    "مناسب لمنصة أدوات",
+    "قصير بصريًا",
+    "يدعم عائلة منتجات"
+  ],
+  "concernsAr": [
+    "عدة بلا تشكيل ملتبسة",
+    "اللاتنة قد تستدعي معنى دينيًا",
+    "النطق يحتاج تثبيتًا",
+    "كلمة معجمية عامة"
+  ],
+  "concernsEn": [
+    "Undiacritized عدة has other meanings",
+    "Latinizations may evoke iddah religious/legal term",
+    "Exact pronunciation must be standardized",
+    "Generic dictionary term may be hard to own"
+  ],
+  "bestFitAr": "منصات المطورين وتنسيق الوكلاء وأدوات البنية التقنية.",
+  "worstFitAr": "علامة استهلاكية عامة بلا مفهوم أدوات أو تجهيز.",
+  "naturalnessAr": "عربي واسع، لكن الكتابة غير المشكلة تحتاج عناية.",
+  "concept": {
+    "ar": "عدة رقمية تجهّز الفرق للبناء والتشغيل.",
+    "en": "A digital toolkit that equips teams to build and operate."
+  },
+  "promise": {
+    "ar": "نوفر الأدوات والبنية التي تجعل الأفكار جاهزة للتنفيذ.",
+    "en": "We provide the tools and infrastructure that make ideas ready to execute."
+  },
+  "story": {
+    "ar": "عُدّة تنقل التقنية من الوعود إلى الأدوات. يمكن أن تكون مظلة لمنصة مطورين أو مجموعة منتجات تشغيلية، لأن الاسم يجعل الاستعداد والمنفعة ملموسين. غياب التشكيل يخلق التباسًا يجب اختباره بجدية.",
+    "en": "Uddah moves technology from promises to tools. It can cover a developer platform or an operational product suite because it makes readiness and utility tangible. The unvowelled Arabic form creates ambiguity that requires serious testing."
+  },
+  "mission": {
+    "ar": "تجهيز المطورين والفرق بأدوات مترابطة تختصر الطريق من الفكرة إلى التشغيل.",
+    "en": "Equip developers and teams with connected tools that shorten the path from idea to operation."
+  },
+  "pitch15": {
+    "ar": "عُدّة شركة تقنية مقترحة. نوفر الأدوات والبنية التي تجعل الأفكار جاهزة للتنفيذ. والغاية هي تجهيز المطورين والفرق بأدوات مترابطة تختصر الطريق من الفكرة إلى التشغيل.",
+    "en": "Uddah is a proposed technology company. We provide the tools and infrastructure that make ideas ready to execute. Its purpose is to equip developers and teams with connected tools that shorten the path from idea to operation."
+  },
+  "pitch60": {
+    "ar": "عُدّة تصور شركة تقنية تخدم المطورين وفرق المنتجات والعمليات. ينطلق من فكرة بسيطة: عدة رقمية تجهّز الفرق للبناء والتشغيل. ويقدم عدة مترابطة من الأدوات والبنية والوكلاء تساعدهم على بناء الأنظمة وتشغيلها. يعمل الفريق بوحدات واضحة يمكن اعتمادها تدريجيًا وربطها بما تستخدمه الفرق اليوم، مع بقاء الهدف واضحًا في كل مرحلة. تبدأ المشاريع بفهم العمل القائم والقرار الذي يحتاجه العميل، ثم تتحول إلى نموذج يمكن اختباره قبل التوسع. الرؤية هي بناء منصة عملية تختصر المسافة بين الفكرة والنظام الجاهز للعمل. بهذا الوعد، يصبح اسم عُدّة تعبيرًا عن طريقة الشركة في العمل، لا مجرد عنوان لها.",
+    "en": "Uddah is conceived as a proposed technology company for developers, product teams, and operations teams. It starts with a simple idea: A digital toolkit that equips teams to build and operate. The company would create a connected toolkit of infrastructure, developer tools, and agents for building and operating systems. Its team would work with clear modules that teams can adopt gradually and connect to what they already use, keeping the intended outcome visible at every stage. Work would move into a usable prototype before wider investment. The long-term aim is a practical platform that shortens the distance between an idea and a working system. In this model, Uddah becomes a clear expression of how the company works and what customers can expect from the experience."
+  },
+  "about30": {
+    "ar": "عُدّة شركة تقنية مقترحة يخدم المطورين وفرق المنتجات والعمليات. نوفر الأدوات والبنية التي تجعل الأفكار جاهزة للتنفيذ.",
+    "en": "Uddah is a proposed technology company for developers, product teams, and operations teams. We provide the tools and infrastructure that make ideas ready to execute."
+  },
+  "about120": {
+    "ar": "عُدّة تصور شركة تقنية صُمم لخدمة المطورين وفرق المنتجات والعمليات. تتمثل فكرته في عدة رقمية تجهّز الفرق للبناء والتشغيل. ومن هذا المنطلق، يبني عدة مترابطة من الأدوات والبنية والوكلاء تساعدهم على بناء الأنظمة وتشغيلها. تبدأ طريقة العمل بفهم السياق الحقيقي وما يحتاجه المستخدم أو الفريق، ثم تستمر بوحدات واضحة يمكن اعتمادها تدريجيًا وربطها بما تستخدمه الفرق اليوم. تُختبر الفكرة في صورة ملموسة قبل إضافة نطاق أو تعقيد جديد، وتبقى المسؤولية والقرار واضحين طوال المشروع. مع الوقت، يمكن أن يتوسع عُدّة ليصبح منصة عملية تختصر المسافة بين الفكرة والنظام الجاهز للعمل. الاسم والنظام اللفظي المقترحان يقدمان وعدًا بسيطًا: نوفر الأدوات والبنية التي تجعل الأفكار جاهزة للتنفيذ.",
+    "en": "Uddah is a proposed technology company designed for developers, product teams, and operations teams. Its central idea is a digital toolkit that equips teams to build and operate. From that position, it would build a connected toolkit of infrastructure, developer tools, and agents for building and operating systems. The working method begins with the real context and the outcome a user or team needs, then proceeds with clear modules that teams can adopt gradually and connect to what they already use. Ideas move into tangible form before more complexity is added. Over time, Uddah could grow into a practical platform that shortens the distance between an idea and a working system."
+  },
+  "taglines": {
+    "ar": [
+      "لكل خطوة عُدّتها.",
+      "جهّز الفكرة للتنفيذ.",
+      "أدوات تبني عليها."
+    ],
+    "en": [
+      "Equipped to build.",
+      "Ready for the work.",
+      "Tools you can build on."
+    ]
+  },
+  "personality": [
+    {
+      "ar": "نافع",
+      "en": "useful"
+    },
+    {
+      "ar": "مرن الوحدات",
+      "en": "modular"
+    },
+    {
+      "ar": "واقعي",
+      "en": "grounded"
+    },
+    {
+      "ar": "مستعد",
+      "en": "prepared"
+    }
+  ],
+  "archetype": {
+    "ar": "المجهّز",
+    "en": "The Equipper"
+  },
+  "vision": {
+    "en": "A future where builders across Saudi Arabia can assemble dependable digital products without rebuilding the foundations each time. Uddah would provide connected tools and infrastructure that let small, capable teams move from an idea to a working service faster.",
+    "ar": "مستقبل يستطيع فيه البناؤون في السعودية تركيب منتجات رقمية موثوقة من دون إعادة بناء الأساس كل مرة. توفر عُدّة أدوات وبنية مترابطة تمكّن الفرق الصغيرة القادرة من نقل الفكرة إلى خدمة تعمل بسرعة أكبر."
+  },
+  "brandApproach": {
+    "en": "Present Uddah as an engineered kit for modern product teams. Modular language, visible components, and a sharp utility-first system make readiness tangible without overstating speed or universal compatibility.",
+    "ar": "تُقدَّم عُدّة كحقيبة هندسية لفرق المنتجات الحديثة. تجعل اللغة المعيارية والمكونات الظاهرة والنظام القائم على المنفعة الجاهزية ملموسة، من دون مبالغة في السرعة أو التوافق."
+  },
+  "headers": {
+    "en": [
+      "Everything your next build needs to begin",
+      "Give every product the right foundation",
+      "Connected tools for teams ready to build"
+    ],
+    "ar": [
+      "كل ما يحتاجه بناؤك القادم للانطلاق",
+      "امنح كل منتج أساسه الصحيح",
+      "أدوات مترابطة لفرق جاهزة للبناء"
+    ]
+  },
+  "headerSubline": {
+    "en": "Uddah brings essential product tools and infrastructure together, so teams can assemble, test, and operate new services with less setup friction.",
+    "ar": "تجمع عُدّة أدوات المنتج وبنيته الأساسية، كي تتمكن الفرق من تركيب الخدمات الجديدة واختبارها وتشغيلها بقدر أقل من عوائق الإعداد."
+  },
+  "visualStory": {
+    "en": "Graphite components lock into a citrus-accented system on warm white. The modular forms signal practical readiness, while the bright joint shows where separate tools begin working together.",
+    "ar": "تتعشق مكونات جرافيتية في نظام تبرزه لمسة حمضية على أبيض دافئ. تشير الوحدات إلى الجاهزية العملية، ويكشف المفصل المضيء لحظة عمل الأدوات معًا."
+  },
+  "pillars": [
+    {
+      "ar": "جاهزية عملية",
+      "en": "Practical readiness"
+    },
+    {
+      "ar": "أدوات مترابطة",
+      "en": "Connected tools"
+    },
+    {
+      "ar": "بناء أسرع",
+      "en": "Faster building"
+    },
+    {
+      "ar": "منفعة ملموسة",
+      "en": "Tangible utility"
+    }
+  ],
+  "tone": {
+    "enterprise": {
+      "ar": "لغة دقيقة وهادئة تربط عُدّة بنتيجة تشغيلية واضحة، من دون وعود ضخمة أو ادعاءات تفوق.",
+      "en": "Use precise, calm language that ties Uddah to an operational outcome without inflated claims."
+    },
+    "conversational": {
+      "ar": "جمل قصيرة وفعلية تستمد نبرتها من معنى عُدّة وتشرح الفائدة بكلام يومي.",
+      "en": "Use short, active sentences grounded in the meaning of Uddah, with everyday explanations of value."
+    }
+  },
+  "avoid": [
+    "Undiacritized عدة has other meanings",
+    "Latinizations may evoke iddah religious/legal term",
+    "Exact pronunciation must be standardized",
+    "Generic dictionary term may be hard to own",
+    "Do not imply trademark, trade-name, domain, or social-handle availability.",
+    "Do not present the meaning hypothesis as settled without native-language validation."
+  ],
+  "wouldChangeMind": {
+    "ar": "اختبار يثبت أن الجمهور يقرأها عِدّة أو يربط Uddah بمعنى قانوني سيخفضها. ضبط بصري وصوتي ناجح قد يحل جزءًا من المشكلة.",
+    "en": "Testing that shows people read it as ʿiddah or connect Uddah to the legal term would lower it. Successful visual and verbal standardization could reduce the risk."
+  },
+  "commercial": {
+    "ar": "مناسب للمنصات والبنية والأدوات، ويتيح تسعيرًا وتجميعًا على شكل حزم. الالتباس الكتابي والديني في بعض اللاتنة يمثلان خطرًا حقيقيًا.",
+    "en": "Well suited to platforms, infrastructure, and tools, with natural bundle architecture. Written ambiguity and the religious/legal association of some transliterations are material risks."
+  },
+  "portfolio": {
+    "ar": "عُدّة بناء، عُدّة تشغيل، عُدّة وكلاء؛ توسعة واضحة ومباشرة.",
+    "en": "Uddah Build, Uddah Operate, and Uddah Agents extend clearly."
+  },
+  "proofPoints": [
+    "HYPOTHESIS: Developer platforms, agent orchestration and tooling. Validate with target buyers.",
+    "HYPOTHESIS: the modular engineered tool components territory can remain recognizable at product and parent-brand scales. Test visually.",
+    "HYPOTHESIS: We provide the tools and infrastructure that make ideas ready to execute. Validate with a prototype offer and customer interviews."
+  ],
+  "proofToBuild": [
+    {
+      "ar": "نموذج تفاعلي يوضح كيف يقدم عُدّة عدة مترابطة من الأدوات والبنية والوكلاء تساعدهم على بناء الأنظمة وتشغيلها.",
+      "en": "An interactive prototype showing how Uddah could deliver a connected toolkit of infrastructure, developer tools, and agents for building and operating systems."
+    },
+    {
+      "ar": "بيئة تجريب موثقة تعرض سير عمل كاملًا، ونقاط التحكم، وحالات الفشل والاستعادة.",
+      "en": "A documented sandbox demonstrating one end-to-end workflow, its control points, failure cases, and recovery path."
+    },
+    {
+      "ar": "اختبار مسمى ونطق ومفهوم مع الجمهور المستهدف، يتبعه ملخص مجهول الهوية لما فهموه وما التبس عليهم.",
+      "en": "A name, pronunciation, and concept test with the target audience, followed by an anonymized summary of what they understood and confused."
+    }
+  ],
+  "forbiddenClaims": {
+    "ar": [
+      "الاسم متاح أو فريد أو قابل للتسجيل من دون فحص رسمي ومشورة قانونية.",
+      "العائد أو خفض التكلفة أو سرعة التنفيذ مضمونة قبل وجود نتائج موثقة.",
+      "تقديم معنى عُدّة أو نطقها كأنه غير قابل للالتباس."
+    ],
+    "en": [
+      "The name is available, unique, or registrable without official searches and legal advice.",
+      "ROI, cost reduction, or delivery speed is guaranteed before documented results exist.",
+      "Presenting Uddah’s meaning or pronunciation as unambiguous."
+    ]
+  },
+  "pronunciationRisks": {
+    "ar": "التشكيل يحسم المعنى؛ Uddah غير بديهية وقد تلتبس مع iddah.",
+    "en": "Vowels determine meaning; Uddah is not intuitive and may be confused with iddah."
+  }
+}

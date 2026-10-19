@@ -1,0 +1,202 @@
+{
+  "pronunciation": "RAK-kib | رَكِّب",
+  "meaningAr": "اجمع القطع أو الأنظمة في تركيب يعمل.",
+  "strengthsAr": [
+    "فعل طبيعي للتكامل",
+    "هوية وحدات بصرية قوية",
+    "فائدة مباشرة",
+    "مناسب لمنتجات البرمجيات"
+  ],
+  "concernsAr": [
+    "قد يوحي بتركيب الأجهزة",
+    "فعل عام ومزدحم",
+    "قد يضيق على أبحاث الذكاء",
+    "تهجئات إنجليزية متعددة"
+  ],
+  "concernsEn": [
+    "Might imply hardware/installers",
+    "Generic verb, potential crowding",
+    "Question whether broad enough for intelligence products",
+    "English spelling variants"
+  ],
+  "bestFitAr": "تكامل سير العمل والأنظمة المؤسسية والأدوات منخفضة البرمجة.",
+  "worstFitAr": "شركة أبحاث نماذج أساسية بعيدة عن مفهوم التركيب.",
+  "naturalnessAr": "فعل عربي دارج ومفهوم، مع اختلافات نطق طفيفة.",
+  "concept": {
+    "ar": "قطع مختلفة تجد تركيبها الصحيح داخل نظام واحد.",
+    "en": "Different pieces finding the right fit in one system."
+  },
+  "promise": {
+    "ar": "نربط الأدوات والبيانات وسير العمل حتى تعمل كوحدة واحدة.",
+    "en": "We connect tools, data, and workflows so they operate as one."
+  },
+  "story": {
+    "ar": "ركّب فعل صنع وتكامل. يجعل قيمة الشركة مفهومة بسرعة: أجزاء متفرقة تدخل في نظام منظم. قوته في الوضوح والمرونة البصرية، فيما يجب تجنب حصره في تركيب الأجهزة أو الخدمات الميدانية.",
+    "en": "Rakkib is a verb of assembly and integration. It makes the value easy to grasp: scattered pieces become an ordered system. Its strength is clarity and visual modularity, while the brand must avoid being mistaken for hardware installation."
+  },
+  "mission": {
+    "ar": "تركيب أنظمة ذكية تربط الأدوات القائمة وتقلل الاحتكاك بين الفرق.",
+    "en": "Assemble intelligent systems that connect existing tools and reduce friction between teams."
+  },
+  "pitch15": {
+    "ar": "ركّب شركة تقنية مقترحة. نربط الأدوات والبيانات وسير العمل حتى تعمل كوحدة واحدة. والغاية هي تركيب أنظمة ذكية تربط الأدوات القائمة وتقلل الاحتكاك بين الفرق.",
+    "en": "Rakkib is a proposed technology company. We connect tools, data, and workflows so they operate as one. Its purpose is to assemble intelligent systems that connect existing tools and reduce friction between teams."
+  },
+  "pitch60": {
+    "ar": "ركّب تصور شركة تقنية تخدم الفرق التي تعمل بأدوات وبيانات متفرقة. ينطلق من فكرة بسيطة: قطع مختلفة تجد تركيبها الصحيح داخل نظام واحد. ويقدم تكاملات وسير عمل ووكلاء تجعل الأجزاء المختلفة تعمل كنظام واحد. يعمل الفريق بفهم ما يجب أن يبقى وما يجب وصله، ثم تركيب وحدات قابلة للتبديل والتوسع، مع بقاء الهدف واضحًا في كل مرحلة. تبدأ المشاريع بفهم العمل القائم والقرار الذي يحتاجه العميل، ثم تتحول إلى نموذج يمكن اختباره قبل التوسع. الرؤية هي بناء طبقة تكامل عملية تجعل إضافة الأدوات الجديدة أسهل بدل أن تزيد التعقيد. بهذا الوعد، يصبح اسم ركّب تعبيرًا عن طريقة الشركة في العمل، لا مجرد عنوان لها.",
+    "en": "Rakkib is conceived as a proposed technology company for teams working across disconnected tools and data. It starts with a simple idea: Different pieces finding the right fit in one system. The company would create integrations, workflows, and agents that make different parts operate as one system. Its team would work by identifying what should remain, what must connect, and assembling modules that can change and scale, keeping the intended outcome visible at every stage. Work would move into a usable prototype before wider investment. The long-term aim is a practical integration layer that makes adding new tools easier instead of adding complexity. In this model, Rakkib becomes a clear expression of how the company works and what customers can expect from the experience."
+  },
+  "about30": {
+    "ar": "ركّب شركة تقنية مقترحة يخدم الفرق التي تعمل بأدوات وبيانات متفرقة. نربط الأدوات والبيانات وسير العمل حتى تعمل كوحدة واحدة.",
+    "en": "Rakkib is a proposed technology company for teams working across disconnected tools and data. We connect tools, data, and workflows so they operate as one."
+  },
+  "about120": {
+    "ar": "ركّب تصور شركة تقنية صُمم لخدمة الفرق التي تعمل بأدوات وبيانات متفرقة. تتمثل فكرته في قطع مختلفة تجد تركيبها الصحيح داخل نظام واحد. ومن هذا المنطلق، يبني تكاملات وسير عمل ووكلاء تجعل الأجزاء المختلفة تعمل كنظام واحد. تبدأ طريقة العمل بفهم السياق الحقيقي وما يحتاجه المستخدم أو الفريق، ثم تستمر بفهم ما يجب أن يبقى وما يجب وصله، ثم تركيب وحدات قابلة للتبديل والتوسع. تُختبر الفكرة في صورة ملموسة قبل إضافة نطاق أو تعقيد جديد، وتبقى المسؤولية والقرار واضحين طوال المشروع. مع الوقت، يمكن أن يتوسع ركّب ليصبح طبقة تكامل عملية تجعل إضافة الأدوات الجديدة أسهل بدل أن تزيد التعقيد. الاسم والنظام اللفظي المقترحان يقدمان وعدًا بسيطًا: نربط الأدوات والبيانات وسير العمل حتى تعمل كوحدة واحدة.",
+    "en": "Rakkib is a proposed technology company designed for teams working across disconnected tools and data. Its central idea is different pieces finding the right fit in one system. From that position, it would build integrations, workflows, and agents that make different parts operate as one system. The working method begins with the real context and the outcome a user or team needs, then proceeds by identifying what should remain, what must connect, and assembling modules that can change and scale. Ideas move into tangible form before more complexity is added. Over time, Rakkib could grow into a practical integration layer that makes adding new tools easier instead of adding complexity."
+  },
+  "taglines": {
+    "ar": [
+      "كل شيء يركب.",
+      "حلول تركب صح.",
+      "من قطع إلى نظام."
+    ],
+    "en": [
+      "Make the pieces work.",
+      "Fit for the workflow.",
+      "From parts to system."
+    ]
+  },
+  "personality": [
+    {
+      "ar": "عملي",
+      "en": "pragmatic"
+    },
+    {
+      "ar": "مرن الوحدات",
+      "en": "modular"
+    },
+    {
+      "ar": "واضح",
+      "en": "clear"
+    },
+    {
+      "ar": "صانع",
+      "en": "maker-minded"
+    }
+  ],
+  "archetype": {
+    "ar": "المركّب",
+    "en": "The Assembler"
+  },
+  "vision": {
+    "en": "A future where organizations can evolve their technology by combining sound modules instead of replacing whole systems. Rakkib would help teams assemble platforms around changing needs, making integration visible, testable, and easier to improve over time.",
+    "ar": "مستقبل تطور فيه المؤسسات تقنياتها بتركيب وحدات سليمة بدل استبدال الأنظمة كاملة. يساعد ركّب الفرق على تجميع منصات حول احتياجات متغيرة، ويجعل التكامل مرئيًا وقابلًا للاختبار وأسهل في التحسين مع الوقت."
+  },
+  "brandApproach": {
+    "en": "Position Rakkib as the exacting assembler of adaptable systems. Interlocking forms, plain technical language, and visible seams celebrate fit and replaceability while acknowledging real integration constraints.",
+    "ar": "يتموضع ركّب كالمركّب الدقيق للأنظمة القابلة للتكيف. تحتفي الأشكال المتعشقة واللغة التقنية الواضحة والمفاصل الظاهرة بجودة الملاءمة وإمكان الاستبدال، مع الاعتراف بقيود التكامل الفعلية."
+  },
+  "headers": {
+    "en": [
+      "Build the system your work actually needs",
+      "Fit every capability into one working whole",
+      "Add what matters without starting over"
+    ],
+    "ar": [
+      "ابنِ النظام الذي يحتاجه عملك فعلًا",
+      "ركّب كل قدرة في منظومة واحدة",
+      "أضف ما يلزم من دون البدء مجددًا"
+    ]
+  },
+  "headerSubline": {
+    "en": "Rakkib connects compatible tools and services into an adaptable operating system, giving teams a clearer way to extend what already works.",
+    "ar": "يربط ركّب الأدوات والخدمات المتوافقة في نظام تشغيل قابل للتكيف، ويمنح الفرق طريقًا أوضح لتوسيع ما يعمل لديها بالفعل."
+  },
+  "visualStory": {
+    "en": "Teal modules meet at coral joints against an off-white field. Exact gaps keep every piece readable, turning the symbol into a study of fit, exchange, and extension.",
+    "ar": "تلتقي وحدات فيروزية عند مفاصل مرجانية فوق خلفية عاجية. تحفظ الفواصل الدقيقة وضوح كل قطعة، فتحول الرمز إلى دراسة في الملاءمة والتبديل والتوسع."
+  },
+  "pillars": [
+    {
+      "ar": "تركيب دقيق",
+      "en": "Exact assembly"
+    },
+    {
+      "ar": "تكامل مفيد",
+      "en": "Useful integration"
+    },
+    {
+      "ar": "مرونة الوحدات",
+      "en": "Modular flexibility"
+    },
+    {
+      "ar": "تشغيل سلس",
+      "en": "Smooth operation"
+    }
+  ],
+  "tone": {
+    "enterprise": {
+      "ar": "لغة دقيقة وهادئة تربط ركّب بنتيجة تشغيلية واضحة، من دون وعود ضخمة أو ادعاءات تفوق.",
+      "en": "Use precise, calm language that ties Rakkib to an operational outcome without inflated claims."
+    },
+    "conversational": {
+      "ar": "جمل قصيرة وفعلية تستمد نبرتها من معنى ركّب وتشرح الفائدة بكلام يومي.",
+      "en": "Use short, active sentences grounded in the meaning of Rakkib, with everyday explanations of value."
+    }
+  },
+  "avoid": [
+    "Might imply hardware/installers",
+    "Generic verb, potential crowding",
+    "Question whether broad enough for intelligence products",
+    "English spelling variants",
+    "Do not imply trademark, trade-name, domain, or social-handle availability.",
+    "Do not present the meaning hypothesis as settled without native-language validation."
+  ],
+  "wouldChangeMind": {
+    "ar": "إذا ربطه المشترون بعمال التركيب أكثر من البرمجيات، يتراجع. فهم تلقائي لمعنى التكامل الرقمي سيرفعه.",
+    "en": "If buyers associate it with installers more than software, it falls. Immediate understanding of digital integration would raise it."
+  },
+  "commercial": {
+    "ar": "قوي للتكامل والأتمتة والمنصات منخفضة البرمجة. قد يحد تصور الشركة إذا انتقلت إلى البحث أو المنتجات الفكرية البحتة.",
+    "en": "Strong for integration, automation, and low-code platforms. It may constrain perception if the company moves into research or pure intelligence products."
+  },
+  "portfolio": {
+    "ar": "ركّب ربط، ركّب تدفق، ركّب وكلاء؛ منطق وحدات سهل العرض والبيع.",
+    "en": "Rakkib Connect, Rakkib Flow, and Rakkib Agents offer a modular system that is easy to present and sell."
+  },
+  "proofPoints": [
+    "HYPOTHESIS: AI workflow integration, enterprise systems and low-code tools. Validate with target buyers.",
+    "HYPOTHESIS: the visible interlocking modules / exact fit territory can remain recognizable at product and parent-brand scales. Test visually.",
+    "HYPOTHESIS: We connect tools, data, and workflows so they operate as one. Validate with a prototype offer and customer interviews."
+  ],
+  "proofToBuild": [
+    {
+      "ar": "نموذج تفاعلي يوضح كيف يقدم ركّب تكاملات وسير عمل ووكلاء تجعل الأجزاء المختلفة تعمل كنظام واحد.",
+      "en": "An interactive prototype showing how Rakkib could deliver integrations, workflows, and agents that make different parts operate as one system."
+    },
+    {
+      "ar": "بيئة تجريب موثقة تعرض سير عمل كاملًا، ونقاط التحكم، وحالات الفشل والاستعادة.",
+      "en": "A documented sandbox demonstrating one end-to-end workflow, its control points, failure cases, and recovery path."
+    },
+    {
+      "ar": "اختبار مسمى ونطق ومفهوم مع الجمهور المستهدف، يتبعه ملخص مجهول الهوية لما فهموه وما التبس عليهم.",
+      "en": "A name, pronunciation, and concept test with the target audience, followed by an anonymized summary of what they understood and confused."
+    }
+  ],
+  "forbiddenClaims": {
+    "ar": [
+      "الاسم متاح أو فريد أو قابل للتسجيل من دون فحص رسمي ومشورة قانونية.",
+      "العائد أو خفض التكلفة أو سرعة التنفيذ مضمونة قبل وجود نتائج موثقة.",
+      "الادعاء بأن كل نظام يمكن تركيبه بلا قيود تقنية."
+    ],
+    "en": [
+      "The name is available, unique, or registrable without official searches and legal advice.",
+      "ROI, cost reduction, or delivery speed is guaranteed before documented results exist.",
+      "Claiming every system can be integrated without technical constraints."
+    ]
+  },
+  "pronunciationRisks": {
+    "ar": "الشدة مهمة؛ Rakkib وRakib وRakeb تنتج نطقًا وتهجئة مختلفين.",
+    "en": "The doubled consonant matters; Rakkib, Rakib, and Rakeb lead to different pronunciations and spellings."
+  }
+}

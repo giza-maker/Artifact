@@ -1,0 +1,202 @@
+{
+  "pronunciation": "SAN-ah | صَنْعَة",
+  "meaningAr": "حرفة ومهارة وعمل مصنوع بإتقان.",
+  "strengthsAr": [
+    "روح صانع جميلة",
+    "دافئ وفاخر",
+    "يمتد بين الرقمي والمادي",
+    "يناسب الملكية الفكرية الأصلية"
+  ],
+  "concernsAr": [
+    "يلتبس لاتينيًا بسنا وصنعاء",
+    "قد يبدو حرفيًا لا تقنيًا",
+    "يحتاج تحققًا بصريًا ولغويًا",
+    "كلمة شائعة نسبيًا"
+  ],
+  "concernsEn": [
+    "Latin spelling easily confused with Sana/Sanaa",
+    "Craft concept may seem artisanal rather than high-tech",
+    "Needs native dialect and visual validation",
+    "Common word may be hard to distinguish"
+  ],
+  "bestFitAr": "استوديو ممتاز يبني منتجات وعوالم وملكية فكرية أصلية.",
+  "worstFitAr": "وكالة محتوى سلعية تعتمد على كثرة الإنتاج.",
+  "naturalnessAr": "عربي فصيح مفهوم، مع حساسية للتشكيل واللاتنة.",
+  "concept": {
+    "ar": "حرفة فكرية وتقنية تعطي كل منتج عناية صانعه.",
+    "en": "Intellectual and technical craft that gives each product a maker’s care."
+  },
+  "promise": {
+    "ar": "نصنع منتجات أصلية بعناية في الفكرة والتفاصيل والتجربة.",
+    "en": "We craft original products with care across concept, detail, and experience."
+  },
+  "story": {
+    "ar": "صَنْعة تضع المهارة قبل الضجيج. تناسب استوديو منتجات وعوالم أصلية يريد الجمع بين الحرفة البشرية والتقنية. يمنحها الاسم دفئًا وجودة، لكن اللاتنة قد تختلط بسَنا وصنعاء، ويجب ألا تنزلق الهوية إلى مظهر حرفي تقليدي فقط.",
+    "en": "San'ah puts skill before noise. It fits a product and original-world studio combining human craft with technology. The name adds warmth and quality, but the Latin form may be confused with Sana or Sanaa, and the identity must avoid looking solely artisanal."
+  },
+  "mission": {
+    "ar": "صنع منتجات وعوالم لها فكرة واضحة وتنفيذ يعيش طويلًا.",
+    "en": "Create products and worlds with a clear idea and execution built to last."
+  },
+  "pitch15": {
+    "ar": "صَنْعة استوديو مشاريع مقترح. نصنع منتجات أصلية بعناية في الفكرة والتفاصيل والتجربة. والغاية هي صنع منتجات وعوالم لها فكرة واضحة وتنفيذ يعيش طويلًا.",
+    "en": "San'ah is a proposed venture studio. We craft original products with care across concept, detail, and experience. Its purpose is to create products and worlds with a clear idea and execution built to last."
+  },
+  "pitch60": {
+    "ar": "صَنْعة تصور استوديو مشاريع يخدم الجهات والجماهير التي تبحث عن منتجات وعوالم أصلية مصنوعة بعناية. ينطلق من فكرة بسيطة: حرفة فكرية وتقنية تعطي كل منتج عناية صانعه. ويقدم برمجيات وألعاب وتجارب وملكية فكرية تجمع الفكرة القوية بالتنفيذ الدقيق. يعمل الفريق بفرق صغيرة متعددة المهارات تحمي الفكرة من أول رسم حتى آخر تفصيل في التجربة، مع بقاء الهدف واضحًا في كل مرحلة. تبدأ المشاريع بفهم العمل القائم والقرار الذي يحتاجه العميل، ثم تتحول إلى نموذج يمكن اختباره قبل التوسع. الرؤية هي بناء استوديو صناعة معاصر من السعودية يبني أعمالًا أصلية قابلة للحياة طويلًا. بهذا الوعد، يصبح اسم صَنْعة تعبيرًا عن طريقة الشركة في العمل، لا مجرد عنوان لها.",
+    "en": "San'ah is conceived as a proposed venture studio for organizations and audiences looking for original products and worlds made with care. It starts with a simple idea: Intellectual and technical craft that gives each product a maker’s care. The company would create software, games, experiences, and intellectual property that combine a strong concept with exact execution. Its team would work through small multidisciplinary teams that protect the idea from the first sketch to the final experiential detail, keeping the intended outcome visible at every stage. Work would move into a usable prototype before wider investment. The long-term aim is a contemporary Saudi craft studio building original work designed for a long life. In this model, San'ah becomes a clear expression of how the company works and what customers can expect from the experience."
+  },
+  "about30": {
+    "ar": "صَنْعة استوديو مشاريع مقترح يخدم الجهات والجماهير التي تبحث عن منتجات وعوالم أصلية مصنوعة بعناية. نصنع منتجات أصلية بعناية في الفكرة والتفاصيل والتجربة.",
+    "en": "San'ah is a proposed venture studio for organizations and audiences looking for original products and worlds made with care. We craft original products with care across concept, detail, and experience."
+  },
+  "about120": {
+    "ar": "صَنْعة تصور استوديو مشاريع صُمم لخدمة الجهات والجماهير التي تبحث عن منتجات وعوالم أصلية مصنوعة بعناية. تتمثل فكرته في حرفة فكرية وتقنية تعطي كل منتج عناية صانعه. ومن هذا المنطلق، يبني برمجيات وألعاب وتجارب وملكية فكرية تجمع الفكرة القوية بالتنفيذ الدقيق. تبدأ طريقة العمل بفهم السياق الحقيقي وما يحتاجه المستخدم أو الفريق، ثم تستمر بفرق صغيرة متعددة المهارات تحمي الفكرة من أول رسم حتى آخر تفصيل في التجربة. تُختبر الفكرة في صورة ملموسة قبل إضافة نطاق أو تعقيد جديد، وتبقى المسؤولية والقرار واضحين طوال المشروع. مع الوقت، يمكن أن يتوسع صَنْعة ليصبح استوديو صناعة معاصر من السعودية يبني أعمالًا أصلية قابلة للحياة طويلًا. الاسم والنظام اللفظي المقترحان يقدمان وعدًا بسيطًا: نصنع منتجات أصلية بعناية في الفكرة والتفاصيل والتجربة.",
+    "en": "San'ah is a proposed venture studio designed for organizations and audiences looking for original products and worlds made with care. Its central idea is intellectual and technical craft that gives each product a maker’s care. From that position, it would build software, games, experiences, and intellectual property that combine a strong concept with exact execution. The working method begins with the real context and the outcome a user or team needs, then proceeds through small multidisciplinary teams that protect the idea from the first sketch to the final experiential detail. Ideas move into tangible form before more complexity is added. Over time, San'ah could grow into a contemporary Saudi craft studio building original work designed for a long life."
+  },
+  "taglines": {
+    "ar": [
+      "للفكرة صنعة.",
+      "شغل له بصمة.",
+      "مصنوع بقصد."
+    ],
+    "en": [
+      "Made with intent.",
+      "Craft what comes next.",
+      "Originals, carefully built."
+    ]
+  },
+  "personality": [
+    {
+      "ar": "ماهر",
+      "en": "skilled"
+    },
+    {
+      "ar": "دافئ",
+      "en": "warm"
+    },
+    {
+      "ar": "متقن",
+      "en": "exacting"
+    },
+    {
+      "ar": "أصيل",
+      "en": "original"
+    }
+  ],
+  "archetype": {
+    "ar": "الصانع",
+    "en": "The Maker"
+  },
+  "vision": {
+    "en": "A future where original Saudi products earn lasting affection through the quality of their ideas and execution. San’ah would unite contemporary craft, technology, and cultural imagination to create useful objects and worlds that people choose to keep.",
+    "ar": "مستقبل تكسب فيه المنتجات السعودية الأصلية محبة طويلة بجودة فكرتها وتنفيذها. تجمع صَنْعة الحرفة المعاصرة والتقنية والخيال الثقافي لصنع أشياء وعوالم نافعة يختار الناس الاحتفاظ بها."
+  },
+  "brandApproach": {
+    "en": "Position San’ah as a contemporary maker of original products and worlds. A precise stamp, tactile colors, and exacting editorial voice make craft feel modern, thoughtful, and commercially relevant.",
+    "ar": "تتموضع صَنْعة كصانع معاصر لمنتجات وعوالم أصلية. يجعل الختم الدقيق والألوان الملموسة والصوت التحريري المتقن الحرفة حديثة ومدروسة وذات قيمة تجارية."
+  },
+  "headers": {
+    "en": [
+      "Make something people will want to keep",
+      "Original products deserve a maker’s care",
+      "Craft the idea all the way through"
+    ],
+    "ar": [
+      "اصنع ما يرغب الناس في الاحتفاظ به",
+      "المنتجات الأصلية تستحق عناية الصانع",
+      "أتقن الفكرة بعناية حتى تصل نهايتها"
+    ]
+  },
+  "headerSubline": {
+    "en": "San’ah brings design, technology, and patient craft together to build original products with a clear purpose and a life beyond launch.",
+    "ar": "تجمع صَنْعة التصميم والتقنية والحرفة الصبورة لبناء منتجات أصلية ذات غاية واضحة وعمر يتجاوز لحظة الإطلاق."
+  },
+  "visualStory": {
+    "en": "An umber maker’s stamp meets clay accents on cream, with joinery kept crisp and visible. The palette feels tactile while the geometry places craft firmly in the present.",
+    "ar": "يلتقي ختم صانع بلون بني مع لمسات طينية على خلفية كريمية، وتظل المفاصل دقيقة وظاهرة. تبدو الألوان ملموسة، وتضع الهندسة الحرفة في الحاضر."
+  },
+  "pillars": [
+    {
+      "ar": "حرفة معاصرة",
+      "en": "Contemporary craft"
+    },
+    {
+      "ar": "تفاصيل مقصودة",
+      "en": "Intentional detail"
+    },
+    {
+      "ar": "أصالة المنتج",
+      "en": "Product originality"
+    },
+    {
+      "ar": "جودة تعيش",
+      "en": "Lasting quality"
+    }
+  ],
+  "tone": {
+    "enterprise": {
+      "ar": "لغة دقيقة وهادئة تربط صَنْعة بنتيجة تشغيلية واضحة، من دون وعود ضخمة أو ادعاءات تفوق.",
+      "en": "Use precise, calm language that ties San'ah to an operational outcome without inflated claims."
+    },
+    "conversational": {
+      "ar": "جمل قصيرة وفعلية تستمد نبرتها من معنى صَنْعة وتشرح الفائدة بكلام يومي.",
+      "en": "Use short, active sentences grounded in the meaning of San'ah, with everyday explanations of value."
+    }
+  },
+  "avoid": [
+    "Latin spelling easily confused with Sana/Sanaa",
+    "Craft concept may seem artisanal rather than high-tech",
+    "Needs native dialect and visual validation",
+    "Common word may be hard to distinguish",
+    "Do not imply trademark, trade-name, domain, or social-handle availability.",
+    "Do not present the meaning hypothesis as settled without native-language validation."
+  ],
+  "wouldChangeMind": {
+    "ar": "إذا استمر الخلط مع سَنا أو صنعاء في الاختبارات، يتراجع. قراءة فورية للحرفة المعاصرة سترفعه.",
+    "en": "If tests keep confusing it with Sana or Sanaa, it falls. Immediate recognition of contemporary craft would raise it."
+  },
+  "commercial": {
+    "ar": "قوي للمنتجات الممتازة والملكية الفكرية والاستوديوهات التي تبيع الجودة. أضعف لمنصة آلية أو شركة حجمها قائم على السرعة والكمية.",
+    "en": "Strong for premium products, intellectual property, and studios selling quality. Weaker for an automation platform or a volume-led company."
+  },
+  "portfolio": {
+    "ar": "صَنْعة ألعاب، صَنْعة عوالم، صَنْعة منتجات؛ عائلة غنية وتحتاج ضبطًا لاتينيًا ثابتًا.",
+    "en": "San'ah Games, San'ah Worlds, and San'ah Products form a rich family that needs consistent Romanization."
+  },
+  "proofPoints": [
+    "HYPOTHESIS: Premium product and original-world development studio. Validate with target buyers.",
+    "HYPOTHESIS: the original maker stamp, precise joinery territory can remain recognizable at product and parent-brand scales. Test visually.",
+    "HYPOTHESIS: We craft original products with care across concept, detail, and experience. Validate with a prototype offer and customer interviews."
+  ],
+  "proofToBuild": [
+    {
+      "ar": "نموذج تفاعلي يوضح كيف يقدم صَنْعة برمجيات وألعاب وتجارب وملكية فكرية تجمع الفكرة القوية بالتنفيذ الدقيق.",
+      "en": "An interactive prototype showing how San'ah could deliver software, games, experiences, and intellectual property that combine a strong concept with exact execution."
+    },
+    {
+      "ar": "نموذج منتج منشور قابل للاستخدام مع سجل قرارات البناء وما تغير بعد الاختبار.",
+      "en": "A usable published product prototype with a build-decision log and the changes made after testing."
+    },
+    {
+      "ar": "اختبار مسمى ونطق ومفهوم مع الجمهور المستهدف، يتبعه ملخص مجهول الهوية لما فهموه وما التبس عليهم.",
+      "en": "A name, pronunciation, and concept test with the target audience, followed by an anonymized summary of what they understood and confused."
+    }
+  ],
+  "forbiddenClaims": {
+    "ar": [
+      "الاسم متاح أو فريد أو قابل للتسجيل من دون فحص رسمي ومشورة قانونية.",
+      "العائد أو خفض التكلفة أو سرعة التنفيذ مضمونة قبل وجود نتائج موثقة.",
+      "الادعاء بأن صَنْعة لها تهجئة لاتينية واحدة متفق عليها."
+    ],
+    "en": [
+      "The name is available, unique, or registrable without official searches and legal advice.",
+      "ROI, cost reduction, or delivery speed is guaranteed before documented results exist.",
+      "Claiming San’ah has one universally accepted Latin spelling."
+    ]
+  },
+  "pronunciationRisks": {
+    "ar": "الفاصلة في San'ah مربكة رقميًا؛ حذفها يزيد الخلط مع Sana وSanaa.",
+    "en": "The apostrophe in San'ah is awkward digitally; removing it increases confusion with Sana and Sanaa."
+  }
+}

@@ -1,0 +1,202 @@
+{
+  "pronunciation": "SAN-ni | سَنِّع",
+  "meaningAr": "رتّب الشيء وحسّنه واجعله مضبوطًا.",
+  "strengthsAr": [
+    "نكهة خليجية واضحة",
+    "ملائم لتحسين العمليات",
+    "قصير وسهل التذكر",
+    "يوحي بالنظام والجودة"
+  ],
+  "concernsAr": [
+    "استخدامات مشابهة محتملة",
+    "التهجئة الإنجليزية غامضة",
+    "أقل فهمًا خارج الخليج",
+    "قد يبدو غير رسمي"
+  ],
+  "concernsEn": [
+    "Existing same/near word uses may exist",
+    "English spelling not obvious",
+    "Not universally intelligible outside GCC",
+    "Could sound informal for large buyers"
+  ],
+  "bestFitAr": "برمجيات العمليات والأتمتة ومنصات تجربة العميل.",
+  "worstFitAr": "منتج عالمي يعتمد منذ البداية على قناة إنجليزية فقط.",
+  "naturalnessAr": "خليجي دارج يحتاج اختبارًا إقليميًا وعمريًا.",
+  "concept": {
+    "ar": "ترتيب العمل وتحسينه حتى يصبح مضبوطًا وجاهزًا.",
+    "en": "Putting work in order until it is polished and ready."
+  },
+  "promise": {
+    "ar": "نرتب العمليات ونصقل التجربة حتى تعمل بلا فوضى.",
+    "en": "We organize operations and refine the experience until it works without disorder."
+  },
+  "story": {
+    "ar": "سنّع يحمل فعل التحسين في كلمة خليجية قريبة من الناس. يصلح لمنصة ترتب العمليات وخدمة العملاء وتمنح الفرق إحساسًا بأن كل شيء في مكانه. يحتاج الاسم إلى اختبار خارج الخليج وإلى أسلوب بصري يرفعه فوق النبرة العامية.",
+    "en": "Sanni carries the act of improvement in a familiar Gulf expression. It suits a platform that orders operations and customer experience so everything feels in place. The name needs testing beyond the Gulf and a visual system that lifts its colloquial tone."
+  },
+  "mission": {
+    "ar": "تحويل العمليات المبعثرة إلى تجارب مرتبة تسهل إدارتها وتطويرها.",
+    "en": "Turn scattered operations into ordered experiences that are easy to manage and improve."
+  },
+  "pitch15": {
+    "ar": "سنّع شركة تقنية مقترحة. نرتب العمليات ونصقل التجربة حتى تعمل بلا فوضى. والغاية هي تحويل العمليات المبعثرة إلى تجارب مرتبة تسهل إدارتها وتطويرها.",
+    "en": "Sanni is a proposed technology company. We organize operations and refine the experience until it works without disorder. Its purpose is to turn scattered operations into ordered experiences that are easy to manage and improve."
+  },
+  "pitch60": {
+    "ar": "سنّع تصور شركة تقنية تخدم فرق العمليات والخدمة التي تريد عملًا أرتب وتجربة أكثر اتساقًا. ينطلق من فكرة بسيطة: ترتيب العمل وتحسينه حتى يصبح مضبوطًا وجاهزًا. ويقدم برمجيات وأتمتة ترتب الخطوات وتكشف التعطل وتحافظ على جودة التنفيذ. يعمل الفريق بتبسيط الإجراءات واحدة تلو الأخرى وربطها بقياس واضح ومسؤولية معروفة، مع بقاء الهدف واضحًا في كل مرحلة. تبدأ المشاريع بفهم العمل القائم والقرار الذي يحتاجه العميل، ثم تتحول إلى نموذج يمكن اختباره قبل التوسع. الرؤية هي بناء منصة تشغيل قريبة من الناس تجعل النظام عادة يومية لا مشروعًا مؤقتًا. بهذا الوعد، يصبح اسم سنّع تعبيرًا عن طريقة الشركة في العمل، لا مجرد عنوان لها.",
+    "en": "Sanni is conceived as a proposed technology company for operations and service teams seeking cleaner work and a more consistent experience. It starts with a simple idea: Putting work in order until it is polished and ready. The company would create software and automation that organize steps, expose bottlenecks, and protect execution quality. Its team would work by simplifying procedures one at a time and tying them to visible measures and clear ownership, keeping the intended outcome visible at every stage. Work would move into a usable prototype before wider investment. The long-term aim is an approachable operations platform that makes order a daily habit instead of a temporary project. In this model, Sanni becomes a clear expression of how the company works and what customers can expect from the experience."
+  },
+  "about30": {
+    "ar": "سنّع شركة تقنية مقترحة يخدم فرق العمليات والخدمة التي تريد عملًا أرتب وتجربة أكثر اتساقًا. نرتب العمليات ونصقل التجربة حتى تعمل بلا فوضى.",
+    "en": "Sanni is a proposed technology company for operations and service teams seeking cleaner work and a more consistent experience. We organize operations and refine the experience until it works without disorder."
+  },
+  "about120": {
+    "ar": "سنّع تصور شركة تقنية صُمم لخدمة فرق العمليات والخدمة التي تريد عملًا أرتب وتجربة أكثر اتساقًا. تتمثل فكرته في ترتيب العمل وتحسينه حتى يصبح مضبوطًا وجاهزًا. ومن هذا المنطلق، يبني برمجيات وأتمتة ترتب الخطوات وتكشف التعطل وتحافظ على جودة التنفيذ. تبدأ طريقة العمل بفهم السياق الحقيقي وما يحتاجه المستخدم أو الفريق، ثم تستمر بتبسيط الإجراءات واحدة تلو الأخرى وربطها بقياس واضح ومسؤولية معروفة. تُختبر الفكرة في صورة ملموسة قبل إضافة نطاق أو تعقيد جديد، وتبقى المسؤولية والقرار واضحين طوال المشروع. مع الوقت، يمكن أن يتوسع سنّع ليصبح منصة تشغيل قريبة من الناس تجعل النظام عادة يومية لا مشروعًا مؤقتًا. الاسم والنظام اللفظي المقترحان يقدمان وعدًا بسيطًا: نرتب العمليات ونصقل التجربة حتى تعمل بلا فوضى.",
+    "en": "Sanni is a proposed technology company designed for operations and service teams seeking cleaner work and a more consistent experience. Its central idea is putting work in order until it is polished and ready. From that position, it would build software and automation that organize steps, expose bottlenecks, and protect execution quality. The working method begins with the real context and the outcome a user or team needs, then proceeds by simplifying procedures one at a time and tying them to visible measures and clear ownership. Ideas move into tangible form before more complexity is added. Over time, Sanni could grow into an approachable operations platform that makes order a daily habit instead of a temporary project."
+  },
+  "taglines": {
+    "ar": [
+      "سنّع شغلك.",
+      "كل شيء في مكانه.",
+      "الترتيب يفرق."
+    ],
+    "en": [
+      "Put work in order.",
+      "Better by design.",
+      "Every move, considered."
+    ]
+  },
+  "personality": [
+    {
+      "ar": "مرتب",
+      "en": "tidy"
+    },
+    {
+      "ar": "قريب",
+      "en": "neighborly"
+    },
+    {
+      "ar": "متمكن",
+      "en": "capable"
+    },
+    {
+      "ar": "مصقول",
+      "en": "polished"
+    }
+  ],
+  "archetype": {
+    "ar": "المنظّم",
+    "en": "The Organizer"
+  },
+  "vision": {
+    "en": "A future where growing operations remain coherent as more people, tools, and services join them. Sanni would help organizations shape practical systems that feel orderly to use, easier to maintain, and ready for responsible expansion.",
+    "ar": "مستقبل تظل فيه العمليات المتنامية متماسكة مع انضمام مزيد من الأشخاص والأدوات والخدمات. يساعد سنّع المؤسسات على تشكيل أنظمة عملية تبدو مرتبة في الاستخدام، أسهل في الصيانة، ومستعدة للتوسع المسؤول."
+  },
+  "brandApproach": {
+    "en": "Build Sanni around the satisfaction of putting work in order. Balanced structures, polished connections, and plainspoken guidance give operational design a capable human character without hiding complexity.",
+    "ar": "تُبنى سنّع حول متعة وضع العمل في نصابه. تمنح البنى المتوازنة والوصلات المصقولة والإرشاد المباشر التصميم التشغيلي طابعًا إنسانيًا متمكنًا، من دون إخفاء التعقيد."
+  },
+  "headers": {
+    "en": [
+      "Put every moving part in its place",
+      "Shape a better way for work to run",
+      "Bring order to growing operations"
+    ],
+    "ar": [
+      "ضع كل جزء متحرك في مكانه",
+      "شكّل طريقة أفضل لسير العمل",
+      "رتّب العمليات بوضوح وهي تنمو معك"
+    ]
+  },
+  "headerSubline": {
+    "en": "Sanni organizes tools, roles, and workflows into a clearer operating model that teams can readily understand, maintain, and improve together.",
+    "ar": "ينظم سنّع الأدوات والأدوار ومسارات العمل في نموذج تشغيلي أوضح تستطيع الفرق فهمه وصيانته وتحسينه معًا."
+  },
+  "visualStory": {
+    "en": "Forest forms align through bronze connections on pearl. Balanced spacing and polished joins express work brought into order, with enough warmth to keep precision from feeling rigid.",
+    "ar": "تنتظم أشكال خضراء داكنة عبر وصلات برونزية على خلفية لؤلؤية. تعبّر المسافات المتوازنة والمفاصل المصقولة عن عمل مرتب، وتمنع اللمسة الدافئة الدقة من أن تبدو جامدة."
+  },
+  "pillars": [
+    {
+      "ar": "ترتيب ذكي",
+      "en": "Smart order"
+    },
+    {
+      "ar": "جودة يومية",
+      "en": "Everyday quality"
+    },
+    {
+      "ar": "تشغيل منضبط",
+      "en": "Disciplined operations"
+    },
+    {
+      "ar": "تحسين مستمر",
+      "en": "Continuous refinement"
+    }
+  ],
+  "tone": {
+    "enterprise": {
+      "ar": "لغة دقيقة وهادئة تربط سنّع بنتيجة تشغيلية واضحة، من دون وعود ضخمة أو ادعاءات تفوق.",
+      "en": "Use precise, calm language that ties Sanni to an operational outcome without inflated claims."
+    },
+    "conversational": {
+      "ar": "جمل قصيرة وفعلية تستمد نبرتها من معنى سنّع وتشرح الفائدة بكلام يومي.",
+      "en": "Use short, active sentences grounded in the meaning of Sanni, with everyday explanations of value."
+    }
+  },
+  "avoid": [
+    "Existing same/near word uses may exist",
+    "English spelling not obvious",
+    "Not universally intelligible outside GCC",
+    "Could sound informal for large buyers",
+    "Do not imply trademark, trade-name, domain, or social-handle availability.",
+    "Do not present the meaning hypothesis as settled without native-language validation."
+  ],
+  "wouldChangeMind": {
+    "ar": "إذا لم يتفق السعوديون على النطق أو رأى العملاء أنه غير رسمي، يتراجع. ارتفاع التذكر بعد اختبار قصير سيرفعه.",
+    "en": "If Saudi speakers disagree on pronunciation or buyers find it too informal, it falls. Strong recall after a short exposure would raise it."
+  },
+  "commercial": {
+    "ar": "جذاب للأتمتة التشغيلية وتجربة العميل، وسهل في الحملات المحلية. تهجئته الإنجليزية وضعف الفهم خارج الخليج يحدان التوسع المباشر.",
+    "en": "Appealing for operational automation and customer experience, with strong local campaign value. English spelling and weaker recognition outside the Gulf limit direct expansion."
+  },
+  "portfolio": {
+    "ar": "سنّع خدمة، سنّع فريق، سنّع تدفق؛ الامتداد طبيعي عربيًا وأضعف إنجليزيًا.",
+    "en": "Sanni Service, Sanni Team, and Sanni Flow extend naturally in Arabic but less clearly in English."
+  },
+  "proofPoints": [
+    "HYPOTHESIS: Operational software, automation and customer-experience platforms. Validate with target buyers.",
+    "HYPOTHESIS: the balanced alignment and polished structural connection territory can remain recognizable at product and parent-brand scales. Test visually.",
+    "HYPOTHESIS: We organize operations and refine the experience until it works without disorder. Validate with a prototype offer and customer interviews."
+  ],
+  "proofToBuild": [
+    {
+      "ar": "نموذج تفاعلي يوضح كيف يقدم سنّع برمجيات وأتمتة ترتب الخطوات وتكشف التعطل وتحافظ على جودة التنفيذ.",
+      "en": "An interactive prototype showing how Sanni could deliver software and automation that organize steps, expose bottlenecks, and protect execution quality."
+    },
+    {
+      "ar": "بيئة تجريب موثقة تعرض سير عمل كاملًا، ونقاط التحكم، وحالات الفشل والاستعادة.",
+      "en": "A documented sandbox demonstrating one end-to-end workflow, its control points, failure cases, and recovery path."
+    },
+    {
+      "ar": "اختبار مسمى ونطق ومفهوم مع الجمهور المستهدف، يتبعه ملخص مجهول الهوية لما فهموه وما التبس عليهم.",
+      "en": "A name, pronunciation, and concept test with the target audience, followed by an anonymized summary of what they understood and confused."
+    }
+  ],
+  "forbiddenClaims": {
+    "ar": [
+      "الاسم متاح أو فريد أو قابل للتسجيل من دون فحص رسمي ومشورة قانونية.",
+      "العائد أو خفض التكلفة أو سرعة التنفيذ مضمونة قبل وجود نتائج موثقة.",
+      "تقديم سنّع كلفظ مفهوم بالطريقة نفسها في كل الأسواق العربية."
+    ],
+    "en": [
+      "The name is available, unique, or registrable without official searches and legal advice.",
+      "ROI, cost reduction, or delivery speed is guaranteed before documented results exist.",
+      "Presenting Sanni as equally understood in every Arabic market."
+    ]
+  },
+  "pronunciationRisks": {
+    "ar": "Sanni قد تُقرأ ساني أو ترتبط بأسماء أشخاص؛ الشدة والنبرة الخليجية تحتاجان توجيهًا.",
+    "en": "Sanni may be read as “sah-nee” or as a personal name; the doubled consonant and Gulf usage need guidance."
+  }
+}

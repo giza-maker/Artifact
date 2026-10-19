@@ -1,0 +1,25 @@
+{
+  "id": "wameed",
+  "method": "built-in image_gen",
+  "assets": [
+    {
+      "kind": "logo",
+      "file": "logo.png",
+      "prompt": "Create a distinctive premium bilingual logo for Saudi enterprise intelligence brand Wameed / وميض. Controlled rectangular aperture crossed by one instantaneous amber line of light; clean vector-like geometry; deep ink #111827, amber #E9A23B, porcelain #FFF9ED; centered horizontal lockup; exact spelling; transparent background; no light bulb, generic sparkle, tagline, extra words, or watermark.",
+      "sourceImageFile": "exec-946042a5-48a0-40dc-b817-0ee3022c0df3.png"
+    },
+    {
+      "kind": "identity",
+      "file": "identity-kit.png",
+      "prompt": "Preserve supplied Wameed logo; comprehensive landscape identity/application board with cards, stationery, slide, social, app icon, signage, dashboard, pattern and palette; controlled amber signal on ink; exact bilingual name and short tagline; no invented clients or stats.",
+      "sourceImageFile": "exec-c7ecdcb1-d2a3-4d16-ba66-2012586676e8.png"
+    },
+    {
+      "kind": "landing",
+      "file": "landing-page.png",
+      "prompt": "Preserve supplied Wameed logo; portrait full-page desktop marketing layout with English UI, bilingual name, Arabic tagline, navigation, hero, product, services, process, CTA and footer; ink/amber/porcelain; no invented stats or logos.",
+      "sourceImageFile": "exec-3664be0b-4ea6-4034-bce8-fc85f6ed792f.png"
+    }
+  ],
+  "notes": "Logo generated first with transparent background, inspected locally, then used as reference for identity and landing. Arabic appears legible; native raster typography may vary at small mockup scale."
+}

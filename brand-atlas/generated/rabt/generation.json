@@ -1,0 +1,25 @@
+{
+  "id": "rabt",
+  "method": "built-in image_gen",
+  "assets": [
+    {
+      "kind": "logo",
+      "file": "logo.png",
+      "prompt": "See prompts.json#logo (exact prompt)",
+      "sourceImageFile": "exec-80a503d6-0833-45f5-8960-e0bb360c0887.png"
+    },
+    {
+      "kind": "identity",
+      "file": "identity-kit.png",
+      "prompt": "See prompts.json#identity (exact prompt)",
+      "sourceImageFile": "exec-c36210e2-e9cb-4c39-8a48-06a88c69411e.png"
+    },
+    {
+      "kind": "landing",
+      "file": "landing-page.png",
+      "prompt": "See prompts.json#landing (exact prompt)",
+      "sourceImageFile": "exec-e2fd7b07-44d5-4a8e-9e83-58571d4feaa1.png"
+    }
+  ],
+  "notes": "Logo inspected before reference-based identity and landing generation; small rendered text may vary."
+}

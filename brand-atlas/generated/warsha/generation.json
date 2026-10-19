@@ -1,0 +1,25 @@
+{
+  "id": "warsha",
+  "method": "built-in image_gen",
+  "assets": [
+    {
+      "kind": "logo",
+      "file": "logo.png",
+      "prompt": "Bilingual Warsha / ورشة open prototype-grid logo in charcoal and brass; transparent background.",
+      "sourceImageFile": "exec-b166ccfa-45c7-4118-b92d-6361db471cc1.png"
+    },
+    {
+      "kind": "identity",
+      "file": "identity-kit.png",
+      "prompt": "Landscape elevated workshop identity environment preserving the approved mark across technical stationery, cards, blueprint, presentation, app icon, signage, tape, tags, and pattern.",
+      "sourceImageFile": "exec-e093b87e-d4ac-421d-9a17-91f599d8e415.png"
+    },
+    {
+      "kind": "landing",
+      "file": "landing-page.png",
+      "prompt": "Portrait full-page English-led desktop workshop website preserving the approved mark, with hero, capabilities, prototype story, process, CTA, and footer.",
+      "sourceImageFile": "exec-31ad2741-5da0-4ba1-97e1-8b138c6c6361.png"
+    }
+  ],
+  "notes": "Logo inspected before reference-driven identity and landing generation. Exact bilingual name preserved."
+}

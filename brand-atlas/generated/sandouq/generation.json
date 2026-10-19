@@ -1,0 +1,25 @@
+{
+  "id": "sandouq",
+  "method": "built-in image_gen",
+  "assets": [
+    {
+      "kind": "logo",
+      "file": "logo.png",
+      "prompt": "See prompts.json#logo (exact prompt)",
+      "sourceImageFile": "exec-18422ea8-ad32-44c3-a198-c933a12aa5af.png"
+    },
+    {
+      "kind": "identity",
+      "file": "identity-kit.png",
+      "prompt": "See prompts.json#identity (exact prompt)",
+      "sourceImageFile": "exec-d7cd41fb-adeb-4806-b544-64b2290fe55a.png"
+    },
+    {
+      "kind": "landing",
+      "file": "landing-page.png",
+      "prompt": "See prompts.json#landing (exact prompt)",
+      "sourceImageFile": "exec-d909e99b-0ed5-47b0-83e9-b3afddd67aa2.png"
+    }
+  ],
+  "notes": "Logo inspected before reference-based identity and landing generation; small rendered text may vary."
+}

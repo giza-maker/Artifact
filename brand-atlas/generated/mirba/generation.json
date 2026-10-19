@@ -1,0 +1,27 @@
+{
+  "id": "mirba",
+  "method": "built-in image_gen",
+  "assets": [
+    {
+      "kind": "logo",
+      "file": "logo.png",
+      "prompt": "Bilingual Mirba' / مرباع architectural logo with four forest modules around a sand central void; transparent background.",
+      "sourceImageFile": "exec-3e5c55b4-455e-4aaf-8abd-907cc64772a4.png"
+    },
+    {
+      "kind": "identity",
+      "file": "identity-kit.png",
+      "prompt": "Landscape cultured venture-studio identity environment preserving the approved mark across cards, stationery, slide, social cover, app icon, signage, publication, wayfinding, and pattern.",
+      "sourceImageFile": "exec-5af5a1fa-57ea-441c-8ec2-929d35448a68.png"
+    },
+    {
+      "kind": "landing",
+      "file": "landing-page.png",
+      "prompt": "Portrait full-page English-led desktop venture-studio website preserving the approved mark, with hero, capabilities, opportunity story, process, CTA, and footer.",
+      "sourceImageFile": "exec-a03148e2-edf7-4cb5-bb66-f50f2b1fb15f.png",
+      "previousSourceImageFile": "exec-3d53632f-e2f7-4937-b2f7-76688fa73f52.png",
+      "revisionPrompt": "Use case: precise-object-edit. Edit target: the attached Mirba' full-page landing concept. Make exactly one correction: the footer copyright year currently reads 2024; change it to 2026. Preserve the exact full-page composition, aspect ratio, all imagery, mark, bilingual Mirba' / مرباع wordmark, all other English/Arabic text, typography, colors, positioning and section sizes. Do not crop or redesign anything. Return the complete full-page image with only that tiny footer-year correction."
+    }
+  ],
+  "notes": "Logo inspected before reference-driven identity and landing generation. Exact bilingual name preserved; no unsupported etymology or hospitality claim."
+}

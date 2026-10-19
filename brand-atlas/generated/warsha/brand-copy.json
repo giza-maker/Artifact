@@ -1,0 +1,202 @@
+{
+  "pronunciation": "WAR-sha | وَرْشَة",
+  "meaningAr": "مكان للعمل اليدوي أو المشترك وصنع الأشياء.",
+  "strengthsAr": [
+    "مفهوم فورًا",
+    "استعارة ثقافية داخلية قوية",
+    "يناسب الفرق متعددة التخصصات",
+    "نظام بصري سهل"
+  ],
+  "concernsAr": [
+    "استخدامات رقمية قائمة",
+    "مصطلح عام ومستهلك",
+    "قد يوحي بإصلاح منخفض القيمة",
+    "ضعيف لمجموعة كبيرة"
+  ],
+  "concernsEn": [
+    "Active software and digital uses",
+    "Overused generic term",
+    "May imply low-end repair/workshop",
+    "Weak distinctiveness for a large holding brand"
+  ],
+  "bestFitAr": "مختبر ابتكار معلن يبني نماذج مع شركاء وجمهور.",
+  "worstFitAr": "مجموعة شركات ممتازة تبحث عن تفرد قانوني قوي.",
+  "naturalnessAr": "عربي دارج وفصيح واسع الفهم.",
+  "concept": {
+    "ar": "مكان مفتوح يجتمع فيه صناع مختلفون لبناء نماذج حقيقية.",
+    "en": "An open place where different makers build real prototypes together."
+  },
+  "promise": {
+    "ar": "نجمع التخصصات حول طاولة واحدة ونحوّل الأفكار إلى أشياء تعمل.",
+    "en": "We bring disciplines to one table and turn ideas into things that work."
+  },
+  "story": {
+    "ar": "ورشة اسم مفهوم وحي. يبني ثقافة شركة تقوم على التجربة والعمل المشترك، ويصلح لمختبر ابتكار ظاهر للجمهور. سهولته هي مشكلته أيضًا: الكلمة عامة ومستخدمة رقميًا، وقد توحي بورشة إصلاح منخفضة القيمة.",
+    "en": "Warsha is familiar and alive. It creates a company culture around experimentation and shared making, and suits a public-facing innovation lab. Its familiarity is also the problem: the word is generic, used in digital markets, and may suggest a low-end repair shop."
+  },
+  "mission": {
+    "ar": "توفير مساحة وعملية تجمع الخبرات لبناء واختبار منتجات وتجارب جديدة.",
+    "en": "Provide the space and process for specialists to build and test new products and experiences together."
+  },
+  "pitch15": {
+    "ar": "ورشة استوديو مشاريع مقترح. نجمع التخصصات حول طاولة واحدة ونحوّل الأفكار إلى أشياء تعمل. والغاية هي توفير مساحة وعملية تجمع الخبرات لبناء واختبار منتجات وتجارب جديدة.",
+    "en": "Warsha is a proposed venture studio. We bring disciplines to one table and turn ideas into things that work. Its purpose is to provide the space and process for specialists to build and test new products and experiences together."
+  },
+  "pitch60": {
+    "ar": "ورشة تصور استوديو مشاريع يخدم المؤسسات وصناع المنتجات الذين يحتاجون مكانًا عمليًا للتجربة. ينطلق من فكرة بسيطة: مكان مفتوح يجتمع فيه صناع مختلفون لبناء نماذج حقيقية. ويقدم برامج ابتكار ونماذج ومنتجات تجمع المصممين والمطورين والخبراء حول تحدٍ واحد. يعمل الفريق بجلسات صنع مركزة، ونماذج قابلة للاستخدام، واختبارات تكشف القرار التالي، مع بقاء الهدف واضحًا في كل مرحلة. تبدأ المشاريع بفهم العمل القائم والقرار الذي يحتاجه العميل، ثم تتحول إلى نموذج يمكن اختباره قبل التوسع. الرؤية هي بناء مختبر مفتوح يترك وراء كل تعاون شيئًا ملموسًا يمكن اختباره أو تشغيله. بهذا الوعد، يصبح اسم ورشة تعبيرًا عن طريقة الشركة في العمل، لا مجرد عنوان لها.",
+    "en": "Warsha is conceived as a proposed venture studio for organizations and product makers who need a practical place to experiment. It starts with a simple idea: An open place where different makers build real prototypes together. The company would create innovation programs, prototypes, and products that bring designers, developers, and specialists around one challenge. Its team would work through focused making sessions, usable prototypes, and tests that reveal the next decision, keeping the intended outcome visible at every stage. Work would move into a usable prototype before wider investment. The long-term aim is an open lab that leaves every collaboration with something tangible to test or operate. In this model, Warsha becomes a clear expression of how the company works and what customers can expect from the experience."
+  },
+  "about30": {
+    "ar": "ورشة استوديو مشاريع مقترح يخدم المؤسسات وصناع المنتجات الذين يحتاجون مكانًا عمليًا للتجربة. نجمع التخصصات حول طاولة واحدة ونحوّل الأفكار إلى أشياء تعمل.",
+    "en": "Warsha is a proposed venture studio for organizations and product makers who need a practical place to experiment. We bring disciplines to one table and turn ideas into things that work."
+  },
+  "about120": {
+    "ar": "ورشة تصور استوديو مشاريع صُمم لخدمة المؤسسات وصناع المنتجات الذين يحتاجون مكانًا عمليًا للتجربة. تتمثل فكرته في مكان مفتوح يجتمع فيه صناع مختلفون لبناء نماذج حقيقية. ومن هذا المنطلق، يبني برامج ابتكار ونماذج ومنتجات تجمع المصممين والمطورين والخبراء حول تحدٍ واحد. تبدأ طريقة العمل بفهم السياق الحقيقي وما يحتاجه المستخدم أو الفريق، ثم تستمر بجلسات صنع مركزة، ونماذج قابلة للاستخدام، واختبارات تكشف القرار التالي. تُختبر الفكرة في صورة ملموسة قبل إضافة نطاق أو تعقيد جديد، وتبقى المسؤولية والقرار واضحين طوال المشروع. مع الوقت، يمكن أن يتوسع ورشة ليصبح مختبر مفتوح يترك وراء كل تعاون شيئًا ملموسًا يمكن اختباره أو تشغيله. الاسم والنظام اللفظي المقترحان يقدمان وعدًا بسيطًا: نجمع التخصصات حول طاولة واحدة ونحوّل الأفكار إلى أشياء تعمل.",
+    "en": "Warsha is a proposed venture studio designed for organizations and product makers who need a practical place to experiment. Its central idea is an open place where different makers build real prototypes together. From that position, it would build innovation programs, prototypes, and products that bring designers, developers, and specialists around one challenge. The working method begins with the real context and the outcome a user or team needs, then proceeds through focused making sessions, usable prototypes, and tests that reveal the next decision. Ideas move into tangible form before more complexity is added. Over time, Warsha could grow into an open lab that leaves every collaboration with something tangible to test or operate."
+  },
+  "taglines": {
+    "ar": [
+      "هنا تبدأ الصنعة.",
+      "من الورشة إلى العالم.",
+      "ابنها هنا."
+    ],
+    "en": [
+      "Built here.",
+      "Ideas need a workshop.",
+      "Make it tangible."
+    ]
+  },
+  "personality": [
+    {
+      "ar": "عملي",
+      "en": "hands-on"
+    },
+    {
+      "ar": "مبتكر",
+      "en": "inventive"
+    },
+    {
+      "ar": "مرحّب",
+      "en": "welcoming"
+    },
+    {
+      "ar": "تعاوني",
+      "en": "collaborative"
+    }
+  ],
+  "archetype": {
+    "ar": "النمّاذج",
+    "en": "The Prototyper"
+  },
+  "vision": {
+    "en": "A future where institutions and makers can turn open questions into working prototypes within a shared culture of making. Warsha would become the place where different specialists build together, test early, and leave each collaboration with something tangible.",
+    "ar": "مستقبل تحول فيه المؤسسات والصناع الأسئلة المفتوحة إلى نماذج تعمل ضمن ثقافة صنع مشتركة. تصبح ورشة المكان الذي يبني فيه المتخصصون معًا، ويختبرون مبكرًا، ويغادرون كل تعاون بشيء ملموس."
+  },
+  "brandApproach": {
+    "en": "Make Warsha feel like an elevated working floor for collaborative invention. A precise grid, visible workmanship, and welcoming verbs balance hands-on energy with the discipline serious partners expect.",
+    "ar": "تبدو ورشة كمساحة عمل راقية للاختراع التعاوني. توازن الشبكة الدقيقة وآثار الصنع الظاهرة والأفعال المرحبة بين طاقة العمل اليدوي والانضباط الذي يتوقعه الشركاء الجادون."
+  },
+  "headers": {
+    "en": [
+      "Bring the idea where makers meet",
+      "Build the first version together here",
+      "Turn an open question into something tangible"
+    ],
+    "ar": [
+      "أحضر الفكرة إلى حيث يلتقي الصناع",
+      "ابنوا النسخة الأولى هنا معًا",
+      "حوّل السؤال المفتوح إلى شيء ملموس"
+    ]
+  },
+  "headerSubline": {
+    "en": "Warsha gathers designers, developers, and specialists around one challenge, then moves quickly from conversation to a prototype people can use and test.",
+    "ar": "تجمع ورشة المصممين والمطورين والمتخصصين حول تحدٍ واحد، ثم تنتقل سريعًا من الحوار إلى نموذج يستطيع الناس استخدامه واختباره."
+  },
+  "visualStory": {
+    "en": "A brass prototype grid rises from charcoal across pale gray. Precise lines show disciplined workmanship, while open cells leave room for collaboration, iteration, and unfinished ideas.",
+    "ar": "ترتفع شبكة نماذج نحاسية من فحمي فوق رمادي فاتح. تظهر الخطوط الدقيقة جودة الصنع، وتترك الخلايا المفتوحة مساحة للتعاون والتكرار والأفكار غير المكتملة."
+  },
+  "pillars": [
+    {
+      "ar": "صنع مشترك",
+      "en": "Collaborative making"
+    },
+    {
+      "ar": "تجربة سريعة",
+      "en": "Rapid experimentation"
+    },
+    {
+      "ar": "نموذج ملموس",
+      "en": "Tangible prototype"
+    },
+    {
+      "ar": "ثقافة مفتوحة",
+      "en": "Open culture"
+    }
+  ],
+  "tone": {
+    "enterprise": {
+      "ar": "لغة دقيقة وهادئة تربط ورشة بنتيجة تشغيلية واضحة، من دون وعود ضخمة أو ادعاءات تفوق.",
+      "en": "Use precise, calm language that ties Warsha to an operational outcome without inflated claims."
+    },
+    "conversational": {
+      "ar": "جمل قصيرة وفعلية تستمد نبرتها من معنى ورشة وتشرح الفائدة بكلام يومي.",
+      "en": "Use short, active sentences grounded in the meaning of Warsha, with everyday explanations of value."
+    }
+  },
+  "avoid": [
+    "Active software and digital uses",
+    "Overused generic term",
+    "May imply low-end repair/workshop",
+    "Weak distinctiveness for a large holding brand",
+    "Do not imply trademark, trade-name, domain, or social-handle availability.",
+    "Do not present the meaning hypothesis as settled without native-language validation."
+  ],
+  "wouldChangeMind": {
+    "ar": "تعارض مباشر في الفئة أو انطباع ورشة سيارات سيخفضه. قبول قوي كمساحة ابتكار قد يبقيه كاسم برنامج.",
+    "en": "A direct class conflict or auto-repair association would lower it. Strong acceptance as an innovation space may preserve it as a program name."
+  },
+  "commercial": {
+    "ar": "ممتاز للمختبرات والبرامج والشراكات وورش الابتكار. ضعيف كعلامة قابلة للتملك لمجموعة كبيرة متعددة القطاعات.",
+    "en": "Excellent for labs, programs, partnerships, and innovation workshops. Weak as an ownable mark for a large diversified group."
+  },
+  "portfolio": {
+    "ar": "ورشة ألعاب، ورشة مستقبل، ورشة منتجات؛ واضحة ومحببة لكنها تبدو أسماء برامج أكثر من شركات.",
+    "en": "Warsha Games, Warsha Futures, and Warsha Products are clear and inviting, though they can sound more like programs than companies."
+  },
+  "proofPoints": [
+    "HYPOTHESIS: Innovation lab with public-facing maker culture. Validate with target buyers.",
+    "HYPOTHESIS: the elevated prototype grid with precise workmanship territory can remain recognizable at product and parent-brand scales. Test visually.",
+    "HYPOTHESIS: We bring disciplines to one table and turn ideas into things that work. Validate with a prototype offer and customer interviews."
+  ],
+  "proofToBuild": [
+    {
+      "ar": "نموذج تفاعلي يوضح كيف يقدم ورشة برامج ابتكار ونماذج ومنتجات تجمع المصممين والمطورين والخبراء حول تحدٍ واحد.",
+      "en": "An interactive prototype showing how Warsha could deliver innovation programs, prototypes, and products that bring designers, developers, and specialists around one challenge."
+    },
+    {
+      "ar": "نموذج منتج منشور قابل للاستخدام مع سجل قرارات البناء وما تغير بعد الاختبار.",
+      "en": "A usable published product prototype with a build-decision log and the changes made after testing."
+    },
+    {
+      "ar": "اختبار مسمى ونطق ومفهوم مع الجمهور المستهدف، يتبعه ملخص مجهول الهوية لما فهموه وما التبس عليهم.",
+      "en": "A name, pronunciation, and concept test with the target audience, followed by an anonymized summary of what they understood and confused."
+    }
+  ],
+  "forbiddenClaims": {
+    "ar": [
+      "الاسم متاح أو فريد أو قابل للتسجيل من دون فحص رسمي ومشورة قانونية.",
+      "العائد أو خفض التكلفة أو سرعة التنفيذ مضمونة قبل وجود نتائج موثقة.",
+      "الادعاء بأن ورشة اسم رقمي فريد أو غير مستخدم."
+    ],
+    "en": [
+      "The name is available, unique, or registrable without official searches and legal advice.",
+      "ROI, cost reduction, or delivery speed is guaranteed before documented results exist.",
+      "Claiming Warsha is a unique or unused digital name."
+    ]
+  },
+  "pronunciationRisks": {
+    "ar": "Warsha سهلة نسبيًا، لكن Wersha وWarshah تهجئات محتملة، والشين قد تصبح s لدى بعض المتحدثين.",
+    "en": "Warsha is fairly easy, though Wersha and Warshah are plausible spellings; some speakers may reduce “sh” to “s.”"
+  }
+}
