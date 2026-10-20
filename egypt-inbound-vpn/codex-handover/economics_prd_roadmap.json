@@ -1,0 +1,189 @@
+{
+  "unitEconomicsModel": {
+    "plans": [
+      {
+        "id": "standard",
+        "name": "Standard Plan (Egypt Stream, Telecom & Gov)",
+        "monthlyPriceUsd": 4.99,
+        "localPrices": { "SAR": 18.99, "AED": 18.99, "KWD": 1.49, "EUR": 4.99, "GBP": 4.49 },
+        "netAfter15PctStoreFee": 4.24,
+        "avgBandwidthGb": 12.0,
+        "serverCostPerUser": 0.45,
+        "ipCostPerUser": 0.08,
+        "supportAndRefundReserve": 0.25,
+        "totalVariableCost": 0.78,
+        "monthlyContributionMargin": 3.46,
+        "marginPct": 81.6
+      },
+      {
+        "id": "banking_sticky",
+        "name": "Banking & Gov Plan (1:1 Dedicated Sticky Cairo IP)",
+        "monthlyPriceUsd": 8.99,
+        "localPrices": { "SAR": 34.99, "AED": 34.99, "KWD": 2.75, "EUR": 8.99, "GBP": 7.99 },
+        "netAfter15PctStoreFee": 7.64,
+        "avgBandwidthGb": 11.5,
+        "serverCostPerUser": 0.35,
+        "ipCostPerUser": 1.75,
+        "supportAndRefundReserve": 0.35,
+        "totalVariableCost": 2.45,
+        "monthlyContributionMargin": 5.19,
+        "marginPct": 67.9
+      },
+      {
+        "id": "annual_hero",
+        "name": "Annual Banking Bundle (Hero Offer · 3-Day Free Trial)",
+        "annualPriceUsd": 59.99,
+        "monthlyEquivalentUsd": 4.99,
+        "localPrices": { "SAR": 229.00, "AED": 229.00, "KWD": 18.50, "EUR": 59.99 },
+        "netUpfrontAfter15PctFee": 50.99,
+        "day1NetCashAfterAnnualInfraReserve": 25.19,
+        "paybackPeriod": "Day 1 (Recovers $16.00 CAC immediately upfront)"
+      }
+    ],
+    "fixedMonthlyOpEx": {
+      "totalUsd": 1050,
+      "breakdown": [
+        { "item": "2x Marseille 10Gbps Virtual Egypt Servers + Clean /24 Egyptian GeoFeed IP Lease", "costUsd": 320 },
+        { "item": "3x Cairo Enterprise Relay Pools (Raya, LinkDC, ISP Static) + Initial 100 Sticky IPs", "costUsd": 380 },
+        { "item": "Offshore Control Plane (FastAPI/Go + Postgres + Prometheus/Grafana + 4 Probe VMs)", "costUsd": 150 },
+        { "item": "IP Intelligence Subscriptions (ipinfo.io + periodic IPQS batch checks)", "costUsd": 100 },
+        { "item": "Offshore Entity Maintenance & Accounting (Amortized monthly)", "costUsd": 100 }
+      ]
+    },
+    "defaultAcquisitionAssumptions": {
+      "targetCpiUsd": 0.80,
+      "killThresholdCpiUsd": 1.50,
+      "installToTrialRatePct": 8.0,
+      "installToPaidRatePct": 5.0,
+      "impliedCacUsd": 16.00,
+      "blendedContributionAt50PctMix": 4.33,
+      "breakEvenSubscribersAt50PctMix": 243,
+      "monthlyPaybackMonths": 3.7
+    }
+  },
+  "paidAcquisitionTestSpec": {
+    "budgetUsd": 1500,
+    "durationWeeks": 3,
+    "targetCountries": ["Saudi Arabia", "Kuwait", "United Arab Emirates"],
+    "channelSplit": [
+      { "channel": "Meta Ads (Facebook & Instagram Reels — Arabic Expat Targeting)", "sharePct": 50, "budgetUsd": 750 },
+      { "channel": "TikTok Spark Ads (Real Screen Recordings of Bank & Watch iT Working)", "sharePct": 30, "budgetUsd": 450 },
+      { "channel": "Google App Campaigns (High-Intent Arabic/English Search Keywords)", "sharePct": 20, "budgetUsd": 300 }
+    ],
+    "positioningAngles": [
+      {
+        "id": "angle_banking",
+        "arabicHeadline": "بنكك المصري من أي مكان",
+        "englishHeadline": "Your Egyptian Bank, From Anywhere",
+        "hook": "تطبيق البنك الأهلي أو بنك مصر أو إنستا باي بيعلق أو بيقفل حسابك وانت في السعودية أو الإمارات؟",
+        "valueProp": "Dedicated 1:1 Egyptian IP pinned exclusively to you—no shared VPN fraud lockouts."
+      },
+      {
+        "id": "angle_gov_family",
+        "arabicHeadline": "خلص ورق أهلك ومصالحك الحكومية وانت برا",
+        "englishHeadline": "Family Errands & Government Portals From Abroad",
+        "hook": "بوابة مصر الرقمية أو مخالفات المرور أو شحن خط وي وفودافون مش بيفتحوا برا مصر؟",
+        "valueProp": "Instant access to digital.gov.eg, ppo.gov.eg, and My WE with a live 15-minute verified status board."
+      },
+      {
+        "id": "angle_ramadan_tv",
+        "arabicHeadline": "رمضان والدوري المصري زي ما في البيت",
+        "englishHeadline": "Ramadan Series & Egyptian Football Live",
+        "hook": "اتفرج على ماتشات الأهلي والزمالك ومسلسلات رمضان على Watch iT بجودة عالية ومن غير إعلانات مزعجة.",
+        "valueProp": "10 Gbps Marseille Virtual Egypt streaming servers with zero forced ads and zero buffering."
+      }
+    ],
+    "asoKeywords": [
+      "vpn مصر",
+      "ip مصري",
+      "egypt vpn",
+      "egyptian ip address",
+      "vpn مصري مجاني",
+      "تشغيل البنك الاهلي خارج مصر",
+      "تشغيل انستا باي خارج مصر",
+      "بوابة مصر الرقمية من الخارج"
+    ]
+  },
+  "prdRequirements": [
+    { "id": "FR-01", "type": "Functional", "domain": "Client", "title": "One-Tap Egypt Connect", "priority": "P0", "spec": "Single prominent connect button routes user to their optimal Egyptian node (Standard Marseille Pool vs. Sticky 1:1 Cairo Banking Relay) displaying live RTT and assigned Egyptian IP." },
+    { "id": "FR-02", "type": "Functional", "domain": "Network", "title": "AmneziaWG + WSS 443 Stealth Engine", "priority": "P0", "spec": "Primary tunnel uses AmneziaWG (randomized headers H1–H4 + junk packet padding) to defeat Gulf ISP & Telecom Egypt DPI. Automatic fallback within 3.5s to WireGuard-over-WSS (TLS TCP 443) if UDP is blocked." },
+    { "id": "FR-03", "type": "Functional", "domain": "Backend", "title": "Banking Mode (1:1 Sticky IP Pinning)", "priority": "P0", "spec": "Banking Plan subscribers are assigned an exclusive, static Egyptian IP (1 User : 1 IP) bound to their account in PostgreSQL and never shared with any other user." },
+    { "id": "FR-04", "type": "Functional", "domain": "Client", "title": "1-Tap 'Egyptian Apps Only' Split-Tunnel", "priority": "P0", "spec": "Pre-populated split-tunnel mode routes only Egyptian banking, government, telecom, and streaming apps through the VPN while keeping WhatsApp, Uber/Careem, and local Gulf bank apps on domestic internet." },
+    { "id": "FR-05", "type": "Functional", "domain": "Client", "title": "Live 15-Minute Service Status Board", "priority": "P0", "spec": "In-app dashboard showing real-time verified status (Working / Degraded / Blocked) for top 12 Egyptian services (NBE, CIB, Banque Misr, InstaPay, Digital Egypt, PPO Fines, Watch iT, My WE, Ana Vodafone)." },
+    { "id": "FR-06", "type": "Functional", "domain": "Network", "title": "Dual-Stack IPv6 Sinkhole & DNS Shield", "priority": "P0", "spec": "Capture and blackhole all ::/0 IPv6 traffic inside VpnService / NEPacketTunnelProvider so dual-stack Gulf 5G networks never leak real Saudi/UAE IPv6 addresses. Force encrypted in-tunnel Egyptian DNS." },
+    { "id": "FR-07", "type": "Functional", "domain": "Client", "title": "Pre-Flight Banking Readiness Check", "priority": "P1", "spec": "1-second diagnostic before opening a bank app verifying: (1) Tunnel up, (2) Sticky EG IP active, (3) IPv6 blocked, and (4) Optional warning if GPS location permission is enabled for the banking app." },
+    { "id": "FR-08", "type": "Functional", "domain": "Backend", "title": "Self-Serve 1-Tap Sticky IP Swap", "priority": "P1", "spec": "Allows Banking Tier users to swap their dedicated IP for a fresh warm-reserve IP from a different Egyptian subnet/ASN if they encounter a block or CAPTCHA (capped at 2 swaps/month)." },
+    { "id": "FR-09", "type": "Functional", "domain": "Client", "title": "Bilingual Arabic-First RTL & English UI", "priority": "P0", "spec": "Natural Egyptian Arabic RTL interface with instant English switch and clear onboarding explaining Egyptian SIM roaming requirements for bank SMS OTPs." },
+    { "id": "FR-10", "type": "Functional", "domain": "Backend", "title": "Localized GCC & Global Billing", "priority": "P0", "spec": "RevenueCat integration over Google Play Billing & Apple StoreKit 2 supporting SAR, AED, KWD, QAR, USD, EUR, and GBP price tiers with a 3-day free trial on Annual plans." },
+    { "id": "NFR-01", "type": "Non-Functional", "domain": "Network", "title": "Destination-Allowlisted Diskless Cairo Relays", "priority": "P0", "spec": "Cairo Tier 2 relays run in RAM (tmpfs) with zero PII and enforce kernel nftables rules allowing only HTTPS traffic to Egyptian bank ASNs and .gov.eg / .com.eg CIDRs." },
+    { "id": "NFR-02", "type": "Non-Functional", "domain": "Network", "title": "Outbound Abuse & Reputation Firewall", "priority": "P0", "spec": "Block outbound SMTP mail ports (25, 465, 587), BitTorrent/P2P signatures, and port scanning across all nodes to keep IPQS fraud scores < 25." },
+    { "id": "NFR-03", "type": "Non-Functional", "domain": "Backend", "title": "15-Minute Synthetic Unlock Monitor", "priority": "P0", "spec": "Headless probes test every exit IP every 15 minutes against target Egyptian services, triggering alerts and auto-rotation from the 25% warm reserve on failure." },
+    { "id": "NFR-04", "type": "Non-Functional", "domain": "Security", "title": "Zero Ad / Zero Tracker Hygiene", "priority": "P0", "spec": "0 third-party ad SDKs, 0 behavioral trackers, and 0 dangerous phone-state permissions—verified in CI via MobSF and Exodus Privacy." },
+    { "id": "NFR-05", "type": "Non-Functional", "domain": "Performance", "title": "Latency & Connect Time SLA", "priority": "P0", "spec": "Connect time ≤ 2.0s on AmneziaWG (≤ 3.5s on WSS fallback); peak RTT ≤ 75ms from Gulf, ≤ 80ms from Europe, ≤ 185ms from North America." },
+    { "id": "NFR-06", "type": "Non-Functional", "domain": "Compliance", "title": "MASA Level 2 & Store Policy Readiness", "priority": "P1", "spec": "Full compliance with Google Play VpnService policy, Apple Guideline 5.4 Organization rules, and OWASP MASVS / MASA Level 2 assessment for the Google Play Verified VPN badge." }
+  ],
+  "roadmapPhases": [
+    {
+      "phase": "Phase 0",
+      "weeks": "Weeks 1–2",
+      "title": "Empirical Validation, Candidate IP Audit & Legal Gate",
+      "deliverables": [
+        "Run Play/App Store review scraper across SWS VPN Egypt, Hola, Planet VPN, Proton, CyberGhost, and ExpressVPN.",
+        "Rent 5 candidate IPs (LightNode Cairo, Link Data Center, IT EGY, Raya Data Center, and 1 Marseille Geo-EG /29 block).",
+        "Score all 5 candidate IPs across MaxMind, IP2Location, ipinfo, DB-IP, IPQS, Scamalytics, and live tests on 10 Egyptian services from KSA, UAE, UK, and US.",
+        "Obtain written legal opinion from Egyptian telecom counsel on all 7 Stage 4 questions and complete offshore LLC/FZCO + D-U-N-S setup."
+      ],
+      "gateCriteria": "≥ 90% unlock pass rate on candidate IPs, IPQS < 25 on Banking IPs, and written legal sign-off."
+    },
+    {
+      "phase": "Phase 1",
+      "weeks": "Weeks 3–5",
+      "title": "Two-Tier Hybrid Infrastructure & Synthetic Status Engine",
+      "deliverables": [
+        "Build Ansible playbooks deploying hardened Ubuntu 24.04 nodes with AmneziaWG (UDP) and WireGuard-over-WSS (TLS 443).",
+        "Configure diskless RAM-only Cairo relays with nftables allowlists for Egyptian banking ASNs and .gov.eg CIDRs.",
+        "Build Control Plane API (FastAPI/Go + PostgreSQL) for 1:1 sticky IP assignment, RevenueCat webhooks, and 25% reserve pool rotation.",
+        "Deploy 15-minute synthetic Playwright probes feeding the Live Service Status API."
+      ],
+      "gateCriteria": "All peak latency/throughput benchmarks met across 7-day hourly mtr/iperf3 runs from Gulf, EU, and US."
+    },
+    {
+      "phase": "Phase 2",
+      "weeks": "Weeks 6–8",
+      "title": "Android Kotlin Client MVP, Split-Tunnel & Security Verification",
+      "deliverables": [
+        "Build native Kotlin Jetpack Compose client with Arabic-first RTL UI and English toggle.",
+        "Implement 1-tap 'Egyptian Apps Only' Split-Tunnel preset, strict ::/0 IPv6 sinkhole, and encrypted in-tunnel DNS.",
+        "Add Pre-Flight Banking Readiness Check and self-serve 1-tap 'Swap My Sticky IP' action.",
+        "Pass MobSF static/dynamic scan and Exodus Privacy audit with 0 trackers and 0 high findings; record Play VpnService video."
+      ],
+      "gateCriteria": "Zero DNS/WebRTC/IPv6 leaks on dual-stack networks and 0 trackers in MobSF/Exodus."
+    },
+    {
+      "phase": "Phase 3 & 4",
+      "weeks": "Weeks 9–12",
+      "title": "200-User Gulf Closed Beta, $1,500 Paid UA Test & iOS Launch",
+      "deliverables": [
+        "Run 4-week Google Play Closed Testing beta with 150–200 Egyptian expats in KSA, Kuwait, and UAE.",
+        "Execute $1,500 paid creative smoke test across Meta Reels (50%), TikTok (30%), and Google App Campaigns (20%).",
+        "Enable RevenueCat localized SAR/AED/KWD/USD billing in Weeks 11–12 to measure trial conversion and refund rates.",
+        "Ship Swift iOS client (NEPacketTunnelProvider) under Organization account and initiate MASA Level 2 audit for Play Verified badge."
+      ],
+      "gateCriteria": "All 12 rows of the External Go/No-Go Launch Scorecard passed (CPI ≤ $0.80, payback < 6 mos, ≥ 4.4★ sentiment)."
+    }
+  ],
+  "launchScorecard": [
+    { "id": "SC-01", "dimension": "Country Geolocation Accuracy", "judge": "MaxMind GeoIP2, IP2Location, ipinfo.io, DB-IP", "target": "4 of 4 report Egypt (EG) across 100% of Tier 1 & Tier 2 IPs" },
+    { "id": "SC-02", "dimension": "VPN & Fraud Reputation", "judge": "IPQualityScore (IPQS) & Scamalytics", "target": "IPQS Fraud Score < 25; vpn: false on 100% of Banking Tier sticky IPs" },
+    { "id": "SC-03", "dimension": "Real-World Service Unlock Rate", "judge": "Logged Stage 2 Matrix (10 Egyptian services × 4 countries)", "target": "≥ 90% pass rate, and ≥ 20 percentage points above SWS VPN Egypt" },
+    { "id": "SC-04", "dimension": "Evening Peak Latency (8–11pm Cairo)", "judge": "Hourly mtr from Gulf, Europe, and US vantage points", "target": "Gulf ≤ 75 ms · Europe ≤ 80 ms · US ≤ 185 ms" },
+    { "id": "SC-05", "dimension": "DPI Survival & Connect Reliability", "judge": "Client telemetry on STC, Mobily, e&, du, and WE", "target": "≥ 98.5% connect success rate; ≤ 2.0s UDP / ≤ 3.5s WSS fallback" },
+    { "id": "SC-06", "dimension": "Zero Leak Verification", "judge": "dnsleaktest.com, browserleaks.com/webrtc, test-ipv6.com", "target": "0 DNS leaks, 0 WebRTC leaks, 0 dual-stack IPv6 leaks" },
+    { "id": "SC-07", "dimension": "App Security & Tracker Hygiene", "judge": "MobSF, Exodus Privacy, and MASA Level 2 Lab", "target": "0 high-severity findings; 0 ad or behavioral trackers" },
+    { "id": "SC-08", "dimension": "Cohort Retention", "judge": "Google Play Console Closed Beta Cohorts", "target": "D1 ≥ 40% · D7 ≥ 20% · D30 ≥ 10%" },
+    { "id": "SC-09", "dimension": "Client Stability & Vitals", "judge": "Google Play Console Android Vitals", "target": "Crash rate < 0.8% · ANR rate < 0.25%" },
+    { "id": "SC-10", "dimension": "Subscriber Refund Rate", "judge": "Google Play & App Store Financial Reports", "target": "< 5.0% of paid conversions" },
+    { "id": "SC-11", "dimension": "Review & Beta Sentiment", "judge": "Coded Beta Reviews on Stage 1 Themes", "target": "≥ 4.4 ★ average; 'doesn't connect' < 5%; 0 ad complaints" },
+    { "id": "SC-12", "dimension": "Acquisition Cost & Legal Clearance", "judge": "Paid UA Test (KSA/UAE/KW) + Written Lawyer Opinion", "target": "CPI ≤ $0.80; payback < 6 months; all 7 legal questions cleared" }
+  ]
+}

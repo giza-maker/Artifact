@@ -1,0 +1,216 @@
+{
+  "meta": {
+    "project": "Egyptian Inbound VPN — Diaspora Banking, Government & Streaming Access Engine",
+    "date": "2026-10-20",
+    "owner": "Ahmed Aljazayeerly",
+    "verdict": "GO — Paid, zero-ad, Egypt-only specialist VPN built on a Two-Tier Hybrid Architecture (Marseille 10G Virtual Hub + Cairo 1:1 Sticky ISP Relays) with AmneziaWG + WSS 443 Stealth.",
+    "diasporaTam": {
+      "totalEgyptiansAbroad": 14000000,
+      "saudiArabia": 1470000,
+      "kuwait": 644000,
+      "uae": 980000,
+      "qatarBahrainOman": 420000,
+      "europeUk": 650000,
+      "northAmerica": 520000
+    }
+  },
+  "stage1UseCases": [
+    {
+      "rank": 1,
+      "id": "gov_portals",
+      "title": "Egyptian Government & Civil Portals",
+      "arabicTitle": "بوابة مصر الرقمية والخدمات الحكومية",
+      "services": [
+        { "name": "Digital Egypt Portal", "domain": "digital.gov.eg", "category": "Civil Registry, Ration,Real Estate, Licensing" },
+        { "name": "Public Prosecution Traffic Fines", "domain": "ppo.gov.eg", "category": "Vehicle Fines & Violations Inquiry/Payment" },
+        { "name": "Ministry of Interior", "domain": "moi.gov.eg", "category": "Passports, National ID, Criminal Record" },
+        { "name": "Social Insurance (NOSI)", "domain": "nosi.gov.eg", "category": "Pensions & Contribution Records" },
+        { "name": "Egyptian Tax Authority", "domain": "eta.gov.eg", "category": "e-Invoice & Tax Filings" }
+      ],
+      "blockingMechanism": "Hard national edge firewall (WAF) drops all non-Egyptian IPv4/IPv6 ranges (HTTP 403 / TCP timeout) and blacklists known commercial VPN datacenter ASNs (M247, Choopa, DataCamp).",
+      "ipAloneUnlocks": "YES (100%)",
+      "nonIpDependencies": "Requires Egyptian National ID and an active roaming Egyptian SIM for SMS OTP verification.",
+      "ourSolution": "Routed via clean AFRINIC Egyptian IP (or Tier 2 Cairo allowlisted relay). Verified every 15 minutes by synthetic probes."
+    },
+    {
+      "rank": 2,
+      "id": "banking_fintech",
+      "title": "Egyptian Banking & InstaPay",
+      "arabicTitle": "البنوك المصرية وإنستا باي من الخارج",
+      "services": [
+        { "name": "National Bank of Egypt (NBE)", "domain": "alahlynet.com.eg", "category": "Al Ahly Net & Al Ahly Mobile" },
+        { "name": "Banque Misr", "domain": "banquemisr.com", "category": "BM Online Retail & Corporate" },
+        { "name": "CIB Egypt", "domain": "cibeg.com", "category": "CIB Mobile Banking" },
+        { "name": "InstaPay Egypt", "domain": "instapay.eg", "category": "CBE Instant Payment Network" },
+        { "name": "QNB Alahli / AlexBank / Fawry", "domain": "myfawry.com", "category": "Cards, Deposits & Bill Settlement" }
+      ],
+      "blockingMechanism": "Foreign IPs are blocked or trigger security freezes. Shared commercial VPN IPs trigger velocity anti-fraud lockouts because 100+ users log into the bank from the same IP. Dual-stack Gulf 5G networks also leak real Saudi/UAE IPv6 addresses.",
+      "ipAloneUnlocks": "YES — With 1:1 Dedicated Sticky IP",
+      "nonIpDependencies": "Initial device binding on InstaPay/bank apps requires sending/receiving an SMS on the user's roaming Egyptian SIM; device GPS permission should be disabled for the banking app.",
+      "ourSolution": "Banking Tier ($8.99/mo) assigns a 1:1 Dedicated Sticky Cairo ISP IP exclusive to one user, enforces a strict ::/0 IPv6 sinkhole, and runs a 1-second Pre-Flight Banking Readiness Check."
+    },
+    {
+      "rank": 3,
+      "id": "telecom_family",
+      "title": "Telecom Self-Service & Family Errands",
+      "arabicTitle": "شحن الخطوط وفواتير الإنترنت للأهل",
+      "services": [
+        { "name": "My WE (Telecom Egypt)", "domain": "te.eg", "category": "Home Fiber/ADSL Renewal & Landline Bills" },
+        { "name": "Ana Vodafone", "domain": "vodafone.com.eg", "category": "Roaming SIM Recharge & Vodafone Cash" },
+        { "name": "My Orange Egypt", "domain": "orange.eg", "category": "Line Management & Top-Up" },
+        { "name": "My e& Egypt", "domain": "etisalat.eg", "category": "Line Management & Top-Up" }
+      ],
+      "blockingMechanism": "Cloudflare and operator WAFs block or challenge non-Egyptian IPs on payment and self-care APIs.",
+      "ipAloneUnlocks": "YES (100%)",
+      "nonIpDependencies": "Strategic loop: Expats must recharge their Egyptian SIM every 60–90 days so the line is not deactivated while roaming (which would cut off their bank OTPs).",
+      "ourSolution": "Standard ($4.99/mo) or Banking Tier unlocks te.eg and carrier apps immediately with in-tunnel Egyptian DNS."
+    },
+    {
+      "rank": 4,
+      "id": "streaming_sports",
+      "title": "Egyptian Streaming, Ramadan & Live Football",
+      "arabicTitle": "مسلسلات رمضان والدوري المصري لايف",
+      "services": [
+        { "name": "Watch iT", "domain": "watchit.com", "category": "Ramadan Originals, Egyptian Movies & Live TV" },
+        { "name": "ON Time Sports Live", "domain": "ontimesports.com", "category": "Egyptian Premier League (Ahly / Zamalek)" },
+        { "name": "Shahid VIP (Egypt Catalog)", "domain": "shahid.mbc.net", "category": "Geo-specific series & channels" },
+        { "name": "DMC / CBC / Al Hayah Live", "domain": "dmc.com.eg", "category": "Domestic satellite live streams" }
+      ],
+      "blockingMechanism": "CDNs geo-fence domestic football rights and Ramadan libraries to Egyptian IPs; cheap local Cairo VPS nodes choke on HD video bandwidth.",
+      "ipAloneUnlocks": "YES (100%)",
+      "nonIpDependencies": "Paid streaming tiers may check Egyptian payment card for EGP pricing, though existing accounts stream immediately once on an Egyptian IP.",
+      "ourSolution": "Tier 1 Marseille 10Gbps Virtual Egypt Hub (28ms subsea cable to Alexandria) delivers ≥15 Mbps per user for buffer-free 1080p60 playback at 65% lower bandwidth cost."
+    },
+    {
+      "rank": 5,
+      "id": "price_arbitrage",
+      "title": "Regional Price Arbitrage on Global Digital Goods",
+      "arabicTitle": "فرق أسعار الاشتراكات العالمية",
+      "services": [
+        { "name": "Netflix / Spotify / YouTube Premium", "domain": "netflix.com", "category": "Global Subscriptions" },
+        { "name": "Steam / PlayStation / Xbox Store", "domain": "store.steampowered.com", "category": "Gaming Stores" }
+      ],
+      "blockingMechanism": "Payment processors verify credit/debit card BIN country against Egypt and lock store account regions.",
+      "ipAloneUnlocks": "RARELY (Requires Egyptian EGP Bank Card)",
+      "nonIpDependencies": "Only works if the expat already holds a domestic Egyptian bank card. Promoting arbitrage violates Apple/Google Store ToS.",
+      "ourSolution": "Strictly excluded from brand positioning and store listing copy to protect store compliance and keep refund rates < 5%."
+    }
+  ],
+  "primaryCompetitorTeardown": {
+    "appName": "VPN Egypt - Unblock VPN Secure",
+    "packageName": "free.vpnegypt.turbo.secure.tunnel.unblock.proxy",
+    "version": "3.8.7.1",
+    "developer": "Proxy Master & Turbo VPN (SWS Software Enterprise, Ipoh, Perak, Malaysia)",
+    "installs": "1,000,000+",
+    "rating": 3.8,
+    "reviewsCount": 54900,
+    "lastUpdated": "2026-08-26",
+    "clonePortfolio": [
+      "VPN Egypt - Unblock VPN Secure",
+      "VPN Korea - Secure VPN Proxy",
+      "VPN Indonesia - Fast Super VPN",
+      "VPN Malaysia - Secure Fast VPN",
+      "VPN India - Unblock Proxy VPN",
+      "VPN Germany - Fast Safe VPN",
+      "VPN Canada - Fast Secure VPN",
+      "VPN Russia - Unblock VPN Proxy",
+      "VPN Japan - Proxy Secure VPN",
+      "VPN Vietnam - Super VPN Shield",
+      "VPN Nigeria - Turbo Master VPN",
+      "VPN USA - Unblock Proxy",
+      "VPN UK - Fast Secure Proxy",
+      "VPN UAE - Unblock Proxy",
+      "VPN Brazil - Fast Proxy"
+    ],
+    "technicalForensics": {
+      "vpnEngine": "Legacy de.blinkt.openvpn (ics-openvpn) wrapper using static .ovpn TCP/UDP configs fetched over remote JSON API. No WireGuard, no AmneziaWG, no DPI obfuscation.",
+      "serverReality": "1–2 overloaded low-end Cairo VPS nodes + automatic silent fallback to European datacenter IPs (M247 / CloudSigma / Choopa) shared by 1,500+ concurrent free users.",
+      "ipqsFraudScore": "85–100 (Flagged vpn: true, proxy: true, high abuse velocity)",
+      "permissionsCount": 14,
+      "dangerousPermissions": [
+        "android.permission.READ_PHONE_STATE (used for device fingerprinting)",
+        "com.google.android.gms.permission.AD_ID",
+        "android.permission.ACCESS_WIFI_STATE",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.WAKE_LOCK"
+      ],
+      "embeddedTrackersAndAds": [
+        "Google AdMob",
+        "Meta Audience Network (Facebook Ads)",
+        "AppLovin MAX Mediation",
+        "Unity Ads",
+        "IronSource",
+        "Firebase Analytics & Crashlytics"
+      ],
+      "uxFailurePattern": "Forces unskippable video interstitial ads on app launch, before connect, after connect, on server list open, and on disconnect (~30 forced ads in 5 minutes). Paid IAP users report ads still persist.",
+      "leakFailures": [
+        "Dual-Stack IPv6 Leak: Does not sinkhole ::/0 IPv6 routes, exposing the user's real Saudi (STC) or Emirati (e&) IPv6 address to Egyptian bank apps while connected.",
+        "No enforced system-wide kill switch on connection drop.",
+        "Public DNS fallback leaks outside the tunnel."
+      ],
+      "iosPresence": "None — Cannot pass Apple App Store Guideline 5.4 due to third-party ad trackers and individual/clone account restrictions."
+    }
+  },
+  "rivalComparisonMatrix": [
+    {
+      "name": "VPN Egypt (SWS Clone)",
+      "model": "Free Adware + Broken IAP",
+      "serverType": "Overloaded VPS + EU Fallbacks",
+      "protocol": "Legacy OpenVPN (Blocked by DPI)",
+      "ipReputation": "IPQS 85–100 (Burned)",
+      "bankingUnlock": "Fails / Triggers Freeze",
+      "govUnlock": "Fails / WAF Blocked",
+      "streamingSpeed": "1–2 Mbps (Buffers at 240p)",
+      "adsAndTrackers": "6 Ad/Tracker SDKs (~30 ads/5m)",
+      "overallUnlockScore": 25
+    },
+    {
+      "name": "Hola VPN",
+      "model": "Free P2P Botnet / Freemium",
+      "serverType": "Peer Mobile/Home Devices in Egypt",
+      "protocol": "HTTP/SOCKS Split Proxy (Not Full VPN)",
+      "ipReputation": "Mixed Residential / Botnet Flagged",
+      "bankingUnlock": "Dangerous (Traffic exits on stranger's phone)",
+      "govUnlock": "Inconsistent / Drops Mid-Form",
+      "streamingSpeed": "Highly Unstable Peer Upload",
+      "adsAndTrackers": "Heavy Telemetry + Bandwidth Harvesting",
+      "overallUnlockScore": 45
+    },
+    {
+      "name": "ExpressVPN / Surfshark / CyberGhost",
+      "model": "Paid Global Bundle ($10–$12.95/mo)",
+      "serverType": "100% Virtual Egypt (Physically in Europe)",
+      "protocol": "Lightway / WireGuard (Shared IPs)",
+      "ipReputation": "IPQS 65–85 (Known Commercial VPN ASN)",
+      "bankingUnlock": "Partial (Shared IP Velocity Lockouts)",
+      "govUnlock": "Frequently Blocked by digital.gov.eg WAF",
+      "streamingSpeed": "Fast (50+ Mbps from EU)",
+      "adsAndTrackers": "Clean First-Party Only",
+      "overallUnlockScore": 58
+    },
+    {
+      "name": "Proton VPN / Planet VPN",
+      "model": "Freemium (Egypt Locked to Paid Tier)",
+      "serverType": "Datacenter Cairo / Virtual Nodes",
+      "protocol": "WireGuard / OpenVPN / Stealth",
+      "ipReputation": "IPQS 70–85 (Datacenter ASN)",
+      "bankingUnlock": "Partial (Shared Datacenter IPs)",
+      "govUnlock": "Mixed",
+      "streamingSpeed": "Moderate–Fast",
+      "adsAndTrackers": "Clean (Proton) / Ad-supported free (Planet)",
+      "overallUnlockScore": 55
+    },
+    {
+      "name": "Our Product (Standard & Banking Tiers)",
+      "model": "Paid Specialist ($4.99 Std / $8.99 Sticky 1:1)",
+      "serverType": "Two-Tier Hybrid: Marseille 10G + Cairo ISP Relays",
+      "protocol": "AmneziaWG (UDP Obfuscated) + WSS TLS 443",
+      "ipReputation": "IPQS < 25 (vpn: false on Banking 1:1 IPs)",
+      "bankingUnlock": "Verified Pass (1:1 Sticky Cairo IP + IPv6 Block)",
+      "govUnlock": "Verified Pass Every 15m (Allowlisted Relay)",
+      "streamingSpeed": "≥ 15 Mbps Guaranteed (Marseille 10G Hub)",
+      "adsAndTrackers": "0 Ads · 0 Trackers · MASA Level 2 Ready",
+      "overallUnlockScore": 95
+    }
+  ]
+}

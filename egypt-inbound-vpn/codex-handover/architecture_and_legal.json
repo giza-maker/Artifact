@@ -1,0 +1,158 @@
+{
+  "lockedArchitectureDecision": {
+    "topologyName": "Two-Tier Hybrid Network (Marseille 10G Virtual Hub + Cairo Sticky 1:1 ISP Relays)",
+    "ownerDecision": "Locked in by owner during strategy review. Combines legal immunity from Egypt Law 175/2018 for general/streaming traffic with physical Cairo ISP ASN legitimacy for banking and .gov.eg.",
+    "layers": [
+      {
+        "layerId": "client_edge",
+        "title": "Layer 1 · Diaspora Mobile Client (Android Kotlin & iOS Swift)",
+        "protocols": [
+          "Primary: AmneziaWG (obfuscated WireGuard with randomized magic headers H1–H4 and junk packet padding Jc/Jmin/Jmax)",
+          "Fallback: WireGuard-over-WSS (TLS TCP Port 443 WebSocket tunnel, auto-triggered if UDP handshake fails within 3.5 seconds)"
+        ],
+        "clientGuards": [
+          "Strict ::/0 IPv6 Sinkhole (prevents dual-stack Gulf 5G networks like STC, Mobily, e&, du from leaking real Saudi/UAE IPv6 addresses)",
+          "Encrypted In-Tunnel DNS (forces Egyptian DNS resolution inside the tunnel)",
+          "1-Tap 'Egyptian Apps Only' Split-Tunnel Preset (routes NBE, CIB, Banque Misr, InstaPay, Digital Egypt, Watch iT, My WE, Ana Vodafone via Egypt while keeping WhatsApp, Uber/Careem, and local Gulf bank apps on domestic internet)",
+          "Pre-Flight Banking Readiness Check (1-second check before launching a bank app verifying tunnel state, sticky IP match, IPv6 block, and warning if GPS permission is active)"
+        ]
+      },
+      {
+        "layerId": "tier1_marseille",
+        "title": "Layer 2 · Tier 1 Virtual Egypt Hub (Marseille MRS1 / Frankfurt FRA1)",
+        "purpose": "Handles 100% of Standard Tier traffic, high-bandwidth video streaming (Watch iT, ON Time Sports, Shahid Egypt), and general web browsing.",
+        "specs": {
+          "capacity": "10 Gbps Unmetered Bare-Metal / Cloud VMs",
+          "subseaCableLatency": "28–32 ms from Marseille to Alexandria/Cairo via TE North & SEA-ME-WE-4/5 submarine cables",
+          "ipSupply": "Leased clean /24 AFRINIC/RIPE IPv4 subnet registered with an RFC 8805 GeoFeed (country: EG, city: Cairo) updated across MaxMind, ipinfo, IP2Location, and DB-IP",
+          "legalAdvantage": "Zero physical servers inside Egypt for general internet browsing — completely outside NTRA and Egypt Law 175 of 2018 territorial jurisdiction"
+        }
+      },
+      {
+        "layerId": "tier2_cairo",
+        "title": "Layer 3 · Tier 2 Cairo Clean Egress Relays (Sticky 1:1 Banking & Gov IPs)",
+        "purpose": "Exclusively serves Banking Tier ($8.99/mo) subscribers and whitelisted Egyptian banking / .gov.eg destinations.",
+        "specs": {
+          "candidateProviders": [
+            "Raya Data Center Cairo (AS24835)",
+            "Link Data Center Cairo (AS24863)",
+            "Telecom Egypt WE Business Static Subnets (AS8452)",
+            "Vodafone Egypt Business Static Subnets (AS36935)",
+            "LightNode Cairo / IT EGY (Phase 0–1 VPS validation)"
+          ],
+          "ipPinning": "1 User : 1 Dedicated Static Egyptian IP pinned in the offshore PostgreSQL database. Never shared with any other subscriber.",
+          "disklessRamMode": "Runs entirely in RAM (tmpfs) with zero local disk persistence and zero subscriber PII on the node.",
+          "nftablesAllowlist": "Kernel nftables firewall strictly permits outbound HTTPS/TCP/UDP only to verified Egyptian bank ASNs and .gov.eg / .com.eg CIDRs. Blocks all general web browsing, SMTP mail ports (25, 465, 587), and BitTorrent/P2P."
+        }
+      },
+      {
+        "layerId": "control_plane",
+        "title": "Layer 4 · Offshore Control Plane & 15-Minute Synthetic Status Engine",
+        "purpose": "Manages accounts, RevenueCat subscriptions, sticky IP allocation, live service status, and automated IP rotation.",
+        "specs": {
+          "jurisdiction": "Hosted in EU/US under an Offshore Corporate Entity (US Delaware LLC, UK Ltd, or UAE Dubai FZCO)",
+          "syntheticProbes": "Playwright / HTTP synthetic checks run every 15 minutes through each exit IP against digital.gov.eg, ppo.gov.eg, alahlynet.com.eg, banquemisr.com, cibeg.com, watchit.com, and te.eg",
+          "reservePool": "Maintains 25% warm spare IPs for instant automated rotation or 1-tap user self-swap"
+        }
+      }
+    ]
+  },
+  "corporateAndStoreCompliance": {
+    "offshoreEntityRequirement": {
+      "recommendedStructures": [
+        "US Delaware or Wyoming LLC (via Stripe Atlas / Firstbase / Doola)",
+        "UK Private Limited Company (Ltd)",
+        "UAE Dubai Free Zone Company (FZCO)"
+      ],
+      "dunsNumberRequired": true,
+      "whyMandatory": [
+        "Apple App Store Guideline 5.4 strictly prohibits individual developer accounts from submitting VPN apps using NEVPNManager / NEPacketTunnelProvider. Only verified Organization accounts are accepted.",
+        "Google Play VpnService policy requires an Organization developer account with verified business identity, a completed VpnService declaration form, and a video walkthrough.",
+        "Creates a clean legal and jurisdictional separation between the offshore software publisher and Egyptian telecom laws."
+      ]
+    },
+    "googlePlayVerifiedBadge": {
+      "badgeName": "Google Play 'Verified' VPN Shield",
+      "requirements": [
+        "MASA Level 2 (Mobile Application Security Assessment) independent lab audit",
+        "At least 10,000 installs and 250 reviews on Google Play",
+        "At least 90 days live on Google Play with zero policy strikes",
+        "Transparent Data Safety section declaring encryption and zero data selling"
+      ]
+    },
+    "storeSafeCopyRules": [
+      {
+        "avoid": "Pay cheap Egyptian prices on Netflix, Spotify & Steam",
+        "useInstead": "Access your Egyptian digital accounts and local services while living abroad",
+        "reason": "Promoting regional price arbitrage violates Apple & Google ToS and causes high refund churn from foreign cardholders."
+      },
+      {
+        "avoid": "Bypass Egyptian bank security and fraud checks",
+        "useInstead": "A dedicated, stable Egyptian IP address recognized by your bank so your account isn't locked abroad",
+        "reason": "Positions the app as a legitimate financial continuity & security tool for expats."
+      },
+      {
+        "avoid": "Unblock any restricted streaming site worldwide",
+        "useInstead": "Watch Egyptian live TV, Ramadan series, and domestic football smoothly from anywhere",
+        "reason": "Keeps positioning focused on home-country diaspora access."
+      },
+      {
+        "avoid": "100% anonymous darknet no-logs proxy",
+        "useInstead": "Zero ad trackers, never sells your data, encrypted tunnel with clear privacy disclosures",
+        "reason": "Satisfies Apple Guideline 5.4 and Google Play transparency rules."
+      }
+    ]
+  },
+  "egyptianLegalQuestions": [
+    {
+      "id": "Q1",
+      "statute": "Law No. 175 of 2018 (Anti-Cyber and IT Crimes Law), Articles 1, 2 & 33",
+      "question": "Does operating destination-allowlisted, stateless routing relays inside Cairo datacenters classify a foreign software company as a 'Telecom/IT Service Provider' required to retain user traffic logs for 180 days (under penalty of EGP 5–20M fines)?",
+      "architecturalMitigation": "General internet browsing and streaming exit at our Marseille Virtual Egypt hub in France. Cairo Tier 2 nodes run diskless in RAM (tmpfs) with zero subscriber PII and enforce kernel nftables rules forwarding only encrypted HTTPS packets to whitelisted Egyptian bank ASNs and .gov.eg CIDRs."
+    },
+    {
+      "id": "Q2",
+      "statute": "Telecom Regulation Law No. 10 of 2003 (NTRA)",
+      "question": "Does terminating obfuscated AmneziaWG/WSS tunnels on rented servers in Cairo require a separate NTRA permit, or is the Tier III Cairo hosting provider's existing license sufficient?",
+      "architecturalMitigation": "Contract exclusively with NTRA-licensed enterprise datacenters (Raya Data Center, Link Data Center, Telecom Egypt) and use standard HTTPS/TLS port 443 and UDP relays."
+    },
+    {
+      "id": "Q3",
+      "statute": "Jurisdiction & Conflict of Laws",
+      "question": "When the contracting company is a foreign entity (US LLC / UK Ltd / UAE FZCO) with no Egyptian office, employees, or local bank accounts, how do legal obligations split between the foreign entity and the local Cairo host?",
+      "architecturalMitigation": "All user authentication, billing (RevenueCat), and account databases are hosted strictly offshore in EU/US cloud regions."
+    },
+    {
+      "id": "Q4",
+      "statute": "Personal Data Protection Law No. 151 of 2020",
+      "question": "How does Law 151 of 2020 treat subscriber account data if zero personal data is collected, processed, or stored on servers inside Egypt?",
+      "architecturalMitigation": "Cairo relays never receive user emails, names, or billing identifiers—only rotating WireGuard public keys mapped in the offshore control plane."
+    },
+    {
+      "id": "Q5",
+      "statute": "Consumer Protection & Store Privacy Policies",
+      "question": "What exact privacy policy disclosure satisfies both Apple/Google rules and Egyptian counsel without creating false-advertising liability?",
+      "architecturalMitigation": "State clearly that we do not log browsing activity, never sell data to third parties, and use automated firewall rules to block network abuse."
+    },
+    {
+      "id": "Q6",
+      "statute": "Abuse & Law Enforcement Inquiry Protocol",
+      "question": "What is the standard procedure when a Cairo datacenter receives an inquiry regarding a leased static IP, and how does our destination allowlist eliminate abuse risk?",
+      "architecturalMitigation": "By blocking SMTP mail ports, BitTorrent, and all non-whitelisted destinations on Cairo relays, third-party spam or cybercrime cannot occur through our Egyptian IPs."
+    },
+    {
+      "id": "Q7",
+      "statute": "B2B ISP Static IP Leasing Terms",
+      "question": "Does leasing business static IP subnets from Telecom Egypt (WE), Vodafone, or Orange for dedicated 1:1 banking access require specific B2B rider clauses?",
+      "architecturalMitigation": "Launch Phase 0–1 on Cairo enterprise cloud VPS + Marseille Virtual Egypt; add direct B2B ISP subnets in Phase 2–3 following counsel sign-off."
+    }
+  ],
+  "stage5PerformanceBenchmarks": [
+    { "metric": "Round-Trip Time (Median Peak 20:00–23:00 Cairo)", "gulfTarget": "≤ 75 ms", "europeTarget": "≤ 80 ms", "usTarget": "≤ 185 ms", "tool": "Hourly 100-packet mtr from Dubai, Riyadh, Kuwait, Frankfurt, London, Virginia" },
+    { "metric": "Packet Loss", "gulfTarget": "< 0.5%", "europeTarget": "< 0.5%", "usTarget": "< 1.0%", "tool": "Continuous ICMP/UDP synthetic telemetry" },
+    { "metric": "Sustained Throughput per User", "gulfTarget": "≥ 15 Mbps (Std) / ≥ 5 Mbps (Bank)", "europeTarget": "≥ 15 Mbps (Std) / ≥ 5 Mbps (Bank)", "usTarget": "≥ 10 Mbps (Std) / ≥ 5 Mbps (Bank)", "tool": "iperf3 30-second 4-stream runs through tunnel" },
+    { "metric": "Time-to-Tunnel-Up", "gulfTarget": "≤ 2.0s (AmneziaWG) / ≤ 3.5s (WSS)", "europeTarget": "≤ 2.0s", "usTarget": "≤ 3.0s", "tool": "In-app telemetry from tap to verified handshake" },
+    { "metric": "First-Attempt Connect Success Rate", "gulfTarget": "≥ 98.5% (STC, Mobily, e&, du)", "europeTarget": "≥ 99.0%", "usTarget": "≥ 99.0%", "tool": "Automated connect/disconnect probes across carrier & Wi-Fi" },
+    { "metric": "60-Minute 1080p Stream Stability", "gulfTarget": "0 drops / 0 buffering stalls", "europeTarget": "0 drops / 0 buffering stalls", "usTarget": "≤ 1 rebuffer event", "tool": "Daily 60-minute Watch iT / ON Time Sports HD stream test" }
+  ]
+}
