@@ -1,1778 +1,1910 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" class="dark">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Egyptian Inbound VPN — Complete Research, Competitor Teardown, PRD & Execution Plan</title>
-  <meta name="description" content="Decision-ready master research report, competitor APK teardown, Two-Tier Hybrid network architecture, legal & corporate compliance framework, unit economics simulator, and full PRD for an Egyptian Inbound VPN." />
+  <title>MasrSwitch — Egyptian Inbound VPN Interactive Proposal</title>
+  <meta name="description" content="Interactive product proposal, live phone unlock simulator, competitor APK forensic X-ray, animated network topology, and financial model for the Egyptian Inbound VPN." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    :root,
-    [data-theme="dark"] {
-      --bg: #0b0f17;
-      --bg-elevated: #111827;
-      --bg-card: #151e2e;
-      --bg-card-hover: #1b263b;
-      --bg-subtle: #0e1420;
-      --border: #243247;
-      --border-strong: #374b68;
-      --text: #f1f5f9;
-      --text-secondary: #cbd5e1;
-      --text-muted: #94a3b8;
-      --accent: #38bdf8;
-      --accent-soft: rgba(56, 189, 248, 0.14);
+    :root {
+      --bg: #080b10;
+      --surface: #0f141d;
+      --surface-2: #161d2a;
+      --surface-3: #1e2738;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-strong: rgba(255, 255, 255, 0.16);
+      --text: #f8fafc;
+      --muted: #94a3b8;
       --emerald: #10b981;
-      --emerald-soft: rgba(16, 185, 129, 0.14);
       --amber: #f59e0b;
-      --amber-soft: rgba(245, 158, 11, 0.15);
       --rose: #f43f5e;
-      --rose-soft: rgba(244, 63, 94, 0.15);
-      --purple: #a855f7;
-      --purple-soft: rgba(168, 85, 247, 0.15);
-      --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+      --sky: #38bdf8;
     }
 
-    [data-theme="light"] {
-      --bg: #f8fafc;
-      --bg-elevated: #ffffff;
-      --bg-card: #ffffff;
-      --bg-card-hover: #f1f5f9;
-      --bg-subtle: #f1f5f9;
-      --border: #e2e8f0;
-      --border-strong: #cbd5e1;
-      --text: #0f172a;
-      --text-secondary: #334155;
-      --text-muted: #64748b;
-      --accent: #0284c7;
-      --accent-soft: rgba(2, 132, 199, 0.1);
-      --emerald: #059669;
-      --emerald-soft: rgba(5, 150, 105, 0.1);
-      --amber: #d97706;
-      --amber-soft: rgba(217, 119, 6, 0.12);
-      --rose: #e11d48;
-      --rose-soft: rgba(225, 29, 72, 0.1);
-      --purple: #7e22ce;
-      --purple-soft: rgba(126, 34, 206, 0.1);
-      --shadow: 0 8px 24px -8px rgba(15, 23, 42, 0.08);
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, "Noto Sans Arabic", sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      font-size: 15px;
-      line-height: 1.6;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
-      background: var(--bg);
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(circle at 15% 0%, rgba(16, 185, 129, 0.08), transparent 40%),
+        radial-gradient(circle at 85% 10%, rgba(56, 189, 248, 0.06), transparent 35%),
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: auto, auto, 40px 40px, 40px 40px;
       color: var(--text);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow-x: hidden;
     }
 
-    a {
-      color: var(--accent);
-      text-decoration: none;
-    }
-    a:hover {
-      text-decoration: underline;
+    .mono {
+      font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+      font-variant-numeric: tabular-nums;
     }
 
-    code, pre {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 0.86em;
+    .tabular {
+      font-variant-numeric: tabular-nums;
     }
 
-    code {
-      background: var(--bg-subtle);
-      border: 1px solid var(--border);
-      padding: 0.15rem 0.4rem;
-      border-radius: 5px;
-      color: var(--accent);
+    /* Tactile Apple-style press feedback */
+    .pressable {
+      transition: transform 140ms cubic-bezier(0.22, 1, 0.36, 1), background-color 140ms ease, border-color 140ms ease;
+    }
+    .pressable:active {
+      transform: scale(0.97);
     }
 
-    /* Top Header */
-    .topbar {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      background: var(--bg-elevated);
-      border-bottom: 1px solid var(--border);
-      backdrop-filter: blur(12px);
-    }
-    .topbar-inner {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 0.75rem 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      flex-wrap: wrap;
-    }
-    .brand-group {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-    .brand-badge {
-      background: var(--accent-soft);
-      color: var(--accent);
-      border: 1px solid var(--accent);
-      font-weight: 700;
-      font-size: 0.75rem;
-      padding: 0.25rem 0.6rem;
-      border-radius: 6px;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-    }
-    .brand-title {
-      font-weight: 700;
-      font-size: 1rem;
-      color: var(--text);
-    }
-    .topbar-actions {
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      flex-wrap: wrap;
-    }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      padding: 0.45rem 0.85rem;
-      border-radius: 8px;
-      font-size: 0.82rem;
-      font-weight: 600;
-      border: 1px solid var(--border);
-      background: var(--bg-card);
-      color: var(--text);
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-    .btn:hover {
-      border-color: var(--border-strong);
-      background: var(--bg-card-hover);
-    }
-    .btn-primary {
-      background: var(--accent);
-      color: #090d16;
-      border-color: var(--accent);
-    }
-    .btn-primary:hover {
-      opacity: 0.92;
-      background: var(--accent);
-    }
-
-    /* Main Layout */
-    .layout {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 1.75rem 1.5rem 4rem;
-      display: grid;
-      grid-template-columns: 260px minmax(0, 1fr);
-      gap: 2rem;
-      align-items: start;
-    }
-
-    @media (max-width: 1024px) {
-      .layout {
-        grid-template-columns: 1fr;
-      }
-      .sidebar {
-        position: static !important;
+    /* Animated SVG Packet Dash */
+    @keyframes packetFlow {
+      to {
+        stroke-dashoffset: -48;
       }
     }
-
-    /* Sidebar TOC */
-    .sidebar {
-      position: sticky;
-      top: 4.5rem;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1rem;
-      box-shadow: var(--shadow);
+    .packet-line {
+      stroke-dasharray: 8 8;
+      animation: packetFlow 1.1s linear infinite;
     }
-    .sidebar-heading {
-      font-size: 0.72rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      color: var(--text-muted);
-      margin: 0 0 0.65rem;
-      padding: 0 0.5rem;
-    }
-    .toc-list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: grid;
-      gap: 0.2rem;
-    }
-    .toc-link {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.45rem 0.6rem;
-      border-radius: 7px;
-      font-size: 0.82rem;
-      font-weight: 500;
-      color: var(--text-secondary);
-      text-decoration: none;
-      transition: background 0.15s, color 0.15s;
-    }
-    .toc-link:hover {
-      background: var(--bg-card-hover);
-      color: var(--text);
-      text-decoration: none;
-    }
-    .toc-link.active {
-      background: var(--accent-soft);
-      color: var(--accent);
-      font-weight: 600;
-    }
-    .toc-num {
-      font-size: 0.72rem;
-      font-family: ui-monospace, monospace;
-      opacity: 0.75;
+    .packet-line-fast {
+      stroke-dasharray: 10 6;
+      animation: packetFlow 0.65s linear infinite;
     }
 
-    /* Content Area */
-    .content {
-      display: grid;
-      gap: 2.25rem;
-      min-width: 0;
-    }
-
-    /* Hero Card */
-    .hero {
-      background: linear-gradient(145deg, var(--bg-card), var(--bg-subtle));
-      border: 1px solid var(--border-strong);
-      border-radius: 16px;
-      padding: 2rem;
-      box-shadow: var(--shadow);
-    }
-    .hero-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-    }
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      padding: 0.25rem 0.65rem;
-      border-radius: 999px;
-      font-size: 0.75rem;
-      font-weight: 600;
-      border: 1px solid transparent;
-    }
-    .pill-blue { background: var(--accent-soft); color: var(--accent); border-color: rgba(56, 189, 248, 0.3); }
-    .pill-green { background: var(--emerald-soft); color: var(--emerald); border-color: rgba(16, 185, 129, 0.3); }
-    .pill-amber { background: var(--amber-soft); color: var(--amber); border-color: rgba(245, 158, 11, 0.3); }
-    .pill-rose { background: var(--rose-soft); color: var(--rose); border-color: rgba(244, 63, 94, 0.3); }
-    .pill-purple { background: var(--purple-soft); color: var(--purple); border-color: rgba(168, 85, 247, 0.3); }
-
-    .hero h1 {
-      margin: 0 0 0.75rem;
-      font-size: clamp(1.65rem, 2.6vw, 2.35rem);
-      line-height: 1.2;
-      letter-spacing: -0.02em;
-    }
-    .hero-lead {
-      margin: 0 0 1.5rem;
-      color: var(--text-secondary);
-      font-size: 1.02rem;
-      max-width: 920px;
-    }
-
-    .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
-      gap: 0.9rem;
-    }
-    .kpi-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1rem 1.1rem;
-    }
-    .kpi-label {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-    .kpi-value {
-      font-size: 1.55rem;
-      font-weight: 800;
-      margin: 0.25rem 0;
-      line-height: 1.15;
-    }
-    .kpi-sub {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-    }
-
-    /* Section Styling */
-    .section-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 1.75rem;
-      box-shadow: var(--shadow);
-      scroll-margin-top: 5rem;
-    }
-    .section-header {
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 1rem;
-      margin-bottom: 1.35rem;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 1rem;
-    }
-    .section-kicker {
-      font-size: 0.74rem;
-      text-transform: uppercase;
-      letter-spacing: 0.07em;
-      color: var(--accent);
-      font-weight: 700;
-      margin-bottom: 0.25rem;
-    }
-    .section-title {
-      margin: 0;
-      font-size: 1.35rem;
-      font-weight: 700;
-    }
-    .section-desc {
-      margin: 0.35rem 0 0;
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      max-width: 820px;
-    }
-
-    /* Callout / Alert Boxes */
-    .callout-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1rem;
-      margin-bottom: 1.25rem;
-    }
-    .callout {
-      border: 1px solid var(--border);
-      border-left-width: 4px;
-      background: var(--bg-subtle);
-      border-radius: 10px;
-      padding: 1.1rem 1.25rem;
-    }
-    .callout-amber { border-left-color: var(--amber); }
-    .callout-emerald { border-left-color: var(--emerald); }
-    .callout-blue { border-left-color: var(--accent); }
-    .callout-rose { border-left-color: var(--rose); }
-    .callout h3 {
-      margin: 0 0 0.4rem;
-      font-size: 0.98rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-    .callout p {
-      margin: 0;
-      font-size: 0.88rem;
-      color: var(--text-secondary);
-    }
-
-    /* Tables */
-    .table-container {
-      overflow-x: auto;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      background: var(--bg-subtle);
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-      font-size: 0.86rem;
-    }
-    th {
-      background: var(--bg-elevated);
-      color: var(--text-muted);
-      font-size: 0.74rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      padding: 0.85rem 1rem;
-      border-bottom: 1px solid var(--border);
-      white-space: nowrap;
-    }
-    td {
-      padding: 0.9rem 1rem;
-      border-bottom: 1px solid var(--border);
-      vertical-align: top;
-      color: var(--text-secondary);
-    }
-    tr:last-child td {
-      border-bottom: none;
-    }
-    tr:hover td {
-      background: var(--bg-card-hover);
-    }
-    td strong {
-      color: var(--text);
-    }
-
-    /* Filter Bar */
-    .filter-bar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 1rem;
-    }
-    .filter-btn {
-      padding: 0.4rem 0.85rem;
-      border-radius: 999px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      border: 1px solid var(--border);
-      background: var(--bg-subtle);
-      color: var(--text-secondary);
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .filter-btn:hover {
-      border-color: var(--border-strong);
-      color: var(--text);
-    }
-    .filter-btn.active {
-      background: var(--accent);
-      color: #090d16;
-      border-color: var(--accent);
-    }
-
-    /* Grid Cards */
-    .grid-2 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 1.1rem;
-    }
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1rem;
-    }
-    .subcard {
-      background: var(--bg-subtle);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 1.2rem;
-    }
-    .subcard h3 {
-      margin: 0 0 0.5rem;
-      font-size: 1rem;
-      color: var(--text);
-    }
-    .subcard p {
-      margin: 0 0 0.75rem;
-      font-size: 0.86rem;
-      color: var(--text-secondary);
-    }
-    .subcard ul {
-      margin: 0;
-      padding-left: 1.15rem;
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-    }
-    .subcard li {
-      margin-bottom: 0.35rem;
-    }
-
-    /* Interactive Topology Diagram */
-    .topology-diagram {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0.75rem;
-      margin-bottom: 1.25rem;
-    }
-    @media (max-width: 860px) {
-      .topology-diagram {
-        grid-template-columns: 1fr 1fr;
+    /* Stage Entrance */
+    @keyframes stageEnter {
+      from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.992);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
       }
     }
-    @media (max-width: 520px) {
-      .topology-diagram {
-        grid-template-columns: 1fr;
-      }
-    }
-    .topo-node {
-      background: var(--bg-subtle);
-      border: 2px solid var(--border);
-      border-radius: 12px;
-      padding: 1rem;
-      cursor: pointer;
-      text-align: left;
-      transition: all 0.15s ease;
-    }
-    .topo-node:hover {
-      border-color: var(--border-strong);
-      background: var(--bg-card-hover);
-    }
-    .topo-node.active {
-      border-color: var(--accent);
-      background: var(--accent-soft);
-    }
-    .topo-step {
-      font-size: 0.72rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--accent);
-    }
-    .topo-title {
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--text);
-      margin: 0.25rem 0;
-    }
-    .topo-sub {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-    }
-    .topo-detail {
-      background: var(--bg-subtle);
-      border: 1px solid var(--border-strong);
-      border-radius: 12px;
-      padding: 1.25rem;
+    .stage-active {
+      animation: stageEnter 240ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
 
-    /* Unit Economics Simulator */
-    .sim-grid {
-      display: grid;
-      grid-template-columns: 1.1fr 1fr;
-      gap: 1.25rem;
-    }
-    @media (max-width: 860px) {
-      .sim-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-    .slider-group {
-      margin-bottom: 1rem;
-    }
-    .slider-group:last-child {
-      margin-bottom: 0;
-    }
-    .slider-header {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.84rem;
-      font-weight: 600;
-      margin-bottom: 0.35rem;
-    }
-    .slider-val {
-      color: var(--accent);
-      font-family: ui-monospace, monospace;
-      font-weight: 700;
-    }
+    /* Custom Range Slider */
     input[type="range"] {
-      width: 100%;
-      accent-color: var(--accent);
+      -webkit-appearance: none;
+      appearance: none;
+      height: 6px;
+      background: #1e293b;
+      border-radius: 999px;
+      outline: none;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #10b981;
+      border: 2px solid #080b10;
       cursor: pointer;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);
+      transition: transform 120ms ease;
+    }
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.12);
     }
 
-    /* Roadmap Timeline */
-    .roadmap-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1rem;
-    }
-    .phase-card {
-      background: var(--bg-subtle);
-      border: 1px solid var(--border);
-      border-top: 4px solid var(--accent);
-      border-radius: 12px;
-      padding: 1.2rem;
-    }
-    .phase-card.p1 { border-top-color: var(--amber); }
-    .phase-card.p2 { border-top-color: var(--accent); }
-    .phase-card.p3 { border-top-color: var(--emerald); }
-    .phase-card.p4 { border-top-color: var(--purple); }
-
-    .footer {
-      text-align: center;
-      padding: 2rem 1rem;
-      color: var(--text-muted);
-      font-size: 0.82rem;
-      border-top: 1px solid var(--border);
-      margin-top: 2rem;
+    @media (prefers-reduced-motion: reduce) {
+      .packet-line, .packet-line-fast, .stage-active {
+        animation: none !important;
+      }
     }
   </style>
 </head>
-<body>
+<body class="min-h-[100dvh] flex flex-col justify-between selection:bg-emerald-500/30 selection:text-emerald-200">
 
-  <!-- Top Navigation Bar -->
-  <header class="topbar">
-    <div class="topbar-inner">
-      <div class="brand-group">
-        <span class="brand-badge">Decision-Ready Master Report</span>
-        <span class="brand-title">Egyptian Inbound VPN — Research, Competitor Teardown, PRD & Roadmap</span>
+  <!-- TOP FLOATING NAVIGATION CHROME -->
+  <header class="sticky top-0 z-50 backdrop-blur-xl bg-[#080b10]/80 border-b border-white/[0.08]">
+    <div class="max-w-[1380px] mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
+      <!-- Brand -->
+      <div class="flex items-center gap-3 shrink-0">
+        <div class="w-9 h-9 rounded-xl bg-emerald-500/15 border border-emerald-500/40 flex items-center justify-center text-emerald-400 font-extrabold text-sm mono">
+          EG
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-sm tracking-tight text-white">Egyptian Inbound VPN</span>
+            <span class="hidden sm:inline-block text-xs px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-400 border border-emerald-500/30 font-semibold">
+              Interactive Proposal
+            </span>
+          </div>
+          <p class="text-xs text-slate-400 hidden sm:block">Diaspora Banking, Gov & Streaming Access Engine</p>
+        </div>
       </div>
-      <div class="topbar-actions">
-        <button type="button" class="btn" id="themeToggle">Toggle Light / Dark</button>
-        <a href="#scorecard" class="btn btn-primary">Launch Scorecard</a>
+
+      <!-- Segmented Chapter Switcher -->
+      <nav class="flex items-center gap-1 bg-[#111722] p-1 rounded-xl border border-white/[0.07] overflow-x-auto max-w-full" aria-label="Proposal Chapters">
+        <button type="button" data-chapter="0" class="chapter-tab pressable px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap bg-emerald-500 text-slate-950">
+          01 · Live Simulator
+        </button>
+        <button type="button" data-chapter="1" class="chapter-tab pressable px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap text-slate-300 hover:text-white">
+          02 · Competitor X-Ray
+        </button>
+        <button type="button" data-chapter="2" class="chapter-tab pressable px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap text-slate-300 hover:text-white">
+          03 · Network & DPI Lab
+        </button>
+        <button type="button" data-chapter="3" class="chapter-tab pressable px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap text-slate-300 hover:text-white">
+          04 · Legal & Store Shield
+        </button>
+        <button type="button" data-chapter="4" class="chapter-tab pressable px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap text-slate-300 hover:text-white">
+          05 · Revenue Simulator
+        </button>
+        <button type="button" data-chapter="5" class="chapter-tab pressable px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap text-slate-300 hover:text-white">
+          06 · Roadmap & PRD
+        </button>
+      </nav>
+
+      <!-- Step Counter & Quick Prev/Next -->
+      <div class="hidden lg:flex items-center gap-2 shrink-0">
+        <span id="chapterCounter" class="mono text-xs text-slate-400">01 / 06</span>
+        <button type="button" id="prevChapterBtn" aria-label="Previous chapter" class="pressable w-8 h-8 rounded-lg bg-[#131a27] border border-white/10 flex items-center justify-center text-slate-300 hover:text-white">
+          ←
+        </button>
+        <button type="button" id="nextChapterBtn" aria-label="Next chapter" class="pressable w-8 h-8 rounded-lg bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-300 hover:bg-emerald-500/30">
+          →
+        </button>
       </div>
     </div>
   </header>
 
-  <div class="layout">
-    <!-- Sticky Sidebar Navigation -->
-    <aside class="sidebar" aria-label="Document Sections">
-      <p class="sidebar-heading">Master Blueprint</p>
-      <ul class="toc-list">
-        <li><a class="toc-link active" href="#summary"><span>Executive Verdict</span><span class="toc-num">00</span></a></li>
-        <li><a class="toc-link" href="#stage1"><span>Use-Case & Unlock Matrix</span><span class="toc-num">01</span></a></li>
-        <li><a class="toc-link" href="#teardown"><span>Competitor APK Teardown</span><span class="toc-num">02</span></a></li>
-        <li><a class="toc-link" href="#architecture"><span>Two-Tier Hybrid Network</span><span class="toc-num">03</span></a></li>
-        <li><a class="toc-link" href="#legal"><span>Law 175 & Corporate Setup</span><span class="toc-num">04</span></a></li>
-        <li><a class="toc-link" href="#performance"><span>Performance & SLA Targets</span><span class="toc-num">05</span></a></li>
-        <li><a class="toc-link" href="#market"><span>Market, ASO & Paid UA</span><span class="toc-num">06</span></a></li>
-        <li><a class="toc-link" href="#economics"><span>Unit Economics Simulator</span><span class="toc-num">07</span></a></li>
-        <li><a class="toc-link" href="#prd"><span>Full PRD (FRs & NFRs)</span><span class="toc-num">08</span></a></li>
-        <li><a class="toc-link" href="#roadmap"><span>12-Week Build Roadmap</span><span class="toc-num">09</span></a></li>
-        <li><a class="toc-link" href="#scorecard"><span>Go/No-Go Scorecard</span><span class="toc-num">10</span></a></li>
-      </ul>
-    </aside>
+  <!-- MAIN INTERACTIVE STAGE -->
+  <main class="max-w-[1380px] w-full mx-auto px-4 sm:px-6 py-7 flex-1">
 
-    <!-- Main Report Body -->
-    <main class="content">
+    <!-- =========================================================
+         CHAPTER 1: THE PITCH & INTERACTIVE PHONE SIMULATOR
+         ========================================================= -->
+    <section id="chapter-0" class="chapter-view stage-active space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
 
-      <!-- 00. EXECUTIVE SUMMARY & BREAKTHROUGHS -->
-      <section class="hero" id="summary">
-        <div class="hero-meta">
-          <span class="pill pill-green">VERDICT: GO (HIGH CONVICTION)</span>
-          <span class="pill pill-blue">ARCH: TWO-TIER HYBRID (MARSEILLE + CAIRO)</span>
-          <span class="pill pill-amber">PROTOCOL: AMNEZIAWG + TLS 443 STEALTH</span>
-          <span class="pill pill-purple">MODEL: PAID SUBSCRIPTION · ZERO ADS</span>
-        </div>
-        <h1>Egyptian Inbound VPN — Complete Research, Competitor Teardown, PRD & Execution Plan</h1>
-        <p class="hero-lead">
-          A paid, zero-ad, Egypt-specialist inbound VPN purpose-built for the <strong>14 million+ Egyptians living abroad</strong> (concentrated in Saudi Arabia, Kuwait, UAE, Qatar, UK, Europe, and North America). While existing free apps are Malaysian adware templates and global VPNs use shared virtual IPs that trigger bank lockouts, our <strong>Two-Tier Hybrid Architecture</strong> combines 10 Gbps Marseille Virtual Egypt nodes for streaming with <strong>1:1 Dedicated Sticky Cairo ISP IPs</strong> for frictionless banking and government portal access.
-        </p>
+        <!-- Left Column: Visual Value Proposition -->
+        <div class="lg:col-span-5 flex flex-col justify-between bg-[#0f141d] border border-white/[0.08] rounded-2xl p-6 sm:p-7">
+          <div class="space-y-4">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-semibold">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span>The Opportunity · 14M Egyptians Abroad</span>
+            </div>
 
-        <div class="kpi-grid">
-          <div class="kpi-card">
-            <div class="kpi-label">Addressable Diaspora</div>
-            <div class="kpi-value">14.0M+</div>
-            <div class="kpi-sub">1.47M in KSA · 644K in Kuwait · ~1M in UAE</div>
-          </div>
-          <div class="kpi-card">
-            <div class="kpi-label">Primary Competitor Rating</div>
-            <div class="kpi-value" style="color: var(--rose);">3.8 ★</div>
-            <div class="kpi-sub">SWS Clone App · ~30 forced ads / 5 mins</div>
-          </div>
-          <div class="kpi-card">
-            <div class="kpi-label">Break-Even Threshold</div>
-            <div class="kpi-value" style="color: var(--emerald);">~248 Payers</div>
-            <div class="kpi-sub">At $1,050/mo fixed OpEx & blended $4.24 margin</div>
-          </div>
-          <div class="kpi-card">
-            <div class="kpi-label">CAC Payback</div>
-            <div class="kpi-value" style="color: var(--amber);">Day 1 (Annual)</div>
-            <div class="kpi-sub">3.8 mos on monthly plans ($16 CAC at $0.80 CPI)</div>
-          </div>
-        </div>
+            <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight leading-[1.12] text-white">
+              One clean Egyptian IP that banks & government portals actually trust.
+            </h1>
 
-        <div class="callout-grid" style="margin-top: 1.5rem; margin-bottom: 0;">
-          <div class="callout callout-amber">
-            <h3>Critical Discovery #1: Plain WireGuard is Blocked by DPI</h3>
-            <p>
-              Standard WireGuard uses a fixed 4-byte header and predictable 148-byte handshake initiation packet. Both <strong>Telecom Egypt (AS8452)</strong> at Egypt's international border gateway and Gulf carriers (<strong>STC, Mobily, e&, du</strong>) actively fingerprint and drop plain WireGuard UDP sessions. Our stack therefore locks in <strong>AmneziaWG</strong> (randomized headers + junk packet padding) as primary, with an automatic 3.5-second fallback to <strong>WireGuard-over-WSS (TLS TCP 443)</strong>.
+            <p class="text-sm text-slate-300 leading-relaxed">
+              When Egyptians in Riyadh, Dubai, Kuwait, or London open <strong>NBE Al Ahly</strong>, <strong>InstaPay</strong>, or <strong>Digital Egypt</strong>, foreign IPs get blocked and shared VPN IPs trigger fraud lockouts. Try the live phone simulator on the right to see why.
             </p>
+
+            <!-- 3 Visual Stat Cards -->
+            <div class="grid grid-cols-3 gap-3 pt-2">
+              <div class="bg-[#161d2a] border border-white/[0.07] rounded-xl p-3.5">
+                <div class="text-xs text-slate-400 font-medium">Gulf + Global</div>
+                <div class="text-2xl font-extrabold text-white mt-0.5 tabular">14M+</div>
+                <div class="text-xs text-emerald-400 mt-1">1.47M in KSA</div>
+              </div>
+              <div class="bg-[#161d2a] border border-white/[0.07] rounded-xl p-3.5">
+                <div class="text-xs text-slate-400 font-medium">#1 Rival App</div>
+                <div class="text-2xl font-extrabold text-rose-400 mt-0.5 tabular">3.8★</div>
+                <div class="text-xs text-rose-300 mt-1">30 ads / 5 min</div>
+              </div>
+              <div class="bg-[#161d2a] border border-white/[0.07] rounded-xl p-3.5">
+                <div class="text-xs text-slate-400 font-medium">Break-Even</div>
+                <div class="text-2xl font-extrabold text-emerald-400 mt-0.5 tabular">248</div>
+                <div class="text-xs text-slate-300 mt-1">Paid users</div>
+              </div>
+            </div>
           </div>
-          <div class="callout callout-emerald">
-            <h3>Critical Discovery #2: How to Beat Law 175 of 2018</h3>
-            <p>
-              Our infrastructure audit revealed that <strong>ExpressVPN, Surfshark, and CyberGhost</strong> all use <em>Virtual Egypt servers</em> physically hosted in Europe to avoid Egypt's 180-day mandatory data retention law (Law 175/2018, carrying EGP 5–20M fines). We lock in a superior <strong>Two-Tier Hybrid Topology</strong>: a 10 Gbps Marseille Virtual Egypt hub for streaming/general browsing (zero Egyptian jurisdiction) paired with diskless, RAM-only Cairo ISP relays <strong>strictly allowlisted for Egyptian banking & <code>.gov.eg</code> CIDRs</strong>.
-            </p>
+
+          <!-- Two Key Breakthrough Pills -->
+          <div class="space-y-2.5 pt-6 mt-6 border-t border-white/[0.08]">
+            <div class="text-xs font-bold uppercase tracking-wider text-slate-400">2 Research Breakthroughs Built Into This Proposal</div>
+            <div class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/25 flex items-start gap-3">
+              <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 font-bold text-xs mono shrink-0">DPI</span>
+              <p class="text-xs text-slate-200 leading-snug">
+                <strong>Plain WireGuard fails in KSA/UAE & Egypt:</strong> Telecom Egypt and Gulf carriers drop standard 148-byte WireGuard handshakes. We use <strong>AmneziaWG + TLS 443 Stealth</strong>.
+              </p>
+            </div>
+            <div class="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/25 flex items-start gap-3">
+              <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-bold text-xs mono shrink-0">LAW</span>
+              <p class="text-xs text-slate-200 leading-snug">
+                <strong>Bypass Law 175 (180-day logs):</strong> Like ExpressVPN, we put a 10G Virtual Egypt hub in Marseille for streaming, and use diskless Cairo ISP relays <em>strictly</em> for banking & <code>.gov.eg</code>.
+              </p>
+            </div>
           </div>
         </div>
-      </section>
 
-      <!-- 01. STAGE 1: USE-CASE & UNLOCK REALITY MATRIX -->
-      <section class="section-card" id="stage1">
-        <div class="section-header">
+        <!-- Right Column: Interactive Expat Phone & Firewall Simulator -->
+        <div class="lg:col-span-7 bg-[#0f141d] border border-white/[0.08] rounded-2xl p-6 flex flex-col justify-between gap-5">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-white/[0.08] pb-4">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Interactive Unlock Lab</span>
+              <h2 class="text-lg font-bold text-white">Test What Happens When an Expat Opens an Egyptian App</h2>
+            </div>
+            <!-- User Location Selector -->
+            <div class="flex items-center gap-1.5 bg-[#161d2a] p-1 rounded-lg border border-white/10">
+              <button type="button" data-loc="ksa" class="loc-btn pressable px-2.5 py-1 rounded text-xs font-semibold bg-emerald-500 text-slate-950">Riyadh (STC 5G)</button>
+              <button type="button" data-loc="uae" class="loc-btn pressable px-2.5 py-1 rounded text-xs font-semibold text-slate-300">Dubai (e&)</button>
+              <button type="button" data-loc="uk" class="loc-btn pressable px-2.5 py-1 rounded text-xs font-semibold text-slate-300">London (UK)</button>
+            </div>
+          </div>
+
+          <!-- Connection Mode Selector (4 Modes) -->
           <div>
-            <div class="section-kicker">Stage 1 · Empirical Demand & Technical Validation</div>
-            <h2 class="section-title">Completed Use-Case Map & Unlock Reality Matrix</h2>
-            <p class="section-desc">
-              Verified across expat communities (<code>r/Egypt</code>, <code>r/PersonalFinanceEgypt</code>, <code>r/dubai</code>, <code>r/saudiarabia</code>) and edge firewall inspections of Egyptian banks, government portals, telecom operators, and streaming CDNs.
-            </p>
+            <div class="text-xs text-slate-400 font-medium mb-2">1. Choose Connection Method:</div>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2" id="simModeBar">
+              <button type="button" data-mode="none" class="mode-btn pressable text-left p-2.5 rounded-xl border border-white/10 bg-[#161d2a]">
+                <div class="text-xs font-bold text-slate-200">No VPN</div>
+                <div class="text-xs text-slate-400">Direct Foreign IP</div>
+              </button>
+              <button type="button" data-mode="sws" class="mode-btn pressable text-left p-2.5 rounded-xl border border-white/10 bg-[#161d2a]">
+                <div class="text-xs font-bold text-rose-400">SWS "VPN Egypt"</div>
+                <div class="text-xs text-slate-400">Free Adware Rival</div>
+              </button>
+              <button type="button" data-mode="express" class="mode-btn pressable text-left p-2.5 rounded-xl border border-white/10 bg-[#161d2a]">
+                <div class="text-xs font-bold text-amber-400">Global VPN</div>
+                <div class="text-xs text-slate-400">Shared Virtual IP</div>
+              </button>
+              <button type="button" data-mode="ours" class="mode-btn pressable text-left p-2.5 rounded-xl border border-emerald-500 bg-emerald-500/15">
+                <div class="text-xs font-bold text-emerald-400">Our Product ★</div>
+                <div class="text-xs text-emerald-200/80">1:1 Sticky + Hybrid</div>
+              </button>
+            </div>
           </div>
-        </div>
 
-        <div class="filter-bar" id="useCaseFilters">
-          <button type="button" class="filter-btn active" data-filter="all">All Use Cases (5)</button>
-          <button type="button" class="filter-btn" data-filter="ip-unlocks">IP Unlocks Core Action (4 — PASS)</button>
-          <button type="button" class="filter-btn" data-filter="sticky-ip">Requires 1:1 Sticky IP (Banking)</button>
-          <button type="button" class="filter-btn" data-filter="excluded">Excluded from Marketing (1)</button>
-        </div>
+          <!-- Target Egyptian App Selector (5 Real Use Cases) -->
+          <div>
+            <div class="text-xs text-slate-400 font-medium mb-2">2. Tap an Egyptian Service to Launch:</div>
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2" id="simServiceBar">
+              <button type="button" data-srv="nbe" class="srv-btn pressable p-2.5 rounded-xl border border-emerald-500 bg-[#1c2638] text-left">
+                <div class="text-xs font-bold text-white">NBE / CIB</div>
+                <div class="text-xs text-emerald-400">Banking (#1)</div>
+              </button>
+              <button type="button" data-srv="gov" class="srv-btn pressable p-2.5 rounded-xl border border-white/10 bg-[#161d2a] text-left">
+                <div class="text-xs font-bold text-white">Digital Egypt</div>
+                <div class="text-xs text-slate-400">digital.gov.eg</div>
+              </button>
+              <button type="button" data-srv="instapay" class="srv-btn pressable p-2.5 rounded-xl border border-white/10 bg-[#161d2a] text-left">
+                <div class="text-xs font-bold text-white">InstaPay EG</div>
+                <div class="text-xs text-slate-400">Instant Transfers</div>
+              </button>
+              <button type="button" data-srv="watchit" class="srv-btn pressable p-2.5 rounded-xl border border-white/10 bg-[#161d2a] text-left">
+                <div class="text-xs font-bold text-white">Watch iT</div>
+                <div class="text-xs text-slate-400">Ramadan & League</div>
+              </button>
+              <button type="button" data-srv="we" class="srv-btn pressable p-2.5 rounded-xl border border-white/10 bg-[#161d2a] text-left col-span-2 sm:col-span-1">
+                <div class="text-xs font-bold text-white">My WE / Voda</div>
+                <div class="text-xs text-slate-400">Family Bills</div>
+              </button>
+            </div>
+          </div>
 
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Rank & Use Case</th>
-                <th>Target Services & Domains</th>
-                <th>Exact Blocking Mechanism Abroad</th>
-                <th>IP Alone Unlocks?</th>
-                <th>Non-IP Dependencies & Product Solution</th>
-              </tr>
-            </thead>
-            <tbody id="useCaseTableBody"></tbody>
-          </table>
-        </div>
+          <!-- Simulated Phone Screen + Live Firewall Telemetry -->
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-4 bg-[#090d14] border border-white/10 rounded-2xl p-4 items-center">
+            <!-- Phone Mockup -->
+            <div class="md:col-span-5 bg-[#121824] border-2 border-slate-700/80 rounded-2xl p-4 shadow-inner flex flex-col justify-between min-h-[210px]">
+              <div class="flex items-center justify-between text-xs text-slate-400 mono border-b border-white/10 pb-2">
+                <span id="phoneCarrier">STC 5G · Riyadh</span>
+                <span id="phoneVpnBadge" class="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-semibold">1:1 EG IP</span>
+              </div>
+              <div class="my-auto py-3 space-y-2" id="phoneScreenContent">
+                <!-- Populated by JS -->
+              </div>
+              <div class="text-xs mono text-slate-400 border-t border-white/10 pt-2 flex justify-between">
+                <span id="phoneIpText">IP: 41.33.118.42 (Cairo)</span>
+                <span id="phoneRttText">54 ms</span>
+              </div>
+            </div>
 
-        <div class="callout callout-blue" style="margin-top: 1.25rem;">
-          <h3>Stage 1 Gate Result: PASS (4 Validated High-Frequency Use Cases)</h3>
-          <p>
-            Government portals, Egyptian banking, telecom self-care, and domestic TV/sports all pass the Stage 1 gate where an Egyptian IP unlocks the core blocked action. For banking and government portals that also send SMS OTPs, expats already keep their Egyptian SIM active in roaming—which is why <strong>Use Case #3 (Telecom Self-Service)</strong> is doubly critical: expats must recharge their Vodafone/WE/Orange/e& line every 60–90 days so their bank OTP line is never disconnected.
+            <!-- Firewall & Fraud Engine Inspector -->
+            <div class="md:col-span-7 space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Target WAF & Anti-Fraud Telemetry</span>
+                <span id="simVerdictBadge" class="px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                  UNLOCKED · ZERO FRICTION
+                </span>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2.5 mono text-xs">
+                <div class="bg-[#141b28] border border-white/[0.06] rounded-lg p-2.5">
+                  <div class="text-slate-400">Exit ASN / Type</div>
+                  <div id="inspAsn" class="font-bold text-white mt-0.5">AS8452 · Telecom Egypt ISP</div>
+                </div>
+                <div class="bg-[#141b28] border border-white/[0.06] rounded-lg p-2.5">
+                  <div class="text-slate-400">IPQS Fraud Score</div>
+                  <div id="inspFraud" class="font-bold text-emerald-400 mt-0.5">8 / 100 (Clean Residential/Biz)</div>
+                </div>
+                <div class="bg-[#141b28] border border-white/[0.06] rounded-lg p-2.5">
+                  <div class="text-slate-400">Dual-Stack IPv6 Leak</div>
+                  <div id="inspIpv6" class="font-bold text-emerald-400 mt-0.5">0 Leaks (::/0 Sinkholed)</div>
+                </div>
+                <div class="bg-[#141b28] border border-white/[0.06] rounded-lg p-2.5">
+                  <div class="text-slate-400">Users Sharing This IP</div>
+                  <div id="inspSharing" class="font-bold text-emerald-400 mt-0.5">1 User (Dedicated Sticky)</div>
+                </div>
+              </div>
+
+              <p id="inspExplanation" class="text-xs text-slate-300 bg-[#141b28] border border-white/[0.06] rounded-lg p-3 leading-relaxed">
+                <!-- Populated by JS -->
+              </p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         CHAPTER 2: COMPETITOR FORENSIC X-RAY ("STUDY THE OTHER APP")
+         ========================================================= -->
+    <section id="chapter-1" class="chapter-view hidden space-y-6">
+      <!-- Top Header Banner -->
+      <div class="bg-[#0f141d] border border-white/[0.08] rounded-2xl p-6 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-wider text-rose-400">Stage 2 & 3 · Forensic APK & Market Teardown</span>
+          <h2 class="text-2xl font-extrabold text-white mt-1">Inside "VPN Egypt - Unblock VPN Secure" (1M+ Downloads)</h2>
+          <p class="text-sm text-slate-300 mt-1">
+            Package <code class="mono text-xs bg-[#161d2a] px-2 py-0.5 rounded text-rose-300">free.vpnegypt.turbo.secure.tunnel.unblock.proxy</code> (v3.8.7.1) by <strong>SWS Software Enterprise</strong> (Ipoh, Malaysia). It is a generic ad-arbitrage template, not an Egypt product.
           </p>
         </div>
-      </section>
-
-      <!-- 02. STAGE 2 & 3: COMPETITOR TEARDOWN -->
-      <section class="section-card" id="teardown">
-        <div class="section-header">
-          <div>
-            <div class="section-kicker">Stage 2 & 3 · Competitor Intelligence & APK Forensic Profile</div>
-            <h2 class="section-title">Study of "The Other App" — <code>VPN Egypt - Unblock VPN Secure</code> & Rivals</h2>
-            <p class="section-desc">
-              Complete teardown of package <code>free.vpnegypt.turbo.secure.tunnel.unblock.proxy</code> (v3.8.7.1) by Proxy Master & Turbo VPN (SWS Software Enterprise, Ipoh, Malaysia) alongside global VPN competitors.
-            </p>
-          </div>
-        </div>
-
-        <div class="grid-3" style="margin-bottom: 1.35rem;">
-          <div class="subcard">
-            <span class="pill pill-rose" style="margin-bottom: 0.6rem;">Malaysian Clone Factory</span>
-            <h3>15+ Identical White-Label Apps</h3>
-            <p>
-              SWS Software Enterprise (Ipoh, Malaysia) does not engineer for Egypt. They ship the exact same Android APK template across 15+ single-country listings:
-            </p>
-            <ul>
-              <li><code>VPN Egypt - Unblock VPN Secure</code> (1M+ installs, 3.8★)</li>
-              <li><code>VPN Korea - Secure VPN Proxy</code></li>
-              <li><code>VPN Indonesia - Fast Super VPN</code></li>
-              <li><code>VPN Malaysia</code>, <code>VPN India</code>, <code>VPN Germany</code></li>
-              <li><code>VPN Russia</code>, <code>VPN Japan</code>, <code>VPN Vietnam</code>, <code>VPN Nigeria</code></li>
-            </ul>
-          </div>
-
-          <div class="subcard">
-            <span class="pill pill-amber" style="margin-bottom: 0.6rem;">Legacy OpenVPN & Leaks</span>
-            <h3>Broken Tunnel & Dual-Stack Exposure</h3>
-            <p>
-              Decompilation confirms a wrapper around legacy <code>ics-openvpn</code> (<code>de.blinkt.openvpn</code>) pulling static <code>.ovpn</code> configs over HTTP/JSON.
-            </p>
-            <ul>
-              <li><strong>No IPv6 Sinkhole:</strong> On dual-stack Gulf mobile carriers (STC, Mobily, e&), IPv6 traffic bypasses the IPv4 OpenVPN tunnel, leaking the user's real Saudi/Emirati location to bank apps.</li>
-              <li><strong>Burned Datacenter Pool:</strong> Uses oversubscribed VPS IPs and European fallbacks (M247 / CloudSigma) with <strong>IPQS fraud scores of 85–100</strong>.</li>
-            </ul>
-          </div>
-
-          <div class="subcard">
-            <span class="pill pill-purple" style="margin-bottom: 0.6rem;">Adware & Tracker Bloat</span>
-            <h3>30 Forced Ads in 5 Minutes</h3>
-            <p>
-              While claiming "No data collected" on Play Data Safety, the APK manifest requests 12–16 permissions including <code>READ_PHONE_STATE</code> and <code>AD_ID</code>.
-            </p>
-            <ul>
-              <li><strong>Embedded SDKs:</strong> Google AdMob, Meta Audience Network, AppLovin MAX, Unity Ads, IronSource, Firebase Analytics.</li>
-              <li><strong>Hostile UX:</strong> Unskippable interstitials before connect, after connect, on server list open, and on disconnect.</li>
-              <li><strong>Blocked from iOS:</strong> Violates Apple Guideline 5.4 ban on third-party ad trackers inside VPN apps.</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Audit Dimension</th>
-                <th>VPN Egypt (SWS Software Enterprise)</th>
-                <th>Hola VPN (Free P2P)</th>
-                <th>ExpressVPN / Surfshark / CyberGhost</th>
-                <th>Our Product (Standard & Banking Tiers)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Package / Footprint</strong></td>
-                <td><code>free.vpnegypt.turbo...</code> · 1M+ installs, 3.8★ (~54.9K reviews)</td>
-                <td>Global P2P client · Claims 17,000 Egyptian residential peer IPs</td>
-                <td>Global multi-country apps · $10–$13/mo</td>
-                <td>Dedicated Egypt-first Android & iOS apps · $4.99 / $8.99</td>
-              </tr>
-              <tr>
-                <td><strong>Real Server Locations</strong></td>
-                <td>1–2 overloaded Cairo VPS nodes + undisclosed EU datacenter fallbacks</td>
-                <td>Peer users' mobile/home devices inside Egypt (Luminati/Bright Data style)</td>
-                <td><strong>100% Virtual Egypt locations</strong> physically hosted in Europe (Marseille, Bucharest, London)</td>
-                <td><strong>Two-Tier Hybrid:</strong> Marseille Virtual 10G Hub + Physical Cairo ISP/Datacenter Relays</td>
-              </tr>
-              <tr>
-                <td><strong>ASN & IP Reputation</strong></td>
-                <td>Hosting ASN · Flagged <code>vpn: true</code> · IPQS Score 85–100</td>
-                <td>Residential ASN, but extreme botnet/abuse reputation & session drops</td>
-                <td>Known commercial VPN ASNs (M247, Datacamp) · Blocked by `.gov.eg` & banks</td>
-                <td>Clean AFRINIC GeoFeed `/24` + <strong>1:1 Sticky Cairo ISP IPs (IPQS &lt; 25)</strong></td>
-              </tr>
-              <tr>
-                <td><strong>Tunnel Protocol & DPI</strong></td>
-                <td>Plain OpenVPN (UDP/TCP) · Easily throttled/dropped by Gulf & Egypt DPI</td>
-                <td>HTTP/SOCKS proxy tunnel · Not a true encrypted device-level VPN</td>
-                <td>Lightway / WireGuard / OpenVPN (shared endpoints)</td>
-                <td><strong>AmneziaWG (DPI-obfuscated UDP) + WireGuard-over-WSS (TLS 443)</strong></td>
-              </tr>
-              <tr>
-                <td><strong>Trackers & Permissions</strong></td>
-                <td>5+ Ad Mediation SDKs + <code>READ_PHONE_STATE</code> + <code>AD_ID</code></td>
-                <td>Heavy telemetry; monetizes idle user bandwidth on free tier</td>
-                <td>First-party analytics; clean permissions</td>
-                <td><strong>0 Ad SDKs · 0 Third-Party Trackers · Minimal Permissions</strong></td>
-              </tr>
-              <tr>
-                <td><strong>Leak Protection</strong></td>
-                <td>Fails IPv6 & WebRTC leak checks on Gulf dual-stack 5G networks</td>
-                <td>Browser/proxy leaks common; no system-wide kill switch</td>
-                <td>Passes DNS/IPv6 leak tests</td>
-                <td><strong>Strict <code>::/0</code> IPv6 Sinkhole + Encrypted In-Tunnel DNS + Kill Switch</strong></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- 03. STAGE 4: TWO-TIER HYBRID NETWORK ARCHITECTURE -->
-      <section class="section-card" id="architecture">
-        <div class="section-header">
-          <div>
-            <div class="section-kicker">Stage 4 · Locked-In Infrastructure Decision</div>
-            <h2 class="section-title">Two-Tier Hybrid Network & Egyptian IP Supply Strategy</h2>
-            <p class="section-desc">
-              Click each node in the interactive architecture chain below to inspect routing rules, submarine cable latency, ASN reputation, and abuse isolation.
-            </p>
-          </div>
-        </div>
-
-        <div class="topology-diagram" id="topoSelector">
-          <button type="button" class="topo-node active" data-topo="0">
-            <div class="topo-step">Node 01 · User Device</div>
-            <div class="topo-title">Diaspora Mobile Client</div>
-            <div class="topo-sub">AmneziaWG · Split-Tunnel · IPv6 Sinkhole</div>
+        <div class="flex flex-wrap gap-2 shrink-0">
+          <button type="button" data-xray="sws" class="xray-btn pressable px-3.5 py-2 rounded-xl text-xs font-bold bg-rose-500 text-white">
+            1. SWS "VPN Egypt" APK X-Ray
           </button>
-          <button type="button" class="topo-node" data-topo="1">
-            <div class="topo-step">Node 02 · Tier 1 Hub</div>
-            <div class="topo-title">Marseille Virtual Egypt</div>
-            <div class="topo-sub">10 Gbps Subsea Landing · Streaming & Web</div>
+          <button type="button" data-xray="clones" class="xray-btn pressable px-3.5 py-2 rounded-xl text-xs font-bold bg-[#161d2a] text-slate-300 border border-white/10">
+            2. The 15-App Clone Farm
           </button>
-          <button type="button" class="topo-node" data-topo="2">
-            <div class="topo-step">Node 03 · Tier 2 Relay</div>
-            <div class="topo-title">Cairo Clean ISP Egress</div>
-            <div class="topo-sub">1:1 Sticky IPs · Banking & .gov.eg Only</div>
-          </button>
-          <button type="button" class="topo-node" data-topo="3">
-            <div class="topo-step">Node 04 · Control Plane</div>
-            <div class="topo-title">15m Synthetic Probes</div>
-            <div class="topo-sub">Auto-Rotation · Live Status Board API</div>
+          <button type="button" data-xray="matrix" class="xray-btn pressable px-3.5 py-2 rounded-xl text-xs font-bold bg-[#161d2a] text-slate-300 border border-white/10">
+            3. All 5 Rivals Compared
           </button>
         </div>
+      </div>
 
-        <div class="topo-detail" id="topoDetailBox"></div>
-
-        <h3 style="margin: 1.5rem 0 0.75rem; font-size: 1.05rem;">Egyptian IP Supply Comparison & Procurement Plan</h3>
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Supply Option</th>
-                <th>Candidate Providers / ASNs</th>
-                <th>Unit Cost</th>
-                <th>How Databases See It</th>
-                <th>Role in Our Two-Tier Hybrid Stack</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Tier 1: Virtual Egypt (Marseille / Frankfurt BGP)</strong></td>
-                <td>Interlir / RIPE / AFRINIC leased `/24` announced in Marseille (`MRS1` — 28ms to Alexandria via TE North subsea cable)</td>
-                <td>~$140–$180/mo per `/24` (254 IPs) + $140/mo 10Gbps server</td>
-                <td><code>country: EG</code> across MaxMind, ipinfo, IP2Location, DB-IP via RFC 8805 GeoFeed</td>
-                <td><strong>Standard Tier Backbone:</strong> Absorbs 100% of video streaming (Watch iT, ON Time Sports) and general browsing with zero hardware in Egypt.</td>
-              </tr>
-              <tr>
-                <td><strong>Tier 2A: Cairo Enterprise Cloud / Colocation</strong></td>
-                <td>Raya Data Center (`AS24835`), Link Data Center (`AS24863`), GPX Cairo, LightNode Cairo, IT EGY</td>
-                <td>VPS from $8–$15/mo; Dedicated / Colo $180–$350/mo + $1.50/IP</td>
-                <td>Physical Cairo routing (&lt;3ms to `.gov.eg` & bank origins); low fraud score when unshared</td>
-                <td><strong>Phase 0–2 Banking & Gov Relays:</strong> Immediate procurement for 1:1 sticky IP assignment on allowlisted domains.</td>
-              </tr>
-              <tr>
-                <td><strong>Tier 2B: Egyptian Business ISP Static Ranges</strong></td>
-                <td>Telecom Egypt WE Business (`AS8452`), Vodafone Egypt (`AS36935`), Orange Business (`AS24863`), e& (`AS36992`)</td>
-                <td>~$1.50–$3.00 per static IP/mo + business fiber commit</td>
-                <td><code>usage_type: ISP / Commercial</code> · <code>vpn: false</code> · IPQS Score 0–15 (Gold Standard)</td>
-                <td><strong>Phase 3+ Premium Banking Moat:</strong> Indistinguishable from a home/office connection in Cairo.</td>
-              </tr>
-              <tr>
-                <td><strong>Residential Proxy SDK Networks</strong></td>
-                <td>Third-party SDK peer networks</td>
-                <td>Excluded</td>
-                <td>Unpredictable residential peers</td>
-                <td><strong>Strictly Excluded:</strong> Unethical consent model, unstable latency, and banned by Google Play & Apple policies.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- 04. STAGE 4 & 8: LEGAL, CORPORATE ENTITY & STORE COMPLIANCE -->
-      <section class="section-card" id="legal">
-        <div class="section-header">
+      <!-- X-RAY SUBVIEW 1: SWS APK ANATOMY & 5-MINUTE AD TIMELINE -->
+      <div id="xray-sws" class="xray-panel grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Left: 5-Minute User Experience Comparison -->
+        <div class="lg:col-span-6 bg-[#0f141d] border border-white/[0.08] rounded-2xl p-6 space-y-5">
           <div>
-            <div class="section-kicker">Stage 4 & 8 · Corporate Entity, App Store Rules & Egyptian Telecom Law</div>
-            <h2 class="section-title">Corporate Structure, Store Compliance & Law 175 Risk Mitigation</h2>
-            <p class="section-desc">
-              Both Apple App Store and Google Play prohibit anonymous individual accounts from shipping commercial VPNs, and Egypt's Law 175 of 2018 regulates domestic service providers. Here is the complete compliance blueprint.
-            </p>
-          </div>
-        </div>
-
-        <div class="grid-2" style="margin-bottom: 1.35rem;">
-          <div class="subcard">
-            <span class="pill pill-blue" style="margin-bottom: 0.6rem;">Mandatory Prerequisite · Entity Setup</span>
-            <h3>1. Offshore Corporate Entity & Store Accounts</h3>
-            <p>
-              Before submitting to Google Play or Apple App Store, the product must be owned by an <strong>Offshore Legal Entity</strong> (recommended: <strong>US Delaware/Wyoming LLC</strong> via Stripe Atlas/Firstbase, <strong>UK Ltd</strong>, or <strong>UAE Dubai FZCO</strong>) with a verified <strong>D-U-N-S Number</strong>:
-            </p>
-            <ul>
-              <li><strong>Apple App Store (Guideline 5.4):</strong> Explicitly rejects VPN apps using <code>NEVPNManager</code> / <code>NEPacketTunnelProvider</code> from individual developer accounts. Only verified <strong>Organization</strong> accounts can publish VPN apps.</li>
-              <li><strong>Google Play <code>VpnService</code> Policy:</strong> Requires an Organization developer account (with D-U-N-S & official business website), a completed <code>VpnService</code> declaration form, and an unedited video demonstrating how the VPN tunnel functions.</li>
-              <li><strong>Google Play "Verified" VPN Badge:</strong> Our 6-month trust goal. Requires an independent <strong>MASA Level 2</strong> security audit, 10,000+ installs, 250+ reviews, and 90+ days live on Play Store.</li>
-              <li><strong>Jurisdictional Separation:</strong> Keeps user accounts, billing (RevenueCat), and support databases strictly outside Egypt.</li>
-            </ul>
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-400">User Experience Reality</span>
+            <h3 class="text-lg font-bold text-white mt-0.5">What Happens in a 5-Minute Banking Session</h3>
+            <p class="text-xs text-slate-400 mt-1">Top-voted Play Store review complaint: <em>"~30 forced ads in 5 minutes and servers don't connect."</em></p>
           </div>
 
-          <div class="subcard">
-            <span class="pill pill-emerald" style="margin-bottom: 0.6rem;">Architectural Shield · Law 175 of 2018</span>
-            <h3>2. How the Two-Tier Hybrid Mitigates Egyptian Law</h3>
-            <p>
-              Under Egypt's <strong>Anti-Cyber and IT Crimes Law (Law 175 of 2018)</strong>, Article 2 requires domestic "service providers" to retain traffic logs for 180 days, with Article 33 setting fines of EGP 5–20 million. Our architecture mitigates this on three levels:
-            </p>
-            <ul>
-              <li><strong>90%+ Traffic Never Enters an Egyptian VPN Server:</strong> Streaming and general browsing exit at our Marseille Virtual Egypt hub in France—outside NTRA and Law 175 territorial jurisdiction.</li>
-              <li><strong>Cairo Relays are Destination-Allowlisted Gateways:</strong> Our Cairo Tier 2 nodes only forward encrypted HTTPS packets destined for whitelisted Egyptian bank ASNs and <code>.gov.eg</code> / <code>.com.eg</code> CIDRs. They cannot be used to browse the open web, post on social media, or commit cyber offenses inside Egypt.</li>
-              <li><strong>Zero PII on Cairo Nodes:</strong> Cairo relays run diskless in RAM (<code>tmpfs</code>) and authenticate packets via ephemeral cryptographic tokens issued by the offshore control plane.</li>
-            </ul>
-          </div>
-        </div>
-
-        <h3 style="margin: 1.25rem 0 0.75rem; font-size: 1.05rem;">7-Point Legal Questionnaire for Egyptian Telecom Counsel (Pre-Launch Gate)</h3>
-        <div class="table-container" style="margin-bottom: 1.25rem;">
-          <table>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Specific Legal Question for Counsel</th>
-                <th>Statutory Reference</th>
-                <th>Architectural / Operational Mitigation Built In</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Q1</strong></td>
-                <td>Does operating destination-restricted routing relays inside Cairo datacenters classify a foreign software company as a "Service Provider"?</td>
-                <td>Law 175 of 2018, Art. 1 & Art. 2 (180-day retention)</td>
-                <td>Marseille handles general internet access; Cairo relays only pass HTTPS traffic to whitelisted bank/gov IPs.</td>
-              </tr>
-              <tr>
-                <td><strong>Q2</strong></td>
-                <td>Does terminating encrypted AmneziaWG/WSS tunnels on a rented Cairo VPS require a separate NTRA permit, or does the licensed Cairo datacenter's license cover it?</td>
-                <td>Telecom Regulation Law No. 10 of 2003 (NTRA)</td>
-                <td>Contract only with NTRA-licensed Tier III enterprise hosts (Raya, LinkDC, Telecom Egypt).</td>
-              </tr>
-              <tr>
-                <td><strong>Q3</strong></td>
-                <td>When the contracting entity is a US LLC / UAE FZCO / UK Ltd with no Egyptian employees or office, how do obligations split between the foreign entity and local host?</td>
-                <td>Law 175 of 2018 & Conflict of Laws</td>
-                <td>All subscriber contracts, billing, and account databases reside exclusively on offshore cloud infrastructure.</td>
-              </tr>
-              <tr>
-                <td><strong>Q4</strong></td>
-                <td>Does Egypt's Personal Data Protection Law apply if no subscriber PII (names, emails, payment data) is ever transmitted to or stored on servers inside Egypt?</td>
-                <td>Data Protection Law No. 151 of 2020</td>
-                <td>Cairo relays only see rotating WireGuard public keys; user identity stays in offshore PostgreSQL.</td>
-              </tr>
-              <tr>
-                <td><strong>Q5</strong></td>
-                <td>What exact privacy policy wording satisfies both Apple/Google disclosure rules and Egyptian law without making false "100% anonymous" claims?</td>
-                <td>Consumer Protection & Apple Guideline 5.4</td>
-                <td>Publish a transparent, plain-language Privacy Policy stating zero browsing logs and exact session telemetry retained for fraud/abuse prevention.</td>
-              </tr>
-              <tr>
-                <td><strong>Q6</strong></td>
-                <td>What is the formal procedure if a Cairo hosting provider receives an NTRA or judicial inquiry regarding a specific static IP?</td>
-                <td>Law 175 of 2018, Art. 33</td>
-                <td>Strict outbound firewall (blocking SMTP, P2P, and non-whitelisted destinations) prevents abuse before it can occur.</td>
-              </tr>
-              <tr>
-                <td><strong>Q7</strong></td>
-                <td>When leasing static business IP blocks from an Egyptian ISP (WE / Vodafone / Orange) for dedicated 1:1 banking access, is a B2B remote-access rider required?</td>
-                <td>NTRA Commercial ISP Terms</td>
-                <td>Start Phase 0–1 on Cairo enterprise cloud VPS; transition Banking Tier to formal B2B ISP static subnets in Phase 2–3.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <h3 style="margin: 1.25rem 0 0.75rem; font-size: 1.05rem;">Store-Safe Marketing & Listing Copy Rules</h3>
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Forbidden Copy (Triggers Store Rejection or Legal Risk)</th>
-                <th>Approved ToS-Safe Copy (High Conversion & Compliant)</th>
-                <th>Why This Matters</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td style="color: var(--rose);">"Get cheap Egyptian prices on Netflix, Spotify & Steam"</td>
-                <td style="color: var(--emerald);">"Access your Egyptian digital subscriptions and local accounts while living or traveling abroad"</td>
-                <td>Both Apple & Google reject apps that promote circumventing third-party merchant regional pricing terms.</td>
-              </tr>
-              <tr>
-                <td style="color: var(--rose);">"Bypass Egyptian bank security & fraud checks"</td>
-                <td style="color: var(--emerald);">"A dedicated, clean Egyptian IP address recognized by your bank so your account isn't locked while abroad"</td>
-                <td>Positions the product as a legitimate security & continuity utility for expats rather than a bypass tool.</td>
-              </tr>
-              <tr>
-                <td style="color: var(--rose);">"Unblock any restricted streaming platform worldwide"</td>
-                <td style="color: var(--emerald);">"Stream Egyptian live TV, Ramadan series, and domestic football smoothly from anywhere"</td>
-                <td>Focuses on diaspora home-country connectivity in Arabic and English.</td>
-              </tr>
-              <tr>
-                <td style="color: var(--rose);">"100% anonymous darknet military-grade no-logs proxy"</td>
-                <td style="color: var(--emerald);">"Zero ad trackers, never sells your data, encrypted tunnel with clear privacy disclosures"</td>
-                <td>Complies with Google Play VpnService transparency rules and Apple Guideline 5.4.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- 05. STAGE 5: PERFORMANCE BENCHMARKS & SLA TARGETS -->
-      <section class="section-card" id="performance">
-        <div class="section-header">
-          <div>
-            <div class="section-kicker">Stage 5 · Network Engineering & QoS Benchmarks</div>
-            <h2 class="section-title">Vantage-Point Performance Targets & Submarine Cable Routing</h2>
-            <p class="section-desc">
-              Tested hourly across 7 days (with emphasis on the 20:00–23:00 Cairo evening peak) from cloud VMs and RIPE Atlas home probes in Dubai, Riyadh, Jeddah, Kuwait City, Frankfurt, London, and Virginia.
-            </p>
-          </div>
-        </div>
-
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Benchmark Metric</th>
-                <th>Test Methodology</th>
-                <th>Gulf Target (KSA / UAE / KW)</th>
-                <th>Europe Target (UK / DE / FR)</th>
-                <th>North America Target (US / CA)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Median Round-Trip Time (RTT)</strong></td>
-                <td>Hourly 100-packet <code>mtr</code> through tunnel at peak (20:00–23:00 EET)</td>
-                <td><strong>&le; 75 ms</strong> (via Red Sea / terrestrial or Marseille hairpin)</td>
-                <td><strong>&le; 80 ms</strong> (Marseille to Cairo is ~32 ms)</td>
-                <td><strong>&le; 185 ms</strong> (via London / Marseille transit)</td>
-              </tr>
-              <tr>
-                <td><strong>Packet Loss</strong></td>
-                <td>Continuous ICMP + UDP probe stream</td>
-                <td><strong>&lt; 0.5%</strong></td>
-                <td><strong>&lt; 0.5%</strong></td>
-                <td><strong>&lt; 1.0%</strong></td>
-              </tr>
-              <tr>
-                <td><strong>Sustained Throughput / User</strong></td>
-                <td><code>iperf3</code> 30-second run, 4 parallel streams</td>
-                <td><strong>&ge; 15 Mbps</strong> (Standard) · <strong>&ge; 5 Mbps</strong> (Banking)</td>
-                <td><strong>&ge; 15 Mbps</strong> (Standard) · <strong>&ge; 5 Mbps</strong> (Banking)</td>
-                <td><strong>&ge; 10 Mbps</strong> (Standard) · <strong>&ge; 5 Mbps</strong> (Banking)</td>
-              </tr>
-              <tr>
-                <td><strong>Time-to-Tunnel-Up</strong></td>
-                <td>In-app telemetry from tap to verified handshake</td>
-                <td><strong>&le; 2.0 s</strong> (AmneziaWG) · <strong>&le; 3.5 s</strong> (WSS Fallback)</td>
-                <td><strong>&le; 2.0 s</strong></td>
-                <td><strong>&le; 3.0 s</strong></td>
-              </tr>
-              <tr>
-                <td><strong>First-Attempt Connect Success</strong></td>
-                <td>Automated connect/disconnect cycle across carrier & Wi-Fi networks</td>
-                <td><strong>&ge; 98.5%</strong> (including STC, Mobily, e&, du 5G)</td>
-                <td><strong>&ge; 99.0%</strong></td>
-                <td><strong>&ge; 99.0%</strong></td>
-              </tr>
-              <tr>
-                <td><strong>60-Minute HD Stream Stability</strong></td>
-                <td>1080p HLS playback on Watch iT / ON Time Sports during evening peak</td>
-                <td><strong>0 drops / 0 buffering stalls</strong></td>
-                <td><strong>0 drops / 0 buffering stalls</strong></td>
-                <td><strong>&le; 1 rebuffer event</strong></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <!-- 06. STAGE 6: MARKET POSITIONING, ASO & PAID UA PLAN -->
-      <section class="section-card" id="market">
-        <div class="section-header">
-          <div>
-            <div class="section-kicker">Stage 6 · Go-To-Market & Diaspora Acquisition</div>
-            <h2 class="section-title">Positioning Angles, App Store Optimization (ASO) & $1,500 Paid Validation</h2>
-            <p class="section-desc">
-              Targeting Egyptians living in Saudi Arabia (1.47M), Kuwait (644K), UAE (~1M), Qatar, UK, Germany, US, and Canada—filtering store geo-targeting strictly to diaspora host countries rather than domestic Egypt.
-            </p>
-          </div>
-        </div>
-
-        <div class="grid-3" style="margin-bottom: 1.25rem;">
-          <div class="subcard">
-            <span class="pill pill-emerald" style="margin-bottom: 0.6rem;">Angle 1 · Highest LTV & Conversion</span>
-            <h3>"بنكك المصري من أي مكان"</h3>
-            <p><strong>Your Egyptian Bank, From Anywhere</strong></p>
-            <ul>
-              <li><strong>Hook:</strong> "تطبيق البنك الأهلي أو بنك مصر قفل حسابك وانت في السعودية أو الإمارات؟"</li>
-              <li><strong>Value Prop:</strong> Dedicated 1:1 Egyptian IP that belongs only to you—no shared VPN lockouts on NBE, CIB, Banque Misr, or InstaPay.</li>
-              <li><strong>Target Plan:</strong> Banking Plan ($8.99/mo or $59.99/yr).</li>
-            </ul>
-          </div>
-
-          <div class="subcard">
-            <span class="pill pill-blue" style="margin-bottom: 0.6rem;">Angle 2 · Year-Round Essential Utility</span>
-            <h3>"خلص ورق أهلك ومصالحك الحكومية"</h3>
-            <p><strong>Government Portals & Family Bills From Abroad</strong></p>
-            <ul>
-              <li><strong>Hook:</strong> "بوابة مصر الرقمية أو مخالفات المرور أو شحن خط وي وفودافون مش بيفتحوا برا مصر؟"</li>
-              <li><strong>Value Prop:</strong> One-tap access to <code>digital.gov.eg</code>, <code>ppo.gov.eg</code>, and My WE / Ana Vodafone with a live service status board.</li>
-              <li><strong>Target Plan:</strong> Standard ($4.99/mo) & Banking ($8.99/mo).</li>
-            </ul>
-          </div>
-
-          <div class="subcard">
-            <span class="pill pill-amber" style="margin-bottom: 0.6rem;">Angle 3 · Ramadan & Match-Day Spike</span>
-            <h3>"رمضان والدوري المصري زي ما في البيت"</h3>
-            <p><strong>Egyptian TV, Watch iT & Football Live</strong></p>
-            <ul>
-              <li><strong>Hook:</strong> "اتفرج على ماتشات الأهلي والزمالك ومسلسلات رمضان على Watch iT من غير تقطيع ولا إعلانات."</li>
-              <li><strong>Value Prop:</strong> 10 Gbps Marseille Virtual Egypt streaming servers with zero forced ads.</li>
-              <li><strong>Target Plan:</strong> Standard Plan ($4.99/mo) & Ramadan Seasonal Pass.</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="callout callout-blue">
-          <h3>$1,500 Paid Smoke Test Specification (3 Weeks · KSA, Kuwait, UAE)</h3>
-          <p>
-            <strong>Channel Split:</strong> Meta (Facebook & Instagram Reels targeting Arabic-speaking expats in KSA/UAE/KW) 50% ($750) · TikTok Spark Ads 30% ($450) · Google App Campaigns (searching <code>vpn مصر</code>, <code>ip مصري</code>, <code>تشغيل البنك الاهلي خارج مصر</code>, <code>مصر الرقمية من الخارج</code>) 20% ($300).<br/>
-            <strong>Kill / Scale Rules:</strong> Kill any ad creative exceeding <strong>$1.50 CPI</strong> after 1,000 impressions. Gate Pass Target: <strong>CPI &le; $0.80</strong> and <strong>Install-to-Trial &ge; 8%</strong> across 500+ installs.
-          </p>
-        </div>
-      </section>
-
-      <!-- 07. STAGE 7: INTERACTIVE UNIT ECONOMICS SIMULATOR -->
-      <section class="section-card" id="economics">
-        <div class="section-header">
-          <div>
-            <div class="section-kicker">Stage 7 · Financial Model & Sensitivity Analysis</div>
-            <h2 class="section-title">Interactive Unit Economics & Break-Even Simulator</h2>
-            <p class="section-desc">
-              Model monthly revenue, infrastructure scaling, net contribution margin, and CAC payback across Standard ($4.99/mo) and Banking Sticky-IP ($8.99/mo) tiers.
-            </p>
-          </div>
-        </div>
-
-        <div class="sim-grid">
-          <div class="subcard">
-            <h3 style="margin-bottom: 1rem;">Adjust Operating Assumptions</h3>
-
-            <div class="slider-group">
-              <div class="slider-header">
-                <label for="simSubs">Active Paying Subscribers</label>
-                <span class="slider-val" id="valSubs">1,000 payers</span>
+          <!-- Rival Timeline -->
+          <div class="space-y-2">
+            <div class="flex justify-between text-xs font-semibold">
+              <span class="text-rose-400">SWS "VPN Egypt" (v3.8.7.1)</span>
+              <span class="mono text-rose-400">6 Forced Ad Interruptions · Failed Login</span>
+            </div>
+            <div class="grid grid-cols-6 gap-1.5 text-center text-xs">
+              <div class="bg-rose-500/20 border border-rose-500/40 rounded-lg p-2 text-rose-200">
+                <div class="font-bold">0:00</div>
+                <div>App Open Ad</div>
               </div>
-              <input type="range" id="simSubs" min="100" max="10000" step="50" value="1000" />
-            </div>
-
-            <div class="slider-group">
-              <div class="slider-header">
-                <label for="simBankShare">Banking Tier Share ($8.99 Sticky IP vs $4.99 Standard)</label>
-                <span class="slider-val" id="valBankShare">45%</span>
+              <div class="bg-rose-500/20 border border-rose-500/40 rounded-lg p-2 text-rose-200">
+                <div class="font-bold">0:30</div>
+                <div>Pre-Connect Ad</div>
               </div>
-              <input type="range" id="simBankShare" min="10" max="90" step="5" value="45" />
-            </div>
-
-            <div class="slider-group">
-              <div class="slider-header">
-                <label for="simCpi">Paid Acquisition CPI (Gulf Diaspora)</label>
-                <span class="slider-val" id="valCpi">$0.80</span>
+              <div class="bg-amber-500/20 border border-amber-500/40 rounded-lg p-2 text-amber-200">
+                <div class="font-bold">1:10</div>
+                <div>14s OpenVPN</div>
               </div>
-              <input type="range" id="simCpi" min="0.30" max="2.50" step="0.05" value="0.80" />
-            </div>
-
-            <div class="slider-group">
-              <div class="slider-header">
-                <label for="simConv">Install-to-Paid Conversion Rate</label>
-                <span class="slider-val" id="valConv">5.0%</span>
+              <div class="bg-rose-500/20 border border-rose-500/40 rounded-lg p-2 text-rose-200">
+                <div class="font-bold">1:30</div>
+                <div>Connected Ad</div>
               </div>
-              <input type="range" id="simConv" min="2.0" max="12.0" step="0.5" value="5.0" />
+              <div class="bg-rose-500/30 border border-rose-500 rounded-lg p-2 text-white">
+                <div class="font-bold">2:15</div>
+                <div>Bank Blocked</div>
+              </div>
+              <div class="bg-rose-500/20 border border-rose-500/40 rounded-lg p-2 text-rose-200">
+                <div class="font-bold">3:00</div>
+                <div>Reconnect Ads</div>
+              </div>
             </div>
           </div>
 
-          <div class="kpi-grid" style="grid-template-columns: 1fr 1fr;">
-            <div class="kpi-card">
-              <div class="kpi-label">Gross Monthly Billing</div>
-              <div class="kpi-value" id="simGross">$6,790</div>
-              <div class="kpi-sub" id="simNetRev">Net after 15% store fee: $5,772</div>
+          <!-- Our Timeline -->
+          <div class="space-y-2 pt-2">
+            <div class="flex justify-between text-xs font-semibold">
+              <span class="text-emerald-400">Our App (AmneziaWG + Sticky 1:1 IP)</span>
+              <span class="mono text-emerald-400">1.6s Connect · Zero Ads · Bank Transfer Done</span>
             </div>
-            <div class="kpi-card">
-              <div class="kpi-label">Monthly Net Profit</div>
-              <div class="kpi-value" id="simProfit" style="color: var(--emerald);">+$3,190/mo</div>
-              <div class="kpi-sub" id="simContrib">Blended contribution: $4.24/user</div>
+            <div class="grid grid-cols-6 gap-1.5 text-center text-xs">
+              <div class="bg-emerald-500/20 border border-emerald-500/40 rounded-lg p-2 text-emerald-200">
+                <div class="font-bold">0:00</div>
+                <div>Instant Launch</div>
+              </div>
+              <div class="bg-emerald-500/20 border border-emerald-500/40 rounded-lg p-2 text-emerald-200">
+                <div class="font-bold">0:02</div>
+                <div>1.6s Tunnel Up</div>
+              </div>
+              <div class="bg-emerald-500/20 border border-emerald-500/40 rounded-lg p-2 text-emerald-200 col-span-4">
+                <div class="font-bold">0:03 – 5:00</div>
+                <div>Dedicated Sticky Cairo IP · NBE & Digital.gov.eg Verified</div>
+              </div>
             </div>
-            <div class="kpi-card">
-              <div class="kpi-label">Break-Even Subscribers</div>
-              <div class="kpi-value" id="simBreakeven">248 payers</div>
-              <div class="kpi-sub">Covers $1,050/mo fixed OpEx</div>
+          </div>
+
+          <!-- Score Meter Bars -->
+          <div class="space-y-3 pt-4 border-t border-white/[0.08]">
+            <div class="text-xs font-bold uppercase text-slate-400">Technical Vulnerability Breakdown</div>
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span>IPQualityScore Fraud Risk (Lower is cleaner)</span>
+                <span class="mono"><strong class="text-rose-400">SWS: 92/100</strong> vs <strong class="text-emerald-400">Ours: 12/100</strong></span>
+              </div>
+              <div class="h-2 bg-slate-800 rounded-full overflow-hidden flex">
+                <div class="bg-emerald-500 h-full" style="width: 12%"></div>
+                <div class="bg-rose-500/80 h-full ml-auto" style="width: 80%"></div>
+              </div>
             </div>
-            <div class="kpi-card">
-              <div class="kpi-label">CAC & Monthly Payback</div>
-              <div class="kpi-value" id="simPayback" style="color: var(--amber);">3.8 mos</div>
-              <div class="kpi-sub" id="simCac">CAC: $16.00 (Day 1 on Annual)</div>
+            <div>
+              <div class="flex justify-between text-xs mb-1">
+                <span>Ad & Tracker SDK Count (Exodus Privacy Scan)</span>
+                <span class="mono"><strong class="text-rose-400">SWS: 6 Trackers</strong> vs <strong class="text-emerald-400">Ours: 0 Trackers</strong></span>
+              </div>
+              <div class="h-2 bg-slate-800 rounded-full overflow-hidden">
+                <div class="bg-rose-500 h-full" style="width: 88%"></div>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="table-container" style="margin-top: 1.25rem;">
-          <table>
-            <thead>
-              <tr>
-                <th>Unit Cost Breakdown</th>
-                <th>Standard Plan ("Egypt Stream & Gov")</th>
-                <th>Banking Plan ("Dedicated Sticky 1:1 IP")</th>
-                <th>Annual Banking Bundle (Hero Offer)</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>Retail Price (Localized Tiers)</strong></td>
-                <td><strong>$4.99 / mo</strong> (18.99 SAR · 18.99 AED · €4.99)</td>
-                <td><strong>$8.99 / mo</strong> (34.99 SAR · 34.99 AED · €8.99)</td>
-                <td><strong>$59.99 / yr</strong> (229 SAR · $4.99/mo eq.)</td>
-              </tr>
-              <tr>
-                <td><strong>Net Revenue (after 15% Store Small Business Program)</strong></td>
-                <td>$4.24 / mo</td>
-                <td>$7.64 / mo</td>
-                <td>$50.99 upfront ($4.25/mo amortized)</td>
-              </tr>
-              <tr>
-                <td><strong>Server & Transit Cost per User</strong></td>
-                <td>$0.45 / mo (~12 GB on Marseille 10G hub)</td>
-                <td>$0.35 / mo (~1.5 GB Cairo relay + 10 GB Marseille)</td>
-                <td>$0.35 / mo</td>
-              </tr>
-              <tr>
-                <td><strong>Egyptian IP Lease & 25% Warm Reserve</strong></td>
-                <td>$0.08 / mo (shared pool, 100:1 ratio)</td>
-                <td><strong>$1.75 / mo</strong> (1:1 sticky IP + reserve buffer)</td>
-                <td>$1.75 / mo</td>
-              </tr>
-              <tr>
-                <td><strong>Support, Payment & Refund Allowance</strong></td>
-                <td>$0.25 / mo</td>
-                <td>$0.35 / mo</td>
-                <td>$0.30 / mo</td>
-              </tr>
-              <tr>
-                <td><strong>Net Contribution Margin per Payer</strong></td>
-                <td><strong style="color: var(--emerald);">$3.46 / mo (81.6%)</strong></td>
-                <td><strong style="color: var(--emerald);">$5.19 / mo (67.9%)</strong></td>
-                <td><strong style="color: var(--emerald);">+$25.19 net cash Day 1</strong> after full 12-mo infra reserve</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
+        <!-- Right: Static Decompilation & Manifest Findings -->
+        <div class="lg:col-span-6 bg-[#0f141d] border border-white/[0.08] rounded-2xl p-6 space-y-4">
+          <span class="text-xs font-bold uppercase tracking-wider text-sky-400">Decompiled APK Forensics (jadx + MobSF)</span>
+          <h3 class="text-lg font-bold text-white">What Lies Inside <code>free.vpnegypt.turbo...</code></h3>
 
-      <!-- 08. STAGE 9: FULL PRODUCT REQUIREMENTS DOCUMENT (PRD) -->
-      <section class="section-card" id="prd">
-        <div class="section-header">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div class="bg-[#161d2a] border border-white/[0.07] rounded-xl p-4 space-y-1.5">
+              <div class="text-xs font-bold text-rose-400 mono">1. de.blinkt.openvpn</div>
+              <div class="text-sm font-bold text-white">Legacy OpenVPN Wrapper</div>
+              <p class="text-xs text-slate-300">
+                Uses un-obfuscated OpenVPN TCP/UDP profiles fetched from a shared backend. Easily fingerprinted and throttled by Telecom Egypt and STC/e& DPI.
+              </p>
+            </div>
+
+            <div class="bg-[#161d2a] border border-white/[0.07] rounded-xl p-4 space-y-1.5">
+              <div class="text-xs font-bold text-rose-400 mono">2. READ_PHONE_STATE + AD_ID</div>
+              <div class="text-sm font-bold text-white">14 Manifest Permissions</div>
+              <p class="text-xs text-slate-300">
+                Requests invasive phone-state and advertising ID permissions to feed <strong>AdMob, Meta Audience Network, AppLovin, Unity Ads & IronSource</strong>.
+              </p>
+            </div>
+
+            <div class="bg-[#161d2a] border border-white/[0.07] rounded-xl p-4 space-y-1.5">
+              <div class="text-xs font-bold text-amber-400 mono">3. Dual-Stack IPv6 Leak</div>
+              <div class="text-sm font-bold text-white">Exposes Gulf Mobile IPs</div>
+              <p class="text-xs text-slate-300">
+                Does not blackhole <code>::/0</code> IPv6 traffic. On Saudi (STC) and UAE (e&) 5G networks, Egyptian bank apps immediately see the user's real Gulf IPv6 address.
+              </p>
+            </div>
+
+            <div class="bg-[#161d2a] border border-white/[0.07] rounded-xl p-4 space-y-1.5">
+              <div class="text-xs font-bold text-emerald-400 mono">4. Apple Guideline 5.4 Ban</div>
+              <div class="text-sm font-bold text-white">Why They Can't Ship on iOS</div>
+              <p class="text-xs text-slate-300">
+                Apple strictly forbids third-party ad networks and data brokers inside VPN apps. Our zero-ad subscription model unlocks the wealthy Gulf iOS market.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- X-RAY SUBVIEW 2: THE 15-APP CLONE FARM -->
+      <div id="xray-clones" class="xray-panel hidden bg-[#0f141d] border border-white/[0.08] rounded-2xl p-6 space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
-            <div class="section-kicker">Stage 9 · Complete Engineering Specification</div>
-            <h2 class="section-title">Full Product Requirements Document (Functional & Non-Functional)</h2>
-            <p class="section-desc">
-              Complete engineering requirements across Android (Kotlin), iOS (Swift), AmneziaWG/Stealth Data Plane, Offshore Control Plane API, and Synthetic Monitoring.
+            <h3 class="text-lg font-bold text-white">SWS Software Enterprise's Copy-Paste Portfolio</h3>
+            <p class="text-xs text-slate-400">Same APK binary, same ad waterfall, same broken servers—re-skinned with 15 different country flags.</p>
+          </div>
+          <span class="px-3 py-1 rounded-full bg-rose-500/15 text-rose-400 text-xs font-bold">Zero Egypt-Specific Engineering</span>
+        </div>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+          <div class="p-3 rounded-xl bg-rose-500/15 border border-rose-500/40">
+            <div class="text-xs font-bold text-rose-300">Target Competitor</div>
+            <div class="text-sm font-bold text-white mt-0.5">VPN Egypt</div>
+            <div class="text-xs text-slate-400 mono mt-1">1M+ · 3.8★</div>
+          </div>
+          <div class="p-3 rounded-xl bg-[#161d2a] border border-white/10">
+            <div class="text-xs text-slate-400">Clone #02</div>
+            <div class="text-sm font-bold text-white mt-0.5">VPN Korea</div>
+            <div class="text-xs text-slate-400 mono mt-1">Identical UI/SDKs</div>
+          </div>
+          <div class="p-3 rounded-xl bg-[#161d2a] border border-white/10">
+            <div class="text-xs text-slate-400">Clone #03</div>
+            <div class="text-sm font-bold text-white mt-0.5">VPN Indonesia</div>
+            <div class="text-xs text-slate-400 mono mt-1">Identical UI/SDKs</div>
+          </div>
+          <div class="p-3 rounded-xl bg-[#161d2a] border border-white/10">
+            <div class="text-xs text-slate-400">Clone #04</div>
+            <div class="text-sm font-bold text-white mt-0.5">VPN Malaysia</div>
+            <div class="text-xs text-slate-400 mono mt-1">Identical UI/SDKs</div>
+          </div>
+          <div class="p-3 rounded-xl bg-[#161d2a] border border-white/10">
+            <div class="text-xs text-slate-400">Clone #05</div>
+            <div class="text-sm font-bold text-white mt-0.5">VPN India</div>
+            <div class="text-xs text-slate-400 mono mt-1">Identical UI/SDKs</div>
+          </div>
+          <div class="p-3 rounded-xl bg-[#161d2a] border border-white/10">
+            <div class="text-xs text-slate-400">Clone #06</div>
+            <div class="text-sm font-bold text-white mt-0.5">VPN Germany</div>
+            <div class="text-xs text-slate-400 mono mt-1">Identical UI/SDKs</div>
+          </div>
+          <div class="p-3 rounded-xl bg-[#161d2a] border border-white/10">
+            <div class="text-xs text-slate-400">Clone #07</div>
+            <div class="text-sm font-bold text-white mt-0.5">VPN Canada</div>
+            <div class="text-xs text-slate-400 mono mt-1">Identical UI/SDKs</div>
+          </div>
+          <div class="p-3 rounded-xl bg-[#161d2a] border border-white/10">
+            <div class="text-xs text-slate-400">Clone #08</div>
+            <div class="text-sm font-bold text-white mt-0.5">VPN Russia</div>
+            <div class="text-xs text-slate-400 mono mt-1">Identical UI/SDKs</div>
+          </div>
+          <div class="p-3 rounded-xl bg-[#161d2a] border border-white/10">
+            <div class="text-xs text-slate-400">Clone #09</div>
+            <div class="text-sm font-bold text-white mt-0.5">VPN Japan</div>
+            <div class="text-xs text-slate-400 mono mt-1">Identical UI/SDKs</div>
+          </div>
+          <div class="p-3 rounded-xl bg-[#161d2a] border border-white/10">
+            <div class="text-xs text-slate-400">Clone #10–15</div>
+            <div class="text-sm font-bold text-white mt-0.5">Vietnam / Nigeria+</div>
+            <div class="text-xs text-slate-400 mono mt-1">Identical UI/SDKs</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- X-RAY SUBVIEW 3: ALL 5 RIVALS COMPARED -->
+      <div id="xray-matrix" class="xray-panel hidden bg-[#0f141d] border border-white/[0.08] rounded-2xl p-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <div class="bg-[#161d2a] border border-white/10 rounded-xl p-4 space-y-2">
+            <span class="text-xs font-bold text-rose-400 uppercase">Free Adware Clone</span>
+            <h4 class="text-base font-bold text-white">SWS VPN Egypt</h4>
+            <p class="text-xs text-slate-300">Overloaded VPS + EU fallback IPs. 30 ads/5m. Blocked by NBE, InstaPay & <code>digital.gov.eg</code>.</p>
+            <div class="pt-2 text-xs mono text-rose-400 font-bold">Unlock Score: 25%</div>
+          </div>
+
+          <div class="bg-[#161d2a] border border-white/10 rounded-xl p-4 space-y-2">
+            <span class="text-xs font-bold text-rose-400 uppercase">Peer-to-Peer Botnet</span>
+            <h4 class="text-base font-bold text-white">Hola VPN</h4>
+            <p class="text-xs text-slate-300">Routes strangers' traffic through users' phones. Unstable residential peers that drop mid-transaction.</p>
+            <div class="pt-2 text-xs mono text-amber-400 font-bold">Unlock Score: 45% (High Risk)</div>
+          </div>
+
+          <div class="bg-[#161d2a] border border-white/10 rounded-xl p-4 space-y-2">
+            <span class="text-xs font-bold text-amber-400 uppercase">Global Giants ($12/mo)</span>
+            <h4 class="text-base font-bold text-white">Express / Surfshark / CyberGhost</h4>
+            <p class="text-xs text-slate-300">Use <strong>Virtual Egypt servers in Europe</strong> on commercial VPN ASNs (M247). Shared by 10,000+ users → bank fraud lockouts.</p>
+            <div class="pt-2 text-xs mono text-amber-400 font-bold">Unlock Score: 58%</div>
+          </div>
+
+          <div class="bg-emerald-500/10 border-2 border-emerald-500 rounded-xl p-4 space-y-2">
+            <span class="text-xs font-bold text-emerald-400 uppercase">Our Specialist Product</span>
+            <h4 class="text-base font-bold text-white">Two-Tier Hybrid + 1:1 Sticky IP</h4>
+            <p class="text-xs text-slate-200">Marseille 10G Virtual Hub for streaming + <strong>1:1 Dedicated Cairo ISP IPs</strong> for banking & government portals.</p>
+            <div class="pt-2 text-xs mono text-emerald-400 font-bold">Target Unlock Score: 95%+</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         CHAPTER 3: INTERACTIVE NETWORK & DPI SIMULATOR
+         ========================================================= -->
+    <section id="chapter-2" class="chapter-view hidden space-y-6">
+      <div class="bg-[#0f141d] border border-white/[0.08] rounded-2xl p-6 space-y-6">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-white/[0.08] pb-4">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Stage 4 & 5 · Interactive Topology & Packet Simulator</span>
+            <h2 class="text-2xl font-extrabold text-white mt-0.5">Two-Tier Hybrid Network: Marseille 10G Hub + Cairo Sticky Relays</h2>
+            <p class="text-xs text-slate-300 mt-1">
+              Click a traffic scenario below to watch how packets flow across the Mediterranean and how we defeat both Law 175 and Telecom Egypt DPI.
             </p>
           </div>
+          <!-- Scenario Switcher -->
+          <div class="flex flex-wrap gap-2 shrink-0">
+            <button type="button" data-flow="banking" class="flow-btn pressable px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950">
+              Scenario A: Banking & .gov.eg (Sticky 1:1)
+            </button>
+            <button type="button" data-flow="streaming" class="flow-btn pressable px-3.5 py-2 rounded-xl text-xs font-bold bg-[#161d2a] text-slate-300 border border-white/10">
+              Scenario B: Watch iT 1080p (Marseille 10G)
+            </button>
+            <button type="button" data-flow="dpi" class="flow-btn pressable px-3.5 py-2 rounded-xl text-xs font-bold bg-[#161d2a] text-slate-300 border border-white/10">
+              Scenario C: Gulf & Egypt DPI Attack Test
+            </button>
+          </div>
         </div>
 
-        <div class="filter-bar" id="prdFilters">
-          <button type="button" class="filter-btn active" data-prd="all">All Requirements (16)</button>
-          <button type="button" class="filter-btn" data-prd="client">Client Apps (Android & iOS)</button>
-          <button type="button" class="filter-btn" data-prd="network">Tunnel, DPI & Security</button>
-          <button type="button" class="filter-btn" data-prd="backend">Backend, IP Pool & Billing</button>
+        <!-- Animated SVG Architecture Map -->
+        <div class="bg-[#090d14] border border-white/10 rounded-2xl p-4 sm:p-6 overflow-x-auto">
+          <svg viewBox="0 0 1000 310" class="w-full min-w-[720px] h-auto" aria-label="Interactive Hybrid Network Map">
+            <defs>
+              <linearGradient id="emeraldGrad" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stop-color="#10b981" stop-opacity="0.2" />
+                <stop offset="100%" stop-color="#10b981" stop-opacity="0.9" />
+              </linearGradient>
+            </defs>
+
+            <!-- Jurisdiction Zones -->
+            <rect x="15" y="15" width="220" height="280" rx="14" fill="#111827" stroke="rgba(255,255,255,0.08)" />
+            <text x="30" y="40" fill="#94a3b8" font-size="11" font-weight="700">DIASPORA USER (KSA / UAE / UK)</text>
+
+            <rect x="275" y="15" width="320" height="280" rx="14" fill="#0f1f1c" stroke="rgba(16,185,129,0.28)" />
+            <text x="292" y="40" fill="#34d399" font-size="11" font-weight="700">EU OFFSHORE SHIELD (ZERO EG JURISDICTION)</text>
+
+            <rect x="635" y="15" width="350" height="280" rx="14" fill="#181824" stroke="rgba(245,158,11,0.25)" />
+            <text x="652" y="40" fill="#fbbf24" font-size="11" font-weight="700">CAIRO ORIGIN & ALLOWLISTED RELAY ZONE</text>
+
+            <!-- Animated Connection Paths -->
+            <!-- Path 1: User to Marseille -->
+            <path id="svgPathUserToMrs" d="M 215 155 L 300 115" stroke="#10b981" stroke-width="3.5" fill="none" class="packet-line-fast" />
+            <!-- Path 2: Marseille to Streaming CDN -->
+            <path id="svgPathMrsToStream" d="M 565 105 L 665 95" stroke="#38bdf8" stroke-width="3" fill="none" class="packet-line" opacity="0.35" />
+            <!-- Path 3: Marseille/User to Cairo Sticky Relay -->
+            <path id="svgPathToCairoRelay" d="M 565 130 L 665 205" stroke="#10b981" stroke-width="3.5" fill="none" class="packet-line-fast" />
+            <!-- Path 4: Local Split Tunnel Bypass -->
+            <path id="svgPathLocalSplit" d="M 125 205 L 125 255" stroke="#64748b" stroke-width="2" stroke-dasharray="4 4" fill="none" />
+
+            <!-- Node 1: Mobile Client -->
+            <rect x="35" y="95" width="180" height="110" rx="12" fill="#161f30" stroke="#38bdf8" stroke-width="1.5" />
+            <text x="50" y="122" fill="#ffffff" font-size="13" font-weight="700">Mobile App Client</text>
+            <text x="50" y="142" fill="#38bdf8" font-size="11" font-family="monospace">AmneziaWG + WSS:443</text>
+            <text x="50" y="162" fill="#cbd5e1" font-size="11">• IPv6 ::/0 Sinkholed</text>
+            <text x="50" y="180" fill="#cbd5e1" font-size="11">• Smart App Split-Tunnel</text>
+
+            <!-- Local Split Box -->
+            <rect x="45" y="245" width="160" height="34" rx="8" fill="#0d131f" stroke="rgba(255,255,255,0.1)" />
+            <text x="60" y="266" fill="#94a3b8" font-size="10">WhatsApp & Gulf Banks → Local</text>
+
+            <!-- Node 2: Marseille Tier 1 Hub -->
+            <rect x="300" y="65" width="265" height="115" rx="12" fill="#132a25" stroke="#10b981" stroke-width="2" />
+            <text x="318" y="92" fill="#ffffff" font-size="13" font-weight="700">Tier 1: Marseille Virtual Egypt</text>
+            <text x="318" y="112" fill="#34d399" font-size="11" font-family="monospace">Geo-EG /24 · 10 Gbps Unmetered</text>
+            <text x="318" y="132" fill="#e2e8f0" font-size="11">• 28ms to Alexandria (TE North cable)</text>
+            <text x="318" y="150" fill="#e2e8f0" font-size="11">• 100% immune to Egypt Law 175</text>
+
+            <!-- Offshore Control Plane -->
+            <rect x="300" y="200" width="265" height="75" rx="10" fill="#141c2b" stroke="rgba(255,255,255,0.14)" />
+            <text x="318" y="225" fill="#ffffff" font-size="12" font-weight="700">Offshore Control Plane & 15m Probes</text>
+            <text x="318" y="244" fill="#94a3b8" font-size="11">US LLC / UAE FZCO · RevenueCat · Live Status</text>
+            <text x="318" y="261" fill="#38bdf8" font-size="10" font-family="monospace">25% Warm IP Reserve Auto-Rotation</text>
+
+            <!-- Node 3A: Streaming Target -->
+            <rect x="665" y="60" width="295" height="78" rx="12" fill="#161f30" stroke="rgba(56,189,248,0.4)" />
+            <text x="682" y="85" fill="#ffffff" font-size="13" font-weight="700">Watch iT / ON Time Sports / Shahid</text>
+            <text x="682" y="105" fill="#38bdf8" font-size="11" font-family="monospace">Direct 10Gbps Egress from Marseille</text>
+            <text x="682" y="123" fill="#94a3b8" font-size="11">Full HD/4K streaming without Cairo VPS lag</text>
+
+            <!-- Node 3B: Cairo Tier 2 Sticky Relay -->
+            <rect id="svgCairoBox" x="665" y="160" width="295" height="115" rx="12" fill="#231f17" stroke="#f59e0b" stroke-width="2" />
+            <text x="682" y="186" fill="#ffffff" font-size="13" font-weight="700">Tier 2: Cairo Sticky 1:1 ISP Relay</text>
+            <text x="682" y="205" fill="#fbbf24" font-size="11" font-family="monospace">Raya AS24835 / LinkDC / WE AS8452</text>
+            <text x="682" y="225" fill="#f1f5f9" font-size="11">• Diskless RAM-only (tmpfs) · Zero PII</text>
+            <text x="682" y="243" fill="#f1f5f9" font-size="11">• nftables Allowlist: Only Banks & .gov.eg</text>
+            <text x="682" y="261" fill="#34d399" font-size="11" font-weight="700">→ Unlocks NBE, CIB, InstaPay, digital.gov.eg</text>
+          </svg>
         </div>
 
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Req ID</th>
-                <th>Domain</th>
-                <th>Requirement Title</th>
-                <th>Detailed Technical Specification & Acceptance Criteria</th>
-                <th>Priority</th>
-              </tr>
-            </thead>
-            <tbody id="prdTableBody"></tbody>
-          </table>
+        <!-- Dynamic Scenario Explanation Cards -->
+        <div id="flowDetailCards" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <!-- Populated by JS -->
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- 09. 12-WEEK ROADMAP -->
-      <section class="section-card" id="roadmap">
-        <div class="section-header">
+    <!-- =========================================================
+         CHAPTER 4: LEGAL SHIELD & STORE COMPLIANCE (INTERACTIVE)
+         ========================================================= -->
+    <section id="chapter-3" class="chapter-view hidden space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Left 5 Cols: Corporate & Store Requirements Blueprint -->
+        <div class="lg:col-span-5 bg-[#0f141d] border border-white/[0.08] rounded-2xl p-6 space-y-5">
           <div>
-            <div class="section-kicker">Execution Plan · 12-Week Sprint Architecture</div>
-            <h2 class="section-title">Phased Build, Validation & Launch Roadmap</h2>
-            <p class="section-desc">
-              Structured with strict Go/No-Go gates so zero capital is wasted on scaling before IP cleanliness, legal sign-off, and Gulf DPI resilience are empirically proven.
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Corporate & Store Gate</span>
+            <h2 class="text-xl font-extrabold text-white mt-0.5">Mandatory Offshore Entity & Store Setup</h2>
+            <p class="text-xs text-slate-300 mt-1">
+              Both Apple and Google reject individual accounts for commercial VPN apps. Set up the offshore entity before writing client code.
             </p>
           </div>
+
+          <div class="space-y-3">
+            <div class="p-4 rounded-xl bg-[#161d2a] border border-white/10 space-y-1">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-emerald-400 uppercase">Step 1 · Incorporation</span>
+                <span class="mono text-xs text-slate-400">Week 1</span>
+              </div>
+              <div class="text-sm font-bold text-white">US Delaware LLC, UK Ltd, or UAE FZCO + D-U-N-S</div>
+              <p class="text-xs text-slate-300">
+                Isolates subscriber contracts, RevenueCat billing, and user authentication outside Egyptian jurisdiction while providing the D-U-N-S number required by Apple and Google.
+              </p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-[#161d2a] border border-white/10 space-y-1">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-sky-400 uppercase">Step 2 · Apple Guideline 5.4</span>
+                <span class="mono text-xs text-slate-400">Organization Only</span>
+              </div>
+              <div class="text-sm font-bold text-white">NEPacketTunnelProvider + In-App Privacy Screen</div>
+              <p class="text-xs text-slate-300">
+                Must enroll as an Organization, declare data collection on a pre-purchase screen, and strictly prohibit third-party data sharing or ad SDKs.
+              </p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-[#161d2a] border border-white/10 space-y-1">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold text-amber-400 uppercase">Step 3 · Google Play Verified Badge</span>
+                <span class="mono text-xs text-slate-400">Trust Moat</span>
+              </div>
+              <div class="text-sm font-bold text-white">VpnService Declaration Video + MASA Level 2</div>
+              <p class="text-xs text-slate-300">
+                Submit the <code>VpnService</code> video declaration at launch. At 10K installs & 90 days, complete the MASA Level 2 audit to earn Play's <strong>Verified VPN</strong> shield.
+              </p>
+            </div>
+          </div>
+
+          <!-- Store Copy Toggle -->
+          <div class="pt-3 border-t border-white/[0.08]">
+            <div class="text-xs font-bold uppercase text-slate-400 mb-2">ToS-Safe Store Listing Copy Rules</div>
+            <div class="space-y-2 text-xs">
+              <div class="p-2.5 rounded-lg bg-rose-500/10 border border-rose-500/25 text-rose-200">
+                <strong>NEVER SAY:</strong> "Get cheap Egyptian Netflix/Spotify" or "Bypass bank fraud security"
+              </div>
+              <div class="p-2.5 rounded-lg bg-emerald-500/10 border border-emerald-500/25 text-emerald-200">
+                <strong>ALWAYS SAY:</strong> "A dedicated Egyptian IP your bank recognizes while abroad" & "Access Egyptian TV & government portals"
+              </div>
+            </div>
+          </div>
         </div>
 
-        <div class="roadmap-grid">
-          <div class="phase-card p1">
-            <span class="pill pill-amber" style="margin-bottom: 0.6rem;">Weeks 1–2 · Phase 0</span>
-            <h3>Validation, IP Audit & Legal Gate</h3>
-            <ul style="padding-left: 1.15rem; font-size: 0.84rem; color: var(--text-secondary);">
-              <li>Run Play/App Store review scraper across top 6 Egypt VPN competitors.</li>
-              <li>Rent 5 candidate IPs (LightNode Cairo, LinkDC, IT EGY, Raya, Marseille Geo-EG).</li>
-              <li>Execute Stage 2 Unlock Matrix from KSA, UAE, UK, and US across 10 Egyptian services.</li>
-              <li>Obtain written Egyptian telecom legal opinion on the 7 Stage 4 questions.</li>
-              <li>Complete offshore LLC/FZCO + D-U-N-S verification for Apple & Google Play.</li>
-            </ul>
+        <!-- Right 7 Cols: Interactive 7 Lawyer Questions & Law 175 Solutions -->
+        <div class="lg:col-span-7 bg-[#0f141d] border border-white/[0.08] rounded-2xl p-6 space-y-4">
+          <div class="flex items-center justify-between">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider text-amber-400">Egypt Law 175 of 2018 & Law 151 of 2020</span>
+              <h2 class="text-xl font-extrabold text-white mt-0.5">7 Legal Questions & Built-In Architectural Shields</h2>
+            </div>
+            <span class="text-xs text-slate-400 hidden sm:inline">Click any card to inspect mitigation</span>
           </div>
 
-          <div class="phase-card p2">
-            <span class="pill pill-blue" style="margin-bottom: 0.6rem;">Weeks 3–5 · Phase 1</span>
-            <h3>Hybrid Infra & Control Plane</h3>
-            <ul style="padding-left: 1.15rem; font-size: 0.84rem; color: var(--text-secondary);">
-              <li>Build Ansible playbooks for Ubuntu 24.04 nodes with AmneziaWG + WSS (TLS 443) fallback.</li>
-              <li>Configure diskless RAM-only Cairo relays with <code>nftables</code> banking/<code>.gov.eg</code> allowlists.</li>
-              <li>Build Control Plane API (FastAPI/Go + Postgres) for 1:1 sticky IP binding & reserve rotation.</li>
-              <li>Deploy 15-minute synthetic Playwright probes feeding the Live Service Status API.</li>
-            </ul>
-          </div>
-
-          <div class="phase-card p3">
-            <span class="pill pill-green" style="margin-bottom: 0.6rem;">Weeks 6–8 · Phase 2</span>
-            <h3>Android Client MVP & Security</h3>
-            <ul style="padding-left: 1.15rem; font-size: 0.84rem; color: var(--text-secondary);">
-              <li>Ship Kotlin Jetpack Compose client with Arabic-first RTL UI and English toggle.</li>
-              <li>Implement 1-tap "Egyptian Apps Only" Split-Tunnel preset & strict IPv6 <code>::/0</code> sinkhole.</li>
-              <li>Add Pre-Flight Banking Readiness Check & self-serve "Swap My Sticky IP" button.</li>
-              <li>Verify 0 trackers / 0 high findings in MobSF & Exodus Privacy; record Play <code>VpnService</code> video.</li>
-            </ul>
-          </div>
-
-          <div class="phase-card p4">
-            <span class="pill pill-purple" style="margin-bottom: 0.6rem;">Weeks 9–12 · Phase 3 & 4</span>
-            <h3>Gulf Beta, Paid UA & iOS Port</h3>
-            <ul style="padding-left: 1.15rem; font-size: 0.84rem; color: var(--text-secondary);">
-              <li>Run 4-week closed beta with 150–200 Egyptian expats in KSA, Kuwait, and UAE.</li>
-              <li>Execute $1,500 paid acquisition test across Meta, TikTok, and Google App Campaigns.</li>
-              <li>Turn on RevenueCat localized SAR/AED/KWD/USD billing in Week 10 to measure conversion.</li>
-              <li>Ship Swift iOS client (<code>NEPacketTunnelProvider</code>) & initiate MASA Level 2 audit for Play Verified badge.</li>
-            </ul>
+          <div class="space-y-2.5" id="lawyerAccordion">
+            <!-- Populated by JS -->
           </div>
         </div>
-      </section>
 
-      <!-- 10. SUCCESS SCORECARD -->
-      <section class="section-card" id="scorecard">
-        <div class="section-header">
+      </div>
+    </section>
+
+    <!-- =========================================================
+         CHAPTER 5: INTERACTIVE FINANCIAL & UNIT ECONOMICS MODEL
+         ========================================================= -->
+    <section id="chapter-4" class="chapter-view hidden space-y-6">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+        <!-- Left 5 Cols: Interactive Sliders & Pricing Tiers -->
+        <div class="lg:col-span-5 bg-[#0f141d] border border-white/[0.08] rounded-2xl p-6 space-y-5">
           <div>
-            <div class="section-kicker">Stage 10 · Final Release Gate</div>
-            <h2 class="section-title">External Go / No-Go Launch Scorecard</h2>
-            <p class="section-desc">
-              Public commercial scale-up is triggered only when all 12 externally verifiable metrics below pass.
-            </p>
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Stage 7 · Live Financial Model</span>
+            <h2 class="text-xl font-extrabold text-white mt-0.5">Unit Economics & Break-Even Lab</h2>
+            <p class="text-xs text-slate-400 mt-1">Drag the sliders to stress-test subscriber scale, plan mix, and Gulf ad acquisition costs.</p>
+          </div>
+
+          <div class="space-y-4 bg-[#161d2a] border border-white/10 rounded-xl p-4">
+            <div>
+              <div class="flex justify-between text-xs font-semibold mb-1.5">
+                <label for="finSubs" class="text-slate-200">Active Paying Subscribers</label>
+                <span id="finSubsVal" class="mono text-emerald-400 font-bold">1,200 payers</span>
+              </div>
+              <input id="finSubs" type="range" min="100" max="10000" step="50" value="1200" class="w-full" />
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs font-semibold mb-1.5">
+                <label for="finMix" class="text-slate-200">Banking Tier Mix ($8.99 Sticky vs $4.99 Std)</label>
+                <span id="finMixVal" class="mono text-emerald-400 font-bold">50%</span>
+              </div>
+              <input id="finMix" type="range" min="10" max="90" step="5" value="50" class="w-full" />
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs font-semibold mb-1.5">
+                <label for="finCpi" class="text-slate-200">Paid Ad Cost Per Install (KSA / UAE / KW)</label>
+                <span id="finCpiVal" class="mono text-emerald-400 font-bold">$0.80</span>
+              </div>
+              <input id="finCpi" type="range" min="0.30" max="2.50" step="0.05" value="0.80" class="w-full" />
+            </div>
+
+            <div>
+              <div class="flex justify-between text-xs font-semibold mb-1.5">
+                <label for="finConv" class="text-slate-200">Install-to-Paid Conversion Rate</label>
+                <span id="finConvVal" class="mono text-emerald-400 font-bold">5.0%</span>
+              </div>
+              <input id="finConv" type="range" min="2.0" max="12.0" step="0.5" value="5.0" class="w-full" />
+            </div>
+          </div>
+
+          <!-- 3 Pricing Tier Cards -->
+          <div class="space-y-2.5">
+            <div class="text-xs font-bold uppercase text-slate-400">Localized Store Pricing Architecture</div>
+            <div class="grid grid-cols-3 gap-2.5 text-xs">
+              <div class="p-3 rounded-xl bg-[#161d2a] border border-white/10">
+                <div class="text-slate-400 font-semibold">Standard</div>
+                <div class="text-lg font-extrabold text-white mono mt-0.5">$4.99<span class="text-xs font-normal">/mo</span></div>
+                <div class="text-xs text-slate-400 mt-0.5">18.99 SAR/AED</div>
+                <div class="text-xs text-emerald-400 font-semibold mt-1.5">+$3.46 net/mo</div>
+              </div>
+              <div class="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/40">
+                <div class="text-emerald-400 font-bold">Banking 1:1</div>
+                <div class="text-lg font-extrabold text-white mono mt-0.5">$8.99<span class="text-xs font-normal">/mo</span></div>
+                <div class="text-xs text-slate-300 mt-0.5">34.99 SAR/AED</div>
+                <div class="text-xs text-emerald-400 font-semibold mt-1.5">+$5.19 net/mo</div>
+              </div>
+              <div class="p-3 rounded-xl bg-[#161d2a] border border-amber-500/40">
+                <div class="text-amber-400 font-bold">Annual Hero</div>
+                <div class="text-lg font-extrabold text-white mono mt-0.5">$59.99<span class="text-xs font-normal">/yr</span></div>
+                <div class="text-xs text-slate-300 mt-0.5">229 SAR upfront</div>
+                <div class="text-xs text-amber-300 font-semibold mt-1.5">Day-1 Payback</div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Verification Dimension</th>
-                <th>External Judge / Measurement Tool</th>
-                <th>Mandatory Pass Target</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><strong>01</strong></td>
-                <td><strong>Geolocation Accuracy</strong></td>
-                <td>MaxMind GeoIP2, IP2Location, ipinfo.io, DB-IP</td>
-                <td><strong>4 of 4 databases report Egypt (EG)</strong> across 100% of Tier 1 and Tier 2 IPs</td>
-              </tr>
-              <tr>
-                <td><strong>02</strong></td>
-                <td><strong>IP Fraud & VPN Reputation</strong></td>
-                <td>IPQualityScore (IPQS) & Scamalytics</td>
-                <td><strong>IPQS Fraud Score &lt; 25</strong> and <code>vpn: false</code> on 100% of Banking Tier sticky IPs</td>
-              </tr>
-              <tr>
-                <td><strong>03</strong></td>
-                <td><strong>Service Unlock Rate</strong></td>
-                <td>Logged Stage 2 Matrix (10 Egyptian services × 4 countries)</td>
-                <td><strong>&ge; 92% Pass Rate</strong> (and &ge; 25 percentage points above SWS VPN Egypt)</td>
-              </tr>
-              <tr>
-                <td><strong>04</strong></td>
-                <td><strong>Evening Peak Latency</strong></td>
-                <td>Hourly <code>mtr</code> from Gulf, Europe, and US vantage points</td>
-                <td>Gulf <strong>&le; 75 ms</strong> · Europe <strong>&le; 80 ms</strong> · US <strong>&le; 185 ms</strong> at 20:00–23:00 Cairo time</td>
-              </tr>
-              <tr>
-                <td><strong>05</strong></td>
-                <td><strong>DPI Survival & Connect Reliability</strong></td>
-                <td>Client telemetry on STC, Mobily, e&, du, and WE networks</td>
-                <td><strong>&ge; 98.5% connection success</strong> via AmneziaWG or automatic WSS TCP 443 fallback</td>
-              </tr>
-              <tr>
-                <td><strong>06</strong></td>
-                <td><strong>Zero Leak Verification</strong></td>
-                <td>dnsleaktest.com, browserleaks.com/webrtc, test-ipv6.com</td>
-                <td><strong>0 DNS leaks, 0 WebRTC leaks, 0 dual-stack IPv6 leaks</strong></td>
-              </tr>
-              <tr>
-                <td><strong>07</strong></td>
-                <td><strong>Security & Privacy Hygiene</strong></td>
-                <td>MobSF static/dynamic scan & Exodus Privacy</td>
-                <td><strong>0 high-severity findings · 0 ad/behavioral trackers · 0 dangerous phone-state permissions</strong></td>
-              </tr>
-              <tr>
-                <td><strong>08</strong></td>
-                <td><strong>Cohort Retention</strong></td>
-                <td>Google Play Console closed beta cohorts</td>
-                <td><strong>D1 &ge; 40% · D7 &ge; 20% · D30 &ge; 10%</strong></td>
-              </tr>
-              <tr>
-                <td><strong>09</strong></td>
-                <td><strong>App Vitals & Stability</strong></td>
-                <td>Google Play Console Android Vitals</td>
-                <td>Crash rate <strong>&lt; 0.8%</strong> · ANR rate <strong>&lt; 0.25%</strong></td>
-              </tr>
-              <tr>
-                <td><strong>10</strong></td>
-                <td><strong>Subscriber Refund Rate</strong></td>
-                <td>Google Play & App Store financial reports</td>
-                <td><strong>&lt; 5.0%</strong> of paid conversions</td>
-              </tr>
-              <tr>
-                <td><strong>11</strong></td>
-                <td><strong>User Sentiment & Review Quality</strong></td>
-                <td>Coded beta feedback & store reviews</td>
-                <td><strong>&ge; 4.4 ★ average</strong>; "doesn't connect" &lt; 5% of mentions; zero ad complaints</td>
-              </tr>
-              <tr>
-                <td><strong>12</strong></td>
-                <td><strong>Unit Economics & Legal Clearance</strong></td>
-                <td>Paid UA test in KSA/UAE/KW + Telecom Lawyer Opinion</td>
-                <td><strong>CPI &le; $0.80 · CAC Payback &lt; 6 mos</strong> · All 7 legal questions cleared in writing</td>
-              </tr>
-            </tbody>
-          </table>
+        <!-- Right 7 Cols: Live Financial Output & Visual Waterfall -->
+        <div class="lg:col-span-7 bg-[#0f141d] border border-white/[0.08] rounded-2xl p-6 flex flex-col justify-between space-y-6">
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div class="bg-[#161d2a] border border-white/10 rounded-xl p-4">
+              <div class="text-xs text-slate-400">Gross Monthly Billing</div>
+              <div id="outGrossBilling" class="text-2xl font-extrabold text-white mono mt-1">$8,388</div>
+              <div id="outNetStore" class="text-xs text-slate-400 mt-1">After 15% fee: $7,130</div>
+            </div>
+            <div class="bg-[#161d2a] border border-white/10 rounded-xl p-4">
+              <div class="text-xs text-slate-400">Monthly Net Profit</div>
+              <div id="outMonthlyProfit" class="text-2xl font-extrabold text-emerald-400 mono mt-1">+$4,140</div>
+              <div id="outBlendedMargin" class="text-xs text-emerald-300 mt-1">Contrib: $4.33/user</div>
+            </div>
+            <div class="bg-[#161d2a] border border-white/10 rounded-xl p-4">
+              <div class="text-xs text-slate-400">Break-Even Point</div>
+              <div id="outBreakevenSubs" class="text-2xl font-extrabold text-white mono mt-1">243</div>
+              <div class="text-xs text-slate-400 mt-1">Fixed OpEx: $1,050/mo</div>
+            </div>
+            <div class="bg-[#161d2a] border border-white/10 rounded-xl p-4">
+              <div class="text-xs text-slate-400">CAC & Payback</div>
+              <div id="outPaybackMonths" class="text-2xl font-extrabold text-amber-400 mono mt-1">3.7 mos</div>
+              <div id="outCacValue" class="text-xs text-slate-300 mt-1">CAC: $16.00</div>
+            </div>
+          </div>
+
+          <!-- Visual Revenue vs Cost Breakdown Bars -->
+          <div class="bg-[#141b28] border border-white/[0.07] rounded-xl p-5 space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase tracking-wider text-slate-300">Monthly Cashflow Allocation Waterfall</span>
+              <span id="outProfitMarginPct" class="mono text-xs font-bold text-emerald-400">49.4% Net Operating Margin</span>
+            </div>
+
+            <div class="space-y-3 text-xs">
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="text-slate-300">App Store / Play Commission (15% Small Business Program)</span>
+                  <span id="barStoreFeeText" class="mono text-slate-300">$1,258</span>
+                </div>
+                <div class="h-2.5 bg-slate-800 rounded-full overflow-hidden">
+                  <div id="barStoreFee" class="bg-slate-500 h-full" style="width: 15%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="text-slate-300">Variable Infra, 1:1 Sticky Cairo IPs & Support</span>
+                  <span id="barVarCostText" class="mono text-amber-300">$1,938</span>
+                </div>
+                <div class="h-2.5 bg-slate-800 rounded-full overflow-hidden">
+                  <div id="barVarCost" class="bg-amber-500 h-full" style="width: 23%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="text-slate-300">Fixed Base OpEx (Marseille 10G + Control Plane + ipinfo + Legal)</span>
+                  <span class="mono text-sky-300">$1,050</span>
+                </div>
+                <div class="h-2.5 bg-slate-800 rounded-full overflow-hidden">
+                  <div id="barFixedCost" class="bg-sky-500 h-full" style="width: 13%"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="text-emerald-400 font-bold">Net Operating Profit (Before Reinvested UA)</span>
+                  <span id="barNetProfitText" class="mono text-emerald-400 font-bold">+$4,140</span>
+                </div>
+                <div class="h-3 bg-slate-800 rounded-full overflow-hidden">
+                  <div id="barNetProfit" class="bg-emerald-500 h-full" style="width: 49%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Paid UA Test Box -->
+          <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="space-y-0.5">
+              <div class="text-xs font-bold text-emerald-400 uppercase">Stage 6 · $1,500 Paid Acquisition Smoke Test</div>
+              <p class="text-xs text-slate-200">
+                3 weeks in KSA, Kuwait & UAE (50% Meta Reels, 30% TikTok, 20% Google App Campaigns). Kill any creative &gt; $1.50 CPI after 1,000 impressions.
+              </p>
+            </div>
+            <span class="px-3 py-1.5 rounded-lg bg-emerald-500 text-slate-950 font-bold text-xs mono shrink-0">
+              Target: ≤ $0.80 CPI
+            </span>
+          </div>
         </div>
-      </section>
 
-    </main>
-  </div>
+      </div>
+    </section>
 
-  <footer class="footer">
-    Egyptian Inbound VPN — Decision-Ready Master Blueprint · Prepared Oct 20, 2026 · Complete Research, Competitor Teardown, Hybrid Network Architecture & PRD
+    <!-- =========================================================
+         CHAPTER 6: INTERACTIVE 12-WEEK ROADMAP, PRD & SCORECARD
+         ========================================================= -->
+    <section id="chapter-5" class="chapter-view hidden space-y-6">
+
+      <!-- Interactive 4-Phase Sprint Selector -->
+      <div class="bg-[#0f141d] border border-white/[0.08] rounded-2xl p-6 space-y-5">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-400">Stage 9 · Execution Plan & PRD</span>
+            <h2 class="text-2xl font-extrabold text-white mt-0.5">12-Week Phased Roadmap & Gate Milestones</h2>
+          </div>
+          <div class="flex flex-wrap gap-1.5" id="phaseTabs">
+            <button type="button" data-phase="0" class="phase-btn pressable px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950">
+              Phase 0 · Weeks 1–2
+            </button>
+            <button type="button" data-phase="1" class="phase-btn pressable px-3.5 py-2 rounded-xl text-xs font-bold bg-[#161d2a] text-slate-300 border border-white/10">
+              Phase 1 · Weeks 3–5
+            </button>
+            <button type="button" data-phase="2" class="phase-btn pressable px-3.5 py-2 rounded-xl text-xs font-bold bg-[#161d2a] text-slate-300 border border-white/10">
+              Phase 2 · Weeks 6–8
+            </button>
+            <button type="button" data-phase="3" class="phase-btn pressable px-3.5 py-2 rounded-xl text-xs font-bold bg-[#161d2a] text-slate-300 border border-white/10">
+              Phase 3–4 · Weeks 9–12
+            </button>
+          </div>
+        </div>
+
+        <div id="phaseDetailContainer" class="grid grid-cols-1 lg:grid-cols-12 gap-5 items-stretch">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Visual Go/No-Go Launch Scorecard -->
+      <div class="bg-[#0f141d] border border-white/[0.08] rounded-2xl p-6 space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-sky-400">External Release Gate</span>
+            <h3 class="text-lg font-bold text-white">12-Point Go / No-Go Scorecard (Judged by External Tools)</h3>
+          </div>
+          <span class="text-xs px-3 py-1 rounded-full bg-emerald-500/15 text-emerald-400 font-semibold border border-emerald-500/30">
+            Launch Only When All 12 Pass
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+          <div class="p-3.5 rounded-xl bg-[#161d2a] border border-white/[0.07]">
+            <div class="flex justify-between text-xs text-slate-400"><span>01 · Country Geo</span><span class="mono text-emerald-400">4/4 DBs</span></div>
+            <div class="text-sm font-bold text-white mt-1">100% Report Egypt</div>
+            <div class="text-xs text-slate-400 mt-0.5">MaxMind, ipinfo, IP2Location, DB-IP</div>
+          </div>
+          <div class="p-3.5 rounded-xl bg-[#161d2a] border border-white/[0.07]">
+            <div class="flex justify-between text-xs text-slate-400"><span>02 · Fraud Score</span><span class="mono text-emerald-400">&lt; 25 IPQS</span></div>
+            <div class="text-sm font-bold text-white mt-1">Zero VPN Flag (Banking)</div>
+            <div class="text-xs text-slate-400 mt-0.5">IPQualityScore & Scamalytics</div>
+          </div>
+          <div class="p-3.5 rounded-xl bg-[#161d2a] border border-white/[0.07]">
+            <div class="flex justify-between text-xs text-slate-400"><span>03 · Service Unlock</span><span class="mono text-emerald-400">≥ 90% Pass</span></div>
+            <div class="text-sm font-bold text-white mt-1">+20 pts Above Rival</div>
+            <div class="text-xs text-slate-400 mt-0.5">10 Services × 4 Countries</div>
+          </div>
+          <div class="p-3.5 rounded-xl bg-[#161d2a] border border-white/[0.07]">
+            <div class="flex justify-between text-xs text-slate-400"><span>04 · Peak Latency</span><span class="mono text-emerald-400">≤ 75ms Gulf</span></div>
+            <div class="text-sm font-bold text-white mt-1">≤ 80ms EU · ≤ 185ms US</div>
+            <div class="text-xs text-slate-400 mt-0.5">Hourly mtr at 8–11pm Cairo peak</div>
+          </div>
+          <div class="p-3.5 rounded-xl bg-[#161d2a] border border-white/[0.07]">
+            <div class="flex justify-between text-xs text-slate-400"><span>05 · Connect Time</span><span class="mono text-emerald-400">≤ 2.0s UDP</span></div>
+            <div class="text-sm font-bold text-white mt-1">≥ 98.5% Success Rate</div>
+            <div class="text-xs text-slate-400 mt-0.5">AmneziaWG + WSS 443 Fallback</div>
+          </div>
+          <div class="p-3.5 rounded-xl bg-[#161d2a] border border-white/[0.07]">
+            <div class="flex justify-between text-xs text-slate-400"><span>06 · Leak Shield</span><span class="mono text-emerald-400">0 Leaks</span></div>
+            <div class="text-sm font-bold text-white mt-1">IPv6, DNS & WebRTC</div>
+            <div class="text-xs text-slate-400 mt-0.5">browserleaks & test-ipv6.com</div>
+          </div>
+          <div class="p-3.5 rounded-xl bg-[#161d2a] border border-white/[0.07]">
+            <div class="flex justify-between text-xs text-slate-400"><span>07 · Privacy Scan</span><span class="mono text-emerald-400">0 Trackers</span></div>
+            <div class="text-sm font-bold text-white mt-1">Clean MobSF & Exodus</div>
+            <div class="text-xs text-slate-400 mt-0.5">No Ad SDKs, no READ_PHONE_STATE</div>
+          </div>
+          <div class="p-3.5 rounded-xl bg-[#161d2a] border border-white/[0.07]">
+            <div class="flex justify-between text-xs text-slate-400"><span>08 · Retention</span><span class="mono text-emerald-400">D1 ≥ 40%</span></div>
+            <div class="text-sm font-bold text-white mt-1">D7 ≥ 20% · D30 ≥ 10%</div>
+            <div class="text-xs text-slate-400 mt-0.5">Play Console Closed Beta Cohorts</div>
+          </div>
+          <div class="p-3.5 rounded-xl bg-[#161d2a] border border-white/[0.07]">
+            <div class="flex justify-between text-xs text-slate-400"><span>09 · App Stability</span><span class="mono text-emerald-400">&gt; 99.2%</span></div>
+            <div class="text-sm font-bold text-white mt-1">Crash &lt; 0.8% · ANR &lt; 0.25%</div>
+            <div class="text-xs text-slate-400 mt-0.5">Google Play Console Vitals</div>
+          </div>
+          <div class="p-3.5 rounded-xl bg-[#161d2a] border border-white/[0.07]">
+            <div class="flex justify-between text-xs text-slate-400"><span>10 · Refund Rate</span><span class="mono text-emerald-400">&lt; 5.0%</span></div>
+            <div class="text-sm font-bold text-white mt-1">Low Churn Billing</div>
+            <div class="text-xs text-slate-400 mt-0.5">Play & App Store Billing Reports</div>
+          </div>
+          <div class="p-3.5 rounded-xl bg-[#161d2a] border border-white/[0.07]">
+            <div class="flex justify-between text-xs text-slate-400"><span>11 · Sentiment</span><span class="mono text-emerald-400">≥ 4.4 ★</span></div>
+            <div class="text-sm font-bold text-white mt-1">Connect Issues &lt; 5%</div>
+            <div class="text-xs text-slate-400 mt-0.5">Coded Beta Survey & Reviews</div>
+          </div>
+          <div class="p-3.5 rounded-xl bg-[#161d2a] border border-white/[0.07]">
+            <div class="flex justify-between text-xs text-slate-400"><span>12 · Legal & CAC</span><span class="mono text-emerald-400">≤ $0.80 CPI</span></div>
+            <div class="text-sm font-bold text-white mt-1">Payback &lt; 6m + Lawyer Signoff</div>
+            <div class="text-xs text-slate-400 mt-0.5">Written Egyptian Counsel Opinion</div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- BOTTOM CHAPTER BAR -->
+  <footer class="border-t border-white/[0.08] bg-[#080b10]/90 py-4 px-4 sm:px-6">
+    <div class="max-w-[1380px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
+      <div>
+        Egyptian Inbound VPN — Interactive Product & Engineering Proposal · Use <kbd class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-200 mono">←</kbd> <kbd class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-200 mono">→</kbd> arrow keys or top tabs to navigate chapters
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="text-emerald-400 font-semibold">Locked Architecture: Two-Tier Hybrid (Marseille 10G + Cairo 1:1 Sticky ISP)</span>
+      </div>
+    </div>
   </footer>
 
   <script>
-    // 1. Theme Toggle
-    const themeToggle = document.getElementById("themeToggle");
-    themeToggle.addEventListener("click", () => {
-      const html = document.documentElement;
-      const next = html.getAttribute("data-theme") === "dark" ? "light" : "dark";
-      html.setAttribute("data-theme", next);
+    // =========================================================
+    // 1. CHAPTER NAVIGATION (TABS + ARROW KEYS + PREV/NEXT)
+    // =========================================================
+    let currentChapter = 0;
+    const totalChapters = 6;
+
+    function setChapter(index) {
+      currentChapter = (index + totalChapters) % totalChapters;
+      document.querySelectorAll(".chapter-view").forEach((el, idx) => {
+        if (idx === currentChapter) {
+          el.classList.remove("hidden");
+          el.classList.remove("stage-active");
+          void el.offsetWidth; // trigger reflow for smooth entrance
+          el.classList.add("stage-active");
+        } else {
+          el.classList.add("hidden");
+        }
+      });
+
+      document.querySelectorAll(".chapter-tab").forEach((btn, idx) => {
+        if (idx === currentChapter) {
+          btn.className = "chapter-tab pressable px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap bg-emerald-500 text-slate-950";
+        } else {
+          btn.className = "chapter-tab pressable px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap text-slate-300 hover:text-white";
+        }
+      });
+
+      const counter = document.getElementById("chapterCounter");
+      if (counter) counter.textContent = `0${currentChapter + 1} / 0${totalChapters}`;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    document.querySelectorAll(".chapter-tab").forEach(btn => {
+      btn.addEventListener("click", () => setChapter(Number(btn.dataset.chapter)));
+    });
+    document.getElementById("prevChapterBtn")?.addEventListener("click", () => setChapter(currentChapter - 1));
+    document.getElementById("nextChapterBtn")?.addEventListener("click", () => setChapter(currentChapter + 1));
+
+    window.addEventListener("keydown", (e) => {
+      if (["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement?.tagName)) return;
+      if (e.key === "ArrowRight") setChapter(currentChapter + 1);
+      if (e.key === "ArrowLeft") setChapter(currentChapter - 1);
     });
 
-    // 2. Stage 1 Use-Case Data & Filter
-    const useCases = [
-      {
-        rank: "#1 · Government & Civil Portals",
-        cat: "ip-unlocks",
-        services: "<strong>Digital Egypt</strong> (<code>digital.gov.eg</code>), <strong>Public Prosecution Traffic Fines</strong> (<code>ppo.gov.eg</code>), <strong>Ministry of Interior</strong> (<code>moi.gov.eg</code>), <strong>Social Insurance</strong> (<code>nosi.gov.eg</code>), <strong>Tax Portal</strong> (<code>eta.gov.eg</code>)",
-        blocker: "Hard Edge WAF geo-fence: drops all non-Egyptian IPv4/IPv6 ranges at the firewall and blacklists known commercial VPN datacenter ASNs (M247, Datacamp, Choopa).",
-        unlocks: "<span class='pill pill-green'>YES — 100%</span>",
-        solution: "<strong>Standard or Banking Tier:</strong> Clean AFRINIC Egyptian IP unlocks the portals immediately. Users authenticate with their existing National ID + roaming Egyptian SIM for OTP."
-      },
-      {
-        rank: "#2 · Egyptian Banking & InstaPay",
-        cat: "sticky-ip",
-        services: "<strong>National Bank of Egypt</strong> (<code>alahlynet.com.eg</code>), <strong>Banque Misr</strong> (<code>banquemisr.com</code>), <strong>CIB</strong>, <strong>QNB Alahli</strong>, <strong>InstaPay Egypt</strong>",
-        blocker: "Foreign IPs are blocked or trigger security freezes. Shared commercial VPN IPs trigger velocity fraud lockouts because 100+ users log in from the same IP.",
-        unlocks: "<span class='pill pill-green'>YES — With Sticky 1:1 IP</span>",
-        solution: "<strong>Banking Tier ($8.99/mo):</strong> Assigns a dedicated 1:1 static Cairo ISP IP exclusive to one user + strict IPv6 leak block + Pre-Flight Readiness Check."
-      },
-      {
-        rank: "#3 · Telecom Self-Service & Family Bills",
-        cat: "ip-unlocks",
-        services: "<strong>My WE</strong> (<code>te.eg</code> landline & home fiber renewal), <strong>Ana Vodafone</strong>, <strong>My Orange Egypt</strong>, <strong>My e&</strong>, <strong>Fawry Portal</strong>",
-        blocker: "Cloudflare & operator WAFs block or time out foreign IP connections on bill payment and recharge endpoints.",
-        unlocks: "<span class='pill pill-green'>YES — 100%</span>",
-        solution: "<strong>Standard Tier ($4.99/mo):</strong> Essential monthly habit for expats paying parents' WE home internet bills and recharging their own roaming SIM every 90 days."
-      },
-      {
-        rank: "#4 · Egyptian Streaming, Ramadan & Football",
-        cat: "ip-unlocks",
-        services: "<strong>Watch iT</strong> (<code>watchit.com</code>), <strong>ON Time Sports</strong> (Egyptian Premier League), <strong>Shahid Egypt library</strong>, <strong>DMC / CBC Live</strong>",
-        blocker: "CDN geo-fences domestic football broadcast rights and Ramadan series libraries to Egyptian IPs; local Cairo VPSs choke on video bandwidth.",
-        unlocks: "<span class='pill pill-green'>YES — 100%</span>",
-        solution: "<strong>Standard Tier ($4.99/mo):</strong> Served via our 10 Gbps Marseille Virtual Egypt hub (~28ms to Alexandria) for buffer-free 1080p60 playback."
-      },
-      {
-        rank: "#5 · Regional Price Arbitrage",
-        cat: "excluded",
-        services: "Netflix, Spotify, Steam, PlayStation Store, YouTube Premium",
-        blocker: "Merchants verify payment card BIN country (matching card issuer to Egypt) and store account country regardless of IP address.",
-        unlocks: "<span class='pill pill-rose'>RARELY (Requires EG Card)</span>",
-        solution: "<strong>Excluded from Marketing:</strong> Only works if the expat already holds a valid Egyptian EGP bank card. Never promoted in store listings to protect Apple/Google ToS compliance."
-      }
-    ];
+    // =========================================================
+    // 2. CHAPTER 1: INTERACTIVE PHONE & FIREWALL SIMULATOR
+    // =========================================================
+    const simState = {
+      loc: "ksa",
+      mode: "ours",
+      srv: "nbe"
+    };
 
-    function renderUseCases(filter) {
-      const tbody = document.getElementById("useCaseTableBody");
-      const rows = useCases.filter(u => {
-        if (filter === "all") return true;
-        if (filter === "ip-unlocks") return u.cat === "ip-unlocks" || u.cat === "sticky-ip";
-        return u.cat === filter;
+    const locMeta = {
+      ksa: { label: "STC 5G · Riyadh", foreignIp: "84.235.64.19 (SA)", rttOurs: "52 ms", rttSws: "190 ms (Timed Out)" },
+      uae: { label: "e& Fiber · Dubai", foreignIp: "94.200.112.8 (AE)", rttOurs: "61 ms", rttSws: "210 ms (Throttled)" },
+      uk:  { label: "BT Fiber · London", foreignIp: "81.134.202.11 (GB)", rttOurs: "68 ms", rttSws: "145 ms" }
+    };
+
+    const srvMeta = {
+      nbe: {
+        name: "NBE Al Ahly Net / CIB",
+        domain: "alahlynet.com.eg",
+        outcomes: {
+          none: {
+            status: "BLOCKED · FOREIGN IP",
+            badgeClass: "bg-rose-500/20 text-rose-400 border border-rose-500/30",
+            screenTitle: "Access Denied / Security Alert",
+            screenSub: "Connection from outside Egypt blocked by bank firewall or triggers fraud review.",
+            asn: "Foreign Carrier ASN",
+            fraud: "65 / 100 (Geo Mismatch)",
+            fraudClass: "text-amber-400",
+            ipv6: "Exposed Foreign IPv6",
+            ipv6Class: "text-rose-400",
+            sharing: "N/A (Foreign IP)",
+            explain: "Egyptian banks block foreign logins or freeze accounts when a user logs in from Saudi Arabia/UAE without prior travel notice."
+          },
+          sws: {
+            status: "LOCKOUT · FLAGGED VPN + AD SPAM",
+            badgeClass: "bg-rose-500/20 text-rose-400 border border-rose-500/30",
+            screenTitle: "Account Temporarily Frozen",
+            screenSub: "After watching 4 forced video ads, login is blocked: IP is on known datacenter abuse list.",
+            asn: "M247 / Datacenter VPS",
+            fraud: "94 / 100 (Blacklisted VPN)",
+            fraudClass: "text-rose-400",
+            ipv6: "LEAKED (Real Gulf IPv6 Visible!)",
+            ipv6Class: "text-rose-400",
+            sharing: "1,500+ Free Users on 1 IP",
+            explain: "SWS VPN Egypt routes users through burned datacenter IPs shared by thousands of free users AND leaks the user's real Gulf IPv6 address—immediately triggering bank anti-fraud."
+          },
+          express: {
+            status: "PARTIAL / SHARED-IP VELOCITY ALERT",
+            badgeClass: "bg-amber-500/20 text-amber-300 border border-amber-500/30",
+            screenTitle: "Extra Security Verification Required",
+            screenSub: "Commercial virtual VPN ASN detected. High risk of CAPTCHA or velocity lockout.",
+            asn: "Commercial Virtual VPN ASN",
+            fraud: "76 / 100 (vpn: true Flagged)",
+            fraudClass: "text-amber-400",
+            ipv6: "Blocked",
+            ipv6Class: "text-emerald-400",
+            sharing: "400+ Users Sharing Virtual IP",
+            explain: "ExpressVPN & Surfshark use Virtual Egypt servers in Europe on well-known VPN ASNs. Because hundreds of users share the same IP, banks flag the session."
+          },
+          ours: {
+            status: "UNLOCKED · 1:1 STICKY CAIRO IP",
+            badgeClass: "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30",
+            screenTitle: "Welcome Back — Balance & Transfers Ready",
+            screenSub: "Connected via your exclusive 1:1 Sticky Cairo IP. Zero ads, IPv6 sinkholed.",
+            asn: "AS8452 / AS24835 · Cairo ISP/Biz",
+            fraud: "8 / 100 (vpn: false · Clean)",
+            fraudClass: "text-emerald-400",
+            ipv6: "0 Leaks (::/0 Sinkholed)",
+            ipv6Class: "text-emerald-400",
+            sharing: "1 User Only (Pinned to You)",
+            explain: "Our Banking Tier assigns a dedicated 1:1 static Egyptian IP never shared with anyone else, blocks dual-stack IPv6 leaks, and connects in 1.6s via AmneziaWG."
+          }
+        }
+      },
+      gov: {
+        name: "Digital Egypt & Traffic Fines",
+        domain: "digital.gov.eg / ppo.gov.eg",
+        outcomes: {
+          none: {
+            status: "HARD BLOCK · HTTP 403 / TIMEOUT",
+            badgeClass: "bg-rose-500/20 text-rose-400 border border-rose-500/30",
+            screenTitle: "403 Forbidden — Outside Egypt",
+            screenSub: "Government edge firewall drops all non-Egyptian IPv4/IPv6 packets automatically.",
+            asn: "Foreign Carrier ASN",
+            fraud: "Geo-Fence Drop",
+            fraudClass: "text-rose-400",
+            ipv6: "Foreign IPv6 Blocked",
+            ipv6Class: "text-rose-400",
+            sharing: "N/A",
+            explain: "digital.gov.eg, ppo.gov.eg (traffic fines), and moi.gov.eg enforce a strict national firewall rule dropping all connections outside Egyptian IP ranges."
+          },
+          sws: {
+            status: "FAIL · DATACENTER ASN BLACKLISTED",
+            badgeClass: "bg-rose-500/20 text-rose-400 border border-rose-500/30",
+            screenTitle: "Connection Reset / CAPTCHA Loop",
+            screenSub: "Server either routes to European fallback or gets dropped by government WAF.",
+            asn: "Overloaded VPS / EU Fallback",
+            fraud: "92 / 100 (Abuse List)",
+            fraudClass: "text-rose-400",
+            ipv6: "LEAKED (Real Gulf IPv6)",
+            ipv6Class: "text-rose-400",
+            sharing: "1,500+ Users",
+            explain: "Government portals blacklist known free proxy subnets. Worse, SWS frequently falls back to non-Egyptian servers when its Cairo VPS is full."
+          },
+          express: {
+            status: "INCONSISTENT · WAF BLOCKS VPN ASN",
+            badgeClass: "bg-amber-500/20 text-amber-300 border border-amber-500/30",
+            screenTitle: "Access Restricted (Firewall Rule)",
+            screenSub: "Commercial VPN datacenter range blocked on ppo.gov.eg & digital.gov.eg.",
+            asn: "Known Commercial VPN ASN",
+            fraud: "74 / 100 (Datacenter Flag)",
+            fraudClass: "text-amber-400",
+            ipv6: "Blocked",
+            ipv6Class: "text-emerald-400",
+            sharing: "Shared Pool",
+            explain: "Reddit expat threads consistently report that commercial VPN Egypt servers are blacklisted by Digital Egypt's WAF."
+          },
+          ours: {
+            status: "UNLOCKED · VERIFIED EVERY 15 MIN",
+            badgeClass: "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30",
+            screenTitle: "Digital Egypt & PPO Fines Loaded",
+            screenSub: "Civil registry, traffic fines, and tax portal unlocked with clean Egyptian routing.",
+            asn: "Clean Cairo Egress Relay",
+            fraud: "11 / 100 (Verified Pass)",
+            fraudClass: "text-emerald-400",
+            ipv6: "0 Leaks (::/0 Sinkholed)",
+            ipv6Class: "text-emerald-400",
+            sharing: "Allowlisted Gov Relay",
+            explain: "Our 15-minute synthetic probes continuously verify digital.gov.eg and ppo.gov.eg reachability across our Cairo relays and auto-rotate any degraded IP."
+          }
+        }
+      },
+      instapay: {
+        name: "InstaPay Egypt",
+        domain: "instapay.eg",
+        outcomes: {
+          none: {
+            status: "BLOCKED · FOREIGN NETWORK ERROR",
+            badgeClass: "bg-rose-500/20 text-rose-400 border border-rose-500/30",
+            screenTitle: "Service Unavailable Outside Egypt",
+            screenSub: "InstaPay API rejects foreign IP or fails security handshake.",
+            asn: "Foreign Carrier ASN",
+            fraud: "Geo-Block Triggered",
+            fraudClass: "text-rose-400",
+            ipv6: "Foreign IPv6",
+            ipv6Class: "text-rose-400",
+            sharing: "N/A",
+            explain: "InstaPay frequently fails outside Egypt when it detects foreign network routing or mismatched IP geolocation."
+          },
+          sws: {
+            status: "BLOCKED · IPv6 LEAK & DPI DROP",
+            badgeClass: "bg-rose-500/20 text-rose-400 border border-rose-500/30",
+            screenTitle: "Transaction Rejected",
+            screenSub: "App detects dual-stack Saudi/UAE IPv6 leak + flagged OpenVPN IP.",
+            asn: "Flagged Proxy VPS",
+            fraud: "95 / 100 (High Risk)",
+            fraudClass: "text-rose-400",
+            ipv6: "LEAKED (Real Gulf IPv6)",
+            ipv6Class: "text-rose-400",
+            sharing: "1,500+ Users",
+            explain: "InstaPay's mobile security SDK detects both the leaked Gulf IPv6 address and the blacklisted free VPN IPv4 address."
+          },
+          express: {
+            status: "PARTIAL · SHARED IP FRICTION",
+            badgeClass: "bg-amber-500/20 text-amber-300 border border-amber-500/30",
+            screenTitle: "Intermittent Connection Error",
+            screenSub: "Works occasionally, fails when shared virtual IP is rate-limited.",
+            asn: "Shared Virtual Egypt ASN",
+            fraud: "72 / 100 (VPN Flag)",
+            fraudClass: "text-amber-400",
+            ipv6: "Blocked",
+            ipv6Class: "text-emerald-400",
+            sharing: "Hundreds of Users",
+            explain: "Shared commercial VPN IPs get rate-limited by banking gateways when multiple expats transact through the same endpoint."
+          },
+          ours: {
+            status: "UNLOCKED · STICKY IP + ROAMING GUIDE",
+            badgeClass: "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30",
+            screenTitle: "InstaPay Transfer Completed",
+            screenSub: "Clean 1:1 Cairo IP + Pre-Flight check ensures IPv6 & GPS leaks are off.",
+            asn: "AS8452 · Sticky Cairo ISP IP",
+            fraud: "9 / 100 (Clean ISP)",
+            fraudClass: "text-emerald-400",
+            ipv6: "0 Leaks (::/0 Sinkholed)",
+            ipv6Class: "text-emerald-400",
+            sharing: "1:1 Dedicated to You",
+            explain: "With a dedicated 1:1 Cairo ISP IP and our Pre-Flight Readiness Check (plus keeping your Egyptian SIM on roaming for initial SMS binding), InstaPay works reliably."
+          }
+        }
+      },
+      watchit: {
+        name: "Watch iT & ON Time Sports",
+        domain: "watchit.com",
+        outcomes: {
+          none: {
+            status: "GEO-RESTRICTED · FOREIGN CATALOG",
+            badgeClass: "bg-rose-500/20 text-rose-400 border border-rose-500/30",
+            screenTitle: "Live Match Not Available in Your Region",
+            screenSub: "Egyptian League live streams & domestic Ramadan catalog restricted outside Egypt.",
+            asn: "Foreign Carrier ASN",
+            fraud: "Region Locked",
+            fraudClass: "text-rose-400",
+            ipv6: "Foreign IPv6",
+            ipv6Class: "text-rose-400",
+            sharing: "N/A",
+            explain: "Domestic football broadcasts (ON Time Sports) and Egypt-tier Watch iT streams check for an Egyptian IP."
+          },
+          sws: {
+            status: "UNWATCHABLE · BUFFERING + ADS",
+            badgeClass: "bg-rose-500/20 text-rose-400 border border-rose-500/30",
+            screenTitle: "Buffering at 240p... (1.2 Mbps)",
+            screenSub: "Overloaded Cairo VPS chokes during evening Ramadan & match peaks.",
+            asn: "Congested Low-End VPS",
+            fraud: "89 / 100",
+            fraudClass: "text-rose-400",
+            ipv6: "Leaked",
+            ipv6Class: "text-rose-400",
+            sharing: "1,500+ Users on 100Mbps port",
+            explain: "Free VPNs cram thousands of video streamers onto cheap VPS nodes with poor international transit, causing constant buffering."
+          },
+          express: {
+            status: "WORKS · BUT $12.95/MO PRICE",
+            badgeClass: "bg-amber-500/20 text-amber-300 border border-amber-500/30",
+            screenTitle: "1080p Stream Playing",
+            screenSub: "Virtual Marseille/EU server handles speed, but costs $12.95/mo and fails banking.",
+            asn: "Virtual Egypt (EU Hosting)",
+            fraud: "68 / 100",
+            fraudClass: "text-amber-400",
+            ipv6: "Blocked",
+            ipv6Class: "text-emerald-400",
+            sharing: "Shared Pool",
+            explain: "Global VPN virtual servers handle video streaming well, which inspired our Tier 1 Marseille 10Gbps Virtual Hub—at less than half the price ($4.99/mo)."
+          },
+          ours: {
+            status: "UNLOCKED · 10 GBPS MARSEILLE HUB",
+            badgeClass: "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30",
+            screenTitle: "1080p60 Live Stream · Zero Buffering",
+            screenSub: "Routed via Tier 1 Marseille 10Gbps Virtual Egypt Hub (28ms to Alexandria).",
+            asn: "Tier 1 Geo-EG 10Gbps Hub",
+            fraud: "14 / 100 (Clean GeoFeed)",
+            fraudClass: "text-emerald-400",
+            ipv6: "0 Leaks",
+            ipv6Class: "text-emerald-400",
+            sharing: " Guaranteed ≥ 15 Mbps/User",
+            explain: "Streaming traffic routes through our 10 Gbps Marseille Virtual Egypt hub—delivering instant 1080p60 playback while keeping video bandwidth costs 65% lower."
+          }
+        }
+      },
+      we: {
+        name: "My WE / Ana Vodafone",
+        domain: "te.eg / vodafone.com.eg",
+        outcomes: {
+          none: {
+            status: "BLOCKED · CLOUDFLARE WAF DROP",
+            badgeClass: "bg-rose-500/20 text-rose-400 border border-rose-500/30",
+            screenTitle: "Request Timed Out (te.eg)",
+            screenSub: "Cannot recharge Egyptian SIM or pay parents' home internet bill from abroad.",
+            asn: "Foreign Carrier ASN",
+            fraud: "Foreign IP Blocked",
+            fraudClass: "text-rose-400",
+            ipv6: "Foreign IPv6",
+            ipv6Class: "text-rose-400",
+            sharing: "N/A",
+            explain: "Telecom Egypt (te.eg) and carrier portals frequently block foreign IPs. If expats can't recharge their Egyptian SIM every 90 days, the SIM gets deactivated and they lose bank OTP access!"
+          },
+          sws: {
+            status: "FAIL · CAPTCHA & SESSION DROPS",
+            badgeClass: "bg-rose-500/20 text-rose-400 border border-rose-500/30",
+            screenTitle: "Payment Gateway Error",
+            screenSub: "3D Secure payment fails mid-checkout when OpenVPN drops or triggers WAF.",
+            asn: "Flagged Datacenter Proxy",
+            fraud: "91 / 100",
+            fraudClass: "text-rose-400",
+            ipv6: "Leaked",
+            ipv6Class: "text-rose-400",
+            sharing: "1,500+ Users",
+            explain: "Recharging a line with a credit card fails when the proxy IP is flagged by Fawry/telecom payment gateways."
+          },
+          express: {
+            status: "PARTIAL · WAF CHALLENGE",
+            badgeClass: "bg-amber-500/20 text-amber-300 border border-amber-500/30",
+            screenTitle: "Cloudflare Security Challenge",
+            screenSub: "Requires repeated CAPTCHAs on te.eg due to shared VPN ASN.",
+            asn: "Commercial VPN ASN",
+            fraud: "70 / 100",
+            fraudClass: "text-amber-400",
+            ipv6: "Blocked",
+            ipv6Class: "text-emerald-400",
+            sharing: "Shared Pool",
+            explain: "Shared VPN IPs trigger repetitive Cloudflare challenges on Egyptian telecom portals."
+          },
+          ours: {
+            status: "UNLOCKED · INSTANT BILL & SIM RECHARGE",
+            badgeClass: "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30",
+            screenTitle: "WE Fiber & Roaming SIM Recharged",
+            screenSub: "Clean Egyptian IP + Egyptian DNS resolvers load te.eg & Ana Vodafone instantly.",
+            asn: "Clean Egyptian Exit IP",
+            fraud: "10 / 100 (Trusted)",
+            fraudClass: "text-emerald-400",
+            ipv6: "0 Leaks",
+            ipv6Class: "text-emerald-400",
+            sharing: "Clean Pool / Sticky IP",
+            explain: "Expats can pay their parents' landline/DSL bills and top up their own roaming Egyptian SIM in 30 seconds every month."
+          }
+        }
+      }
+    };
+
+    function renderSimulator() {
+      const loc = locMeta[simState.loc];
+      const srv = srvMeta[simState.srv];
+      const out = srv.outcomes[simState.mode];
+
+      document.getElementById("phoneCarrier").textContent = loc.label;
+
+      const vpnBadge = document.getElementById("phoneVpnBadge");
+      const ipText = document.getElementById("phoneIpText");
+      const rttText = document.getElementById("phoneRttText");
+
+      if (simState.mode === "none") {
+        vpnBadge.textContent = "VPN OFF";
+        vpnBadge.className = "px-1.5 py-0.5 rounded bg-slate-700 text-slate-300 font-semibold";
+        ipText.textContent = `IP: ${loc.foreignIp}`;
+        rttText.textContent = "Direct";
+      } else if (simState.mode === "sws") {
+        vpnBadge.textContent = "SWS OpenVPN";
+        vpnBadge.className = "px-1.5 py-0.5 rounded bg-rose-500/20 text-rose-300 font-semibold";
+        ipText.textContent = "IP: 185.153.177.9 (Flagged)";
+        rttText.textContent = loc.rttSws;
+      } else if (simState.mode === "express") {
+        vpnBadge.textContent = "Shared Virtual";
+        vpnBadge.className = "px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-semibold";
+        ipText.textContent = "IP: 154.47.22.10 (Shared)";
+        rttText.textContent = "72 ms";
+      } else {
+        vpnBadge.textContent = "AmneziaWG · 1:1";
+        vpnBadge.className = "px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-400 font-semibold";
+        ipText.textContent = "IP: 41.33.118.42 (Cairo 1:1)";
+        rttText.textContent = loc.rttOurs;
+      }
+
+      const isPass = simState.mode === "ours";
+      const isWarn = simState.mode === "express";
+      const iconHtml = isPass
+        ? `<div class="w-8 h-8 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 font-bold text-sm">✓</div>`
+        : isWarn
+        ? `<div class="w-8 h-8 rounded-full bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-300 font-bold text-sm">!</div>`
+        : `<div class="w-8 h-8 rounded-full bg-rose-500/20 border border-rose-500/40 flex items-center justify-center text-rose-400 font-bold text-sm">✕</div>`;
+
+      document.getElementById("phoneScreenContent").innerHTML = `
+        <div class="flex items-center gap-2.5">
+          ${iconHtml}
+          <div>
+            <div class="text-xs font-bold text-slate-300">${srv.name}</div>
+            <div class="text-xs mono text-slate-400">${srv.domain}</div>
+          </div>
+        </div>
+        <div class="p-2.5 rounded-xl bg-[#0b1018] border border-white/[0.07] mt-2">
+          <div class="text-xs font-bold ${isPass ? 'text-emerald-400' : isWarn ? 'text-amber-300' : 'text-rose-400'}">${out.screenTitle}</div>
+          <p class="text-xs text-slate-300 mt-1 leading-snug">${out.screenSub}</p>
+        </div>
+      `;
+
+      const verdictBadge = document.getElementById("simVerdictBadge");
+      verdictBadge.textContent = out.status;
+      verdictBadge.className = `px-2.5 py-1 rounded-full text-xs font-bold ${out.badgeClass}`;
+
+      document.getElementById("inspAsn").textContent = out.asn;
+      const fraudEl = document.getElementById("inspFraud");
+      fraudEl.textContent = out.fraud;
+      fraudEl.className = `font-bold mt-0.5 ${out.fraudClass}`;
+
+      const ipv6El = document.getElementById("inspIpv6");
+      ipv6El.textContent = out.ipv6;
+      ipv6El.className = `font-bold mt-0.5 ${out.ipv6Class}`;
+
+      document.getElementById("inspSharing").textContent = out.sharing;
+      document.getElementById("inspExplanation").textContent = out.explain;
+    }
+
+    document.querySelectorAll(".loc-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        simState.loc = btn.dataset.loc;
+        document.querySelectorAll(".loc-btn").forEach(b => {
+          b.className = b.dataset.loc === simState.loc
+            ? "loc-btn pressable px-2.5 py-1 rounded text-xs font-semibold bg-emerald-500 text-slate-950"
+            : "loc-btn pressable px-2.5 py-1 rounded text-xs font-semibold text-slate-300";
+        });
+        renderSimulator();
       });
-      tbody.innerHTML = rows.map(r => `
-        <tr>
-          <td><strong>${r.rank}</strong></td>
-          <td>${r.services}</td>
-          <td>${r.blocker}</td>
-          <td>${r.unlocks}</td>
-          <td>${r.solution}</td>
-        </tr>
+    });
+
+    document.querySelectorAll(".mode-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        simState.mode = btn.dataset.mode;
+        document.querySelectorAll(".mode-btn").forEach(b => {
+          const active = b.dataset.mode === simState.mode;
+          b.className = active
+            ? "mode-btn pressable text-left p-2.5 rounded-xl border border-emerald-500 bg-emerald-500/15"
+            : "mode-btn pressable text-left p-2.5 rounded-xl border border-white/10 bg-[#161d2a]";
+        });
+        renderSimulator();
+      });
+    });
+
+    document.querySelectorAll(".srv-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        simState.srv = btn.dataset.srv;
+        document.querySelectorAll(".srv-btn").forEach(b => {
+          const active = b.dataset.srv === simState.srv;
+          const spanClass = b.dataset.srv === "we" ? " col-span-2 sm:col-span-1" : "";
+          b.className = (active
+            ? "srv-btn pressable p-2.5 rounded-xl border border-emerald-500 bg-[#1c2638] text-left"
+            : "srv-btn pressable p-2.5 rounded-xl border border-white/10 bg-[#161d2a] text-left") + spanClass;
+        });
+        renderSimulator();
+      });
+    });
+
+    // =========================================================
+    // 3. CHAPTER 2: COMPETITOR X-RAY SUBTABS
+    // =========================================================
+    document.querySelectorAll(".xray-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const target = btn.dataset.xray;
+        document.querySelectorAll(".xray-panel").forEach(p => p.classList.add("hidden"));
+        document.getElementById(`xray-${target}`).classList.remove("hidden");
+
+        document.querySelectorAll(".xray-btn").forEach(b => {
+          b.className = b.dataset.xray === target
+            ? "xray-btn pressable px-3.5 py-2 rounded-xl text-xs font-bold bg-rose-500 text-white"
+            : "xray-btn pressable px-3.5 py-2 rounded-xl text-xs font-bold bg-[#161d2a] text-slate-300 border border-white/10";
+        });
+      });
+    });
+
+    // =========================================================
+    // 4. CHAPTER 3: INTERACTIVE NETWORK & DPI FLOWS
+    // =========================================================
+    const flowScenarios = {
+      banking: {
+        streamOpacity: "0.2",
+        cairoOpacity: "1.0",
+        cards: [
+          {
+            badge: "Step 1 · Smart Split-Tunnel",
+            title: "Only Egyptian Apps Enter the Tunnel",
+            body: "When the user opens NBE, CIB, InstaPay, or digital.gov.eg, our Android/iOS split-tunnel routes those packets into AmneziaWG while WhatsApp, Uber, and Saudi/UAE bank apps stay on fast local internet."
+          },
+          {
+            badge: "Step 2 · Sticky 1:1 Cairo ISP IP",
+            title: "Exclusive Static IP Assigned to 1 User",
+            body: "Traffic routes to the subscriber's dedicated 1:1 static IP in Cairo (Raya AS24835 / LinkDC / WE AS8452). Because zero other users ever share this IP, bank velocity fraud locks are impossible."
+          },
+          {
+            badge: "Step 3 · Diskless & Allowlisted",
+            title: "Zero PII + Kernel nftables Allowlist",
+            body: "The Cairo relay runs in RAM (tmpfs) with zero user logs and only forwards packets destined for verified Egyptian bank ASNs and .gov.eg CIDRs—preventing any general web abuse inside Egypt."
+          }
+        ]
+      },
+      streaming: {
+        streamOpacity: "1.0",
+        cairoOpacity: "0.25",
+        cards: [
+          {
+            badge: "Step 1 · Marseille 10G Virtual Hub",
+            title: "28ms Subsea Landing from Alexandria",
+            body: "Marseille is the direct European landing station for Egypt's TE North & SEA-ME-WE submarine cables. We announce a clean, geo-registered Egyptian /24 block from a 10 Gbps server in Marseille."
+          },
+          {
+            badge: "Step 2 · 65% Lower Bandwidth Cost",
+            title: "Buffer-Free 1080p60 Ramadan & Football",
+            body: "Watch iT, Shahid Egypt, and ON Time Sports streams exit directly from Marseille at 10 Gbps—avoiding expensive, congested local Cairo VPS bandwidth during Ramadan peak hours."
+          },
+          {
+            badge: "Step 3 · Zero Egyptian Jurisdiction",
+            title: "General Browsing Never Touches Egypt",
+            body: "Because 100% of streaming and general web browsing terminates in France, no physical server in Egypt ever sees user web traffic—solving Law 175 of 2018 by design."
+          }
+        ]
+      },
+      dpi: {
+        streamOpacity: "0.7",
+        cairoOpacity: "1.0",
+        cards: [
+          {
+            badge: "Why Plain WireGuard Fails",
+            title: "148-Byte Handshake Fingerprinted",
+            body: "Standard WireGuard uses a fixed 4-byte header and 148-byte initiation packet. Both Telecom Egypt border DPI and Gulf carriers (STC, e&, du) silently drop plain WireGuard UDP connections."
+          },
+          {
+            badge: "Primary Defense · AmneziaWG",
+            title: "Randomized Headers + Junk Padding",
+            body: "Our client ships AmneziaWG: prepending randomized junk packets (Jc/Jmin/Jmax) and scrambling magic headers (H1–H4) so DPI firewalls see only unclassifiable UDP noise."
+          },
+          {
+            badge: "Fallback · Stealth WSS (TCP 443)",
+            title: "Automatic 3.5s Switch to HTTPS Tunnel",
+            body: "If a restrictive hotel, office, or cellular network blocks all UDP ports, the app automatically falls back within 3.5 seconds to WireGuard-over-WebSockets (TLS port 443)."
+          }
+        ]
+      }
+    };
+
+    function renderFlowScenario(key) {
+      const sc = flowScenarios[key];
+      document.getElementById("svgPathMrsToStream").setAttribute("opacity", sc.streamOpacity);
+      document.getElementById("svgPathToCairoRelay").setAttribute("opacity", sc.cairoOpacity);
+
+      document.getElementById("flowDetailCards").innerHTML = sc.cards.map(c => `
+        <div class="bg-[#161d2a] border border-white/10 rounded-xl p-4 space-y-1.5">
+          <div class="text-xs font-bold text-emerald-400 uppercase">${c.badge}</div>
+          <h3 class="text-sm font-bold text-white">${c.title}</h3>
+          <p class="text-xs text-slate-300 leading-relaxed">${c.body}</p>
+        </div>
       `).join("");
     }
 
-    document.querySelectorAll("#useCaseFilters .filter-btn").forEach(btn => {
+    document.querySelectorAll(".flow-btn").forEach(btn => {
       btn.addEventListener("click", () => {
-        document.querySelectorAll("#useCaseFilters .filter-btn").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        renderUseCases(btn.dataset.filter);
+        const key = btn.dataset.flow;
+        renderFlowScenario(key);
+        document.querySelectorAll(".flow-btn").forEach(b => {
+          b.className = b.dataset.flow === key
+            ? "flow-btn pressable px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950"
+            : "flow-btn pressable px-3.5 py-2 rounded-xl text-xs font-bold bg-[#161d2a] text-slate-300 border border-white/10";
+        });
       });
     });
 
-    // 3. Interactive Topology Details
-    const topoData = [
+    // =========================================================
+    // 5. CHAPTER 4: INTERACTIVE LAWYER ACCORDION
+    // =========================================================
+    const lawyerItems = [
       {
-        title: "Node 01 · Diaspora Mobile Client (Android Kotlin & iOS Swift)",
-        badge: "AmneziaWG + Stealth Fallback + Leak Shield",
-        points: [
-          "<strong>DPI Obfuscation (AmneziaWG):</strong> Randomizes WireGuard packet headers (H1–H4) and prepends configurable junk padding (Jc/Jmin/Jmax) so Gulf carriers (STC, Mobily, e&, du) and Telecom Egypt border DPI cannot fingerprint the handshake.",
-          "<strong>Automatic Stealth Fallback (WSS TCP 443):</strong> If UDP handshakes fail within 3.5 seconds (e.g., restricted hotel or office Wi-Fi), the client seamlessly wraps WireGuard inside TLS WebSockets over port 443.",
-          "<strong>Smart 'Egyptian Apps Only' Split-Tunneling:</strong> Pre-configured package list routes NBE, Banque Misr, CIB, InstaPay, Watch iT, Ana Vodafone, and My WE through Egypt while keeping WhatsApp, Uber/Careem, and local Saudi/UAE banking apps on the user's fast domestic network.",
-          "<strong>Strict Dual-Stack IPv6 Sinkhole:</strong> Captures and drops all <code>::/0</code> IPv6 traffic inside the tunnel interface so dual-stack Gulf 5G networks never leak the user's real KSA/UAE IPv6 address."
-        ]
+        q: "Q1 · Law 175 Art. 2: Does a Cairo relay make us a 'Service Provider' subject to 180-day logs?",
+        a: "Mitigation: General internet access exits in Marseille (France). Cairo nodes are stateless, diskless (tmpfs) relays strictly allowlisted via nftables to forward only encrypted packets to Egyptian banking & .gov.eg CIDRs."
       },
       {
-        title: "Node 02 · Tier 1 Virtual Egypt Hub (Marseille / Frankfurt 10 Gbps)",
-        badge: "Zero Egyptian Jurisdiction · High-Speed Streaming Backbone",
-        points: [
-          "<strong>Subsea Cable Proximity:</strong> Hosted in Marseille (<code>MRS1</code>), the direct European landing station for Egypt's <em>TE North</em> and <em>SEA-ME-WE-4/5</em> submarine cables (~28–32 ms latency to Alexandria/Cairo).",
-          "<strong>Clean Egyptian GeoFeed IPv4 (/24):</strong> Announces a dedicated Egyptian-registered `/24` subnet with RFC 8805 GeoFeed records verified across MaxMind GeoIP2, IP2Location, ipinfo.io, and DB-IP.",
-          "<strong>10 Gbps Unmetered Capacity:</strong> Handles 100% of bandwidth-heavy streaming (Watch iT, ON Time Sports, Shahid Egypt) and general browsing at a fraction of Cairo bandwidth costs.",
-          "<strong>Law 175 Immunity:</strong> Because zero physical servers sit in Egypt for Tier 1, general user web browsing is completely outside NTRA and Law 175/2018 territorial jurisdiction."
-        ]
+        q: "Q2 · Telecom Law No. 10 of 2003: Does renting a Cairo VPS require a separate NTRA license?",
+        a: "Mitigation: We lease infrastructure exclusively from already-licensed Tier III enterprise hosts in Cairo (Raya Data Center, Link Data Center, Telecom Egypt) rather than operating unlicensed physical telecom hardware."
       },
       {
-        title: "Node 03 · Tier 2 Cairo Clean ISP Egress Relays (Sticky 1:1 Banking & Gov IPs)",
-        badge: "1 User = 1 Dedicated Static IP · Diskless RAM-Only",
-        points: [
-          "<strong>True Local Egyptian ASNs:</strong> Sourced across Raya Data Center (<code>AS24835</code>), Link Data Center (<code>AS24863</code>), and Egyptian business ISP static subnets (Telecom Egypt <code>AS8452</code> / Vodafone <code>AS36935</code>).",
-          "<strong>1:1 Sticky IP Pinning:</strong> Each Banking Tier subscriber is assigned an exclusive, static Egyptian IP that is never shared with any other user—eliminating velocity fraud lockouts on NBE, CIB, Banque Misr, and InstaPay.",
-          "<strong>Strict Destination Allowlisting (<code>nftables</code>):</strong> Relays only forward traffic destined for verified Egyptian bank ASNs and <code>.gov.eg</code> / <code>.com.eg</code> CIDRs. General web browsing, P2P/BitTorrent, and SMTP mail ports are blocked at the kernel level.",
-          "<strong>Stateless & Diskless:</strong> Runs entirely in RAM (<code>tmpfs</code>) with zero user PII stored on the node."
-        ]
+        q: "Q3 · Foreign Entity Shield: How do obligations split when the company is a US LLC / UAE FZCO?",
+        a: "Mitigation: The contracting entity, billing (RevenueCat), user accounts, and PostgreSQL control plane reside 100% outside Egypt with zero local corporate presence."
       },
       {
-        title: "Node 04 · Offshore Control Plane & 15-Minute Synthetic Status Engine",
-        badge: "Automated Health Checks · Warm Reserve Rotation",
-        points: [
-          "<strong>15-Minute Synthetic Unlock Probes:</strong> Headless probes test every exit IP every 15 minutes against <code>digital.gov.eg</code>, <code>ppo.gov.eg</code>, <code>alahlynet.com.eg</code>, <code>banquemisr.com</code>, <code>watchit.com</code>, and <code>te.eg</code>.",
-          "<strong>Live In-App Service Status Board:</strong> Users see real-time green checkmarks inside the app confirming that their specific bank or government portal is verified working before they log in.",
-          "<strong>25% Warm IP Reserve & 1-Tap Swap:</strong> Maintains a 25% buffer of unallocated clean Egyptian IPs. If any IP is degraded or encounters a CAPTCHA, it is automatically rotated or swapped via a 1-tap button in the app."
-        ]
+        q: "Q4 · Data Protection Law 151 of 2020: Are user account logs subject to Egyptian data transfer rules?",
+        a: "Mitigation: Zero subscriber PII (names, emails, payment methods) ever enters Egypt. Cairo relays only validate ephemeral WireGuard public keys synced in RAM."
+      },
+      {
+        q: "Q5 · Marketing & Privacy Policy: Can we claim 'No Logs' while complying with Apple/Google rules?",
+        a: "Mitigation: Avoid reckless '100% anonymous' claims. Publish an honest, Apple Guideline 5.4-compliant disclosure stating we never log browsing history and never sell or share data with third parties."
+      },
+      {
+        q: "Q6 · Incident Response: What happens if a Cairo datacenter receives an abuse inquiry on an IP?",
+        a: "Mitigation: Because outbound SMTP (ports 25/465/587), BitTorrent/P2P, and non-whitelisted web domains are blocked at the kernel firewall on Cairo relays, spam and cybercrime abuse cannot originate from our Cairo IPs."
+      },
+      {
+        q: "Q7 · B2B ISP Partnerships: Does leasing static business IPs from WE/Vodafone change compliance?",
+        a: "Mitigation: Phase 0–1 launches on Cairo enterprise cloud VPS + Marseille Virtual Egypt; Phase 2–3 adds B2B ISP static subnets once written legal sign-off is completed."
       }
     ];
 
-    function renderTopo(idx) {
-      const d = topoData[idx];
-      const box = document.getElementById("topoDetailBox");
-      box.innerHTML = `
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem; margin-bottom:0.75rem;">
-          <h3 style="margin:0; font-size:1.05rem;">${d.title}</h3>
-          <span class="pill pill-blue">${d.badge}</span>
-        </div>
-        <ul style="margin:0; padding-left:1.2rem; display:grid; gap:0.5rem; font-size:0.88rem; color:var(--text-secondary);">
-          ${d.points.map(p => `<li>${p}</li>`).join("")}
-        </ul>
-      `;
+    let activeLawyerIdx = 0;
+    function renderLawyerAccordion() {
+      const wrap = document.getElementById("lawyerAccordion");
+      wrap.innerHTML = lawyerItems.map((item, idx) => {
+        const open = idx === activeLawyerIdx;
+        return `
+          <div class="rounded-xl border ${open ? 'border-emerald-500/50 bg-[#161d2a]' : 'border-white/10 bg-[#121824]'} overflow-hidden transition">
+            <button type="button" data-lidx="${idx}" class="lawyer-toggle w-full text-left px-4 py-3 flex items-center justify-between gap-3">
+              <span class="text-xs font-bold ${open ? 'text-white' : 'text-slate-300'}">${item.q}</span>
+              <span class="mono text-xs ${open ? 'text-emerald-400' : 'text-slate-400'}">${open ? '−' : '+'}</span>
+            </button>
+            ${open ? `<div class="px-4 pb-3.5 text-xs text-emerald-200/90 border-t border-white/[0.06] pt-2.5 leading-relaxed">${item.a}</div>` : ''}
+          </div>
+        `;
+      }).join("");
+
+      document.querySelectorAll(".lawyer-toggle").forEach(btn => {
+        btn.addEventListener("click", () => {
+          activeLawyerIdx = Number(btn.dataset.lidx);
+          renderLawyerAccordion();
+        });
+      });
     }
 
-    document.querySelectorAll("#topoSelector .topo-node").forEach(btn => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll("#topoSelector .topo-node").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        renderTopo(Number(btn.dataset.topo));
-      });
-    });
+    // =========================================================
+    // 6. CHAPTER 5: FINANCIAL SIMULATOR
+    // =========================================================
+    function updateFinancialModel() {
+      const subs = Number(document.getElementById("finSubs").value);
+      const mix = Number(document.getElementById("finMix").value) / 100;
+      const cpi = Number(document.getElementById("finCpi").value);
+      const conv = Number(document.getElementById("finConv").value) / 100;
 
-    // 4. Unit Economics Simulator
-    function calcEconomics() {
-      const subs = Number(document.getElementById("simSubs").value);
-      const bankShare = Number(document.getElementById("simBankShare").value) / 100;
-      const cpi = Number(document.getElementById("simCpi").value);
-      const conv = Number(document.getElementById("simConv").value) / 100;
+      document.getElementById("finSubsVal").textContent = `${subs.toLocaleString()} payers`;
+      document.getElementById("finMixVal").textContent = `${Math.round(mix * 100)}%`;
+      document.getElementById("finCpiVal").textContent = `$${cpi.toFixed(2)}`;
+      document.getElementById("finConvVal").textContent = `${(conv * 100).toFixed(1)}%`;
 
-      document.getElementById("valSubs").textContent = `${subs.toLocaleString()} payers`;
-      document.getElementById("valBankShare").textContent = `${Math.round(bankShare * 100)}%`;
-      document.getElementById("valCpi").textContent = `$${cpi.toFixed(2)}`;
-      document.getElementById("valConv").textContent = `${(conv * 100).toFixed(1)}%`;
-
-      const stdSubs = subs * (1 - bankShare);
-      const bankSubs = subs * bankShare;
+      const stdSubs = subs * (1 - mix);
+      const bankSubs = subs * mix;
 
       const gross = (stdSubs * 4.99) + (bankSubs * 8.99);
-      const netRev = gross * 0.85;
+      const storeFee = gross * 0.15;
+      const netRev = gross - storeFee;
 
-      // Variable cost: Standard = $0.78/mo, Banking = $2.45/mo
+      // Variable cost: Standard = $0.78/mo, Banking = $2.45/mo (1:1 sticky IP + reserve + bandwidth)
       const varCost = (stdSubs * 0.78) + (bankSubs * 2.45);
-      const totalContrib = netRev - varCost;
-      const contribPerUser = totalContrib / subs;
+      const contrib = netRev - varCost;
+      const contribPerUser = contrib / subs;
 
-      const fixedOpEx = 1050;
-      const profit = totalContrib - fixedOpEx;
-      const breakeven = Math.ceil(fixedOpEx / contribPerUser);
+      const fixedCost = 1050;
+      const netProfit = contrib - fixedCost;
+      const breakeven = Math.ceil(fixedCost / contribPerUser);
 
       const cac = cpi / conv;
       const payback = cac / contribPerUser;
 
-      document.getElementById("simGross").textContent = `$${Math.round(gross).toLocaleString()}`;
-      document.getElementById("simNetRev").textContent = `Net after 15% store fee: $${Math.round(netRev).toLocaleString()}`;
+      document.getElementById("outGrossBilling").textContent = `$${Math.round(gross).toLocaleString()}`;
+      document.getElementById("outNetStore").textContent = `After 15% fee: $${Math.round(netRev).toLocaleString()}`;
 
-      const profitEl = document.getElementById("simProfit");
-      profitEl.textContent = `${profit >= 0 ? "+" : "-"}$${Math.abs(Math.round(profit)).toLocaleString()}/mo`;
-      profitEl.style.color = profit >= 0 ? "var(--emerald)" : "var(--rose)";
+      const profitEl = document.getElementById("outMonthlyProfit");
+      profitEl.textContent = `${netProfit >= 0 ? "+" : "-"}$${Math.abs(Math.round(netProfit)).toLocaleString()}`;
+      profitEl.className = `text-2xl font-extrabold mono mt-1 ${netProfit >= 0 ? "text-emerald-400" : "text-rose-400"}`;
 
-      document.getElementById("simContrib").textContent = `Blended contribution: $${contribPerUser.toFixed(2)}/user`;
-      document.getElementById("simBreakeven").textContent = `${breakeven.toLocaleString()} payers`;
-      document.getElementById("simPayback").textContent = `${payback.toFixed(1)} mos`;
-      document.getElementById("simCac").textContent = `CAC: $${cac.toFixed(2)} (Day 1 on Annual)`;
+      document.getElementById("outBlendedMargin").textContent = `Contrib: $${contribPerUser.toFixed(2)}/user`;
+      document.getElementById("outBreakevenSubs").textContent = breakeven.toLocaleString();
+      document.getElementById("outPaybackMonths").textContent = `${payback.toFixed(1)} mos`;
+      document.getElementById("outCacValue").textContent = `CAC: $${cac.toFixed(2)}`;
+
+      // Update Waterfall Bars
+      const marginPct = Math.max(0, (netProfit / gross) * 100);
+      document.getElementById("outProfitMarginPct").textContent = `${marginPct.toFixed(1)}% Net Operating Margin`;
+
+      document.getElementById("barStoreFeeText").textContent = `$${Math.round(storeFee).toLocaleString()}`;
+      document.getElementById("barVarCostText").textContent = `$${Math.round(varCost).toLocaleString()}`;
+      document.getElementById("barNetProfitText").textContent = `${netProfit >= 0 ? "+" : "-"}$${Math.abs(Math.round(netProfit)).toLocaleString()}`;
+
+      document.getElementById("barVarCost").style.width = `${Math.min(100, (varCost / gross) * 100)}%`;
+      document.getElementById("barFixedCost").style.width = `${Math.min(100, (fixedCost / gross) * 100)}%`;
+      document.getElementById("barNetProfit").style.width = `${Math.max(0, Math.min(100, (netProfit / gross) * 100))}%`;
     }
 
-    ["simSubs", "simBankShare", "simCpi", "simConv"].forEach(id => {
-      document.getElementById(id).addEventListener("input", calcEconomics);
+    ["finSubs", "finMix", "finCpi", "finConv"].forEach(id => {
+      document.getElementById(id).addEventListener("input", updateFinancialModel);
     });
 
-    // 5. PRD Table Data & Filters
-    const prdItems = [
-      { id: "FR-01", domain: "client", title: "One-Tap Egypt Connect", spec: "Single prominent action connects user to their optimal Egyptian node (Standard Marseille Pool vs. Sticky 1:1 Cairo Banking Relay) with real-time latency and assigned IP badge.", prio: "P0 (MVP)" },
-      { id: "FR-02", domain: "network", title: "AmneziaWG + WSS 443 Stealth Engine", spec: "Primary tunnel uses AmneziaWG (randomized headers H1–H4 + junk padding) to defeat Gulf ISP & Telecom Egypt DPI. Auto-fallback within 3.5s to WireGuard-over-WSS (TLS TCP 443) if UDP is blocked.", prio: "P0 (MVP)" },
-      { id: "FR-03", domain: "backend", title: "Banking Mode (1:1 Sticky IP Pinning)", spec: "Banking Plan subscribers receive an exclusive, static Egyptian IP (1 User : 1 IP) pinned to their account in PostgreSQL. Never shared with any other subscriber.", prio: "P0 (MVP)" },
-      { id: "FR-04", domain: "client", title: "Egyptian Apps Split-Tunnel Preset", spec: "1-tap split-tunnel mode routes only Egyptian banking, government, telecom, and streaming apps through the VPN while keeping WhatsApp, Uber/Careem, and Gulf bank apps on local internet.", prio: "P0 (MVP)" },
-      { id: "FR-05", domain: "client", title: "Live Service Status Board", spec: "In-app status sheet displaying real-time verified pass/degraded indicators for top 12 Egyptian services (NBE, CIB, Banque Misr, InstaPay, Digital Egypt, Traffic Fines, Watch iT, My WE, Ana Vodafone).", prio: "P0 (MVP)" },
-      { id: "FR-06", domain: "network", title: "Dual-Stack IPv6 Sinkhole & DNS Shield", spec: "Explicitly capture and drop all ::/0 IPv6 routes inside VpnService / NEPacketTunnelProvider so dual-stack Gulf mobile networks never leak real Saudi/UAE IPv6 addresses. Force encrypted in-tunnel DNS.", prio: "P0 (MVP)" },
-      { id: "FR-07", domain: "client", title: "Pre-Flight Banking Readiness Check", spec: "1-second diagnostic before launching a bank app verifying: (1) Tunnel up, (2) Assigned sticky EG IP active, (3) IPv6 blocked, and (4) Warning if device GPS location permission is enabled for the bank app.", prio: "P1 (MVP)" },
-      { id: "FR-08", domain: "backend", title: "Self-Serve 1-Tap Sticky IP Swap", spec: "Allows Banking Tier users to swap their dedicated IP to a fresh warm-reserve IP from a different Egyptian subnet/ASN if they encounter a block or CAPTCHA (rate-limited to 2 swaps/month).", prio: "P1 (MVP)" },
-      { id: "FR-09", domain: "client", title: "Arabic-First RTL & English UI", spec: "Natural Egyptian Arabic RTL interface with instant English switch, clear onboarding for Egyptian SIM roaming OTP requirements, and 1-tap WhatsApp/in-app support.", prio: "P0 (MVP)" },
-      { id: "FR-10", domain: "backend", title: "Localized GCC & Global Billing", spec: "RevenueCat integration over Google Play Billing & Apple StoreKit 2 with localized price tiers in SAR, AED, KWD, QAR, USD, EUR, and GBP, featuring a 3-day trial on Annual plans.", prio: "P0 (MVP)" },
-      { id: "NFR-01", domain: "network", title: "Destination-Allowlisted Cairo Relays", spec: "Cairo Tier 2 relays run diskless in RAM (tmpfs) and enforce kernel nftables rules allowing only HTTPS traffic to Egyptian bank ASNs and .gov.eg / .com.eg CIDRs, routing all other traffic via Marseille.", prio: "P0 (MVP)" },
-      { id: "NFR-02", domain: "network", title: "Outbound Abuse & Reputation Firewall", spec: "Block outbound SMTPports (25, 465, 587), BitTorrent/P2P protocols, and port scanning across all nodes to keep IPQS fraud scores < 25.", prio: "P0 (MVP)" },
-      { id: "NFR-03", domain: "backend", title: "15-Minute Synthetic Unlock Monitor", spec: "Automated headless checks run every 15 minutes per exit IP against target Egyptian portals, triggering PagerDuty/Slack alerts and auto-rotation if an IP is flagged.", prio: "P0 (MVP)" },
-      { id: "NFR-04", domain: "client", title: "Zero Ad / Zero Tracker Security Profile", spec: "Zero third-party ad SDKs, zero behavioral trackers, and no READ_PHONE_STATE or AD_ID permissions—verified in CI via MobSF and Exodus Privacy.", prio: "P0 (MVP)" },
-      { id: "NFR-05", domain: "network", title: "Latency & Connect Time SLA", spec: "Time-to-tunnel-up <= 2.0s on AmneziaWG (<= 3.5s on WSS fallback); peak RTT <= 75ms from Gulf, <= 80ms from Europe, <= 185ms from US.", prio: "P0 (MVP)" },
-      { id: "NFR-06", domain: "client", title: "Store Policy & MASA Level 2 Readiness", spec: "Full compliance with Google Play VpnService policy, Apple Guideline 5.4 Organization rules, and OWASP MASVS / MASA Level 2 requirements for the Google Play Verified VPN badge.", prio: "P1 (Launch)" }
+    // =========================================================
+    // 7. CHAPTER 6: INTERACTIVE ROADMAP & PRD EXPLORER
+    // =========================================================
+    const phases = [
+      {
+        tag: "Phase 0 · Weeks 1–2",
+        title: "Empirical Validation, Candidate IP Audit & Legal Gate",
+        goal: "Prove IP unlock rate ≥ 90% and obtain written Egyptian legal opinion before committing server capex.",
+        tasks: [
+          "Scrape 5,000+ Arabic & English reviews across SWS VPN Egypt, Hola, Planet VPN, Proton, CyberGhost & ExpressVPN.",
+          "Rent 5 candidate test IPs: LightNode Cairo, Link Data Center, IT EGY, Raya Data Center, and 1 Marseille Geo-EG /29 subnet.",
+          "Run all 5 candidate IPs through MaxMind, ipinfo, IP2Location, DB-IP, IPQS & Scamalytics + live tests on NBE, CIB, InstaPay, digital.gov.eg & Watch iT.",
+          "Obtain written opinion from Egyptian telecom counsel on the 7 Stage 4 questions & complete offshore LLC/FZCO D-U-N-S setup."
+        ],
+        reqs: [
+          { code: "GATE-01", name: "4/4 GeoDBs report Egypt", desc: "Verified across MaxMind, IP2Location, ipinfo, DB-IP" },
+          { code: "GATE-02", name: "IPQS Fraud Score < 25", desc: "Zero VPN or proxy flags on candidate Banking IPs" },
+          { code: "GATE-03", name: "Legal & Entity Cleared", desc: "Written counsel sign-off + Apple/Play Organization accounts" }
+        ]
+      },
+      {
+        tag: "Phase 1 · Weeks 3–5",
+        title: "Two-Tier Hybrid Infrastructure & Synthetic Status Engine",
+        goal: "Automate diskless Cairo relays, Marseille 10G hub, AmneziaWG obfuscation, and 15-minute synthetic probes.",
+        tasks: [
+          "Build Ansible playbooks provisioning Ubuntu 24.04 nodes with AmneziaWG (UDP) and WireGuard-over-WSS (TLS 443) fallback.",
+          "Configure Cairo Tier 2 relays in RAM-only tmpfs mode with kernel nftables allowlisting strictly for Egyptian bank ASNs and .gov.eg CIDRs.",
+          "Build Control Plane API (FastAPI/Go + PostgreSQL) managing 1:1 sticky IP assignment, RevenueCat webhooks, and 25% warm reserve rotation.",
+          "Deploy 15-minute synthetic Playwright probes checking NBE, CIB, Banque Misr, InstaPay, digital.gov.eg, ppo.gov.eg, Watch iT & te.eg."
+        ],
+        reqs: [
+          { code: "FR-02", name: "AmneziaWG + WSS 443 Stealth", desc: "Defeats Telecom Egypt & Gulf carrier DPI with 3.5s auto-fallback" },
+          { code: "FR-03", name: "1:1 Sticky IP Pinning", desc: "Exclusive static Egyptian IP bound to each Banking subscriber" },
+          { code: "NFR-07", name: "Abuse & SMTP Firewall", desc: "Blocks ports 25/465/587 & BitTorrent to protect IP reputation" }
+        ]
+      },
+      {
+        tag: "Phase 2 · Weeks 6–8",
+        title: "Android Kotlin MVP, Split-Tunnel Preset & Security Audit",
+        goal: "Ship a fast, zero-tracker Arabic-first Android app that passes every DNS/IPv6 leak test and MobSF scan.",
+        tasks: [
+          "Build native Kotlin Jetpack Compose client with natural Egyptian Arabic RTL UI and instant English toggle.",
+          "Implement 1-tap 'Egyptian Apps Only' Split-Tunnel preset + strict ::/0 IPv6 sinkhole so Gulf 5G networks never leak real IPv6.",
+          "Add Pre-Flight Banking Readiness Check (verifies tunnel, sticky IP, IPv6 block, and warns if GPS is on) + 1-tap 'Swap My IP'.",
+          "Run MobSF & Exodus Privacy scans verifying 0 trackers and 0 ad SDKs; record Google Play VpnService declaration walkthrough video."
+        ],
+        reqs: [
+          { code: "FR-04", name: "Egyptian App Split-Tunnel", desc: "Routes only Egyptian apps via VPN; keeps WhatsApp/Gulf banks local" },
+          { code: "FR-05", name: "Live Service Status Board", desc: "Shows real-time verified green checks for top 12 Egyptian services" },
+          { code: "FR-06", name: "Dual-Stack IPv6 Sinkhole", desc: "Zero IPv6 or DNS leaks on STC, Mobily, e&, and du mobile networks" }
+        ]
+      },
+      {
+        tag: "Phase 3–4 · Weeks 9–12",
+        title: "200-User Gulf Closed Beta, $1,500 Paid UA Test & iOS Port",
+        goal: "Validate retention, conversion, and CPI ≤ $0.80 in KSA/UAE/Kuwait, then ship iOS and public production.",
+        tasks: [
+          "Recruit 150–200 Egyptian expats in Saudi Arabia, Kuwait, and UAE onto Google Play Closed Testing track for 4 weeks.",
+          "Collect in-app post-session unlock ratings per service and turn on RevenueCat localized SAR/AED/KWD/USD billing in Weeks 11–12.",
+          "Run $1,500 paid creative test across Meta Reels (50%), TikTok (30%), and Google App Campaigns (20%) testing 3 Arabic angles.",
+          "Ship Swift iOS client (NEPacketTunnelProvider) under Organization account & initiate MASA Level 2 audit for Play Verified VPN badge."
+        ],
+        reqs: [
+          { code: "FR-10", name: "Localized GCC Billing", desc: "SAR, AED, KWD, QAR, USD, EUR tiers + Annual plan hero offer" },
+          { code: "NFR-06", name: "99.5% Crash-Free Vitals", desc: "ANR < 0.25%, Crash < 0.8%, Refunds < 5% in Play Console" },
+          { code: "MASA-L2", name: "Play Verified VPN Badge", desc: "Independent security certification creating an unassailable moat" }
+        ]
+      }
     ];
 
-    function renderPrd(domain) {
-      const tbody = document.getElementById("prdTableBody");
-      const rows = prdItems.filter(item => domain === "all" || item.domain === domain);
-      tbody.innerHTML = rows.map(item => `
-        <tr>
-          <td><code>${item.id}</code></td>
-          <td style="text-transform:uppercase; font-size:0.75rem; font-weight:700; color:var(--text-muted);">${item.domain}</td>
-          <td><strong>${item.title}</strong></td>
-          <td>${item.spec}</td>
-          <td><span class="pill ${item.prio.includes('P0') ? 'pill-green' : 'pill-blue'}">${item.prio}</span></td>
-        </tr>
-      `).join("");
+    function renderPhase(idx) {
+      const p = phases[idx];
+      document.getElementById("phaseDetailContainer").innerHTML = `
+        <div class="lg:col-span-7 bg-[#161d2a] border border-white/10 rounded-xl p-5 space-y-3">
+          <div class="inline-block text-xs font-bold px-2.5 py-0.5 rounded bg-emerald-500/15 text-emerald-400 mono">${p.tag}</div>
+          <h3 class="text-lg font-bold text-white">${p.title}</h3>
+          <p class="text-xs text-emerald-300 font-medium">${p.goal}</p>
+          <ul class="space-y-2 pt-2 text-xs text-slate-200 list-disc pl-4 leading-relaxed">
+            ${p.tasks.map(t => `<li>${t}</li>`).join("")}
+          </ul>
+        </div>
+        <div class="lg:col-span-5 bg-[#161d2a] border border-white/10 rounded-xl p-5 space-y-3">
+          <div class="text-xs font-bold uppercase tracking-wider text-slate-400">Core PRD Requirements Delivered</div>
+          <div class="space-y-2.5">
+            ${p.reqs.map(r => `
+              <div class="p-3 rounded-lg bg-[#0f141d] border border-white/[0.07]">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs font-bold text-white">${r.name}</span>
+                  <span class="mono text-xs text-emerald-400 font-semibold">${r.code}</span>
+                </div>
+                <p class="text-xs text-slate-400 mt-1">${r.desc}</p>
+              </div>
+            `).join("")}
+          </div>
+        </div>
+      `;
     }
 
-    document.querySelectorAll("#prdFilters .filter-btn").forEach(btn => {
+    document.querySelectorAll(".phase-btn").forEach(btn => {
       btn.addEventListener("click", () => {
-        document.querySelectorAll("#prdFilters .filter-btn").forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        renderPrd(btn.dataset.prd);
+        const idx = Number(btn.dataset.phase);
+        renderPhase(idx);
+        document.querySelectorAll(".phase-btn").forEach(b => {
+          b.className = Number(b.dataset.phase) === idx
+            ? "phase-btn pressable px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-500 text-slate-950"
+            : "phase-btn pressable px-3.5 py-2 rounded-xl text-xs font-bold bg-[#161d2a] text-slate-300 border border-white/10";
+        });
       });
     });
 
-    // Init all interactive views
-    renderUseCases("all");
-    renderTopo(0);
-    calcEconomics();
-    renderPrd("all");
+    // INITIALIZE ALL INTERACTIVE MODULES
+    renderSimulator();
+    renderFlowScenario("banking");
+    renderLawyerAccordion();
+    updateFinancialModel();
+    renderPhase(0);
   </script>
 </body>
 </html>
