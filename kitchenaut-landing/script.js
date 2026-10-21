@@ -33,6 +33,13 @@ const CONTACT_EMAIL = "contact@example.com"; // TODO: replace with the real addr
   var toggle = header.querySelector(".nav__toggle");
   var navLinks = document.getElementById("site-nav");
 
+  /* The header is transparent over the hero photo until the page scrolls. */
+  var onScroll = function () {
+    header.classList.toggle("is-scrolled", window.scrollY > 8);
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+
   function setMenu(open) {
     toggle.setAttribute("aria-expanded", String(open));
     toggle.setAttribute("aria-label", open ? "Close menu" : "Menu");
