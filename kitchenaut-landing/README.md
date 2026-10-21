@@ -12,6 +12,7 @@ A single-page, static landing page for a pre-launch consumer app. Plain HTML, CS
 | `styles.css` | Design tokens, layout, components and motion. Mobile-first (390px), scales to 1440px. |
 | `script.js` | Scroll reveals, mobile menu, hero phone loop, FAQ accordion, walkthrough form. `CONTACT_EMAIL` is the first line. |
 | `favicon.svg` | The orbit-ring mark on a dark tile. |
+| `images/` | AI-generated photography as responsive WebP files (about 0.8 MB for the whole set; each visitor loads only the sizes their screen needs). |
 | `README.md` | This file. |
 
 ## Preview locally
@@ -40,7 +41,7 @@ You can also open `index.html` directly in a browser. The page looks the same, b
    ```
 
    The walkthrough form opens a `mailto:` link to that address, pre-filled with the visitor's name, email and firm. Nothing is sent from the page itself. The fallback line shown after submitting reads the same constant.
-2. **Add social-share tags once the domain is known.** The page has Open Graph and Twitter tags but deliberately no `og:image`, `og:url` or `canonical`: the brief forbids raster images and the production domain is not decided yet. Add all three when the domain is live (social cards need a PNG or JPG, which is the one place a raster file is unavoidable).
+2. **Add social-share tags once the domain is known.** The page has Open Graph and Twitter tags but no `og:url`, `canonical` or `og:image` yet, because those need absolute URLs on the production domain. When the domain is live, add all three; `images/hero-1280.webp` works as a starting point for `og:image`, although some platforms still prefer a 1200 x 630 JPG or PNG.
 3. **Re-read the content rules below** before editing any copy.
 
 ## Renaming the product
@@ -96,15 +97,18 @@ Keep these when editing copy:
 - Pricing is labelled "Planned pricing, pre-launch assumptions". Targets are labelled "Targets, not results". Every roadmap phase is marked "Planned".
 - No users, traction, revenue, waitlist numbers, press, testimonials, logos, awards, partners, investor names or team members.
 - No claims of first, only or best. No competitors or third-party brands named. No model vendor named.
-- Emoji appear only inside the phone mockups. All phone screens are labelled "Prototype UI, sample data."
+- No emoji are used. All phone screens are labelled "Prototype UI, sample data."
+- Photography is AI-generated for this page (food and kitchens only, no people) and the footer says so. Do not swap in stock photos.
 - No text under 14px anywhere, including inside the phone mockups (the phones are sized in `em`, so they scale as a unit and never go below 14px).
 
 ## Design notes
 
 - Tokens live at the top of `styles.css` (`:root`): background `#120e0b`, surfaces `#1c1612` and `#261e18`, text `#f6efe6`, muted `#b8a99a`, orange `#f97316`, amber `#f59e0b`, green `#22c55e`, purple `#a855f7`. Lighter `-text` tints are used for small coloured text so AA contrast holds on the dark surfaces.
 - Fonts: Fraunces (headings) and DM Sans (body) from Google Fonts, loaded without blocking render, with Georgia and system-ui fallbacks. This is the page's only third-party request.
+- Photography: hero (a dark kitchen lit by an open fridge), the Problem section (wilted basil and an overripe tomato), five product panels, and the closing section (bruschetta). Ingredient, dish and Chef Zara images also appear inside the phone screens. Every image has explicit `width` and `height`, a responsive `srcset`, and `loading="lazy"` except the hero, which is preloaded with `fetchpriority="high"`.
+- To regenerate or replace an image, keep the file names and sizes in `images/` (for example `hero-800.webp`, `hero-1280.webp`, `hero-2048.webp`) or update the matching `srcset` in `index.html`.
 - The hero grain is a procedural SVG filter in CSS, not an image file.
-- Motion is limited to transforms and opacity. With `prefers-reduced-motion: reduce` the hero phone stays on the Quests screen, reveals show immediately, the XP ladder is filled, and the pulse and orbit animations stop. The hero phone loop also has a visible pause button and pauses while off-screen or in a background tab.
+- Motion is limited to transforms and opacity. With `prefers-reduced-motion: reduce` the hero phone stays on the Quests screen, reveals show immediately, the XP ladder is filled, and the pulse animations stop. The hero phone loop also has a visible pause button and pauses while off-screen or in a background tab.
 - Without JavaScript the page is fully readable: reveals are visible, every FAQ answer is open, the XP ladder is filled, and the nav links wrap onto their own row.
 
 ## Accessibility
