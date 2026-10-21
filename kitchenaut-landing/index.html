@@ -1,0 +1,920 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kitchenaut | Your fridge is mission control</title>
+  <meta name="description" content="Kitchenaut is a gamified cooking app in development. It turns food about to expire into a daily cooking quest and coaches you through it with an AI chef.">
+  <meta name="theme-color" content="#120e0b">
+  <meta name="color-scheme" content="dark">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Kitchenaut">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:title" content="Kitchenaut: your fridge is mission control">
+  <meta property="og:description" content="A gamified cooking app in development. Scan what you own, turn whatever is about to expire into a daily quest, and level up as you cook.">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Kitchenaut: your fridge is mission control">
+  <meta name="twitter:description" content="A gamified cooking app in development. Scan what you own, turn whatever is about to expire into a daily quest, and level up as you cook.">
+
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+  <script>document.documentElement.className = "js";</script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..700&amp;family=Fraunces:opsz,wght@9..144,500..700&amp;display=swap" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..700&amp;family=Fraunces:opsz,wght@9..144,500..700&amp;display=swap"></noscript>
+  <link rel="stylesheet" href="styles.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+
+<!-- Inline SVG sprite: every icon, the orbit-ring mark and the dish illustration -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <linearGradient id="g-planet" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f59e0b"/>
+      <stop offset="1" stop-color="#f97316"/>
+    </linearGradient>
+  </defs>
+  <symbol id="mark" viewBox="0 0 32 32">
+    <g transform="rotate(-28 16 16)" fill="none" stroke="#f6efe6" stroke-width="1.8" stroke-linecap="round">
+      <ellipse cx="16" cy="16" rx="12.5" ry="5.2" opacity=".85"/>
+    </g>
+    <circle cx="16" cy="16" r="6.2" fill="url(#g-planet)"/>
+    <g transform="rotate(-28 16 16)">
+      <path d="M3.5 16a12.5 5.2 0 0 0 25 0" fill="none" stroke="#f6efe6" stroke-width="1.8" stroke-linecap="round"/>
+    </g>
+    <circle cx="26" cy="9.2" r="2" fill="#22c55e"/>
+  </symbol>
+
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-camera" viewBox="0 0 24 24"><path d="M4 8h3l2-2.5h6L17 8h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></symbol>
+  <symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 1.5 1 2.5 2 2.5C11 9 11 6 12 3z"/></symbol>
+  <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 3L5 13.5h6L10 21l8-10.5h-6z"/></symbol>
+  <symbol id="i-medal" viewBox="0 0 24 24"><circle cx="12" cy="14.5" r="5.5"/><path d="M8.5 3l3.5 6M15.5 3L12 9M12 12l.9 1.8 2 .3-1.4 1.4.3 2-1.8-.9-1.8.9.3-2-1.4-1.4 2-.3z"/></symbol>
+  <symbol id="i-scan" viewBox="0 0 24 24"><path d="M4 8V5.5A1.5 1.5 0 0 1 5.5 4H8M16 4h2.5A1.5 1.5 0 0 1 20 5.5V8M20 16v2.5a1.5 1.5 0 0 1-1.5 1.5H16M8 20H5.5A1.5 1.5 0 0 1 4 18.5V16M4 12h16"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1" fill="currentColor"/></symbol>
+  <symbol id="i-pot" viewBox="0 0 24 24"><path d="M5 10h14v6a4 4 0 0 1-4 4H9a4 4 0 0 1-4-4zM3 10h18M9 6c0-1.5 1.5-1.5 1.5-3M14 6c0-1.5 1.5-1.5 1.5-3"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24"><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.2 10.8l7.6-3.6M8.2 13.2l7.6 3.6"/></symbol>
+  <symbol id="i-levelup" viewBox="0 0 24 24"><path d="M12 19V6M6 11l6-6 6 6M7 21h10"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2.5"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 17v-6a6 6 0 0 1 12 0v6l1.5 2h-15zM10 21.5h4"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8.5 5v14M15.5 5v14"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5l11 7-11 7z"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></symbol>
+  <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M7 4h10v16l-5-4-5 4z"/></symbol>
+  <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M7 18a4 4 0 0 1-.5-8A5.5 5.5 0 0 1 17 8.5a4.8 4.8 0 0 1 0 9.5z"/></symbol>
+  <symbol id="i-house" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9H4zM10 20v-5h4v5"/></symbol>
+  <symbol id="i-plate" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="5"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></symbol>
+  <symbol id="i-fridge" viewBox="0 0 24 24"><rect x="6" y="3" width="12" height="18" rx="2.5"/><path d="M6 10h12M9 6v2M9 13v3"/></symbol>
+  <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8zM19 16l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7z"/></symbol>
+  <symbol id="i-school" viewBox="0 0 24 24"><path d="M3 9l9-4 9 4-9 4zM7 11.5V16c0 1 2.5 2.5 5 2.5s5-1.5 5-2.5v-4.5"/></symbol>
+  <symbol id="i-people" viewBox="0 0 24 24"><circle cx="9" cy="9" r="3.2"/><path d="M3.5 19a5.5 5.5 0 0 1 11 0"/><circle cx="17" cy="10" r="2.4"/><path d="M16 14.2a4.5 4.5 0 0 1 5 4.3"/></symbol>
+  <symbol id="i-barcode" viewBox="0 0 24 24"><path d="M4 5v14M7 5v14M11 5v14M14 5v14M17.5 5v14M20 5v14"/></symbol>
+  <symbol id="i-phone" viewBox="0 0 24 24"><rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M11 18h2"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="13" rx="2.5"/><path d="M4 8l8 5.5L20 8"/></symbol>
+  <symbol id="i-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5H5V6h5"/></symbol>
+  <symbol id="i-chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+  <symbol id="i-dot" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.5"/></symbol>
+  <symbol id="i-loop" viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 8.5M20 4v4.5h-4.5M20 12a8 8 0 0 1-13.7 5.6L4 15.5M4 20v-4.5h4.5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M7 7l10 10M17 7L7 17"/></symbol>
+
+  <symbol id="art-slice" viewBox="0 0 70 52">
+    <rect x="1" y="1" width="68" height="50" rx="16" fill="#b97a3d"/>
+    <rect x="6" y="6" width="58" height="40" rx="12" fill="#e9b777"/>
+    <rect x="14" y="13" width="12" height="12" rx="3" fill="#dc2626"/>
+    <rect x="34" y="18" width="12" height="12" rx="3" fill="#ef4444"/>
+    <rect x="22" y="29" width="11" height="11" rx="3" fill="#dc2626"/>
+    <rect x="45" y="30" width="10" height="10" rx="3" fill="#ef4444"/>
+    <ellipse cx="46" cy="14" rx="9" ry="4.6" fill="#15803d" transform="rotate(-25 46 14)"/>
+    <ellipse cx="20" cy="38" rx="8" ry="4.2" fill="#16a34a" transform="rotate(20 20 38)"/>
+  </symbol>
+  <symbol id="art-bruschetta" viewBox="0 0 200 200">
+    <circle cx="100" cy="100" r="94" fill="#efe5d8"/>
+    <circle cx="100" cy="100" r="76" fill="#faf5ee" stroke="#e4d6c3" stroke-width="2"/>
+    <use href="#art-slice" x="26" y="48" width="78" height="58" transform="rotate(-12 65 77)"/>
+    <use href="#art-slice" x="94" y="40" width="78" height="58" transform="rotate(10 133 69)"/>
+    <use href="#art-slice" x="60" y="108" width="78" height="58" transform="rotate(-4 99 137)"/>
+  </symbol>
+</svg>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- 1. Sticky nav ---------------------------------------------------------- -->
+<header class="site-header" id="site-header">
+  <div class="container nav">
+    <a class="brand" href="#top">
+      <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><use href="#mark"/></svg>
+      <span class="brand__name">Kitchenaut</span>
+    </a>
+    <nav class="nav__links" id="site-nav" aria-label="Primary">
+      <ul>
+        <li><a href="#problem">Problem</a></li>
+        <li><a href="#product">Product</a></li>
+        <li><a href="#model">Model</a></li>
+        <li><a href="#roadmap">Roadmap</a></li>
+      </ul>
+    </nav>
+    <a class="btn btn--primary btn--sm nav__cta" href="#walkthrough" aria-label="Request a walkthrough"><span class="btn__long" aria-hidden="true">Request a walkthrough</span><span class="btn__short" aria-hidden="true">Walkthrough</span></a>
+    <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Menu">
+      <svg class="icon icon-menu" aria-hidden="true" focusable="false"><use href="#i-menu"/></svg>
+      <svg class="icon icon-close" aria-hidden="true" focusable="false"><use href="#i-close"/></svg>
+    </button>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- 2. Hero ---------------------------------------------------------------- -->
+<section class="hero" id="top" aria-labelledby="hero-title">
+  <div class="hero__bg" aria-hidden="true"></div>
+  <div class="container hero__grid">
+    <div class="hero__copy">
+      <p class="hero__status"><i aria-hidden="true"></i>Pre-launch. Interactive prototype built.</p>
+      <h1 id="hero-title">Your fridge is <em>mission control.</em></h1>
+      <p class="lede">Kitchenaut scans what you already own, turns whatever is about to expire into a daily cooking quest, and coaches you through it. Cook more. Waste less. Level up.</p>
+      <div class="hero__actions">
+        <a class="btn btn--primary btn--lg" href="#walkthrough">Request a walkthrough</a>
+        <a class="btn btn--ghost btn--lg" href="#loop">See how it works</a>
+      </div>
+      <ul class="stage" aria-label="Where the product stands today">
+        <li><span class="stage__icon" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span>Interactive prototype built</li>
+        <li><span class="stage__icon" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span>Requirements and technical design complete</li>
+        <li class="is-next"><span class="stage__icon" aria-hidden="true"><svg class="icon"><use href="#i-arrow"/></svg></span>MVP build is next</li>
+      </ul>
+    </div>
+
+    <div class="hero__visual">
+      <div class="orbit" aria-hidden="true">
+        <div class="orbit__ring"><span class="orbit__dot orbit__dot--a"></span><span class="orbit__dot orbit__dot--b"></span></div>
+        <div class="orbit__ring orbit__ring--2"><span class="orbit__dot orbit__dot--c"></span></div>
+      </div>
+      <span class="float float--xp" aria-hidden="true"><svg class="icon"><use href="#i-bolt"/></svg>+20 XP</span>
+      <span class="float float--streak" aria-hidden="true"><svg class="icon"><use href="#i-flame"/></svg>Streak kept</span>
+
+      <div class="phone phone--hero phone--multi" id="hero-phone" data-state="quest" role="img"
+           aria-label="Prototype app screens with sample data, cycling through three states. Scan: the camera reads fridge shelves and finds basil, tomatoes and eggs with their expiry dates. Quests: Today's mission, with Basil expiring in 1 day, Tomatoes in 2 days and Eggs in 3 days, a quest card for Tomato and basil bruschetta, 12 min, and Chef Zara saying your basil expires tomorrow and your tomatoes are next, so make bruschetta in 12 minutes with zero waste, plus 20 XP for the salt trick. Cooked: the finished dish earns XP and moves the cook toward Apprentice Cook.">
+        <span class="phone__island"></span>
+        <div class="phone__screen">
+          <div class="statusbar"><span>9:41</span><svg viewBox="0 0 32 10"><rect x="0" y="6" width="3" height="4" rx="1"/><rect x="5" y="4" width="3" height="6" rx="1"/><rect x="10" y="2" width="3" height="8" rx="1"/><rect x="15" y="0" width="3" height="10" rx="1"/><rect x="21" y="1" width="10" height="8" rx="2.4" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="22.6" y="2.6" width="6" height="4.8" rx="1.2"/></svg></div>
+
+          <!-- State 1: scan -->
+          <div class="screen screen--scan">
+            <div class="p-head">
+              <div class="p-title">Scan your fridge</div>
+              <div class="p-sub">Barcode and expiry date first</div>
+            </div>
+            <div class="p-viewfinder">
+              <svg class="p-brackets" viewBox="0 0 100 100" preserveAspectRatio="none"><path vector-effect="non-scaling-stroke" d="M2 16V6a4 4 0 0 1 4-4h10M84 2h10a4 4 0 0 1 4 4v10M98 84v10a4 4 0 0 1-4 4H84M16 98H6a4 4 0 0 1-4-4V84"/></svg>
+              <span class="p-scanline"></span>
+              <div class="p-cell"><b>🥛</b></div>
+              <div class="p-cell p-cell--hit" style="--dl:1.2s"><b>🥚</b><span>Eggs</span></div>
+              <div class="p-cell"><b>🧀</b></div>
+              <div class="p-cell p-cell--hit" style="--dl:0.8s"><b>🍅</b><span>Tomatoes</span></div>
+              <div class="p-cell p-cell--hit" style="--dl:0.4s"><b>🌿</b><span>Basil</span></div>
+              <div class="p-cell"><b>🫙</b></div>
+            </div>
+            <ul class="p-found">
+              <li style="--dl:0.9s"><span>🌿</span>Basil<span class="p-chip">1 day</span></li>
+              <li style="--dl:1.3s"><span>🍅</span>Tomatoes<span class="p-chip p-chip--warm">2 days</span></li>
+              <li style="--dl:1.7s"><span>🥚</span>Eggs<span class="p-chip p-chip--fresh">3 days</span></li>
+            </ul>
+            <div class="p-status"><svg class="icon"><use href="#i-barcode"/></svg>Reading expiry dates</div>
+            <div class="p-tabs">
+              <span class="p-tab is-on"><svg class="icon"><use href="#i-fridge"/></svg>Fridge</span>
+              <span class="p-tab"><svg class="icon"><use href="#i-target"/></svg>Quests</span>
+              <span class="p-tab"><svg class="icon"><use href="#i-sparkle"/></svg>Chef</span>
+              <span class="p-tab"><svg class="icon"><use href="#i-school"/></svg>School</span>
+              <span class="p-tab"><svg class="icon"><use href="#i-people"/></svg>Hub</span>
+            </div>
+          </div>
+
+          <!-- State 2: quest (default) -->
+          <div class="screen screen--quest">
+            <div class="p-head">
+              <div class="p-title">Today's mission</div>
+              <div class="p-sub">Use these up first</div>
+            </div>
+            <div class="p-expiry">
+              <div class="p-exp p-exp--hot"><b>🌿</b>Basil<span>1 day</span></div>
+              <div class="p-exp p-exp--warm"><b>🍅</b>Tomatoes<span>2 days</span></div>
+              <div class="p-exp p-exp--fresh"><b>🥚</b>Eggs<span>3 days</span></div>
+            </div>
+            <div class="p-quest">
+              <div class="p-quest__top">
+                <span class="p-chip">Daily quest</span>
+                <span class="p-meta"><svg class="icon"><use href="#i-clock"/></svg>12 min</span>
+              </div>
+              <div class="p-quest__title">Tomato and basil bruschetta</div>
+              <div class="p-quest__foot">
+                <span class="p-emoji-row">🍅🌿🍞</span>
+                <span class="p-btn">Start<svg class="icon"><use href="#i-arrow"/></svg></span>
+              </div>
+            </div>
+            <div class="p-zara">
+              <div class="p-avatar">🧑‍🍳</div>
+              <div class="p-zara__body">
+                <div class="p-zara__name">Chef Zara <span class="p-chip p-chip--ai">AI chef</span></div>
+                <p class="p-bubble">Your basil expires tomorrow and your tomatoes are next. Bruschetta in 12 minutes, zero waste. +20 XP for the salt trick.</p>
+              </div>
+            </div>
+            <div class="p-tabs">
+              <span class="p-tab"><svg class="icon"><use href="#i-fridge"/></svg>Fridge</span>
+              <span class="p-tab is-on"><svg class="icon"><use href="#i-target"/></svg>Quests</span>
+              <span class="p-tab"><svg class="icon"><use href="#i-sparkle"/></svg>Chef</span>
+              <span class="p-tab"><svg class="icon"><use href="#i-school"/></svg>School</span>
+              <span class="p-tab"><svg class="icon"><use href="#i-people"/></svg>Hub</span>
+            </div>
+          </div>
+
+          <!-- State 3: cooked -->
+          <div class="screen screen--cooked">
+            <svg class="p-spark" viewBox="0 0 100 160" preserveAspectRatio="xMidYMid slice"><g fill="#f59e0b"><circle cx="14" cy="30" r="2.4"/><circle cx="88" cy="22" r="2"/><circle cx="8" cy="86" r="1.8"/><circle cx="94" cy="96" r="2.4"/></g><g fill="#a855f7"><circle cx="30" cy="14" r="2"/><circle cx="72" cy="40" r="1.8"/><circle cx="20" cy="112" r="2.2"/></g><g fill="#22c55e"><circle cx="80" cy="12" r="1.8"/><circle cx="6" cy="58" r="2"/><circle cx="90" cy="130" r="2"/></g><g stroke="#f59e0b" stroke-width="1.2" stroke-linecap="round"><path d="M50 6v8M46 10h8"/><path d="M92 60v7M88.5 63.5h7"/><path d="M10 138v7M6.5 141.5h7"/></g></svg>
+            <div class="p-done">
+              <span class="p-chip p-chip--fresh"><svg class="icon"><use href="#i-check"/></svg>Quest complete</span>
+            </div>
+            <div class="p-title">Tomato and basil bruschetta</div>
+            <div class="p-dish"><svg viewBox="0 0 200 200"><use href="#art-bruschetta"/></svg></div>
+            <div class="p-reward">
+              <span class="p-xp">+20 XP</span>
+              <span class="p-chip p-chip--warm"><svg class="icon"><use href="#i-flame"/></svg>Streak kept</span>
+            </div>
+            <div class="p-level">
+              <div class="p-level__row"><span>Kitchen Novice</span><span>480 / 500 XP</span></div>
+              <div class="p-bar"><span></span></div>
+            </div>
+            <span class="p-btn p-btn--block"><svg class="icon"><use href="#i-share"/></svg>Share to Food Hub</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="phone-controls" role="group" aria-label="Prototype screen">
+        <button type="button" data-phone-state="scan" aria-pressed="false">Scan</button>
+        <button type="button" data-phone-state="quest" aria-pressed="true">Quest</button>
+        <button type="button" data-phone-state="cooked" aria-pressed="false">Cooked</button>
+        <button type="button" class="pp" data-phone-pause aria-pressed="false" aria-label="Pause automatic screen changes">
+          <svg class="icon icon-pause" aria-hidden="true" focusable="false"><use href="#i-pause"/></svg>
+          <svg class="icon icon-play" aria-hidden="true" focusable="false"><use href="#i-play"/></svg>
+        </button>
+      </div>
+      <p class="fineprint">Prototype UI, sample data.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 3. Problem ------------------------------------------------------------- -->
+<section class="section section--tint" id="problem" aria-labelledby="problem-title">
+  <div class="container">
+    <div class="section__head reveal">
+      <span class="eyebrow">The problem</span>
+      <h2 class="problem__title" id="problem-title">Recipe apps are passive. <span>They don't motivate, teach or reward.</span></h2>
+      <p class="lede">Meanwhile, the waste is large, and most of it happens at home.</p>
+    </div>
+
+    <ul class="stats stagger" aria-label="Food waste figures from the UN Environment Programme">
+      <li class="stat reveal">
+        <span class="stat__icon" aria-hidden="true"><svg class="icon"><use href="#i-globe"/></svg></span>
+        <p class="stat__num">1.05 billion<small>tonnes</small></p>
+        <p>of food wasted in 2022, which is 19% of the food available to consumers.</p>
+      </li>
+      <li class="stat reveal">
+        <span class="stat__icon" aria-hidden="true"><svg class="icon"><use href="#i-house"/></svg></span>
+        <p class="stat__num">631 million<small>tonnes</small></p>
+        <p>came from households, about 60% of the total.</p>
+      </li>
+      <li class="stat reveal">
+        <span class="stat__icon" aria-hidden="true"><svg class="icon"><use href="#i-plate"/></svg></span>
+        <p class="stat__num">1 billion+<small>meals a day</small></p>
+        <p>worth of food thrown out by households, every day.</p>
+      </li>
+      <li class="stat reveal">
+        <span class="stat__icon" aria-hidden="true"><svg class="icon"><use href="#i-cloud"/></svg></span>
+        <p class="stat__num">8 to 10%<small>of global emissions</small></p>
+        <p>of global greenhouse gas emissions come from food loss and waste.</p>
+      </li>
+    </ul>
+    <p class="source reveal">Source: UN Environment Programme, <a href="https://www.unep.org/resources/publication/food-waste-index-report-2024" target="_blank" rel="noopener noreferrer">Food Waste Index Report 2024<span class="sr-only"> (opens in a new tab)</span></a>.</p>
+
+    <ul class="answers stagger" aria-label="How Kitchenaut answers each gap">
+      <li class="answer reveal">
+        <p class="answer__no"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-x"/></svg>Recipes don't motivate</p>
+        <p class="answer__yes">Daily quests turn what is expiring into today's mission.</p>
+      </li>
+      <li class="answer reveal">
+        <p class="answer__no"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-x"/></svg>Recipes don't teach</p>
+        <p class="answer__yes">Chef Zara and Chef School coach real technique.</p>
+      </li>
+      <li class="answer reveal">
+        <p class="answer__no"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-x"/></svg>Recipes don't reward</p>
+        <p class="answer__yes">XP, streaks and badges reward the habit.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- 4. The loop ------------------------------------------------------------ -->
+<section class="section" id="loop" aria-labelledby="loop-title">
+  <div class="container">
+    <div class="section__head reveal">
+      <span class="eyebrow">How it works</span>
+      <h2 id="loop-title">Scan. Quest. Cook. Share. Level up.</h2>
+      <p class="lede">Five connected steps. Each one feeds the next, and the last sends you back to the start.</p>
+    </div>
+
+    <ol class="loop stagger">
+      <li class="loop__step reveal">
+        <span class="loop__icon" aria-hidden="true"><svg class="icon"><use href="#i-scan"/></svg></span>
+        <div class="loop__text"><span class="loop__num">Step 1</span><h3>Scan</h3><p>Add what you own: fridge, freezer, pantry and spice rack.</p></div>
+      </li>
+      <li class="loop__step reveal">
+        <span class="loop__icon" aria-hidden="true"><svg class="icon"><use href="#i-target"/></svg></span>
+        <div class="loop__text"><span class="loop__num">Step 2</span><h3>Quest</h3><p>Whatever is about to expire becomes today's mission.</p></div>
+      </li>
+      <li class="loop__step reveal">
+        <span class="loop__icon" aria-hidden="true"><svg class="icon"><use href="#i-pot"/></svg></span>
+        <div class="loop__text"><span class="loop__num">Step 3</span><h3>Cook</h3><p>Chef Zara coaches you through it, step by step.</p></div>
+      </li>
+      <li class="loop__step reveal">
+        <span class="loop__icon" aria-hidden="true"><svg class="icon"><use href="#i-share"/></svg></span>
+        <div class="loop__text"><span class="loop__num">Step 4</span><h3>Share</h3><p>Post the dish you cooked to the Food Hub.</p></div>
+      </li>
+      <li class="loop__step reveal">
+        <span class="loop__icon" aria-hidden="true"><svg class="icon"><use href="#i-levelup"/></svg></span>
+        <div class="loop__text"><span class="loop__num">Step 5</span><h3>Level up</h3><p>Earn XP, keep your streak, unlock the next level.</p></div>
+      </li>
+    </ol>
+    <p class="loop__return reveal"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-loop"/></svg>Then tomorrow's scan starts the loop again.</p>
+  </div>
+</section>
+
+<!-- 5. Product ------------------------------------------------------------- -->
+<section class="section section--tint" id="product" aria-labelledby="product-title">
+  <div class="container">
+    <div class="section__head reveal">
+      <span class="eyebrow">The product</span>
+      <h2 id="product-title">Five modules. One daily habit.</h2>
+      <p class="lede">Every screen below comes from the interactive prototype. Each module is planned for the phase shown.</p>
+    </div>
+
+    <div class="modules">
+
+      <!-- Fridge -->
+      <article class="module" aria-labelledby="m-fridge" style="--glow:34 197 94;--ct:var(--green-text)">
+        <div class="module__copy reveal">
+          <span class="module__kicker"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-fridge"/></svg>Fridge</span>
+          <h3 id="m-fridge">See everything you own, and when it expires.</h3>
+          <p>Scan your fridge, freezer, pantry and spice rack. Barcode lookup and expiry-date reading come first; produce recognition and receipt scanning follow in later phases.</p>
+          <p>Alerts arrive 48 and 24 hours before anything expires.</p>
+          <span class="pill pill--dashed module__tag">Planned. Phase 1, then Phase 4</span>
+        </div>
+        <div class="phone-wrap reveal">
+          <div class="phone phone--crop" style="--tint:34 197 94" role="img"
+               aria-label="Prototype Fridge screen with sample data. My kitchen shows four storage areas: Fridge, Freezer, Pantry and Spices. Scan buttons for barcode and expiry date sit below, with an alert that basil has 24 hours left and a list of items with their days to expiry.">
+            <span class="phone__island"></span>
+            <div class="phone__screen">
+              <div class="statusbar"><span>9:41</span><svg viewBox="0 0 32 10"><rect x="0" y="6" width="3" height="4" rx="1"/><rect x="5" y="4" width="3" height="6" rx="1"/><rect x="10" y="2" width="3" height="8" rx="1"/><rect x="15" y="0" width="3" height="10" rx="1"/><rect x="21" y="1" width="10" height="8" rx="2.4" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="22.6" y="2.6" width="6" height="4.8" rx="1.2"/></svg></div>
+              <div class="screen">
+                <div class="p-head"><div class="p-title">My kitchen</div><div class="p-sub">Everything you own, in one place</div></div>
+                <div class="p-grid2">
+                  <div class="p-tile is-on"><b>🧊</b>Fridge</div>
+                  <div class="p-tile"><b>❄️</b>Freezer</div>
+                  <div class="p-tile"><b>🥫</b>Pantry</div>
+                  <div class="p-tile"><b>🧂</b>Spices</div>
+                </div>
+                <div class="p-grid2">
+                  <span class="p-btn"><svg class="icon"><use href="#i-barcode"/></svg>Barcode</span>
+                  <span class="p-btn p-btn--ghost"><svg class="icon"><use href="#i-camera"/></svg>Expiry</span>
+                </div>
+                <div class="p-alert"><svg class="icon"><use href="#i-bell"/></svg><div>Basil: 24 hours left<small>Cook it tonight</small></div></div>
+                <ul class="p-rows">
+                  <li class="p-row"><span class="p-row__emoji">🍅</span>Tomatoes<span class="p-chip p-chip--warm">2 days</span></li>
+                  <li class="p-row"><span class="p-row__emoji">🥚</span>Eggs<span class="p-chip p-chip--fresh">3 days</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <p class="fineprint">Prototype UI, sample data.</p>
+        </div>
+      </article>
+
+      <!-- Quests -->
+      <article class="module" aria-labelledby="m-quests" style="--glow:249 115 22;--ct:var(--orange-text)">
+        <div class="module__copy reveal">
+          <span class="module__kicker"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-target"/></svg>Quests</span>
+          <h3 id="m-quests">Turn what is expiring into today's mission.</h3>
+          <p>Daily quests are built from what you actually have, with expiring items first.</p>
+          <p>Complete one with a photo of your dish, then take on the weekly challenge.</p>
+          <span class="pill pill--dashed module__tag">Planned. Phase 1</span>
+        </div>
+        <div class="phone-wrap reveal">
+          <div class="phone phone--crop" role="img"
+               aria-label="Prototype Quests screen with sample data. Daily quests lists Tomato and basil bruschetta, 12 min, using basil and tomatoes before they expire, with a button to add a photo of your dish. Below it, a weekly challenge card shows progress through seven days.">
+            <span class="phone__island"></span>
+            <div class="phone__screen">
+              <div class="statusbar"><span>9:41</span><svg viewBox="0 0 32 10"><rect x="0" y="6" width="3" height="4" rx="1"/><rect x="5" y="4" width="3" height="6" rx="1"/><rect x="10" y="2" width="3" height="8" rx="1"/><rect x="15" y="0" width="3" height="10" rx="1"/><rect x="21" y="1" width="10" height="8" rx="2.4" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="22.6" y="2.6" width="6" height="4.8" rx="1.2"/></svg></div>
+              <div class="screen">
+                <div class="p-head"><div class="p-title">Daily quests</div><div class="p-sub">Expiring items come first</div></div>
+                <div class="p-quest">
+                  <div class="p-quest__top"><span class="p-chip">Today</span><span class="p-meta"><svg class="icon"><use href="#i-clock"/></svg>12 min</span></div>
+                  <div class="p-quest__title">Tomato and basil bruschetta</div>
+                  <div class="p-sub">Uses the basil and tomatoes before they expire.</div>
+                  <span class="p-btn p-btn--block"><svg class="icon"><use href="#i-camera"/></svg>Add a photo of your dish</span>
+                </div>
+                <div class="p-card p-weekly">
+                  <div class="p-label">Weekly challenge</div>
+                  <div class="p-quest__title p-quest__title--sm">Zero-waste week</div>
+                  <div class="p-dots"><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="fineprint">Prototype UI, sample data.</p>
+        </div>
+      </article>
+
+      <!-- Chef AI -->
+      <article class="module" aria-labelledby="m-chef" style="--glow:168 85 247;--ct:var(--purple-text)">
+        <div class="module__copy reveal">
+          <span class="module__kicker"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-sparkle"/></svg>Chef AI</span>
+          <h3 id="m-chef">A coach that sees your real kitchen.</h3>
+          <p>Chef Zara is an AI coach who sees your real inventory. She walks you through each recipe step by step.</p>
+          <p>Voice coaching is planned for the Pro tier.</p>
+          <span class="pill pill--dashed module__tag">Planned. Phase 1, voice in Phase 4</span>
+        </div>
+        <div class="phone-wrap reveal">
+          <div class="phone phone--crop" style="--tint:168 85 247" role="img"
+               aria-label="Prototype Chef AI screen with sample data. Chef Zara, an AI chef who sees your real inventory, lists basil, tomatoes and eggs, then coaches step 2 of 5: dice the tomatoes, add a pinch of salt and let them rest. The cook replies done, and Zara gives the next step.">
+            <span class="phone__island"></span>
+            <div class="phone__screen">
+              <div class="statusbar"><span>9:41</span><svg viewBox="0 0 32 10"><rect x="0" y="6" width="3" height="4" rx="1"/><rect x="5" y="4" width="3" height="6" rx="1"/><rect x="10" y="2" width="3" height="8" rx="1"/><rect x="15" y="0" width="3" height="10" rx="1"/><rect x="21" y="1" width="10" height="8" rx="2.4" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="22.6" y="2.6" width="6" height="4.8" rx="1.2"/></svg></div>
+              <div class="screen">
+                <div class="p-zara p-zara--head">
+                  <div class="p-avatar">🧑‍🍳</div>
+                  <div class="p-zara__body"><div class="p-title p-title--sm">Chef Zara</div><div class="p-sub">Sees your real inventory</div></div>
+                  <span class="p-chip p-chip--ai">AI chef</span>
+                </div>
+                <div class="p-chips"><span class="p-chip">Basil</span><span class="p-chip p-chip--warm">Tomatoes</span><span class="p-chip p-chip--fresh">Eggs</span></div>
+                <p class="p-bubble"><strong>Step 2 of 5.</strong> Dice the tomatoes. Add a pinch of salt and let them rest.</p>
+                <p class="p-bubble p-bubble--me">Done. What's next?</p>
+                <p class="p-bubble">Toast the bread. Spoon the tomatoes on top, basil last.</p>
+                <div class="p-dots p-dots--ai"><i class="on"></i><i class="on"></i><i></i><i></i><i></i></div>
+              </div>
+            </div>
+          </div>
+          <p class="fineprint">Prototype UI, sample data.</p>
+        </div>
+      </article>
+
+      <!-- Chef School -->
+      <article class="module" aria-labelledby="m-school" style="--glow:245 158 11;--ct:var(--amber-text)">
+        <div class="module__copy reveal">
+          <span class="module__kicker"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-school"/></svg>Chef School</span>
+          <h3 id="m-school">Real skills, one technique at a time.</h3>
+          <p>Structured lessons that build real skills, one technique at a time.</p>
+          <p>Free includes three lessons. Paid plans include the full school.</p>
+          <span class="pill pill--dashed module__tag">Planned. Phase 2</span>
+        </div>
+        <div class="phone-wrap reveal">
+          <div class="phone phone--crop" style="--tint:245 158 11" role="img"
+               aria-label="Prototype Chef School screen with sample data. A learning path shows Knife basics complete, Heat control in progress at about 60 percent, and Pan sauces locked.">
+            <span class="phone__island"></span>
+            <div class="phone__screen">
+              <div class="statusbar"><span>9:41</span><svg viewBox="0 0 32 10"><rect x="0" y="6" width="3" height="4" rx="1"/><rect x="5" y="4" width="3" height="6" rx="1"/><rect x="10" y="2" width="3" height="8" rx="1"/><rect x="15" y="0" width="3" height="10" rx="1"/><rect x="21" y="1" width="10" height="8" rx="2.4" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="22.6" y="2.6" width="6" height="4.8" rx="1.2"/></svg></div>
+              <div class="screen">
+                <div class="p-head"><div class="p-title">Chef School</div><div class="p-sub">One technique at a time</div></div>
+                <div class="p-lesson is-done">
+                  <span class="p-lesson__ico"><svg class="icon"><use href="#i-check"/></svg></span>
+                  <span class="p-lesson__body">Knife basics<small>Complete</small></span>
+                </div>
+                <div class="p-lesson is-now">
+                  <span class="p-lesson__ico">🔥</span>
+                  <span class="p-lesson__body">Heat control<small>In progress</small><span class="p-bar"><span style="--w:60%"></span></span></span>
+                </div>
+                <div class="p-lesson is-lock">
+                  <span class="p-lesson__ico"><svg class="icon"><use href="#i-lock"/></svg></span>
+                  <span class="p-lesson__body">Pan sauces<small>Locked</small></span>
+                </div>
+                <div class="p-lesson is-lock">
+                  <span class="p-lesson__ico"><svg class="icon"><use href="#i-lock"/></svg></span>
+                  <span class="p-lesson__body">Fresh pasta<small>Locked</small></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="fineprint">Prototype UI, sample data.</p>
+        </div>
+      </article>
+
+      <!-- Food Hub -->
+      <article class="module" aria-labelledby="m-hub" style="--glow:34 197 94;--ct:var(--green-text)">
+        <div class="module__copy reveal">
+          <span class="module__kicker"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-people"/></svg>Food Hub</span>
+          <h3 id="m-hub">Social media for cooking.</h3>
+          <p>Every post is a dish someone actually cooked.</p>
+          <p>Free members can browse the feed. Posting and social features come with paid plans.</p>
+          <span class="pill pill--dashed module__tag">Planned. Phase 1 feed, full Hub in Phase 3</span>
+        </div>
+        <div class="phone-wrap reveal">
+          <div class="phone phone--crop" style="--tint:34 197 94" role="img"
+               aria-label="Prototype Food Hub screen with sample data. A feed post from a sample cook shows a plate of tomato and basil bruschetta marked as cooked, with cheer, reply and save actions.">
+            <span class="phone__island"></span>
+            <div class="phone__screen">
+              <div class="statusbar"><span>9:41</span><svg viewBox="0 0 32 10"><rect x="0" y="6" width="3" height="4" rx="1"/><rect x="5" y="4" width="3" height="6" rx="1"/><rect x="10" y="2" width="3" height="8" rx="1"/><rect x="15" y="0" width="3" height="10" rx="1"/><rect x="21" y="1" width="10" height="8" rx="2.4" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="22.6" y="2.6" width="6" height="4.8" rx="1.2"/></svg></div>
+              <div class="screen">
+                <div class="p-head p-head--row"><div class="p-title">Food Hub</div><span class="p-chip p-chip--fresh"><svg class="icon"><use href="#i-check"/></svg>Cooked only</span></div>
+                <div class="p-post">
+                  <div class="p-post__who"><span class="p-avatar p-avatar--sm">🧑‍🍳</span><span>Sample cook<small>Cooked tonight</small></span></div>
+                  <div class="p-post__art"><svg viewBox="0 0 200 200"><use href="#art-bruschetta"/></svg></div>
+                  <div class="p-post__cap">Tomato and basil bruschetta. Nothing wasted.</div>
+                  <div class="p-actions"><span><svg class="icon"><use href="#i-heart"/></svg>Cheer</span><span><svg class="icon"><use href="#i-chat"/></svg>Reply</span><span><svg class="icon"><use href="#i-bookmark"/></svg>Save</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="fineprint">Prototype UI, sample data.</p>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- 6. Progression --------------------------------------------------------- -->
+<section class="section" id="progression" aria-labelledby="progression-title">
+  <div class="container">
+    <div class="section__head reveal">
+      <span class="eyebrow">Progression</span>
+      <h2 id="progression-title">Cooking that levels you up.</h2>
+      <p class="lede">XP, streaks and badges give every dish a reason to happen again.</p>
+    </div>
+
+    <div class="pillars stagger">
+      <article class="pillar reveal" style="--c:168 85 247;--ct:var(--purple-text)">
+        <span class="pillar__icon" aria-hidden="true"><svg class="icon"><use href="#i-bolt"/></svg></span>
+        <h3>XP</h3>
+        <p>Earn experience points for cooking real dishes, with bonuses for good technique.</p>
+      </article>
+      <article class="pillar reveal" style="--c:249 115 22;--ct:var(--orange-text)">
+        <span class="pillar__icon" aria-hidden="true"><svg class="icon"><use href="#i-flame"/></svg></span>
+        <h3>Streaks</h3>
+        <p>Cook on consecutive days to keep your streak alive. The habit is the point.</p>
+      </article>
+      <article class="pillar reveal" style="--c:34 197 94;--ct:var(--green-text)">
+        <span class="pillar__icon" aria-hidden="true"><svg class="icon"><use href="#i-medal"/></svg></span>
+        <h3>Badges</h3>
+        <p>Badges mark milestones, all the way up to the Culinary Master mentor badge.</p>
+      </article>
+    </div>
+
+    <div class="ladder-card reveal">
+      <div class="ladder-card__head">
+        <h3>The six-level ladder</h3>
+        <p>Each level unlocks something new.</p>
+      </div>
+      <ol class="ladder" aria-label="Six levels, from Kitchen Novice to Culinary Master">
+        <li class="level" style="--i:0">
+          <span class="level__node" aria-hidden="true">1</span><span class="level__seg" aria-hidden="true"></span>
+          <div class="level__body"><h4 class="level__name">Kitchen Novice</h4><p class="level__xp">0 XP</p><p class="level__perk">Basic quests</p></div>
+        </li>
+        <li class="level" style="--i:1">
+          <span class="level__node" aria-hidden="true">2</span><span class="level__seg" aria-hidden="true"></span>
+          <div class="level__body"><h4 class="level__name">Apprentice Cook</h4><p class="level__xp">500 XP</p><p class="level__perk">Chef School access</p></div>
+        </li>
+        <li class="level" style="--i:2">
+          <span class="level__node" aria-hidden="true">3</span><span class="level__seg" aria-hidden="true"></span>
+          <div class="level__body"><h4 class="level__name">Sauté Specialist</h4><p class="level__xp">1,500 XP</p><p class="level__perk">Hard quests and leaderboard</p></div>
+        </li>
+        <li class="level" style="--i:3">
+          <span class="level__node" aria-hidden="true">4</span><span class="level__seg" aria-hidden="true"></span>
+          <div class="level__body"><h4 class="level__name">Sous Chef</h4><p class="level__xp">4,000 XP</p><p class="level__perk">Community quests</p></div>
+        </li>
+        <li class="level" style="--i:4">
+          <span class="level__node" aria-hidden="true">5</span><span class="level__seg" aria-hidden="true"></span>
+          <div class="level__body"><h4 class="level__name">Head Chef</h4><p class="level__xp">10,000 XP</p><p class="level__perk">Custom challenge creation</p></div>
+        </li>
+        <li class="level" style="--i:5">
+          <span class="level__node" aria-hidden="true">6</span><span class="level__seg" aria-hidden="true"></span>
+          <div class="level__body"><h4 class="level__name">Culinary Master</h4><p class="level__xp">25,000 XP</p><p class="level__perk">Mentor badge and profile frame</p></div>
+        </li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- 7. Business model ------------------------------------------------------ -->
+<section class="section section--tint" id="model" aria-labelledby="model-title">
+  <div class="container">
+    <div class="section__head reveal">
+      <span class="eyebrow">Business model</span>
+      <h2 id="model-title">Free to start. Three paid plans.</h2>
+      <p class="lede">Free is ad-supported. Paid plans add depth, remove ads and, for Family, bring the whole household in.</p>
+    </div>
+
+    <div class="pricing-label reveal">
+      <span class="pill pill--dashed">Planned pricing, pre-launch assumptions</span>
+      <p>No plan is billable yet. Premium billing is planned for Phase 3.</p>
+    </div>
+
+    <div class="tiers stagger" role="group" aria-label="Planned pricing, pre-launch assumptions">
+      <article class="tier reveal">
+        <div class="tier__top"><h3>Free</h3><p class="tier__price">$0</p></div>
+        <ul>
+          <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>1 daily quest</li>
+          <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Basic fridge scan</li>
+          <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>3 Chef School lessons</li>
+          <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>View-only community feed</li>
+          <li class="is-limit"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-dot"/></svg>Ad-supported</li>
+        </ul>
+      </article>
+      <article class="tier reveal">
+        <div class="tier__top"><h3>Plus</h3><p class="tier__price">$5.99<span>/mo</span></p></div>
+        <ul>
+          <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Unlimited quests</li>
+          <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Advanced scan with receipt OCR</li>
+          <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Full Chef School</li>
+          <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Post and social features</li>
+          <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Ad-free</li>
+        </ul>
+      </article>
+      <article class="tier reveal">
+        <div class="tier__top"><h3>Pro</h3><p class="tier__price">$12.99<span>/mo</span></p></div>
+        <ul>
+          <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Unlimited quests</li>
+          <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>AI vision scan</li>
+          <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Full Chef School</li>
+          <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Post and social features</li>
+          <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Ad-free</li>
+          <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Offline recipes</li>
+          <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Voice coaching mode</li>
+        </ul>
+      </article>
+      <article class="tier reveal">
+        <div class="tier__top"><h3>Family</h3><p class="tier__price">$19.99<span>/mo</span></p></div>
+        <ul>
+          <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Up to 5 members</li>
+          <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Shared family fridge</li>
+          <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Full Chef School</li>
+          <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Family leaderboard</li>
+          <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Ad-free</li>
+          <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Meal-planning calendar</li>
+          <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Weekly family quest</li>
+        </ul>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- 8. Roadmap ------------------------------------------------------------- -->
+<section class="section" id="roadmap" aria-labelledby="roadmap-title">
+  <div class="container">
+    <div class="section__head reveal">
+      <span class="eyebrow">Roadmap</span>
+      <h2 id="roadmap-title">Forty weeks from foundation to intelligence.</h2>
+      <p class="lede">Every phase below is planned. Nothing in it has shipped.</p>
+    </div>
+
+    <div class="today reveal">
+      <p class="today__label">Done so far</p>
+      <ul>
+        <li><span class="stage__icon" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span>Interactive prototype</li>
+        <li><span class="stage__icon" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span>Product requirements</li>
+        <li><span class="stage__icon" aria-hidden="true"><svg class="icon"><use href="#i-check"/></svg></span>Technical design</li>
+        <li class="is-next"><span class="stage__icon" aria-hidden="true"><svg class="icon"><use href="#i-arrow"/></svg></span>Next: MVP build</li>
+      </ul>
+    </div>
+
+    <ol class="phases stagger">
+      <li class="phase reveal">
+        <div class="phase__meta"><span class="phase__no">Phase 0</span><span class="pill pill--dashed">Planned</span></div>
+        <h3>Foundation</h3>
+        <p class="phase__weeks">Weeks 1 to 4</p>
+        <ul>
+          <li>Auth and profiles</li>
+          <li>Fridge inventory</li>
+          <li>Recipe matching v1</li>
+          <li>Design system</li>
+        </ul>
+      </li>
+      <li class="phase reveal">
+        <div class="phase__meta"><span class="phase__no">Phase 1</span><span class="pill pill--dashed">Planned</span></div>
+        <h3>MVP</h3>
+        <p class="phase__weeks">Weeks 5 to 12</p>
+        <ul>
+          <li>Barcode and expiry-date scanner</li>
+          <li>Daily quest engine</li>
+          <li>AI chef</li>
+          <li>Basic social feed</li>
+          <li>iOS beta</li>
+        </ul>
+      </li>
+      <li class="phase reveal">
+        <div class="phase__meta"><span class="phase__no">Phase 2</span><span class="pill pill--dashed">Planned</span></div>
+        <h3>Gamification</h3>
+        <p class="phase__weeks">Weeks 13 to 20</p>
+        <ul>
+          <li>XP and levels</li>
+          <li>Streaks</li>
+          <li>Chef School v1</li>
+          <li>Push notifications</li>
+          <li>Android launch</li>
+        </ul>
+      </li>
+      <li class="phase reveal">
+        <div class="phase__meta"><span class="phase__no">Phase 3</span><span class="pill pill--dashed">Planned</span></div>
+        <h3>Social and growth</h3>
+        <p class="phase__weeks">Weeks 21 to 28</p>
+        <ul>
+          <li>Full Food Hub with leaderboards</li>
+          <li>Community quests</li>
+          <li>Referrals</li>
+          <li>Premium billing</li>
+          <li>Public launch</li>
+        </ul>
+      </li>
+      <li class="phase reveal">
+        <div class="phase__meta"><span class="phase__no">Phase 4</span><span class="pill pill--dashed">Planned</span></div>
+        <h3>Intelligence</h3>
+        <p class="phase__weeks">Weeks 29 to 40</p>
+        <ul>
+          <li>Produce vision scan</li>
+          <li>Receipt scanner</li>
+          <li>Personalised meal plans</li>
+          <li>Voice coaching</li>
+          <li>Family tier</li>
+        </ul>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- 9. Why it can win ------------------------------------------------------ -->
+<section class="section section--tint" id="why" aria-labelledby="why-title">
+  <div class="container why">
+    <div class="why__text reveal">
+      <span class="eyebrow">One loop</span>
+      <h2 id="why-title">Why it can win</h2>
+      <p class="why__statement">Three things that live in separate apps today, joined in one loop: <mark>what's in your kitchen</mark>, <mark class="g">what to cook tonight</mark>, and <mark class="p">the habit that keeps you cooking</mark>.</p>
+      <p class="chips__label">Technical foundation</p>
+      <ul class="chips">
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-phone"/></svg>Cross-platform mobile app</li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-cloud"/></svg>Cloud backend</li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-scan"/></svg>ML scan pipeline</li>
+        <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-sparkle"/></svg>Frontier language model for the AI chef</li>
+      </ul>
+    </div>
+    <div class="venn reveal" role="img" aria-label="Diagram: three overlapping rings labelled what's in your kitchen, what to cook tonight, and the habit that keeps you cooking, joined in the middle as one loop.">
+      <div class="venn__ring venn__ring--a"><span>What's in your kitchen</span></div>
+      <div class="venn__ring venn__ring--b"><span>What to cook tonight</span></div>
+      <div class="venn__ring venn__ring--c"><span>The habit that keeps you cooking</span></div>
+      <div class="venn__core">One loop</div>
+    </div>
+  </div>
+</section>
+
+<!-- 10. Targets ------------------------------------------------------------ -->
+<section class="section" id="targets" aria-labelledby="targets-title">
+  <div class="container">
+    <div class="section__head reveal">
+      <span class="eyebrow">Targets</span>
+      <h2 id="targets-title">What we are aiming for in year one.</h2>
+    </div>
+    <p class="pill pill--dashed targets__label reveal">Year-one targets from our product plan. Targets, not results.</p>
+
+    <ul class="targets stagger">
+      <li class="target reveal">
+        <svg class="target__ring" viewBox="0 0 120 120" aria-hidden="true" focusable="false"><circle cx="60" cy="60" r="56"/><circle cx="60" cy="60" r="38"/><circle cx="60" cy="60" r="20"/></svg>
+        <span class="target__tag">Target</span>
+        <p class="target__num">500K</p>
+        <p><strong>Monthly active users</strong>within 12 months of public launch.</p>
+      </li>
+      <li class="target reveal">
+        <svg class="target__ring" viewBox="0 0 120 120" aria-hidden="true" focusable="false"><circle cx="60" cy="60" r="56"/><circle cx="60" cy="60" r="38"/><circle cx="60" cy="60" r="20"/></svg>
+        <span class="target__tag">Target</span>
+        <p class="target__num">40%+</p>
+        <p><strong>Day-30 retention</strong>40% or better.</p>
+      </li>
+      <li class="target reveal">
+        <svg class="target__ring" viewBox="0 0 120 120" aria-hidden="true" focusable="false"><circle cx="60" cy="60" r="56"/><circle cx="60" cy="60" r="38"/><circle cx="60" cy="60" r="20"/></svg>
+        <span class="target__tag">Target</span>
+        <p class="target__num">8%+</p>
+        <p><strong>Premium conversion</strong>8% or better.</p>
+      </li>
+      <li class="target reveal">
+        <svg class="target__ring" viewBox="0 0 120 120" aria-hidden="true" focusable="false"><circle cx="60" cy="60" r="56"/><circle cx="60" cy="60" r="38"/><circle cx="60" cy="60" r="20"/></svg>
+        <span class="target__tag">Target</span>
+        <p class="target__num">$3M</p>
+        <p><strong>Annual recurring revenue</strong>by the end of year one.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- 11. FAQ ---------------------------------------------------------------- -->
+<section class="section section--tint" id="faq" aria-labelledby="faq-title">
+  <div class="container">
+    <div class="section__head section__head--center reveal">
+      <span class="eyebrow">FAQ</span>
+      <h2 id="faq-title">Questions, answered plainly.</h2>
+    </div>
+
+    <div class="faq reveal">
+      <div class="faq__item is-open">
+        <h3><button class="faq__q" type="button" id="faq-q1" aria-expanded="true" aria-controls="faq-a1">What stage are you at?<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></button></h3>
+        <div class="faq__panel" id="faq-a1" role="region" aria-labelledby="faq-q1"><div>
+          <p>Pre-launch. We have built an interactive prototype, and the product requirements and technical design are complete. The MVP build is next. There are no users, revenue or waitlist yet.</p>
+        </div></div>
+      </div>
+      <div class="faq__item">
+        <h3><button class="faq__q" type="button" id="faq-q2" aria-expanded="false" aria-controls="faq-a2">How do you make money?<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></button></h3>
+        <div class="faq__panel" id="faq-a2" role="region" aria-labelledby="faq-q2"><div>
+          <p>Subscriptions on top of a free, ad-supported tier. The planned prices are $5.99 a month for Plus, $12.99 for Pro and $19.99 for Family. These are pre-launch assumptions, and premium billing is planned for Phase 3.</p>
+        </div></div>
+      </div>
+      <div class="faq__item">
+        <h3><button class="faq__q" type="button" id="faq-q3" aria-expanded="false" aria-controls="faq-a3">How is this different from recipe and pantry apps?<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></button></h3>
+        <div class="faq__panel" id="faq-a3" role="region" aria-labelledby="faq-q3"><div>
+          <p>Most are utilities that track or suggest. Kitchenaut is a daily game loop that connects your real inventory to what you cook next.</p>
+        </div></div>
+      </div>
+      <div class="faq__item">
+        <h3><button class="faq__q" type="button" id="faq-q4" aria-expanded="false" aria-controls="faq-a4">What ships first?<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></button></h3>
+        <div class="faq__panel" id="faq-a4" role="region" aria-labelledby="faq-q4"><div>
+          <p>Phase 0 lays the foundation in weeks 1 to 4: auth and profiles, fridge inventory, recipe matching v1 and the design system. Phase 1 is the MVP in weeks 5 to 12: the barcode and expiry-date scanner, the daily quest engine, the AI chef, a basic social feed and an iOS beta.</p>
+        </div></div>
+      </div>
+      <div class="faq__item">
+        <h3><button class="faq__q" type="button" id="faq-q5" aria-expanded="false" aria-controls="faq-a5">What happens next?<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></button></h3>
+        <div class="faq__panel" id="faq-a5" role="region" aria-labelledby="faq-q5"><div>
+          <p>The MVP build, then the iOS beta, then Android and public launch. We cover the details in a walkthrough, and you can <a href="#walkthrough">request one here</a>.</p>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 12. Closing CTA -------------------------------------------------------- -->
+<section class="section" id="walkthrough" aria-labelledby="cta-title">
+  <div class="container">
+    <div class="cta reveal">
+      <div class="cta__copy">
+        <span class="eyebrow">Next step</span>
+        <h2 id="cta-title">Want a walkthrough?</h2>
+        <p class="lede">See the interactive prototype and the plan behind it. Leave your details and we will be in touch.</p>
+        <ul class="cta__list">
+          <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>The prototype, screen by screen</li>
+          <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>The roadmap and the planned pricing</li>
+          <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>The year-one targets, and what they assume</li>
+        </ul>
+      </div>
+
+      <form class="form" id="walkthrough-form" aria-labelledby="form-title">
+        <p class="sr-only" id="form-title">Request a walkthrough</p>
+        <div class="field">
+          <label for="f-name">Name</label>
+          <input id="f-name" name="name" type="text" autocomplete="name" required placeholder="Your name">
+        </div>
+        <div class="field">
+          <label for="f-email">Email</label>
+          <input id="f-email" name="email" type="email" autocomplete="email" required placeholder="you@example.com" inputmode="email">
+        </div>
+        <div class="field">
+          <label for="f-firm">Firm <span>(optional)</span></label>
+          <input id="f-firm" name="firm" type="text" autocomplete="organization" placeholder="Your firm">
+        </div>
+        <button class="btn btn--primary btn--lg" type="submit"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-mail"/></svg>Request a walkthrough</button>
+        <p class="form__note">This opens your email app with a pre-filled message. Nothing is stored or sent from this page.</p>
+        <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container footer">
+    <div class="footer__brand">
+      <a class="brand" href="#top">
+        <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true" focusable="false"><use href="#mark"/></svg>
+        <span class="brand__name">Kitchenaut</span>
+      </a>
+      <p>A gamified cooking app in development. Scan your kitchen, cook what is about to expire, build the habit.</p>
+    </div>
+    <div class="footer__meta">
+      <p>Food waste figures: UN Environment Programme, <a href="https://www.unep.org/resources/publication/food-waste-index-report-2024" target="_blank" rel="noopener noreferrer">Food Waste Index Report 2024<span class="sr-only"> (opens in a new tab)</span></a>.</p>
+      <p>Phone screens show prototype UI with sample data. Pricing and targets are plans, not results.</p>
+      <a href="#top">Back to top</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
