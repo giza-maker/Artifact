@@ -3676,6 +3676,95 @@ h3 {
   }
 }
 
+/* Receipt and spending concept uses existing product tokens. */
+.module__copy .expense-timing {
+  margin-top: -10px;
+  font-size: 0.875rem;
+}
+
+.panel--spending {
+  margin: 0;
+  padding: clamp(20px, 4vw, 36px);
+  aspect-ratio: auto;
+  font-variant-numeric: tabular-nums;
+}
+
+.panel--spending::before,
+.panel--spending::after {
+  content: none;
+}
+
+.spend-heading,
+.receipt-preview__heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.spend-heading > :last-child,
+.spend-budget,
+.receipt-sources,
+.spend-caption {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.spend-total {
+  margin: 16px 0 0;
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6vw, 3.5rem);
+  line-height: 1.15;
+}
+
+.spend-total span {
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+}
+
+.spend-budget { margin: 4px 0 16px; }
+.spend-remaining { margin: 8px 0 0; color: var(--orange-text); font-size: 0.875rem; }
+.spend-meter { display: block; width: 100%; height: 10px; border: 0; border-radius: 5px; background: var(--surface-2); }
+.spend-meter::-webkit-meter-bar { height: 10px; border: 0; border-radius: 5px; background: var(--surface-2); }
+.spend-meter::-webkit-meter-optimum-value { border-radius: 5px; background: var(--orange); }
+.spend-meter::-moz-meter-bar { border-radius: 5px; background: var(--orange); }
+
+.spend-weeks {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 24px 0;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.spend-weeks div { display: flex; flex-direction: column; align-items: center; justify-content: end; gap: 4px; }
+.spend-weeks div::before { content: ""; width: 100%; max-width: 42px; height: var(--bar-size); border-radius: 6px 6px 0 0; background: var(--orange); }
+.spend-weeks dt { color: var(--muted); }
+.spend-weeks dd { margin: 0; }
+
+.receipt-preview {
+  padding: 18px;
+  border: 1px solid var(--line-2);
+  border-radius: calc(var(--radius) - 8px);
+  background: var(--bg);
+}
+
+.receipt-preview__heading > :last-child { color: var(--orange-text); }
+.receipt-sources { margin: 6px 0 14px; }
+.receipt-lines { width: 100%; border-collapse: collapse; font-size: 0.875rem; }
+.receipt-lines th { font-weight: 400; text-align: left; }
+.receipt-lines th, .receipt-lines td { padding: 5px 0; }
+.receipt-lines td, .receipt-lines thead th:last-child { text-align: right; white-space: nowrap; }
+.receipt-lines thead { color: var(--muted); }
+.receipt-lines tfoot { border-top: 1px dashed var(--line-2); }
+.receipt-lines tfoot th, .receipt-lines tfoot td { padding-top: 12px; font-weight: 600; }
+.receipt-result { margin: 14px 0 0; color: var(--muted); font-size: 0.875rem; }
+.spend-caption { margin-top: 18px; text-align: center; }
+
 /* 11. Progression ---------------------------------------------------------- */
 .pillars {
   display: grid;

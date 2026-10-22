@@ -103,6 +103,8 @@ After the first deploy, add `canonical`, `og:url` and `og:image` (see "Before yo
 
 Keep these when editing copy:
 
+- Receipts and expenses are planned features. Paper photos and digital receipts (PDFs/screenshots) feed a proposed review step before inventory and expense updates. Receipt scanning remains in Phase 4; grocery spending summaries, monthly budgets and trends have no confirmed delivery phase or paid tier. The static concept dashboard uses sample SAR values, not live receipt extraction or stored expenses. Surface rules are recorded in `DESIGN.md`.
+
 - The only statistics are the four UN Environment Programme Food Waste Index Report 2024 figures in the Problem section, with the source link. Do not add others.
 - Pricing is labelled "Planned pricing, pre-launch assumptions". Targets are labelled "Targets, not results". Every roadmap phase is marked "Planned".
 - No users, traction, revenue, waitlist numbers, press, testimonials, logos, awards, partners, investor names or team members.

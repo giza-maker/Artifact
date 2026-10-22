@@ -575,8 +575,8 @@
     <header class="sh reveal">
       <p class="kicker"><span>04</span>The product</p>
       <div class="sh__main">
-        <h2 id="product-title">Five modules. <em>One daily habit.</em></h2>
-        <p class="lede">Every screen below comes from the interactive prototype. Each module is planned for the phase shown.</p>
+        <h2 id="product-title">Your kitchen, <em>all connected.</em></h2>
+        <p class="lede">Six modules connect what you own, what you cook and what you spend. A preview of planned features, shown with sample data.</p>
       </div>
     </header>
 
@@ -587,7 +587,7 @@
         <div class="module__copy reveal">
           <p class="module__kicker"><span>4.1</span>Fridge</p>
           <h3 id="m-fridge">See everything you own, <em>and when it expires.</em></h3>
-          <p>Scan your fridge, freezer, pantry and spice rack. Barcode lookup and expiry-date reading come first; produce recognition and receipt scanning follow in later phases.</p>
+          <p>Scan your fridge, freezer, pantry and spice rack. Barcode lookup and expiry-date reading come first; produce recognition and paper or digital receipt scanning follow in later phases.</p>
           <p>Alerts arrive 48 and 24 hours before anything expires. It also keeps a list of your pots, pans and appliances, so recipes only ask for tools you own.</p>
           <p class="planned">Planned for Phase 1, then Phase 4</p>
         </div>
@@ -769,6 +769,47 @@
         </div>
       </article>
 
+      <!-- Receipts and grocery expenses -->
+      <article class="module" id="expenses" aria-labelledby="m-expenses">
+        <div class="module__copy reveal">
+          <p class="module__kicker"><span>4.6</span>Receipts &amp; expenses</p>
+          <h3 id="m-expenses">Know what you bought. <em>See what you spend.</em></h3>
+          <p>Photograph a paper receipt or upload a digital receipt, PDF or screenshot. Review the items, quantities and prices before adding groceries to your inventory and purchases to your spending history.</p>
+          <p>Track grocery expenses, set a monthly budget and follow spending trends. Keep every shopping trip connected to the kitchen it stocked.</p>
+          <p class="planned">Receipt scanning: Phase 4</p>
+          <p class="expense-timing">Expense tracking planned; timing to be confirmed.</p>
+        </div>
+        <figure class="panel panel--spending reveal">
+          <div class="spend-heading"><span>Grocery spending</span><span>October</span></div>
+          <p class="spend-total"><span>SAR</span> 1,240</p>
+          <p class="spend-budget">of SAR 1,600 monthly budget</p>
+          <meter class="spend-meter" min="0" max="1600" value="1240" aria-label="October grocery spending: 1,240 of 1,600 Saudi riyals">SAR 1,240 of SAR 1,600</meter>
+          <p class="spend-remaining">SAR 360 left in your budget</p>
+          <dl class="spend-weeks" aria-label="Weekly grocery spending in Saudi riyals">
+            <div style="--bar-size:56px"><dt>Week 1</dt><dd>280</dd></div>
+            <div style="--bar-size:70px"><dt>Week 2</dt><dd>350</dd></div>
+            <div style="--bar-size:62px"><dt>Week 3</dt><dd>310</dd></div>
+            <div style="--bar-size:60px"><dt>Week 4</dt><dd>300</dd></div>
+          </dl>
+          <div class="receipt-preview">
+            <div class="receipt-preview__heading"><span>Latest receipt</span><span>Reviewed</span></div>
+            <p class="receipt-sources">Paper photos · E-receipts · PDFs</p>
+            <table class="receipt-lines">
+              <caption class="sr-only">Sample paper receipt, amounts in Saudi riyals</caption>
+              <thead><tr><th scope="col">Item</th><th scope="col">SAR</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">Tomatoes · 2 kg</th><td>18.50</td></tr>
+                <tr><th scope="row">Eggs · 12</th><td>24.00</td></tr>
+                <tr><th scope="row">Olive oil · 750 ml</th><td>42.00</td></tr>
+              </tbody>
+              <tfoot><tr><th scope="row">Total</th><td>84.50</td></tr></tfoot>
+            </table>
+            <p class="receipt-result">One reviewed receipt. Inventory + expenses.</p>
+          </div>
+          <figcaption class="spend-caption">Concept UI, sample data in SAR.</figcaption>
+        </figure>
+      </article>
+
     </div>
   </div>
 </section>
@@ -870,7 +911,7 @@
           <p class="tier__price">$5.99<span>/mo</span></p>
           <ul>
             <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Unlimited quests</li>
-            <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Advanced scan with receipt OCR</li>
+            <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Paper and digital receipt OCR</li>
             <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Full Chef School</li>
             <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Post and social features</li>
             <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>Ad-free</li>
@@ -982,13 +1023,14 @@
         <p class="phase__weeks">Weeks 29 to 40</p>
         <ul>
           <li>Produce vision scan</li>
-          <li>Receipt scanner</li>
+          <li>Paper and digital receipt scanning</li>
           <li>Personalised meal plans</li>
           <li>Voice coaching</li>
           <li>Family tier</li>
         </ul>
       </li>
     </ol>
+    <p class="later reveal"><span class="later__tag">Also planned</span>Grocery expense tracking, monthly budgets and spending trends. Scheduling is still to be confirmed.</p>
     <p class="later reveal"><span class="later__tag">Later</span>Beyond the 40 weeks we are exploring restocking: shopping lists that fill themselves from what runs low, and online grocery ordering. Not yet part of the plan.</p>
   </div>
 </section>
@@ -1098,6 +1140,12 @@
         <h3><button class="faq__q" type="button" id="faq-q5" aria-expanded="false" aria-controls="faq-a5">What happens next?<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg></button></h3>
         <div class="faq__panel" id="faq-a5" role="region" aria-labelledby="faq-q5"><div>
           <p>The MVP build, then the iOS beta, then Android and public launch. We cover the details in a walkthrough, and you can <a href="#walkthrough">request one here</a>.</p>
+        </div></div>
+      </div>
+      <div class="faq__item">
+        <h3><button class="faq__q" type="button" id="faq-q6" aria-expanded="false" aria-controls="faq-a6">Can I scan receipts and track grocery expenses?<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-plus"/></svg></button></h3>
+        <div class="faq__panel" id="faq-a6" role="region" aria-labelledby="faq-q6"><div>
+          <p>Both are planned. Receipt scanning will accept paper receipt photos and digital receipts, including PDFs and screenshots. You will review the extracted items, quantities and prices before saving. Expense tracking will bring grocery purchases, monthly budgets and spending trends into one view. Receipt scanning is in Phase 4; expense tracking has no confirmed delivery phase yet. The preview on this page uses sample data.</p>
         </div></div>
       </div>
     </div>
