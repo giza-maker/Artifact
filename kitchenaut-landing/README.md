@@ -34,14 +34,14 @@ You can also open `index.html` directly in a browser. The page looks the same, b
 
 ## Before you ship
 
-1. **Set the contact email.** Edit the constant on the first line of `script.js`:
+1. **Contact email is intentionally blank.** The owner requested this on 22 October 2026. Inputs and submission stay disabled, with a visible explanation, until the constant on the first line of `script.js` is set:
 
    ```js
-   const CONTACT_EMAIL = "contact@example.com"; // replace with the real address
+   const CONTACT_EMAIL = ""; // set only when the owner supplies an address
    ```
 
-   The walkthrough form opens a `mailto:` link to that address, pre-filled with the visitor's name, email and firm. Nothing is sent from the page itself. The fallback line shown after submitting reads the same constant.
-2. **Add social-share tags once the domain is known.** The page has Open Graph and Twitter tags but no `og:url`, `canonical` or `og:image` yet, because those need absolute URLs on the production domain. When the domain is live, add all three; `images/hero-1280.webp` works as a starting point for `og:image`, although some platforms still prefer a 1200 x 630 JPG or PNG.
+   Once configured, JavaScript enables the controls. The form opens a `mailto:` draft addressed to that email, with the visitor's name, email and firm. Nothing is sent or stored by the page. Without JavaScript, submission stays disabled.
+2. **Deployment metadata is configured** for `https://giza-maker.github.io/Artifact/kitchenaut-landing/`: canonical, `og:url`, `og:image` and Twitter image. Update these if the deployment path or host changes.
 3. **Re-read the content rules below** before editing any copy.
 
 ## Interactive demo (section 03, "Try it")
@@ -50,6 +50,7 @@ A tappable prototype of the app, built in HTML, CSS and vanilla JavaScript insid
 
 - **Kitchen:** groceries with quantities, storage location, days to expiry and low-stock flags, plus a Tools list (oven, hob, pans, toaster and so on) that you can switch on and off. "Scan groceries" plays a short scan that adds basil, tomatoes and eggs.
 - **Cook:** recipes ranked by what is about to expire. A recipe adapts to your kitchen: a servings stepper, ingredient shortfalls, swaps (balsamic for lemon juice, butter for olive oil), and a method that changes with your tools (toaster, oven grill or pan). Cooking runs step by step with Chef Zara and a salt-trick timer. When you finish, the inventory updates and XP is added.
+- Cooking is blocked until required groceries, substitutions and tools are available. Adding a shortfall to Restock does not add it to inventory. Reduce servings, scan groceries or resolve a substitution before starting.
 - **Quests:** XP, level, streak, today's quest, the weekly challenge and the Chef School unlock at level 2.
 - **Restock:** a list built from low stock, used-up items and recipe shortfalls. "Order online" is tagged Later and explains that it is an after-launch idea, not part of the 40-week plan.
 - **Hub:** a feed post of the dish you just cooked.
@@ -64,7 +65,7 @@ The demo needs JavaScript. Without it the phone shows the starting Kitchen scree
 
 The brand name is written literally, never injected, so a rename is one find-and-replace. The working name is **Kitchenaut**; the alternative under consideration is Quisine.
 
-Every occurrence, as of the last edit (14 across four files; match case-insensitively):
+Brand labels occur 14 times across four files. Four additional lowercase occurrences in `index.html` are the deployment paths in metadata; retain those unless the public URL also changes.
 
 | File | Count | Where |
 | --- | --- | --- |
@@ -81,7 +82,15 @@ grep -n -i kitchenaut index.html script.js favicon.svg styles.css
 
 To rename: replace `Kitchenaut` with the new name in `index.html`, `script.js`, `favicon.svg` and `styles.css` (the case-insensitive grep above catches `kitchenaut` too). The wordmark is an inline SVG orbit-ring mark plus the name as live HTML text in Fraunces, so a longer or shorter name needs no SVG edit. The folder name `kitchenaut-landing` is not referenced from inside the files.
 
-## Deploy to Cloudflare Pages
+## Deploy to GitHub Pages
+
+The existing Artifact site publishes the root of the `gh-pages` branch. The reviewed site belongs in `kitchenaut-landing/`, preserving sibling artifacts. Deployment URL: `https://giza-maker.github.io/Artifact/kitchenaut-landing/`.
+
+Original five commits are preserved on `claude/kitchenaut-landing-page-k103y8`, ending at `e81a172`. Review branch `codex/kitchenaut-review` starts from the current Pages branch and applies those five commits, then review fixes. Merge or fast-forward the reviewed branch onto the latest `gh-pages` before pushing; never replace the Artifact root with this folder.
+
+At this checkpoint, production publication and a replacement name are pending. Kitchenaut remains the working name.
+
+## Alternative: deploy to Cloudflare Pages
 
 Nothing has been deployed. When you are ready:
 
@@ -132,4 +141,30 @@ Keep these when editing copy:
 
 Semantic landmarks (`header`, `nav`, `main`, `footer`), one `h1`, ordered headings, a skip link, visible focus rings, labelled form fields with `autocomplete`, an FAQ built from buttons with `aria-expanded` and `aria-controls` and regions labelled by their questions, and `role="img"` with a descriptive `aria-label` on every static phone mockup and diagram. Decorative SVGs are `aria-hidden`.
 
-The interactive demo is a labelled `role="group"` made of real buttons. Toggles use `aria-pressed`, the tab bar marks the current tab with `aria-current`, the level-up screen is a labelled `role="dialog"`, and progress is announced through a polite live region. When the screen changes, focus moves to the new screen's heading. When a control is redrawn in place, focus goes back to it.
+The interactive demo is a labelled `role="group"` made of real buttons. Toggles use `aria-pressed`, the tab bar marks the current tab with `aria-current`, and progress is announced through a polite live region. The level-up dialog has `aria-modal`, inerts the background, contains keyboard focus, supports Escape, and returns focus to the kitchen heading on dismissal. Screen changes move focus to the new heading. Controls redrawn in place retain focus.
+
+## Review checkpoint: 22 October 2026
+
+- Fixed cooking and XP with missing ingredients, including depleted substitutions.
+- Fixed level-up keyboard containment and background interaction.
+- Invalidated cooking timers when leaving their screen; scan completion cannot focus a hidden screen.
+- Changed demo XP bar animation from width updates to transforms.
+- Fixed the narrow header overflowing at 360px.
+- Verified full scan, tools, servings, swap, cooking, XP, inventory deduction, restock, Hub and restart flow in the in-app browser; checked mobile menu and FAQ keyboard behavior.
+- Checked layouts at 360, 390, 768, 1280 and 1440px. Minimum rendered text is 14px; all 42 local asset references and internal anchors resolve, with one h1 and no duplicate IDs.
+- Final local mobile Lighthouse measured 94 Performance, 100 Accessibility, 100 Best Practices and 100 SEO. This is a lab result, not production performance or full WCAG certification.
+- Contact stays blank by owner request. Chef School's three free lessons versus level-based access remains a product copy decision; existing wording is preserved.
+
+## Replacement names under consideration
+
+Owner requested a different name on 22 October 2026. No replacement is selected. Scores below are editorial judgments about brand fit, not availability scores.
+
+| Name | Score | Fit | Tradeoff |
+| --- | --- | --- | --- |
+| Pantrilo | 8/10 | Compact, warm, suggests an organized kitchen; recommendation to test first. | Pantry association needs broader cooking context in the tagline. |
+| Stirlane | 7.5/10 | Familiar cooking root with a sense of a daily path or rhythm. | Says little about inventory without supporting copy. |
+| Ripekit | 7.5/10 | Clear freshness and practical kitchen association. | Could be mistaken for a physical meal kit. |
+
+Preliminary exact-name web searches found no obvious cooking-app match for these three. Domains, social handles and trademark registers have not been cleared.
+
+The previous handoff's two leading options have clear existing uses: [Cookdown](https://www.cookdown.com/about) is an enterprise software brand, and [Platesmith](https://platesmith.app/) is a fitness and food-tracking app. Neither should be described as clean or easiest to own on that earlier screening alone.

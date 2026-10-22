@@ -11,11 +11,16 @@
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Kitchenaut">
   <meta property="og:locale" content="en_US">
+  <meta property="og:url" content="https://giza-maker.github.io/Artifact/kitchenaut-landing/">
+  <meta property="og:image" content="https://giza-maker.github.io/Artifact/kitchenaut-landing/images/hero-1280.webp">
+  <meta property="og:image:alt" content="A warm kitchen lit by an open fridge with fresh ingredients.">
   <meta property="og:title" content="Kitchenaut: your fridge is mission control">
   <meta property="og:description" content="A gamified cooking app in development. Scan what you own, turn whatever is about to expire into a daily quest, and level up as you cook.">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="Kitchenaut: your fridge is mission control">
   <meta name="twitter:description" content="A gamified cooking app in development. Scan what you own, turn whatever is about to expire into a daily quest, and level up as you cook.">
+  <meta name="twitter:image" content="https://giza-maker.github.io/Artifact/kitchenaut-landing/images/hero-1280.webp">
+  <link rel="canonical" href="https://giza-maker.github.io/Artifact/kitchenaut-landing/">
 
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
 
@@ -461,8 +466,9 @@
                 <div class="p-zara"><img class="p-avatar" src="images/zara-96.webp" width="96" height="96" alt="" loading="lazy" decoding="async"><span class="p-bubble" data-r-tip></span></div>
                 <div class="r-cta">
                   <button class="p-btn p-btn--ghost" type="button" data-restock-missing><svg class="icon" aria-hidden="true"><use href="#i-cart"/></svg><span data-r-missing-label>Add missing</span></button>
-                  <button class="p-btn" type="button" data-cook-start>Start cooking</button>
+                  <button class="p-btn" type="button" data-cook-start aria-describedby="recipe-readiness">Start cooking</button>
                 </div>
+                <p class="p-sub" id="recipe-readiness" data-r-readiness></p>
               </div>
 
               <!-- Step by step with Chef Zara -->
@@ -547,7 +553,7 @@
             </div>
 
             <!-- Level-up moment -->
-            <div class="app-overlay" data-overlay role="dialog" aria-labelledby="lvl-title" hidden>
+            <div class="app-overlay" data-overlay role="dialog" aria-modal="true" aria-labelledby="lvl-title" hidden>
               <div class="lvl">
                 <svg class="lvl__burst" viewBox="0 0 200 200" aria-hidden="true"><g stroke-linecap="round" stroke-width="3"><path d="M100 14v22M100 164v22M14 100h22M164 100h22M39 39l15 15M146 146l15 15M161 39l-15 15M54 146l-15 15" stroke="#f59e0b"/><path d="M70 22l5 14M130 178l-5-14M22 130l14-5M178 70l-14 5M130 22l-5 14M70 178l5-14M22 70l14 5M178 130l-14-5" stroke="#c9a0fc"/></g></svg>
                 <span class="lvl__badge" aria-hidden="true">2</span>
@@ -1121,7 +1127,7 @@
     <div class="cta__copy reveal">
       <p class="kicker"><span>11</span>Next step</p>
       <h2 id="cta-title">Want a <em>walkthrough?</em></h2>
-      <p class="lede">See the interactive prototype and the plan behind it. Leave your details and we will be in touch.</p>
+      <p class="lede">Explore the interactive prototype, the roadmap and the assumptions behind the plan.</p>
       <ul class="cta__list">
         <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>The prototype, screen by screen</li>
         <li><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-check"/></svg>The roadmap and the planned pricing</li>
@@ -1133,18 +1139,18 @@
       <p class="form__title" id="form-title">Request a walkthrough</p>
       <div class="field">
         <label for="f-name">Name</label>
-        <input id="f-name" name="name" type="text" autocomplete="name" required>
+        <input id="f-name" name="name" type="text" autocomplete="name" required disabled>
       </div>
       <div class="field">
         <label for="f-email">Email</label>
-        <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" required>
+        <input id="f-email" name="email" type="email" autocomplete="email" inputmode="email" required disabled>
       </div>
       <div class="field">
         <label for="f-firm">Firm <span>(optional)</span></label>
-        <input id="f-firm" name="firm" type="text" autocomplete="organization">
+        <input id="f-firm" name="firm" type="text" autocomplete="organization" disabled>
       </div>
-      <button class="btn btn--primary btn--lg" type="submit">Request a walkthrough<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></button>
-      <p class="form__note">This opens your email app with a pre-filled message. Nothing is stored or sent from this page.</p>
+      <button class="btn btn--primary btn--lg" type="submit" aria-describedby="contact-note" disabled>Request a walkthrough<svg class="icon" aria-hidden="true" focusable="false"><use href="#i-arrow"/></svg></button>
+      <p class="form__note" id="contact-note">Walkthrough contact details are pending. This form is not accepting requests yet.</p>
       <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
     </form>
   </div>

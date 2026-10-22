@@ -1,4 +1,4 @@
-const CONTACT_EMAIL = "contact@example.com"; // TODO: replace with the real address before deploying
+const CONTACT_EMAIL = ""; // Walkthrough requests stay disabled until an address is supplied.
 
 (function () {
   "use strict";
@@ -189,8 +189,15 @@ const CONTACT_EMAIL = "contact@example.com"; // TODO: replace with the real addr
   var status = document.getElementById("form-status");
 
   if (form) {
+    form.querySelectorAll("input, button[type='submit']").forEach(function (control) { control.disabled = !CONTACT_EMAIL; });
+    if (!CONTACT_EMAIL) {
+      form.querySelector(".form__note").textContent = "Walkthrough contact details are pending. This form is not accepting requests yet.";
+    } else {
+      form.querySelector(".form__note").textContent = "This opens your email app with a pre-filled message. Nothing is stored or sent from this page.";
+    }
     form.addEventListener("submit", function (event) {
       event.preventDefault();
+      if (!CONTACT_EMAIL) return;
 
       var data = new FormData(form);
       var name = String(data.get("name") || "").trim();
@@ -400,6 +407,8 @@ const CONTACT_EMAIL = "contact@example.com"; // TODO: replace with the real addr
     var state;
     var timers = [];
     var raf = 0;
+    var timerVersion = 0;
+    var modalBackground = [];
     var animatingXP = false;
     var lastHTML = {};
 
@@ -469,6 +478,7 @@ const CONTACT_EMAIL = "contact@example.com"; // TODO: replace with the real addr
       timers.forEach(window.clearTimeout);
       timers = [];
       window.cancelAnimationFrame(raf);
+      timerVersion += 1;
       animatingXP = false;
       state = fresh();
       render();
@@ -481,14 +491,14 @@ const CONTACT_EMAIL = "contact@example.com"; // TODO: replace with the real addr
 
     function setXP(value) {
       document.querySelectorAll("[data-demo-xp]").forEach(function (n) { n.textContent = String(value); });
-      xpBars.forEach(function (b) { b.style.width = Math.min(100, (value / LEVEL_XP) * 100) + "%"; });
+      xpBars.forEach(function (b) { b.style.transform = "scaleX(" + Math.min(1, value / LEVEL_XP) + ")"; });
     }
 
     /* recipe maths */
     function status(rk, ing) {
       var have = state.inv[ing.key] || 0;
       var sw = ing.swaps ? swapOf(rk, ing.key) : null;
-      if (sw) return { kind: "swapped", swap: sw };
+      if (sw) return { kind: "swapped", swap: sw, available: sw === "skip" || (state.inv[sw] || 0) > 0 };
       if (have >= ing.need) return { kind: ITEMS[ing.key].low ? "low" : "have", have: have };
       if (have > 0) return { kind: "short", have: have, short: ing.need - have };
       return { kind: "missing", have: 0, short: ing.need };
@@ -506,7 +516,7 @@ const CONTACT_EMAIL = "contact@example.com"; // TODO: replace with the real addr
       ings.forEach(function (ing) {
         var st = status(rk, ing);
         ing.st = st;
-        if (st.kind === "have" || st.kind === "low" || st.kind === "swapped") ok += 1;
+        if (st.kind === "have" || st.kind === "low" || (st.kind === "swapped" && st.available)) ok += 1;
         else {
           missing.push(ing);
           short[ing.key] = st.short;
@@ -547,6 +557,11 @@ const CONTACT_EMAIL = "contact@example.com"; // TODO: replace with the real addr
     /* navigation */
     function go(screen, focus, back) {
       var from = state.screen;
+      if (from === "steps" && screen !== "steps") {
+        timerVersion += 1;
+        window.cancelAnimationFrame(raf);
+        state.timer = "idle";
+      }
       if (from === "kitchen" && screen !== "kitchen" && screen !== "scan") state.newItems = [];
       state.screen = screen;
       state.swapOpen = null;
@@ -578,7 +593,12 @@ const CONTACT_EMAIL = "contact@example.com"; // TODO: replace with the real addr
         return tab("cook");
       }
       if (goal === "cook") {
-        if (s === "recipe") return q("[data-cook-start]");
+        if (s === "recipe") {
+          var recipe = analyse(state.recipe);
+          if (recipe.short.tomatoes && recipe.s > 1) return q('[data-serv="-1"]');
+          if (recipe.missing.length) return q("[data-swap-open]") || tab("kitchen");
+          return recipe.method.ok ? q("[data-cook-start]") : tab("kitchen");
+        }
         if (s === "steps") {
           var st = currentSteps()[state.step];
           if (st.timer && state.timer === "idle") return q("[data-timer-btn]");
@@ -690,6 +710,7 @@ const CONTACT_EMAIL = "contact@example.com"; // TODO: replace with the real addr
           cls = " is-swapped";
           var swText = ing.swaps.filter(function (x) { return x.key === st.swap; })[0].text;
           note = st.swap === "skip" ? "Skipped" : "Swapped for " + swText.toLowerCase();
+          if (!st.available) { cls += " is-missing"; note += ". Out of stock; undo to choose another option."; }
           tail = '<button class="mini-btn" type="button" data-unswap="' + ing.key + '">Undo</button>';
         } else if (ing.swaps) {
           cls = " is-missing";
@@ -716,7 +737,8 @@ const CONTACT_EMAIL = "contact@example.com"; // TODO: replace with the real addr
       var addable = a.missing.filter(function (ing) { return !ing.swaps && !restockHas(ing.key); });
       q("[data-restock-missing]").disabled = addable.length === 0;
       q("[data-r-missing-label]").textContent = addable.length ? "Add missing (" + addable.length + ")" : "Nothing to add";
-      q("[data-cook-start]").disabled = !a.method.ok;
+      q("[data-cook-start]").disabled = !a.method.ok || a.missing.length > 0;
+      q("[data-r-readiness]").textContent = !a.method.ok ? a.method.text : a.missing.length ? "Scan groceries, reduce servings or resolve missing ingredients with Swap before cooking." : "Your kitchen has everything for this recipe.";
     }
 
     function renderSteps() {
@@ -827,6 +849,7 @@ const CONTACT_EMAIL = "contact@example.com"; // TODO: replace with the real addr
       renderRestock();
       renderHub();
       q("[data-overlay]").hidden = !state.overlay;
+      syncModal();
 
       var goal = nextGoal();
       missionItems.forEach(function (li) {
@@ -862,7 +885,7 @@ const CONTACT_EMAIL = "contact@example.com"; // TODO: replace with the real addr
         state.scan = "done";
         render();
         say("Found basil, tomatoes and eggs, with their expiry dates.");
-        focusIn(q("[data-scan-add]"));
+        if (state.screen === "scan") focusIn(q("[data-scan-add]"));
       }, fast() ? 500 : 2300);
     }
 
@@ -897,6 +920,11 @@ const CONTACT_EMAIL = "contact@example.com"; // TODO: replace with the real addr
     }
 
     function startCooking() {
+      var ready = analyse(state.recipe);
+      if (!ready.method.ok || ready.missing.length) {
+        say("Resolve missing ingredients and tools before cooking.");
+        return;
+      }
       state.step = 0;
       state.timer = "idle";
       go("steps", true);
@@ -907,13 +935,14 @@ const CONTACT_EMAIL = "contact@example.com"; // TODO: replace with the real addr
     function startTimer() {
       if (state.timer !== "idle") return;
       state.timer = "running";
+      var version = ++timerVersion;
       render();
       say("Timer started.");
       var label = q("[data-timer-text]");
       var duration = fast() ? 700 : 3000;
       var t0 = 0;
       var tick = function (ts) {
-        if (state.timer !== "running") return;
+        if (version !== timerVersion || state.timer !== "running") return;
         if (!t0) t0 = ts;
         var p = Math.min(1, (ts - t0) / duration);
         var left = Math.ceil(120 * (1 - p));
@@ -922,7 +951,7 @@ const CONTACT_EMAIL = "contact@example.com"; // TODO: replace with the real addr
       };
       raf = window.requestAnimationFrame(tick);
       later(function () {
-        if (state.timer !== "running") return;
+        if (version !== timerVersion || state.timer !== "running") return;
         state.timer = "done";
         render();
         say("Two minutes done. Salt trick bonus: 20 XP.");
@@ -932,6 +961,7 @@ const CONTACT_EMAIL = "contact@example.com"; // TODO: replace with the real addr
 
     function nextStep() {
       var steps = currentSteps();
+      if (steps[state.step].timer && state.timer !== "done") return;
       if (state.step < steps.length - 1) {
         state.step += 1;
         render();
@@ -945,6 +975,7 @@ const CONTACT_EMAIL = "contact@example.com"; // TODO: replace with the real addr
     function finishCooking() {
       var rk = state.recipe;
       var a = analyse(rk);
+      if (!a.method.ok || a.missing.length) return;
       var changes = [];
       a.ings.forEach(function (ing) {
         var sw = ing.swaps ? swapOf(rk, ing.key) : null;
@@ -1006,6 +1037,47 @@ const CONTACT_EMAIL = "contact@example.com"; // TODO: replace with the real addr
       };
       raf = window.requestAnimationFrame(frame);
     }
+
+    function syncModal() {
+      if (state.overlay && !modalBackground.length) {
+        var branch = q("[data-overlay]");
+        while (branch.parentElement) {
+          Array.prototype.forEach.call(branch.parentElement.children, function (sibling) {
+            if (sibling !== branch && !sibling.inert) {
+              sibling.inert = true;
+              modalBackground.push(sibling);
+            }
+          });
+          branch = branch.parentElement;
+          if (branch === document.body) break;
+        }
+      } else if (!state.overlay && modalBackground.length) {
+        modalBackground.forEach(function (el) { el.inert = false; });
+        modalBackground = [];
+      }
+    }
+
+    function closeLevelUp() {
+      state.overlay = false;
+      state.kview = "groceries";
+      go("kitchen", true, true);
+      say("Back in your kitchen. Inventory is up to date.");
+    }
+
+    document.addEventListener("keydown", function (event) {
+      if (!state.overlay) return;
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeLevelUp();
+      } else if (event.key === "Tab") {
+        event.preventDefault();
+        focusIn(q("[data-overlay-close]"));
+      }
+    });
+
+    document.addEventListener("focusin", function (event) {
+      if (state.overlay && !q("[data-overlay]").contains(event.target)) focusIn(q("[data-overlay-close]"));
+    });
 
     app.addEventListener("click", function (event) {
       var t = event.target.closest("button");
@@ -1093,10 +1165,7 @@ const CONTACT_EMAIL = "contact@example.com"; // TODO: replace with the real addr
         state.cheered = !state.cheered;
         render();
       } else if (t.hasAttribute("data-overlay-close")) {
-        state.overlay = false;
-        state.kview = "groceries";
-        go("kitchen", true, true);
-        say("Back in your kitchen. Inventory is up to date.");
+        closeLevelUp();
       }
     });
 

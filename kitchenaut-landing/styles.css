@@ -509,6 +509,7 @@ h3 {
 @media (max-width: 899.98px) {
   .js .nav__toggle {
     display: inline-flex;
+    flex: none;
   }
 
   .js .nav__links {
@@ -548,6 +549,13 @@ h3 {
     border-bottom: 1px solid var(--line);
     background-image: none;
   }
+}
+
+@media (max-width: 389.98px) {
+  .nav .brand { gap: 6px; }
+  .nav .brand__mark { width: 24px; height: 24px; }
+  .nav .brand__name { font-size: 1.25rem; }
+  .nav__cta { padding-inline: 0.85em; }
 }
 
 @media (min-width: 480px) {
@@ -3172,6 +3180,12 @@ h3 {
 }
 
 /* quests */
+.form input:disabled,
+.form button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
 .xpcard {
   display: grid;
   gap: 0.55em;
@@ -3200,7 +3214,13 @@ h3 {
 }
 
 .xpcard .p-bar > span {
-  transition: width 0.2s linear;
+  transition: transform 0.2s linear;
+}
+
+[data-demo-xpbar] {
+  width: 100% !important;
+  transform: scaleX(0.88);
+  transform-origin: left;
 }
 
 .qcard {
