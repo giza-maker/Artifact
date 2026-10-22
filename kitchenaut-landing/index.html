@@ -84,6 +84,15 @@
   <symbol id="i-mail" viewBox="0 0 24 24"><rect x="3.5" y="5.5" width="17" height="13" rx="2.5"/><path d="M4 8l8 5.5L20 8"/></symbol>
   <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
   <symbol id="i-dot" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="i-cart" viewBox="0 0 24 24"><path d="M3 4h2l2.2 10.5a1.5 1.5 0 0 0 1.5 1.2h8.6a1.5 1.5 0 0 0 1.5-1.1L21 8H6"/><circle cx="9.5" cy="19.5" r="1.3"/><circle cx="17" cy="19.5" r="1.3"/></symbol>
+  <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+  <symbol id="i-swap" viewBox="0 0 24 24"><path d="M7 8h12l-3.5-3.5M17 16H5l3.5 3.5"/></symbol>
+  <symbol id="i-oven" viewBox="0 0 24 24"><rect x="3.5" y="4" width="17" height="16" rx="2.5"/><path d="M3.5 9h17M7 6.5h.01M10 6.5h.01"/><rect x="7" y="12" width="10" height="5" rx="1"/></symbol>
+  <symbol id="i-pan" viewBox="0 0 24 24"><circle cx="9.5" cy="13" r="6"/><path d="M15.5 13h6"/></symbol>
+  <symbol id="i-toaster" viewBox="0 0 24 24"><rect x="3" y="10" width="18" height="10" rx="3"/><path d="M8 10V6.5A2.5 2.5 0 0 1 10.5 4h3A2.5 2.5 0 0 1 16 6.5V10M7 15h3"/></symbol>
+  <symbol id="i-tray" viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="9" rx="2"/><path d="M7 12.5h10"/></symbol>
+  <symbol id="i-blender" viewBox="0 0 24 24"><path d="M8 3h8l-1.2 10H9.2z"/><rect x="7" y="13" width="10" height="7" rx="2"/><path d="M12 16.5h.01"/></symbol>
+  <symbol id="i-airfryer" viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="4"/><circle cx="12" cy="11" r="3.5"/><path d="M9 17h6"/></symbol>
   <symbol id="i-loop" viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 13.7-5.6L20 8.5M20 4v4.5h-4.5M20 12a8 8 0 0 1-13.7 5.6L4 15.5M4 20v-4.5h4.5"/></symbol>
 </svg>
 
@@ -310,7 +319,7 @@
     <ol class="loop stagger">
       <li class="loop__step reveal">
         <span class="loop__n" aria-hidden="true"><svg class="icon"><use href="#i-scan"/></svg></span>
-        <div class="loop__text"><span class="loop__num">Step 1</span><h3>Scan</h3><p>Add what you own: fridge, freezer, pantry and spice rack.</p></div>
+        <div class="loop__text"><span class="loop__num">Step 1</span><h3>Scan</h3><p>Add what you own, with expiry dates: fridge, freezer, pantry, spice rack, even your pans.</p></div>
       </li>
       <li class="loop__step reveal">
         <span class="loop__n" aria-hidden="true"><svg class="icon"><use href="#i-target"/></svg></span>
@@ -339,20 +348,20 @@
     <header class="sh reveal">
       <p class="kicker"><span>03</span>Try it</p>
       <div class="sh__main">
-        <h2 id="demo-title">Run tonight's mission. <em>Tap through the prototype.</em></h2>
-        <p class="lede">A working demo with sample data. Scan the fridge, cook the quest with Chef Zara, share the dish and level up. It takes about a minute.</p>
+        <h2 id="demo-title">Your whole kitchen. <em>Tap through the prototype.</em></h2>
+        <p class="lede">Groceries with expiry dates, the tools you own, recipes that adapt to both, a restock list, and the game that keeps you cooking. Sample data throughout.</p>
       </div>
     </header>
 
     <div class="demo">
       <aside class="mission reveal" aria-labelledby="mission-title">
-        <p class="mission__label" id="mission-title">Tonight's demo mission</p>
+        <p class="mission__label" id="mission-title">Take the tour</p>
         <ol class="mission__list">
-          <li data-goal="scan" class="is-current"><span class="mission__check" aria-hidden="true"><span>1</span><svg class="icon"><use href="#i-check"/></svg></span><span class="mission__text"><span class="sr-only" data-goal-state>Next: </span><b>Scan your shelves</b><small>Tap Scan shelf in the Fridge tab.</small></span></li>
-          <li data-goal="quest"><span class="mission__check" aria-hidden="true"><span>2</span><svg class="icon"><use href="#i-check"/></svg></span><span class="mission__text"><span class="sr-only" data-goal-state></span><b>Start tonight's quest</b><small>Open Quests and start the bruschetta.</small></span></li>
-          <li data-goal="cook"><span class="mission__check" aria-hidden="true"><span>3</span><svg class="icon"><use href="#i-check"/></svg></span><span class="mission__text"><span class="sr-only" data-goal-state></span><b>Cook it with Chef Zara</b><small>Four steps, including the salt trick.</small></span></li>
-          <li data-goal="share"><span class="mission__check" aria-hidden="true"><span>4</span><svg class="icon"><use href="#i-check"/></svg></span><span class="mission__text"><span class="sr-only" data-goal-state></span><b>Share the dish</b><small>Snap it and post it to the Food Hub.</small></span></li>
-          <li data-goal="level"><span class="mission__check" aria-hidden="true"><span>5</span><svg class="icon"><use href="#i-check"/></svg></span><span class="mission__text"><span class="sr-only" data-goal-state></span><b>Level up</b><small>Collect your XP in the Food Hub.</small></span></li>
+          <li data-goal="stock" class="is-current"><span class="mission__check" aria-hidden="true"><span>1</span><svg class="icon"><use href="#i-check"/></svg></span><span class="mission__text"><span class="sr-only" data-goal-state>Next: </span><b>Stock your kitchen</b><small>Scan groceries. Expiry dates come in with them.</small></span></li>
+          <li data-goal="tools"><span class="mission__check" aria-hidden="true"><span>2</span><svg class="icon"><use href="#i-check"/></svg></span><span class="mission__text"><span class="sr-only" data-goal-state></span><b>Tell it your tools</b><small>Open Tools in Kitchen and switch one off.</small></span></li>
+          <li data-goal="adapt"><span class="mission__check" aria-hidden="true"><span>3</span><svg class="icon"><use href="#i-check"/></svg></span><span class="mission__text"><span class="sr-only" data-goal-state></span><b>Adapt tonight's meal</b><small>Open a recipe in Cook. Change servings or swap an ingredient.</small></span></li>
+          <li data-goal="cook"><span class="mission__check" aria-hidden="true"><span>4</span><svg class="icon"><use href="#i-check"/></svg></span><span class="mission__text"><span class="sr-only" data-goal-state></span><b>Cook it and level up</b><small>Follow Chef Zara's steps, then collect your XP.</small></span></li>
+          <li data-goal="restock"><span class="mission__check" aria-hidden="true"><span>5</span><svg class="icon"><use href="#i-check"/></svg></span><span class="mission__text"><span class="sr-only" data-goal-state></span><b>Restock what is missing</b><small>Add an item to your restock list.</small></span></li>
         </ol>
         <div class="mission__xp">
           <p class="mission__xprow"><span>Demo XP</span><span class="mission__xpnum"><b data-demo-xp>440</b> / 500</span></p>
@@ -360,10 +369,10 @@
           <p class="mission__level" data-demo-level>Kitchen Novice</p>
         </div>
         <div class="mission__done" id="demo-done" hidden>
-          <p><b>Mission complete.</b> That is the whole loop: scan, quest, cook, share, level up.</p>
+          <p><b>Tour complete.</b> Inventory, tools, adaptive recipes, cooking, XP and restocking, all in one loop.</p>
           <a class="btn btn--primary btn--sm" href="#walkthrough">Request a walkthrough</a>
         </div>
-        <button class="btn btn--ghost btn--sm mission__reset" type="button" data-demo-reset>Replay demo</button>
+        <button class="btn btn--ghost btn--sm mission__reset" type="button" data-demo-reset>Restart demo</button>
         <p class="sr-only" id="demo-live" aria-live="polite"></p>
       </aside>
 
@@ -374,93 +383,98 @@
             <div class="statusbar" aria-hidden="true"><span>9:41</span><svg viewBox="0 0 32 10"><rect x="0" y="6" width="3" height="4" rx="1"/><rect x="5" y="4" width="3" height="6" rx="1"/><rect x="10" y="2" width="3" height="8" rx="1"/><rect x="15" y="0" width="3" height="10" rx="1"/><rect x="21" y="1" width="10" height="8" rx="2.4" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="22.6" y="2.6" width="6" height="4.8" rx="1.2"/></svg></div>
             <div class="app__view">
 
-              <!-- Fridge -->
-              <div class="app-screen" data-screen="fridge">
+              <!-- Kitchen: groceries and tools -->
+              <div class="app-screen" data-screen="kitchen">
                 <div class="p-head"><span class="p-over">Inventory</span><h3 class="p-title" data-focus tabindex="-1">My kitchen</h3></div>
-                <div class="seg" role="group" aria-label="Storage">
-                  <button type="button" data-storage="fridge" aria-pressed="true">Fridge</button>
-                  <button type="button" data-storage="freezer" aria-pressed="false">Freezer</button>
-                  <button type="button" data-storage="pantry" aria-pressed="false">Pantry</button>
-                  <button type="button" data-storage="spices" aria-pressed="false">Spices</button>
+                <div class="seg seg--2" role="group" aria-label="Inventory view">
+                  <button type="button" data-kview="groceries" aria-pressed="true">Groceries</button>
+                  <button type="button" data-kview="tools" aria-pressed="false">Tools</button>
                 </div>
-                <div class="shelf" data-shelf="fridge">
-                  <div class="app-vf" data-state="idle">
-                    <img src="images/fridge-vf-480.webp" srcset="images/fridge-vf-480.webp 480w, images/fridge-vf-800.webp 800w" sizes="320px" width="480" height="427" alt="" loading="lazy" decoding="async">
-                    <span class="p-scanline" aria-hidden="true"></span>
-                    <span class="p-box" aria-hidden="true" style="--x:29%;--y:40%;--w:30%;--h:15%;--dl:.5s"><b>Basil</b></span>
-                    <span class="p-box" aria-hidden="true" style="--x:68%;--y:42%;--w:30%;--h:13%;--dl:1s"><b>Tomatoes</b></span>
-                    <span class="p-box" aria-hidden="true" style="--x:58%;--y:72%;--w:26%;--h:13%;--dl:1.5s"><b>Eggs</b></span>
-                    <div class="app-vf__bar">
-                      <div class="app-vf__row" data-vf="idle"><span>Point at a shelf</span><button class="p-btn" type="button" data-scan><svg class="icon" aria-hidden="true"><use href="#i-scan"/></svg>Scan shelf</button></div>
-                      <div class="app-vf__row" data-vf="scanning" hidden><span class="app-spin" aria-hidden="true"></span><span>Reading labels and dates</span></div>
-                      <div class="app-vf__row" data-vf="done" hidden><span>3 found</span><button class="p-btn" type="button" data-to-quests>Tonight's mission<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button></div>
-                    </div>
-                  </div>
-                  <p class="shelf__empty" data-scan-empty>Nothing scanned yet.</p>
-                  <ul class="p-rows" data-scan-list hidden>
-                    <li><img src="images/basil-128.webp" width="128" height="127" alt="" loading="lazy" decoding="async">Basil<span class="p-chip">1 day</span></li>
-                    <li><img src="images/tomato-128.webp" width="128" height="128" alt="" loading="lazy" decoding="async">Tomatoes<span class="p-chip p-chip--warm">2 days</span></li>
-                    <li><img src="images/eggs-128.webp" width="128" height="128" alt="" loading="lazy" decoding="async">Eggs<span class="p-chip p-chip--fresh">3 days</span></li>
+                <div class="kpanel" data-kpanel="groceries">
+                  <button class="p-btn p-btn--block" type="button" data-scan-open><svg class="icon" aria-hidden="true"><use href="#i-barcode"/></svg>Scan groceries</button>
+                  <ul class="inv" data-inventory>
+                    <li class="inv__row"><span class="row-ico" aria-hidden="true"><svg class="icon"><use href="#i-fridge"/></svg></span><span class="inv__name">Lemons<small>2, Fridge</small></span><span class="p-chip p-chip--fresh">9 days</span></li>
+                    <li class="inv__row"><span class="row-ico" aria-hidden="true"><svg class="icon"><use href="#i-jar"/></svg></span><span class="inv__name">Garlic<small>1 bulb, Pantry</small></span><span class="p-chip p-chip--fresh">2 weeks</span></li>
+                    <li class="inv__row"><span class="row-ico" aria-hidden="true"><svg class="icon"><use href="#i-snow"/></svg></span><span class="inv__name">Sourdough loaf<small>1 loaf, Freezer</small></span><span class="p-chip p-chip--fresh">1 month</span></li>
+                    <li class="inv__row is-low"><span class="row-ico" aria-hidden="true"><svg class="icon"><use href="#i-jar"/></svg></span><span class="inv__name">Olive oil<small>Running low, Pantry</small></span><span class="p-chip p-chip--warm">Low</span></li>
                   </ul>
                 </div>
-                <ul class="p-rows shelf" data-shelf="freezer" hidden>
-                  <li><span class="row-ico" aria-hidden="true"><svg class="icon"><use href="#i-snow"/></svg></span>Sourdough loaf<span class="p-chip p-chip--fresh">1 month</span></li>
-                  <li><span class="row-ico" aria-hidden="true"><svg class="icon"><use href="#i-snow"/></svg></span>Frozen peas<span class="p-chip p-chip--fresh">3 months</span></li>
-                </ul>
-                <ul class="p-rows shelf" data-shelf="pantry" hidden>
-                  <li><span class="row-ico" aria-hidden="true"><svg class="icon"><use href="#i-jar"/></svg></span>Garlic<span class="p-chip p-chip--fresh">2 weeks</span></li>
-                  <li><span class="row-ico" aria-hidden="true"><svg class="icon"><use href="#i-jar"/></svg></span>Olive oil<span class="p-chip p-chip--fresh">8 months</span></li>
-                </ul>
-                <ul class="p-rows shelf" data-shelf="spices" hidden>
-                  <li><span class="row-ico" aria-hidden="true"><svg class="icon"><use href="#i-salt"/></svg></span>Flaky sea salt<span class="p-chip p-chip--fresh">1 year</span></li>
-                  <li><span class="row-ico" aria-hidden="true"><svg class="icon"><use href="#i-salt"/></svg></span>Black pepper<span class="p-chip p-chip--fresh">1 year</span></li>
-                </ul>
-              </div>
-
-              <!-- Quests -->
-              <div class="app-screen" data-screen="quests" hidden>
-                <div class="p-head--row">
-                  <span class="p-head"><span class="p-over">Tonight</span><h3 class="p-title" data-focus tabindex="-1">Today's mission</h3></span>
-                  <span class="p-chip p-chip--ai"><svg class="icon" aria-hidden="true"><use href="#i-bolt"/></svg><span data-demo-xp>440</span>&nbsp;XP</span>
-                </div>
-                <div class="q-empty" data-quests-empty>
-                  <p>Scan your fridge first. Tonight's quest is built from whatever is about to expire.</p>
-                  <button class="p-btn" type="button" data-go-fridge><svg class="icon" aria-hidden="true"><use href="#i-scan"/></svg>Go to Fridge</button>
-                </div>
-                <div class="q-full" data-quests-full hidden>
-                  <div class="p-expiry">
-                    <div class="p-exp p-exp--hot"><img src="images/basil-128.webp" width="128" height="127" alt="" loading="lazy" decoding="async"><b>Basil</b><span>1 day</span></div>
-                    <div class="p-exp p-exp--warm"><img src="images/tomato-128.webp" width="128" height="128" alt="" loading="lazy" decoding="async"><b>Tomatoes</b><span>2 days</span></div>
-                    <div class="p-exp p-exp--fresh"><img src="images/eggs-128.webp" width="128" height="128" alt="" loading="lazy" decoding="async"><b>Eggs</b><span>3 days</span></div>
-                  </div>
-                  <div class="p-quest">
-                    <img src="images/plate-320.webp" srcset="images/plate-320.webp 320w, images/plate-640.webp 640w" sizes="320px" width="320" height="284" alt="" loading="lazy" decoding="async">
-                    <div class="p-quest__body">
-                      <span class="p-chip p-chip--solid">Daily quest, +40 XP</span>
-                      <span class="p-quest__title">Tomato and basil bruschetta</span>
-                      <span class="p-quest__row"><span class="p-meta"><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>12 min</span><button class="p-btn" type="button" data-start><span data-start-label>Start quest</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button></span>
-                    </div>
-                  </div>
-                  <div class="p-zara">
-                    <img class="p-avatar" src="images/zara-96.webp" srcset="images/zara-96.webp 96w, images/zara-192.webp 192w" sizes="36px" width="96" height="96" alt="" loading="lazy" decoding="async">
-                    <span class="p-bubble">Your basil expires tomorrow and your tomatoes are next. Bruschetta in 12 minutes, zero waste. +20 XP for the salt trick.</span>
-                  </div>
+                <div class="kpanel" data-kpanel="tools" hidden>
+                  <p class="p-sub">Recipes only ask for tools you have. Tap to switch.</p>
+                  <div class="tools" data-tools></div>
                 </div>
               </div>
 
-              <!-- Cook -->
-              <div class="app-screen" data-screen="cook" hidden>
+              <!-- Scan -->
+              <div class="app-screen" data-screen="scan" hidden>
                 <div class="app-top">
-                  <button class="app-back" type="button" data-back><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>Quests</button>
-                  <span class="app-top__count" data-step-count>Step 1 of 4</span>
+                  <button class="app-back" type="button" data-nav="kitchen"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>Kitchen</button>
+                  <h3 class="app-top__title" data-focus tabindex="-1">Scan groceries</h3>
                 </div>
-                <span class="app-steps" aria-hidden="true"><i data-step-dot class="on"></i><i data-step-dot></i><i data-step-dot></i><i data-step-dot></i></span>
-                <div class="cook-img"><img data-step-img src="images/prep-close-320.webp" srcset="images/prep-close-320.webp 320w, images/prep-close-640.webp 640w" sizes="320px" width="320" height="341" alt="" loading="lazy" decoding="async"></div>
-                <h3 class="cook-title" data-focus tabindex="-1" data-step-title>Dice the tomatoes</h3>
-                <div class="p-zara">
-                  <img class="p-avatar" src="images/zara-96.webp" width="96" height="96" alt="" loading="lazy" decoding="async">
-                  <span class="p-bubble" data-step-text>Dice the tomatoes into small, even pieces and tear the basil.</span>
+                <div class="app-vf" data-state="idle">
+                  <img src="images/fridge-vf-480.webp" srcset="images/fridge-vf-480.webp 480w, images/fridge-vf-800.webp 800w" sizes="320px" width="480" height="427" alt="" loading="lazy" decoding="async">
+                  <span class="p-scanline" aria-hidden="true"></span>
+                  <span class="p-box" aria-hidden="true" style="--x:29%;--y:40%;--w:30%;--h:15%;--dl:.5s"><b>Basil</b></span>
+                  <span class="p-box" aria-hidden="true" style="--x:68%;--y:42%;--w:30%;--h:13%;--dl:1s"><b>Tomatoes</b></span>
+                  <span class="p-box" aria-hidden="true" style="--x:58%;--y:72%;--w:26%;--h:13%;--dl:1.5s"><b>Eggs</b></span>
+                  <div class="app-vf__bar">
+                    <div class="app-vf__row" data-vf="scanning"><span class="app-spin" aria-hidden="true"></span><span>Reading barcodes and dates</span></div>
+                    <div class="app-vf__row" data-vf="done" hidden><span><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>3 items found</span></div>
+                  </div>
                 </div>
+                <ul class="p-rows" data-scan-found hidden>
+                  <li><img src="images/basil-128.webp" width="128" height="127" alt="" loading="lazy" decoding="async">Basil, 1 bunch<span class="p-chip">1 day</span></li>
+                  <li><img src="images/tomato-128.webp" width="128" height="128" alt="" loading="lazy" decoding="async">Tomatoes, 4<span class="p-chip p-chip--warm">2 days</span></li>
+                  <li><img src="images/eggs-128.webp" width="128" height="128" alt="" loading="lazy" decoding="async">Eggs, 6<span class="p-chip p-chip--fresh">3 days</span></li>
+                </ul>
+                <button class="p-btn p-btn--block app-cta" type="button" data-scan-add disabled>Add 3 items</button>
+              </div>
+
+              <!-- Cook: recipes ranked by what you have -->
+              <div class="app-screen" data-screen="cook" hidden>
+                <div class="p-head"><span class="p-over">With what you have</span><h3 class="p-title" data-focus tabindex="-1">Cook tonight</h3></div>
+                <div class="filters" role="group" aria-label="Filter recipes">
+                  <button type="button" data-filter="expiring" aria-pressed="true">Uses expiring</button>
+                  <button type="button" data-filter="quick" aria-pressed="false">Under 15 min</button>
+                </div>
+                <ul class="recipes" data-recipes></ul>
+              </div>
+
+              <!-- Recipe detail -->
+              <div class="app-screen app-screen--scroll" data-screen="recipe" hidden>
+                <div class="app-top">
+                  <button class="app-back" type="button" data-nav="cook"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>Cook</button>
+                  <span class="app-top__count" data-r-meta>12 min</span>
+                </div>
+                <div class="r-hero"><img data-r-img src="images/plate-320.webp" width="320" height="284" alt="" loading="lazy" decoding="async"></div>
+                <h3 class="cook-title" data-focus tabindex="-1" data-r-name>Tomato and basil bruschetta</h3>
+                <div class="r-row">
+                  <span class="r-label">Servings</span>
+                  <span class="stepper">
+                    <button type="button" data-serv="-1" aria-label="Fewer servings"><svg class="icon" aria-hidden="true"><use href="#i-minus"/></svg></button>
+                    <b data-r-serv>2</b>
+                    <button type="button" data-serv="1" aria-label="More servings"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg></button>
+                  </span>
+                </div>
+                <p class="r-tools" data-r-tools></p>
+                <ul class="ingr" data-r-ingr></ul>
+                <div class="p-zara"><img class="p-avatar" src="images/zara-96.webp" width="96" height="96" alt="" loading="lazy" decoding="async"><span class="p-bubble" data-r-tip></span></div>
+                <div class="r-cta">
+                  <button class="p-btn p-btn--ghost" type="button" data-restock-missing><svg class="icon" aria-hidden="true"><use href="#i-cart"/></svg><span data-r-missing-label>Add missing</span></button>
+                  <button class="p-btn" type="button" data-cook-start>Start cooking</button>
+                </div>
+              </div>
+
+              <!-- Step by step with Chef Zara -->
+              <div class="app-screen" data-screen="steps" hidden>
+                <div class="app-top">
+                  <button class="app-back" type="button" data-nav="recipe"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>Recipe</button>
+                  <span class="app-top__count" data-step-count>Step 1 of 3</span>
+                </div>
+                <span class="app-steps" aria-hidden="true"><i data-step-dot class="on"></i><i data-step-dot></i><i data-step-dot></i></span>
+                <div class="cook-img"><img data-step-img src="images/prep-close-320.webp" width="320" height="341" alt="" loading="lazy" decoding="async"></div>
+                <h3 class="cook-title" data-focus tabindex="-1" data-step-title>Dice and salt</h3>
+                <div class="p-zara"><img class="p-avatar" src="images/zara-96.webp" width="96" height="96" alt="" loading="lazy" decoding="async"><span class="p-bubble" data-step-text></span></div>
                 <div class="timer" data-timer data-state="idle" hidden>
                   <span class="timer__ring" aria-hidden="true"><svg viewBox="0 0 40 40"><circle class="timer__track" cx="20" cy="20" r="17"/><circle class="timer__fill" cx="20" cy="20" r="17"/></svg><b data-timer-text>2:00</b></span>
                   <span class="timer__body">
@@ -471,38 +485,57 @@
                 <button class="p-btn p-btn--block app-cta" type="button" data-next><span data-next-label>Next step</span><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button>
               </div>
 
-              <!-- Camera -->
-              <div class="app-screen" data-screen="camera" hidden>
-                <div class="app-top">
-                  <button class="app-back" type="button" data-back><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>Quests</button>
-                  <h3 class="app-top__title" data-focus tabindex="-1">Snap your dish</h3>
+              <!-- Cooked: inventory and XP update -->
+              <div class="app-screen app-screen--scroll" data-screen="done" hidden>
+                <div class="r-hero r-hero--done"><img data-d-img src="images/plate-320.webp" width="320" height="284" alt="" loading="lazy" decoding="async"><span class="cam__tag"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Cooked</span></div>
+                <h3 class="cook-title" data-focus tabindex="-1" data-d-name>Tomato and basil bruschetta</h3>
+                <div class="done-block"><p class="p-over">Inventory updated</p><ul class="done-list" data-d-inv></ul></div>
+                <div class="done-block"><p class="p-over p-over--ai">XP earned</p><ul class="done-list" data-d-xp></ul></div>
+                <div class="r-cta">
+                  <button class="p-btn p-btn--ghost" type="button" data-share><svg class="icon" aria-hidden="true"><use href="#i-share"/></svg><span data-share-label>Share</span></button>
+                  <button class="p-btn" type="button" data-collect><svg class="icon" aria-hidden="true"><use href="#i-bolt"/></svg>Collect 60 XP</button>
                 </div>
-                <div class="cam" data-cam data-state="live">
-                  <img src="images/plate-640.webp" width="640" height="569" alt="" loading="lazy" decoding="async">
-                  <svg class="p-brackets" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path vector-effect="non-scaling-stroke" d="M2 16V6a4 4 0 0 1 4-4h10M84 2h10a4 4 0 0 1 4 4v10M98 84v10a4 4 0 0 1-4 4H84M16 98H6a4 4 0 0 1-4-4V84"/></svg>
-                  <span class="cam__flash" aria-hidden="true"></span>
-                  <span class="cam__tag"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Quest complete</span>
+              </div>
+
+              <!-- Quests: the game layer -->
+              <div class="app-screen" data-screen="quests" hidden>
+                <div class="p-head"><span class="p-over">Your progress</span><h3 class="p-title" data-focus tabindex="-1">Quests</h3></div>
+                <div class="xpcard">
+                  <div class="xpcard__top"><b data-demo-level>Kitchen Novice</b><span class="p-chip p-chip--warm"><svg class="icon" aria-hidden="true"><use href="#i-flame"/></svg>Streak kept</span></div>
+                  <span class="p-bar" aria-hidden="true"><span data-demo-xpbar style="width:88%"></span></span>
+                  <span class="xpcard__xp" data-xp-next><span data-demo-xp>440</span> / 500 XP to Apprentice Cook</span>
                 </div>
-                <div class="cam__controls" data-cam-live>
-                  <button class="shutter" type="button" data-shutter aria-label="Take photo"><span></span></button>
+                <button class="qcard" type="button" data-open-recipe="bruschetta">
+                  <img src="images/plate-320.webp" width="320" height="284" alt="" loading="lazy" decoding="async">
+                  <span class="qcard__body"><span class="p-over">Today's quest, +40 XP</span><b>Tomato and basil bruschetta</b><small data-q-status>Uses basil and tomatoes before they expire</small></span>
+                </button>
+                <div class="p-card p-weekly">
+                  <span class="p-over p-over--ai">Weekly challenge</span>
+                  <span class="p-card__title">Zero-waste week</span>
+                  <span class="p-dots" data-week><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i></span>
                 </div>
-                <div class="cam__review" data-cam-review hidden>
-                  <button class="p-btn p-btn--ghost" type="button" data-retake>Retake</button>
-                  <button class="p-btn" type="button" data-post><svg class="icon" aria-hidden="true"><use href="#i-share"/></svg>Post to Food Hub</button>
-                </div>
+                <p class="school-state" data-school-locked><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg>Chef School unlocks at 500 XP.</p>
+                <p class="school-state school-state--open" data-school-open hidden><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Chef School unlocked.</p>
+              </div>
+
+              <!-- Restock -->
+              <div class="app-screen app-screen--scroll" data-screen="restock" hidden>
+                <div class="p-head"><span class="p-over">Built from what you have</span><h3 class="p-title" data-focus tabindex="-1">Restock</h3></div>
+                <p class="rs-label">On your list</p>
+                <ul class="rs" data-rs-list></ul>
+                <p class="rs-label">Suggested</p>
+                <ul class="rs" data-rs-suggest></ul>
+                <button class="p-btn p-btn--ghost p-btn--block rs-order" type="button" data-order><svg class="icon" aria-hidden="true"><use href="#i-cart"/></svg>Order online<span class="p-chip p-chip--ai">Later</span></button>
+                <p class="rs-note" data-order-note hidden>Online ordering is an idea for after launch. It is not part of the 40-week plan.</p>
               </div>
 
               <!-- Food Hub -->
               <div class="app-screen" data-screen="hub" hidden>
                 <div class="p-head--row"><h3 class="p-title" data-focus tabindex="-1">Food Hub</h3><span class="p-chip p-chip--fresh"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Cooked only</span></div>
-                <div class="hub-banner" data-collect-banner hidden>
-                  <span class="hub-banner__sum"><span class="hub-banner__xp">+60 XP</span><span class="hub-banner__txt">Quest 40 + salt trick 20</span></span>
-                  <button class="p-btn" type="button" data-collect>Collect</button>
-                </div>
                 <article class="p-post" data-hub-mine hidden>
                   <div class="p-post__who"><span class="p-mono">Y</span><span>You<small>Cooked just now</small></span></div>
-                  <div class="p-post__art"><img src="images/plate-320.webp" srcset="images/plate-320.webp 320w, images/plate-640.webp 640w" sizes="300px" width="320" height="284" alt="" loading="lazy" decoding="async"></div>
-                  <span class="p-post__cap">Tomato and basil bruschetta. Nothing wasted.</span>
+                  <div class="p-post__art"><img data-hub-img src="images/plate-320.webp" width="320" height="284" alt="" loading="lazy" decoding="async"></div>
+                  <span class="p-post__cap" data-hub-cap>Tomato and basil bruschetta. Nothing wasted.</span>
                   <span class="p-actions"><button class="act" type="button" data-cheer aria-pressed="false"><svg class="icon" aria-hidden="true"><use href="#i-heart"/></svg>Cheer</button><span><svg class="icon" aria-hidden="true"><use href="#i-chat"/></svg>Reply</span></span>
                 </article>
                 <article class="p-post" data-hub-sample>
@@ -510,35 +543,6 @@
                   <div class="p-post__art"><img src="images/dishplate-800.webp" width="800" height="450" alt="" loading="lazy" decoding="async"></div>
                   <span class="p-post__cap">Bruschetta, before the basil could wilt.</span>
                 </article>
-              </div>
-
-              <!-- Chef School -->
-              <div class="app-screen" data-screen="school" hidden>
-                <div class="p-head"><span class="p-over">One technique at a time</span><h3 class="p-title" data-focus tabindex="-1">Chef School</h3></div>
-                <p class="school-state" data-school-locked><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg>Unlocks at Apprentice Cook, 500 XP.</p>
-                <p class="school-state school-state--open" data-school-open hidden><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>Unlocked at Apprentice Cook.</p>
-                <button class="p-lesson p-lesson--btn" type="button" data-lesson disabled>
-                  <img src="images/prep-close-320.webp" width="320" height="341" alt="" loading="lazy" decoding="async">
-                  <span class="p-lesson__body">Knife basics<small data-lesson-note>Lesson 1</small></span>
-                </button>
-                <div class="p-lesson is-lock"><span class="p-lesson__ico"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg></span><span class="p-lesson__body">Heat control<small>Locked</small></span></div>
-                <div class="p-lesson is-lock"><span class="p-lesson__ico"><svg class="icon" aria-hidden="true"><use href="#i-lock"/></svg></span><span class="p-lesson__body">Pan sauces<small>Locked</small></span></div>
-              </div>
-
-              <!-- Chef Zara -->
-              <div class="app-screen" data-screen="chef" hidden>
-                <div class="p-zara p-zara--head">
-                  <img class="p-avatar p-avatar--lg" src="images/zara-96.webp" srcset="images/zara-96.webp 96w, images/zara-192.webp 192w" sizes="44px" width="96" height="96" alt="" loading="lazy" decoding="async">
-                  <span class="p-zara__body"><h3 class="p-title p-title--sm" data-focus tabindex="-1">Chef Zara</h3><span class="p-sub">Sees your real inventory</span></span>
-                </div>
-                <div class="chat" data-chat>
-                  <span class="p-bubble">Ask me anything about tonight's cooking.</span>
-                </div>
-                <div class="quick" role="group" aria-label="Ask Chef Zara">
-                  <button type="button" data-ask="tonight">What should I cook tonight?</button>
-                  <button type="button" data-ask="salt">What is the salt trick?</button>
-                  <button type="button" data-ask="eggs">Something with the eggs?</button>
-                </div>
               </div>
             </div>
 
@@ -550,15 +554,15 @@
                 <p class="lvl__over">Level up</p>
                 <h3 class="lvl__title" id="lvl-title" data-focus tabindex="-1">Apprentice Cook</h3>
                 <p class="lvl__sub">500 XP. Chef School unlocked.</p>
-                <button class="p-btn p-btn--block" type="button" data-open-school><svg class="icon" aria-hidden="true"><use href="#i-school"/></svg>Open Chef School</button>
+                <button class="p-btn p-btn--block" type="button" data-overlay-close><svg class="icon" aria-hidden="true"><use href="#i-fridge"/></svg>Back to my kitchen</button>
               </div>
             </div>
 
             <div class="p-tabs app__tabs" role="group" aria-label="App tabs">
-              <button class="p-tab" type="button" data-tab="fridge" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#i-fridge"/></svg>Fridge</button>
+              <button class="p-tab" type="button" data-tab="kitchen" aria-current="page"><svg class="icon" aria-hidden="true"><use href="#i-fridge"/></svg>Kitchen</button>
+              <button class="p-tab" type="button" data-tab="cook"><svg class="icon" aria-hidden="true"><use href="#i-pot"/></svg>Cook</button>
               <button class="p-tab" type="button" data-tab="quests"><svg class="icon" aria-hidden="true"><use href="#i-target"/></svg>Quests</button>
-              <button class="p-tab" type="button" data-tab="chef"><svg class="icon" aria-hidden="true"><use href="#i-sparkle"/></svg>Chef</button>
-              <button class="p-tab" type="button" data-tab="school"><svg class="icon" aria-hidden="true"><use href="#i-school"/></svg>School</button>
+              <button class="p-tab" type="button" data-tab="restock"><svg class="icon" aria-hidden="true"><use href="#i-cart"/></svg>Restock</button>
               <button class="p-tab" type="button" data-tab="hub"><svg class="icon" aria-hidden="true"><use href="#i-people"/></svg>Hub</button>
             </div>
           </div>
@@ -589,7 +593,7 @@
           <p class="module__kicker"><span>4.1</span>Fridge</p>
           <h3 id="m-fridge">See everything you own, <em>and when it expires.</em></h3>
           <p>Scan your fridge, freezer, pantry and spice rack. Barcode lookup and expiry-date reading come first; produce recognition and receipt scanning follow in later phases.</p>
-          <p>Alerts arrive 48 and 24 hours before anything expires.</p>
+          <p>Alerts arrive 48 and 24 hours before anything expires. It also keeps a list of your pots, pans and appliances, so recipes only ask for tools you own.</p>
           <p class="planned">Planned for Phase 1, then Phase 4</p>
         </div>
         <div class="panel reveal">
@@ -669,7 +673,7 @@
           <p class="module__kicker"><span>4.3</span>Chef AI</p>
           <h3 id="m-chef">A coach that sees <em>your real kitchen.</em></h3>
           <p>Chef Zara is an AI coach who sees your real inventory. She walks you through each recipe step by step.</p>
-          <p>Voice coaching is planned for the Pro tier.</p>
+          <p>She adjusts each recipe to what you have: servings, swaps and the tools in your kitchen. Voice coaching is planned for the Pro tier.</p>
           <p class="planned">Planned for Phase 1, voice in Phase 4</p>
         </div>
         <div class="panel reveal">
@@ -990,6 +994,7 @@
         </ul>
       </li>
     </ol>
+    <p class="later reveal"><span class="later__tag">Later</span>Beyond the 40 weeks we are exploring restocking: shopping lists that fill themselves from what runs low, and online grocery ordering. Not yet part of the plan.</p>
   </div>
 </section>
 

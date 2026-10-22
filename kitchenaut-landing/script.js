@@ -235,47 +235,180 @@ const CONTACT_EMAIL = "contact@example.com"; // TODO: replace with the real addr
     var live = document.getElementById("demo-live");
     var missionItems = document.querySelectorAll("[data-goal]");
     var missionDone = document.getElementById("demo-done");
-    var xpNums = document.querySelectorAll("[data-demo-xp]");
     var xpBars = document.querySelectorAll("[data-demo-xpbar]");
     var levelNames = document.querySelectorAll("[data-demo-level]");
 
     var START_XP = 440;
     var LEVEL_XP = 500;
-    var GOALS = ["scan", "quest", "cook", "share", "level"];
-    var FULLSCREEN = { cook: true, camera: true };
-    var TITLES = { fridge: "Fridge", quests: "Quests", chef: "Chef Zara", school: "Chef School", hub: "Food Hub", cook: "Cook mode", camera: "Camera" };
-    var STEPS = [
-      { title: "Dice the tomatoes", text: "Dice the tomatoes into small, even pieces and tear the basil.", img: "prep-close" },
-      { title: "The salt trick", text: "Salt the tomatoes and let them rest for two minutes. It draws out water, so the toast stays crisp.", img: "prep-close", timer: true },
-      { title: "Toast the bread", text: "Toast the sourdough until golden, then rub it with the cut side of a garlic clove.", img: "plate" },
-      { title: "Build and finish", text: "Spoon the tomatoes onto the toast. Basil goes on last.", img: "plate" }
-    ];
-    var IMAGES = {
-      "prep-close": { src: "images/prep-close-320.webp", srcset: "images/prep-close-320.webp 320w, images/prep-close-640.webp 640w" },
-      plate: { src: "images/plate-320.webp", srcset: "images/plate-320.webp 320w, images/plate-640.webp 640w" }
+    var GOALS = ["stock", "tools", "adapt", "cook", "restock"];
+    var FULLSCREEN = { scan: true, recipe: true, steps: true, done: true };
+    var TAB_OF = { kitchen: "kitchen", scan: "kitchen", cook: "cook", recipe: "cook", steps: "cook", done: "cook", quests: "quests", restock: "restock", hub: "hub" };
+    var TITLES = { kitchen: "Kitchen", cook: "Cook", quests: "Quests", restock: "Restock", hub: "Food Hub" };
+    var FOCUS_KEYS = ["data-tool", "data-restock-add", "data-rs-tick", "data-recipe", "data-swap-open", "data-swap", "data-unswap", "data-kview", "data-filter", "data-serv"];
+
+    var IMG = {
+      basil: "images/basil-128.webp",
+      tomatoes: "images/tomato-128.webp",
+      eggs: "images/eggs-128.webp",
+      eggsLg: "images/eggs-256.webp",
+      tomatoesLg: "images/tomato-256.webp",
+      plate: "images/plate-320.webp",
+      prep: "images/prep-close-320.webp"
     };
-    var REPLIES = {
-      tonight: {
-        q: "What should I cook tonight?",
-        a: function () {
-          return state.scan === "done"
-            ? "Bruschetta. Your basil expires tomorrow and your tomatoes are next. Twelve minutes, zero waste."
-            : "Scan your fridge first, and I will plan around whatever expires soonest.";
+
+    var ITEMS = {
+      basil: { name: "Basil", img: IMG.basil, loc: "Fridge", days: 1, unit: " bunch" },
+      tomatoes: { name: "Tomatoes", img: IMG.tomatoes, loc: "Fridge", days: 2, unit: "" },
+      eggs: { name: "Eggs", img: IMG.eggs, loc: "Fridge", days: 3, unit: "" },
+      lemons: { name: "Lemons", icon: "i-fridge", loc: "Fridge", days: 9, unit: "" },
+      garlic: { name: "Garlic", icon: "i-jar", loc: "Pantry", days: 14, unit: " bulb" },
+      sourdough: { name: "Sourdough loaf", icon: "i-snow", loc: "Freezer", days: 30, unit: " loaf" },
+      oliveoil: { name: "Olive oil", icon: "i-jar", loc: "Pantry", days: 240, low: true },
+      salt: { name: "Flaky sea salt", icon: "i-salt", loc: "Spices", days: 365, plenty: true },
+      balsamic: { name: "Balsamic glaze", icon: "i-jar" },
+      butter: { name: "Butter", icon: "i-fridge" }
+    };
+
+    var TOOLS = [
+      { key: "oven", name: "Oven", icon: "i-oven" },
+      { key: "hob", name: "Hob", icon: "i-flame" },
+      { key: "pan", name: "Cast-iron pan", icon: "i-pan" },
+      { key: "toaster", name: "Toaster", icon: "i-toaster" },
+      { key: "sheet", name: "Sheet pan", icon: "i-tray" },
+      { key: "stockpot", name: "Stockpot", icon: "i-pot" },
+      { key: "blender", name: "Blender", icon: "i-blender" },
+      { key: "airfryer", name: "Air fryer", icon: "i-airfryer" }
+    ];
+
+    function toastMethod(t) {
+      if (t.toaster) return { label: "Toaster", text: "Toast the sourdough straight from frozen in the toaster" };
+      if (t.oven) return { label: "Oven grill", text: "Toast the sourdough under the oven grill, two minutes a side" };
+      if (t.pan && t.hob) return { label: "Cast-iron pan", text: "Toast the sourdough in the dry cast-iron pan until golden" };
+      if (t.airfryer) return { label: "Air fryer", text: "Crisp the sourdough in the air fryer for four minutes" };
+      return null;
+    }
+
+    function panMethod(t) {
+      if (!t.hob) return null;
+      if (t.pan) return { label: "Cast-iron pan on the hob", name: "cast-iron pan" };
+      if (t.stockpot) return { label: "Stockpot on the hob", name: "stockpot" };
+      return null;
+    }
+
+    function swapOf(rk, key) {
+      return state.swaps[rk + ":" + key] || null;
+    }
+
+    var RECIPES = {
+      bruschetta: {
+        name: "Tomato and basil bruschetta", short: "bruschetta", time: 12, img: IMG.plate, hero: IMG.plate, quest: true,
+        xp: [["Daily quest", 40], ["Salt trick", 20]],
+        ingredients: function (s) {
+          return [
+            { key: "tomatoes", need: s, text: s + " tomatoes" },
+            { key: "basil", need: 1, text: "A handful of basil" },
+            { key: "sourdough", need: 1, text: s + " slices of sourdough", use: s + " slices" },
+            { key: "garlic", need: 1, text: "1 garlic clove", use: "1 clove" },
+            { key: "oliveoil", need: 1, text: Math.max(1, Math.round(s / 2)) + " tbsp olive oil" },
+            { key: "salt", need: 1, text: "A pinch of flaky salt" },
+            { key: "balsamic", need: 1, text: "Balsamic glaze, to finish", swaps: [{ key: "lemons", text: "Lemon juice" }, { key: "skip", text: "Skip it" }] }
+          ];
+        },
+        method: function (t) {
+          var m = toastMethod(t);
+          return m ? { ok: true, text: "Toast with: " + m.label, adapted: !t.toaster } : { ok: false, text: "Needs a toaster, oven, pan or air fryer. Switch one on in Kitchen, Tools." };
+        },
+        steps: function (s, t) {
+          var m = toastMethod(t) || { text: "Toast the sourdough" };
+          var sw = swapOf("bruschetta", "balsamic");
+          var finish = sw === "lemons" ? " Finish with a squeeze of lemon." : sw === "skip" ? "" : " Finish with a little balsamic glaze.";
+          return [
+            { title: "Dice and salt", text: "Dice " + s + " tomatoes, salt them and let them rest for two minutes. It draws out water, so the toast stays crisp.", img: IMG.prep, timer: true },
+            { title: "Toast the bread", text: m.text + ", then rub it with the cut side of a garlic clove.", img: IMG.plate },
+            { title: "Build and finish", text: "Spoon the tomatoes onto the toast and add the basil last." + finish, img: IMG.plate }
+          ];
+        },
+        tip: function (s, t, short) {
+          var tip = "Your sourdough is in the freezer. Toast it straight from frozen, no need to thaw.";
+          if (!t.toaster && toastMethod(t)) tip = "No toaster? I have switched the toast step to your " + toastMethod(t).label.toLowerCase() + ".";
+          if (short.tomatoes) tip += " You are " + short.tomatoes + " tomato" + (short.tomatoes > 1 ? "es" : "") + " short for " + s + ".";
+          return tip;
         }
       },
-      salt: { q: "What is the salt trick?", a: function () { return "Salt the diced tomatoes and wait two minutes. It pulls out water, so the toast stays crisp. Worth 20 bonus XP."; } },
-      eggs: { q: "Something with the eggs?", a: function () { return "Your eggs have three days. Tomorrow's quest could be a basil omelette."; } }
+      omelette: {
+        name: "Basil omelette", short: "omelette", time: 8, img: IMG.eggs, hero: IMG.eggsLg,
+        xp: [["Cooked before it expired", 60]],
+        ingredients: function (s) {
+          return [
+            { key: "eggs", need: 2 * s, text: 2 * s + " eggs" },
+            { key: "basil", need: 1, text: "A few basil leaves" },
+            { key: "butter", need: 1, text: "A knob of butter", swaps: [{ key: "oliveoil", text: "Olive oil" }, { key: "skip", text: "Skip it" }] },
+            { key: "salt", need: 1, text: "A pinch of salt" }
+          ];
+        },
+        method: function (t) {
+          var m = panMethod(t);
+          return m ? { ok: true, text: "Cook with: " + m.label, adapted: !t.pan } : { ok: false, text: "Needs a hob and a pan. Switch them on in Kitchen, Tools." };
+        },
+        steps: function (s, t) {
+          var m = panMethod(t) || { name: "pan" };
+          var fat = swapOf("omelette", "butter") === "oliveoil" ? "a little olive oil" : swapOf("omelette", "butter") === "skip" ? "nothing but a hot surface" : "a knob of butter";
+          return [
+            { title: "Whisk", text: "Whisk " + 2 * s + " eggs with a pinch of salt and tear in the basil.", img: IMG.eggsLg },
+            { title: "Cook", text: "Warm " + fat + " in the " + m.name + " over a medium heat, then pour in the eggs.", img: IMG.eggsLg },
+            { title: "Fold and serve", text: "Fold it over as soon as the top is just set. Serve straight away.", img: IMG.eggsLg }
+          ];
+        },
+        tip: function (s, t, short) {
+          if (short.eggs) return "You need " + 2 * s + " eggs for " + s + " and have " + (state.inv.eggs || 0) + ". Try fewer servings, or add eggs to Restock.";
+          return "Your eggs have three days left, so this uses them first.";
+        }
+      },
+      skillet: {
+        name: "Tomato and egg skillet", short: "skillet", time: 20, img: IMG.tomatoes, hero: IMG.tomatoesLg,
+        xp: [["Cooked before it expired", 60]],
+        ingredients: function (s) {
+          return [
+            { key: "tomatoes", need: s, text: s + " tomatoes" },
+            { key: "eggs", need: s, text: s + " eggs" },
+            { key: "garlic", need: 1, text: "1 garlic clove", use: "1 clove" },
+            { key: "oliveoil", need: 1, text: "1 tbsp olive oil" },
+            { key: "salt", need: 1, text: "A pinch of salt" }
+          ];
+        },
+        method: function (t) {
+          var m = panMethod(t);
+          if (m) return { ok: true, text: "Cook with: " + m.label, adapted: !t.pan };
+          if (t.oven && t.sheet) return { ok: true, text: "Cook with: sheet pan in the oven", adapted: true };
+          return { ok: false, text: "Needs a hob and pan, or an oven and sheet pan." };
+        },
+        steps: function (s, t) {
+          var pan = panMethod(t);
+          var where = pan ? "the " + pan.name : "the sheet pan";
+          return [
+            { title: "Soften", text: "Warm the olive oil in " + where + " and add the garlic and chopped tomatoes.", img: IMG.tomatoesLg },
+            { title: pan ? "Simmer" : "Roast", text: (pan ? "Simmer" : "Roast") + " for ten minutes, then make " + s + " small wells.", img: IMG.tomatoesLg },
+            { title: "Crack and cover", text: "Crack an egg into each well and cook until the whites are just set.", img: IMG.eggsLg }
+          ];
+        },
+        tip: function (s, t) {
+          return panMethod(t) ? "One pan, and it uses your tomatoes and eggs before they expire." : "No hob? It works on a sheet pan in the oven.";
+        }
+      }
     };
 
     var state;
     var timers = [];
     var raf = 0;
     var animatingXP = false;
+    var lastHTML = {};
 
     var q = function (sel) { return app.querySelector(sel); };
     var qa = function (sel) { return app.querySelectorAll(sel); };
     var fast = function () { return reduceMotion.matches; };
     var later = function (fn, ms) { timers.push(window.setTimeout(fn, ms)); };
+    var tab = function (name) { return q('[data-tab="' + name + '"]'); };
+    var icon = function (id) { return '<svg class="icon" aria-hidden="true"><use href="#' + id + '"/></svg>'; };
 
     function say(message) {
       live.textContent = "";
@@ -286,14 +419,50 @@ const CONTACT_EMAIL = "contact@example.com"; // TODO: replace with the real addr
       if (el && typeof el.focus === "function") el.focus({ preventScroll: true });
     }
 
-    function nextGoal() {
-      for (var i = 0; i < GOALS.length; i++) if (!state.goals[GOALS[i]]) return GOALS[i];
-      return null;
+    function setHTML(el, html) {
+      var key = el.getAttribute("data-html-key") || (el.setAttribute("data-html-key", String(Math.random()).slice(2)), el.getAttribute("data-html-key"));
+      if (lastHTML[key] === html) return;
+      lastHTML[key] = html;
+      el.innerHTML = html;
     }
 
-    function setXP(value) {
-      xpNums.forEach(function (n) { n.textContent = String(value); });
-      xpBars.forEach(function (b) { b.style.width = Math.min(100, (value / LEVEL_XP) * 100) + "%"; });
+    function daysLabel(d) {
+      if (d <= 1) return "1 day";
+      if (d < 14) return d + " days";
+      if (d < 28) return Math.round(d / 7) + " weeks";
+      if (d < 365) return Math.round(d / 30) === 1 ? "1 month" : Math.round(d / 30) + " months";
+      return "1 year";
+    }
+
+    function chipClass(d) {
+      return d <= 1 ? "p-chip" : d <= 3 ? "p-chip p-chip--warm" : "p-chip p-chip--fresh";
+    }
+
+    function thumb(key) {
+      var it = ITEMS[key];
+      return it.img
+        ? '<img src="' + it.img + '" width="128" height="128" alt="" decoding="async">'
+        : '<span class="row-ico" aria-hidden="true"><svg class="icon"><use href="#' + it.icon + '"/></svg></span>';
+    }
+
+    function qtyLabel(key) {
+      var it = ITEMS[key];
+      if (it.low) return "Running low";
+      if (it.plenty) return "Plenty";
+      return state.inv[key] + it.unit;
+    }
+
+    function fresh() {
+      return {
+        screen: "kitchen", kview: "groceries", scan: "idle", newItems: [],
+        inv: { lemons: 2, garlic: 1, sourdough: 1, oliveoil: 1, salt: 1 },
+        tools: { oven: true, hob: true, pan: true, toaster: true, sheet: true, stockpot: true, blender: false, airfryer: false },
+        filters: { expiring: true, quick: false },
+        recipe: "bruschetta", servings: { bruschetta: 2, omelette: 2, skillet: 2 }, swaps: {}, swapOpen: null,
+        step: 0, timer: "idle", cooked: {}, lastCooked: null, changes: [], collected: false, overlay: false,
+        restock: [], usedUp: [], orderNote: false, shared: false, cheered: false,
+        xp: START_XP, goals: {}
+      };
     }
 
     function reset() {
@@ -301,136 +470,365 @@ const CONTACT_EMAIL = "contact@example.com"; // TODO: replace with the real addr
       timers = [];
       window.cancelAnimationFrame(raf);
       animatingXP = false;
-      state = {
-        screen: "fridge", storage: "fridge", scan: "idle", questStarted: false, step: 0, timer: "idle",
-        cooked: false, photo: false, posted: false, collected: false, overlay: false, cheered: false,
-        xp: START_XP, chat: [], goals: {}
-      };
-      qa(".chat .is-dyn").forEach(function (n) { n.remove(); });
+      state = fresh();
       render();
     }
 
-    function go(screen, focus) {
+    function nextGoal() {
+      for (var i = 0; i < GOALS.length; i++) if (!state.goals[GOALS[i]]) return GOALS[i];
+      return null;
+    }
+
+    function setXP(value) {
+      document.querySelectorAll("[data-demo-xp]").forEach(function (n) { n.textContent = String(value); });
+      xpBars.forEach(function (b) { b.style.width = Math.min(100, (value / LEVEL_XP) * 100) + "%"; });
+    }
+
+    /* recipe maths */
+    function status(rk, ing) {
+      var have = state.inv[ing.key] || 0;
+      var sw = ing.swaps ? swapOf(rk, ing.key) : null;
+      if (sw) return { kind: "swapped", swap: sw };
+      if (have >= ing.need) return { kind: ITEMS[ing.key].low ? "low" : "have", have: have };
+      if (have > 0) return { kind: "short", have: have, short: ing.need - have };
+      return { kind: "missing", have: 0, short: ing.need };
+    }
+
+    function analyse(rk) {
+      var r = RECIPES[rk];
+      var s = state.servings[rk];
+      var ings = r.ingredients(s);
+      var ok = 0;
+      var expiring = 0;
+      var urgency = 0;
+      var missing = [];
+      var short = {};
+      ings.forEach(function (ing) {
+        var st = status(rk, ing);
+        ing.st = st;
+        if (st.kind === "have" || st.kind === "low" || st.kind === "swapped") ok += 1;
+        else {
+          missing.push(ing);
+          short[ing.key] = st.short;
+        }
+        if ((state.inv[ing.key] || 0) > 0 && ITEMS[ing.key].days <= 3 && st.kind !== "swapped") {
+          expiring += 1;
+          urgency += 4 - ITEMS[ing.key].days;
+        }
+      });
+      return { r: r, s: s, ings: ings, ok: ok, total: ings.length, expiring: expiring, urgency: urgency, missing: missing, short: short, method: r.method(state.tools) };
+    }
+
+    function restockHas(key) {
+      return state.restock.some(function (x) { return x.key === key; });
+    }
+
+    function addRestock(key, reason) {
+      if (restockHas(key)) return false;
+      state.restock.push({ key: key, reason: reason, got: false });
+      state.goals.restock = true;
+      return true;
+    }
+
+    function suggestions() {
+      var out = [];
+      var push = function (key, reason) {
+        if (!restockHas(key) && !out.some(function (x) { return x.key === key; })) out.push({ key: key, reason: reason });
+      };
+      Object.keys(state.inv).forEach(function (k) { if (ITEMS[k].low && state.inv[k] > 0) push(k, "Running low"); });
+      state.usedUp.forEach(function (k) { push(k, "Used up"); });
+      var a = analyse(state.recipe);
+      a.missing.forEach(function (ing) {
+        push(ing.key, (ing.st.kind === "short" ? "Need " + ing.st.short + " more" : "Missing") + " for the " + a.r.short);
+      });
+      return out;
+    }
+
+    /* navigation */
+    function go(screen, focus, back) {
+      var from = state.screen;
+      if (from === "kitchen" && screen !== "kitchen" && screen !== "scan") state.newItems = [];
       state.screen = screen;
+      state.swapOpen = null;
       render();
       var el = q('[data-screen="' + screen + '"]');
-      el.classList.remove("is-entering");
+      el.classList.remove("is-entering", "is-back");
       void el.offsetWidth;
       el.classList.add("is-entering");
+      if (back) el.classList.add("is-back");
+      if (el.classList.contains("app-screen--scroll")) el.scrollTop = 0;
       if (focus) focusIn(el.querySelector("[data-focus]"));
     }
 
     function hintTarget(goal) {
-      if (state.overlay) return q("[data-open-school]");
+      if (state.overlay) return q("[data-overlay-close]");
       var s = state.screen;
-      if (goal === "scan") {
-        if (s !== "fridge") return q('[data-tab="fridge"]');
-        if (state.storage !== "fridge") return q('[data-storage="fridge"]');
-        return state.scan === "idle" ? q("[data-scan]") : null;
+      if (goal === "stock") {
+        if (s === "scan") return state.scan === "done" ? q("[data-scan-add]") : null;
+        if (s !== "kitchen") return tab("kitchen");
+        return state.kview !== "groceries" ? q('[data-kview="groceries"]') : q("[data-scan-open]");
       }
-      if (goal === "quest") {
-        if (s === "fridge" && state.storage === "fridge") return q("[data-to-quests]");
-        return s === "quests" ? q("[data-start]") : q('[data-tab="quests"]');
+      if (goal === "tools") {
+        if (s !== "kitchen") return tab("kitchen");
+        return state.kview !== "tools" ? q('[data-kview="tools"]') : q('[data-tool="toaster"]');
+      }
+      if (goal === "adapt") {
+        if (s === "recipe") return q('[data-serv="1"]');
+        if (s === "cook") return q('[data-recipe="bruschetta"]') || q("[data-recipe]");
+        return tab("cook");
       }
       if (goal === "cook") {
-        if (s !== "cook") return s === "quests" ? q("[data-start]") : q('[data-tab="quests"]');
-        if (STEPS[state.step].timer && state.timer === "idle") return q("[data-timer-btn]");
-        if (STEPS[state.step].timer && state.timer === "running") return null;
-        return q("[data-next]");
+        if (s === "recipe") return q("[data-cook-start]");
+        if (s === "steps") {
+          var st = currentSteps()[state.step];
+          if (st.timer && state.timer === "idle") return q("[data-timer-btn]");
+          if (st.timer && state.timer === "running") return null;
+          return q("[data-next]");
+        }
+        if (s === "done") return q("[data-collect]");
+        if (s === "cook") return q('[data-recipe="bruschetta"]') || q("[data-recipe]");
+        return tab("cook");
       }
-      if (goal === "share") {
-        if (s === "camera") return state.photo ? q("[data-post]") : q("[data-shutter]");
-        return s === "quests" ? q("[data-start]") : q('[data-tab="quests"]');
+      if (goal === "restock") {
+        if (s === "recipe" && analyse(state.recipe).missing.length) return q("[data-restock-missing]");
+        if (s === "restock") return q("[data-restock-add]");
+        if (s === "kitchen" && state.kview === "groceries") return q('[data-restock-add="oliveoil"]');
+        return tab("restock");
       }
-      if (goal === "level") return s === "hub" ? q("[data-collect]") : q('[data-tab="hub"]');
       return null;
     }
 
-    function render() {
-      var goal = nextGoal();
+    function currentSteps() {
+      return RECIPES[state.recipe].steps(state.servings[state.recipe], state.tools);
+    }
 
-      // screens and chrome
-      qa("[data-screen]").forEach(function (el) { el.hidden = el.getAttribute("data-screen") !== state.screen; });
-      app.setAttribute("data-chrome", FULLSCREEN[state.screen] ? "full" : "tabs");
-      qa("[data-tab]").forEach(function (b) {
-        if (b.getAttribute("data-tab") === state.screen) b.setAttribute("aria-current", "page");
-        else b.removeAttribute("aria-current");
-      });
+    /* rendering */
+    function renderKitchen() {
+      qa("[data-kview]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-kview") === state.kview)); });
+      qa("[data-kpanel]").forEach(function (p) { p.hidden = p.getAttribute("data-kpanel") !== state.kview; });
+      var keys = Object.keys(state.inv).filter(function (k) { return state.inv[k] > 0; });
+      keys.sort(function (a, b) { return ITEMS[a].days - ITEMS[b].days; });
+      setHTML(q("[data-inventory]"), keys.map(function (k) {
+        var it = ITEMS[k];
+        var isNew = state.newItems.indexOf(k) > -1;
+        var tail;
+        if (it.low) {
+          var on = restockHas(k);
+          tail = '<span class="p-chip p-chip--warm">Low</span><button class="mini-btn" type="button" data-restock-add="' + k + '"' + (on ? " disabled" : "") +
+            ' aria-label="' + (on ? it.name + " is on your restock list" : "Add " + it.name.toLowerCase() + " to restock") + '">' + icon(on ? "i-check" : "i-cart") + "</button>";
+        } else {
+          tail = '<span class="' + chipClass(it.days) + '">' + daysLabel(it.days) + "</span>";
+        }
+        return '<li class="inv__row' + (isNew ? " is-new" : "") + (it.low ? " is-low" : "") + '">' + thumb(k) +
+          '<span class="inv__name">' + it.name + "<small>" + qtyLabel(k) + ", " + it.loc + (isNew ? ", new" : "") + "</small></span>" + tail + "</li>";
+      }).join(""));
+      setHTML(q("[data-tools]"), TOOLS.map(function (t) {
+        var on = !!state.tools[t.key];
+        return '<button class="tool" type="button" data-tool="' + t.key + '" aria-pressed="' + on + '">' + icon(t.icon) + "<b>" + t.name + "</b><small>" + (on ? "Have it" : "Don't have") + "</small></button>";
+      }).join(""));
+    }
 
-      // fridge
-      qa("[data-storage]").forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-storage") === state.storage)); });
-      qa("[data-shelf]").forEach(function (el) { el.hidden = el.getAttribute("data-shelf") !== state.storage; });
+    function renderScan() {
       q(".app-vf").setAttribute("data-state", state.scan);
-      qa("[data-vf]").forEach(function (el) { el.hidden = el.getAttribute("data-vf") !== state.scan; });
-      q("[data-scan-list]").hidden = state.scan !== "done";
-      q("[data-scan-empty]").hidden = state.scan === "done";
+      qa("[data-vf]").forEach(function (el) { el.hidden = el.getAttribute("data-vf") !== (state.scan === "done" ? "done" : "scanning"); });
+      q("[data-scan-found]").hidden = state.scan !== "done";
+      q("[data-scan-add]").disabled = state.scan !== "done";
+    }
 
-      // quests
-      q("[data-quests-empty]").hidden = state.scan === "done";
-      q("[data-quests-full]").hidden = state.scan !== "done";
-      var start = q("[data-start]");
-      var startLabel = state.posted ? "Completed" : state.cooked ? "Snap your photo" : state.questStarted ? "Continue" : "Start quest";
-      q("[data-start-label]").textContent = startLabel;
-      start.disabled = state.posted;
-
-      // cook
-      var step = STEPS[state.step];
-      var last = state.step === STEPS.length - 1;
-      q("[data-step-count]").textContent = "Step " + (state.step + 1) + " of " + STEPS.length;
-      qa("[data-step-dot]").forEach(function (d, i) { d.classList.toggle("on", i <= state.step); });
-      q("[data-step-title]").textContent = step.title;
-      q("[data-step-text]").textContent = step.text;
-      var img = q("[data-step-img]");
-      if (img.getAttribute("src") !== IMAGES[step.img].src) {
-        img.setAttribute("srcset", IMAGES[step.img].srcset);
-        img.setAttribute("src", IMAGES[step.img].src);
+    function renderCook() {
+      qa("[data-filter]").forEach(function (b) { b.setAttribute("aria-pressed", String(!!state.filters[b.getAttribute("data-filter")])); });
+      var list = Object.keys(RECIPES).map(analyse).filter(function (a) {
+        if (state.filters.expiring && a.expiring === 0) return false;
+        if (state.filters.quick && a.r.time >= 15) return false;
+        return true;
+      });
+      list.sort(function (a, b) {
+        if (a.method.ok !== b.method.ok) return a.method.ok ? -1 : 1;
+        if (b.urgency !== a.urgency) return b.urgency - a.urgency;
+        return b.ok / b.total - a.ok / a.total;
+      });
+      var html = list.map(function (a) {
+        var rk = Object.keys(RECIPES).filter(function (k) { return RECIPES[k] === a.r; })[0];
+        var tags = "";
+        if (a.expiring) tags += '<span class="p-chip">Uses ' + a.expiring + " expiring</span>";
+        if (!a.method.ok) tags += '<span class="p-chip p-chip--warm">Missing a tool</span>';
+        if (state.cooked[rk]) tags += '<span class="p-chip p-chip--fresh">Cooked</span>';
+        return '<li><button class="rcard' + (a.method.ok ? "" : " is-blocked") + '" type="button" data-recipe="' + rk + '">' +
+          '<img src="' + a.r.img + '" width="128" height="128" alt="" decoding="async">' +
+          '<span class="rcard__body"><b>' + a.r.name + "</b><small>You have " + a.ok + " of " + a.total + ", " + a.r.time + " min</small>" +
+          (tags ? '<span class="rcard__tags">' + tags + "</span>" : "") + "</span></button></li>";
+      }).join("");
+      if (!list.length) {
+        html = '<li class="recipes__empty">' + (state.scan === "done" ? "Nothing matches these filters." : "Nothing is expiring yet. Scan your groceries in Kitchen first.") + "</li>";
       }
+      setHTML(q("[data-recipes]"), html);
+    }
+
+    function renderRecipe() {
+      var rk = state.recipe;
+      var a = analyse(rk);
+      q("[data-r-name]").textContent = a.r.name;
+      q("[data-r-meta]").textContent = a.r.time + " min";
+      var img = q("[data-r-img]");
+      if (img.getAttribute("src") !== a.r.hero) img.setAttribute("src", a.r.hero);
+      q("[data-r-serv]").textContent = String(a.s);
+      q('[data-serv="-1"]').disabled = a.s <= 1;
+      q('[data-serv="1"]').disabled = a.s >= 6;
+      var tools = q("[data-r-tools]");
+      tools.classList.toggle("is-blocked", !a.method.ok);
+      setHTML(tools, icon(a.method.ok ? "i-pan" : "i-lock") + "<span>" + a.method.text + "</span>" + (a.method.ok && a.method.adapted ? '<span class="p-chip p-chip--ai">Adapted</span>' : ""));
+      setHTML(q("[data-r-ingr]"), a.ings.map(function (ing) {
+        var st = ing.st;
+        var it = ITEMS[ing.key];
+        var cls = "";
+        var note = "";
+        var tail = "";
+        var extra = "";
+        if (st.kind === "have") { note = "You have " + qtyLabel(ing.key); tail = icon("i-check").replace('class="icon"', 'class="icon ingr__ok"'); }
+        else if (st.kind === "low") { note = "Running low"; tail = icon("i-check").replace('class="icon"', 'class="icon ingr__ok"'); }
+        else if (st.kind === "swapped") {
+          cls = " is-swapped";
+          var swText = ing.swaps.filter(function (x) { return x.key === st.swap; })[0].text;
+          note = st.swap === "skip" ? "Skipped" : "Swapped for " + swText.toLowerCase();
+          tail = '<button class="mini-btn" type="button" data-unswap="' + ing.key + '">Undo</button>';
+        } else if (ing.swaps) {
+          cls = " is-missing";
+          note = "Not in your kitchen";
+          var open = state.swapOpen === ing.key;
+          tail = '<button class="mini-btn" type="button" data-swap-open="' + ing.key + '" aria-expanded="' + open + '">' + icon("i-swap") + "Swap</button>";
+          if (open) {
+            extra = '<span class="swaps">' + ing.swaps.map(function (x) {
+              var avail = x.key === "skip" || (state.inv[x.key] || 0) > 0;
+              return avail ? '<button type="button" data-swap="' + ing.key + ":" + x.key + '">' + x.text + "</button>" : "";
+            }).join("") + "</span>";
+          }
+        } else {
+          cls = st.kind === "short" ? " is-short" : " is-missing";
+          note = st.kind === "short" ? "You have " + st.have + ", need " + ing.need : "Not in your kitchen";
+          var on = restockHas(ing.key);
+          tail = '<span class="p-chip p-chip--warm">' + (st.kind === "short" ? "Need " + st.short : "Missing") + "</span>" +
+            '<button class="mini-btn" type="button" data-restock-add="' + ing.key + '"' + (on ? " disabled" : "") + ' aria-label="' +
+            (on ? it.name + " is on your restock list" : "Add " + it.name.toLowerCase() + " to restock") + '">' + icon(on ? "i-check" : "i-cart") + "</button>";
+        }
+        return '<li class="' + cls.trim() + '">' + thumb(ing.key) + '<span class="ingr__name">' + ing.text + "<small>" + note + "</small></span>" + tail + extra + "</li>";
+      }).join(""));
+      q("[data-r-tip]").textContent = a.r.tip(a.s, state.tools, a.short);
+      var addable = a.missing.filter(function (ing) { return !ing.swaps && !restockHas(ing.key); });
+      q("[data-restock-missing]").disabled = addable.length === 0;
+      q("[data-r-missing-label]").textContent = addable.length ? "Add missing (" + addable.length + ")" : "Nothing to add";
+      q("[data-cook-start]").disabled = !a.method.ok;
+    }
+
+    function renderSteps() {
+      var steps = currentSteps();
+      var st = steps[Math.min(state.step, steps.length - 1)];
+      var last = state.step === steps.length - 1;
+      q("[data-step-count]").textContent = "Step " + (state.step + 1) + " of " + steps.length;
+      qa("[data-step-dot]").forEach(function (d, i) { d.classList.toggle("on", i <= state.step); });
+      q("[data-step-title]").textContent = st.title;
+      q("[data-step-text]").textContent = st.text;
+      var img = q("[data-step-img]");
+      if (img.getAttribute("src") !== st.img) img.setAttribute("src", st.img);
       var timer = q("[data-timer]");
-      timer.hidden = !step.timer;
+      timer.hidden = !st.timer;
       timer.setAttribute("data-state", state.timer);
-      var timerBtn = q("[data-timer-btn]");
-      timerBtn.disabled = state.timer !== "idle";
-      timerBtn.textContent = state.timer === "idle" ? "Start 2:00 timer" : state.timer === "running" ? "Resting" : "Rested";
+      var tb = q("[data-timer-btn]");
+      tb.disabled = state.timer !== "idle";
+      tb.textContent = state.timer === "idle" ? "Start 2:00 timer" : state.timer === "running" ? "Resting" : "Rested";
       q("[data-timer-note]").textContent = state.timer === "done" ? "Salt trick done: +20 XP" : "Demo runs two minutes in three seconds.";
       if (state.timer !== "running") q("[data-timer-text]").textContent = state.timer === "done" ? "0:00" : "2:00";
-      q("[data-next]").disabled = !!step.timer && state.timer !== "done";
-      q("[data-next-label]").textContent = last ? "Finish and snap a photo" : "Next step";
+      q("[data-next]").disabled = !!st.timer && state.timer !== "done";
+      q("[data-next-label]").textContent = last ? "Finish" : "Next step";
+    }
 
-      // camera
-      q("[data-cam]").setAttribute("data-state", state.photo ? "captured" : "live");
-      q("[data-cam-live]").hidden = state.photo;
-      q("[data-cam-review]").hidden = !state.photo;
+    function renderDone() {
+      var r = RECIPES[state.lastCooked || state.recipe];
+      q("[data-d-name]").textContent = r.name;
+      var img = q("[data-d-img]");
+      if (img.getAttribute("src") !== r.hero) img.setAttribute("src", r.hero);
+      setHTML(q("[data-d-inv]"), state.changes.map(function (c) {
+        return "<li>" + thumb(c.key) + '<b class="inv__name">' + ITEMS[c.key].name + "</b><span>" + c.text + "</span></li>";
+      }).join(""));
+      var xpList = q("[data-d-xp]");
+      xpList.classList.add("done-list--xp");
+      setHTML(xpList, r.xp.map(function (x) { return "<li><b>" + x[0] + "</b><span>+" + x[1] + " XP</span></li>"; }).join(""));
+      var collect = q("[data-collect]");
+      collect.disabled = state.collected;
+      collect.lastChild.textContent = state.collected ? "XP collected" : "Collect 60 XP";
+      q("[data-share]").disabled = state.shared;
+      q("[data-share-label]").textContent = state.shared ? "Shared" : "Share";
+    }
 
-      // food hub
-      q("[data-hub-mine]").hidden = !state.posted;
-      q("[data-hub-sample]").hidden = state.posted;
-      q("[data-collect-banner]").hidden = !state.posted || state.collected;
-      var cheer = q("[data-cheer]");
-      cheer.setAttribute("aria-pressed", String(state.cheered));
-
-      // chef school
+    function renderQuests() {
+      var done = !!state.cooked.bruschetta;
+      var card = q("[data-open-recipe]");
+      card.classList.toggle("is-done", done);
+      q("[data-q-status]").textContent = done ? "Done tonight. Nothing wasted." : "Uses basil and tomatoes before they expire";
+      var cookedAny = Object.keys(state.cooked).length > 0;
+      qa("[data-week] i").forEach(function (d, i) { d.classList.toggle("on", i < (cookedAny ? 4 : 3)); });
       q("[data-school-locked]").hidden = state.collected;
       q("[data-school-open]").hidden = !state.collected;
-      q("[data-lesson]").disabled = !state.collected;
-      q("[data-lesson-note]").textContent = state.collected ? "Lesson 1, tap to preview" : "Lesson 1";
+      var nextLine = q("[data-xp-next]");
+      if (state.collected && !animatingXP) nextLine.innerHTML = '<span data-demo-xp>500</span> XP. Sauté Specialist at 1,500 XP';
+      else if (!state.collected) nextLine.innerHTML = '<span data-demo-xp>' + state.xp + "</span> / 500 XP to Apprentice Cook";
+    }
 
-      // chef chat (the latest four messages)
-      var chat = q("[data-chat]");
-      if (chat.getAttribute("data-count") !== String(state.chat.length)) {
-        chat.setAttribute("data-count", String(state.chat.length));
-        qa(".chat .is-dyn").forEach(function (n) { n.remove(); });
-        state.chat.slice(-4).forEach(function (m) {
-          var b = document.createElement("span");
-          b.className = "p-bubble is-dyn" + (m.me ? " p-bubble--me" : "");
-          b.textContent = m.text;
-          chat.appendChild(b);
+    function renderRestock() {
+      var list = state.restock.map(function (x) {
+        var it = ITEMS[x.key];
+        return '<li class="' + (x.got ? "is-got" : "") + '">' + thumb(x.key) + '<span class="inv__name">' + it.name + "<small>" + x.reason + "</small></span>" +
+          '<button class="tick" type="button" data-rs-tick="' + x.key + '" aria-pressed="' + x.got + '" aria-label="' + it.name + ', got it"><span>' + icon("i-check") + "</span></button></li>";
+      }).join("");
+      setHTML(q("[data-rs-list]"), list || '<li class="rs__empty">Nothing on your list yet.</li>');
+      var sug = suggestions();
+      setHTML(q("[data-rs-suggest]"), sug.map(function (x) {
+        var it = ITEMS[x.key];
+        return "<li>" + thumb(x.key) + '<span class="inv__name">' + it.name + "<small>" + x.reason + "</small></span>" +
+          '<button class="mini-btn" type="button" data-restock-add="' + x.key + '" aria-label="Add ' + it.name.toLowerCase() + ' to your list">' + icon("i-plus") + "Add</button></li>";
+      }).join("") || '<li class="rs__empty">No suggestions right now.</li>');
+      q("[data-order-note]").hidden = !state.orderNote;
+    }
+
+    function renderHub() {
+      var r = RECIPES[state.lastCooked || "bruschetta"];
+      q("[data-hub-mine]").hidden = !state.shared;
+      q("[data-hub-sample]").hidden = state.shared;
+      q("[data-hub-cap]").textContent = r.name + ". Nothing wasted.";
+      var img = q("[data-hub-img]");
+      if (img.getAttribute("src") !== r.hero) img.setAttribute("src", r.hero);
+      q("[data-cheer]").setAttribute("aria-pressed", String(state.cheered));
+    }
+
+    function render() {
+      var active = document.activeElement;
+      var restore = null;
+      if (active && app.contains(active)) {
+        FOCUS_KEYS.some(function (k) {
+          if (active.hasAttribute(k)) { restore = "[" + k + '="' + active.getAttribute(k) + '"]'; return true; }
+          return false;
         });
       }
 
-      // level-up moment
+      qa("[data-screen]").forEach(function (el) { el.hidden = el.getAttribute("data-screen") !== state.screen; });
+      app.setAttribute("data-chrome", FULLSCREEN[state.screen] ? "full" : "tabs");
+      var activeTab = TAB_OF[state.screen];
+      qa("[data-tab]").forEach(function (b) {
+        if (b.getAttribute("data-tab") === activeTab) b.setAttribute("aria-current", "page");
+        else b.removeAttribute("aria-current");
+      });
+
+      renderKitchen();
+      renderScan();
+      renderCook();
+      renderRecipe();
+      renderSteps();
+      renderDone();
+      renderQuests();
+      renderRestock();
+      renderHub();
       q("[data-overlay]").hidden = !state.overlay;
 
-      // mission panel
+      var goal = nextGoal();
       missionItems.forEach(function (li) {
         var g = li.getAttribute("data-goal");
         var done = !!state.goals[g];
@@ -442,39 +840,68 @@ const CONTACT_EMAIL = "contact@example.com"; // TODO: replace with the real addr
       if (!animatingXP) setXP(state.xp);
       levelNames.forEach(function (n) { n.textContent = state.collected ? "Apprentice Cook" : "Kitchen Novice"; });
 
-      // pulse on the next thing to tap
       qa(".is-hint").forEach(function (n) { n.classList.remove("is-hint"); });
-      var target = goal ? hintTarget(goal) : state.overlay ? q("[data-open-school]") : null;
-      if (target && !target.closest("[hidden]")) target.classList.add("is-hint");
+      var target = goal ? hintTarget(goal) : state.overlay ? q("[data-overlay-close]") : null;
+      if (target && !target.disabled && !target.closest("[hidden]")) target.classList.add("is-hint");
+
+      if (restore && active && !document.body.contains(active)) {
+        var again = q(restore);
+        if (again && !again.disabled) focusIn(again);
+        else focusIn(q('[data-screen="' + state.screen + '"] [data-focus]'));
+      }
     }
 
-    function startScan() {
+    /* actions */
+    function openScan() {
+      go("scan", true);
       if (state.scan !== "idle") return;
       state.scan = "scanning";
       render();
-      say("Scanning the shelf.");
+      say("Scanning groceries.");
       later(function () {
         state.scan = "done";
-        state.goals.scan = true;
-        var hadFocus = app.contains(document.activeElement);
         render();
-        say("Scan complete. Found basil, tomatoes and eggs. Basil expires first.");
-        if (hadFocus) focusIn(q("[data-to-quests]"));
+        say("Found basil, tomatoes and eggs, with their expiry dates.");
+        focusIn(q("[data-scan-add]"));
       }, fast() ? 500 : 2300);
     }
 
-    function startQuest() {
-      if (state.posted) return;
-      if (state.cooked) {
-        go("camera", true);
-        return;
-      }
-      if (!state.questStarted) {
-        state.questStarted = true;
-        state.goals.quest = true;
-      }
-      go("cook", true);
-      say("Cook mode. Step " + (state.step + 1) + " of " + STEPS.length + ": " + STEPS[state.step].title + ".");
+    function addScanned() {
+      state.inv.basil = 1;
+      state.inv.tomatoes = 4;
+      state.inv.eggs = 6;
+      state.newItems = ["basil", "tomatoes", "eggs"];
+      state.goals.stock = true;
+      state.kview = "groceries";
+      go("kitchen", true, true);
+      say("Added basil, tomatoes and eggs. Basil expires first, in 1 day.");
+    }
+
+    function openRecipe(rk) {
+      state.recipe = rk;
+      state.step = 0;
+      state.timer = "idle";
+      go("recipe", true);
+      say(RECIPES[rk].name + ". " + analyse(rk).method.text + ".");
+    }
+
+    function changeServings(delta) {
+      var rk = state.recipe;
+      var next = Math.max(1, Math.min(6, state.servings[rk] + delta));
+      if (next === state.servings[rk]) return;
+      state.servings[rk] = next;
+      state.goals.adapt = true;
+      render();
+      var a = analyse(rk);
+      say("Servings: " + next + ". " + (a.missing.length ? a.missing.length + " item" + (a.missing.length > 1 ? "s" : "") + " short." : "You have everything."));
+    }
+
+    function startCooking() {
+      state.step = 0;
+      state.timer = "idle";
+      go("steps", true);
+      var st = currentSteps()[0];
+      say("Step 1: " + st.title + ". " + st.text);
     }
 
     function startTimer() {
@@ -495,6 +922,7 @@ const CONTACT_EMAIL = "contact@example.com"; // TODO: replace with the real addr
       };
       raf = window.requestAnimationFrame(tick);
       later(function () {
+        if (state.timer !== "running") return;
         state.timer = "done";
         render();
         say("Two minutes done. Salt trick bonus: 20 XP.");
@@ -503,35 +931,50 @@ const CONTACT_EMAIL = "contact@example.com"; // TODO: replace with the real addr
     }
 
     function nextStep() {
-      if (state.step === STEPS.length - 1) {
-        state.cooked = true;
-        state.goals.cook = true;
-        go("camera", true);
-        say("All steps done. Snap a photo of your dish.");
+      var steps = currentSteps();
+      if (state.step < steps.length - 1) {
+        state.step += 1;
+        render();
+        focusIn(q("[data-step-title]"));
+        say("Step " + (state.step + 1) + ": " + steps[state.step].title + ". " + steps[state.step].text);
         return;
       }
-      state.step += 1;
-      render();
-      focusIn(q("[data-step-title]"));
-      say("Step " + (state.step + 1) + " of " + STEPS.length + ": " + STEPS[state.step].title + ".");
+      finishCooking();
     }
 
-    function snap() {
-      var cam = q("[data-cam]");
-      cam.classList.remove("is-flash");
-      void cam.offsetWidth;
-      cam.classList.add("is-flash");
-      state.photo = true;
-      render();
-      say("Photo taken.");
-      focusIn(q("[data-post]"));
-    }
-
-    function post() {
-      state.posted = true;
-      state.goals.share = true;
-      go("hub", true);
-      say("Posted to the Food Hub. Collect your 60 XP.");
+    function finishCooking() {
+      var rk = state.recipe;
+      var a = analyse(rk);
+      var changes = [];
+      a.ings.forEach(function (ing) {
+        var sw = ing.swaps ? swapOf(rk, ing.key) : null;
+        if (sw && sw !== "skip") {
+          if (state.inv[sw] > 0 && !ITEMS[sw].low) {
+            changes.push({ key: sw, text: state.inv[sw] + " to " + (state.inv[sw] - 1) });
+            state.inv[sw] -= 1;
+          }
+          return;
+        }
+        var have = state.inv[ing.key] || 0;
+        if (!have) return;
+        if (ing.key === "basil") {
+          state.inv.basil = 0;
+          changes.push({ key: "basil", text: "Used up" });
+          if (state.usedUp.indexOf("basil") < 0) state.usedUp.push("basil");
+        } else if (ing.key === "tomatoes" || ing.key === "eggs") {
+          var left = Math.max(0, have - ing.need);
+          changes.push({ key: ing.key, text: left ? have + " to " + left : "Used up" });
+          state.inv[ing.key] = left;
+          if (!left && state.usedUp.indexOf(ing.key) < 0) state.usedUp.push(ing.key);
+        } else if (ing.use) {
+          changes.push({ key: ing.key, text: "Used " + ing.use });
+        }
+      });
+      state.changes = changes;
+      state.cooked[rk] = true;
+      state.lastCooked = rk;
+      go("done", true);
+      say("Cooked. Inventory updated automatically. " + (state.collected ? "" : "Collect your 60 XP."));
     }
 
     function collect() {
@@ -543,7 +986,7 @@ const CONTACT_EMAIL = "contact@example.com"; // TODO: replace with the real addr
       var finish = function () {
         animatingXP = false;
         state.overlay = true;
-        state.goals.level = true;
+        state.goals.cook = true;
         render();
         focusIn(q("[data-overlay] [data-focus]"));
         say("Level up. You are now an Apprentice Cook. Chef School unlocked.");
@@ -557,77 +1000,110 @@ const CONTACT_EMAIL = "contact@example.com"; // TODO: replace with the real addr
       var frame = function (ts) {
         if (!t0) t0 = ts;
         var p = Math.min(1, (ts - t0) / 1200);
-        var eased = 1 - Math.pow(1 - p, 3);
-        setXP(Math.round(START_XP + (LEVEL_XP - START_XP) * eased));
+        setXP(Math.round(START_XP + (LEVEL_XP - START_XP) * (1 - Math.pow(1 - p, 3))));
         if (p < 1) raf = window.requestAnimationFrame(frame);
         else finish();
       };
       raf = window.requestAnimationFrame(frame);
     }
 
-    function ask(key) {
-      var reply = REPLIES[key];
-      if (!reply) return;
-      var answer = reply.a();
-      state.chat.push({ me: true, text: reply.q }, { me: false, text: answer });
-      render();
-      say("Chef Zara: " + answer);
-    }
-
     app.addEventListener("click", function (event) {
       var t = event.target.closest("button");
       if (!t || !app.contains(t) || t.disabled) return;
+      var v;
 
-      if (t.hasAttribute("data-tab")) {
-        var tab = t.getAttribute("data-tab");
-        if (tab !== state.screen) go(tab, false);
-        say(TITLES[tab]);
-      } else if (t.hasAttribute("data-storage")) {
-        state.storage = t.getAttribute("data-storage");
+      if ((v = t.getAttribute("data-tab"))) {
+        if (TAB_OF[state.screen] !== v || state.screen !== v) go(v, false);
+        say(TITLES[v]);
+      } else if ((v = t.getAttribute("data-nav"))) {
+        go(v, true, true);
+      } else if ((v = t.getAttribute("data-kview"))) {
+        state.kview = v;
         render();
-      } else if (t.hasAttribute("data-scan")) {
-        startScan();
-      } else if (t.hasAttribute("data-to-quests")) {
-        go("quests", true);
-      } else if (t.hasAttribute("data-go-fridge")) {
-        state.storage = "fridge";
-        go("fridge", true);
-      } else if (t.hasAttribute("data-start")) {
-        startQuest();
-      } else if (t.hasAttribute("data-back")) {
-        go("quests", true);
+      } else if (t.hasAttribute("data-scan-open")) {
+        openScan();
+      } else if (t.hasAttribute("data-scan-add")) {
+        addScanned();
+      } else if ((v = t.getAttribute("data-tool"))) {
+        state.tools[v] = !state.tools[v];
+        state.goals.tools = true;
+        render();
+        var ra = analyse("bruschetta").method;
+        say((state.tools[v] ? "Added " : "Removed ") + TOOLS.filter(function (x) { return x.key === v; })[0].name + ". Bruschetta: " + ra.text + ".");
+      } else if ((v = t.getAttribute("data-filter"))) {
+        state.filters[v] = !state.filters[v];
+        render();
+      } else if ((v = t.getAttribute("data-recipe"))) {
+        openRecipe(v);
+      } else if ((v = t.getAttribute("data-open-recipe"))) {
+        openRecipe(v);
+      } else if ((v = t.getAttribute("data-serv"))) {
+        changeServings(parseInt(v, 10));
+      } else if ((v = t.getAttribute("data-swap-open"))) {
+        state.swapOpen = state.swapOpen === v ? null : v;
+        render();
+        if (state.swapOpen) focusIn(q("[data-swap]"));
+      } else if ((v = t.getAttribute("data-swap"))) {
+        var parts = v.split(":");
+        state.swaps[state.recipe + ":" + parts[0]] = parts[1];
+        state.swapOpen = null;
+        state.goals.adapt = true;
+        render();
+        focusIn(q('[data-unswap="' + parts[0] + '"]'));
+        say(parts[1] === "skip" ? "Skipped " + ITEMS[parts[0]].name.toLowerCase() + "." : "Swapped " + ITEMS[parts[0]].name.toLowerCase() + " for " + ITEMS[parts[1]].name.toLowerCase() + ", which you have.");
+      } else if ((v = t.getAttribute("data-unswap"))) {
+        delete state.swaps[state.recipe + ":" + v];
+        render();
+        focusIn(q('[data-swap-open="' + v + '"]'));
+      } else if ((v = t.getAttribute("data-restock-add"))) {
+        var a = analyse(state.recipe);
+        var miss = a.missing.filter(function (ing) { return ing.key === v; })[0];
+        var reason = ITEMS[v].low ? "Running low" : state.usedUp.indexOf(v) > -1 && !miss ? "Used up" : miss ? (miss.st.kind === "short" ? "Need " + miss.st.short + " more" : "Missing") + " for the " + a.r.short : "Added";
+        if (addRestock(v, reason)) say("Added " + ITEMS[v].name.toLowerCase() + " to your restock list.");
+        render();
+      } else if (t.hasAttribute("data-restock-missing")) {
+        var added = [];
+        analyse(state.recipe).missing.forEach(function (ing) {
+          if (ing.swaps) return;
+          if (addRestock(ing.key, (ing.st.kind === "short" ? "Need " + ing.st.short + " more" : "Missing") + " for the " + RECIPES[state.recipe].short)) added.push(ITEMS[ing.key].name.toLowerCase());
+        });
+        render();
+        if (added.length) say("Added " + added.join(" and ") + " to your restock list.");
+      } else if ((v = t.getAttribute("data-rs-tick"))) {
+        state.restock.forEach(function (x) { if (x.key === v) x.got = !x.got; });
+        state.goals.restock = true;
+        render();
+      } else if (t.hasAttribute("data-order")) {
+        state.orderNote = true;
+        render();
+        say("Online ordering is an idea for after launch. It is not part of the 40-week plan.");
+      } else if (t.hasAttribute("data-cook-start")) {
+        startCooking();
       } else if (t.hasAttribute("data-timer-btn")) {
         startTimer();
       } else if (t.hasAttribute("data-next")) {
         nextStep();
-      } else if (t.hasAttribute("data-shutter")) {
-        snap();
-      } else if (t.hasAttribute("data-retake")) {
-        state.photo = false;
+      } else if (t.hasAttribute("data-collect")) {
+        collect();
+      } else if (t.hasAttribute("data-share")) {
+        state.shared = true;
         render();
-        focusIn(q("[data-shutter]"));
-      } else if (t.hasAttribute("data-post")) {
-        post();
+        say("Shared to the Food Hub.");
       } else if (t.hasAttribute("data-cheer")) {
         state.cheered = !state.cheered;
         render();
-      } else if (t.hasAttribute("data-collect")) {
-        collect();
-      } else if (t.hasAttribute("data-open-school")) {
+      } else if (t.hasAttribute("data-overlay-close")) {
         state.overlay = false;
-        go("school", true);
-      } else if (t.hasAttribute("data-ask")) {
-        ask(t.getAttribute("data-ask"));
-      } else if (t.hasAttribute("data-lesson")) {
-        q("[data-lesson-note]").textContent = "Chef School v1 is planned for Phase 2";
-        say("Chef School v1 is planned for Phase 2.");
+        state.kview = "groceries";
+        go("kitchen", true, true);
+        say("Back in your kitchen. Inventory is up to date.");
       }
     });
 
     document.querySelectorAll("[data-demo-reset]").forEach(function (b) {
       b.addEventListener("click", function () {
         reset();
-        say("Demo restarted. Start with Scan shelf in the Fridge tab.");
+        say("Demo restarted. Start by scanning groceries in Kitchen.");
       });
     });
 
