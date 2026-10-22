@@ -1,0 +1,234 @@
+{
+  "brand": "MAWJ / موج",
+  "stage": "Investor concept · 22 October 2026",
+  "slides": [
+    {
+      "title": "Good style. Better found.",
+      "subtitle": "MAWJ / موج",
+      "body": [
+        "A proposed Gulf marketplace for discovering salons, choosing specialists, and booking appointments.",
+        "Men and women. Hair, barbering, nails, makeup and spa."
+      ],
+      "note": "Idea stage. Working brand. No operating traction claimed.",
+      "ar": {
+        "title": "أسلوبك يبدأ بالاختيار الصحيح",
+        "subtitle": "موج / MAWJ",
+        "body": [
+          "منصة خليجية مقترحة لاكتشاف الصالونات، واختيار المختصين، وحجز المواعيد.",
+          "للرجال والنساء: الشعر والحلاقة والأظافر والمكياج والسبا."
+        ],
+        "note": "المشروع في مرحلة الفكرة. الاسم مبدئي، ولا توجد نتائج تشغيلية مثبتة."
+      }
+    },
+    {
+      "title": "The appointment starts with uncertainty",
+      "body": [
+        "Which salon can deliver the service and style I want?",
+        "Who is the right professional, at the right price and time?",
+        "Can salons convert that search into reliable, repeat business?"
+      ],
+      "note": "Customer and salon pain points are hypotheses to validate through interviews.",
+      "ar": {
+        "title": "الحجز يبدأ بأسئلة تحتاج إلى إجابة",
+        "body": [
+          "أي صالون يستطيع تقديم الخدمة والأسلوب المناسبين؟",
+          "من المختص المناسب، بالسعر والموعد المناسبين؟",
+          "كيف يحول الصالون البحث إلى زيارات موثوقة ومتكررة؟"
+        ],
+        "note": "هذه فرضيات تحتاج إلى التحقق عبر مقابلات العملاء والصالونات."
+      }
+    },
+    {
+      "title": "Discover. Choose. Book. Visit.",
+      "body": [
+        "Compare services, price bands, venue preferences and availability.",
+        "Book a salon-assigned professional or choose a named specialist.",
+        "Visit the salon; pay using its supported method; confirm completion."
+      ],
+      "note": "Product demonstration uses fictional venues, prices and availability. No booking is sent.",
+      "ar": {
+        "title": "اكتشف، اختر، احجز، ثم زر الصالون",
+        "body": [
+          "قارن الخدمات وفئات الأسعار وتفضيلات المكان والمواعيد.",
+          "اختر مختصاً بعينه، أو دع الصالون يحدد المختص المتاح.",
+          "زر الصالون، وادفع بالطريقة التي يدعمها، ثم أكد إتمام الزيارة."
+        ],
+        "note": "العرض التجريبي يستخدم بيانات وأسعاراً ومواعيد افتراضية، ولا يرسل حجوزات فعلية."
+      }
+    },
+    {
+      "title": "Trust before the appointment",
+      "body": [
+        "Partner checks: business identity, relevant documents and service location.",
+        "Professional profiles: specialities, experience and real-work portfolios.",
+        "Reviews tied to completed visits, with dispute and moderation processes."
+      ],
+      "note": "Proposed trust system. Document checks alone cannot guarantee service quality.",
+      "ar": {
+        "title": "الثقة قبل الموعد",
+        "body": [
+          "التحقق من الشريك: هوية المنشأة والوثائق ذات الصلة وموقع الخدمة.",
+          "ملفات المختصين: التخصص والخبرة ونماذج الأعمال الفعلية.",
+          "تقييمات مرتبطة بزيارات مكتملة، مع آلية للاعتراض والمراجعة."
+        ],
+        "note": "نظام ثقة مقترح. التحقق من الوثائق وحده لا يضمن جودة الخدمة."
+      }
+    },
+    {
+      "title": "A reason for salons to stay",
+      "body": [
+        "Acquire new customers through relevant local discovery.",
+        "Coordinate appointments and professional availability.",
+        "Test reminders, optional deposits and offers for quieter hours.",
+        "Make rebooking useful enough to keep customers on the platform."
+      ],
+      "note": "Merchant benefits are proposed outcomes. Adoption, no-show reduction and retention remain unproven.",
+      "ar": {
+        "title": "قيمة تدفع الصالونات للاستمرار",
+        "body": [
+          "الوصول إلى عملاء جدد عبر اكتشاف محلي مناسب.",
+          "تنسيق المواعيد وتوفر المختصين.",
+          "اختبار التذكيرات والعربون الاختياري وعروض الأوقات الأقل ازدحاماً.",
+          "تسهيل إعادة الحجز بما يشجع العملاء على البقاء في المنصة."
+        ],
+        "note": "هذه فوائد مستهدفة، وليست نتائج مثبتة حتى الآن."
+      }
+    },
+    {
+      "title": "Saudi consumers are digitally ready",
+      "body": [
+        "99.0% internet use among individuals aged 15–74 in 2025.",
+        "71.0% purchased goods or services online in the same survey.",
+        "85% of retail-payment transactions were electronic in 2025."
+      ],
+      "note": "GASTAT ICT 2025; SAMA, April 2026. General readiness measures, not salon-service TAM or evidence for all Gulf markets.",
+      "ar": {
+        "title": "جاهزية رقمية لدى المستهلك السعودي",
+        "body": [
+          "99.0% من الأفراد بعمر 15–74 عاماً استخدموا الإنترنت في 2025.",
+          "71.0% اشتروا سلعاً أو خدمات عبر الإنترنت وفق الاستبيان نفسه.",
+          "85% من عدد عمليات دفع الأفراد في التجزئة كانت إلكترونية في 2025."
+        ],
+        "note": "الهيئة العامة للإحصاء 2025؛ البنك المركزي السعودي، أبريل 2026. مؤشرات عامة وليست حجماً لسوق خدمات الصالونات."
+      }
+    },
+    {
+      "title": "A competitive market, a testable wedge",
+      "body": [
+        "Fresha already offers Saudi salon discovery, reviews, pricing and booking.",
+        "Glamera offers localized salon operations, booking and payments.",
+        "MAWJ must prove better trusted supply, Arabic discovery, conversion and merchant economics in a focused cluster."
+      ],
+      "note": "No first, only or defensible-moat claim. Proposed differentiation requires comparative evidence.",
+      "ar": {
+        "title": "سوق تنافسي وفرصة قابلة للاختبار",
+        "body": [
+          "تقدم Fresha بالفعل اكتشاف الصالونات والتقييمات والأسعار والحجز في السعودية.",
+          "تقدم Glamera أدوات محلية لتشغيل الصالونات والحجز والمدفوعات.",
+          "يجب أن تثبت موج تفوقها في جودة الشركاء والاكتشاف بالعربية والتحويل إلى حجز واقتصاديات الشراكة."
+        ],
+        "note": "لا ندعي أننا الأول أو الوحيد. التميز المقترح يحتاج إلى دليل مقارن."
+      }
+    },
+    {
+      "title": "Revenue follows completed appointments",
+      "body": [
+        "Working model: commission on completed platform bookings.",
+        "Each salon selects supported customer payment methods.",
+        "Completion confirmation and reconciliation support commission collection.",
+        "Test rate, repeat-booking fees and salon willingness before committing terms."
+      ],
+      "note": "12% is the illustrative model rate. Fee scope and collection process are unvalidated; no signed commercial agreements.",
+      "ar": {
+        "title": "إيراد مرتبط بالمواعيد المكتملة",
+        "body": [
+          "النموذج المبدئي: عمولة على الحجوزات المكتملة عبر المنصة.",
+          "يحدد كل صالون طرق الدفع المتاحة لعملائه.",
+          "تأكيد إتمام الموعد وتسوية السجلات أساس تحصيل العمولة.",
+          "اختبار النسبة ورسوم إعادة الحجز وقبول الصالونات قبل تثبيت الشروط."
+        ],
+        "note": "نسبة 12% افتراض للنموذج المالي، وليست سعراً معتمداً أو اتفاقاً موقعاً."
+      }
+    },
+    {
+      "title": "One local cluster, transparent economics",
+      "body": [
+        "30 salons × 3 appointments per day × 26 days = 2,340 monthly appointments.",
+        "SAR 150 average ticket gives SAR 351,000 monthly GMV.",
+        "At 12%, gross commission is SAR 42,120; contribution after SAR 6 per visit is SAR 28,080.",
+        "After SAR 75,000 fixed costs: negative SAR 46,920. Break-even requires 6,250 appointments at unchanged assumptions."
+      ],
+      "note": "Illustrative steady-state scenario, not forecast, TAM or profit. Assumes full fee eligibility and collection; tax/refunds/discounts/collection loss excluded.",
+      "ar": {
+        "title": "تجمع محلي واحد واقتصاديات واضحة",
+        "body": [
+          "30 صالوناً × 3 مواعيد يومياً × 26 يوماً = 2,340 موعداً شهرياً.",
+          "بمتوسط 150 ريالاً للزيارة، تبلغ قيمة الخدمات 351,000 ريال شهرياً.",
+          "بعمولة 12%، يبلغ إجمالي العمولة 42,120 ريالاً؛ والمساهمة بعد تكلفة 6 ريالات للزيارة 28,080 ريالاً.",
+          "بعد تكاليف ثابتة قدرها 75,000 ريال: عجز 46,920 ريالاً. التعادل يحتاج إلى 6,250 موعداً بالافتراضات نفسها."
+        ],
+        "note": "سيناريو توضيحي، وليس توقعاً أو حجماً للسوق أو ربحاً مثبتاً. يفترض أهلية وتحصيل جميع العمولات ويستبعد الضرائب والاسترداد والخصومات."
+      }
+    },
+    {
+      "title": "Prove one city before expanding",
+      "body": [
+        "Interview customers and salon owners; select city through partner interest.",
+        "Recruit 30 venues across adjacent neighbourhoods and essential categories.",
+        "Target 1,000 completed appointments and measure a mature 90-day repeat cohort.",
+        "Expansion gate: positive contribution per visit, reliable completion data and at least 30% repeat within the measured cohort."
+      ],
+      "note": "Proposed pilot targets, not traction. Full category scope remains vision; local supply quality governs rollout.",
+      "ar": {
+        "title": "إثبات النموذج في مدينة قبل التوسع",
+        "body": [
+          "مقابلة العملاء وأصحاب الصالونات واختيار المدينة وفق اهتمام الشركاء.",
+          "استقطاب 30 منشأة في أحياء متجاورة وفئات أساسية.",
+          "استهداف 1,000 موعد مكتمل وقياس تكرار الزيارة لمجموعة ناضجة خلال 90 يوماً.",
+          "التوسع مشروط بمساهمة موجبة لكل زيارة وبيانات إتمام موثوقة وتكرار زيارة لا يقل عن 30% للمجموعة المقاسة."
+        ],
+        "note": "أهداف تجريبية مقترحة وليست نتائج حالية. جودة الشركاء تحدد وتيرة إضافة الفئات."
+      }
+    },
+    {
+      "title": "Existing team, focused execution",
+      "body": [
+        "Existing business and technical team; names, roles and credentials to add.",
+        "Validate customer acquisition cost, repeat demand, commission leakage and merchant retention.",
+        "Review local licensing, privacy, contracts, invoicing and payment flow before launch.",
+        "Confirm founder credentials, city choice, brand clearance and partner commitments before fundraising closes."
+      ],
+      "note": "Team reported by founder; biographies not supplied. No signed partners, licensed status or compliant integrations claimed.",
+      "ar": {
+        "title": "فريق قائم وتنفيذ محدد",
+        "body": [
+          "فريق قائم بخبرات تجارية وتقنية؛ الأسماء والأدوار والخبرات التفصيلية بحاجة إلى الإضافة.",
+          "التحقق من تكلفة اكتساب العملاء والطلب المتكرر وتسرب العمولات واحتفاظ الشركاء.",
+          "مراجعة التراخيص والخصوصية والعقود والفوترة ومسار الدفع قبل الإطلاق.",
+          "تأكيد خبرات المؤسسين والمدينة والاسم التجاري والتزامات الشركاء قبل إتمام التمويل."
+        ],
+        "note": "وجود الفريق وفق إفادة المؤسس، ولم تقدم السير المهنية بعد. لا ندعي وجود شركاء موقعين أو تراخيص أو تكاملات معتمدة."
+      }
+    },
+    {
+      "title": "Fund a focused pilot",
+      "body": [
+        "Indicative planning envelope: SAR 900,000 over 12 months.",
+        "Product and engineering 330k; partnerships and operations 300k.",
+        "Acquisition tests 120k; legal/privacy/contracts 60k; contingency 90k.",
+        "Seeking capital plus strategic access to quality salon supply. Release spending against validation milestones."
+      ],
+      "note": "Funding amount remains undecided by founder. SAR 900k is a proposed planning scenario, not quotes, an approved raise or guaranteed runway.",
+      "ar": {
+        "title": "تمويل تجربة محددة النطاق",
+        "body": [
+          "ميزانية تخطيطية مبدئية: 900,000 ريال على مدى 12 شهراً.",
+          "المنتج والتطوير 330 ألفاً؛ الشراكات والتشغيل 300 ألف.",
+          "اختبارات الاكتساب 120 ألفاً؛ الجوانب القانونية والخصوصية والعقود 60 ألفاً؛ احتياطي 90 ألفاً.",
+          "نبحث عن تمويل ووصول استراتيجي إلى صالونات مناسبة، مع ربط الإنفاق بمراحل التحقق."
+        ],
+        "note": "مبلغ التمويل لم يعتمد بعد من المؤسس. مبلغ 900 ألف ريال سيناريو تخطيطي مقترح، وليس عروض أسعار أو مبلغاً معتمداً أو ضماناً لمدة التشغيل."
+      }
+    }
+  ]
+}
