@@ -55,7 +55,9 @@ A tappable prototype of the app, built in HTML, CSS and vanilla JavaScript insid
 - **Restock:** a list built from low stock, used-up items and recipe shortfalls. "Order online" is tagged Later and explains that it is an after-launch idea, not part of the 40-week plan.
 - **Hub:** a feed post of the dish you just cooked.
 
-The "Take the tour" panel next to the phone tracks five goals (stock your kitchen, set your tools, adapt a recipe, cook and level up, plan a restock) and shows demo XP going from 440 to 500. "Restart demo" resets everything.
+The "Take the tour" panel next to the phone tracks seven goals (stock your kitchen, set your tools, adapt a recipe, cook and level up, plan a restock, review a receipt, set a budget) and shows demo XP going from 440 to 500. "Restart demo" resets everything.
+
+**Expenses** opens from Kitchen. Review fixed paper and digital receipt samples, save each once, and see inventory quantities, monthly spending and weekly totals update together. Edit a monthly grocery budget (SAR 1–100,000, up to two decimal places) and see the remaining or over-budget amount. These are simulated prototype interactions: no camera, uploads, OCR, accounts or persistent storage. Receipt saves do not award XP.
 
 To change the sample data, edit the `ITEMS`, `TOOLS` and `RECIPES` objects at the top of `initDemo` in `script.js`. The screens are rendered from that state, so the markup does not need to change.
 

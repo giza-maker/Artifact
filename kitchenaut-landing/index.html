@@ -343,7 +343,7 @@
       <p class="kicker"><span>03</span>Try it</p>
       <div class="sh__main">
         <h2 id="demo-title">Your whole kitchen. <em>Tap through the prototype.</em></h2>
-        <p class="lede">Groceries with expiry dates, the tools you own, recipes that adapt to both, a restock list, and the game that keeps you cooking. Sample data throughout.</p>
+        <p class="lede">Groceries, tools, adaptive recipes, receipts and grocery spending, connected in one kitchen. Try the cooking loop, review a sample receipt and set a budget. Sample data throughout.</p>
       </div>
     </header>
 
@@ -356,6 +356,8 @@
           <li data-goal="adapt"><span class="mission__check" aria-hidden="true"><span>3</span><svg class="icon"><use href="#i-check"/></svg></span><span class="mission__text"><span class="sr-only" data-goal-state></span><b>Adapt tonight's meal</b><small>Open a recipe in Cook. Change servings or swap an ingredient.</small></span></li>
           <li data-goal="cook"><span class="mission__check" aria-hidden="true"><span>4</span><svg class="icon"><use href="#i-check"/></svg></span><span class="mission__text"><span class="sr-only" data-goal-state></span><b>Cook it and level up</b><small>Follow Chef Zara's steps, then collect your XP.</small></span></li>
           <li data-goal="restock"><span class="mission__check" aria-hidden="true"><span>5</span><svg class="icon"><use href="#i-check"/></svg></span><span class="mission__text"><span class="sr-only" data-goal-state></span><b>Restock what is missing</b><small>Add an item to your restock list.</small></span></li>
+          <li data-goal="receipts"><span class="mission__check" aria-hidden="true"><span>6</span><svg class="icon"><use href="#i-check"/></svg></span><span class="mission__text"><span class="sr-only" data-goal-state></span><b>Review a receipt</b><small>Open Expenses in Kitchen. Try a paper or digital receipt.</small></span></li>
+          <li data-goal="budget"><span class="mission__check" aria-hidden="true"><span>7</span><svg class="icon"><use href="#i-check"/></svg></span><span class="mission__text"><span class="sr-only" data-goal-state></span><b>Set your grocery budget</b><small>Save a monthly budget in Expenses.</small></span></li>
         </ol>
         <div class="mission__xp">
           <p class="mission__xprow"><span>Demo XP</span><span class="mission__xpnum"><b data-demo-xp>440</b> / 500</span></p>
@@ -363,7 +365,7 @@
           <p class="mission__level" data-demo-level>Kitchen Novice</p>
         </div>
         <div class="mission__done" id="demo-done" hidden>
-          <p><b>Tour complete.</b> Inventory, tools, adaptive recipes, cooking, XP and restocking, all in one loop.</p>
+          <p><b>Tour complete.</b> Inventory, cooking, restocking, receipts and grocery spending, all connected.</p>
           <a class="btn btn--primary btn--sm" href="#walkthrough">Request a walkthrough</a>
         </div>
         <button class="btn btn--ghost btn--sm mission__reset" type="button" data-demo-reset>Restart demo</button>
@@ -379,7 +381,7 @@
 
               <!-- Kitchen: groceries and tools -->
               <div class="app-screen" data-screen="kitchen">
-                <div class="p-head"><span class="p-over">Inventory</span><h3 class="p-title" data-focus tabindex="-1">My kitchen</h3></div>
+                <div class="p-head"><span class="p-over">Inventory</span><div class="p-head--row"><h3 class="p-title" data-focus tabindex="-1">My kitchen</h3><button class="mini-btn" type="button" data-nav="expenses">Expenses<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></button></div></div>
                 <div class="seg seg--2" role="group" aria-label="Inventory view">
                   <button type="button" data-kview="groceries" aria-pressed="true">Groceries</button>
                   <button type="button" data-kview="tools" aria-pressed="false">Tools</button>
@@ -397,6 +399,42 @@
                   <p class="p-sub">Recipes only ask for tools you have. Tap to switch.</p>
                   <div class="tools" data-tools></div>
                 </div>
+              </div>
+
+              <!-- Grocery spending: sample data, no financial account connection -->
+              <div class="app-screen app-screen--scroll" data-screen="expenses" hidden>
+                <div class="app-top"><button class="app-back" type="button" data-nav="kitchen"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>Kitchen</button><h3 class="app-top__title" data-focus tabindex="-1">Expenses</h3></div>
+                <div class="p-card demo-spend-summary">
+                  <span class="p-over">October · sample SAR</span>
+                  <b class="demo-spend-total" data-expense-total>1,240.00</b>
+                  <span class="p-sub" data-budget-summary>of SAR 1,600.00 budget</span>
+                  <meter class="spend-meter" data-expense-meter min="0" max="1600" value="1240" aria-label="Monthly grocery spending against budget">1,240 of 1,600</meter>
+                  <span class="p-sub" data-budget-remaining>SAR 360.00 remaining</span>
+                </div>
+                <dl class="demo-spend-weeks" data-expense-weeks aria-label="Weekly spending in Saudi riyals"></dl>
+                <form class="demo-budget" data-budget-form novalidate>
+                  <label for="demo-budget">Monthly budget (SAR)</label>
+                  <div class="demo-budget__row"><input id="demo-budget" data-budget-input type="number" min="1" max="100000" step="0.01" value="1600" required inputmode="decimal" aria-describedby="demo-budget-error"><button class="mini-btn" type="submit">Save budget</button></div>
+                  <p class="demo-budget__error" id="demo-budget-error" data-budget-error role="status" hidden></p>
+                </form>
+                <div class="p-head"><span class="p-over">Add a sample receipt</span><p class="p-sub">Review before adding items and spending.</p></div>
+                <div class="demo-receipt-sources">
+                  <button class="p-btn p-btn--ghost p-btn--block" type="button" data-receipt-source="paper"><svg class="icon" aria-hidden="true"><use href="#i-camera"/></svg>Try paper receipt</button>
+                  <button class="p-btn p-btn--ghost p-btn--block" type="button" data-receipt-source="digital"><svg class="icon" aria-hidden="true"><use href="#i-scan"/></svg>Try e-receipt / PDF</button>
+                </div>
+                <p class="p-sub">Demo samples only. No camera or files accessed.</p>
+                <span class="p-over">Saved receipts</span>
+                <ul class="demo-purchases" data-expense-receipts></ul>
+              </div>
+
+              <div class="app-screen app-screen--scroll" data-screen="receipt" hidden>
+                <div class="app-top"><button class="app-back" type="button" data-nav="expenses"><svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>Expenses</button><h3 class="app-top__title" data-focus tabindex="-1">Review receipt</h3></div>
+                <span class="p-chip p-chip--warm" data-receipt-kind>Paper receipt sample</span>
+                <p class="p-sub">Sample extraction. Check quantities and prices before saving. Real scanning is planned.</p>
+                <div class="p-card"><span class="p-over" data-receipt-store>Sample market</span><ul class="demo-receipt-lines" data-receipt-lines></ul><p class="demo-receipt-total">Total <b data-receipt-total>SAR 50.50</b></p></div>
+                <p class="p-sub">Saving adds these groceries to Kitchen and records one purchase in Expenses. No XP is awarded.</p>
+                <button class="p-btn p-btn--block" type="button" data-receipt-save>Add to kitchen &amp; expenses</button>
+                <p class="p-sub" data-receipt-saved hidden>This sample is already saved. Each receipt can be added once per demo.</p>
               </div>
 
               <!-- Scan -->

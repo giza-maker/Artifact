@@ -247,9 +247,9 @@ const CONTACT_EMAIL = ""; // Walkthrough requests stay disabled until an address
 
     var START_XP = 440;
     var LEVEL_XP = 500;
-    var GOALS = ["stock", "tools", "adapt", "cook", "restock"];
-    var FULLSCREEN = { scan: true, recipe: true, steps: true, done: true };
-    var TAB_OF = { kitchen: "kitchen", scan: "kitchen", cook: "cook", recipe: "cook", steps: "cook", done: "cook", quests: "quests", restock: "restock", hub: "hub" };
+    var GOALS = ["stock", "tools", "adapt", "cook", "restock", "receipts", "budget"];
+    var FULLSCREEN = { scan: true, recipe: true, steps: true, done: true, expenses: true, receipt: true };
+    var TAB_OF = { kitchen: "kitchen", scan: "kitchen", expenses: "kitchen", receipt: "kitchen", cook: "cook", recipe: "cook", steps: "cook", done: "cook", quests: "quests", restock: "restock", hub: "hub" };
     var TITLES = { kitchen: "Kitchen", cook: "Cook", quests: "Quests", restock: "Restock", hub: "Food Hub" };
     var FOCUS_KEYS = ["data-tool", "data-restock-add", "data-rs-tick", "data-recipe", "data-swap-open", "data-swap", "data-unswap", "data-kview", "data-filter", "data-serv"];
 
@@ -275,6 +275,21 @@ const CONTACT_EMAIL = ""; // Walkthrough requests stay disabled until an address
       balsamic: { name: "Balsamic glaze", icon: "i-jar" },
       butter: { name: "Butter", icon: "i-fridge" }
     };
+
+    // Fixed samples: no files, camera, OCR service or financial account is accessed.
+    var RECEIPTS = {
+      paper: { label: "Paper receipt", store: "Sample market · paper photo", lines: [
+        { key: "tomatoes", qty: 4, cents: 1850 }, { key: "eggs", qty: 12, cents: 2400 }, { key: "basil", qty: 1, cents: 800 }
+      ] },
+      digital: { label: "E-receipt / PDF", store: "Sample grocer · digital receipt", lines: [
+        { key: "tomatoes", qty: 6, cents: 2400 }, { key: "garlic", qty: 1, cents: 600 }, { key: "sourdough", qty: 1, cents: 1650 }
+      ] }
+    };
+
+    function money(cents) { return (cents / 100).toFixed(2); }
+    function receiptTotal(source) { return RECEIPTS[source].lines.reduce(function (sum, line) { return sum + line.cents; }, 0); }
+    function receiptSaved(source) { return state.expenses.receipts.indexOf(source) !== -1; }
+    function spentCents() { return 124000 + state.expenses.receipts.reduce(function (sum, source) { return sum + receiptTotal(source); }, 0); }
 
     var TOOLS = [
       { key: "oven", name: "Oven", icon: "i-oven" },
@@ -458,7 +473,14 @@ const CONTACT_EMAIL = ""; // Walkthrough requests stay disabled until an address
       var it = ITEMS[key];
       if (it.low) return "Running low";
       if (it.plenty) return "Plenty";
-      return state.inv[key] + it.unit;
+      var quantity = state.inv[key];
+      var unit = it.unit;
+      if (quantity !== 1) {
+        if (unit === " bulb") unit = " bulbs";
+        else if (unit === " loaf") unit = " loaves";
+        else if (unit === " bunch") unit = " bunches";
+      }
+      return quantity + unit;
     }
 
     function fresh() {
@@ -470,6 +492,7 @@ const CONTACT_EMAIL = ""; // Walkthrough requests stay disabled until an address
         recipe: "bruschetta", servings: { bruschetta: 2, omelette: 2, skillet: 2 }, swaps: {}, swapOpen: null,
         step: 0, timer: "idle", cooked: {}, lastCooked: null, changes: [], collected: false, overlay: false,
         restock: [], usedUp: [], orderNote: false, shared: false, cheered: false,
+        expenses: { budgetCents: 160000, receipts: [], source: "paper", error: "" },
         xp: START_XP, goals: {}
       };
     }
@@ -614,6 +637,18 @@ const CONTACT_EMAIL = ""; // Walkthrough requests stay disabled until an address
         if (s === "restock") return q("[data-restock-add]");
         if (s === "kitchen" && state.kview === "groceries") return q('[data-restock-add="oliveoil"]');
         return tab("restock");
+      }
+      if (goal === "receipts") {
+        if (s === "receipt") return q("[data-receipt-save]");
+        if (s === "expenses") return q('[data-receipt-source="paper"]');
+        if (s === "kitchen") return q('[data-nav="expenses"]');
+        return tab("kitchen");
+      }
+      if (goal === "budget") {
+        if (s === "expenses") return q("[data-budget-form] button");
+        if (s === "receipt") return q('[data-screen="receipt"] [data-nav="expenses"]');
+        if (s === "kitchen") return q('[data-nav="expenses"]');
+        return tab("kitchen");
       }
       return null;
     }
@@ -821,6 +856,62 @@ const CONTACT_EMAIL = ""; // Walkthrough requests stay disabled until an address
       q("[data-cheer]").setAttribute("aria-pressed", String(state.cheered));
     }
 
+    function renderExpenses() {
+      var total = spentCents();
+      var budget = state.expenses.budgetCents;
+      q("[data-expense-total]").textContent = money(total);
+      q("[data-budget-summary]").textContent = "of SAR " + money(budget) + " budget";
+      q("[data-budget-remaining]").textContent = total <= budget ? "SAR " + money(budget - total) + " remaining" : "SAR " + money(total - budget) + " over budget";
+      var meter = q("[data-expense-meter]");
+      meter.max = budget / 100;
+      meter.value = Math.min(total, budget) / 100;
+      meter.setAttribute("aria-valuetext", "SAR " + money(total) + " spent against SAR " + money(budget) + " budget");
+      var weeks = [28000, 35000, 31000, total - 94000];
+      var max = Math.max.apply(null, weeks);
+      setHTML(q("[data-expense-weeks]"), weeks.map(function (amount, i) {
+        return '<div style="--bar-size:' + Math.round(48 * amount / max) + 'px"><dt>W' + (i + 1) + '</dt><dd>' + money(amount) + '</dd></div>';
+      }).join(""));
+      var input = q("[data-budget-input]");
+      if (document.activeElement !== input && !state.expenses.error) input.value = money(budget);
+      input.setAttribute("aria-invalid", String(!!state.expenses.error));
+      q("[data-budget-error]").hidden = !state.expenses.error;
+      q("[data-budget-error]").textContent = state.expenses.error;
+      setHTML(q("[data-expense-receipts]"), state.expenses.receipts.map(function (source) {
+        return '<li><span>' + RECEIPTS[source].label + '<small>Added to Kitchen</small></span><b>SAR ' + money(receiptTotal(source)) + '</b></li>';
+      }).join("") || '<li class="p-sub">No new receipts. Try a sample above.</li>');
+    }
+
+    function renderReceipt() {
+      var source = state.expenses.source;
+      var receipt = RECEIPTS[source];
+      q("[data-receipt-kind]").textContent = receipt.label + " sample";
+      q("[data-receipt-store]").textContent = receipt.store;
+      setHTML(q("[data-receipt-lines]"), receipt.lines.map(function (line) {
+        return '<li><span>' + ITEMS[line.key].name + '<small>Quantity: ' + line.qty + ITEMS[line.key].unit + '</small></span><b>SAR ' + money(line.cents) + '</b></li>';
+      }).join(""));
+      q("[data-receipt-total]").textContent = "SAR " + money(receiptTotal(source));
+      q("[data-receipt-save]").disabled = receiptSaved(source);
+      q("[data-receipt-save]").textContent = receiptSaved(source) ? "Receipt already saved" : "Add to kitchen & expenses";
+      q("[data-receipt-saved]").hidden = !receiptSaved(source);
+    }
+
+    function saveReceipt() {
+      var source = state.expenses.source;
+      if (receiptSaved(source)) return;
+      var lines = RECEIPTS[source].lines;
+      state.expenses.receipts.push(source);
+      lines.forEach(function (line) {
+        state.inv[line.key] = (state.inv[line.key] || 0) + line.qty;
+        state.restock.forEach(function (item) { if (item.key === line.key) item.got = true; });
+      });
+      state.usedUp = state.usedUp.filter(function (key) { return !lines.some(function (line) { return line.key === key; }); });
+      state.newItems = lines.map(function (line) { return line.key; });
+      state.goals.stock = true;
+      state.goals.receipts = true;
+      go("expenses", true);
+      say("Receipt saved once. Added three groceries to Kitchen and SAR " + money(receiptTotal(source)) + " to expenses.");
+    }
+
     function render() {
       var active = document.activeElement;
       var restore = null;
@@ -848,6 +939,8 @@ const CONTACT_EMAIL = ""; // Walkthrough requests stay disabled until an address
       renderQuests();
       renderRestock();
       renderHub();
+      renderExpenses();
+      renderReceipt();
       q("[data-overlay]").hidden = !state.overlay;
       syncModal();
 
@@ -890,9 +983,10 @@ const CONTACT_EMAIL = ""; // Walkthrough requests stay disabled until an address
     }
 
     function addScanned() {
-      state.inv.basil = 1;
-      state.inv.tomatoes = 4;
-      state.inv.eggs = 6;
+      // A sample fridge scan observes stock; it must not erase receipt purchases.
+      state.inv.basil = Math.max(state.inv.basil || 0, 1);
+      state.inv.tomatoes = Math.max(state.inv.tomatoes || 0, 4);
+      state.inv.eggs = Math.max(state.inv.eggs || 0, 6);
       state.newItems = ["basil", "tomatoes", "eggs"];
       state.goals.stock = true;
       state.kview = "groceries";
@@ -1079,6 +1173,26 @@ const CONTACT_EMAIL = ""; // Walkthrough requests stay disabled until an address
       if (state.overlay && !q("[data-overlay]").contains(event.target)) focusIn(q("[data-overlay-close]"));
     });
 
+    app.addEventListener("submit", function (event) {
+      if (!event.target.hasAttribute("data-budget-form")) return;
+      event.preventDefault();
+      var input = q("[data-budget-input]");
+      var value = Number(input.value);
+      var cents = Math.round(value * 100);
+      if (!input.value.trim() || !Number.isFinite(value) || value < 1 || value > 100000 || Math.abs(value * 100 - cents) > 0.000001) {
+        state.expenses.error = "Enter SAR 1 to 100,000, with up to two decimal places.";
+        render();
+        focusIn(input);
+        say(state.expenses.error);
+        return;
+      }
+      state.expenses.budgetCents = cents;
+      state.expenses.error = "";
+      state.goals.budget = true;
+      render();
+      say("Monthly budget saved: SAR " + money(cents) + ". " + q("[data-budget-remaining]").textContent + ".");
+    });
+
     app.addEventListener("click", function (event) {
       var t = event.target.closest("button");
       if (!t || !app.contains(t) || t.disabled) return;
@@ -1089,6 +1203,11 @@ const CONTACT_EMAIL = ""; // Walkthrough requests stay disabled until an address
         say(TITLES[v]);
       } else if ((v = t.getAttribute("data-nav"))) {
         go(v, true, true);
+      } else if ((v = t.getAttribute("data-receipt-source"))) {
+        state.expenses.source = v;
+        go("receipt", true);
+      } else if (t.hasAttribute("data-receipt-save")) {
+        saveReceipt();
       } else if ((v = t.getAttribute("data-kview"))) {
         state.kview = v;
         render();

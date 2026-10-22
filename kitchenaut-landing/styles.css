@@ -2434,6 +2434,27 @@ h3 {
   display: none;
 }
 
+/* Receipt and expense demo screens keep existing phone type and touch sizes. */
+.demo-spend-summary { flex: none; }
+.demo-spend-total { font-family: var(--font-display); font-size: 2.2em; font-weight: 400; line-height: 1.1; }
+.demo-spend-weeks { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.45em; margin: 0; flex: none; font-size: 1em; text-align: center; }
+.demo-spend-weeks div { display: flex; flex-direction: column; align-items: center; justify-content: end; gap: 0.2em; }
+.demo-spend-weeks div::before { content: ""; width: 70%; height: var(--bar-size); border-radius: 0.3em 0.3em 0 0; background: var(--orange); }
+.demo-spend-weeks dt { color: var(--muted); }
+.demo-spend-weeks dd { margin: 0; }
+.demo-budget { display: grid; gap: 0.45em; flex: none; }
+.demo-budget__row { display: flex; align-items: center; gap: 0.6em; }
+.demo-budget input { min-width: 0; width: 8em; flex: 1; min-height: 3.15em; padding: 0.65em; border: 1px solid var(--line-2); border-radius: 0.65em; background: var(--surface); color: var(--text); font: inherit; }
+.demo-budget input[aria-invalid="true"] { border-color: var(--orange-text); }
+.demo-budget__error { margin: 0; color: var(--orange-text); }
+.demo-budget .mini-btn { min-height: 3.15em; padding: 0.5em; }
+.demo-receipt-sources { display: grid; gap: 0.6em; flex: none; }
+.demo-purchases, .demo-receipt-lines { list-style: none; padding: 0; margin: 0; }
+.demo-purchases li, .demo-receipt-lines li { display: flex; align-items: baseline; justify-content: space-between; gap: 0.7em; padding-block: 0.75em; border-bottom: 1px solid var(--line); }
+.demo-purchases small, .demo-receipt-lines small { display: block; margin-top: 0.25em; color: var(--muted); font-size: 1em; }
+.demo-purchases b, .demo-receipt-lines b { white-space: nowrap; font-size: 1em; font-weight: 500; font-variant-numeric: tabular-nums; }
+.demo-receipt-total { display: flex; justify-content: space-between; gap: 1em; margin: 0.5em 0 0; font-variant-numeric: tabular-nums; }
+
 .app-screen.is-entering {
   animation: screenIn 0.45s var(--ease) both;
 }
