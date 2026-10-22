@@ -88,11 +88,11 @@ The existing Artifact site publishes the root of the `gh-pages` branch. The revi
 
 Original five commits are preserved on `claude/kitchenaut-landing-page-k103y8`, ending at `e81a172`. Review branch `codex/kitchenaut-review` starts from the current Pages branch and applies those five commits, then review fixes. Merge or fast-forward the reviewed branch onto the latest `gh-pages` before pushing; never replace the Artifact root with this folder.
 
-At this checkpoint, production publication and a replacement name are pending. Kitchenaut remains the working name.
+The reviewed release uses Kitchenaut as a temporary working name while the owner considers replacements. Contact remains blank and submission disabled.
 
 ## Alternative: deploy to Cloudflare Pages
 
-Nothing has been deployed. When you are ready:
+If moving this static site to Cloudflare Pages later:
 
 **Git integration (recommended)**
 
