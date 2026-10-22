@@ -204,11 +204,11 @@ const CONTACT_EMAIL = ""; // Walkthrough requests stay disabled until an address
       var email = String(data.get("email") || "").trim();
       var firm = String(data.get("firm") || "").trim();
 
-      var subject = "Kitchenaut walkthrough request";
+      var subject = "Nomli walkthrough request";
       var lines = [
         "Hello,",
         "",
-        "I would like a walkthrough of Kitchenaut.",
+        "I would like a walkthrough of Nomli.",
         "",
         "Name: " + name,
         "Email: " + email

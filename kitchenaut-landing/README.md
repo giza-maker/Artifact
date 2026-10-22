@@ -1,4 +1,4 @@
-# Kitchenaut investor landing page
+# Nomli investor landing page
 
 A single-page, static landing page for a pre-launch consumer app. Plain HTML, CSS and vanilla JavaScript. No build step, no framework, no analytics, no trackers.
 
@@ -8,10 +8,10 @@ A single-page, static landing page for a pre-launch consumer app. Plain HTML, CS
 
 | File | Purpose |
 | --- | --- |
-| `index.html` | All markup, the inline SVG icon sprite, the orbit-ring wordmark mark and every phone mockup (HTML and CSS only). |
+| `index.html` | All markup, the inline SVG icon sprite, the N-and-spoon brand mark and every phone mockup (HTML and CSS only). |
 | `styles.css` | Design tokens, layout, components and motion. Mobile-first (390px), scales to 1440px. |
 | `script.js` | Scroll reveals, mobile menu, hero phone loop, FAQ accordion, walkthrough form, and the interactive demo in section 03 (its sample data sits at the top of `initDemo`). `CONTACT_EMAIL` is the first line. |
-| `favicon.svg` | The orbit-ring mark on a dark tile. |
+| `favicon.svg` | The N-and-spoon mark on an orange tile. |
 | `images/` | AI-generated photography as responsive WebP files (about 0.8 MB for the whole set; each visitor loads only the sizes their screen needs). |
 | `README.md` | This file. |
 
@@ -61,26 +61,11 @@ To change the sample data, edit the `ITEMS`, `TOOLS` and `RECIPES` objects at th
 
 The demo needs JavaScript. Without it the phone shows the starting Kitchen screen and a note asking the visitor to turn JavaScript on.
 
-## Renaming the product
+## Product name and logo
 
-The brand name is written literally, never injected, so a rename is one find-and-replace. The working name is **Kitchenaut**; the alternative under consideration is Quisine.
+The owner selected **Nomli** on 22 October 2026. The header, footer, page metadata, accessible labels and walkthrough draft use that name. The logo is a dark N with a spoon forming its right stem, on an orange rounded tile; the inline SVG and favicon use identical geometry.
 
-Brand labels occur 14 times across four files. Four additional lowercase occurrences in `index.html` are the deployment paths in metadata; retain those unless the public URL also changes.
-
-| File | Count | Where |
-| --- | --- | --- |
-| `index.html` | 10 | `<title>`; meta description; `og:site_name`; `og:title`; `twitter:title`; header wordmark text; hero subhead; the `aria-label` on the "answers" list in the Problem section; the FAQ answer to "How is this different..."; footer wordmark text |
-| `script.js` | 2 | The email subject line and the first line of the email body |
-| `favicon.svg` | 1 | The `aria-label` on the mark |
-| `styles.css` | 1 | The header comment |
-
-Check the list is still complete at any time:
-
-```sh
-grep -n -i kitchenaut index.html script.js favicon.svg styles.css
-```
-
-To rename: replace `Kitchenaut` with the new name in `index.html`, `script.js`, `favicon.svg` and `styles.css` (the case-insensitive grep above catches `kitchenaut` too). The wordmark is an inline SVG orbit-ring mark plus the name as live HTML text in Fraunces, so a longer or shorter name needs no SVG edit. The folder name `kitchenaut-landing` is not referenced from inside the files.
+The existing `kitchenaut-landing/` deployment path is retained so shared links keep working. Lowercase references in metadata point to that URL; they are not visible brand labels.
 
 ## Deploy to GitHub Pages
 
@@ -88,7 +73,7 @@ The existing Artifact site publishes the root of the `gh-pages` branch. The revi
 
 Original five commits are preserved on `claude/kitchenaut-landing-page-k103y8`, ending at `e81a172`. Review branch `codex/kitchenaut-review` starts from the current Pages branch and applies those five commits, then review fixes. Merge or fast-forward the reviewed branch onto the latest `gh-pages` before pushing; never replace the Artifact root with this folder.
 
-The reviewed release uses Kitchenaut as a temporary working name while the owner considers replacements. Contact remains blank and submission disabled.
+The reviewed release uses Nomli. Contact remains blank and submission disabled.
 
 ## Alternative: deploy to Cloudflare Pages
 
@@ -155,16 +140,6 @@ The interactive demo is a labelled `role="group"` made of real buttons. Toggles 
 - Final local mobile Lighthouse measured 94 Performance, 100 Accessibility, 100 Best Practices and 100 SEO. This is a lab result, not production performance or full WCAG certification.
 - Contact stays blank by owner request. Chef School's three free lessons versus level-based access remains a product copy decision; existing wording is preserved.
 
-## Replacement names under consideration
+## Nomli rename: 22 October 2026
 
-Owner requested a different name on 22 October 2026. No replacement is selected. Scores below are editorial judgments about brand fit, not availability scores.
-
-| Name | Score | Fit | Tradeoff |
-| --- | --- | --- | --- |
-| Pantrilo | 8/10 | Compact, warm, suggests an organized kitchen; recommendation to test first. | Pantry association needs broader cooking context in the tagline. |
-| Stirlane | 7.5/10 | Familiar cooking root with a sense of a daily path or rhythm. | Says little about inventory without supporting copy. |
-| Ripekit | 7.5/10 | Clear freshness and practical kitchen association. | Could be mistaken for a physical meal kit. |
-
-Preliminary exact-name web searches found no obvious cooking-app match for these three. Domains, social handles and trademark registers have not been cleared.
-
-The previous handoff's two leading options have clear existing uses: [Cookdown](https://www.cookdown.com/about) is an enterprise software brand, and [Platesmith](https://platesmith.app/) is a fitness and food-tracking app. Neither should be described as clean or easiest to own on that earlier screening alone.
+Owner approved the Nomli name, a new logo and deployment. Replaced all former product labels, email-draft wording and brand metadata; updated the shared inline logo and favicon. Public URL remains unchanged. Domain, handle and trademark availability have not been cleared.
