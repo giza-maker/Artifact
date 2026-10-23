@@ -1,23 +1,150 @@
-const copy={
-en:{skip:'Skip to content',navOpportunity:'Opportunity',navExperience:'Experience',navModel:'Business model',brief:'Investor brief',heroEyebrow:'A proposed salon marketplace for the Gulf',heroTitle:'Good style.<br>Better found.',heroBody:'A trusted way to discover salons, choose your specialist, and book your time.',heroPrimary:'Explore the opportunity',heroSecondary:'Try the booking demo',heroNote:'A Gulf vision. A focused first-city pilot.',catHair:'Hair',catBarber:'Barbering',catNails:'Nails',catMakeup:'Makeup',catSpa:'Spa',trustKicker:'The opportunity',trustTitle:'Trust begins before the appointment.',trust1Title:'Verified visit reviews',trust1Body:'Proposed reviews tied to completed platform appointments, backed by provider portfolios.',trust2Title:'Vetted salon partners',trust2Body:'A proposed onboarding check for quality, service accuracy, and reliable availability.',trust3Title:'Choice at booking',trust3Body:'Book a named professional or let the salon assign one. Payment method stays the salon’s choice.',demoKicker:'Product concept',demoTitle:'Find the right chair.',demoIntro:'Explore a working discovery and booking flow. Every salon, rating, price, and time below is fictional.',demoLabel:'Interactive demo',demoDisclosure:'No real providers or appointments. Nothing is sent.',filterCategory:'Category',all:'All services',filterAudience:'For',allAudience:'Everyone',women:'Women',men:'Men',filterBudget:'Maximum budget',anyBudget:'Any budget',emptyTitle:'No demo matches',emptyBody:'Try a broader category or budget.',salonKicker:'For salons',salonTitle:'Built around the operating day.',salonIntro:'Proposed tools for venues serving women and men across hair, barbering, nails, makeup, and spa.',salon1Title:'Reach new customers',salon1Body:'Be found by service, location, portfolio, and availability.',salon2Title:'Clarify schedules',salon2Body:'Expose bookable capacity while keeping staff assignment flexible.',salon3Title:'Reduce no-shows',salon3Body:'Test reminders and salon-selected payment policies.',salon4Title:'Fill off-peak time',salon4Body:'Measure demand by hour and trial targeted availability.',marketKicker:'Why Saudi Arabia',marketTitle:'Digital readiness supports a focused test.',metric1:'internet use among people aged 15–74 in 2025',metric2:'purchased goods or services online in 2025, ages 15–74',metric3:'of retail payments were electronic in 2025',metricsNote:'These indicators show digital readiness, not salon market size.',sourceGastar:'Source: GASTAT ICT 2025',sourceSama:'Source: Saudi Central Bank',competitionTitle:'An honest competitive frame',competitionBody:'Established platforms include Fresha and Glamera. MAWJ’s proposed wedge is trusted local supply, Arabic-first discovery, and measured conversion from search to repeat booking.',modelKicker:'Working business model',modelTitle:'Commission on completed bookings.',modelIntro:'The working model applies commission to every completed platform booking, including repeats. The 12% rate is illustrative and not agreed.',calcSalons:'Active salons',calcBookings:'Completed bookings / salon / day',calcDays:'Operating days / month',calcTicket:'Average ticket (SAR)',calcCommission:'Commission (%)',calcVariable:'Variable cost / booking (SAR)',calcFixed:'Fixed cost / month (SAR)',outBookings:'Bookings / month',outGmv:'GMV',outRevenue:'Commission revenue',outContribution:'Contribution before fixed',outBalance:'Indicative monthly operating balance',calcNote:'Planning assumptions only. Excludes acquisition costs, fixed payment fees, tax, and refunds.',roadKicker:'Proposed pilot roadmap',roadTitle:'Learn in one city, then earn the right to expand.',road1:'Interview customers and salon operators',road2:'Recruit 30 venues in one city',road3:'Prove repeat demand and salon value',road4:'Expand services and geography',roadNote:'These are targets, not traction. MAWJ is currently an idea-stage proposal.',askKicker:'Indicative investor ask',askTitle:'to fund a 12-month pilot.',allocProduct:'Product',allocOps:'Operations',allocAcq:'Acquisition',allocLegal:'Legal',allocCont:'Contingency',askNote:'All figures are planning assumptions. Existing business and technical team; names and credentials to add. Seeking funding and salon partners. Working brand; trademark and domain availability are unchecked.',introCta:'Prepare investor introduction',footer:'Gulf investor concept · Idea stage',bookingDemo:'Booking demo',bookingDisclosure:'Demo only. No appointment will be sent.',choosePro:'Professional',chooseSlot:'Time',selectSlot:'Select a time',payment:'Payment preference',paySalon:'At salon',payOnline:'Online, if salon enables it',confirmDemo:'Confirm demo booking',briefKicker:'Investor brief',previous:'Previous',next:'Next',introKicker:'Local draft',introTitle:'Prepare an introduction',introPrivacy:'This form stays in your browser. It downloads a text draft and sends nothing.',name:'Name',contact:'Contact',message:'Message',downloadDraft:'Download .txt draft',book:'Try booking',from:'From',results:n=>`${n} fictional demo ${n===1?'result':'results'}`,confirmed:'Demo confirmed. No appointment was sent.',downloaded:'Draft downloaded. Nothing was sent.'},
-ar:{skip:'انتقل إلى المحتوى',navOpportunity:'الفرصة',navExperience:'التجربة',navModel:'نموذج العمل',brief:'ملخص المستثمر',heroEyebrow:'سوق صالونات مقترح للخليج',heroTitle:'أناقة أجمل.<br>اكتشاف أسهل.',heroBody:'طريقة موثوقة لاكتشاف الصالونات واختيار المختص وحجز الموعد.',heroPrimary:'استكشف الفرصة',heroSecondary:'جرّب الحجز',heroNote:'رؤية خليجية. تجربة مركزة في مدينة واحدة.',catHair:'الشعر',catBarber:'الحلاقة',catNails:'الأظافر',catMakeup:'المكياج',catSpa:'السبا',trustKicker:'الفرصة',trustTitle:'الثقة تبدأ قبل الموعد.',trust1Title:'تقييمات زيارات موثقة',trust1Body:'تقييمات مقترحة مرتبطة بمواعيد مكتملة عبر المنصة ومدعومة بمعارض أعمال.',trust2Title:'شركاء صالونات مدققون',trust2Body:'فحص انضمام مقترح للجودة ودقة الخدمات وموثوقية المواعيد.',trust3Title:'حرية الاختيار عند الحجز',trust3Body:'اختر مختصاً بالاسم أو دع الصالون يعيّن أحداً. الصالون يحدد طريقة الدفع.',demoKicker:'تصور المنتج',demoTitle:'اعثر على المقعد المناسب.',demoIntro:'استكشف تجربة بحث وحجز عملية. جميع الصالونات والتقييمات والأسعار والمواعيد أدناه خيالية.',demoLabel:'تجربة تفاعلية',demoDisclosure:'لا مزودون أو مواعيد حقيقيون. لن يُرسل شيء.',filterCategory:'الفئة',all:'كل الخدمات',filterAudience:'الفئة المستهدفة',allAudience:'الجميع',women:'نساء',men:'رجال',filterBudget:'الميزانية القصوى',anyBudget:'أي ميزانية',emptyTitle:'لا نتائج تجريبية',emptyBody:'جرّب فئة أو ميزانية أوسع.',salonKicker:'للصالونات',salonTitle:'مصمم حول يوم العمل.',salonIntro:'أدوات مقترحة لمنشآت تخدم النساء والرجال في الشعر والحلاقة والأظافر والمكياج والسبا.',salon1Title:'الوصول لعملاء جدد',salon1Body:'الظهور حسب الخدمة والموقع ومعرض الأعمال والتوفر.',salon2Title:'توضيح الجداول',salon2Body:'إظهار السعة المتاحة مع مرونة تعيين الموظفين.',salon3Title:'تقليل الغياب',salon3Body:'اختبار التذكير وسياسات الدفع التي يختارها الصالون.',salon4Title:'ملء الأوقات الهادئة',salon4Body:'قياس الطلب حسب الساعة وتجربة توفر موجه.',marketKicker:'لماذا السعودية',marketTitle:'الجاهزية الرقمية تدعم اختباراً مركزاً.',metric1:'يستخدمون الإنترنت من عمر 15–74 في 2025',metric2:'اشتروا سلعاً أو خدمات عبر الإنترنت في 2025 من عمر 15–74',metric3:'من مدفوعات التجزئة كانت إلكترونية في 2025',metricsNote:'هذه المؤشرات تقيس الجاهزية الرقمية، لا حجم سوق الصالونات.',sourceGastar:'المصدر: هيئة الإحصاء، الاتصالات 2025',sourceSama:'المصدر: البنك المركزي السعودي',competitionTitle:'إطار تنافسي صريح',competitionBody:'تشمل المنصات القائمة Fresha وGlamera. ميزة موج المقترحة: عرض محلي موثوق، واكتشاف عربي أولاً، وقياس التحول من البحث إلى الحجز المتكرر.',modelKicker:'نموذج عمل قيد الاختبار',modelTitle:'عمولة على الحجوزات المكتملة.',modelIntro:'يطبق النموذج عمولة على كل حجز مكتمل عبر المنصة، بما فيه الحجوزات المتكررة. نسبة 12٪ توضيحية وغير متفق عليها.',calcSalons:'الصالونات النشطة',calcBookings:'الحجوزات المكتملة / صالون / يوم',calcDays:'أيام العمل / شهر',calcTicket:'متوسط الفاتورة (ر.س)',calcCommission:'العمولة (٪)',calcVariable:'التكلفة المتغيرة / حجز (ر.س)',calcFixed:'التكلفة الثابتة / شهر (ر.س)',outBookings:'الحجوزات / شهر',outGmv:'إجمالي قيمة الحجوزات',outRevenue:'إيراد العمولة',outContribution:'المساهمة قبل الثابت',outBalance:'الرصيد التشغيلي الشهري الإرشادي',calcNote:'افتراضات تخطيطية فقط. لا تشمل تكلفة الاستحواذ ورسوم الدفع الثابتة والضريبة والاستردادات.',roadKicker:'خارطة تجربة مقترحة',roadTitle:'نتعلم في مدينة واحدة ثم نستحق التوسع.',road1:'مقابلة العملاء ومشغلي الصالونات',road2:'ضم 30 منشأة في مدينة واحدة',road3:'إثبات الطلب المتكرر وقيمة الصالون',road4:'توسيع الخدمات والنطاق الجغرافي',roadNote:'هذه أهداف وليست نتائج محققة. موج مقترح في مرحلة الفكرة.',askKicker:'طلب استثماري إرشادي',askTitle:'لتمويل تجربة لمدة 12 شهراً.',allocProduct:'المنتج',allocOps:'العمليات',allocAcq:'الاستحواذ',allocLegal:'القانوني',allocCont:'الاحتياطي',askNote:'كل الأرقام افتراضات تخطيطية. فريق تجاري وتقني قائم؛ الأسماء والخبرات التفصيلية بحاجة إلى الإضافة. نبحث عن تمويل وشركاء صالونات. العلامة مؤقتة؛ لم تُفحص العلامة التجارية أو النطاق.',introCta:'حضّر مقدمة للمستثمر',footer:'تصور استثماري بمرحلة الفكرة · الرياض، السعودية',bookingDemo:'تجربة حجز',bookingDisclosure:'تجربة فقط. لن يُرسل أي موعد.',choosePro:'المختص',chooseSlot:'الوقت',selectSlot:'اختر وقتاً',payment:'تفضيل الدفع',paySalon:'في الصالون',payOnline:'إلكترونياً إذا فعّله الصالون',confirmDemo:'تأكيد الحجز التجريبي',briefKicker:'ملخص المستثمر',previous:'السابق',next:'التالي',introKicker:'مسودة محلية',introTitle:'حضّر مقدمة',introPrivacy:'تبقى هذه البيانات في متصفحك. تُنزّل مسودة نصية ولا ترسل شيئاً.',name:'الاسم',contact:'بيانات التواصل',message:'الرسالة',downloadDraft:'تنزيل مسودة .txt',book:'جرّب الحجز',from:'ابتداءً من',results:n=>`${n} نتائج تجريبية خيالية`,confirmed:'تم تأكيد التجربة. لم يُرسل أي موعد.',downloaded:'تم تنزيل المسودة. لم يُرسل شيء.'}}
-const listings=[{name:'Noura Studio',ar:'استوديو نورة',category:'hair',audience:'women',price:180,rating:'4.8',pros:['Maha','Salon assigned']},{name:'The Gentlemen’s Room',ar:'مجلس الرجال',category:'barber',audience:'men',price:95,rating:'4.7',pros:['Fahad','Salon assigned']},{name:'Luma Nail Atelier',ar:'لوما للأظافر',category:'nails',audience:'women',price:140,rating:'4.9',pros:['Reem','Salon assigned']},{name:'Contour House',ar:'كونتور هاوس',category:'makeup',audience:'women',price:280,rating:'4.6',pros:['Dana','Salon assigned']},{name:'Sukoon Spa',ar:'سبا سكون',category:'spa',audience:'all',price:220,rating:'4.8',pros:['Abeer','Salon assigned']}];
-Object.assign(copy.en,{footer:'Gulf investor concept · Idea stage',metric3:'of retail-payment transactions were electronic in 2025',competitionTitle:'Competition and proposed advantage',calcNote:'Illustrative assumptions, not a forecast. Assumes full fee eligibility and collection. Tax, refunds, discounts and collection loss excluded; include acquisition and payment costs in the inputs.',roadTitle:'Prove one city before expanding.',roadNote:'Proposed targets: 30 venues, 1,000 completed appointments, positive contribution per visit, and at least 30% repeat within a mature 90-day customer cohort. These are targets, not traction. Launch city remains unselected.',askTitle:'for a focused pilot.',askNote:'Proposed 12-month budget allocations, not quotes or guaranteed runway. Spend timing depends on hiring, pilot scope and payment collections. Existing business and technical team; names and credentials to add. Seeking funding plus salon partners. Working brand; trademark and domain checks pending.'});
-Object.assign(copy.ar,{footer:'تصور استثماري خليجي · مرحلة الفكرة',metric3:'من عدد عمليات دفع الأفراد في التجزئة كانت إلكترونية في 2025',competitionTitle:'المنافسة والميزة المقترحة',calcNote:'افتراضات توضيحية وليست توقعاً. يفترض النموذج أهلية وتحصيل جميع العمولات. يستبعد الضرائب والاسترداد والخصومات وتعثر التحصيل؛ أدرج تكاليف اكتساب العملاء والدفع ضمن المدخلات.',roadTitle:'إثبات النموذج في مدينة قبل التوسع.',roadNote:'أهداف مقترحة: 30 منشأة و1,000 موعد مكتمل، ومساهمة موجبة لكل زيارة، وتكرار زيارة لا يقل عن 30% لمجموعة عملاء ناضجة خلال 90 يوماً. هذه أهداف وليست نتائج حالية، ومدينة الإطلاق لم تحدد بعد.',askTitle:'لاختبار تجربة محددة النطاق.',askNote:'ميزانية تخطيطية مقترحة لمدة 12 شهراً، وليست عروض أسعار أو ضماناً لمدة التشغيل. يتوقف توقيت الإنفاق على التوظيف ونطاق التجربة وتحصيل المدفوعات. فريق تجاري وتقني قائم؛ الأسماء والخبرات التفصيلية بحاجة إلى الإضافة. نبحث عن تمويل وشركاء صالونات، والاسم التجاري والنطاق بحاجة إلى فحص.'});
-let lang='en',activeListing=null,slides=[],slideIndex=0;const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-function t(k){return copy[lang][k]??k}function localNum(n){return new Intl.NumberFormat(lang==='ar'?'ar-SA':'en-US',{maximumFractionDigits:0}).format(n)}
-function applyLanguage(){document.documentElement.lang=lang;document.documentElement.dir=lang==='ar'?'rtl':'ltr';$$('[data-i18n]').forEach(el=>{const v=t(el.dataset.i18n);if(typeof v==='string')el.innerHTML=v});$$('[data-alt-en]').forEach(el=>el.alt=el.dataset[lang==='ar'?'altAr':'altEn']);$('.logo').setAttribute('aria-label',lang==='ar'?'صفحة موج الرئيسية':'MAWJ home');$('.site-header nav').setAttribute('aria-label',lang==='ar'?'التنقل الرئيسي':'Primary navigation');$('#langToggle').setAttribute('aria-label',lang==='ar'?'تبديل اللغة':'Switch language');$('.category-band').setAttribute('aria-label',lang==='ar'?'فئات الخدمات المقترحة':'Proposed service categories');$$('.close').forEach(el=>el.setAttribute('aria-label',lang==='ar'?'إغلاق':'Close'));renderListings();calculate();renderSlide();}
-$('#langToggle').addEventListener('click',()=>{lang=lang==='en'?'ar':'en';applyLanguage()});
-function renderListings(){const cat=$('#category').value,aud=$('#audience').value,budget=+$ ('#budget').value;const filtered=listings.filter(x=>(cat==='all'||x.category===cat)&&(aud==='all'||x.audience==='all'||x.audience===aud)&&x.price<=budget);$('#resultsCount').textContent=t('results')(filtered.length);$('#results').innerHTML=filtered.map((x,i)=>`<article class="result"><span class="meta">${t('cat'+x.category[0].toUpperCase()+x.category.slice(1))} · ★ ${x.rating}</span><h3>${lang==='ar'?x.ar:x.name}</h3><p>${t('from')} ${localNum(x.price)} SAR</p><button class="button" type="button" data-book="${listings.indexOf(x)}">${t('book')}</button></article>`).join('');$('#empty').hidden=filtered.length!==0;$('#results').hidden=filtered.length===0;$$('[data-book]').forEach(b=>b.addEventListener('click',()=>openBooking(+b.dataset.book)));}
-$('#filters').addEventListener('change',renderListings);
-function openModal(d,trigger){d._trigger=trigger;d.showModal();requestAnimationFrame(()=>{const f=d.querySelector('button,input,select,textarea');f?.focus()})}function closeModal(d){d.close();d._trigger?.focus()}
-$$('[data-close]').forEach(b=>b.addEventListener('click',()=>closeModal($('#'+b.dataset.close))));$$('dialog').forEach(d=>{d.addEventListener('click',e=>{if(e.target===d)closeModal(d)});d.addEventListener('cancel',()=>d._trigger?.focus())});
-function openBooking(i){activeListing=listings[i];$('#bookingTitle').textContent=lang==='ar'?activeListing.ar:activeListing.name;$('#professional').innerHTML=activeListing.pros.map((p,j)=>`<option value="${p}">${j&&lang==='ar'?'يعيّنه الصالون':p}</option>`).join('');$('#bookingStatus').textContent='';$('#bookingForm').reset();openModal($('#bookingDialog'),document.activeElement)}
-$('#bookingForm').addEventListener('submit',e=>{e.preventDefault();if(!e.currentTarget.reportValidity())return;$('#bookingStatus').textContent=t('confirmed')});
-function calculate(){const fields=[...$('#calculatorForm').querySelectorAll('input')],valid=fields.every(f=>f.validity.valid);fields.forEach(f=>{f.setAttribute('aria-invalid',String(!f.validity.valid));if(!f.validity.valid)f.setAttribute('aria-describedby','calculatorError');else f.removeAttribute('aria-describedby')});$('#calculatorError').hidden=valid;$('#calculatorError').textContent=lang==='ar'?'أدخل قيماً صحيحة ضمن الحدود الموضحة لعرض النتائج.':'Enter valid values within the shown limits to display results.';$('.outputs').hidden=!valid;if(!valid)return;const salons=+$('#cSalons').value,bookings=+$('#cBookings').value,days=+$('#cDays').value,ticket=+$('#cTicket').value,commission=+$('#cCommission').value/100,variable=+$('#cVariable').value,fixed=+$('#cFixed').value;const count=salons*bookings*days,gmv=count*ticket,revenue=gmv*commission,contribution=revenue-count*variable,balance=contribution-fixed;$('#oBookings').textContent=localNum(count);$('#oGmv').textContent=`${localNum(gmv)} SAR`;$('#oRevenue').textContent=`${localNum(revenue)} SAR`;$('#oContribution').textContent=`${localNum(contribution)} SAR`;$('#oBalance').textContent=`${balance<0?'−':''}${localNum(Math.abs(balance))} SAR`}
-$('#calculatorForm').addEventListener('input',calculate);
-async function openBrief(){openModal($('#briefDialog'),document.activeElement);$('#slide').innerHTML=`<p role="status">${lang === 'ar' ? 'جارٍ التحميل…' : 'Loading…'}</p>`;try{const r=await fetch('assets/brief.json');if(!r.ok)throw Error();const data=await r.json();slides=data.slides||[];if(!slides.length)throw Error();slideIndex=0;renderSlide()}catch{$('#slide').innerHTML=`<h3>${lang==='ar'?'الملخص غير متاح':'Brief unavailable'}</h3><p>${lang==='ar'?'تعذر تحميل ملف العرض. تبقى قصة المستثمر الكاملة متاحة في الصفحة.':'The presentation file could not be loaded. The full investor story remains available on this page.'}</p>`;$('#slideCount').textContent='';$('#slidePrev').disabled=$('#slideNext').disabled=true}}
-$('#briefOpen').addEventListener('click',openBrief);function renderSlide(){if(!slides.length)return;const base=slides[slideIndex],s=lang==='ar'&&base.ar?base.ar:base;$('#slide').innerHTML=`<h3>${s.title||''}</h3>${s.subtitle?`<p><strong>${s.subtitle}</strong></p>`:''}<ul>${(s.body||[]).map(x=>`<li>${x}</li>`).join('')}</ul>${s.note?`<p class="source-note">${s.note}</p>`:''}`;$('#slideCount').textContent=`${slideIndex+1} / ${slides.length}`;$('#slidePrev').disabled=slideIndex===0;$('#slideNext').disabled=slideIndex===slides.length-1}
-$('#slidePrev').addEventListener('click',()=>{if(slideIndex>0){slideIndex--;renderSlide()}});$('#slideNext').addEventListener('click',()=>{if(slideIndex<slides.length-1){slideIndex++;renderSlide()}});$('#briefDialog').addEventListener('keydown',e=>{if(e.key==='ArrowRight')$('#slideNext').click();if(e.key==='ArrowLeft')$('#slidePrev').click()});
-$('#introOpen').addEventListener('click',()=>{openModal($('#introDialog'),document.activeElement);$('#introStatus').textContent=''});$('#introForm').addEventListener('submit',e=>{e.preventDefault();if(!e.currentTarget.reportValidity())return;const body=`MAWJ investor introduction\n\nName: ${$('#introName').value}\nContact: ${$('#introContact').value}\n\n${$('#introMessage').value}\n\nDraft generated locally. Nothing was sent.`;const url=URL.createObjectURL(new Blob([body],{type:'text/plain'}));const a=document.createElement('a');a.href=url;a.download='mawj-investor-introduction.txt';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);$('#introStatus').textContent=t('downloaded')});
-applyLanguage();
+(() => {
+  'use strict';
+  const $ = s => document.querySelector(s);
+  const $$ = s => [...document.querySelectorAll(s)];
+  const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+  let lang = 'en', slides = [], slideIndex = 0;
+  const esc = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const icon = name => `<svg class="icon" aria-hidden="true"><use href="assets/icons.svg#${name}"></use></svg>`;
+  const local = (en, ar) => lang === 'ar' ? ar : en;
+  const number = n => new Intl.NumberFormat(lang === 'ar' ? 'ar-SA' : 'en-US', {maximumFractionDigits: 0}).format(n);
+  const money = n => local(`${n < 0 ? '−' : ''}SAR ${number(Math.abs(n))}`, `${n < 0 ? '−' : ''}${number(Math.abs(n))} ر.س`);
+
+  function setLanguage(value) {
+    lang = value;
+    document.documentElement.lang = lang;
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+    $$('[data-en][data-ar]').forEach(el => el.textContent = el.dataset[lang]);
+    $('#langToggle').textContent = $('#deckLang').textContent = local('العربية', 'English');
+    $('#langToggle').setAttribute('aria-label', local('Switch to Arabic', 'Switch to English'));
+    $('#menuToggle').setAttribute('aria-label', local('Toggle navigation', 'فتح أو إغلاق القائمة'));
+    $('#slidePrev').setAttribute('aria-label', local('Previous slide', 'الشريحة السابقة'));
+    $('#slideNext').setAttribute('aria-label', local('Next slide', 'الشريحة التالية'));
+    $('#slideNext use').setAttribute('href',`assets/icons.svg#${lang==='ar'?'arrow-left':'arrow-right'}`);
+    $('#slidePrev use').setAttribute('href',`assets/icons.svg#${lang==='ar'?'arrow-right':'arrow-left'}`);
+    $$('[data-close]').forEach(el => el.setAttribute('aria-label', local('Close dialog', 'إغلاق النافذة')));
+    const ariaCopy = [['.desktop-nav','Main navigation','التنقل الرئيسي'],['.mobile-menu','Mobile navigation','قائمة التنقل'],['.service-band','Explore service categories','استكشف فئات الخدمات'],['.investor-tabs','Investor perspectives','خيارات المستثمر'],['#deckDots','Presentation slides','شرائح العرض'],['#app-demo','Interactive MAWJ mobile app concept','تصور تفاعلي لتطبيق موج']];
+    ariaCopy.forEach(([selector,en,ar]) => $(selector).setAttribute('aria-label',local(en,ar)));
+    $$('.wordmark[href]').forEach(el => el.setAttribute('aria-label',local('MAWJ home','الرئيسية في موج')));
+    document.title = local('MAWJ | Your next look. One tap closer.', 'موج | إطلالتك الجاية. أقرب بلمسة.');
+    window.MawjDemo?.setLanguage(lang);
+    updateModel();
+    if (slides.length) renderSlide(false);
+  }
+  $('#langToggle').addEventListener('click', () => setLanguage(lang === 'en' ? 'ar' : 'en'));
+  $('#deckLang').addEventListener('click', () => setLanguage(lang === 'en' ? 'ar' : 'en'));
+  window.addEventListener('mawj:language', e => setLanguage(e.detail.lang));
+  $('#menuToggle').addEventListener('click', () => {
+    const open = $('#mobileMenu').hidden;
+    $('#mobileMenu').hidden = !open;
+    $('#menuToggle').setAttribute('aria-expanded', String(open));
+  });
+  $('#mobileMenu').addEventListener('click', e => {
+    if (e.target.closest('a,button')) { $('#mobileMenu').hidden = true; $('#menuToggle').setAttribute('aria-expanded','false'); }
+  });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && !$('#mobileMenu').hidden) { $('#mobileMenu').hidden = true; $('#menuToggle').setAttribute('aria-expanded','false'); $('#menuToggle').focus(); }
+  });
+  $$('[data-category]').forEach(el => el.addEventListener('click', () => window.MawjDemo?.selectCategory(el.dataset.category)));
+  $$('[data-try-app]').forEach(el => el.addEventListener('click', () => window.MawjDemo?.selectCategory('all')));
+
+  const tabs = $$('[data-tab]');
+  function selectTab(tab, focus = false) {
+    tabs.forEach(el => { const active = el === tab; el.setAttribute('aria-selected', String(active)); el.tabIndex = active ? 0 : -1; $(`#panel-${el.dataset.tab}`).hidden = !active; });
+    if (focus) tab.focus();
+  }
+  tabs.forEach((tab,i) => {
+    tab.addEventListener('click', () => selectTab(tab));
+    tab.addEventListener('keydown', e => {
+      let target;
+      if (e.key === 'ArrowRight') target = (i + (lang === 'ar' ? 2 : 1)) % tabs.length;
+      if (e.key === 'ArrowLeft') target = (i + (lang === 'ar' ? 1 : 2)) % tabs.length;
+      if (e.key === 'Home') target = 0;
+      if (e.key === 'End') target = tabs.length - 1;
+      if (target != null) { e.preventDefault(); selectTab(tabs[target], true); }
+    });
+  });
+  function updateModel() {
+    const salons = Number($('#salonRange').value), bookings = salons * 3 * 26;
+    const revenue = bookings * 150 * .12, contribution = revenue - bookings * 6;
+    $('#salonCount').value = number(salons);
+    $('#calcBookings').textContent = number(bookings);
+    $('#calcRevenue').textContent = money(revenue);
+    $('#calcContribution').textContent = money(contribution);
+    $('#calcBalance').textContent = money(contribution - 75000);
+  }
+  $('#salonRange').addEventListener('input', updateModel);
+
+  const dialogTriggers = new WeakMap();
+  function openDialog(dialog) { dialogTriggers.set(dialog, document.activeElement); dialog.showModal(); }
+  $$('dialog').forEach(dialog => {
+    dialog.addEventListener('close', () => dialogTriggers.get(dialog)?.focus({preventScroll:true}));
+    dialog.addEventListener('click', e => {
+      if (e.target.closest('[data-close]')) dialog.close();
+      if (e.target === dialog) { const r = dialog.getBoundingClientRect(); if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) dialog.close(); }
+    });
+  });
+  async function openBrief() {
+    openDialog($('#briefDialog'));
+    if (!slides.length) {
+      $('#slide').innerHTML = `<p role="status">${local('Loading investor story…','جارٍ تحميل العرض…')}</p>`;
+      try {
+        const response = await fetch('assets/brief.json');
+        if (!response.ok) throw new Error('Brief unavailable');
+        const data = await response.json(); slides = data.slides;
+        if (!Array.isArray(slides) || !slides.length) throw new Error('Invalid brief');
+      } catch {
+        $('#slide').innerHTML = `<div><h2>${local('The brief could not load.','تعذر تحميل العرض.')}</h2><p>${local('Close this window and try again. The investment overview remains available on the page.','أغلق النافذة وحاول مجدداً. الملخص الاستثماري متاح في الصفحة.')}</p></div>`;
+        $('#slideNext').disabled = $('#slidePrev').disabled = true; return;
+      }
+    }
+    slideIndex = 0; renderSlide(false); $('#briefDialog').scrollTop = 0;
+  }
+  $$('[data-brief]').forEach(el => el.addEventListener('click', openBrief));
+  function artForSlide(index) {
+    const image = file => `<aside class="slide-art is-photo"><img src="assets/${file}.webp" alt=""></aside>`;
+    const big = (value,label,glyph) => `<aside class="slide-art">${icon(glyph)}<span class="slide-big">${value}</span><p>${label}</p></aside>`;
+    const stats = rows => `<aside class="slide-art">${rows.map(([v,k]) => `<div class="slide-stat"><b>${v}</b><span>${k}</span></div>`).join('')}</aside>`;
+    if (index === 0) return image('woman-hair');
+    if (index === 1) return image('barber');
+    if (index === 2) return big('01 → 04', local('Discover. Choose. Book. Visit.','اكتشف. اختر. احجز. زر.'),'device-mobile');
+    if (index === 3) return big(local('Trust','الثقة'),local('Profiles, partner checks, and completed-visit reviews.','ملفات مختصين، وتحقق من الشركاء، وتقييمات بعد الزيارة.'),'shield-check');
+    if (index === 4) return image('salon');
+    if (index === 5) return stats([['99%',local('Internet use · Saudi Arabia','استخدام الإنترنت · السعودية')],['71%',local('Bought online · ages 15–74','اشتروا عبر الإنترنت · عمر 15–74')],['85%',local('Electronic retail transactions','مدفوعات تجزئة إلكترونية')]]);
+    if (index === 6) return big(local('Local','محلي'),local('A focused cluster. A measurable experience.','تجمع محلي مركز. تجربة قابلة للقياس.'),'map-pin');
+    if (index === 7) return big('12%',local('Illustrative commission on completed bookings.','عمولة توضيحية على الحجوزات المكتملة.'),'check');
+    if (index === 8) return `<aside class="slide-art"><table><caption>${local('Monthly scenario · SAR','سيناريو شهري · ر.س')}</caption><tbody>${[[local('Bookings','الحجوزات'),'2,340'],['GMV','351,000'],[local('Commission','العمولة'),'42,120'],[local('Contribution','المساهمة'),'28,080'],[local('Fixed costs','التكاليف الثابتة'),'75,000'],[local('Operating balance','الرصيد التشغيلي'),'−46,920']].map(([k,v])=>`<tr><th scope="row">${k}</th><td>${v}</td></tr>`).join('')}</tbody></table></aside>`;
+    if (index === 9) return stats([['30',local('Partner venues · target','أماكن شريكة · هدف')],['1,000',local('Completed appointments · target','مواعيد مكتملة · هدف')],['30%',local('Mature cohort repeat · target','تكرار مجموعة ناضجة · هدف')]]);
+    if (index === 10) return big(local('Build','نبني'),local('Business + technical team. Founder biographies to add.','فريق تجاري وتقني. السير المهنية قيد الإضافة.'),'user');
+    return `<aside class="slide-art"><span class="slide-big">900k</span><p>${local('SAR · indicative pilot budget','ر.س · ميزانية تجريبية إرشادية')}</p><table><tbody>${[[local('Product','المنتج'),'330k'],[local('Operations','التشغيل'),'300k'],[local('Acquisition','الاكتساب'),'120k'],[local('Legal','القانوني'),'60k'],[local('Reserve','الاحتياطي'),'90k']].map(([k,v])=>`<tr><th scope="row">${k}</th><td>${v}</td></tr>`).join('')}</tbody></table></aside>`;
+  }
+  function renderSlide(animate = true) {
+    const base = slides[slideIndex], slide = lang === 'ar' && base.ar ? base.ar : base;
+    const title = slideIndex === 0 ? local('Your next look. One tap closer.','إطلالتك الجاية. أقرب بلمسة.') : slide.title;
+    $('#slide').innerHTML = `<div class="slide-main"><p class="slide-eyebrow">${local('MAWJ · GULF BEAUTY MARKETPLACE','موج · سوق الجمال الخليجي')}</p><h2>${esc(title)}</h2><ul>${slide.body.map(x=>`<li>${esc(x)}</li>`).join('')}</ul><p class="slide-note">${esc(slide.note || '')}</p></div>${artForSlide(slideIndex)}`;
+    $('#slideCount').textContent = `${slideIndex + 1} / ${slides.length}`;
+    $('#slidePrev').disabled = slideIndex === 0; $('#slideNext').disabled = slideIndex === slides.length - 1;
+    $('#deckDots').innerHTML = slides.map((_,i)=>`<button type="button" data-slide="${i}" aria-label="${local('Slide','الشريحة')} ${i+1}" ${i===slideIndex?'aria-current="true"':''}></button>`).join('');
+    if (animate && !reducedMotion.matches) $('#slide').animate([{opacity:0,transform:'translateY(8px)'},{opacity:1,transform:'none'}],{duration:250,easing:'ease-out'});
+  }
+  function moveSlide(delta) { const target = slideIndex + delta; if (target < 0 || target >= slides.length) return; slideIndex = target; renderSlide(); $('#briefDialog').scrollTop = 0; }
+  $('#slidePrev').addEventListener('click',()=>moveSlide(-1)); $('#slideNext').addEventListener('click',()=>moveSlide(1));
+  $('#deckDots').addEventListener('click',e=>{const dot=e.target.closest('[data-slide]');if(dot){slideIndex=Number(dot.dataset.slide);renderSlide();}});
+  $('#briefDialog').addEventListener('keydown',e=>{ if(e.key==='ArrowRight'){e.preventDefault();moveSlide(lang==='ar'?-1:1);}if(e.key==='ArrowLeft'){e.preventDefault();moveSlide(lang==='ar'?1:-1);} });
+
+  $$('[data-intro]').forEach(el=>el.addEventListener('click',()=>{ const form=$('#introForm');form.elements.interest.value=el.dataset.intro;$('#introStatus').textContent='';openDialog($('#introDialog')); }));
+  $('#introForm').addEventListener('submit',e=>{
+    e.preventDefault(); const form=e.currentTarget; if(!form.reportValidity())return;
+    const content=`MAWJ introduction\n\nName: ${form.elements.name.value}\nContact: ${form.elements.contact.value}\nInterest: ${form.elements.interest.value}\n\n${form.elements.message.value}\n\nDraft generated locally. Nothing sent.`;
+    const url=URL.createObjectURL(new Blob([content],{type:'text/plain;charset=utf-8'}));const a=document.createElement('a');a.href=url;a.download='mawj-introduction.txt';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
+    $('#introStatus').textContent=local('Draft downloaded. Nothing was sent.','تم تنزيل المسودة. لم يُرسل شيء.');
+  });
+  if(!reducedMotion.matches && 'IntersectionObserver' in window){
+    document.documentElement.classList.add('motion-ready');
+    const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('is-visible');observer.unobserve(entry.target);}}),{threshold:.08});
+    $$('.reveal').forEach(el=>observer.observe(el));
+  }
+  $('#app-demo').setAttribute('role','region');
+  const appHeading=document.createElement('h2');appHeading.className='sr-only';appHeading.dataset.en='Explore the MAWJ app';appHeading.dataset.ar='استكشف تطبيق موج';appHeading.textContent=appHeading.dataset.en;$('#experience').prepend(appHeading);
+  updateModel();
+})();
