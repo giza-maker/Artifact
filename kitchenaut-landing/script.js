@@ -5,7 +5,33 @@
   var nav = document.getElementById("navlinks");
   var frame = document.getElementById("nomli-app-frame");
   var demo = document.getElementById("demo");
+  var shortcuts = document.querySelector(".screen-shortcuts");
+  var demoStatus = document.getElementById("demo-status");
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+  var origin = window.location.origin;
+  var frameReady = false;
+  var pendingPayload = null;
+
+  function setDemoReady(ready) {
+    frameReady = ready;
+    if (shortcuts) shortcuts.setAttribute("aria-busy", String(!ready));
+    if (demoStatus)
+      demoStatus.textContent = ready
+        ? "Interactive demo ready."
+        : "Loading interactive demo…";
+  }
+
+  function pingFrame() {
+    if (!frame || !frame.contentWindow) return;
+    frame.contentWindow.postMessage({ type: "nomli:ping" }, origin);
+  }
+
+  function flushPending() {
+    if (!frameReady || !pendingPayload || !frame || !frame.contentWindow)
+      return;
+    frame.contentWindow.postMessage(pendingPayload, origin);
+    pendingPayload = null;
+  }
 
   function closeMenu() {
     if (!menu || !nav) return;
@@ -14,10 +40,31 @@
   }
   function openDemo(payload) {
     if (!frame || !demo) return;
-    frame.contentWindow.postMessage(payload, window.location.origin);
+    pendingPayload = payload;
+    flushPending();
     demo.scrollIntoView({
       behavior: reduced.matches ? "auto" : "smooth",
       block: "center",
+    });
+  }
+
+  if (frame) {
+    setDemoReady(false);
+    pingFrame();
+    frame.addEventListener("load", function () {
+      setDemoReady(false);
+      pingFrame();
+    });
+    window.addEventListener("message", function (event) {
+      if (
+        event.origin !== origin ||
+        event.source !== frame.contentWindow ||
+        !event.data ||
+        event.data.type !== "nomli:ready"
+      )
+        return;
+      setDemoReady(true);
+      flushPending();
     });
   }
 

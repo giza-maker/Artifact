@@ -357,8 +357,8 @@ small {
   grid-template-columns: 1fr;
   grid-template-rows: auto auto minmax(0, 1fr) auto;
   width: min(100%, 430px);
-  height: min(900px, calc(100dvh - 48px));
-  min-height: 650px;
+  height: min(900px, calc(100dvh - 74px));
+  min-height: 0;
   margin: auto;
   overflow: hidden;
   background: var(--bg);
@@ -1091,22 +1091,40 @@ th {
 }
 dialog {
   width: min(430px, calc(100vw - 24px));
-  max-height: 82dvh;
+  max-height: min(82dvh, calc(100dvh - 12px));
   margin: auto auto 0;
   border-radius: 24px 24px 0 0;
+}
+dialog[open] {
+  display: flex;
+  flex-direction: column;
+}
+#modal-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 0;
+  max-height: inherit;
+  overflow: hidden;
 }
 dialog::backdrop {
   background: rgba(0, 0, 0, 0.72);
   backdrop-filter: none;
 }
 .modal-heading {
+  flex: 0 0 auto;
   padding: 14px 16px;
 }
 .modal-heading h2 {
   font-size: 18px;
 }
 .modal-body {
-  max-height: calc(82dvh - 70px);
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   padding: 15px 16px max(20px, env(safe-area-inset-bottom));
 }
 .mobile-only {
@@ -1132,6 +1150,25 @@ body.embedded .app-shell {
   border: 0;
   border-radius: 0;
   box-shadow: none;
+}
+@media (max-width: 600px) {
+  body {
+    height: 100dvh;
+    min-height: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  .prototype-banner {
+    display: none;
+  }
+  .app-device,
+  .app-shell {
+    width: 100%;
+    height: 100dvh;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
 }
 @media (max-width: 350px) {
   body {
@@ -2031,7 +2068,7 @@ dialog[data-screen="camera"] .modal-body {
   flex-direction: column;
   min-height: 0;
   max-height: none;
-  overflow: hidden;
+  overflow-y: auto;
 }
 dialog[data-screen="camera"] .camera-caption {
   flex: 0 0 auto;
@@ -2040,7 +2077,7 @@ dialog[data-screen="camera"] .camera-view {
   position: relative;
   flex: 1 1 0;
   width: 100%;
-  min-height: 160px;
+  min-height: clamp(110px, 28dvh, 260px);
   max-width: 100%;
 }
 dialog[data-screen="camera"] .camera-view > img {
@@ -2072,73 +2109,6 @@ dialog[data-screen="camera"] .capture-actions {
   margin-top: 11px;
 }
 dialog[data-screen="camera"] .camera-disclosure {
-  margin: 7px 0 0;
-}
-dialog:has([data-camera]) {
-  width: 100%;
-  max-width: none;
-  height: 100dvh;
-  max-height: 100dvh;
-  margin: 0;
-  border: 0;
-  border-radius: 0;
-}
-dialog:has([data-camera]) #modal-content {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  min-height: 0;
-}
-dialog:has([data-camera]) .modal-heading {
-  flex: 0 0 auto;
-}
-dialog:has([data-camera]) .modal-body {
-  display: flex;
-  flex: 1 1 auto;
-  flex-direction: column;
-  min-height: 0;
-  max-height: none;
-  overflow: hidden;
-}
-dialog:has([data-camera]) .camera-caption {
-  flex: 0 0 auto;
-}
-dialog:has([data-camera]) .camera-view {
-  position: relative;
-  flex: 1 1 0;
-  width: 100%;
-  min-height: 160px;
-  max-width: 100%;
-}
-dialog:has([data-camera]) .camera-view > img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-dialog:has([data-camera]) .sample-receipt,
-dialog:has([data-camera]) .product-label,
-dialog:has([data-camera]) .date-label {
-  position: absolute;
-  z-index: 1;
-  top: 50%;
-  left: 50%;
-  max-height: calc(100% - 28px);
-  overflow: hidden;
-  transform: translate(-50%, -50%);
-}
-dialog:has([data-camera]) .sample-receipt {
-  transform: translate(-50%, -50%) rotate(-1deg);
-}
-dialog:has([data-camera]) .capture-actions,
-dialog:has([data-camera]) .camera-disclosure {
-  flex: 0 0 auto;
-}
-dialog:has([data-camera]) .capture-actions {
-  margin-top: 11px;
-}
-dialog:has([data-camera]) .camera-disclosure {
   margin: 7px 0 0;
 }
 @media (max-width: 300px) {

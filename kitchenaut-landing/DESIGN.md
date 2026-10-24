@@ -14,3 +14,5 @@ Nomli is a mobile consumer app presented inside a cinematic, photography-led lan
 - All AI, scanning, receipt extraction, community and upgrade interactions are explicit simulations. Future capabilities have Demo / MVP planned / Later planned / Exploratory labels.
 - Never collect real credentials, payment details, contact information or health information for the demo. Onboarding uses fictional sample choices. No claim of certified skills, food safety or photo verification.
 - The app's sample session survives refresh when session storage is available. Reset creates a known seed state; memory fallback is disclosed for restricted file previews.
+- Every sheet uses a bounded flex column: fixed title/Close, independently scrolling body, contained overscroll and dynamic viewport height. Camera controls retain a scroll fallback on short screens. Phone widths up to 600px fill the viewport without an outer page scrollbar.
+- Replace an open sheet in place; cancel capture timers when switching or dismissing. Cancel the previous route animation before starting the next. Validation brings its focused invalid field into view.

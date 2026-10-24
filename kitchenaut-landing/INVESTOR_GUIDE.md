@@ -43,4 +43,4 @@ Prepared 24 October 2026 for the 25 October meeting. The landing page now center
 
 ## Presenter checks still required
 
-Have another person explain the three pillars without coaching. Rehearse the talk track twice on the actual presentation browser/display and confirm the funding ask and ownership. A real-time narrated screen recording is a separate backup item; do not describe the screenshot set as a recording.
+Have another person explain the three pillars without coaching. Rehearse the talk track twice on the actual presentation browser/display and confirm the funding ask and ownership. The offline narrated walkthrough uses actual captured prototype states; describe it as a guided walkthrough, not a real-time screen recording. Keep the interactive local package available for questions.

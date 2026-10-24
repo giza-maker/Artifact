@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Nomli — Product overview</title>
+    <title>Nomli - Investor product brief</title>
     <link rel="icon" href="favicon.svg" />
     <style>
       * {
@@ -114,13 +114,30 @@
         flex-wrap: wrap;
         margin-top: 16px;
       }
+      .boundary {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 18px;
+        margin: 20px 0;
+        padding: 16px;
+        border-radius: 10px;
+        background: #f3ece2;
+      }
+      .boundary p {
+        margin-bottom: 0;
+      }
+      .gate {
+        border-bottom: 1px solid #cbbdb0;
+        padding-bottom: 7px;
+      }
       @media (max-width: 600px) {
         .sheet {
           margin: 0;
           padding: 24px;
         }
         .pillars,
-        .two {
+        .two,
+        .boundary {
           grid-template-columns: 1fr;
         }
         h1 {
@@ -139,6 +156,7 @@
           margin: 0;
           padding: 0;
           max-width: none;
+          zoom: 0.78;
         }
         .actions {
           display: none;
@@ -156,65 +174,100 @@
         <div class="brand">
           <img src="favicon.svg" width="36" height="36" alt="" />Nomli
         </div>
-        <small>Product overview · October 2026</small>
+        <small>Investor product brief · 25 October 2026</small>
       </header>
-      <h1>Learn to cook.<br />Manage your kitchen.<br />Enjoy the progress.</h1>
+      <h1>
+        One everyday loop for learning, running and enjoying your kitchen.
+      </h1>
       <p class="lead">
-        A connected cooking experience: use what you own, learn a practical
-        technique and build a habit worth repeating.
+        Nomli tests whether cooking guidance becomes more useful when it shares
+        context with kitchen management and progress that gives people a reason
+        to return.
       </p>
       <div class="pillars">
         <section class="pillar">
           <p class="label">01 / Learn</p>
           <h3>Skills in context</h3>
           <p>
-            Chef Zara, three free starter lessons and guided recipe practice.
-            Learning milestones are separate from activity XP.
+            Chef Zara, three starter lessons, knowledge checks and guided recipe
+            practice connect technique to tonight's cooking. Practice is
+            self-reported; Nomli does not claim certification or verified
+            mastery.
           </p>
         </section>
         <section class="pillar">
           <p class="label">02 / Manage</p>
           <h3>The whole kitchen</h3>
           <p>
-            Ingredients, storage, equipment, recipes and shopping. Receipts,
-            grocery budgets and spending form an optional branch.
+            Ingredients, storage, equipment, recipes and shopping inform the
+            next action. Reviewed sample receipts update inventory and grocery
+            spending together; budgets and category totals stay visible.
           </p>
         </section>
         <section class="pillar">
           <p class="label">03 / Play</p>
           <h3>Meaningful progress</h3>
           <p>
-            Ingredient and skill quests, levels, challenges, achievements and an
-            illustrative Food Hub connect effort to progress.
+            Ingredient quests, learning quests, weekly challenges, levels and
+            achievements link progress to cooking activity. Food Hub and all
+            community activity shown are illustrative.
           </p>
         </section>
       </div>
-      <p class="stage">
-        <b>Current stage:</b> responsive interactive prototype with sample data.
-        Coaching, scanning, receipt extraction and community activity are
-        simulated. No production users, revenue, AI integration, billing or
-        certified skill is claimed.
-      </p>
+      <div class="boundary">
+        <section>
+          <h3>Built now</h3>
+          <p>
+            Responsive interactive prototype with fixed sample data. Linked
+            Learn, Manage and Play journeys support editable inventory, lessons,
+            recipes, quests, sample receipt review and reconciled spending.
+          </p>
+        </section>
+        <section>
+          <h3>Simulated or unproven</h3>
+          <p>
+            Camera scanning, OCR, AI coaching, receipt extraction, community
+            posts and payments are simulated. No production users, revenue,
+            traction, live integrations or independently validated learning
+            outcome is claimed.
+          </p>
+        </section>
+      </div>
       <div class="two">
         <section>
-          <h2>The demonstration</h2>
+          <h2>Five-minute meeting path</h2>
           <ol>
-            <li>Set a sample cooking profile.</li>
-            <li>Review ingredients and dates.</li>
-            <li>Learn and check a technique.</li>
-            <li>Cook and confirm inventory use.</li>
-            <li>See skill milestones and collect XP.</li>
-            <li>Share an illustrative meal.</li>
+            <li>Start at 440 XP and state the prototype boundary.</li>
+            <li><b>Manage:</b> review kitchen stock and a simulated scan.</li>
+            <li><b>Learn:</b> complete a technique lesson and cook.</li>
+            <li>
+              <b>Play:</b> see milestones, collect eligible XP and share an
+              illustrative meal.
+            </li>
+            <li>
+              Optional: review a sample receipt; show inventory and spending
+              update once.
+            </li>
           </ol>
         </section>
         <section>
-          <h2>The next validation</h2>
-          <p><b>Days 1–30:</b> comprehension and task usability.</p>
-          <p><b>Days 31–60:</b> repeat value and learning behavior.</p>
-          <p><b>Days 61–90:</b> packaging and willingness to pay.</p>
+          <h2>Evidence before scale</h2>
+          <p class="gate">
+            <b>Days 1-30:</b> Can target users understand and complete the core
+            loop?
+          </p>
+          <p class="gate">
+            <b>Days 31-60:</b> Do they return, cook and practice without
+            prompting?
+          </p>
+          <p class="gate">
+            <b>Days 61-90:</b> Which package earns willingness to pay?
+          </p>
           <p>
-            Funding discussion: MVP delivery, evaluated safety/AI and staged
-            validation. Scope and raise amount require founder agreement.
+            <b>Funding conversation:</b> define a 90-day MVP validation mandate.
+            Capital would fund MVP delivery, evaluated AI and safety controls,
+            and a controlled pilot. Raise amount, terms, team plan and
+            milestones require founder approval; none are invented here.
           </p>
         </section>
       </div>
@@ -223,10 +276,8 @@
         ><a href="index.html">Read the product story</a>
       </div>
       <footer>
-        Prototype access opens all sample journeys. Three starter lessons stay
-        free; the 500-XP unlock adds a Heat-control challenge. Later and
-        exploratory features are explicitly labeled. Guided practice is
-        self-reported, not verified mastery.
+        Pre-launch prototype · sample data · presenter contact intentionally
+        unset. Later and exploratory features are explicitly labeled.
       </footer>
     </main>
   </body>

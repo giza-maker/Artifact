@@ -41,8 +41,8 @@
     <script>
       document.documentElement.className = "js";
     </script>
-    <link rel="stylesheet" href="styles.css?v=20261024-3" />
-    <script src="script.js?v=20261024-3" defer></script>
+    <link rel="stylesheet" href="styles.css?v=20261024-4" />
+    <script src="script.js?v=20261024-4" defer></script>
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
@@ -120,13 +120,23 @@
             <div class="phone-shell">
               <iframe
                 id="nomli-app-frame"
-                src="app/index.html?embed=1&amp;surface=hero&amp;v=20261024-3"
+                src="app/index.html?embed=1&amp;surface=hero&amp;v=20261024-4"
                 title="Interactive Nomli mobile app"
+                aria-describedby="demo-status"
               ></iframe>
             </div>
+            <p
+              class="demo-status"
+              id="demo-status"
+              role="status"
+              aria-live="polite"
+            >
+              Loading interactive demo…
+            </p>
             <div
               class="screen-shortcuts"
               aria-label="Open a screen in the Nomli demo"
+              aria-busy="true"
             >
               <button type="button" data-route="kitchen">Kitchen</button
               ><button type="button" data-mode="fridge">Scan</button
@@ -135,9 +145,50 @@
               ><button type="button" data-route="play">Play</button
               ><button type="button" data-route="expenses">Expenses</button>
             </div>
-            <a class="open-mobile" href="app/index.html?v=20261024-3#home"
+            <a class="open-mobile" href="app/index.html?v=20261024-4#home"
               >Open mobile demo <span aria-hidden="true">↗</span></a
             >
+          </div>
+        </div>
+      </section>
+      <section class="problem-section" aria-labelledby="problem-title">
+        <div class="wrap">
+          <p class="kicker reveal">Three breaks · one connected response</p>
+          <div class="section-head reveal">
+            <h2 id="problem-title">
+              Kitchen progress<br /><em>breaks between moments.</em>
+            </h2>
+            <p>
+              Most tools solve one task. Nomli tests whether connecting
+              capability, context and motivation creates a stronger everyday
+              loop.
+            </p>
+          </div>
+          <div class="problem-grid reveal">
+            <article>
+              <span>01 · Skill gap</span>
+              <h3>Knowing recipes is not knowing technique.</h3>
+              <p>
+                <b>Learn</b> turns each meal into guided practice and visible
+                skill progress.
+              </p>
+            </article>
+            <article>
+              <span>02 · Disconnected operations</span>
+              <h3>Food, tools and spending live apart.</h3>
+              <p>
+                <b>Manage</b> keeps kitchen context available when choosing and
+                cooking.
+              </p>
+            </article>
+            <article>
+              <span>03 · Weak return habit</span>
+              <h3>Useful tools still need a reason to reopen.</h3>
+              <p>
+                <b>Play</b> connects quests and recognition to real cooking
+                practice.
+              </p>
+            </article>
           </div>
         </div>
       </section>
@@ -404,6 +455,178 @@
               <p>Shared household tools when ready.</p>
             </article>
           </div>
+          <details class="feature-matrix reveal">
+            <summary>
+              Feature, proposed tier and release map
+              <span aria-hidden="true">+</span>
+            </summary>
+            <p>
+              Packaging below is a hypothesis, not billing. Release labels match
+              the current prototype catalog.
+            </p>
+            <div
+              class="table-scroll"
+              tabindex="0"
+              role="region"
+              aria-label="Scrollable feature and tier table"
+            >
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Pillar</th>
+                    <th scope="col">Feature</th>
+                    <th scope="col">Proposed tier</th>
+                    <th scope="col">Release</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Learn</th>
+                    <td>Chef School &amp; skill practice</td>
+                    <td>Free</td>
+                    <td>Demo</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Learn</th>
+                    <td>Contextual Chef Zara</td>
+                    <td>Free</td>
+                    <td>Demo</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Manage</th>
+                    <td>Inventory, tools &amp; recipes</td>
+                    <td>Free</td>
+                    <td>Demo</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Manage</th>
+                    <td>Receipts &amp; grocery spending</td>
+                    <td>Pro</td>
+                    <td>Demo</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Play</th>
+                    <td>Quests, levels, badges &amp; Hub</td>
+                    <td>Social posting entitlement TBD</td>
+                    <td>Demo</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Learn</th>
+                    <td>Personalized coaching engine</td>
+                    <td>Plus</td>
+                    <td>MVP planned</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Learn</th>
+                    <td>Starter lessons &amp; skill quests</td>
+                    <td>Free</td>
+                    <td>MVP planned</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Manage</th>
+                    <td>Barcode &amp; expiry review</td>
+                    <td>Free</td>
+                    <td>MVP planned</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Play</th>
+                    <td>Daily quests &amp; basic feed</td>
+                    <td>Social posting entitlement TBD</td>
+                    <td>MVP planned</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Learn</th>
+                    <td>Full novice-to-advanced school</td>
+                    <td>Plus</td>
+                    <td>Later planned</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Learn</th>
+                    <td>Voice &amp; multilingual coaching</td>
+                    <td>Pro</td>
+                    <td>Later planned</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Manage</th>
+                    <td>Produce recognition &amp; receipt OCR</td>
+                    <td>Pro</td>
+                    <td>Later planned</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Manage</th>
+                    <td>Shared family kitchen</td>
+                    <td>Family</td>
+                    <td>Later planned</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Manage</th>
+                    <td>Meal &amp; dietary planning</td>
+                    <td>Family</td>
+                    <td>Later planned</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Manage</th>
+                    <td>Offline recipe library</td>
+                    <td>Pro</td>
+                    <td>Later planned</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Manage</th>
+                    <td>Spending localization</td>
+                    <td>Pro</td>
+                    <td>Later planned</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Play</th>
+                    <td>Community &amp; family quests</td>
+                    <td>Social posting entitlement TBD</td>
+                    <td>Later planned</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Play</th>
+                    <td>Custom challenges &amp; mentor tools</td>
+                    <td>Pro</td>
+                    <td>Later planned</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Account</th>
+                    <td>Sign-in, consent &amp; privacy</td>
+                    <td>All tiers</td>
+                    <td>MVP planned</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Commercial</th>
+                    <td>Subscription checkout</td>
+                    <td>Paid tiers</td>
+                    <td>Later planned</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Manage</th>
+                    <td>Grocery ordering integrations</td>
+                    <td>TBD</td>
+                    <td>Exploratory</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Learn</th>
+                    <td>Certificates &amp; verified mastery</td>
+                    <td>TBD</td>
+                    <td>Exploratory</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Play</th>
+                    <td>Photo authenticity checks</td>
+                    <td>TBD</td>
+                    <td>Exploratory</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="matrix-note">
+              Current price hypotheses: Free $0 · Plus $5.99/month · Pro
+              $12.99/month · Family $19.99/month. Tier assignments require
+              validation.
+            </p>
+          </details>
         </div>
       </section>
       <section class="roadmap" id="roadmap" aria-labelledby="roadmap-title">
@@ -485,6 +708,89 @@
               </p>
             </div>
           </details>
+        </div>
+      </section>
+      <section class="problem-section" aria-labelledby="landscape-title">
+        <div class="wrap">
+          <p class="kicker">Product landscape</p>
+          <h2 id="landscape-title">
+            A connected loop.<br /><em>A hypothesis to prove.</em>
+          </h2>
+          <div class="problem-grid">
+            <article>
+              <span>Samsung Food</span>
+              <h3>Plan, shop and share.</h3>
+              <p>
+                Its official product page describes recipe saving, meal
+                planning, grocery lists and recipe communities.
+              </p>
+              <a
+                href="https://samsungfood.com/"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Official product overview ↗</a
+              >
+            </article>
+            <article>
+              <span>Kitchen Stories</span>
+              <h3>Recipes and practical guidance.</h3>
+              <p>
+                Its official app page describes serving conversions,
+                step-by-step cooking, instructional videos and expert tips.
+              </p>
+              <a
+                href="https://pages.kitchenstories.com/en/app"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Official app overview ↗</a
+              >
+            </article>
+            <article>
+              <span>Nomli · prototype</span>
+              <h3>Learn. Manage. Play.</h3>
+              <p>
+                Our proposed focus connects guided skill milestones, reviewed
+                stock and receipt spending, and quests in one daily loop. Its
+                value and demand remain to be tested.
+              </p>
+            </article>
+          </div>
+          <p class="details">
+            Selected public capabilities, reviewed 24 October 2026. This is a
+            positioning comparison, not an exhaustive feature assessment or a
+            claim of exclusivity.
+          </p>
+        </div>
+      </section>
+      <section class="funding" aria-labelledby="funding-title">
+        <div class="wrap funding__grid">
+          <div class="reveal">
+            <p class="kicker">What funding enables</p>
+            <h2 id="funding-title">
+              From interactive prototype<br /><em
+                >to controlled MVP evidence.</em
+              >
+            </h2>
+          </div>
+          <div class="funding__body reveal">
+            <p>
+              Today: a built, interactive three-pillar prototype using fixed
+              data and simulated behavior.
+            </p>
+            <p>
+              Funding would enable an MVP around Learn, Manage and Play;
+              evaluated coaching and recognition with safety controls; and a
+              controlled pilot measured through the 90-day gates.
+            </p>
+            <div class="funding__ask">
+              <span>Concrete next step</span
+              ><b>Discuss a 90-day MVP validation mandate.</b
+              ><small
+                >Raise size, runway and milestones require agreement with the
+                founding team.</small
+              >
+            </div>
+          </div>
         </div>
       </section>
       <section class="closing" aria-labelledby="closing-title">

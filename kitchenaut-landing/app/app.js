@@ -153,6 +153,7 @@
       xp: 440,
       ledger: [],
       meals: [],
+      activeMeal: null,
       cooking: null,
       shopping: [],
       receiptDraft: null,
@@ -170,6 +171,7 @@
       chat: [],
       tour: new URLSearchParams(location.search).has("investor"),
       accountPreview: false,
+      previewLanguage: "English",
     };
   }
   let storageAvailable = true;
@@ -231,6 +233,18 @@
   let S = load(),
     toastTimer,
     lastFocus;
+  const legacyFollowAuthors = {
+    "sample-meal": "author-noor",
+    "sample-skill": "author-mariam",
+    "sample-level": "author-omar",
+  };
+  S.follows = [
+    ...new Set(
+      S.follows
+        .filter((id) => !String(id).startsWith("own-"))
+        .map((id) => legacyFollowAuthors[id] || id),
+    ),
+  ];
   if (new URLSearchParams(location.search).has("investor")) S.tour = true;
   const routes = [
     "home",
@@ -285,19 +299,29 @@
     $(".app-scroll")?.scrollTo({ top: 0, left: 0, behavior: "instant" });
   }
   function closeModal() {
-    modal.close();
-    if (lastFocus && lastFocus.isConnected) lastFocus.focus();
+    cancelScanTimers();
+    if (modal.open) modal.close();
   }
   let modalVersion = 0;
-  function openModal(title, body) {
+  let scanTimers = [];
+  function cancelScanTimers() {
+    scanTimers.forEach(clearTimeout);
+    scanTimers = [];
     modalVersion++;
-    delete modal.dataset.screen;
+  }
+  function openModal(title, body, screen = "") {
+    cancelScanTimers();
+    modalVersion++;
+    modal.dataset.screen = screen;
     if (!modal.open) lastFocus = document.activeElement;
-    if (modal.open) modal.close();
     $("#modal-content").innerHTML =
       `<header class="modal-heading"><h2 id="modal-title">${title}</h2><button class="icononly" data-action="modal-close" aria-label="Close">${icon("x")}</button></header><div class="modal-body">${body}</div>`;
     modal.querySelectorAll("form").forEach((f) => (f.noValidate = true));
-    modal.showModal();
+    if (!modal.open) modal.showModal();
+    else
+      modal
+        .querySelector('[data-action="modal-close"]')
+        .focus({ preventScroll: true });
     $(".modal-body")?.scrollTo(0, 0);
   }
   let errorSequence = 0;
@@ -313,7 +337,8 @@
     if (target) {
       target.setAttribute("aria-invalid", "true");
       target.setAttribute("aria-describedby", box.id);
-      target.focus();
+      target.focus({ preventScroll: true });
+      target.scrollIntoView({ block: "center", behavior: "instant" });
     }
   }
   function errors() {
@@ -403,7 +428,7 @@
       )
       .join("");
   }
-  let renderedRoute;
+  let renderedRoute, routeAnimation;
 
   function render(focus = true) {
     const active = document.activeElement;
@@ -440,8 +465,10 @@
     const changed = renderedRoute !== S.route;
     view.dataset.screen = S.route;
     view.innerHTML = (screens[S.route] || homeView)();
+    view.setAttribute("aria-busy", "false");
+    routeAnimation?.cancel();
     if (changed && !matchMedia("(prefers-reduced-motion: reduce)").matches)
-      view.animate(
+      routeAnimation = view.animate(
         [{ transform: "translateY(8px)" }, { transform: "translateY(0)" }],
         { duration: 260, easing: "cubic-bezier(.2,.7,.2,1)" },
       );
@@ -579,8 +606,8 @@
             .join("")}</div>`
     }
     <div class="capture-actions"><button class="capture-button" data-action="scan-capture" aria-label="${digital ? "Import sample PDF" : "Capture sample " + (receipt ? "receipt" : "scan")}">${icon(digital ? "upload-simple" : "camera")}</button><p>${digital ? "Import sample PDF" : "Tap to capture"}</p></div><p class="details camera-disclosure">Interactive simulation. Camera, files and OCR are not accessed. You review every result.</p>`,
+      "camera",
     );
-    modal.dataset.screen = "camera";
   }
   function captureScan() {
     const button = modal.querySelector('[data-action="scan-capture"]');
@@ -598,26 +625,30 @@
     const delay = matchMedia("(prefers-reduced-motion: reduce)").matches
       ? 350
       : 1800;
-    setTimeout(() => {
-      if (!modal.open || modalVersion !== version) return;
-      modal
-        .querySelectorAll(".recognition-box")
-        .forEach((x) => (x.hidden = false));
-      status.textContent =
-        mode === "fridge"
-          ? "3 ingredients found"
-          : mode === "barcode"
-            ? "Tomatoes matched"
-            : mode === "expiry"
-              ? "25 October 2026 detected"
-              : "3 receipt lines extracted";
-    }, delay * 0.55);
-    setTimeout(() => {
-      if (!modal.open || modalVersion !== version) return;
-      if (["paper", "digital"].includes(mode)) receiptForm(mode);
-      else if (mode === "fridge") scanReview();
-      else singleScanReview(mode);
-    }, delay);
+    scanTimers.push(
+      setTimeout(() => {
+        if (!modal.open || modalVersion !== version) return;
+        modal
+          .querySelectorAll(".recognition-box")
+          .forEach((x) => (x.hidden = false));
+        status.textContent =
+          mode === "fridge"
+            ? "3 ingredients found"
+            : mode === "barcode"
+              ? "Tomatoes matched"
+              : mode === "expiry"
+                ? "25 October 2026 detected"
+                : "3 receipt lines extracted";
+      }, delay * 0.55),
+    );
+    scanTimers.push(
+      setTimeout(() => {
+        if (!modal.open || modalVersion !== version) return;
+        if (["paper", "digital"].includes(mode)) receiptForm(mode);
+        else if (mode === "fridge") scanReview();
+        else singleScanReview(mode);
+      }, delay),
+    );
   }
   function singleScanReview(mode) {
     const id = mode === "barcode" ? "tomatoes" : "basil",
@@ -756,6 +787,7 @@
     return {
       ing,
       ready,
+      urgent,
       missing,
       allergens,
       method: method(r),
@@ -771,7 +803,7 @@
     };
   }
   function recipeCard(r, a) {
-    return `<article class="recipe-card"><img class="recipe-image" src="${r.image}" alt="Illustrative ${esc(r.name)}" width="320" height="284" loading="lazy"><div class="recipe-body"><h3>${r.name}</h3><p class="recipe-meta">${r.time} min · ${r.difficulty} · ${S.servings[r.id] || r.servings} servings</p><span class="recipe-match">${icon("check-circle")}${a.ready}/${a.ing.length} ingredients ready</span><p class="details">${r.objective}</p><div class="actions">${btn("View recipe", "recipe", r.id, "btn-primary")}${btn(S.favorites.includes(r.id) ? "Saved" : "Save", "favorite", r.id, "btn-quiet")}</div></div></article>`;
+    return `<article class="recipe-card"><img class="recipe-image" src="${r.image}" alt="Illustrative ${esc(r.name)}" width="320" height="284" loading="lazy"><div class="recipe-body"><h3>${r.name}</h3><p class="recipe-meta">${r.time} min · ${r.difficulty} · ${S.servings[r.id] || r.servings} servings</p><span class="recipe-match">${icon("check-circle")}${a.ready}/${a.ing.length} ingredients ready</span><p class="details">${r.objective}</p><p class="details">${a.urgent ? `Uses ${a.urgent} ingredient${a.urgent === 1 ? "" : "s"} with a reviewed date in the next three days. ` : ""}${a.timeFit ? "Fits" : "Exceeds"} your ${S.profile.time}-minute goal · ${a.skillFit ? "matches" : "stretches"} your confidence.</p><div class="actions">${btn("View recipe", "recipe", r.id, "btn-primary")}${btn(S.favorites.includes(r.id) ? "Saved" : "Save", "favorite", r.id, "btn-quiet")}</div></div></article>`;
   }
   function cookView() {
     let recipes = D.recipes
@@ -787,9 +819,13 @@
       `<label class="checkbox-field"><input type="checkbox" data-change="matches"${S.matchOnly ? " checked" : ""}>Apply sample allergen exclusions (${S.profile.allergies.join(", ") || "none"})</label><details class="details"><summary>About recipe matching & allergens</summary><p>Limited sample tags. Check packaging and cross-contact. These filters do not establish food safety.</p></details><div class="grid grid-3">${recipes.map(({ r, a }) => recipeCard(r, a)).join("") || '<p class="empty">No sample recipes match the selected exclusions. Review preferences or show all recipes to inspect the blockers.</p>'}</div><div class="grid grid-2"><section class="card"><h2>Saved recipes</h2>${S.favorites.length ? S.favorites.map((id) => btn(recipe(id).name, "recipe", id, "btn-quiet")).join("") : "<p class='muted'>Save a recipe to return to it later.</p>"}</section><section class="card"><h2>Previously cooked</h2>${
         S.meals
           .filter((m) => !m.undone)
-          .map(
-            (m) =>
-              `<p>${recipe(m.rid).name} · ${m.claimed ? "Reward collected" : "Reward ready"}</p>`,
+          .map((m) =>
+            btn(
+              `${recipe(m.rid).name} · ${m.claimed ? "Reward collected" : "Reward ready"}`,
+              "meal-open",
+              m.id,
+              "btn-quiet",
+            ),
           )
           .join("") ||
         '<p class="muted">Your completed sample meals will appear here.</p>'
@@ -951,8 +987,21 @@
   function latestMeal() {
     return [...S.meals].reverse().find((m) => !m.undone);
   }
+  function selectedMeal() {
+    const selected = S.meals.find((m) => m.id === S.activeMeal && !m.undone);
+    return selected || latestMeal();
+  }
+  function canUndoMeal(m) {
+    if (!m?.after) return false;
+    return m.used.every(
+      (x) =>
+        Number.isFinite(m.after[x.id]) &&
+        S.items[x.id].unit === m.before[x.id].unit &&
+        Math.abs(S.items[x.id].qty - m.after[x.id]) < 0.000001,
+    );
+  }
   function completeView() {
-    const m = latestMeal();
+    const m = selectedMeal();
     if (!m) return cookView();
     const r = recipe(m.rid);
     const amount = m.claimed
@@ -965,7 +1014,7 @@
           : 0);
     return (
       heading("DINNER, DONE.", "Look at you, chef.", r.name) +
-      `<div class="success-meal"><img src="${r.image}" alt="${esc(r.name)}"><span class="badge">${icon("check-circle")}QUEST COMPLETE</span></div><section class="card reward-summary"><span class="reward-icon">${icon("trophy")}</span><strong>+${amount} XP</strong><p>${amount ? "A meal made. A little better than yesterday." : "Another good practice. This recipe’s XP was already collected."}</p>${m.claimed ? '<span class="badge">Reward collected</span>' : btn("Collect reward", "claim-meal", m.id, "btn-primary")}${levelBlock()}</section><section class="card"><div class="card-header"><h2>${icon("graduation-cap")}${r.skill}</h2><b>${milestones(r.lesson)}/3</b></div><progress class="progress" value="${milestones(r.lesson)}" max="3" aria-label="Linked lesson progress"></progress><p class="details">${m.technique ? "Practical checkpoint recorded. Keep building the habit." : "Complete the lesson’s practical checkpoint to record this skill."}</p>${btn("See my learning progress", "lesson", r.lesson)}</section><div class="actions">${btn(m.photo ? "Dish photo added" : "Add a dish photo", "meal-photo", m.id)}${m.claimed ? btn(m.shared ? "View shared sample" : "Share to Food Hub", "share", m.id, "btn-primary") : ""}</div><details class="card"><summary>Your kitchen has been updated</summary><ul class="feature-list">${m.used.map((x) => `<li>${esc(S.items[x.id].name)}: ${num(x.qty)} ${esc(S.items[x.id].unit)} used</li>`).join("")}</ul>${!m.claimed ? btn("Undo inventory change", "undo-meal", m.id) : '<p class="details">Need a later correction? Edit the ingredient in Kitchen.</p>'}</details>`
+      `<div class="success-meal"><img src="${r.image}" alt="${esc(r.name)}"><span class="badge">${icon("check-circle")}QUEST COMPLETE</span></div><section class="card reward-summary"><span class="reward-icon">${icon("trophy")}</span><strong>+${amount} XP</strong><p>${amount ? "A meal made. A little better than yesterday." : "Another good practice. This recipe’s XP was already collected."}</p>${m.claimed ? '<span class="badge">Reward collected</span>' : btn("Collect reward", "claim-meal", m.id, "btn-primary")}${levelBlock()}</section><section class="card"><div class="card-header"><h2>${icon("graduation-cap")}${r.skill}</h2><b>${milestones(r.lesson)}/3</b></div><progress class="progress" value="${milestones(r.lesson)}" max="3" aria-label="Linked lesson progress"></progress><p class="details">${m.technique ? "Practical checkpoint recorded. Keep building the habit." : "Complete the lesson’s practical checkpoint to record this skill."}</p>${btn("See my learning progress", "lesson", r.lesson)}</section><div class="actions">${btn(m.photo ? "Dish photo added" : "Add a dish photo", "meal-photo", m.id)}${m.claimed ? btn(m.shared ? "View shared sample" : "Share to Food Hub", "share", m.id, "btn-primary") : ""}</div><details class="card"><summary>Your kitchen has been updated</summary><ul class="feature-list">${m.used.map((x) => `<li>${esc(S.items[x.id].name)}: ${num(x.qty)} ${esc(m.before?.[x.id]?.unit || D.items[x.id].unit)} used</li>`).join("")}</ul>${!m.claimed && canUndoMeal(m) ? btn("Undo inventory change", "undo-meal", m.id) : !m.claimed ? `${notice(m.after ? "Stock used by this meal changed afterward, so automatic undo is unavailable. Correct current quantities in Kitchen." : "This meal predates safe undo tracking. Correct current quantities in Kitchen.")}${btn("Correct in Kitchen", "go", "kitchen")}` : '<p class="details">Need a later correction? Edit the ingredient in Kitchen.</p>'}</details>`
     );
   }
   function playView() {
@@ -999,11 +1048,11 @@
         "A little win, every day.",
         "Cook something. Learn something. Make it a habit.",
       ) +
-      `<section class="card level-hero"><div class="level-emblem">${icon("trophy")}</div><div><small>YOUR COOKING JOURNEY</small>${levelBlock()}<p class="details">${Math.max(0, 500 - S.xp)} XP to the next chapter</p></div></section>
+      `<section class="card level-hero"><div class="level-emblem">${icon("trophy")}</div><div><small>YOUR COOKING JOURNEY</small>${levelBlock()}<p class="details">${Math.max(0, level().next - S.xp)} XP to the next chapter</p></div></section>
     <div class="habit-strip"><span>${icon("fire")}This week</span>${["M", "T", "W", "T", "F", "S", "S"].map((d, i) => `<span class="habit-day ${i < 2 || (i === 5 && meals.length) ? "is-done" : ""}">${i < 2 || (i === 5 && meals.length) ? icon("check") : d}</span>`).join("")}</div><p class="details">Sample flexible goal: cook 3 days a week. Two earlier days are illustrative.</p>
-    <div class="section-heading"><h2>Today’s quests</h2><span class="badge">2 WAYS TO GROW</span></div><article class="featured-meal quest-meal"><img src="${recipe(coreRecipeId()).image}" alt="${recipe(coreRecipeId()).name}"><div class="meal-overlay"><span class="badge quest-badge">${icon("target")}INGREDIENT QUEST</span><h2>Rescue the basil</h2><p>Good food, before it goes.</p><div class="meal-meta"><span>${icon("clock")}12 min</span><span>${icon("lightning")}40 XP</span><button class="btn btn-primary" data-action="recipe" data-id="${coreRecipeId()}">Start ${icon("arrow-right")}</button></div></div></article><button class="text-link quest-replace" data-action="quest-replace">Try a different quest</button>
-    <section class="card learning-quest"><span class="badge">${icon("graduation-cap")}LEARNING QUEST • 20 XP</span><h2>Salt with a reason</h2><p>Learn why a pinch changes the texture.</p><progress class="progress" value="${milestones("balance")}" max="3" aria-label="Learning quest milestones"></progress><div class="stat-row"><span>${milestones("balance")}/3 milestones</span>${btn("Open lesson", "lesson", "balance", "btn-primary")}</div></section>
-    <section class="card"><span class="badge">WEEKLY CHALLENGE • 30 XP</span><h2>Learn. Cook. Share.</h2><p>One lesson. One meal. One moment shared.</p><progress class="progress" value="${linked}" max="3" aria-label="Weekly challenge actions"></progress><p class="details">${linked}/3 actions complete</p>${!S.accepted ? btn("Accept challenge", "challenge-accept", "", "btn-primary") : linked === 3 && !S.ledger.includes("weekly") ? btn("Claim 30 XP", "challenge-claim", "", "btn-primary") : `<span class="badge">${S.ledger.includes("weekly") ? "Reward collected" : "Challenge accepted"}</span>`}</section>
+    <div class="section-heading"><h2>Today’s quests</h2><span class="badge">2 WAYS TO GROW</span></div><article class="featured-meal quest-meal"><img src="${recipe(coreRecipeId()).image}" alt="${recipe(coreRecipeId()).name}"><div class="meal-overlay"><span class="badge quest-badge">${icon("target")}INGREDIENT QUEST</span><h2>Rescue the basil</h2><p>Good food, before it goes.</p><div class="meal-meta"><span>${icon("clock")}12 min</span><span>${icon("lightning")}40 XP</span><button class="btn btn-primary" data-action="recipe" data-id="${coreRecipeId()}">Start ${icon("arrow-right")}</button></div></div></article><p class="details">Beginner · finish the guided recipe and confirm ingredients used. Recipe reward: 40 XP once; technique reward shown separately.</p><button class="text-link quest-replace" data-action="quest-replace">Try a different quest</button>
+    <section class="card learning-quest"><span class="badge">${icon("graduation-cap")}LEARNING QUEST • 20 XP</span><h2>Salt with a reason</h2><p>Beginner · read the concept, pass the check, then practise in the linked meal. Technique reward: 20 XP once.</p><progress class="progress" value="${milestones("balance")}" max="3" aria-label="Learning quest milestones"></progress><div class="stat-row"><span>${milestones("balance")}/3 milestones</span>${btn("Open lesson", "lesson", "balance", "btn-primary")}</div></section>
+    <section class="card"><span class="badge">WEEKLY CHALLENGE • 30 XP</span><h2>Learn. Cook. Share.</h2><p>Beginner · complete one lesson, finish a meal and share a sample post. Claim 30 XP once after accepting.</p><progress class="progress" value="${linked}" max="3" aria-label="Weekly challenge actions"></progress><p class="details">${linked}/3 actions complete</p>${!S.accepted ? btn("Accept challenge", "challenge-accept", "", "btn-primary") : linked === 3 && !S.ledger.includes("weekly") ? btn("Claim 30 XP", "challenge-claim", "", "btn-primary") : `<span class="badge">${S.ledger.includes("weekly") ? "Reward collected" : "Challenge accepted"}</span>`}</section>
     <div class="section-heading"><h2>Little badges. Big meaning.</h2></div><div class="achievement-grid">${badges.map(([name, earned, why], i) => `<div class="achievement ${earned ? "is-earned" : ""}"><span>${icon(["refrigerator", "fork-knife", "graduation-cap", "users", "fire"][i])}</span><b>${name}</b><small>${earned ? "Earned" : why}</small></div>`).join("")}</div>
     <section class="card"><h2>Your next level</h2>${S.xp >= 500 ? btn("Heat-control challenge", "heat-challenge", "", "btn-primary") : "<p>At 500 XP, your Heat-control practice challenge opens. Starter School is already free.</p>"}<details><summary>Explore the six-level path</summary><ol class="curriculum">${D.levels.map(([xp, name], i) => `<li><b>${name}</b> ${xp.toLocaleString()} XP${i > 1 ? " • later planned" : ""}</li>`).join("")}</ol>${btn("More ways to play", "preview", "play")}</details></section><p class="details">440 XP starts the sample session. Rewards are once per eligible action. Learning milestones are self-reported practice, separate from points.</p>`
     );
@@ -1012,6 +1061,7 @@
     return [
       {
         id: "sample-meal",
+        authorId: "author-noor",
         author: "Noor A.",
         title: "Bruschetta practice",
         text: "Trying the salt-and-drain technique before assembly.",
@@ -1020,6 +1070,7 @@
       },
       {
         id: "sample-skill",
+        authorId: "author-mariam",
         author: "Mariam H.",
         title: "One skill, three milestones",
         text: "Read the concept, checked understanding, then practised in a guided meal.",
@@ -1027,6 +1078,7 @@
       },
       {
         id: "sample-level",
+        authorId: "author-omar",
         author: "Omar K.",
         title: "Apprentice Cook",
         text: "A sample 500 XP milestone opens the Heat-control challenge.",
@@ -1038,6 +1090,7 @@
     const posts = [
       ...S.posts.map((p) => ({
         id: p.id,
+        authorId: "self",
         author: "You · demo profile",
         title: recipe(p.rid).name,
         text: "Guided practice completed in the Nomli prototype.",
@@ -1053,7 +1106,7 @@
         "A sample community of small wins and shared ideas.",
         btn("Community & safety preview", "preview", "community"),
       ) +
-      `<div class="grid grid-2">${posts.map((p) => `<article class="card post"><div class="card-header post-meta"><span class="post-avatar">${esc(p.author.slice(0, 1))}</span><div><b>${esc(p.author)}</b><p class="muted">${p.kind}</p></div>${btn(S.follows.includes(p.id) ? "Following" : "Follow", "follow", p.id, "btn-quiet")}</div>${p.image ? `<img class="post-image" src="${p.image}" alt="Illustrative meal image; not user-submitted proof">` : ""}<h2>${esc(p.title)}</h2><p>${esc(p.text)}</p><div class="actions">${btn(S.cheers.includes(p.id) ? "Cheered" : "Cheer", "cheer", p.id, "btn-quiet")}${btn("Reply", "reply", p.id, "btn-quiet")}${btn(S.savedPosts.includes(p.id) ? "Saved" : "Save", "save-post", p.id, "btn-quiet")}${btn("Report / block", "report", p.id, "btn-quiet")}</div>${(S.replies[p.id] || []).map((t) => `<p class="notice"><b>You · sample reply:</b> ${esc(t)}</p>`).join("")}</article>`).join("")}</div>${S.blocked.length ? btn("Restore blocked sample posts", "restore-posts") : ""}<p class="notice">Sample profiles, photos and reactions. Nothing is posted publicly. Posting access and moderation remain planned product decisions.</p>`
+      `<div class="grid grid-2">${posts.map((p) => `<article class="card post"><div class="card-header post-meta"><span class="post-avatar">${esc(p.author.slice(0, 1))}</span><div><b>${esc(p.author)}</b><p class="muted">${p.kind}</p></div>${p.authorId === "self" ? "" : btn(S.follows.includes(p.authorId) ? "Following" : "Follow", "follow", p.authorId, "btn-quiet")}</div>${p.image ? `<img class="post-image" src="${p.image}" alt="Illustrative meal image; not user-submitted proof">` : ""}<h2>${esc(p.title)}</h2><p>${esc(p.text)}</p><div class="actions">${btn(S.cheers.includes(p.id) ? "Cheered" : "Cheer", "cheer", p.id, "btn-quiet")}${btn("Reply", "reply", p.id, "btn-quiet")}${btn(S.savedPosts.includes(p.id) ? "Saved" : "Save", "save-post", p.id, "btn-quiet")}${btn("Report / block", "report", p.id, "btn-quiet")}</div>${(S.replies[p.id] || []).map((t) => `<p class="notice"><b>You · sample reply:</b> ${esc(t)}</p>`).join("")}</article>`).join("")}</div>${S.blocked.length ? btn("Restore blocked sample posts", "restore-posts") : ""}<p class="notice">Sample profiles, photos and reactions. Nothing is posted publicly. Posting access and moderation remain planned product decisions.</p>`
     );
   }
   function shoppingView() {
@@ -1143,11 +1196,17 @@
         "What’s demonstrated. What comes next.",
         "Every planned capability has a visible representation. A preview is not a production implementation.",
       ) +
-      `<div class="pill-row">${tag("Demo")}${tag("MVP planned")}${tag("Later planned")}${tag("Exploratory")}</div><div class="grid grid-2">${D.features.map(([pillar, name, status, detail]) => `<article class="card"><div class="card-header"><span class="eyebrow">${pillar}</span>${tag(status)}</div><h2>${name}</h2><p>${detail}</p>${status !== "Demo" ? btn("Open concept preview", "preview", previewKey(name)) : btn("Explore journey", "go", pillar === "Learn" ? "school" : pillar === "Play" ? "play" : "kitchen")}</article>`).join("")}</div>`
+      `<div class="pill-row">${tag("Demo")}${tag("MVP planned")}${tag("Later planned")}${tag("Exploratory")}</div><div class="grid grid-2">${D.features.map(([pillar, name, status, detail]) => `<article class="card"><div class="card-header"><span class="eyebrow">${pillar}</span>${tag(status)}</div><h2>${name}</h2><p>${detail}</p>${status !== "Demo" ? btn("Open concept preview", "preview", previewKey(name)) : btn("Explore journey", "go", pillar === "Learn" ? "school" : pillar === "Play" ? "play" : /Receipts/.test(name) ? "expenses" : "kitchen")}</article>`).join("")}</div>`
     );
   }
   function previewKey(name) {
     if (/Voice|multilingual/.test(name)) return "voice";
+    if (/Community|Custom challenges/.test(name)) return "play";
+    if (/Photo authenticity/.test(name)) return "authenticity";
+    if (/Personalized coaching/.test(name)) return "coaching";
+    if (/Starter lessons/.test(name)) return "curriculum";
+    if (/Barcode|Produce recognition/.test(name)) return "recognition";
+    if (/Daily quests/.test(name)) return "quests";
     if (/family|Shared/.test(name)) return "family";
     if (/planning|dietary/.test(name)) return "planning";
     if (/Offline/.test(name)) return "offline";
@@ -1170,6 +1229,44 @@
   }
   function preview(id) {
     const previews = {
+      coaching: [
+        "Personalized coaching engine",
+        "MVP planned",
+        "Planned coaching combines cooking confidence, goals, time, exclusions, equipment and available ingredients. Answers need evaluated models, safety rules and human-reviewed content before release.",
+        btn("Try context-aware sample Zara", "coach", S.recipe, "btn-primary") +
+          btn("Review sample preferences", "go", "profile"),
+      ],
+      curriculum: [
+        "Starter lessons & skill quests",
+        "MVP planned",
+        "The proposed starter curriculum links a short explanation, a knowledge check and guided recipe practice. Milestones measure those three activities; XP rewards participation separately.",
+        '<ol class="timeline"><li>Understand · read the technique and reason</li><li>Check · answer with corrective feedback</li><li>Practise · acknowledge the technique while cooking</li></ol>' +
+          btn("Try the starter curriculum", "go", "school", "btn-primary"),
+      ],
+      recognition: [
+        "Recognition & review pipeline",
+        "MVP / later planned",
+        "Planned capture → recognize → review → confirm. Barcode lookup and reviewed dates are MVP scope; produce recognition and receipt OCR need later integrations. Recognition never bypasses your review.",
+        btn(
+          "Try sample kitchen capture",
+          "scan-open",
+          "fridge",
+          "btn-primary",
+        ) + btn("Try sample receipt capture", "scan-open", "paper"),
+      ],
+      quests: [
+        "Daily quests & basic feed",
+        "MVP planned",
+        "A proposed daily loop recommends a meal or technique, records reviewed completion and awards XP once. The basic social rollout needs moderation and a confirmed posting entitlement.",
+        btn("Try sample quests", "go", "play", "btn-primary") +
+          btn("Explore sample Food Hub", "go", "hub"),
+      ],
+      authenticity: [
+        "Photo authenticity checks",
+        "Exploratory",
+        "A future submission could show review status and appeal options. The current sample photo is illustrative; it is never evidence that a meal was cooked. Feasibility, privacy and error rates need validation before any authenticity claim.",
+        '<ol class="timeline"><li>Submit · consent and context</li><li>Review · show pending, accepted or needs-review status</li><li>Appeal · correct errors with human oversight</li></ol>',
+      ],
       voice: [
         "Voice & multilingual coaching",
         "Later planned",
@@ -1179,9 +1276,17 @@
             "Concept language",
             "language",
             ["English", "Arabic — planned"],
-            "English",
+            S.previewLanguage || "English",
+          ).replace(
+            '<select name="language"',
+            '<select name="language" data-change="preview-language"',
           ) +
           "</div>" +
+          notice(
+            (S.previewLanguage || "English") === "English"
+              ? "Scripted explanation preview: English."
+              : "Arabic remains planned; scripted explanation stays in English in this prototype.",
+          ) +
           btn("Try scripted step explanation", "coach", S.recipe),
       ],
       family: [
@@ -1298,6 +1403,20 @@
       );
       return;
     }
+    if (
+      a.ing.some(
+        (x) =>
+          x.id !== "skip" &&
+          (S.items[x.id].unit !== D.items[x.id].unit ||
+            daysLeft(S.items[x.id]) < 0),
+      )
+    ) {
+      formError(
+        form,
+        "Review ingredient units and dates in Kitchen before applying this meal.",
+      );
+      return;
+    }
     const used = [];
     for (const x of a.ing.filter((x) => x.id !== "skip")) {
       const raw = fd.get("used-" + x.id),
@@ -1338,6 +1457,7 @@
       rid: r.id,
       used,
       before,
+      after: Object.fromEntries(used.map((x) => [x.id, S.items[x.id].qty])),
       lessonBefore,
       technique: c.technique,
       knifePractice: !!c.knifePractice,
@@ -1346,6 +1466,7 @@
       undone: false,
     };
     S.meals.push(m);
+    S.activeMeal = m.id;
     c.applied = true;
     S.adjustments.push(
       "Cooked " + r.name + ": reviewed ingredient deduction applied.",
@@ -1415,7 +1536,7 @@
     );
   }
   function closeModalIfOpen() {
-    if (modal.open) modal.close();
+    closeModal();
   }
   function handleAction(action, id, el) {
     if (action === "modal-close") return closeModal();
@@ -1520,6 +1641,13 @@
       navigate("recipe");
       return;
     }
+    if (action === "meal-open") {
+      const meal = S.meals.find((m) => m.id === id && !m.undone);
+      if (!meal) return;
+      S.activeMeal = meal.id;
+      navigate("complete");
+      return;
+    }
     if (action === "lesson") {
       closeModalIfOpen();
       S.currentLesson = id;
@@ -1570,11 +1698,12 @@
     }
     if (action === "undo-meal") {
       const m = S.meals.find((x) => x.id === id);
-      if (!m || m.claimed || m.undone) return;
+      if (!m || m.claimed || m.undone || !canUndoMeal(m)) return;
       m.used.forEach((x) => {
         S.items[x.id].qty = Number((S.items[x.id].qty + x.qty).toFixed(2));
       });
       m.undone = true;
+      if (S.activeMeal === m.id) S.activeMeal = null;
       D.lessons.forEach((l) => {
         S.lessons[l.id].practice = S.meals.some(
           (other) =>
@@ -1766,6 +1895,11 @@
       else S.swaps[S.recipe][el.dataset.id] = el.value;
       render();
     }
+    if (what === "preview-language") {
+      S.previewLanguage = el.value;
+      persist();
+      preview("voice");
+    }
     if (what === "technique") {
       S.cooking.technique = el.checked;
       persist();
@@ -1799,7 +1933,8 @@
         cuisine: fd.get("cuisine"),
         allergies: fd.getAll("allergies"),
       };
-      if (fd.get("starter")) {
+      const starter = !!fd.get("starter");
+      if (starter) {
         [
           ["tomatoes", 4],
           ["basil", 1],
@@ -1813,7 +1948,9 @@
       closeModal();
       navigate("home");
       toast(
-        "Sample preferences saved. Five ingredients give you a quick first recipe.",
+        starter
+          ? "Sample preferences saved. Five ingredients give you a quick first recipe."
+          : "Sample preferences saved. Existing kitchen stock was left unchanged.",
       );
     }
     if (kind === "single-scan") {
@@ -2072,8 +2209,15 @@
   }
   window.addEventListener("hashchange", restoreRoute);
   window.addEventListener("popstate", restoreRoute);
-  modal.addEventListener("cancel", () => {
-    if (lastFocus?.isConnected) setTimeout(() => lastFocus.focus(), 0);
+  modal.addEventListener("close", () => {
+    cancelScanTimers();
+    if (
+      !modal.open &&
+      lastFocus?.isConnected &&
+      (document.activeElement === document.body ||
+        modal.contains(document.activeElement))
+    )
+      lastFocus.focus({ preventScroll: true });
   });
   window.addEventListener("message", (event) => {
     if (
@@ -2083,6 +2227,10 @@
       typeof event.data !== "object"
     )
       return;
+    if (event.data.type === "nomli:ping") {
+      parent.postMessage({ type: "nomli:ready" }, location.origin);
+      return;
+    }
     if (
       event.data.type === "nomli:navigate" &&
       routes.includes(event.data.route)
@@ -2093,4 +2241,6 @@
     if (event.data.type === "nomli:scan") scanCamera(event.data.mode);
   });
   render(false);
+  if (parent !== window)
+    parent.postMessage({ type: "nomli:ready" }, location.origin);
 })();

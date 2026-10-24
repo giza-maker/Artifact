@@ -8,7 +8,7 @@ Nomli joins three pillars: **Learn** practical cooking skills, **Manage** the ki
 - Guided investor path: https://giza-maker.github.io/Artifact/kitchenaut-landing/app/index.html?investor=1
 - Landing page: https://giza-maker.github.io/Artifact/kitchenaut-landing/
 
-The landing page embeds the same mobile app at `app/index.html?embed=1&surface=hero&v=20261024-3`. Same-origin screen shortcuts control that live phone. There is one prototype engine, not separate marketing and presentation versions.
+The landing page embeds the same mobile app at `app/index.html?embed=1&surface=hero&v=20261024-4`. Same-origin screen shortcuts control that live phone. There is one prototype engine, not separate marketing and presentation versions.
 
 For local preview, serve this folder with any static server, for example `python -m http.server 8000`, then open `http://localhost:8000/app/index.html?investor=1`. The offline package uses a local static server, so no internet connection is required. The app has no remote dependencies. Direct file-URL opening was not browser-tested because tooling blocks that protocol.
 
@@ -29,6 +29,10 @@ For local preview, serve this folder with any static server, for example `python
 ## Rehearsal
 
 Use `INVESTOR_GUIDE.md`. Start from Reset, keep the default sample preferences for the short demonstration, and follow Manage → Learn → Play. Receipts and budgets are optional after the core path. No lead form or disabled walkthrough CTA is present; contact remains intentionally unset.
+
+The 24 October meeting audit reviewed all 102 partner items. Fixes include scrolling sheets with pinned Close, full-height phone layout, cancelled stale scan/route animations, accessible validation focus, reopenable meal history, guarded inventory undo, persistent language previews and explicit quest rules. Thirteen domain regression checks pass; the core UI flow repeated twice from Reset with matching outcomes. These automated runs do not replace a human timed rehearsal on the presentation hardware.
+
+`INVESTOR_CHECKLIST.md` records remaining founder and presenter tasks. `overview.html` is the printable one-page leave-behind. The landing includes the feature/tier/release map, three customer problems, sourced competitor positioning and funding-enabled validation scope.
 
 ## Files and state
 
