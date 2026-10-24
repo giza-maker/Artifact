@@ -119,7 +119,7 @@ window.NOMLI_DATA = {
     {
       id: "salad",
       name: "Tomato & basil salad",
-      image: "../images/tomato-256.webp",
+      image: "../images/recipe-salad.webp",
       time: 8,
       difficulty: "Beginner",
       cuisine: "Mediterranean",
@@ -154,7 +154,7 @@ window.NOMLI_DATA = {
     {
       id: "bruschetta",
       name: "Tomato & basil bruschetta",
-      image: "../images/plate-320.webp",
+      image: "../images/plate-640.webp",
       time: 12,
       difficulty: "Beginner",
       cuisine: "Mediterranean",
@@ -198,7 +198,7 @@ window.NOMLI_DATA = {
     {
       id: "omelette",
       name: "Basil omelette",
-      image: "../images/eggs-256.webp",
+      image: "../images/recipe-omelette.webp",
       time: 8,
       difficulty: "Beginner",
       cuisine: "Everyday",
@@ -232,7 +232,7 @@ window.NOMLI_DATA = {
     {
       id: "skillet",
       name: "Tomato & egg skillet",
-      image: "../images/tomato-256.webp",
+      image: "../images/recipe-skillet.webp",
       time: 15,
       difficulty: "Developing",
       cuisine: "MENA-inspired",

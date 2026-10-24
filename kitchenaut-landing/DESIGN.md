@@ -1,13 +1,15 @@
 # Nomli design contract
 
-Warm, dark, editorial consumer product. Preserve the orange N-and-spoon mark, local food photography, serif headings and plain sans body. Learn, Manage and Play receive equal prominence.
+Nomli is a mobile consumer app presented inside a cinematic, photography-led landing page. The live phone is the main product demonstration. Preserve the earlier orange N-and-spoon identity and warm kitchen imagery. Learn, Manage and Play have equal product importance.
 
-- Background #120e0b; surfaces #1c1612/#261e18; text #f6efe6; secondary #b8a99a.
-- Primary orange #f97316; small orange text #fb923c. Status colors have semantic meaning only.
-- Minimum visible text 14px; primary controls at least 44px high; visible keyboard focus; native dialog focus containment and Escape dismissal.
-- Responsive app: sidebar on desktop, five-item bottom navigation plus Menu on mobile. No page overflow at 320px. Scrollable tables stay inside their cards.
-- No continuous hero cycling or layout animations. Reduced-motion preferences are respected. The app uses local files and system fallbacks, with no remote font dependency.
-- The landing preview embeds the same app code. Investor-tour guidance is optional and compact. Expense tracking follows the core Manage → Learn → Play story.
+- App background #100f0e; surfaces #1c1a17/#25211c; text #faf6ef; secondary #a89f94. Primary orange #ff7a18. Other colors have semantic meaning only.
+- App typography: locally hosted DM Sans, 22–25px screen titles, 14px body, 10–12px compact metadata. Landing display uses locally hosted Fraunces with DM Sans body.
+- Mobile app at every browser size: centered device up to 430px on desktop, edge-to-edge in a phone iframe. Five icon tabs remain visible; header and bottom navigation frame an independently scrolling content region. No desktop sidebar.
+- Cards use 16–24px corners; touch controls usually 44px minimum, compact secondary controls 36px. Visible keyboard focus, native dialog focus containment and Escape dismissal. Camera simulations fill the device; other dialogs behave as bottom sheets.
+- Phone composition: image-first meal cards, ingredient photography, contextual Zara, lesson thumbnails and distinct recipe photos. Use Phosphor regular icons from the local sprite. Never substitute emoji for navigation icons.
+- Motion communicates state: short screen translations, finite scan/extraction stages, detection labels, button press feedback, one-shot reward celebration, and landing section reveals. Never auto-cycle an interactive screen. Respect reduced motion; avoid layout-thrashing loops.
+- The hero embeds the same app engine as the standalone mobile demo. Landing shortcuts navigate that phone through same-origin messages. Investor guidance is optional and hidden for the normal hero preview.
+- Scanning includes fridge, barcode, expiry label, physical receipt and e-receipt simulations. Each leads to editable review before state changes. No live camera, files, OCR or recognition service is accessed.
 - Lesson progress means concept read, knowledge check and self-reported recipe practice. XP tracks activity separately. Three starter lessons are free; the 500-XP unlock is a Heat-control challenge.
 - All AI, scanning, receipt extraction, community and upgrade interactions are explicit simulations. Future capabilities have Demo / MVP planned / Later planned / Exploratory labels.
 - Never collect real credentials, payment details, contact information or health information for the demo. Onboarding uses fictional sample choices. No claim of certified skills, food safety or photo verification.

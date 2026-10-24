@@ -1,331 +1,428 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="no-js">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Nomli | Learn. Manage. Play.</title>
+    <title>Nomli | Your kitchen. Your next level.</title>
     <meta
       name="description"
-      content="Nomli connects practical cooking learning, kitchen management and rewarding play. Explore the pre-launch sample prototype."
+      content="Nomli connects cooking skills, kitchen management and rewarding play. Explore the interactive pre-launch prototype."
     />
+    <meta name="theme-color" content="#120e0b" />
+    <meta name="color-scheme" content="dark" />
     <link
       rel="canonical"
       href="https://giza-maker.github.io/Artifact/kitchenaut-landing/"
     />
+    <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Nomli" />
-    <meta property="og:title" content="Nomli — Learn. Manage. Play." />
+    <meta
+      property="og:title"
+      content="Nomli — Your kitchen. Your next level."
+    />
     <meta
       property="og:description"
-      content="Learn cooking skills, manage your kitchen and enjoy the progress. Explore the interactive product prototype."
-    />
-    <meta property="og:type" content="website" />
-    <meta
-      property="og:url"
-      content="https://giza-maker.github.io/Artifact/kitchenaut-landing/"
+      content="Learn to cook, manage your kitchen and make progress worth returning to."
     />
     <meta
       property="og:image"
       content="https://giza-maker.github.io/Artifact/kitchenaut-landing/images/hero-1280.webp"
     />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="theme-color" content="#17100c" />
-    <link rel="icon" href="favicon.svg" />
-    <link rel="stylesheet" href="styles.css" />
-    <script src="script.js" defer></script>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link
+      rel="preload"
+      as="image"
+      href="images/hero-1280.webp"
+      imagesrcset="images/hero-800.webp 800w, images/hero-1280.webp 1280w, images/hero-2048.webp 2048w"
+      imagesizes="100vw"
+      fetchpriority="high"
+    />
+    <script>
+      document.documentElement.className = "js";
+    </script>
+    <link rel="stylesheet" href="styles.css?v=20261024-3" />
+    <script src="script.js?v=20261024-3" defer></script>
   </head>
   <body>
     <a class="skip" href="#main">Skip to content</a>
-    <header data-header>
+    <header class="site-header" data-header>
       <div class="wrap nav">
-        <a class="brand" href="#top"
-          ><img src="favicon.svg" alt="" width="30" height="30" />Nomli</a
-        ><button class="menu" aria-expanded="false" aria-controls="navlinks">
+        <a class="brand" href="#top" aria-label="Nomli home"
+          ><img src="favicon.svg" alt="" width="34" height="34" /><span
+            >Nomli</span
+          ></a
+        >
+        <button
+          class="menu"
+          type="button"
+          aria-expanded="false"
+          aria-controls="navlinks"
+        >
           Menu
         </button>
-        <nav id="navlinks">
-          <a href="#product">Product</a><a href="#model">Model</a
-          ><a href="#roadmap">Roadmap</a><a href="#validation">Validation</a>
+        <nav id="navlinks" aria-label="Primary navigation">
+          <a href="#features">Features</a><a href="#how">How it works</a
+          ><a href="#plans">Plans</a><a href="#roadmap">Roadmap</a>
         </nav>
-        <a class="btn small" href="app/index.html?investor=1">Open prototype</a>
+        <a class="button button--small nav-cta" href="#demo"
+          >Try Nomli <span aria-hidden="true">↘</span></a
+        >
       </div>
     </header>
     <main id="main">
-      <section class="hero" id="top">
-        <img
-          src="images/hero-1280.webp"
-          srcset="
-            images/hero-800.webp   800w,
-            images/hero-1280.webp 1280w,
-            images/hero-2048.webp 2048w
-          "
-          alt="Open fridge with fresh ingredients"
-        />
-        <div class="wrap hero-grid">
-          <div>
-            <p class="eyebrow"><i></i>Learn · Manage · Play · Prototype</p>
-            <h1>
-              Learn to cook.<br />Run your kitchen.<br /><em
-                >Enjoy the progress.</em
-              >
-            </h1>
-            <p class="lede">
-              Nomli connects cooking development, household food management and
-              game mechanics in one daily loop. The current build is a sample
-              prototype for testing the product story and core workflow.
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <picture class="hero__media"
+          ><source
+            media="(max-width:680px)"
+            srcset="images/hero-m-600.webp 600w, images/hero-m-1000.webp 1000w"
+            sizes="100vw" />
+          <img
+            src="images/hero-1280.webp"
+            srcset="
+              images/hero-800.webp   800w,
+              images/hero-1280.webp 1280w,
+              images/hero-2048.webp 2048w
+            "
+            sizes="100vw"
+            alt="Open refrigerator lighting a dark kitchen, filled with fresh ingredients"
+            fetchpriority="high"
+        /></picture>
+        <div class="wrap hero__grid">
+          <div class="hero__copy reveal">
+            <p class="eyebrow">
+              <span aria-hidden="true"></span>Pre-launch · interactive prototype
             </p>
-            <div class="actions">
-              <a class="btn" href="app/index.html?investor=1"
-                >Try the full prototype ↗</a
-              ><a href="#demo">View embedded demo ↓</a>
+            <h1 id="hero-title">
+              Your kitchen.<br /><em>Your next level.</em>
+            </h1>
+            <p class="hero__lede">
+              Nomli connects cooking skills, the food you own and a reason to
+              come back tomorrow.
+            </p>
+            <div class="hero__actions">
+              <a class="button" href="#demo"
+                >Try Nomli <span aria-hidden="true">↓</span></a
+              ><a class="text-link" href="#how"
+                >See the loop <span aria-hidden="true">→</span></a
+              >
             </div>
-            <small
-              >Sample data and simulated behavior. No production AI, users,
-              revenue or traction claimed.</small
+            <div class="pillars" aria-label="Nomli product pillars">
+              <div><b>Learn</b><span>Technique inside every meal</span></div>
+              <div><b>Manage</b><span>Your whole kitchen in view</span></div>
+              <div><b>Play</b><span>Quests that reward practice</span></div>
+            </div>
+          </div>
+          <div class="device-stage reveal" id="demo">
+            <p class="device-stage__label">
+              <span>Live demo</span> · sample data
+            </p>
+            <div class="phone-shell">
+              <iframe
+                id="nomli-app-frame"
+                src="app/index.html?embed=1&amp;surface=hero&amp;v=20261024-3"
+                title="Interactive Nomli mobile app"
+              ></iframe>
+            </div>
+            <div
+              class="screen-shortcuts"
+              aria-label="Open a screen in the Nomli demo"
+            >
+              <button type="button" data-route="kitchen">Kitchen</button
+              ><button type="button" data-mode="fridge">Scan</button
+              ><button type="button" data-route="cook">Cook</button
+              ><button type="button" data-route="school">School</button
+              ><button type="button" data-route="play">Play</button
+              ><button type="button" data-route="expenses">Expenses</button>
+            </div>
+            <a class="open-mobile" href="app/index.html?v=20261024-3#home"
+              >Open mobile demo <span aria-hidden="true">↗</span></a
             >
           </div>
-          <div class="pillars">
-            <article>
-              <b>01</b><span class="tag demo">Demo</span>
-              <h2>Learn</h2>
-              <p>
-                Practice technique inside recipes. Three starter lessons stay
-                free; Level 2 unlocks a Heat-control challenge.
-              </p>
-            </article>
-            <article>
-              <b>02</b><span class="tag demo">Demo</span>
-              <h2>Manage</h2>
-              <p>
-                See ingredients, storage and equipment together, then turn what
-                is available into a plan.
-              </p>
-            </article>
-            <article>
-              <b>03</b><span class="tag demo">Demo</span>
-              <h2>Play</h2>
-              <p>
-                Use quests and visible progress to make repeated cooking worth
-                returning to.
-              </p>
-            </article>
-          </div>
         </div>
       </section>
-      <section class="section">
-        <div class="wrap split">
-          <div>
-            <p class="kicker">Product thesis</p>
-            <h2>
-              Cooking support is split across
-              <em>three incomplete experiences.</em>
-            </h2>
-          </div>
-          <div class="problems">
-            <article>
-              <b>Learn</b>
-              <h3>Instructions rarely build skill</h3>
-              <p>
-                Recipes finish one meal but often miss the technique that
-                transfers to the next.
-              </p>
-            </article>
-            <article>
-              <b>Manage</b>
-              <h3>Kitchen context lives elsewhere</h3>
-              <p>
-                Ingredients, expiry, tools, budgets and shopping lists sit in
-                separate workflows.
-              </p>
-            </article>
-            <article>
-              <b>Play</b>
-              <h3>Good intentions lack a return loop</h3>
-              <p>
-                Most utilities stop at the answer and do little to sustain
-                practice.
-              </p>
-            </article>
-          </div>
-        </div>
-      </section>
-      <section class="section warm" id="product">
+      <section class="loop-section" id="how" aria-labelledby="loop-title">
         <div class="wrap">
-          <p class="kicker">One connected loop</p>
-          <div class="head">
-            <h2>Each pillar makes the <em>other two stronger.</em></h2>
+          <p class="kicker reveal">One connected loop</p>
+          <div class="section-head reveal">
+            <h2 id="loop-title">
+              Learn while cooking.<br /><em>Run the kitchen as you go.</em>
+            </h2>
             <p>
-              Kitchen context shapes the recipe. The recipe becomes a lesson and
-              quest. Completion updates skills and inventory, improving the next
+              Kitchen context shapes the meal. The meal becomes a lesson and
+              quest. Completion updates skills and inventory for the next
               session.
             </p>
           </div>
-          <ol class="loop">
-            <li><b>1</b>Set skill goals</li>
-            <li><b>2</b>Confirm kitchen</li>
-            <li><b>3</b>Match meal + technique</li>
-            <li><b>4</b>Cook with guidance</li>
-            <li><b>5</b>Update progress</li>
+          <ol class="loop reveal">
+            <li>
+              <span>01</span><b>Scan</b><small>Confirm what you have</small>
+            </li>
+            <li>
+              <span>02</span><b>Match</b><small>Choose meal + technique</small>
+            </li>
+            <li>
+              <span>03</span><b>Cook</b><small>Follow Zara’s guidance</small>
+            </li>
+            <li>
+              <span>04</span><b>Improve</b><small>Update kitchen + skill</small>
+            </li>
           </ol>
-          <div class="features">
-            <article>
-              <img src="images/prep2-800.webp" alt="Preparing ingredients" />
-              <div>
-                <span class="tag demo">Demo</span>
-                <h3>Learn in context</h3>
-                <p>
-                  Technique sits inside meal steps. Three starter lessons are
-                  free. Level 2 adds Heat-control; School basics are never
-                  locked.
-                </p>
-              </div>
-            </article>
-            <article>
-              <img src="images/fridge-800.webp" alt="Organized refrigerator" />
-              <div>
-                <span class="tag demo">Demo</span>
-                <h3>Manage the whole kitchen</h3>
-                <p>
-                  Food, storage and equipment share one view. Scan and expiry
-                  outputs are simulated and require user review.
-                </p>
-              </div>
-            </article>
-            <article>
-              <img src="images/dish-800.webp" alt="Finished dish" />
-              <div>
-                <span class="tag demo">Demo</span>
-                <h3>Make progress tangible</h3>
-                <p>
-                  Quests and skill progress reward practice. Community remains
-                  planned work, not live network activity.
-                </p>
-              </div>
-            </article>
-          </div>
         </div>
       </section>
-      <section class="section demo-section" id="demo">
-        <div class="wrap">
-          <div class="head">
-            <div>
-              <p class="kicker">Interactive sample</p>
-              <h2>Follow the <em>Learn · Manage · Play</em> loop.</h2>
+      <section class="features" id="features" aria-label="Nomli features">
+        <article class="feature feature--image-right" id="inventory">
+          <div class="feature__photo reveal">
+            <img
+              src="images/fridge-1280.webp"
+              srcset="
+                images/fridge-800.webp   800w,
+                images/fridge-1280.webp 1280w
+              "
+              sizes="(max-width:800px) 100vw, 50vw"
+              alt="Organized refrigerator shelves with fresh ingredients"
+              loading="lazy"
+            />
+          </div>
+          <div class="feature__copy reveal">
+            <p class="kicker">Manage · inventory + scanning</p>
+            <h2>See what you own.<br /><em>Use it in time.</em></h2>
+            <p>
+              Keep food, storage and equipment together. Add items manually or
+              test camera-assisted fridge scanning, then review every result
+              before it enters your kitchen.
+            </p>
+            <div class="mini-ui inventory-ui" aria-hidden="true">
+              <div>
+                <img src="images/basil-128.webp" alt="" /><span
+                  ><b>Basil</b><small>Use first · tomorrow</small></span
+                ><i>1d</i>
+              </div>
+              <div>
+                <img src="images/tomato-128.webp" alt="" /><span
+                  ><b>Tomatoes</b><small>Fridge · produce</small></span
+                ><i>2d</i>
+              </div>
+              <div>
+                <img src="images/eggs-128.webp" alt="" /><span
+                  ><b>Eggs</b><small>Fridge · top shelf</small></span
+                ><i>3d</i>
+              </div>
             </div>
-            <div>
-              <p>
-                Fixed sample data. Open full screen for the clearest investor
-                walkthrough.
-              </p>
-              <a class="btn" href="app/index.html?investor=1"
-                >Open full-screen prototype ↗</a
+            <div class="feature__actions">
+              <button class="route-button" type="button" data-mode="fridge">
+                Try fridge scan <span aria-hidden="true">→</span></button
+              ><button
+                class="route-button route-button--quiet"
+                type="button"
+                data-route="kitchen"
+              >
+                Open kitchen
+              </button>
+            </div>
+          </div>
+        </article>
+        <article class="feature feature--dark" id="recipes">
+          <div class="feature__photo reveal">
+            <img
+              src="images/prep2-1280.webp"
+              srcset="images/prep2-800.webp 800w, images/prep2-1280.webp 1280w"
+              sizes="(max-width:800px) 100vw, 50vw"
+              alt="Fresh ingredients being prepared on a kitchen counter"
+              loading="lazy"
+            />
+          </div>
+          <div class="feature__copy reveal">
+            <p class="kicker">Learn · recipes + Zara</p>
+            <h2>A recipe that knows<br /><em>your real kitchen.</em></h2>
+            <p>
+              Match meals to ingredients, equipment and time. Chef Zara turns
+              each step into practical coaching as you go.
+            </p>
+            <blockquote class="zara">
+              <img src="images/zara-96.webp" alt="" />
+              <div>
+                <b>Chef Zara <span>AI direction</span></b>
+                <p>
+                  “Your basil goes first. Let’s turn it into dinner and practise
+                  the salt trick.”
+                </p>
+              </div>
+            </blockquote>
+            <button class="route-button" type="button" data-route="cook">
+              Cook with Zara <span aria-hidden="true">→</span>
+            </button>
+          </div>
+        </article>
+        <article class="feature feature--school" id="school">
+          <div class="school-art reveal" aria-hidden="true">
+            <img
+              class="school-preview"
+              src="images/school-preview.png"
+              width="390"
+              height="844"
+              alt=""
+              loading="lazy"
+            />
+          </div>
+          <div class="feature__copy reveal">
+            <p class="kicker">Learn · Chef School</p>
+            <h2>Real skills.<br /><em>One technique at a time.</em></h2>
+            <p>
+              Start with knife setup, flavour and heat. Every lesson connects a
+              clear idea, a quick knowledge check and a technique to try in your
+              next meal.
+            </p>
+            <ul class="check-list">
+              <li>Technique embedded in real meals</li>
+              <li>Visible practice and progress</li>
+              <li>No basics hidden behind an XP gate</li>
+            </ul>
+            <button class="route-button" type="button" data-route="school">
+              Enter Chef School <span aria-hidden="true">→</span>
+            </button>
+          </div>
+        </article>
+        <article class="feature feature--image-right" id="play">
+          <div class="feature__photo reveal">
+            <img
+              src="images/dish-1280.webp"
+              srcset="images/dish-800.webp 800w, images/dish-1280.webp 1280w"
+              sizes="(max-width:800px) 100vw, 50vw"
+              alt="Finished meal ready to serve"
+              loading="lazy"
+            />
+          </div>
+          <div class="feature__copy reveal">
+            <p class="kicker">Play · quests + rewards</p>
+            <h2>Make progress<br /><em>worth returning to.</em></h2>
+            <p>
+              XP, skill milestones and weekly goals turn each meal into a small
+              win. See what you are learning, then unlock your next challenge.
+            </p>
+            <div class="reward-row" aria-label="Sample game progress">
+              <div><span>+60</span><small>meal + skill XP</small></div>
+              <div><span>3</span><small>days per week goal</small></div>
+              <div><span>Apprentice</span><small>Heat control next</small></div>
+            </div>
+            <button class="route-button" type="button" data-route="play">
+              View today’s quests <span aria-hidden="true">→</span>
+            </button>
+          </div>
+        </article>
+        <article class="feature feature--dark" id="expenses">
+          <div class="feature__photo feature__photo--receipt reveal">
+            <img
+              src="images/receipt-camera.webp"
+              width="780"
+              height="1000"
+              alt="A sample grocery receipt on a walnut kitchen table"
+              loading="lazy"
+            />
+            <div class="receipt-card" aria-hidden="true">
+              <small>Receipt review</small><b>3 items found</b
+              ><span>Confirm before saving</span><strong>SAR 50.50</strong>
+            </div>
+          </div>
+          <div class="feature__copy reveal">
+            <p class="kicker">Manage · receipts + expenses</p>
+            <h2>Know what you bought.<br /><em>See what you spend.</em></h2>
+            <p>
+              Paper receipt or e-receipt, every shop stays connected. Review
+              what you bought, update your groceries and keep your budget in
+              view. Receipt recognition is simulated in this demo.
+            </p>
+            <div class="feature__actions">
+              <button class="route-button" type="button" data-mode="paper">
+                Scan a receipt <span aria-hidden="true">→</span></button
+              ><button
+                class="route-button route-button--quiet"
+                type="button"
+                data-route="expenses"
+              >
+                Open expenses
+              </button>
+            </div>
+          </div>
+        </article>
+        <article class="feature feature--future" id="family">
+          <div class="future-art reveal" aria-hidden="true">
+            <div class="avatar-stack">
+              <span>A</span><span>M</span><span>+2</span>
+            </div>
+            <div class="future-post">
+              <img src="images/plate-320.webp" alt="" /><span
+                ><b>Sunday dinner</b
+                ><small>Cooked from the family kitchen</small></span
               >
             </div>
           </div>
-          <div class="frame">
-            <div>
-              <span>● ● ●</span><b>Nomli sample product prototype</b
-              ><a href="app/index.html?investor=1">Full screen ↗</a>
-            </div>
-            <iframe
-              src="app/index.html?embed=1"
-              title="Nomli interactive sample product prototype"
-              loading="lazy"
-              allowfullscreen
-            ></iframe>
+          <div class="feature__copy reveal">
+            <p class="kicker">Later · Food Hub + family</p>
+            <h2>A shared kitchen.<br /><em>A community of cooks.</em></h2>
+            <p>
+              Household coordination and cooked-dish sharing are future
+              directions—not live social activity. Both need privacy, moderation
+              and usefulness testing before release.
+            </p>
+            <button class="route-button" type="button" data-route="hub">
+              Preview Food Hub <span aria-hidden="true">→</span>
+            </button>
           </div>
-        </div>
+        </article>
       </section>
-      <section class="section" id="model">
+      <section class="proof" id="plans" aria-labelledby="plans-title">
         <div class="wrap">
-          <p class="kicker">Feature · tier · release</p>
-          <div class="head">
-            <h2>
-              Access follows shipped capability, <em>not a billing promise.</em>
+          <p class="kicker reveal">Plans · hypothesis, not checkout</p>
+          <div class="section-head reveal">
+            <h2 id="plans-title">
+              Access follows<br /><em>shipped value.</em>
             </h2>
             <p>
-              No plan is billable today. Packaging and prices require
-              validation.
+              No plan is billable today. Packages and prices require validation.
             </p>
           </div>
-          <div class="table">
-            <table>
-              <thead>
-                <tr>
-                  <th>Capability</th>
-                  <th>Free direction</th>
-                  <th>Paid direction</th>
-                  <th>Status</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <th>Chef School</th>
-                  <td>3 starter lessons</td>
-                  <td>Expanded curriculum</td>
-                  <td><span class="tag mvp">MVP planned</span></td>
-                </tr>
-                <tr>
-                  <th>Kitchen management</th>
-                  <td>Inventory + personal tools</td>
-                  <td>Shared family kitchen later</td>
-                  <td><span class="tag mvp">MVP planned</span></td>
-                </tr>
-                <tr>
-                  <th>Quests + guidance</th>
-                  <td>Core daily loop</td>
-                  <td>Deeper challenges</td>
-                  <td><span class="tag mvp">MVP planned</span></td>
-                </tr>
-                <tr>
-                  <th>Billing</th>
-                  <td>None</td>
-                  <td>After package validation</td>
-                  <td><span class="tag later">Later planned</span></td>
-                </tr>
-                <tr>
-                  <th>Advanced scan, voice + social</th>
-                  <td>Not included</td>
-                  <td>To be tested</td>
-                  <td>
-                    <span class="tag later">Later planned · Phase 4</span>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <p class="note">
-            Price hypotheses: Free $0, Plus $5.99/month, Pro $12.99/month,
-            Family $19.99/month. These are not validated prices or purchasable
-            plans. Social-posting access and advertising need founder
-            validation.
-          </p>
-          <p class="note" id="expenses">
-            <a href="app/index.html#expenses"
-              >Explore the optional receipts and spending mockup</a
-            >.
-          </p>
-          <p class="note">
-            Expense and receipt tools are an optional Manage branch, not the
-            main loop. Automated extraction is later planned; online grocery
-            ordering remains exploratory.
-          </p>
-        </div>
-      </section>
-      <section class="section dark" id="roadmap">
-        <div class="wrap">
-          <p class="kicker">Roadmap</p>
-          <div class="head">
-            <h2>Prove the core loop before <em>adding breadth.</em></h2>
-            <p>Sequence reflects product risk, not committed delivery dates.</p>
-          </div>
-          <div class="phases">
+          <div class="plan-grid reveal">
             <article>
-              <span class="tag demo">Demo</span><b>Now</b>
-              <h3>Prototype</h3>
-              <p>Three-pillar sample, investor mode, fixed states.</p>
+              <span>Free</span>
+              <h3>$0</h3>
+              <p>Starter School, personal kitchen and core daily loop.</p>
             </article>
             <article>
-              <span class="tag mvp">MVP planned</span><b>Phase 1</b>
+              <span>Plus hypothesis</span>
+              <h3>$5.99<small>/month</small></h3>
+              <p>Expanded curriculum and deeper challenges.</p>
+            </article>
+            <article>
+              <span>Pro hypothesis</span>
+              <h3>$12.99<small>/month</small></h3>
+              <p>Advanced tools after capability validation.</p>
+            </article>
+            <article>
+              <span>Family hypothesis</span>
+              <h3>$19.99<small>/month</small></h3>
+              <p>Shared household tools when ready.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+      <section class="roadmap" id="roadmap" aria-labelledby="roadmap-title">
+        <div class="wrap">
+          <p class="kicker reveal">Roadmap</p>
+          <div class="section-head reveal">
+            <h2 id="roadmap-title">
+              Prove the loop.<br /><em>Then add breadth.</em>
+            </h2>
+            <p>Sequence reflects product risk, not committed delivery dates.</p>
+          </div>
+          <div class="timeline reveal">
+            <article>
+              <span>Now · demo</span>
+              <h3>Interactive prototype</h3>
+              <p>Three-pillar sample with fixed data and simulated behavior.</p>
+            </article>
+            <article>
+              <span>Phase 1 · MVP planned</span>
               <h3>Learn + Manage + Play</h3>
               <p>
                 Starter lessons, editable inventory, guided recipes, quests,
@@ -333,7 +430,7 @@
               </p>
             </article>
             <article>
-              <span class="tag later">Later planned</span><b>Phases 2–3</b>
+              <span>Phases 2–3 · later</span>
               <h3>Retention + packaging</h3>
               <p>
                 Curriculum, household tools, validated community and billing for
@@ -341,7 +438,7 @@
               </p>
             </article>
             <article>
-              <span class="tag later">Later planned</span><b>Phase 4</b>
+              <span>Phase 4 · later</span>
               <h3>Advanced intelligence</h3>
               <p>
                 Vision, receipt automation, voice coaching and advanced social
@@ -349,161 +446,81 @@
               </p>
             </article>
           </div>
+          <details class="validation reveal">
+            <summary>
+              90-day validation plan and scale arithmetic
+              <span aria-hidden="true">+</span>
+            </summary>
+            <div class="validation__body">
+              <div class="gates">
+                <article>
+                  <b>Days 1–30</b>
+                  <h3>Usability</h3>
+                  <p>
+                    Can cooks understand all pillars and finish the core path
+                    unaided?
+                  </p>
+                </article>
+                <article>
+                  <b>Days 31–60</b>
+                  <h3>Value</h3>
+                  <p>
+                    Do they return, complete a lesson and maintain their
+                    kitchen?
+                  </p>
+                </article>
+                <article>
+                  <b>Days 61–90</b>
+                  <h3>Commercial</h3>
+                  <p>
+                    Which completed capabilities create credible payment intent?
+                  </p>
+                </article>
+              </div>
+              <p class="math">
+                <b>Unvalidated stretch scenario:</b> 500K MAU × 8% paid = 40K
+                payers. $3M ARR then requires $6.25 monthly revenue per payer. A
+                40% Day-30 retention target is also an aspiration. None
+                represents traction or a forecast.
+              </p>
+            </div>
+          </details>
         </div>
       </section>
-      <section class="section">
-        <div class="wrap split">
-          <div>
-            <p class="kicker">Category view</p>
-            <h2>Joining workflows that are <em>usually separate.</em></h2>
-            <p>
-              Adjacent references:
-              <a
-                href="https://samsungfood.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                >Samsung Food</a
-              >
-              presents recipe saving, meal planning and shopping;
-              <a
-                href="https://www.kitchenstories.com/en"
-                target="_blank"
-                rel="noopener noreferrer"
-                >Kitchen Stories</a
-              >
-              offers cooking content and community features. Nomli’s hypothesis
-              is a linked skill-practice, kitchen and reward loop;
-              differentiation still needs user testing.
-            </p>
-          </div>
-          <div class="compare">
-            <p><b>Recipe libraries</b><span>Find a meal</span></p>
-            <p><b>Learning products</b><span>Teach a skill</span></p>
-            <p><b>Kitchen utilities</b><span>Track food and lists</span></p>
-            <p><b>Habit games</b><span>Reward repetition</span></p>
-            <p class="nomli">
-              <b>Nomli thesis</b
-              ><span>Connect all four around cooking outcomes</span>
-            </p>
-          </div>
-        </div>
-      </section>
-      <section class="section warm" id="validation">
-        <div class="wrap">
-          <p class="kicker">First 90 days</p>
-          <div class="head">
-            <h2>Funding should buy <em>evidence.</em></h2>
-            <p>
-              Three gates determine whether the concept earns a larger build.
-            </p>
-          </div>
-          <div class="gates">
-            <article>
-              <b>Days 1–30</b>
-              <h3>Usability</h3>
-              <p>
-                Can cooks understand all pillars and finish the core path
-                unaided?
-              </p>
-              <small>Task completion, comprehension, failure points.</small>
-            </article>
-            <article>
-              <b>Days 31–60</b>
-              <h3>Value</h3>
-              <p>
-                Do they return, complete a lesson and maintain their kitchen?
-              </p>
-              <small>Repeat sessions, lesson completion, corrections.</small>
-            </article>
-            <article>
-              <b>Days 61–90</b>
-              <h3>Commercial</h3>
-              <p>
-                Which completed capabilities create credible payment intent?
-              </p>
-              <small>Structured package and pricing tests.</small>
-            </article>
-          </div>
-          <div class="scenario">
-            <span class="tag explore">Unvalidated stretch scenario</span>
-            <h3>Scale arithmetic, not a forecast</h3>
-            <p>
-              <strong>500K</strong> MAU × <strong>8%</strong> paid =
-              <strong>40K</strong> payers. <strong>$3M ARR</strong> then
-              requires <strong>$6.25 monthly revenue per payer.</strong> A 40%
-              Day-30 retention target is also an unvalidated stretch aspiration.
-              Every input needs cohort testing; none represents traction or a
-              forecast.
-            </p>
-          </div>
-        </div>
-      </section>
-      <section class="section">
-        <div class="wrap split">
-          <div>
-            <p class="kicker">Investor FAQ</p>
-            <h2>Built now. <em>Validated next.</em></h2>
-          </div>
-          <div class="faqs">
-            <details>
-              <summary>What exists today?</summary>
-              <p>
-                A responsive sample prototype and investor walkthrough using
-                simulated interactions. It is not a production service.
-              </p>
-            </details>
-            <details>
-              <summary>Where does AI fit?</summary>
-              <p>
-                AI-assisted scan and coaching are directions. This demo does not
-                prove model quality, safety or production integration. Users
-                must confirm food data.
-              </p>
-            </details>
-            <details>
-              <summary>What would funding enable?</summary>
-              <p>
-                An MVP across all three pillars, research, safety,
-                accessibility, instrumentation and the 90-day validation
-                program. No raise amount or team claim is made here.
-              </p>
-            </details>
-            <details>
-              <summary>How would Nomli make money?</summary>
-              <p>
-                Free starter value with paid expansion after capabilities and
-                willingness to pay are validated. Billing follows shipped value.
-              </p>
-            </details>
-          </div>
-        </div>
-      </section>
-      <section class="closing">
-        <img src="images/dishplate-1280.webp" alt="Prepared meal" />
-        <div class="wrap">
-          <p class="kicker">Next step</p>
-          <h2>Prototype built.<br /><em>Premise ready to test.</em></h2>
-          <p>
-            Funding would enable the MVP and validation needed to decide what
-            deserves scale.
+      <section class="closing" aria-labelledby="closing-title">
+        <img
+          src="images/dishplate-1280.webp"
+          srcset="
+            images/dishplate-800.webp   800w,
+            images/dishplate-1280.webp 1280w
+          "
+          sizes="100vw"
+          alt="Prepared meal plated for sharing"
+          loading="lazy"
+        />
+        <div class="wrap reveal">
+          <p class="kicker">Prototype built · premise ready to test</p>
+          <h2 id="closing-title">
+            Ready to step<br /><em>into the kitchen?</em>
+          </h2>
+          <a class="button" href="#demo"
+            >Try Nomli <span aria-hidden="true">↑</span></a
+          >
+          <p class="closing__note">
+            Interactive sample · simulated behavior · no traction claimed
           </p>
-          <a class="btn" href="app/index.html?investor=1"
-            >Explore the working prototype ↗</a
-          ><small>Prototype UI · sample data · pre-launch assumptions</small>
         </div>
       </section>
     </main>
     <footer>
-      <div class="wrap">
+      <div class="wrap footer">
         <a class="brand" href="#top"
           ><img src="favicon.svg" alt="" width="30" height="30" />Nomli</a
         >
+        <p>Learn · Manage · Play</p>
         <p>
-          Learn · Manage · Play · <a href="overview.html">One-page overview</a>
-        </p>
-        <p>
-          Pre-launch sample prototype. Food imagery is AI-generated. Contact
-          details pending.
+          Pre-launch sample prototype. Generated food imagery. Contact details
+          pending.
         </p>
       </div>
     </footer>

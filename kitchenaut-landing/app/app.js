@@ -38,6 +38,53 @@
   const lesson = (id) => D.lessons.find((l) => l.id === id) || D.lessons[0];
   const coreRecipeId = () =>
     S.profile.allergies.includes("wheat") ? "salad" : "bruschetta";
+  const icon = (name, cls = "") =>
+    `<svg class="ui-icon ${cls}" aria-hidden="true"><use href="icons.svg#${name}"/></svg>`;
+  const navIcons = {
+    home: "house",
+    kitchen: "refrigerator",
+    cook: "chef-hat",
+    school: "graduation-cap",
+    play: "target",
+    hub: "users",
+    shopping: "shopping-cart",
+    expenses: "wallet",
+    profile: "gear",
+    features: "sparkle",
+  };
+  const itemPhoto = (id) =>
+    ({
+      tomatoes: "tomato-128.webp",
+      basil: "basil-128.webp",
+      eggs: "eggs-128.webp",
+    })[id];
+  const lessonPhoto = (id) =>
+    ({
+      balance: "prep-close-640.webp",
+      knife: "prep-800.webp",
+      heat: "recipe-skillet.webp",
+    })[id];
+  const actionIcons = {
+    "scan-review": "camera",
+    "scan-open": "camera",
+    "item-edit": "plus",
+    recipe: "arrow-right",
+    coach: "sparkle",
+    lesson: "graduation-cap",
+    receipt: "receipt",
+    "claim-meal": "trophy",
+    share: "upload-simple",
+    favorite: "bookmark",
+    cheer: "heart",
+    reply: "chat-circle",
+    "save-post": "bookmark",
+    "shopping-add": "plus",
+    "cook-next": "arrow-right",
+    "cook-start": "play",
+    "repeat-step": "arrows-clockwise",
+    "heat-challenge": "fire",
+    "modal-close": "x",
+  };
   const btn = (label, action, id = "", cls = "btn-secondary") => {
     const lists = {
       favorite: "favorites",
@@ -48,7 +95,7 @@
     const pressed = lists[action]
       ? ` aria-pressed="${S[lists[action]].includes(id)}"`
       : "";
-    return `<button type="button" class="btn ${cls}" data-action="${action}" data-id="${esc(id)}"${pressed}>${esc(label)}</button>`;
+    return `<button type="button" class="btn ${cls}" data-action="${action}" data-id="${esc(id)}"${pressed}>${icon(action === "go" ? navIcons[id] || "caret-right" : actionIcons[action] || "caret-right")}<span>${esc(label)}</span></button>`;
   };
   const tag = (status) =>
     `<span class="badge ${status === "Demo" ? "badge-demo" : status === "Exploratory" ? "badge-explore" : "badge-planned"}">${esc(status)}</span>`;
@@ -204,8 +251,11 @@
   ];
   const hash = location.hash.slice(1);
   if (routes.includes(hash)) S.route = hash;
-  if (new URLSearchParams(location.search).has("embed"))
+  if (new URLSearchParams(location.search).has("embed")) {
     document.body.classList.add("embedded");
+    S.tour = false;
+    if (!hash) S.route = "home";
+  }
   function persist() {
     try {
       sessionStorage.setItem(KEY, JSON.stringify(S));
@@ -232,19 +282,23 @@
       location.hash = route;
     }
     render();
-    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    $(".app-scroll")?.scrollTo({ top: 0, left: 0, behavior: "instant" });
   }
   function closeModal() {
     modal.close();
     if (lastFocus && lastFocus.isConnected) lastFocus.focus();
   }
+  let modalVersion = 0;
   function openModal(title, body) {
+    modalVersion++;
+    delete modal.dataset.screen;
     if (!modal.open) lastFocus = document.activeElement;
     if (modal.open) modal.close();
     $("#modal-content").innerHTML =
-      `<header class="modal-heading"><h2 id="modal-title">${title}</h2>${btn("Close", "modal-close", "", "btn-quiet")}</header><div class="modal-body">${body}</div>`;
+      `<header class="modal-heading"><h2 id="modal-title">${title}</h2><button class="icononly" data-action="modal-close" aria-label="Close">${icon("x")}</button></header><div class="modal-body">${body}</div>`;
     modal.querySelectorAll("form").forEach((f) => (f.noValidate = true));
     modal.showModal();
+    $(".modal-body")?.scrollTo(0, 0);
   }
   let errorSequence = 0;
   function formError(form, text) {
@@ -336,22 +390,21 @@
       : S.route === "lesson"
         ? "school"
         : S.route;
-    const nav = (items) =>
-      items
-        .map(
-          ([id, label]) =>
-            `<button type="button" class="nav-item" data-route="${id}"${active === id ? ' aria-current="page"' : ""}>${label}</button>`,
-        )
-        .join("");
-    $("#desktop-nav").innerHTML = nav(D.nav);
-    $("#bottom-nav").innerHTML = nav([
+    $("#bottom-nav").innerHTML = [
       ["home", "Home"],
       ["kitchen", "Kitchen"],
       ["cook", "Cook"],
       ["school", "School"],
       ["play", "Play"],
-    ]);
+    ]
+      .map(
+        ([id, label]) =>
+          `<button type="button" class="nav-item" data-route="${id}"${active === id ? ' aria-current="page"' : ""}>${icon(navIcons[id])}<span>${label}</span></button>`,
+      )
+      .join("");
   }
+  let renderedRoute;
+
   function render(focus = true) {
     const active = document.activeElement;
     const preserve =
@@ -384,7 +437,15 @@
       profile: profileView,
       features: featuresView,
     };
+    const changed = renderedRoute !== S.route;
+    view.dataset.screen = S.route;
     view.innerHTML = (screens[S.route] || homeView)();
+    if (changed && !matchMedia("(prefers-reduced-motion: reduce)").matches)
+      view.animate(
+        [{ transform: "translateY(8px)" }, { transform: "translateY(0)" }],
+        { duration: 260, easing: "cubic-bezier(.2,.7,.2,1)" },
+      );
+    renderedRoute = S.route;
     view.querySelectorAll("form").forEach((f) => (f.noValidate = true));
     renderNav();
     renderTour();
@@ -404,30 +465,30 @@
     }
   }
   function homeView() {
-    const first = recipe(coreRecipeId()),
-      a = assess(first);
-    return (
-      heading(
-        "LEARN. MANAGE. PLAY.",
-        "Make room for a better cooking habit.",
-        "A sample kitchen, a practical skill and a reason to come back.",
-        btn(
-          S.profile.done ? "Edit sample profile" : "Set up my kitchen",
-          "onboard",
-          "",
-          "btn-primary",
-        ),
-      ) +
-      (!S.profile.done
-        ? notice(
-            "Start with a cooking level, a goal and five sample ingredients. No full pantry setup or account needed.",
-          )
-        : notice(
-            `${esc(S.profile.level)} · ${esc(S.profile.goal)} · ${S.profile.household} people · ${S.profile.time} minutes. ${btn("My preferences", "go", "profile", "btn-quiet")}`,
-          )) +
-      `<div class="grid grid-3 pillar-grid"><section class="card"><p class="eyebrow">01 / LEARN</p><h2>A little technique.<br>A better dinner.</h2><p>Chef Zara and three free starter lessons turn instructions into guided practice.</p><div class="skill-row"><span>Salt & texture</span><b>${milestones("balance")}/3 milestones</b></div>${btn("Open Chef School", "go", "school", "btn-primary")}</section><section class="card"><p class="eyebrow">02 / MANAGE</p><h2>Your real kitchen,<br>in one place.</h2><p>Ingredients, dates, equipment, recipes, shopping and spending stay connected.</p><div class="skill-row"><span>In stock</span><b>${Object.values(S.items).filter((i) => i.qty > 0).length} items</b></div>${btn("Open Kitchen", "go", "kitchen", "btn-primary")}</section><section class="card"><p class="eyebrow">03 / PLAY</p><h2>Small wins.<br>A lasting habit.</h2><p>Daily quests, useful unlocks and sample community moments reward the practice.</p>${levelBlock()}${btn("See quests & progress", "go", "play", "btn-primary")}</section></div><div class="grid grid-2"><section class="card"><div class="card-header"><h2>Tonight’s suggestion</h2>${tag("Demo")}</div>${recipeCard(first, a)}<p class="muted">Matched from ingredient readiness, expiry, skill, time and cuisine. This is a demo ranking, not an AI recommendation.</p></section><section class="card"><h2>Your next useful step</h2><ul class="feature-list"><li>${S.reviewed ? "Kitchen dates reviewed" : "Review the sample scan and confirm dates"}</li><li>${lessonComplete("balance") ? "Salt technique practised in a meal" : "Learn why salting tomatoes changes the texture"}</li><li>${S.posts.length ? "Practice meal shared to the sample Hub" : "Finish a meal, collect the reward and share the result"}</li></ul><div class="actions">${btn("Start investor path", "tour-start", "", "btn-primary")}${btn("Explore all planned features", "go", "features")}</div><p class="muted">${storageAvailable ? "Sample state stays in this browser tab through refresh. Reset demo clears it." : "Browser storage is unavailable: this preview keeps sample state in memory and refresh resets it."} No real user information is needed.</p></section></div>`
-    );
+    const r = recipe(coreRecipeId());
+    return `<div class="home-greeting"><div><p class="eyebrow">GOOD EVENING</p><h1 data-title tabindex="-1">What’s cooking?</h1></div><button class="xp-mini" data-action="go" data-id="play">${icon("lightning")}${S.xp} XP</button></div>
+    <div class="home-quick"><button data-action="scan-open" data-id="fridge">${icon("scan")}<span>Scan kitchen</span></button><button data-action="go" data-id="school">${icon("graduation-cap")}<span>Learn a skill</span></button><button data-action="scan-open" data-id="paper">${icon("receipt")}<span>Add receipt</span></button></div>
+
+    <div class="section-heading"><h2>Tonight’s quest</h2><button class="text-link" data-action="go" data-id="play">See all ${icon("caret-right")}</button></div>
+    <article class="featured-meal"><img src="${r.image}" alt="${r.name}" width="640" height="568"><div class="meal-overlay"><span class="badge quest-badge">${icon("target")} DAILY QUEST</span><h2>${r.name}</h2><div class="meal-meta"><span>${icon("clock")}${r.time} min</span><span>${icon("lightning")}40 XP</span><button class="btn btn-primary" data-action="recipe" data-id="${r.id}">Let’s cook ${icon("arrow-right")}</button></div></div></article>
+    <button class="chef-card card" data-action="coach" data-id="${r.id}"><img class="avatar" src="../images/zara-96.webp" alt="Chef Zara"><div><b>Chef Zara <span class="tiny-label">YOUR COOKING COACH</span></b><p>${S.reviewed ? "Your kitchen is ready. Let’s turn those ingredients into a little win." : "A quick kitchen scan. A delicious dinner. Ready when you are."}</p></div>${icon("caret-right")}</button>
+    <div class="expiry-strip">${["basil", "tomatoes", "eggs"].map((id) => `<button data-action="go" data-id="kitchen"><img src="../images/${itemPhoto(id)}" alt=""><b>${D.items[id].name}</b><span>${S.items[id].qty > 0 ? `${daysLeft(S.items[id])} days left` : "Scan to add"}</span></button>`).join("")}</div>
+    <div class="section-heading"><h2>A little better, every day</h2><button class="text-link" data-action="go" data-id="school">Chef School ${icon("caret-right")}</button></div>
+    <button class="lesson-card" data-action="lesson" data-id="balance"><img class="lesson-photo" src="../images/prep-close-640.webp" alt="Tomatoes and herbs on a preparation board"><span class="lesson-copy"><small class="eyebrow">YOUR NEXT SKILL</small><h3>Salt, texture & balance</h3><span class="details">3 min lesson • ${milestones("balance")}/3 milestones</span><progress class="progress" value="${milestones("balance")}" max="3" aria-label="Salt lesson progress"></progress></span></button>
+    <div class="section-heading"><h2>Your kitchen, connected</h2></div><div class="home-links">${[
+      ["kitchen", "refrigerator", "Kitchen", "Food & equipment"],
+      ["expenses", "wallet", "Spending", "Receipts & budgets"],
+      ["hub", "users", "Food Hub", "Share your wins"],
+      ["profile", "gear", "For you", "Goals & preferences"],
+    ]
+      .map(
+        ([route, ic, title, sub]) =>
+          `<button data-action="go" data-id="${route}">${icon(ic)}<b>${title}</b><small>${sub}</small></button>`,
+      )
+      .join("")}</div>
+    ${!S.profile.done ? `<button class="setup-nudge" data-action="onboard">${icon("sparkle")}Make Nomli yours <span>Set your cooking goals</span>${icon("caret-right")}</button>` : ""}`;
   }
+
   function onboarding() {
     openModal(
       "Make this sample kitchen yours",
@@ -435,35 +496,138 @@
     );
   }
   function kitchenView() {
-    let rows = Object.entries(S.items).filter(
-      ([, i]) => S.storage === "All" || i.storage === S.storage,
-    );
-    rows.sort((a, b) =>
-      S.sort === "name"
-        ? a[1].name.localeCompare(b[1].name)
-        : S.sort === "quantity"
-          ? a[1].qty - b[1].qty
-          : daysLeft(a[1]) - daysLeft(b[1]),
-    );
+    const rows = Object.entries(S.items)
+      .filter(([, i]) => S.storage === "All" || i.storage === S.storage)
+      .sort((a, b) =>
+        S.sort === "name"
+          ? a[1].name.localeCompare(b[1].name)
+          : S.sort === "quantity"
+            ? a[1].qty - b[1].qty
+            : daysLeft(a[1]) - daysLeft(b[1]),
+      );
     return (
       heading(
-        "MANAGE / KITCHEN",
-        "Know what’s here. Use it well.",
-        "Edit quantities, storage and dates. Dates are illustrative and do not determine food safety.",
-        btn("Review sample scan", "scan-review", "", "btn-primary") +
-          btn("Add ingredient", "item-edit", "new"),
+        "YOUR KITCHEN",
+        "Fresh starts here.",
+        "A little less guessing. A lot less waste.",
       ) +
-      `<div class="pill-row">${["All", "Fridge", "Freezer", "Pantry", "Spices"].map((s) => `<button class="pill" data-action="storage" data-id="${s}" aria-pressed="${S.storage === s}">${s}</button>`).join("")}</div><div class="grid grid-2"><section class="card"><div class="card-header"><h2>Groceries</h2><label class="field">Sort<select data-change="sort">${options(["expiry", "name", "quantity"], S.sort)}</select></label></div><div class="stack">${rows.map(([id, i]) => `<div class="item-row"><div><b>${esc(i.name)}</b><p class="muted">${num(i.qty)} ${esc(i.unit)} · ${i.storage}</p><span class="badge">${i.qty <= 0 ? "Out of stock" : daysLeft(i) < 0 ? "Past sample date" : `${daysLeft(i)} days to sample date`}</span>${i.estimated ? '<small class="muted">Date needs review</small>' : ""}</div><div class="actions">${btn("Edit / adjust", "item-edit", id, "btn-quiet")}${i.qty <= i.low ? btn("Restock", "shopping-add", id, "btn-quiet") : ""}</div></div>`).join("") || '<p class="empty">Nothing in this storage area. Add an ingredient or change the filter.</p>'}</div></section><div class="stack"><section class="card"><h2>Equipment you own</h2><p class="muted">Turn off the toaster, then open bruschetta to see the cooking method adapt.</p><div class="field-grid">${D.tools.map((t) => `<label class="checkbox-field"><input type="checkbox" data-change="tool" data-id="${t.id}"${S.tools[t.id] ? " checked" : ""}>${t.name}</label>`).join("")}</div>${btn("See matched recipes", "go", "cook", "btn-primary")}</section><section class="card"><h2>Recent stock changes</h2>${
-        S.adjustments.length
-          ? `<ul class="timeline">${S.adjustments
-              .slice(-5)
-              .reverse()
-              .map((x) => `<li>${esc(x)}</li>`)
-              .join("")}</ul>`
-          : '<p class="muted">Manual corrections, consumed items and discarded items will appear here.</p>'
-      }<div class="actions">${btn("Shopping list", "go", "shopping")}${btn("Receipts & expenses", "go", "expenses")}</div></section></div></div>`
+      `<button class="scan-banner" data-action="scan-open" data-id="fridge"><img src="../images/fridge-vf-480.webp" alt=""><span>${icon("scan")}<b>What’s in your fridge?</b><small>Scan groceries, barcodes & dates</small></span>${icon("arrow-right")}</button>
+    <div class="pill-row">${["All", "Fridge", "Freezer", "Pantry", "Spices"].map((x) => `<button class="pill" data-action="storage" data-id="${x}" aria-pressed="${S.storage === x}">${x}</button>`).join("")}</div>
+    <div class="card"><div class="card-header"><h2>My groceries <small>${rows.filter(([, i]) => i.qty > 0).length} in stock</small></h2><button class="icononly" data-action="item-edit" data-id="new" aria-label="Add ingredient">${icon("plus")}</button></div><div class="inventory-sort"><label for="inventory-sort">Sort by</label><select id="inventory-sort" data-change="sort">${options(["expiry", "name", "quantity"], S.sort)}</select></div>
+    ${rows.map(([id, i]) => `<div class="inventory-row">${itemPhoto(id) ? `<img class="inventory-photo" src="../images/${itemPhoto(id)}" alt="">` : `<span class="inventory-icon">${icon(i.storage === "Freezer" ? "refrigerator" : "fork-knife")}</span>`}<div class="inventory-copy"><b>${esc(i.name)}</b><span>${num(i.qty)} ${esc(i.unit)} <small>${i.storage}</small></span><small class="${i.qty > 0 && daysLeft(i) < 3 ? "use-soon" : "muted"}">${i.qty <= 0 ? "Out of stock" : `${daysLeft(i)} days left`}${i.estimated ? " • review date" : ""}</small></div><button class="icononly" data-action="item-edit" data-id="${id}" aria-label="Edit ${esc(i.name)}">${icon("pencil")}</button>${i.qty <= i.low ? `<button class="icononly" data-action="shopping-add" data-id="${id}" aria-label="Restock ${esc(i.name)}">${icon("plus")}</button>` : ""}</div>`).join("") || '<p class="empty">No ingredients here yet.</p>'}</div>
+    <section class="card"><div class="card-header"><h2>${icon("chef-hat")} My equipment</h2></div><p class="muted">Recipes adapt to the tools you own.</p><div class="equipment-grid">${D.tools.map((t) => `<label class="equipment-toggle"><input type="checkbox" data-change="tool" data-id="${t.id}"${S.tools[t.id] ? " checked" : ""}><span>${t.name}</span>${icon("check")}</label>`).join("")}</div>${btn("Find something to cook", "go", "cook", "btn-primary")}</section>
+    <div class="actions">${btn("Shopping list", "go", "shopping")}${btn("Receipts & spending", "go", "expenses")}</div><details class="card"><summary>Recent stock changes</summary><ul class="timeline">${
+      S.adjustments
+        .slice(-5)
+        .reverse()
+        .map((x) => `<li>${esc(x)}</li>`)
+        .join("") || "<li>Your stock updates will appear here.</li>"
+    }</ul><p class="details">Dates shown are samples. Always check food condition and packaging.</p></details>`
     );
   }
+  let cameraMode = "fridge";
+  function scanCamera(mode = "fridge") {
+    cameraMode = ["fridge", "barcode", "expiry", "paper", "digital"].includes(
+      mode,
+    )
+      ? mode
+      : "fridge";
+    const receipt = ["paper", "digital"].includes(cameraMode),
+      digital = cameraMode === "digital";
+    const titles = {
+      fridge: "Scan your kitchen",
+      barcode: "Scan a barcode",
+      expiry: "Read an expiry date",
+      paper: "Scan a receipt",
+      digital: "Add an e-receipt",
+    };
+    const lineReceipt = D.receipts[digital ? "digital" : "paper"];
+    const paper = `<div class="sample-receipt"><b>${esc(lineReceipt.store)}</b><small>GROCERY RECEIPT • 24 OCT 2026</small><hr>${lineReceipt.lines.map((l) => `<p><span>${D.items[l.id].name}</span><b>${money(l.cents)}</b></p>`).join("")}<hr><p><b>TOTAL</b><b>${money(lineReceipt.lines.reduce((a, l) => a + l.cents, 0))}</b></p><div class="barcode-lines"></div><small>Sample receipt for this demonstration</small></div>`;
+    let scene = receipt
+      ? paper
+      : `<img src="../images/fridge-vf-800.webp" alt="Sample camera view into a stocked fridge">`;
+    if (cameraMode === "paper")
+      scene =
+        '<img src="../images/receipt-camera.webp" alt="Sample market grocery receipt, total SAR 50.50">';
+    if (cameraMode === "barcode")
+      scene += `<div class="product-label"><img src="../images/tomato-256.webp" alt="Tomatoes"><b>VINE TOMATOES</b><span>4 pieces</span><div class="barcode-lines"></div><small>DEMO 628 104 004</small></div>`;
+    if (cameraMode === "expiry")
+      scene += `<div class="date-label"><b>FRESH BASIL</b><span>BEST BEFORE</span><strong>25 OCT 2026</strong><small>Sample package label</small></div>`;
+    openModal(
+      titles[cameraMode],
+      `<p class="camera-caption">${digital ? "Select the sample PDF to preview receipt import." : receipt ? "Keep all four corners inside the frame." : cameraMode === "barcode" ? "Center the barcode inside the frame." : cameraMode === "expiry" ? "Point at the printed date on the pack." : "Hold steady. We’ll find what’s fresh."}</p><div class="camera-view ${receipt ? "receipt-camera" : ""} ${digital ? "digital-camera" : ""}" data-camera>${scene}<div class="camera-brackets"></div><div class="scan-beam" hidden></div><span class="scan-status" data-scan-status>${digital ? "grocery-receipt.pdf • sample" : "Sample camera • ready"}</span>${cameraMode === "fridge" ? '<span class="recognition-box recognition-basil" hidden>Basil</span><span class="recognition-box recognition-tomato" hidden>Tomatoes</span><span class="recognition-box recognition-eggs" hidden>Eggs</span>' : ""}</div>
+    ${
+      receipt
+        ? `<div class="scan-modes receipt-modes">${[
+            ["paper", "camera", "Paper receipt"],
+            ["digital", "upload-simple", "Digital / PDF"],
+          ]
+            .map(
+              ([id, ic, label]) =>
+                `<button data-action="scan-open" data-id="${id}" aria-pressed="${cameraMode === id}">${icon(ic)}${label}</button>`,
+            )
+            .join("")}</div>`
+        : `<div class="scan-modes">${[
+            ["fridge", "scan", "Groceries"],
+            ["barcode", "barcode", "Barcode"],
+            ["expiry", "calendar-blank", "Expiry date"],
+          ]
+            .map(
+              ([id, ic, label]) =>
+                `<button data-action="scan-open" data-id="${id}" aria-pressed="${cameraMode === id}">${icon(ic)}${label}</button>`,
+            )
+            .join("")}</div>`
+    }
+    <div class="capture-actions"><button class="capture-button" data-action="scan-capture" aria-label="${digital ? "Import sample PDF" : "Capture sample " + (receipt ? "receipt" : "scan")}">${icon(digital ? "upload-simple" : "camera")}</button><p>${digital ? "Import sample PDF" : "Tap to capture"}</p></div><p class="details camera-disclosure">Interactive simulation. Camera, files and OCR are not accessed. You review every result.</p>`,
+    );
+    modal.dataset.screen = "camera";
+  }
+  function captureScan() {
+    const button = modal.querySelector('[data-action="scan-capture"]');
+    if (!button || button.disabled) return;
+    const version = modalVersion,
+      mode = cameraMode;
+    button.disabled = true;
+    modal.querySelector("[data-camera]").classList.add("is-processing");
+    modal.querySelector(".scan-beam").hidden = false;
+    const status = modal.querySelector("[data-scan-status]");
+    status.textContent = ["paper", "digital"].includes(mode)
+      ? "Reading items & prices…"
+      : "Looking for a match…";
+    status.setAttribute("role", "status");
+    const delay = matchMedia("(prefers-reduced-motion: reduce)").matches
+      ? 350
+      : 1800;
+    setTimeout(() => {
+      if (!modal.open || modalVersion !== version) return;
+      modal
+        .querySelectorAll(".recognition-box")
+        .forEach((x) => (x.hidden = false));
+      status.textContent =
+        mode === "fridge"
+          ? "3 ingredients found"
+          : mode === "barcode"
+            ? "Tomatoes matched"
+            : mode === "expiry"
+              ? "25 October 2026 detected"
+              : "3 receipt lines extracted";
+    }, delay * 0.55);
+    setTimeout(() => {
+      if (!modal.open || modalVersion !== version) return;
+      if (["paper", "digital"].includes(mode)) receiptForm(mode);
+      else if (mode === "fridge") scanReview();
+      else singleScanReview(mode);
+    }, delay);
+  }
+  function singleScanReview(mode) {
+    const id = mode === "barcode" ? "tomatoes" : "basil",
+      item = S.items[id];
+    openModal(
+      mode === "barcode" ? "Tomatoes found" : "Date found",
+      `<div class="scan-result-heading"><img src="../images/${itemPhoto(id)}" alt=""><div><span class="badge">${mode === "barcode" ? "Barcode matched" : "Date read"}</span><h3>${item.name}</h3></div>${icon("check-circle")}</div><form data-form="single-scan" data-id="${id}">${errors()}${field("Quantity on hand (" + item.unit + ")", "qty", Math.max(item.qty, mode === "barcode" ? 4 : 1), "number", 'min="0.01" max="10000" step="0.01" required')}${field("Review date", "expiry", datePlus(D.items[id].days), "date", "required")}<label class="checkbox-field"><input type="checkbox" name="confirmed" required>I checked the quantity and date.</label><button class="btn btn-primary">Save to my kitchen ${icon("check")}</button></form><p class="details">Simulated recognition. The reviewed result updates this ingredient only.</p>`,
+    );
+  }
+
   function scanReview() {
     if (S.scanSaved) {
       openModal(
@@ -475,15 +639,15 @@
       return;
     }
     openModal(
-      "Review the sample scan",
-      `<p class="muted">Simulated scan: no camera or barcode service. Confirm quantities and correct the estimated dates before adding.</p><form data-form="scan">${errors()}${[
+      "3 ingredients found",
+      `<p class="muted">Check the quantities and dates, then add them to your kitchen.</p><form data-form="scan">${errors()}${[
         ["tomatoes", 4],
         ["basil", 1],
         ["eggs", 6],
       ]
         .map(
           ([id, qty]) =>
-            `<fieldset><legend>${D.items[id].name} · sample estimate</legend><div class="field-grid">${field(`Quantity (${D.items[id].unit})`, `qty-${id}`, qty, "number", 'min="0.01" max="10000" step="0.01" required')}${field("Review date", `expiry-${id}`, datePlus(D.items[id].days), "date", "required")}</div></fieldset>`,
+            `<fieldset><legend><img src="../images/${itemPhoto(id)}" alt="">${D.items[id].name}</legend><div class="field-grid">${field(`Quantity (${D.items[id].unit})`, `qty-${id}`, qty, "number", 'min="0.01" max="10000" step="0.01" required')}${field("Review date", `expiry-${id}`, datePlus(D.items[id].days), "date", "required")}</div></fieldset>`,
         )
         .join(
           "",
@@ -607,7 +771,7 @@
     };
   }
   function recipeCard(r, a) {
-    return `<article class="recipe-card"><img class="recipe-image" src="${r.image}" alt="Illustrative ${esc(r.name)}" width="320" height="284" loading="lazy"><div class="recipe-body"><h3>${r.name}</h3><p class="recipe-meta">${r.time} min · ${r.difficulty} · ${S.servings[r.id] || r.servings} servings</p><p><b>Learn:</b> ${r.objective}</p><p class="muted">${a.ready}/${a.ing.length} ingredients ready · ${a.timeFit ? "Fits your time" : "More time needed"} · ${a.skillFit ? "Fits your confidence" : "Learning stretch"}</p><div class="actions">${btn("View recipe", "recipe", r.id, "btn-primary")}${btn(S.favorites.includes(r.id) ? "Saved" : "Save", "favorite", r.id, "btn-quiet")}</div></div></article>`;
+    return `<article class="recipe-card"><img class="recipe-image" src="${r.image}" alt="Illustrative ${esc(r.name)}" width="320" height="284" loading="lazy"><div class="recipe-body"><h3>${r.name}</h3><p class="recipe-meta">${r.time} min · ${r.difficulty} · ${S.servings[r.id] || r.servings} servings</p><span class="recipe-match">${icon("check-circle")}${a.ready}/${a.ing.length} ingredients ready</span><p class="details">${r.objective}</p><div class="actions">${btn("View recipe", "recipe", r.id, "btn-primary")}${btn(S.favorites.includes(r.id) ? "Saved" : "Save", "favorite", r.id, "btn-quiet")}</div></div></article>`;
   }
   function cookView() {
     let recipes = D.recipes
@@ -616,11 +780,11 @@
       .sort((a, b) => b.a.score - a.a.score);
     return (
       heading(
-        "MANAGE + LEARN / COOK",
-        "A good match for your kitchen.",
-        "Ingredient readiness, dates, cooking confidence, available time and cuisine all shape this sample order.",
+        "COOK SOMETHING GOOD",
+        "Made for your kitchen.",
+        "Matched to what you have, and what you want to learn.",
       ) +
-      `<label class="checkbox-field"><input type="checkbox" data-change="matches"${S.matchOnly ? " checked" : ""}>Apply sample allergen exclusions (${S.profile.allergies.join(", ") || "none"})</label>${notice("Allergen tags are limited prototype examples. Check ingredient labels and cross-contact; these filters do not establish safety.")}<div class="grid grid-3">${recipes.map(({ r, a }) => recipeCard(r, a)).join("") || '<p class="empty">No sample recipes match the selected exclusions. Review preferences or show all recipes to inspect the blockers.</p>'}</div><div class="grid grid-2"><section class="card"><h2>Saved recipes</h2>${S.favorites.length ? S.favorites.map((id) => btn(recipe(id).name, "recipe", id, "btn-quiet")).join("") : "<p class='muted'>Save a recipe to return to it later.</p>"}</section><section class="card"><h2>Previously cooked</h2>${
+      `<label class="checkbox-field"><input type="checkbox" data-change="matches"${S.matchOnly ? " checked" : ""}>Apply sample allergen exclusions (${S.profile.allergies.join(", ") || "none"})</label><details class="details"><summary>About recipe matching & allergens</summary><p>Limited sample tags. Check packaging and cross-contact. These filters do not establish food safety.</p></details><div class="grid grid-3">${recipes.map(({ r, a }) => recipeCard(r, a)).join("") || '<p class="empty">No sample recipes match the selected exclusions. Review preferences or show all recipes to inspect the blockers.</p>'}</div><div class="grid grid-2"><section class="card"><h2>Saved recipes</h2>${S.favorites.length ? S.favorites.map((id) => btn(recipe(id).name, "recipe", id, "btn-quiet")).join("") : "<p class='muted'>Save a recipe to return to it later.</p>"}</section><section class="card"><h2>Previously cooked</h2>${
         S.meals
           .filter((m) => !m.undone)
           .map(
@@ -637,52 +801,59 @@
       a = assess(r),
       blocked = a.missing.length || a.allergens.length || !a.method.ok;
     return (
-      heading(
-        "LEARN + MANAGE / RECIPE",
-        r.name,
-        r.objective,
-        btn("All recipes", "go", "cook") +
-          btn("Ask Chef Zara", "coach", r.id, "btn-primary"),
-      ) +
-      `<div class="grid grid-2"><section class="card"><img class="post-image" src="${r.image}" alt="Illustrative ${esc(r.name)}"><p>${r.time} min · ${r.difficulty} · ${r.cuisine}</p>${select("Servings", "servings", ["1", "2", "3", "4", "5", "6"], String(S.servings[r.id] || r.servings)).replace('<select name="servings"', '<select name="servings" data-change="servings"')}<h2>Ingredients</h2><ul class="feature-list">${a.ing
-        .map((x) => {
-          if (x.id === "skip")
-            return `<li>Optional finish skipped ${swapSelect(r, x)}</li>`;
-          const i = S.items[x.id],
-            ok = !a.missing.includes(x);
-          return `<li><b>${esc(i.name)}</b> · ${num(x.qty)} ${esc(D.items[x.id].unit)}<p class="muted">${ok ? "In stock" : i.unit !== D.items[x.id].unit ? "Unit mismatch: edit the stock unit" : daysLeft(i) < 0 ? "Past sample date: review before cooking" : `Have ${num(i.qty)} ${esc(i.unit)}; resolve the shortfall`}</p>${swapSelect(r, x)}</li>`;
-        })
-        .join(
-          "",
-        )}</ul>${a.missing.length ? btn("Add missing items to shopping", "shopping-missing", r.id) : ""}</section><div class="stack"><section class="card"><h2>Your kitchen context</h2><p>${esc(S.profile.level)} · ${S.profile.household} people · ${S.profile.time} minutes available</p><p>${a.method.text}</p>${!a.method.ok ? btn("Change equipment", "go", "kitchen") : ""}${a.allergens.length ? `<p class="notice notice-warning">Blocked by sample allergy preference: ${a.allergens.join(", ")}. Review the ingredient or choose another recipe.</p>` : ""}<p class="muted">${a.timeFit ? "Fits" : "Exceeds"} your time preference. ${a.skillFit ? "Matches" : "Stretches"} your selected confidence.</p></section><section class="coach"><p class="eyebrow">CHEF ZARA · SCRIPTED PROTOTYPE</p><h2>A small lesson in every meal.</h2><p>${r.objective}</p><p class="muted">Learn the reason, practise the technique, then see the lesson milestone change.</p>${btn("Open linked starter lesson", "lesson", r.lesson, "btn-primary")}${btn("Why this technique?", "coach", r.id)}</section><section class="card"><h2>Ready to cook?</h2>${blocked ? notice("Resolve ingredient, unit, date, allergy or equipment blockers above. Saving a shopping-list item does not add stock.") : "<p>Ingredients and equipment are ready for this sample recipe.</p>"}<button class="btn btn-primary" data-action="cook-start"${blocked ? " disabled" : ""}>Start guided cooking</button></section></div></div>`
+      `<div class="recipe-cover"><img src="${r.image}" alt="${esc(r.name)}"><button class="icononly" data-action="go" data-id="cook" aria-label="All recipes">${icon("arrow-left")}</button><button class="icononly" data-action="favorite" data-id="${r.id}" aria-label="Save recipe" aria-pressed="${S.favorites.includes(r.id)}">${icon("bookmark")}</button></div>` +
+      heading("TONIGHT’S GOOD IDEA", r.name) +
+      `<div class="meal-meta recipe-facts"><span>${icon("clock")}${r.time} min</span><span>${icon("chef-hat")}${r.difficulty}</span><span>${icon("lightning")}40 XP</span></div>
+    <button class="chef-card card" data-action="coach" data-id="${r.id}"><img class="avatar" src="../images/zara-96.webp" alt="Chef Zara"><div><b>A little help from Zara</b><p>${r.objective}</p></div>${icon("caret-right")}</button>
+    <div class="recipe-servings">${select("How many are eating?", "servings", ["1", "2", "3", "4", "5", "6"], String(S.servings[r.id] || r.servings)).replace('<select name="servings"', '<select name="servings" data-change="servings"')}<span class="recipe-match">${icon("check-circle")}${a.ready}/${a.ing.length} ready</span></div>
+    <section class="card"><h2>Let’s get everything ready</h2><ul class="ingredients-list">${a.ing
+      .map((x) => {
+        if (x.id === "skip")
+          return `<li>Optional finish skipped ${swapSelect(r, x)}</li>`;
+        const i = S.items[x.id],
+          ok = !a.missing.includes(x);
+        return `<li><div class="ingredient-line"><span>${itemPhoto(x.id) ? `<img src="../images/${itemPhoto(x.id)}" alt="">` : icon("fork-knife")}<b>${esc(i.name)}</b></span><strong>${num(x.qty)} ${esc(D.items[x.id].unit)}</strong></div><small class="${ok ? "muted" : "use-soon"}">${ok ? "In your kitchen" : i.unit !== D.items[x.id].unit ? "Check stock unit" : daysLeft(i) < 0 ? "Review the sample date" : `Have ${num(i.qty)} ${esc(i.unit)}`}</small>${swapSelect(r, x)}</li>`;
+      })
+      .join(
+        "",
+      )}</ul>${a.missing.length ? btn("Add missing ingredients", "shopping-missing", r.id) : ""}</section>
+    <section class="card"><h2>${icon("graduation-cap")} One meal. One new skill.</h2><p>${r.objective}</p>${btn("Learn the technique", "lesson", r.lesson)}</section>
+    <details class="card recipe-context"><summary>Equipment & kitchen match</summary><p>${a.method.text}</p><p class="details">${esc(S.profile.level)} • ${S.profile.time} minutes available • ${a.timeFit ? "Fits your time" : "Allow more time"}</p>${btn("Edit equipment", "go", "kitchen")}</details>
+    ${a.allergens.length ? notice("Sample allergy exclusion: " + a.allergens.join(", ") + ". Choose another recipe or review ingredients.") : ""}
+    <div class="cook-cta">${blocked ? '<p class="details">Review missing ingredients, dates, units or equipment before starting.</p>' : ""}<button class="btn btn-primary" data-action="cook-start"${blocked ? " disabled" : ""}>${icon("play")}Start guided cooking</button></div>`
     );
   }
+
   function swapSelect(r, x) {
     if (!x.swaps) return "";
     return `<div class="field"><label for="swap-${x.base}">Choose a finish or substitution</label><select id="swap-${x.base}" data-change="swap" data-id="${x.base}"><option value="original"${!(S.swaps[r.id] || {})[x.base] ? " selected" : ""}>Original ingredient</option>${x.swaps.map((sw) => `<option value="${sw.id}"${(S.swaps[r.id] || {})[x.base] === sw.id ? " selected" : ""}>${sw.id === "skip" ? "Skip optional finish" : D.items[sw.id].name}</option>`).join("")}</select></div>`;
   }
   function schoolView() {
+    const complete = D.lessons.filter((l) => lessonComplete(l.id)).length;
     return (
       heading(
-        "LEARN / CHEF SCHOOL",
-        "A skill you can use tonight.",
-        "Three free starter lessons are available from the beginning. Reading and quizzes show understanding; cooking records self-reported guided practice.",
+        "CHEF SCHOOL",
+        "Small skills. Big difference.",
+        "Learn the why. Try it tonight.",
       ) +
-      `<div class="grid grid-3">${D.lessons.map((l) => `<article class="card"><span class="badge badge-demo">Free starter · ${l.minutes} min</span><h2>${l.name}</h2><p>${l.objective}</p><div class="stat-row"><span>${l.skill}</span><b>${milestones(l.id)}/3 milestones</b></div><progress class="progress" max="3" value="${milestones(l.id)}" aria-label="${l.skill} guided milestones">${milestones(l.id)}/3</progress><p class="muted">${lessonComplete(l.id) ? "Guided lesson completed. Real-world mastery is not verified." : "Concept, knowledge check and recipe practice; milestones can be completed in any order"}</p>${btn("Open lesson", "lesson", l.id, "btn-primary")}</article>`).join("")}</div><section class="card"><h2>Your learning path</h2><ol class="curriculum"><li><b>Starter · available now in this demo</b><p>Salt and texture, knife setup, gentle heat. Three free introductory lessons.</p></li><li><b>Developing · later planned</b><p>Pan sauces, timing a whole meal and ingredient-led substitutions. Starter practice is the proposed prerequisite.</p>${btn("Preview next stage", "preview", "school")}</li><li><b>Advanced · later planned</b><p>Fresh pasta and multi-course preparation. Verified assessments and certificates remain exploratory.</p></li></ol><p class="notice">At 500 XP, the demo opens a Heat-control challenge. Basic Chef School access never depends on reaching 500 XP.</p></section>`
+      `<div class="school-hero"><img src="../images/prep-800.webp" alt="Fresh ingredients, a knife and a preparation board"><div><span class="badge">FREE STARTER PATH</span><h2>Good cooking starts<br>with the little things.</h2><p>3 lessons • 10 minutes of learning</p></div></div><div class="school-progress"><span>${icon("graduation-cap")}Your foundations</span><b>${complete}/3 lessons</b><progress class="progress" value="${D.lessons.reduce((a, l) => a + milestones(l.id), 0)}" max="9" aria-label="Starter learning milestones"></progress></div>
+    <div class="lesson-list">${D.lessons.map((l, i) => `<button class="lesson-card" data-action="lesson" data-id="${l.id}"><img class="lesson-photo" src="../images/${lessonPhoto(l.id)}" alt=""><span class="lesson-copy"><small class="eyebrow">LESSON ${i + 1} • ${l.minutes} MIN</small><h3>${l.name}</h3><span class="details">${l.skill}</span><progress class="progress" max="3" value="${milestones(l.id)}" aria-label="${l.skill} milestones"></progress><span class="lesson-state">${lessonComplete(l.id) ? "Completed" : milestones(l.id) ? "Continue learning" : "Start lesson"} ${icon(lessonComplete(l.id) ? "check-circle" : "arrow-right")}</span></span></button>`).join("")}</div>
+    <div class="section-heading"><h2>Your next chapter</h2><span class="badge">COMING LATER</span></div><section class="card next-chapter">${icon("chef-hat")}<div><h3>From good to confident</h3><p>Pan sauces. Meal timing. Fresh pasta.</p></div>${btn("Preview learning path", "preview", "school")}</section><p class="details">Progress records a read concept, knowledge check and self-reported recipe practice. Starter lessons are free; 500 XP opens an extra Heat-control challenge.</p>`
     );
   }
+
   function lessonView() {
     const l = lesson(S.currentLesson),
       p = S.lessons[l.id],
       target = l.id === "balance" ? coreRecipeId() : l.recipe;
     return (
       heading(
-        "LEARN / FREE STARTER LESSON",
+        "CHEF SCHOOL / STARTER LESSON",
         l.name,
         l.objective,
         btn("Chef School", "go", "school"),
       ) +
-      `<div class="grid grid-2"><section class="card"><p class="eyebrow">1 / UNDERSTAND</p><h2>The technique and the reason</h2><p>${l.instruction}</p>${btn(p.read ? "Concept read" : "I’ve read the concept", "lesson-read", l.id, "btn-primary")}<p class="eyebrow">2 / CHECK UNDERSTANDING</p>${p.read ? `<form data-form="quiz" data-id="${l.id}">${errors()}<fieldset><legend>${l.question}</legend>${l.answers.map((answer, i) => `<label class="checkbox-field"><input type="radio" name="answer" value="${i}" required>${answer}</label>`).join("")}</fieldset><button class="btn btn-secondary">Check my answer</button></form>` : notice("Read the concept to open the knowledge check.")}${p.quiz ? '<p class="success">Knowledge check complete. Your next step is practical use.</p>' : ""}</section><div class="stack"><section class="card"><p class="eyebrow">3 / PRACTISE IN A MEAL</p><h2>${recipe(target).name}</h2><p>Follow the guided recipe, acknowledge the technique checkpoint and confirm the ingredients used. The practice milestone updates after meal completion.</p>${btn("Practise with this recipe", "recipe", target, "btn-primary")}<p class="muted">${p.practice ? "One guided recipe practice recorded. This is self-reported, not verified mastery." : "No recipe practice recorded yet."}</p></section><section class="card"><h2>Skill progress, separate from XP</h2><progress class="progress" max="3" value="${milestones(l.id)}" aria-label="${l.skill} milestones">${milestones(l.id)}/3</progress><ul class="checklist"><li>${p.read ? "✓" : "○"} Concept read</li><li>${p.quiz ? "✓" : "○"} Knowledge check passed</li><li>${p.practice ? "✓" : "○"} Guided recipe practice</li></ul><p>${milestones(l.id)}/3 guided milestones. ${S.xp} XP tracks activity rewards separately.</p>${btn("Ask Zara to explain", "coach", l.recipe)}</section></div></div>`
+      `<img class="lesson-cover" src="../images/${lessonPhoto(l.id)}" alt="${esc(l.skill)} cooking practice"><div class="grid grid-2"><section class="card"><p class="eyebrow">1 / UNDERSTAND</p><h2>The technique and the reason</h2><p>${l.instruction}</p>${btn(p.read ? "Concept read" : "I’ve read the concept", "lesson-read", l.id, "btn-primary")}<p class="eyebrow">2 / CHECK UNDERSTANDING</p>${p.read ? `<form data-form="quiz" data-id="${l.id}">${errors()}<fieldset><legend>${l.question}</legend>${l.answers.map((answer, i) => `<label class="checkbox-field"><input type="radio" name="answer" value="${i}" required>${answer}</label>`).join("")}</fieldset><button class="btn btn-secondary">Check my answer</button></form>` : notice("Read the concept to open the knowledge check.")}${p.quiz ? '<p class="success">Knowledge check complete. Your next step is practical use.</p>' : ""}</section><div class="stack"><section class="card"><p class="eyebrow">3 / PRACTISE IN A MEAL</p><h2>${recipe(target).name}</h2><p>Follow the guided recipe, acknowledge the technique checkpoint and confirm the ingredients used. The practice milestone updates after meal completion.</p>${btn("Practise with this recipe", "recipe", target, "btn-primary")}<p class="muted">${p.practice ? "One guided recipe practice recorded. This is self-reported, not verified mastery." : "No recipe practice recorded yet."}</p></section><section class="card"><h2>Skill progress, separate from XP</h2><progress class="progress" max="3" value="${milestones(l.id)}" aria-label="${l.skill} milestones">${milestones(l.id)}/3</progress><ul class="checklist"><li>${p.read ? "✓" : "○"} Concept read</li><li>${p.quiz ? "✓" : "○"} Knowledge check passed</li><li>${p.practice ? "✓" : "○"} Guided recipe practice</li></ul><p>${milestones(l.id)}/3 guided milestones. ${S.xp} XP tracks activity rewards separately.</p>${btn("Ask Zara to explain", "coach", l.recipe)}</section></div></div>`
     );
   }
   function coaching(rid, key) {
@@ -730,8 +901,8 @@
       persist();
     }
     openModal(
-      "Chef Zara · scripted coach",
-      `<p class="badge badge-demo">Simulation · no AI service connected</p><p class="muted">Context: ${esc(S.profile.level)} · ${esc(r.name)} · ${Object.values(S.items).filter((i) => i.qty > 0).length} ingredients in stock · ${S.profile.time} minutes. Exclusions: ${S.profile.allergies.join(", ") || "none"}.</p><div class="chat-log">${S.chat.length ? S.chat.map((m) => `<div class="chat-message"><b>${m.role}</b><p>${esc(m.text)}</p></div>`).join("") : "<div class='chat-message'><b>Zara</b><p>I can explain the technique, offer a listed substitution or talk through the next step. Choose a sample question.</p></div>"}</div><div class="actions">${[
+      "A little help from Zara",
+      `<p class="muted">Context: ${esc(S.profile.level)} · ${esc(r.name)} · ${Object.values(S.items).filter((i) => i.qty > 0).length} ingredients in stock · ${S.profile.time} minutes. Exclusions: ${S.profile.allergies.join(", ") || "none"}.</p><div class="coach-intro"><img src="../images/zara-96.webp" alt="Chef Zara"><div><b>Chef Zara</b><span>Your cooking coach</span></div><span class="badge">SAMPLE CHAT</span></div><div class="chat-log">${S.chat.length ? S.chat.map((m) => `<div class="chat-message"><b>${m.role}</b><p>${esc(m.text)}</p></div>`).join("") : "<div class='chat-message'><b>Zara</b><p>I can explain the technique, offer a listed substitution or talk through the next step. Choose a sample question.</p></div>"}</div><div class="actions">${[
         ["why", "Explain the technique"],
         ["missing", "Missing ingredient"],
         ["salty", "Too salty"],
@@ -749,37 +920,32 @@
   }
   function cookingView() {
     const c = S.cooking;
-    if (!c)
-      return heading(
-        "COOK",
-        "Choose a recipe first.",
-        "",
-        btn("Recipes", "go", "cook"),
-      );
+    if (!c) return cookView();
     const r = recipe(c.rid),
-      step = r.steps[c.step];
-    return (
-      heading(
-        "LEARN + MANAGE / GUIDED COOKING",
-        `${c.step + 1}/${r.steps.length} · ${step.title}`,
-        r.name,
-        btn("Leave cooking", "leave-cooking"),
-      ) +
-      `<div class="grid grid-2"><section class="card"><img class="post-image" src="${r.image}" alt="Illustrative recipe image"><h2>${step.title}</h2><p>${step.text}</p><p class="notice">${method(r).text}</p>${step.technique ? `<div class="coach"><p class="eyebrow">PRACTICAL TECHNIQUE CHECKPOINT</p><p>${r.objective}</p>${r.id === "bruschetta" ? "<p class='muted'>Presenter shortcut: the two-minute rest is compressed to a click in this simulation. No real timer or doneness check.</p>" : ""}<label class="checkbox-field"><input type="checkbox" data-change="technique"${c.technique ? " checked" : ""}>I practised this technique in the sample flow.</label></div>` : ""}${c.step === 0 && ["bruschetta", "salad"].includes(r.id) ? `<label class="checkbox-field"><input type="checkbox" data-change="knife-practice"${c.knifePractice ? " checked" : ""}>I practised stable-board, deliberate cutting in this sample.</label>` : ""}<div class="actions">${btn("Repeat", "repeat-step")}${btn("Explain", "coach", r.id)}${btn(c.step === r.steps.length - 1 ? "Review ingredients used" : "Next step", "cook-next", "", "btn-primary")}</div></section><section class="card"><h2>What you’re learning</h2><p>${r.skill}: ${r.objective}</p><p>${esc(S.profile.level)} · ${S.servings[r.id] || r.servings} servings · scripted coaching.</p><ol class="step-list">${r.steps.map((s, i) => `<li>${i < c.step ? "✓ " : ""}${s.title}</li>`).join("")}</ol><p class="muted">The practice milestone records an acknowledged demo activity, not independently demonstrated cooking ability.</p></section></div>`
-    );
+      step = r.steps[c.step],
+      photo =
+        r.id === "bruschetta" && c.step < 2
+          ? "../images/prep-close-640.webp"
+          : r.image;
+    return `<div class="cooking-toolbar"><button class="icononly" data-action="leave-cooking" aria-label="Leave cooking">${icon("arrow-left")}</button><b>COOK WITH ZARA</b><span class="badge">${c.step + 1} of ${r.steps.length}</span></div><progress class="progress" value="${c.step + 1}" max="${r.steps.length}" aria-label="Guided cooking steps"></progress><img class="cooking-photo" src="${photo}" alt="${c.step < 2 ? "Illustrative food preparation" : esc(r.name)}"><h1 class="cooking-title" data-title tabindex="-1">${step.title}</h1><p class="step-instruction">${step.text}</p>
+    <button class="chef-card card" data-action="coach" data-id="${r.id}"><img class="avatar" src="../images/zara-96.webp" alt="Chef Zara"><div><b>Need a hand?</b><p>I can explain the why, or guide your next move.</p></div>${icon("chat-circle")}</button>
+    ${step.technique ? `<section class="card technique-check"><span class="badge">${icon("graduation-cap")}A SKILL FOR NEXT TIME</span><p>${r.objective}</p><label class="checkbox-field"><input type="checkbox" data-change="technique"${c.technique ? " checked" : ""}>I practised this technique in the sample flow.</label></section>` : ""}
+    ${c.step === 0 && ["bruschetta", "salad"].includes(r.id) ? `<label class="checkbox-field knife-check"><input type="checkbox" data-change="knife-practice"${c.knifePractice ? " checked" : ""}>I practised stable-board, deliberate cutting in this sample.</label>` : ""}
+    <div class="cooking-actions">${btn("Repeat", "repeat-step")}${btn(c.step === r.steps.length - 1 ? "Review ingredients used" : "Next step", "cook-next", "", "btn-primary")}</div>
+    <details class="card"><summary>Recipe & equipment</summary><p>${r.name} • ${S.servings[r.id] || r.servings} servings</p><p>${method(r).text}</p><ol class="step-list">${r.steps.map((x, i) => `<li>${i < c.step ? "✓ " : ""}${x.title}</li>`).join("")}</ol></details><p class="details">Demo timing is compressed. Practice is self-reported; no live doneness or safety check.</p>`;
   }
+
   function reviewView() {
     const c = S.cooking;
     if (!c) return cookView();
-    const r = recipe(c.rid),
-      ing = resolved(r).filter((x) => x.id !== "skip");
+    const ing = resolved(recipe(c.rid)).filter((x) => x.id !== "skip");
     return (
       heading(
-        "MANAGE / CONFIRM CONSUMPTION",
-        "Check what went into the meal.",
-        "Correct the quantities before applying the inventory change.",
+        "FINISHING TOUCHES",
+        "A quick kitchen update.",
+        "Check what you used. We’ll keep your stock in sync.",
       ) +
-      `<form class="card" data-form="consumption">${errors()}<div class="table-wrap"><table class="receipt-table"><thead><tr><th>Ingredient</th><th>On hand</th><th>Used</th></tr></thead><tbody>${ing.map((x) => `<tr><th scope="row">${esc(S.items[x.id].name)}<small>${esc(S.items[x.id].unit)}</small></th><td>${num(S.items[x.id].qty)}</td><td><label class="field"><span class="sr-only">${esc(S.items[x.id].name)} quantity used</span><input name="used-${x.id}" type="number" min="0" max="${S.items[x.id].qty}" step="0.01" value="${x.qty}" required></label></td></tr>`).join("")}</tbody></table></div><div class="actions"><button class="btn btn-primary">Apply changes & complete meal</button>${btn("Back to recipe", "go", "recipe")}</div></form>`
+      `<form class="card" data-form="consumption">${errors()}${ing.map((x) => `<div class="consumption-row"><div><strong>${esc(S.items[x.id].name)}</strong><small>${num(S.items[x.id].qty)} ${esc(S.items[x.id].unit)} on hand</small></div><label class="field"><span class="sr-only">${esc(S.items[x.id].name)} quantity used</span><span>Used (${esc(S.items[x.id].unit)})</span><input name="used-${x.id}" type="number" min="0" max="${S.items[x.id].qty}" step="0.01" value="${x.qty}" required></label></div>`).join("")}<div class="actions"><button class="btn btn-primary">Apply changes & complete meal</button>${btn("Back to recipe", "go", "recipe")}</div></form>`
     );
   }
   function latestMeal() {
@@ -789,13 +955,17 @@
     const m = latestMeal();
     if (!m) return cookView();
     const r = recipe(m.rid);
+    const amount = m.claimed
+      ? m.rewardAmount || 0
+      : (!S.ledger.includes("meal:" + m.rid) ? 40 : 0) +
+        (r.lesson === "balance" &&
+        m.technique &&
+        !S.ledger.includes("technique:balance")
+          ? 20
+          : 0);
     return (
-      heading(
-        "LEARN + PLAY / MEAL COMPLETE",
-        "A meal made. A technique practised.",
-        r.name,
-      ) +
-      `<div class="grid grid-2"><section class="card"><img class="post-image" src="${r.image}" alt="Illustrative finished meal"><h2>Inventory updated</h2><ul class="feature-list">${m.used.map((x) => `<li>${esc(S.items[x.id].name)}: ${num(x.qty)} ${esc(S.items[x.id].unit)} used</li>`).join("")}</ul>${!m.claimed ? btn("Undo inventory change", "undo-meal", m.id) : ""}<p class="muted">${m.claimed ? "Reward already collected for this event. Adjust any later stock correction in Kitchen." : "Undo is available before reward collection. You can correct the deduction and apply it again."}</p></section><div class="stack"><section class="card"><h2>${r.skill} progress</h2><p>${milestones(r.lesson)}/3 guided milestones. ${m.technique ? "One self-reported practice recorded." : "Technique checkpoint was not acknowledged; no practice milestone added."}</p><progress class="progress" max="3" value="${milestones(r.lesson)}" aria-label="Linked lesson progress">${milestones(r.lesson)}/3</progress>${btn("View lesson result", "lesson", r.lesson)}</section><section class="card"><h2>Your reward</h2><p>First completion of each recipe: 40 XP. First acknowledged salt technique: 20 XP. Replays do not repeat these rewards.</p>${levelBlock()}${m.claimed ? '<p class="success">Reward collected. The ledger prevents collecting it twice or again after refresh.</p>' : btn("Collect reward", "claim-meal", m.id, "btn-primary")}<div class="actions">${m.claimed ? btn(m.shared ? "View shared sample" : "Share illustrative meal", "share", m.id) : '<p class="muted">Collect the reward before sharing the sample result.</p>'}${btn("Quests & achievements", "go", "play")}</div></section></div></div>`
+      heading("DINNER, DONE.", "Look at you, chef.", r.name) +
+      `<div class="success-meal"><img src="${r.image}" alt="${esc(r.name)}"><span class="badge">${icon("check-circle")}QUEST COMPLETE</span></div><section class="card reward-summary"><span class="reward-icon">${icon("trophy")}</span><strong>+${amount} XP</strong><p>${amount ? "A meal made. A little better than yesterday." : "Another good practice. This recipe’s XP was already collected."}</p>${m.claimed ? '<span class="badge">Reward collected</span>' : btn("Collect reward", "claim-meal", m.id, "btn-primary")}${levelBlock()}</section><section class="card"><div class="card-header"><h2>${icon("graduation-cap")}${r.skill}</h2><b>${milestones(r.lesson)}/3</b></div><progress class="progress" value="${milestones(r.lesson)}" max="3" aria-label="Linked lesson progress"></progress><p class="details">${m.technique ? "Practical checkpoint recorded. Keep building the habit." : "Complete the lesson’s practical checkpoint to record this skill."}</p>${btn("See my learning progress", "lesson", r.lesson)}</section><div class="actions">${btn(m.photo ? "Dish photo added" : "Add a dish photo", "meal-photo", m.id)}${m.claimed ? btn(m.shared ? "View shared sample" : "Share to Food Hub", "share", m.id, "btn-primary") : ""}</div><details class="card"><summary>Your kitchen has been updated</summary><ul class="feature-list">${m.used.map((x) => `<li>${esc(S.items[x.id].name)}: ${num(x.qty)} ${esc(S.items[x.id].unit)} used</li>`).join("")}</ul>${!m.claimed ? btn("Undo inventory change", "undo-meal", m.id) : '<p class="details">Need a later correction? Edit the ingredient in Kitchen.</p>'}</details>`
     );
   }
   function playView() {
@@ -825,18 +995,24 @@
       ];
     return (
       heading(
-        "PLAY / QUESTS & PROGRESS",
-        "A reason to cook. A reason to learn.",
-        "Rewards track activity. Guided skill milestones track learning separately.",
+        "YOUR DAILY DOSE OF PROGRESS",
+        "A little win, every day.",
+        "Cook something. Learn something. Make it a habit.",
       ) +
-      `<section class="card">${levelBlock()}<p class="muted">440 XP is seeded sample progress. All new rewards come from this demo’s once-only ledger.</p></section><div class="grid grid-3"><section class="card"><span class="badge">Ingredient quest · Beginner</span><h2>Rescue the basil</h2><p>Cook a compatible basil recipe before the sample date. Complete the guided recipe and confirm inventory use.</p><p><b>40 XP</b> for the first recipe completion.</p>${btn("Open daily recipe", "recipe", coreRecipeId(), "btn-primary")}${btn("Replace daily quest", "quest-replace")}</section><section class="card"><span class="badge">Learning quest · Beginner</span><h2>Salt with a reason</h2><p>Read the concept, pass the knowledge check and acknowledge the salting technique during the compatible tomato recipe practice.</p><p><b>20 XP</b> for the first salt technique practice; ${milestones("balance")}/3 lesson milestones.</p>${btn("Open learning quest", "lesson", "balance", "btn-primary")}</section><section class="card"><span class="badge">Weekly challenge · 3 linked actions</span><h2>Learn. Cook. Share.</h2><p>Finish the salt lesson, complete one meal and share the illustrative result.</p><progress class="progress" max="3" value="${linked}" aria-label="Weekly challenge actions">${linked}/3</progress><p>${linked}/3 actions · 30 XP, once.</p>${!S.accepted ? btn("Accept challenge", "challenge-accept", "", "btn-primary") : linked === 3 && !S.ledger.includes("weekly") ? btn("Claim 30 XP", "challenge-claim", "", "btn-primary") : `<p>${S.ledger.includes("weekly") ? "Reward collected" : "Challenge accepted. Continue the linked actions."}</p>`}</section></div><div class="grid grid-2"><section class="card"><h2>Achievements with a reason</h2>${badges.map(([name, earned, why]) => `<div class="skill-row"><span><b>${name}</b><small>${why}</small></span><span class="badge">${earned ? "Earned in demo" : "Not yet"}</span></div>`).join("")}<h3>A flexible habit</h3><p>Proposed goal: cook on three days each week, with rest days allowed. Two earlier days are seeded examples; today’s first completed meal fills the third. This is a policy preview, not verified attendance.</p></section><section class="card"><h2>Levels that open something useful</h2><ol class="curriculum">${D.levels.map(([xp, name], i) => `<li><b>${name}</b> · ${xp.toLocaleString()} XP${i === 1 ? " · Heat-control practice challenge" : ""}${i > 1 ? " · later capability preview" : ""}</li>`).join("")}</ol>${S.xp >= 500 ? btn("Open Heat-control challenge", "heat-challenge", "", "btn-primary") : notice("At 500 XP, a Heat-control challenge opens. Your three starter lessons are already free.")}${btn("Preview advanced play features", "preview", "play")}</section></div>`
+      `<section class="card level-hero"><div class="level-emblem">${icon("trophy")}</div><div><small>YOUR COOKING JOURNEY</small>${levelBlock()}<p class="details">${Math.max(0, 500 - S.xp)} XP to the next chapter</p></div></section>
+    <div class="habit-strip"><span>${icon("fire")}This week</span>${["M", "T", "W", "T", "F", "S", "S"].map((d, i) => `<span class="habit-day ${i < 2 || (i === 5 && meals.length) ? "is-done" : ""}">${i < 2 || (i === 5 && meals.length) ? icon("check") : d}</span>`).join("")}</div><p class="details">Sample flexible goal: cook 3 days a week. Two earlier days are illustrative.</p>
+    <div class="section-heading"><h2>Today’s quests</h2><span class="badge">2 WAYS TO GROW</span></div><article class="featured-meal quest-meal"><img src="${recipe(coreRecipeId()).image}" alt="${recipe(coreRecipeId()).name}"><div class="meal-overlay"><span class="badge quest-badge">${icon("target")}INGREDIENT QUEST</span><h2>Rescue the basil</h2><p>Good food, before it goes.</p><div class="meal-meta"><span>${icon("clock")}12 min</span><span>${icon("lightning")}40 XP</span><button class="btn btn-primary" data-action="recipe" data-id="${coreRecipeId()}">Start ${icon("arrow-right")}</button></div></div></article><button class="text-link quest-replace" data-action="quest-replace">Try a different quest</button>
+    <section class="card learning-quest"><span class="badge">${icon("graduation-cap")}LEARNING QUEST • 20 XP</span><h2>Salt with a reason</h2><p>Learn why a pinch changes the texture.</p><progress class="progress" value="${milestones("balance")}" max="3" aria-label="Learning quest milestones"></progress><div class="stat-row"><span>${milestones("balance")}/3 milestones</span>${btn("Open lesson", "lesson", "balance", "btn-primary")}</div></section>
+    <section class="card"><span class="badge">WEEKLY CHALLENGE • 30 XP</span><h2>Learn. Cook. Share.</h2><p>One lesson. One meal. One moment shared.</p><progress class="progress" value="${linked}" max="3" aria-label="Weekly challenge actions"></progress><p class="details">${linked}/3 actions complete</p>${!S.accepted ? btn("Accept challenge", "challenge-accept", "", "btn-primary") : linked === 3 && !S.ledger.includes("weekly") ? btn("Claim 30 XP", "challenge-claim", "", "btn-primary") : `<span class="badge">${S.ledger.includes("weekly") ? "Reward collected" : "Challenge accepted"}</span>`}</section>
+    <div class="section-heading"><h2>Little badges. Big meaning.</h2></div><div class="achievement-grid">${badges.map(([name, earned, why], i) => `<div class="achievement ${earned ? "is-earned" : ""}"><span>${icon(["refrigerator", "fork-knife", "graduation-cap", "users", "fire"][i])}</span><b>${name}</b><small>${earned ? "Earned" : why}</small></div>`).join("")}</div>
+    <section class="card"><h2>Your next level</h2>${S.xp >= 500 ? btn("Heat-control challenge", "heat-challenge", "", "btn-primary") : "<p>At 500 XP, your Heat-control practice challenge opens. Starter School is already free.</p>"}<details><summary>Explore the six-level path</summary><ol class="curriculum">${D.levels.map(([xp, name], i) => `<li><b>${name}</b> ${xp.toLocaleString()} XP${i > 1 ? " • later planned" : ""}</li>`).join("")}</ol>${btn("More ways to play", "preview", "play")}</details></section><p class="details">440 XP starts the sample session. Rewards are once per eligible action. Learning milestones are self-reported practice, separate from points.</p>`
     );
   }
   function samplePosts() {
     return [
       {
         id: "sample-meal",
-        author: "Sample cook",
+        author: "Noor A.",
         title: "Bruschetta practice",
         text: "Trying the salt-and-drain technique before assembly.",
         image: "../images/plate-320.webp",
@@ -844,14 +1020,14 @@
       },
       {
         id: "sample-skill",
-        author: "Sample learner",
+        author: "Mariam H.",
         title: "One skill, three milestones",
         text: "Read the concept, checked understanding, then practised in a guided meal.",
         kind: "Technique · simulated progress",
       },
       {
         id: "sample-level",
-        author: "Sample member",
+        author: "Omar K.",
         title: "Apprentice Cook",
         text: "A sample 500 XP milestone opens the Heat-control challenge.",
         kind: "Milestone · simulated achievement",
@@ -872,12 +1048,12 @@
     ].filter((p) => !S.blocked.includes(p.id));
     return (
       heading(
-        "PLAY / FOOD HUB",
-        "Share the meal. Share what you learned.",
-        "Every person, post, photo and reaction here is illustrative. No image authenticity check or real community service is connected.",
+        "FOOD HUB",
+        "Good food brings us together.",
+        "A sample community of small wins and shared ideas.",
         btn("Community & safety preview", "preview", "community"),
       ) +
-      `<div class="grid grid-2">${posts.map((p) => `<article class="card post"><div class="card-header"><div><b>${esc(p.author)}</b><p class="muted">${p.kind}</p></div>${btn(S.follows.includes(p.id) ? "Following" : "Follow sample", "follow", p.id, "btn-quiet")}</div>${p.image ? `<img class="post-image" src="${p.image}" alt="Illustrative meal image; not user-submitted proof">` : ""}<h2>${esc(p.title)}</h2><p>${esc(p.text)}</p><div class="actions">${btn(S.cheers.includes(p.id) ? "Cheered" : "Cheer", "cheer", p.id, "btn-quiet")}${btn("Reply", "reply", p.id, "btn-quiet")}${btn(S.savedPosts.includes(p.id) ? "Saved" : "Save", "save-post", p.id, "btn-quiet")}${btn("Report / block", "report", p.id, "btn-quiet")}</div>${(S.replies[p.id] || []).map((t) => `<p class="notice"><b>You · sample reply:</b> ${esc(t)}</p>`).join("")}</article>`).join("")}</div>${S.blocked.length ? btn("Restore blocked sample posts", "restore-posts") : ""}<p class="notice">Posting entitlements are a founder decision still to validate. This prototype opens all social interactions without a subscription or payment.</p>`
+      `<div class="grid grid-2">${posts.map((p) => `<article class="card post"><div class="card-header post-meta"><span class="post-avatar">${esc(p.author.slice(0, 1))}</span><div><b>${esc(p.author)}</b><p class="muted">${p.kind}</p></div>${btn(S.follows.includes(p.id) ? "Following" : "Follow", "follow", p.id, "btn-quiet")}</div>${p.image ? `<img class="post-image" src="${p.image}" alt="Illustrative meal image; not user-submitted proof">` : ""}<h2>${esc(p.title)}</h2><p>${esc(p.text)}</p><div class="actions">${btn(S.cheers.includes(p.id) ? "Cheered" : "Cheer", "cheer", p.id, "btn-quiet")}${btn("Reply", "reply", p.id, "btn-quiet")}${btn(S.savedPosts.includes(p.id) ? "Saved" : "Save", "save-post", p.id, "btn-quiet")}${btn("Report / block", "report", p.id, "btn-quiet")}</div>${(S.replies[p.id] || []).map((t) => `<p class="notice"><b>You · sample reply:</b> ${esc(t)}</p>`).join("")}</article>`).join("")}</div>${S.blocked.length ? btn("Restore blocked sample posts", "restore-posts") : ""}<p class="notice">Sample profiles, photos and reactions. Nothing is posted publicly. Posting access and moderation remain planned product decisions.</p>`
     );
   }
   function shoppingView() {
@@ -905,22 +1081,33 @@
     });
     return (
       heading(
-        "MANAGE / OPTIONAL EXPENSE BRANCH",
-        "See what your kitchen costs.",
-        "Illustrative SAR currency. Localization and real receipt extraction are later planned; no financial account is connected.",
+        "GROCERIES, ALL ACCOUNTED FOR",
+        "Spending, made simple.",
+        "A clearer picture of what goes into your kitchen.",
       ) +
-      `<div class="grid grid-3"><section class="card metric"><span>October grocery spend</span><b class="metric-value">${money(total)}</b><p class="muted">SAR 1,240 seeded history + reviewed sample receipts.</p></section><section class="card metric"><span>Monthly budget</span><b class="metric-value">${money(S.budget)}</b><p>${money(Math.abs(remaining))} ${remaining >= 0 ? "remaining" : "over budget"}</p><progress class="progress" max="${S.budget}" value="${Math.min(total, S.budget)}" aria-label="Grocery budget used">${money(total)}</progress></section><section class="card metric"><span>Compared with September</span><b class="metric-value">${((total / 110000 - 1) * 100).toFixed(1)}% higher</b><p class="muted">September sample: ${money(110000)}. These figures are not actual household results.</p></section></div><div class="grid grid-2"><section class="card"><h2>Weekly spending</h2><div class="bar-chart">${weeks.map((w, i) => `<div class="bar-column"><span style="height:${Math.round((100 * w) / Math.max(...weeks))}px" aria-hidden="true"></span><b>Week ${i + 1}</b><small>${money(w)}</small></div>`).join("")}</div><h3>By category</h3>${Object.entries(
-        cats,
+      `<section class="card spend-hero"><div class="stat-row"><span>October 2026</span><span class="badge">SAMPLE SAR</span></div><p class="spend-label">Grocery spending</p><div class="spend-total">${money(total)}</div><progress class="progress" max="${S.budget}" value="${Math.min(total, S.budget)}" aria-label="Grocery budget used"></progress><div class="stat-row"><b>${money(Math.abs(remaining))} ${remaining >= 0 ? "left" : "over budget"}</b><small>of ${money(S.budget)}</small></div><details class="budget-edit"><summary>Edit monthly budget ${icon("pencil")}</summary><form data-form="budget">${errors()}${field("Monthly budget (SAR)", "budget", (S.budget / 100).toFixed(2), "number", 'min="1" max="100000" step="0.01" required')}<button class="btn btn-primary">Save budget</button></form></details></section>
+    <div class="receipt-shortcuts"><button data-action="scan-open" data-id="paper">${icon("camera")}Scan a receipt</button><button data-action="scan-open" data-id="digital">${icon("upload-simple")}Add an e-receipt</button></div>
+    <section class="card"><div class="card-header"><h2>Your month, at a glance</h2><span class="badge">+${((total / 110000 - 1) * 100).toFixed(1)}%</span></div><div class="bar-chart">${weeks.map((w, i) => `<div class="bar-column"><span style="height:${Math.round((100 * w) / Math.max(...weeks))}px" aria-hidden="true"></span><b>Week ${i + 1}</b><small>${money(w)}</small></div>`).join("")}</div><p class="details">Compared with September’s ${money(110000)} sample.</p><h3>Where it went</h3>${Object.entries(
+      cats,
+    )
+      .map(
+        ([name, value], i) =>
+          `<div class="category-row"><span class="inventory-icon">${icon(["fork-knife", "refrigerator", "shopping-cart"][i])}</span><div><b>${name}</b><progress class="progress" max="${total}" aria-label="${name} spending" value="${value}"></progress></div><strong>${money(value)}</strong></div>`,
       )
-        .map(
-          ([name, value]) =>
-            `<div class="stat-row"><span>${name}</span><b>${money(value)}</b></div>`,
-        )
-        .join(
-          "",
-        )}<p class="muted">Category and weekly totals reconcile to ${money(total)}.</p></section><section class="card"><h2>Set a grocery budget</h2><form data-form="budget">${errors()}${field("Monthly budget (SAR)", "budget", (S.budget / 100).toFixed(2), "number", 'min="1" max="100000" step="0.01" required')}<button class="btn btn-primary">Save budget</button></form><h2>Review a receipt sample</h2><p class="muted">No camera, files or OCR accessed. Edit known item names, quantities and line prices before applying the sample.</p><div class="actions">${btn("Paper receipt sample", "receipt", "paper")}${btn("Digital / PDF sample", "receipt", "digital")}</div><h3>Purchase history</h3><div class="item-row"><span>Seeded October purchases</span><b>${money(124000)}</b></div>${S.receipts.map((r) => `<div class="item-row"><span>${esc(r.name)}<small>${r.lines.length} reviewed lines · added once</small></span><b>${money(r.lines.reduce((s, l) => s + l.cents, 0))}</b></div>`).join("")}</section></div>`
+      .join("")}</section>
+    <div class="section-heading"><h2>Recent shops</h2><span class="badge">${S.receipts.length} RECEIPTS ADDED</span></div><section class="card purchase-history">${S.receipts
+      .slice()
+      .reverse()
+      .map(
+        (r) =>
+          `<div class="item-row"><span class="inventory-icon">${icon("receipt")}</span><div><b>${esc(r.name)}</b><small>${r.lines.length} reviewed items • 24 Oct</small></div><strong>${money(r.lines.reduce((a, l) => a + l.cents, 0))}</strong></div>`,
+      )
+      .join(
+        "",
+      )}<div class="item-row"><span class="inventory-icon">${icon("shopping-cart")}</span><div><b>Earlier this month</b><small>Seeded sample purchases</small></div><strong>${money(124000)}</strong></div></section><p class="details">Receipt recognition is simulated. Saving a reviewed receipt updates groceries and spending together, once per sample.</p>`
     );
   }
+
   function receiptForm(source) {
     if (S.receipts.some((r) => r.source === source)) {
       openModal(
@@ -935,7 +1122,7 @@
     S.receiptDraft = source;
     openModal(
       "Review " + receipt.name.toLowerCase(),
-      `<p class="badge badge-demo">Simulated extraction · ${receipt.store}</p><p class="muted">Edit each known ingredient, quantity and line total. Changing the display name retains its inventory identity. All values are illustrative.</p><form data-form="receipt" data-source="${source}">${errors()}${receipt.lines.map((l) => `<fieldset><legend>${esc(D.items[l.id].name)}</legend><div class="field-grid">${field("Item name", `name-${l.id}`, S.items[l.id].name, "text", 'maxlength="48" required')}${field(`Quantity (${D.items[l.id].unit})`, `qty-${l.id}`, l.qty, "number", 'min="0.01" max="10000" step="0.01" required')}${field("Line total (SAR)", `price-${l.id}`, (l.cents / 100).toFixed(2), "number", 'min="0" max="100000" step="0.01" required')}${field("Reviewed date for combined stock", `expiry-${l.id}`, S.items[l.id].qty > 0 ? S.items[l.id].expiry : datePlus(D.items[l.id].days), "date", "required")}</div></fieldset>`).join("")}<p class="notice">Scanned total: ${money(receipt.lines.reduce((s, l) => s + l.cents, 0))}. <b data-revised-total>Reviewed total: ${money(receipt.lines.reduce((s, l) => s + l.cents, 0))}</b></p><p class="muted">This prototype keeps one stock record per ingredient. Review its combined date; separate purchase batches are later planned.</p><label class="checkbox-field"><input type="checkbox" name="confirm" required>I reviewed names, quantities, combined-stock dates and the revised total.</label><button class="btn btn-primary">Save receipt to kitchen & expenses</button></form>`,
+      `<p class="badge badge-demo">Simulated extraction · ${receipt.store}</p><p class="muted">Check items, quantities and prices before adding them to your kitchen.</p><form data-form="receipt" data-source="${source}">${errors()}${receipt.lines.map((l) => `<fieldset><legend>${esc(D.items[l.id].name)}</legend><div class="field-grid">${field("Item name", `name-${l.id}`, S.items[l.id].name, "text", 'maxlength="48" required')}${field(`Quantity (${D.items[l.id].unit})`, `qty-${l.id}`, l.qty, "number", 'min="0.01" max="10000" step="0.01" required')}${field("Line total (SAR)", `price-${l.id}`, (l.cents / 100).toFixed(2), "number", 'min="0" max="100000" step="0.01" required')}${field("Reviewed date for combined stock", `expiry-${l.id}`, S.items[l.id].qty > 0 ? S.items[l.id].expiry : datePlus(D.items[l.id].days), "date", "required")}</div></fieldset>`).join("")}<p class="notice">Scanned total: ${money(receipt.lines.reduce((s, l) => s + l.cents, 0))}. <b data-revised-total>Reviewed total: ${money(receipt.lines.reduce((s, l) => s + l.cents, 0))}</b></p><details class="details"><summary>How stock dates work</summary><p>New and existing quantities share one date in this demo. Review the combined stock date; separate batches are planned.</p></details><label class="checkbox-field"><input type="checkbox" name="confirm" required>I reviewed names, quantities, combined-stock dates and the revised total.</label><button class="btn btn-primary">Save receipt to kitchen & expenses</button></form>`,
     );
   }
   function profileView() {
@@ -1175,6 +1362,7 @@
     let amount = reward("meal:" + m.rid, 40);
     if (recipe(m.rid).lesson === "balance" && m.technique)
       amount += reward("technique:balance", 20);
+    m.rewardAmount = amount;
     m.claimed = true;
     render();
     toast(
@@ -1185,14 +1373,14 @@
     if (level().index > old)
       openModal(
         "Apprentice Cook · 500 XP reached",
-        `<p>You have unlocked the Heat-control practice challenge. Your three starter lessons remain free from the beginning.</p>${levelBlock()}${btn("Open the new challenge", "heat-challenge", "", "btn-primary")}${btn("Continue to share the meal", "share", m.id)}`,
+        `<div class="reward-celebration">${icon("trophy")}<span>LEVEL 2</span><h3>Apprentice Cook!</h3><p>A little practice. A real step forward.</p></div><p>You have unlocked the Heat-control practice challenge. Your three starter lessons remain free from the beginning.</p>${levelBlock()}${btn("Open the new challenge", "heat-challenge", "", "btn-primary")}${btn("Continue to share the meal", "share", m.id)}`,
       );
   }
   function tourNext() {
     const done = tourState(),
       i = done.findIndex((x) => !x);
     if (i === 0) return onboarding();
-    if (i === 1) return scanReview();
+    if (i === 1) return scanCamera("fridge");
     if (i === 2) {
       S.currentLesson = "balance";
       return navigate("lesson");
@@ -1238,8 +1426,25 @@
     if (action === "menu")
       return openModal(
         "Explore Nomli",
-        `<div class="stack">${D.nav.map(([r, label]) => btn(label, "go", r, "btn-quiet")).join("")}</div>`,
+        `<div class="app-menu">${D.nav.map(([r, label]) => btn(label, "go", r, "btn-quiet")).join("")}</div><div class="menu-footer">${btn("Reset demo", "reset-ask")}${btn("Set cooking goals", "onboard")}</div><a class="text-link" href="../index.html" target="_top">Back to Nomli overview</a>`,
       );
+    if (action === "meal-photo") {
+      const meal = S.meals.find((m) => m.id === id);
+      if (!meal) return;
+      openModal(
+        "Your finished dish",
+        `<div class="camera-view dish-camera"><img src="${recipe(meal.rid).image}" alt="Sample finished dish"><div class="camera-brackets"></div><span class="scan-status">Sample camera • ready</span></div><p class="muted">A little moment worth sharing.</p>${btn("Use this sample photo", "photo-confirm", id, "btn-primary")}<p class="details">This demo attaches an illustrative photo. No camera or authenticity verification.</p>`,
+      );
+      return;
+    }
+    if (action === "photo-confirm") {
+      const meal = S.meals.find((m) => m.id === id);
+      if (meal) meal.photo = true;
+      closeModal();
+      render();
+      toast("Sample dish photo attached.");
+      return;
+    }
     if (action === "onboard") return onboarding();
     if (action === "tour-toggle") {
       S.tour = !S.tour;
@@ -1271,7 +1476,9 @@
       render();
       return;
     }
-    if (action === "scan-review") return scanReview();
+    if (action === "scan-review" || action === "scan-open")
+      return scanCamera(id || "fridge");
+    if (action === "scan-capture") return captureScan();
     if (action === "item-edit") return itemForm(id);
     if (action === "shopping-add") {
       addShopping(id, "Low stock or manual addition");
@@ -1344,6 +1551,7 @@
       if (c.step < r.steps.length - 1) {
         c.step++;
         render();
+        $(".app-scroll")?.scrollTo(0, 0);
       } else navigate("review");
       return;
     }
@@ -1495,7 +1703,7 @@
       render();
       return;
     }
-    if (action === "receipt") return receiptForm(id);
+    if (action === "receipt") return scanCamera(id);
     if (action === "preview") return preview(id);
     if (action === "plan-select") {
       closeModal();
@@ -1607,6 +1815,32 @@
       toast(
         "Sample preferences saved. Five ingredients give you a quick first recipe.",
       );
+    }
+    if (kind === "single-scan") {
+      const id = form.dataset.id,
+        q = Number(fd.get("qty")),
+        date = fd.get("expiry");
+      if (
+        !D.items[id] ||
+        !Number.isFinite(q) ||
+        q <= 0 ||
+        q > 10000 ||
+        Math.abs(q * 100 - Math.round(q * 100)) > 0.000001 ||
+        !validDate(date) ||
+        !fd.get("confirmed")
+      )
+        return formError(
+          form,
+          "Check quantity (up to two decimals), date and confirmation.",
+        );
+      S.items[id].qty = q;
+      S.items[id].expiry = date;
+      S.items[id].estimated = false;
+      S.adjustments.push(S.items[id].name + ": reviewed camera sample saved.");
+      closeModal();
+      navigate("kitchen");
+      toast("Reviewed ingredient saved to your kitchen.");
+      return;
     }
     if (kind === "scan") {
       if (S.scanSaved) return;
@@ -1833,13 +2067,30 @@
     if (routes.includes(route) && route !== S.route) {
       S.route = route;
       render();
-      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+      $(".app-scroll")?.scrollTo({ top: 0, left: 0, behavior: "instant" });
     }
   }
   window.addEventListener("hashchange", restoreRoute);
   window.addEventListener("popstate", restoreRoute);
   modal.addEventListener("cancel", () => {
     if (lastFocus?.isConnected) setTimeout(() => lastFocus.focus(), 0);
+  });
+  window.addEventListener("message", (event) => {
+    if (
+      event.origin !== location.origin ||
+      event.source !== parent ||
+      !event.data ||
+      typeof event.data !== "object"
+    )
+      return;
+    if (
+      event.data.type === "nomli:navigate" &&
+      routes.includes(event.data.route)
+    ) {
+      closeModalIfOpen();
+      navigate(event.data.route);
+    }
+    if (event.data.type === "nomli:scan") scanCamera(event.data.mode);
   });
   render(false);
 })();

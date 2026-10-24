@@ -1,6 +1,6 @@
 # Nomli investor demonstration guide
 
-Prepared 24 October 2026 for the 25 October meeting. Functional rehearsals are not a substitute for the presenter's timed rehearsal on the meeting laptop.
+Prepared 24 October 2026 for the 25 October meeting. The landing page now centers the live mobile app. The triangle icon opens the optional investor guide; the menu opens utilities and future-feature previews. Functional rehearsals are not a substitute for the presenter's timed rehearsal on the meeting laptop.
 
 ## Before presenting
 
@@ -25,11 +25,11 @@ Prepared 24 October 2026 for the 25 October meeting. Functional rehearsals are n
 
 ## Optional branches after the core journey
 
-- Kitchen: storage filters, add/edit ingredients, consumed/discarded corrections; switch off the toaster and inspect the adapted recipe method.
-- Expenses: paper and digital receipt samples; edit quantity, name, combined-stock date or line total; confirm and save once. Category, weekly and monthly totals update together. No real OCR or uploads.
+- Kitchen: fridge, barcode and expiry-date camera simulations, then editable review; storage filters, add/edit ingredients, consumed/discarded corrections. Switch off the toaster and inspect the adapted recipe method.
+- Expenses: photograph-like paper receipt capture and sample PDF import, animated extraction, then editable receipt samples; edit quantity, name, combined-stock date or line total; confirm and save once. Category, weekly and monthly totals update together. No real OCR or uploads.
 - Budget: enter a positive amount with up to two decimals; show remaining/over-budget state.
 - Play: accept the three-action weekly challenge; claim its 30 XP once after learning, cooking and sharing. Explain seeded flexible-week examples.
-- Hub: local Cheer, Reply, Save, Follow and Report/Block examples.
+- Hub: local Cheer, Reply, Save, Follow and Report/Block examples. A completed meal also offers a sample dish-photo attachment.
 - Future features: family, voice/languages, meal planning, offline syncing, accounts/privacy, subscriptions and ordering are labeled previews.
 
 ## Honest answers
