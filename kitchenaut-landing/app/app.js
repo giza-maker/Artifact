@@ -184,6 +184,7 @@
   let S = load(),
     toastTimer,
     lastFocus;
+  if (new URLSearchParams(location.search).has("investor")) S.tour = true;
   const routes = [
     "home",
     "kitchen",
