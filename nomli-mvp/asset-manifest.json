@@ -54,8 +54,8 @@
     },
     {
       "path": "web/public/ASSETS.md",
-      "bytes": 1767,
-      "sha256": "a8dec563238e1cfd0dcbf2d038858908c8b9e5833e706d55a87f05d1d9fe6c84"
+      "bytes": 2049,
+      "sha256": "20194e8df7dd32d7f8ce1c11ce6ebd65c4a946cc2d1f5043aa4b82ec04c6f183"
     },
     {
       "path": "web/public/favicon.svg",
@@ -263,14 +263,44 @@
       "sha256": "8a96ff82d21f0db9f6bb3000aca5fe942aa41736017773be92c4e06f53844802"
     },
     {
+      "path": "web/public/images/recipe-omelette-card.webp",
+      "bytes": 65278,
+      "sha256": "c2a01d65bdde14f5df5685d0c4617b0923a3b227bd9bfd0923268500ab1e8ebd"
+    },
+    {
+      "path": "web/public/images/recipe-omelette-mobile.webp",
+      "bytes": 132448,
+      "sha256": "7447633582bb8cbdc397e3a36546734255c99ab0d98a5a76031fc50c62259f14"
+    },
+    {
       "path": "web/public/images/recipe-omelette.webp",
       "bytes": 334868,
       "sha256": "3039065803d6fc282cbe2ad8ba13641c42de3b88cd0ea1a8d27a64f880058cff"
     },
     {
+      "path": "web/public/images/recipe-salad-card.webp",
+      "bytes": 57958,
+      "sha256": "5c7cbaa321a3b79a827cb89aa62d842d47dd3d4a03a0b20ea062157545c01791"
+    },
+    {
+      "path": "web/public/images/recipe-salad-mobile.webp",
+      "bytes": 112720,
+      "sha256": "7fdbadafe0deb269fb93e4915a38c9266cc13da9a5c677951a67240931952abb"
+    },
+    {
       "path": "web/public/images/recipe-salad.webp",
       "bytes": 331256,
       "sha256": "d5f140783431b6db4da397bfaa15978430bfdc96cff5d4ad136036f61890557d"
+    },
+    {
+      "path": "web/public/images/recipe-skillet-card.webp",
+      "bytes": 71550,
+      "sha256": "6bb18feb55f14d14cbcbac80524762cd62b281b797c0566d84bedc81c6851f06"
+    },
+    {
+      "path": "web/public/images/recipe-skillet-mobile.webp",
+      "bytes": 141086,
+      "sha256": "bd33fd4a146449d8c391af3c973237f6463a65b5fe5bc0c2dcc6e21310c86fbd"
     },
     {
       "path": "web/public/images/recipe-skillet.webp",

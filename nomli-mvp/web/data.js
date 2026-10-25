@@ -157,7 +157,7 @@ window.NOMLI_DATA = {
     {
       "id": "salad",
       "name": "Tomato & basil salad",
-      "image": "images/recipe-salad.webp",
+      "image": "images/recipe-salad-mobile.webp",
       "time": 8,
       "difficulty": "Beginner",
       "cuisine": "Mediterranean",
@@ -201,7 +201,8 @@ window.NOMLI_DATA = {
           "title": "Plate and serve",
           "text": "Spoon the dressed tomatoes onto plates, scatter the basil and serve."
         }
-      ]
+      ],
+      "cardImage": "images/recipe-salad-card.webp"
     },
     {
       "id": "bruschetta",
@@ -276,7 +277,7 @@ window.NOMLI_DATA = {
     {
       "id": "omelette",
       "name": "Basil omelette",
-      "image": "images/recipe-omelette.webp",
+      "image": "images/recipe-omelette-mobile.webp",
       "time": 8,
       "difficulty": "Beginner",
       "cuisine": "Everyday",
@@ -326,12 +327,13 @@ window.NOMLI_DATA = {
           "title": "Fold and serve",
           "text": "Add the basil. Once the eggs have set, fold the omelette and slide it onto a plate."
         }
-      ]
+      ],
+      "cardImage": "images/recipe-omelette-card.webp"
     },
     {
       "id": "skillet",
       "name": "Tomato & egg skillet",
-      "image": "images/recipe-skillet.webp",
+      "image": "images/recipe-skillet-mobile.webp",
       "time": 15,
       "difficulty": "Developing",
       "cuisine": "MENA-inspired",
@@ -378,7 +380,8 @@ window.NOMLI_DATA = {
           "title": "Add the eggs",
           "text": "Make wells and add the eggs. Continue cooking until the whites and yolks are set, then finish with basil."
         }
-      ]
+      ],
+      "cardImage": "images/recipe-skillet-card.webp"
     }
   ],
   "receipts": {

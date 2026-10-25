@@ -14,3 +14,5 @@
 - Synthetic digital receipt PDF rendered and visually inspected; PNG included beside PDF. Fixture has no printed expiry and matches its JSON ground truth.
 
 Android compilation status is recorded separately in `artifacts/build-status.json` after setup. Web build and Capacitor sync do not by themselves prove native runtime behavior. No physical device was connected. Live auth, database, OCR, LLM, voice, concurrent updates and production security remain implementation/validation work.
+
+Java 21.0.10, Android API 36 and Gradle 8.14.3 verified locally. APK compilation and device QA have not been run. Gradle may download Maven dependencies during the first build.

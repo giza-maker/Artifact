@@ -5,7 +5,7 @@
   "contentValidation": "passed",
   "capacitorSync": "passed",
   "androidSdk": "API 36 installed",
-  "gradle": "8.14.3 distribution download in progress",
+  "gradle": "8.14.3 installed and verified with Java 21",
   "apk": "not compiled",
   "device": "No connected Android device",
   "liveServices": "not configured",

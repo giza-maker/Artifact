@@ -12,3 +12,5 @@ The product uses local images and fonts so a demonstration does not depend on th
 Camera, scanner and reward motion is authored in CSS/JavaScript. No generated video is used. All synthetic food and receipt imagery is disclosed as demonstration imagery.
 
 `images/school-preview.png` is a browser capture of the implemented mobile Chef School, showing sample learning progress. It is a presentation image; the hero remains the live interactive app.
+
+Lean MVP derivatives: recipe-*-card.webp (560 x 420) and recipe-*-mobile.webp (840 x 630) preserve the centered crop used by the UI. Created from existing Nomli recipe art with Sharp; originals retained. Android launcher PNGs and adaptive vector use the original N-and-spoon mark.
