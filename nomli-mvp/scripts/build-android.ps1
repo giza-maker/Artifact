@@ -7,10 +7,10 @@ if (-not $env:JAVA_HOME) {
   $taskExtensionRoot = Join-Path $env:USERPROFILE '.antigravity\extensions'
   if (Test-Path -LiteralPath $taskExtensionRoot) {
     $taskBundledJava = Get-ChildItem -LiteralPath $taskExtensionRoot -Directory -Filter 'redhat.java-*' | ForEach-Object { Get-ChildItem -LiteralPath (Join-Path $_.FullName 'jre') -Directory -Filter '21*' -ErrorAction SilentlyContinue } | Select-Object -First 1
-    if ($taskBundledJava) { $env:JAVA_HOME = $taskBundledJava.FullName; $env:PATH = "$env:JAVA_HOME\bin;$env:PATH" }
+    if ($taskBundledJava -and (Test-Path -LiteralPath (Join-Path $taskBundledJava.FullName 'bin\jlink.exe'))) { $env:JAVA_HOME = $taskBundledJava.FullName; $env:PATH = "$env:JAVA_HOME\bin;$env:PATH" }
   }
 }
-if (-not (Get-Command java -ErrorAction SilentlyContinue)) { throw 'Java 21 required. See docs/SETUP.md.' }
+if (-not $env:JAVA_HOME -or -not (Test-Path -LiteralPath (Join-Path $env:JAVA_HOME 'bin\jlink.exe'))) { throw 'Full JDK 21 with jlink required for local APK compilation. The editor runtime is insufficient. See docs/SETUP.md or use the Nomli Android CI workflow.' }
 & npm.cmd run android:sync
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 Push-Location android

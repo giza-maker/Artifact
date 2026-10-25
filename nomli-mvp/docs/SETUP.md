@@ -5,7 +5,7 @@ Preparation date: 25 October 2026. Package versions are pinned in `package-lock.
 ## Host tools verified
 
 - Node 22.14.0, npm 11.1.0.
-- Java 21.0.10 found inside the existing Antigravity Red Hat Java extension. `scripts/build-android.ps1` detects it when `JAVA_HOME` is unset; no global Java setting was changed.
+- Java 21.0.10 found inside the existing Antigravity Red Hat Java extension. It runs Gradle but lacks `jlink` and JDK modules, so it cannot compile Android. Local APK compilation requires a full JDK 21; the build script checks this before starting.
 - Android SDK under `%LOCALAPPDATA%\Android\Sdk`; API 36 installed for Capacitor 8. Existing build tools include 36.0.0.
 - Capacitor 8.5.3, Android target/compile API 36, minimum API 26 (Android 8) for barcode support.
 - Official Gradle wrapper 8.14.3, binary distribution. Android Studio is optional for command-line builds and has not been installed.
@@ -28,3 +28,7 @@ npm run android:debug
 No Android device was connected during preparation. An emulator image is optional and has not been downloaded. Use a physical Android 8+ phone for camera, barcode, permission, keyboard, safe-area, background-timer and offline persistence tests before treating the APK as a functional MVP.
 
 Debug APK builds use debug signing. Production release signing, Play Store submission, privacy policy and cloud credentials are separate setup work. No credentials or signing keystore are included.
+
+## Android build in CI
+
+`.github/workflows/nomli-android.yml` compiles on Ubuntu with a full Temurin JDK 21 and API 36. It runs the application checks, builds the APK, verifies its signature and ZIP alignment, then uploads `Nomli-MVP-debug` as a workflow artifact. Updates to the MVP on `gh-pages` trigger the build. It uses a read-only repository token and receives no application API keys.

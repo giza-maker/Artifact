@@ -3171,3 +3171,41 @@ button,
     grid-column: auto;
   }
 }
+/* Native Android supplies the system bars; use the entire WebView for the app. */
+body.native-app {
+  padding: 0;
+  background: var(--bg);
+}
+.native-app .device-status {
+  display: none;
+}
+.native-app .app-device {
+  width: 100%;
+  max-width: none;
+  height: 100dvh;
+  min-height: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+}
+.native-app dialog[data-screen="camera"] {
+  width: 100%;
+  max-width: 100%;
+  height: 100dvh;
+  max-height: 100dvh;
+  margin: 0;
+  border-radius: 0;
+}
+.captured-photo {
+  width: 100%;
+  max-height: 55dvh;
+  object-fit: contain;
+  border-radius: var(--radius);
+}
+.captured-code {
+  overflow-wrap: anywhere;
+  font-size: 20px;
+  font-weight: 700;
+}

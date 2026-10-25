@@ -263,7 +263,7 @@ import { createTimerNotifications } from "./timer-notifications.js";
   }
   function scanView() {
     const native = window.NomliNative?.isNative
-      ? `<section class="card"><h2>Device tools</h2><p class="muted">Capture is real. Recognition service is not configured; results will not alter inventory.</p><div class="actions">${button("Take photo", "native-camera")}${button("Scan barcode", "native-barcode")}</div></section>`
+      ? `<section class="card"><h2>Device tools</h2><p class="muted">Capture is real. Recognition service is not configured; results will not alter inventory.</p><div class="actions">${button("Take/select photo", "native-camera")}${button("Scan barcode", "native-barcode")}</div></section>`
       : "";
     return (
       heading(
@@ -284,7 +284,7 @@ import { createTimerNotifications } from "./timer-notifications.js";
         )
         .join(
           "",
-        )}</div>${native}<p class="details">Simulation only. No camera, file, OCR, barcode database or recognition service is used.</p>`
+        )}</div>${native}<p class="details">${window.NomliNative?.isNative ? "Sample scan cards are simulated. Device tools access your camera or photo library. Recognition and product lookup are not connected." : "Simulation only. No camera, file, OCR, barcode database or recognition service is used."}</p>`
     );
   }
   function selectedIngredient(r, ing) {
@@ -938,7 +938,7 @@ import { createTimerNotifications } from "./timer-notifications.js";
           ]?.();
         openModal(
           a === "native-camera" ? "Photo captured" : "Barcode captured",
-          `${a === "native-camera" && result?.webPath ? `<img class="captured-photo" src="${esc(result.webPath)}" alt="Your captured grocery photo">` : `<p class="captured-code">${esc(result?.ScanResult || "No barcode result")}</p>`}<p class="notice">Capture saved for preview. Recognition and product lookup still need connecting; stock has not changed.</p>`,
+          `${a === "native-camera" && result?.webPath ? `<img class="captured-photo" src="${esc(result.webPath)}" alt="Your captured grocery photo">` : `<p class="captured-code">${esc(result?.ScanResult || "No barcode result")}</p>`}<p class="notice">Captured for preview. Recognition and product lookup still need connecting; stock has not changed.</p>`,
         );
       } catch (err) {
         announce(err?.message || "Device action cancelled.");

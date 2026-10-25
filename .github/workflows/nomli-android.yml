@@ -1,0 +1,71 @@
+name: Build Nomli Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [gh-pages]
+    paths:
+      - '.github/workflows/nomli-android.yml'
+      - 'nomli-mvp/**'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: nomli-android-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  apk:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: nomli-mvp
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: nomli-mvp/package-lock.json
+      - uses: actions/setup-java@v6.1.0
+        with:
+          distribution: temurin
+          java-version: '21'
+          cache: gradle
+          cache-dependency-path: |
+            nomli-mvp/android/**/*.gradle
+            nomli-mvp/android/gradle/wrapper/gradle-wrapper.properties
+      - name: Install JavaScript dependencies
+        run: npm ci --legacy-peer-deps --no-fund --no-audit
+      - name: Check application and content
+        run: npm run check
+      - name: Build and sync mobile assets
+        run: npm run android:sync
+      - name: Ensure Android SDK packages
+        run: sdkmanager 'platforms;android-36' 'build-tools;36.0.0'
+      - name: Compile debug APK
+        working-directory: nomli-mvp/android
+        run: |
+          chmod +x gradlew
+          ./gradlew --no-daemon --console=plain --stacktrace --max-workers=2 assembleDebug
+      - name: Verify installable package
+        run: |
+          mkdir -p artifacts
+          cp android/app/build/outputs/apk/debug/app-debug.apk artifacts/Nomli-MVP-debug.apk
+          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify --verbose artifacts/Nomli-MVP-debug.apk
+          "$ANDROID_HOME/build-tools/36.0.0/zipalign" -c -P 16 4 artifacts/Nomli-MVP-debug.apk
+          "$ANDROID_HOME/build-tools/36.0.0/aapt2" dump badging artifacts/Nomli-MVP-debug.apk > artifacts/apk-badging.txt
+          sha256sum artifacts/Nomli-MVP-debug.apk > artifacts/Nomli-MVP-debug.apk.sha256
+      - uses: actions/upload-artifact@v7.0.2
+        with:
+          name: Nomli-MVP-debug
+          path: |
+            nomli-mvp/artifacts/Nomli-MVP-debug.apk
+            nomli-mvp/artifacts/Nomli-MVP-debug.apk.sha256
+            nomli-mvp/artifacts/apk-badging.txt
+          if-no-files-found: error
+          retention-days: 7

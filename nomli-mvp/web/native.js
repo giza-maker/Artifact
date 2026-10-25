@@ -66,3 +66,4 @@ window.NomliNative = Object.freeze({
     return result.value ? JSON.parse(result.value) : null;
   },
 });
+if (window.NomliNative.isNative) document.body.classList.add("native-app");
