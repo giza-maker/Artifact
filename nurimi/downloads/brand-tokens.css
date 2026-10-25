@@ -1,0 +1,17 @@
+/* NURIMI design tokens. Concept release, 25 October 2026. */
+:root {
+  --nurimi-plum: #3B2158;
+  --nurimi-ivory: #FFF9F3;
+  --nurimi-lilac: #EADFFF;
+  --nurimi-blush: #F7CBD4;
+  --nurimi-sage: #C8D9BF;
+  --nurimi-deep-cherry: #B82B55;
+  --nurimi-bright-cherry: #D43F69;
+  --nurimi-butter: #FFE7A7;
+  --nurimi-coral: #F29AA8;
+  --nurimi-radius-small: 10px;
+  --nurimi-radius-medium: 18px;
+  --nurimi-radius-large: 28px;
+  --nurimi-body: "Noto Sans Arabic", "Plus Jakarta Sans", sans-serif;
+  --nurimi-display: "Alexandria", "Plus Jakarta Sans", sans-serif;
+}

@@ -1,0 +1,68 @@
+{
+  "brand": "NURIMI",
+  "legal_status": "trademark_clearance_required",
+  "taglines": {
+    "ar": "بشرتك أهم.",
+    "en": "Your skin comes first.",
+    "campaign": "Skin First. Hype Second."
+  },
+  "anchors": [
+    "plum",
+    "ivory"
+  ],
+  "colors": {
+    "plum": "#3B2158",
+    "ivory": "#FFF9F3",
+    "lilac": "#EADFFF",
+    "blush": "#F7CBD4",
+    "sage": "#C8D9BF",
+    "deep_cherry": "#B82B55",
+    "bright_cherry": "#D43F69",
+    "butter": "#FFE7A7",
+    "coral": "#F29AA8"
+  },
+  "palette_variants": {
+    "balanced": {
+      "background": "#FFF9F3",
+      "text": "#3B2158",
+      "card": "#EADFFF",
+      "cta": "#B82B55",
+      "support": "#C8D9BF"
+    },
+    "lilac_story": {
+      "background": "#FFF9F3",
+      "text": "#3B2158",
+      "hero": "#EADFFF",
+      "cta": "#B82B55",
+      "support": "#F7CBD4"
+    },
+    "cherry_energy": {
+      "background": "#FFF9F3",
+      "text": "#3B2158",
+      "hero": "#F7CBD4",
+      "cta": "#B82B55",
+      "support": "#FFE7A7"
+    }
+  },
+  "typography_proposal": {
+    "latin": "Plus Jakarta Sans",
+    "arabic_display": "Alexandria",
+    "arabic_body": "Noto Sans Arabic",
+    "korean_supplement": "Noto Sans KR"
+  },
+  "product_publication": "blocked_pending_individual_approval",
+  "logo_source": "assets/user_references/approved_nurimi_brand_reference.png",
+  "version": "2026-10-25-prototype",
+  "business_model": "own_inventory_retailer",
+  "typography_runtime": {
+    "latin": "Plus Jakarta Sans, variable 200–800",
+    "arabic_display": "Alexandria, variable 100–900",
+    "arabic_body": "Noto Sans Arabic, variable 100–900"
+  },
+  "font_sources": {
+    "Plus Jakarta Sans": "https://fonts.google.com/specimen/Plus+Jakarta+Sans",
+    "Alexandria": "https://fonts.google.com/specimen/Alexandria",
+    "Noto Sans Arabic": "https://fonts.google.com/noto/specimen/Noto+Sans+Arabic"
+  },
+  "logo_status": "source-derived digitized concept; owner optical review and legal clearance pending"
+}

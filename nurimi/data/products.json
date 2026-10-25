@@ -1,0 +1,277 @@
+{
+  "products": [
+    {
+      "id": "P001",
+      "brand": "Celimax",
+      "name": {
+        "ar": "سيروم ذا فيتا-إيه ريتينول شوت لشد البشرة",
+        "en": "The Vita-A Retinol Shot Tightening Serum"
+      },
+      "shortName": {
+        "ar": "سيروم ريتينول شوت",
+        "en": "Retinol Shot Serum"
+      },
+      "image": "assets/products/p001.webp",
+      "moods": [
+        "night",
+        "smooth"
+      ],
+      "category": "retinoid",
+      "ingredient": {
+        "ar": "ريتينول، بانثينول، ببتيدات",
+        "en": "Retinol, panthenol, peptides"
+      },
+      "format": {
+        "ar": "سيروم ليلي",
+        "en": "Night serum"
+      },
+      "sizeLabel": {
+        "ar": "قائمة الشركة: 30 مل / المنتج المحلي قيد التأكيد",
+        "en": "Manufacturer listing: 30ml / Local SKU to confirm"
+      },
+      "description": {
+        "ar": "سيروم تجميلي يحتوي على الريتينول، بقوام مخصص لخطوة السيروم المسائية.",
+        "en": "A retinol cosmetic serum in a format intended for the evening serum step."
+      },
+      "why": {
+        "ar": "خيار منسق لمن يريد إدخال منتج ريتينويد واحد ضمن روتين ليلي بسيط.",
+        "en": "A curated option for shoppers choosing one retinoid product for a simple night routine."
+      },
+      "use": {
+        "ar": "يُستخدم مساءً وفق تعليمات الشركة على العبوة، ثم مرطب عند الحاجة.",
+        "en": "Use in the evening according to manufacturer directions on the pack; follow with moisturizer if needed."
+      },
+      "caution": {
+        "ar": "لا تجمع بين عدة منتجات ريتينويد. يُتجنب أثناء الحمل. اتبع تعليمات الشركة واستخدم واقي شمس نهارًا. استشر مختصًا مؤهلًا للنصيحة الشخصية.",
+        "en": "Do not combine multiple retinoid products. Avoid during pregnancy. Follow manufacturer directions and use daytime sun protection. Consult a qualified professional for personal advice."
+      },
+      "sourceUrl": "https://celimax.us/products/the-vita-a-retinol-shot-tightening-serum-30ml",
+      "sourceLabel": "Manufacturer information",
+      "localVerification": "pending",
+      "price": null,
+      "stock": null,
+      "batch": null,
+      "expiry": null,
+      "retinoid": true,
+      "color": "#B7D433"
+    },
+    {
+      "id": "P002",
+      "brand": "Arencia",
+      "name": {
+        "ar": "ريتينال بوستر شوت",
+        "en": "Retinal Booster Shot Serum"
+      },
+      "shortName": {
+        "ar": "ريتينال بوستر شوت",
+        "en": "Retinal Booster Shot"
+      },
+      "image": "assets/products/p002.webp",
+      "moods": [
+        "night",
+        "smooth"
+      ],
+      "category": "retinoid",
+      "ingredient": {
+        "ar": "ريتينال، كافيين، إكتوين، ببتيدات",
+        "en": "Retinal, caffeine, ectoin, peptides"
+      },
+      "format": {
+        "ar": "سيروم ليلي خفيف",
+        "en": "Lightweight night serum"
+      },
+      "sizeLabel": {
+        "ar": "قائمة الشركة: 30 مل / المنتج المحلي قيد التأكيد",
+        "en": "Manufacturer listing: 30ml / Local SKU to confirm"
+      },
+      "description": {
+        "ar": "سيروم تجميلي ليلي بالريتينال ومكونات مرطبة ضمن تركيبة خفيفة.",
+        "en": "A lightweight night cosmetic serum with retinal and moisturizing ingredients."
+      },
+      "why": {
+        "ar": "خيار ريتينويد واحد لروتين مسائي موجه للعناية بملمس البشرة.",
+        "en": "A single-retinoid option for an evening routine focused on the look of skin texture."
+      },
+      "use": {
+        "ar": "توضع كمية صغيرة في خطوة السيروم مساءً بعد التونر وقبل المرطب، وفق تعليمات الشركة.",
+        "en": "Apply a small amount at the evening serum step, after toner and before moisturizer, following manufacturer directions."
+      },
+      "caution": {
+        "ar": "لا تجمع بين عدة منتجات ريتينويد. يُتجنب أثناء الحمل. اتبع تعليمات الشركة واستخدم واقي شمس نهارًا. استشر مختصًا مؤهلًا للنصيحة الشخصية.",
+        "en": "Do not combine multiple retinoid products. Avoid during pregnancy. Follow manufacturer directions and use daytime sun protection. Consult a qualified professional for personal advice."
+      },
+      "sourceUrl": "https://arencia.us/products/retinal-booster-shot-advanced-retinal-caffeine-formula",
+      "sourceLabel": "Manufacturer information",
+      "localVerification": "pending",
+      "price": null,
+      "stock": null,
+      "batch": null,
+      "expiry": null,
+      "retinoid": true,
+      "color": "#C5A33B"
+    },
+    {
+      "id": "P003",
+      "brand": "Arencia",
+      "name": {
+        "ar": "سيروم بي دي آر إن بوستر شوت",
+        "en": "PDRN Booster Shot Serum"
+      },
+      "shortName": {
+        "ar": "بي دي آر إن بوستر شوت",
+        "en": "PDRN Booster Shot"
+      },
+      "image": "assets/products/p003.webp",
+      "moods": [
+        "hydrate"
+      ],
+      "category": "hydration",
+      "ingredient": {
+        "ar": "صوديوم دي إن إيه، ببتيدات، نياسيناميد، بانثينول",
+        "en": "Sodium DNA, peptides, niacinamide, panthenol"
+      },
+      "format": {
+        "ar": "سيروم مرطب خفيف",
+        "en": "Lightweight moisturizing serum"
+      },
+      "sizeLabel": {
+        "ar": "قائمة الشركة: 30 مل / المنتج المحلي قيد التأكيد",
+        "en": "Manufacturer listing: 30ml / Local SKU to confirm"
+      },
+      "description": {
+        "ar": "سيروم تجميلي مرطب يجمع صوديوم دي إن إيه والببتيدات والبانثينول.",
+        "en": "A moisturizing cosmetic serum combining sodium DNA, peptides, and panthenol."
+      },
+      "why": {
+        "ar": "خيار ترطيب مريح ضمن تشكيلة صغيرة، من دون إضافة ريتينويد آخر.",
+        "en": "A comfort-focused hydration option in the edit, without adding another retinoid."
+      },
+      "use": {
+        "ar": "يُستخدم في خطوة السيروم وفق تعليمات الشركة على العبوة.",
+        "en": "Use at the serum step according to manufacturer directions on the pack."
+      },
+      "caution": {
+        "ar": "راجع قائمة المكونات على العبوة وأوقف الاستخدام عند التهيج. استشر مختصًا مؤهلًا للنصيحة الشخصية.",
+        "en": "Review the ingredient list on the pack and stop use if irritation occurs. Consult a qualified professional for personal advice."
+      },
+      "sourceUrl": "https://arencia.us/products/pdrn-booster-shot-rosy-pdrn-peptides-for-glowy-healthy-skin",
+      "sourceLabel": "Manufacturer information",
+      "localVerification": "pending",
+      "price": null,
+      "stock": null,
+      "batch": null,
+      "expiry": null,
+      "retinoid": false,
+      "color": "#EBA6B8"
+    },
+    {
+      "id": "P004",
+      "brand": "Arencia",
+      "name": {
+        "ar": "سيروم فيتامين سي بوستر شوت",
+        "en": "Vitamin C Booster Shot Serum"
+      },
+      "shortName": {
+        "ar": "فيتامين سي بوستر شوت",
+        "en": "Vitamin C Booster Shot"
+      },
+      "image": "assets/products/p004.webp",
+      "moods": [
+        "glow"
+      ],
+      "category": "glow",
+      "ingredient": {
+        "ar": "مشتقات فيتامين سي، نياسيناميد، جلوتاثيون",
+        "en": "Vitamin C derivatives, niacinamide, glutathione"
+      },
+      "format": {
+        "ar": "سيروم خفيف",
+        "en": "Lightweight serum"
+      },
+      "sizeLabel": {
+        "ar": "قائمة الشركة: 10 أو 30 مل / المنتج المحلي المصور 30 مل؛ قيد التأكيد",
+        "en": "Manufacturer listing: 10ml or 30ml / Pictured local SKU 30ml; to confirm"
+      },
+      "description": {
+        "ar": "سيروم تجميلي خفيف بمشتقات فيتامين سي والنياسيناميد والجلوتاثيون.",
+        "en": "A lightweight cosmetic serum with vitamin C derivatives, niacinamide, and glutathione."
+      },
+      "why": {
+        "ar": "خيار مخصص لمظهر الإشراقة ضمن روتين يومي مختصر.",
+        "en": "A glow-focused option for a concise daily routine."
+      },
+      "use": {
+        "ar": "يُستخدم في خطوة السيروم وفق تعليمات الشركة على العبوة، مع واقي شمس نهارًا.",
+        "en": "Use at the serum step according to manufacturer directions on the pack, with daytime sun protection."
+      },
+      "caution": {
+        "ar": "راجع قائمة المكونات على العبوة وأوقف الاستخدام عند التهيج. قد يختلف لون التركيبة طبيعيًا بين الدفعات بحسب الشركة.",
+        "en": "Review the ingredient list on the pack and stop use if irritation occurs. The manufacturer notes that formula color may vary naturally between batches."
+      },
+      "sourceUrl": "https://arencia.us/products/vitamin-c-booster-shot-pure-vitamin-c-glutathione-for-bright-healthy-skin",
+      "sourceLabel": "Manufacturer information",
+      "localVerification": "pending",
+      "price": null,
+      "stock": null,
+      "batch": null,
+      "expiry": null,
+      "retinoid": false,
+      "color": "#AAB744"
+    },
+    {
+      "id": "P005",
+      "brand": "Celimax",
+      "name": {
+        "ar": "ذا فيتا-إيه ريتينال شوت بوستر لشد البشرة",
+        "en": "The Vita-A Retinal Shot Tightening Booster"
+      },
+      "shortName": {
+        "ar": "ريتينال شوت بوستر",
+        "en": "Retinal Shot Booster"
+      },
+      "image": "assets/products/p005.webp",
+      "moods": [
+        "night",
+        "smooth"
+      ],
+      "category": "retinoid",
+      "ingredient": {
+        "ar": "ريتينال، مركب ماتريكسيل، بانثينول",
+        "en": "Retinal, Matrixyl, panthenol"
+      },
+      "format": {
+        "ar": "بوستر ليلي مركز",
+        "en": "Targeted night booster"
+      },
+      "sizeLabel": {
+        "ar": "قائمة الشركة: 15 مل / المنتج المحلي قيد التأكيد",
+        "en": "Manufacturer listing: 15ml / Local SKU to confirm"
+      },
+      "description": {
+        "ar": "بوستر تجميلي ليلي بالريتينال في أنبوب مخصص للاستخدام الموضعي أو ضمن خطوة السيروم.",
+        "en": "A retinal night cosmetic booster in a tube format for targeted use or the serum step."
+      },
+      "why": {
+        "ar": "خيار ريتينويد موجه لمن يفضل صيغة بوستر صغيرة؛ وليس منتجًا للاستخدام مع ريتينويد آخر.",
+        "en": "A targeted retinoid option for shoppers preferring a smaller booster format; not for layering with another retinoid."
+      },
+      "use": {
+        "ar": "يُستخدم مساءً وفق تعليمات الشركة على العبوة، من دون جمعه مع ريتينويد آخر.",
+        "en": "Use in the evening according to manufacturer directions on the pack, without combining it with another retinoid."
+      },
+      "caution": {
+        "ar": "لا تجمع بين عدة منتجات ريتينويد. يُتجنب أثناء الحمل. اتبع تعليمات الشركة واستخدم واقي شمس نهارًا. استشر مختصًا مؤهلًا للنصيحة الشخصية.",
+        "en": "Do not combine multiple retinoid products. Avoid during pregnancy. Follow manufacturer directions and use daytime sun protection. Consult a qualified professional for personal advice."
+      },
+      "sourceUrl": "https://celimax.us/products/the-vita-a-retinal-shot-tightening-booster",
+      "sourceLabel": "Manufacturer information",
+      "localVerification": "pending",
+      "price": null,
+      "stock": null,
+      "batch": null,
+      "expiry": null,
+      "retinoid": true,
+      "color": "#B8D63A"
+    }
+  ]
+}
