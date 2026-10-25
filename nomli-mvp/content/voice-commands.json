@@ -1,0 +1,358 @@
+{
+  "schemaVersion": 1,
+  "notes": "Authored utterances for intent and confirmation-flow tests. They are not speech-recognition benchmarks.",
+  "confirmationPolicy": {
+    "alwaysConfirm": [
+      "inventory.remove",
+      "inventory.set_expiry",
+      "shopping.clear",
+      "cook.stop",
+      "agent.purchase_or_order",
+      "inventory.add",
+      "inventory.adjust",
+      "shopping.add"
+    ],
+    "confirmWhenAmbiguous": [
+      "recipe.start",
+      "timer.set"
+    ],
+    "noConfirmationNormally": [
+      "inventory.query",
+      "recipe.search",
+      "timer.query",
+      "help"
+    ]
+  },
+  "examples": [
+    {
+      "id": "vc_en_001",
+      "locale": "en",
+      "utterance": "Add six eggs to my fridge",
+      "expected": {
+        "intent": "inventory.add",
+        "slots": {
+          "ingredientId": "egg",
+          "quantity": 6,
+          "unit": "piece",
+          "storage": "fridge"
+        }
+      },
+      "confirmation": "required",
+      "reason": "Preview parsed quantity and target; user confirms before any state change."
+    },
+    {
+      "id": "vc_ar_001",
+      "locale": "ar",
+      "utterance": "ضيف ست بيضات في التلاجة",
+      "expected": {
+        "intent": "inventory.add",
+        "slots": {
+          "ingredientId": "egg",
+          "quantity": 6,
+          "unit": "piece",
+          "storage": "fridge"
+        }
+      },
+      "confirmation": "required",
+      "reason": "Preview parsed quantity and target; user confirms before any state change."
+    },
+    {
+      "id": "vc_en_002",
+      "locale": "en",
+      "utterance": "How many tomatoes do I have?",
+      "expected": {
+        "intent": "inventory.query",
+        "slots": {
+          "ingredientId": "tomato"
+        }
+      },
+      "confirmation": "none",
+      "reason": "Read-only query."
+    },
+    {
+      "id": "vc_ar_002",
+      "locale": "ar",
+      "utterance": "عندي كام طماطم؟",
+      "expected": {
+        "intent": "inventory.query",
+        "slots": {
+          "ingredientId": "tomato"
+        }
+      },
+      "confirmation": "none",
+      "reason": "Read-only query."
+    },
+    {
+      "id": "vc_en_003",
+      "locale": "en",
+      "utterance": "Remove the yogurt",
+      "expected": {
+        "intent": "inventory.remove",
+        "slots": {
+          "ingredientId": "yogurt_plain"
+        }
+      },
+      "confirmation": "required",
+      "reason": "Preview parsed quantity and target; user confirms before any state change."
+    },
+    {
+      "id": "vc_ar_003",
+      "locale": "ar",
+      "utterance": "شيل الزبادي من المخزون",
+      "expected": {
+        "intent": "inventory.remove",
+        "slots": {
+          "ingredientId": "yogurt_plain"
+        }
+      },
+      "confirmation": "required",
+      "reason": "Preview parsed quantity and target; user confirms before any state change."
+    },
+    {
+      "id": "vc_en_004",
+      "locale": "en",
+      "utterance": "Find a vegetarian dinner under thirty minutes",
+      "expected": {
+        "intent": "recipe.search",
+        "slots": {
+          "dietaryTag": "vegetarian",
+          "meal": "dinner",
+          "maxTotalMinutes": 30
+        }
+      },
+      "confirmation": "none",
+      "reason": "Read-only search."
+    },
+    {
+      "id": "vc_ar_004",
+      "locale": "ar",
+      "utterance": "دور على عشا نباتي في أقل من نص ساعة",
+      "expected": {
+        "intent": "recipe.search",
+        "slots": {
+          "dietaryTag": "vegetarian",
+          "meal": "dinner",
+          "maxTotalMinutes": 30
+        }
+      },
+      "confirmation": "none",
+      "reason": "Read-only search."
+    },
+    {
+      "id": "vc_en_005",
+      "locale": "en",
+      "utterance": "Start the lentil soup recipe",
+      "expected": {
+        "intent": "recipe.start",
+        "slots": {
+          "recipeId": "red_lentil_soup"
+        }
+      },
+      "confirmation": "conditional",
+      "reason": "Confirm if multiple recipes match or current cooking session would be replaced."
+    },
+    {
+      "id": "vc_ar_005",
+      "locale": "ar",
+      "utterance": "ابدأ وصفة شوربة العدس",
+      "expected": {
+        "intent": "recipe.start",
+        "slots": {
+          "recipeId": "red_lentil_soup"
+        }
+      },
+      "confirmation": "conditional",
+      "reason": "Confirm if multiple recipes match or current cooking session would be replaced."
+    },
+    {
+      "id": "vc_en_006",
+      "locale": "en",
+      "utterance": "Set a timer for eight minutes",
+      "expected": {
+        "intent": "timer.set",
+        "slots": {
+          "durationSeconds": 480
+        }
+      },
+      "confirmation": "conditional",
+      "reason": "Speak back parsed duration when kitchen is noisy or another timer has same label."
+    },
+    {
+      "id": "vc_ar_006",
+      "locale": "ar",
+      "utterance": "اضبط مؤقت تمان دقايق",
+      "expected": {
+        "intent": "timer.set",
+        "slots": {
+          "durationSeconds": 480
+        }
+      },
+      "confirmation": "conditional",
+      "reason": "Speak back parsed duration when kitchen is noisy or another timer has same label."
+    },
+    {
+      "id": "vc_en_007",
+      "locale": "en",
+      "utterance": "Stop cooking",
+      "expected": {
+        "intent": "cook.stop",
+        "slots": {}
+      },
+      "confirmation": "required",
+      "reason": "Preview parsed quantity and target; user confirms before any state change."
+    },
+    {
+      "id": "vc_ar_007",
+      "locale": "ar",
+      "utterance": "وقف الطبخ",
+      "expected": {
+        "intent": "cook.stop",
+        "slots": {}
+      },
+      "confirmation": "required",
+      "reason": "Preview parsed quantity and target; user confirms before any state change."
+    },
+    {
+      "id": "vc_en_008",
+      "locale": "en",
+      "utterance": "Set the chicken expiry to next Friday",
+      "expected": {
+        "intent": "inventory.set_expiry",
+        "slots": {
+          "ingredientId": "chicken_breast",
+          "dateExpression": "next Friday"
+        }
+      },
+      "confirmation": "required",
+      "reason": "Preview parsed quantity and target; user confirms before any state change."
+    },
+    {
+      "id": "vc_ar_008",
+      "locale": "ar",
+      "utterance": "حط تاريخ انتهاء الفراخ الجمعة الجاية",
+      "expected": {
+        "intent": "inventory.set_expiry",
+        "slots": {
+          "ingredientId": "chicken_breast",
+          "dateExpression": "الجمعة الجاية"
+        }
+      },
+      "confirmation": "required",
+      "reason": "Preview parsed quantity and target; user confirms before any state change."
+    },
+    {
+      "id": "vc_en_009",
+      "locale": "en",
+      "utterance": "Clear my shopping list",
+      "expected": {
+        "intent": "shopping.clear",
+        "slots": {}
+      },
+      "confirmation": "required",
+      "reason": "Preview parsed quantity and target; user confirms before any state change."
+    },
+    {
+      "id": "vc_ar_009",
+      "locale": "ar",
+      "utterance": "امسح قائمة المشتريات",
+      "expected": {
+        "intent": "shopping.clear",
+        "slots": {}
+      },
+      "confirmation": "required",
+      "reason": "Preview parsed quantity and target; user confirms before any state change."
+    },
+    {
+      "id": "vc_en_010",
+      "locale": "en",
+      "utterance": "Order two bags of rice",
+      "expected": {
+        "intent": "agent.purchase_or_order",
+        "slots": {
+          "ingredientId": "rice_basmati_dry",
+          "quantity": 2,
+          "unit": "package"
+        }
+      },
+      "confirmation": "required",
+      "reason": "Preview parsed quantity and target; user confirms before any state change."
+    },
+    {
+      "id": "vc_ar_010",
+      "locale": "ar",
+      "utterance": "اطلب كيسين رز",
+      "expected": {
+        "intent": "agent.purchase_or_order",
+        "slots": {
+          "ingredientId": "rice_basmati_dry",
+          "quantity": 2,
+          "unit": "package"
+        }
+      },
+      "confirmation": "required",
+      "reason": "Preview parsed quantity and target; user confirms before any state change."
+    },
+    {
+      "id": "vc_en_011",
+      "locale": "en",
+      "utterance": "I bought some cheese",
+      "expected": {
+        "intent": "inventory.add",
+        "slots": {
+          "ingredientId": null,
+          "quantity": null,
+          "unit": null
+        }
+      },
+      "confirmation": "required",
+      "reason": "Preview parsed quantity and target; user confirms before any state change."
+    },
+    {
+      "id": "vc_ar_011",
+      "locale": "ar",
+      "utterance": "اشتريت جبنة",
+      "expected": {
+        "intent": "inventory.add",
+        "slots": {
+          "ingredientId": null,
+          "quantity": null,
+          "unit": null
+        }
+      },
+      "confirmation": "required",
+      "reason": "Preview parsed quantity and target; user confirms before any state change."
+    },
+    {
+      "id": "vc_en_012",
+      "locale": "en",
+      "utterance": "What can I cook with chickpeas and spinach?",
+      "expected": {
+        "intent": "recipe.search",
+        "slots": {
+          "includeIngredientIds": [
+            "chickpea_cooked",
+            "spinach"
+          ]
+        }
+      },
+      "confirmation": "none",
+      "reason": "Read-only search."
+    },
+    {
+      "id": "vc_ar_012",
+      "locale": "ar",
+      "utterance": "أطبخ إيه بالحمص والسبانخ؟",
+      "expected": {
+        "intent": "recipe.search",
+        "slots": {
+          "includeIngredientIds": [
+            "chickpea_cooked",
+            "spinach"
+          ]
+        }
+      },
+      "confirmation": "none",
+      "reason": "Read-only search."
+    }
+  ]
+}

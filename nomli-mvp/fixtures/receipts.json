@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "fixtureNotice": "Synthetic test data authored for Nomli. These fixtures exercise parsing and review flows; they are not OCR accuracy benchmarks and do not represent real merchants or prices.",
+  "receipts": [
+    {
+      "id":"paper_ar_egp_001","sourceType":"paper_photo","locale":"ar-EG","currency":"EGP","minorUnitScale":100,
+      "merchant":{"printed":"سوق النخلة التجريبي","synthetic":true},"printedDate":"2026-10-18","printedTextLines":["سوق النخلة التجريبي","18/10/2026  18:42","طماطم 2 كجم       24.00","بيض 6 حبات        18.00","زبادي سادة 2      16.00","المجموع الفرعي    58.00","ضريبة 14%          8.12","الإجمالي           66.12"],
+      "expectedExtraction":{"merchantName":"سوق النخلة التجريبي","transactionDate":"2026-10-18","currency":"EGP","lines":[{"rawLabel":"طماطم 2 كجم","ingredientId":"tomato","quantity":2,"unit":"kg","lineTotalMinor":2400},{"rawLabel":"بيض 6 حبات","ingredientId":"egg","quantity":6,"unit":"piece","lineTotalMinor":1800},{"rawLabel":"زبادي سادة 2","ingredientId":"yogurt_plain","quantity":2,"unit":"piece","lineTotalMinor":1600}],"subtotalMinor":5800,"taxMinor":812,"totalMinor":6612},
+      "expectedReview":[{"field":"lines[2].unit","reason":"Catalog canonical unit for yogurt is g; receipt gives package count without package mass.","required":true},{"field":"lines[2].quantity","reason":"Confirm whether 2 means packages or another unit.","required":true}],"printedExpiry":null,"expiryHandling":"No expiry is printed. Do not infer or create one."
+    },
+    {
+      "id":"paper_en_sar_001","sourceType":"paper_photo","locale":"en-SA","currency":"SAR","minorUnitScale":100,
+      "merchant":{"printed":"Cedar Sample Grocer","synthetic":true},"printedDate":"2026-10-20","printedTextLines":["CEDAR SAMPLE GROCER","20/10/2026 09:16","BASMATI RICE 1 KG   10.95","CHICKEN BREAST 1KG  17.95","LEMON x5             6.50","SUBTOTAL             35.40","VAT 15%               5.31","TOTAL                40.71"],
+      "expectedExtraction":{"merchantName":"Cedar Sample Grocer","transactionDate":"2026-10-20","currency":"SAR","lines":[{"rawLabel":"BASMATI RICE 1 KG","ingredientId":"rice_basmati_dry","quantity":1,"unit":"kg","lineTotalMinor":1095},{"rawLabel":"CHICKEN BREAST 1KG","ingredientId":"chicken_breast","quantity":1,"unit":"kg","lineTotalMinor":1795},{"rawLabel":"LEMON x5","ingredientId":"lemon","quantity":5,"unit":"piece","lineTotalMinor":650}],"subtotalMinor":3540,"taxMinor":531,"totalMinor":4071},
+      "expectedReview":[{"field":"lines[1].ingredientId","reason":"Confirm cut and product mapping from abbreviated label.","required":true}],"printedExpiry":null,"expiryHandling":"No expiry is printed. Do not infer or create one."
+    },
+    {
+      "id":"digital_en_aed_001","sourceType":"digital_receipt","locale":"en-AE","currency":"AED","minorUnitScale":100,
+      "merchant":{"printed":"Nomli Fixture Online","synthetic":true},"printedDate":"2026-10-21","documentFields":{"orderReference":"SYN-ORD-1042","deliveryMethod":"sample-delivery"},"printedTextLines":["Nomli Fixture Online","Order SYN-ORD-1042","Date: 2026-10-21","Cooked chickpeas 4 x 400 g   12.99","Tahini 500 g                  8.75","Olive oil 1 L                15.99","Subtotal                     37.73","VAT 5%                        1.89","Total                        39.62"],
+      "expectedExtraction":{"merchantName":"Nomli Fixture Online","transactionDate":"2026-10-21","currency":"AED","lines":[{"rawLabel":"Cooked chickpeas 4 x 400 g","ingredientId":"chickpea_cooked","quantity":1600,"unit":"g","package":{"count":4,"size":400,"unit":"g"},"lineTotalMinor":1299},{"rawLabel":"Tahini 500 g","ingredientId":"tahini","quantity":500,"unit":"g","lineTotalMinor":875},{"rawLabel":"Olive oil 1 L","ingredientId":"olive_oil","quantity":1,"unit":"l","lineTotalMinor":1599}],"subtotalMinor":3773,"taxMinor":189,"totalMinor":3962},
+      "expectedReview":[{"field":"taxMinor","reason":"Displayed tax is rounded to nearest minor unit; verify imported total arithmetic.","required":false}],"printedExpiry":null,"expiryHandling":"No expiry is printed. Do not infer or create one."
+    }
+  ]
+}

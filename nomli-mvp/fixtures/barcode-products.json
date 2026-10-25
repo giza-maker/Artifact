@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "fixtureNotice": "All identifiers and products are synthetic. Values use a SYN-NOMLI namespace, are not retail GTINs, and make no claim about real barcode assignments.",
+  "products": [
+    {"fixtureBarcode":"SYN-NOMLI-0001","name":{"en":"Plain yogurt sample cup","ar":"عبوة زبادي سادة تجريبية"},"ingredientId":"yogurt_plain","package":{"quantity":170,"unit":"g"},"brand":"Fixture Pantry","countryContext":"EG","expectedAction":"match_and_review","reviewFields":["brand","package.quantity","allergens"],"printedExpiry":null},
+    {"fixtureBarcode":"SYN-NOMLI-0002","name":{"en":"Cooked chickpeas sample can","ar":"علبة حمص مسلوق تجريبية"},"ingredientId":"chickpea_cooked","package":{"quantity":400,"unit":"g"},"brand":"Cedar Test Foods","countryContext":"AE","expectedAction":"match_and_review","reviewFields":["drainedWeight","ingredients","allergens"],"printedExpiry":null},
+    {"fixtureBarcode":"SYN-NOMLI-0003","name":{"en":"Basmati rice sample bag","ar":"كيس أرز بسمتي تجريبي"},"ingredientId":"rice_basmati_dry","package":{"quantity":1,"unit":"kg"},"brand":"Demo Grain Co","countryContext":"SA","expectedAction":"match_and_review","reviewFields":["package.quantity"],"printedExpiry":null},
+    {"fixtureBarcode":"SYN-NOMLI-0004","name":{"en":"Tahini sample jar","ar":"برطمان طحينة تجريبي"},"ingredientId":"tahini","package":{"quantity":500,"unit":"g"},"brand":"Nomli Fixture","countryContext":"JO","expectedAction":"match_and_review","reviewFields":["sesame allergen","ingredients"],"printedExpiry":null},
+    {"fixtureBarcode":"SYN-NOMLI-0005","name":{"en":"Dry pasta sample pack","ar":"عبوة مكرونة جافة تجريبية"},"ingredientId":"pasta_dry","package":{"quantity":500,"unit":"g"},"brand":"Test Table","countryContext":"EG","expectedAction":"match_and_review","reviewFields":["wheat allergen","egg presence","package.quantity"],"printedExpiry":null},
+    {"fixtureBarcode":"SYN-NOMLI-0006","name":{"en":"Unmapped sample snack","ar":"وجبة خفيفة تجريبية غير مصنفة"},"ingredientId":null,"package":{"quantity":1,"unit":"piece"},"brand":"Unknown Fixture","countryContext":"QA","expectedAction":"manual_classification_required","reviewFields":["ingredientId","package.quantity","ingredients","allergens"],"printedExpiry":null}
+  ],
+  "expiryRule":"Only store an expiry when user confirms a date visibly printed on the product. Missing fixture dates must remain null; never estimate shelf life as printed expiry."
+}

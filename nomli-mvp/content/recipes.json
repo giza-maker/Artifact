@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "unitPolicy": "Quantities use catalog canonical units or declared compatible units. No mass-volume conversion is implied.",
+  "dietaryPolicy": "Recipe tags are editorial hints derived from listed ingredients. Users must review product labels, substitutions, cross-contact, and personal requirements.",
+  "recipes": [
+    {
+      "id":"tomato_cucumber_salad","name":{"en":"Tomato and cucumber salad","ar":"سلطة طماطم وخيار"},"cuisine":"MENA","servings":2,"prepMinutes":12,"cookMinutes":0,"difficulty":"beginner","image":"/images/recipe-salad.webp","tools":["knife","cutting_board","mixing_bowl"],"dietaryTags":["vegan","vegetarian"],
+      "ingredients":[{"ingredientId":"tomato","quantity":300,"unit":"g"},{"ingredientId":"cucumber","quantity":200,"unit":"g"},{"ingredientId":"red_onion","quantity":50,"unit":"g"},{"ingredientId":"parsley","quantity":15,"unit":"g"},{"ingredientId":"lemon","quantity":1,"unit":"piece"},{"ingredientId":"olive_oil","quantity":20,"unit":"ml"},{"ingredientId":"salt","quantity":2,"unit":"g"}],
+      "steps":["Dice tomato and cucumber; thinly slice onion.","Chop parsley. Combine vegetables and parsley in bowl.","Squeeze in lemon, add oil and salt, toss, taste, and serve."]
+    },
+    {
+      "id":"shakshuka_simple","name":{"en":"Simple shakshuka","ar":"شكشوكة بسيطة"},"cuisine":"North African","servings":2,"prepMinutes":10,"cookMinutes":20,"difficulty":"beginner","image":"/images/recipe-skillet.webp","tools":["knife","cutting_board","frying_pan","lid","wooden_spoon"],"dietaryTags":[],
+      "ingredients":[{"ingredientId":"olive_oil","quantity":15,"unit":"ml"},{"ingredientId":"onion","quantity":100,"unit":"g"},{"ingredientId":"bell_pepper","quantity":150,"unit":"g"},{"ingredientId":"garlic","quantity":2,"unit":"clove"},{"ingredientId":"tomato_passata","quantity":400,"unit":"ml"},{"ingredientId":"cumin","quantity":2,"unit":"g"},{"ingredientId":"paprika","quantity":2,"unit":"g"},{"ingredientId":"salt","quantity":2,"unit":"g"},{"ingredientId":"egg","quantity":4,"unit":"piece"}],
+      "steps":["Heat oil over medium heat. Soften chopped onion and pepper for 6 to 8 minutes.","Add garlic, cumin, and paprika; stir for 30 seconds. Add passata and salt, then simmer 8 minutes.","Make four wells, add eggs, cover, and cook until whites are set and yolks reach preferred doneness."]
+    },
+    {
+      "id":"red_lentil_soup","name":{"en":"Red lentil soup","ar":"شوربة عدس أحمر"},"cuisine":"MENA","servings":4,"prepMinutes":10,"cookMinutes":30,"difficulty":"beginner","image":null,"tools":["knife","cutting_board","saucepan","wooden_spoon","blender_optional"],"dietaryTags":["vegan","vegetarian"],
+      "ingredients":[{"ingredientId":"olive_oil","quantity":20,"unit":"ml"},{"ingredientId":"onion","quantity":150,"unit":"g"},{"ingredientId":"carrot","quantity":150,"unit":"g"},{"ingredientId":"garlic","quantity":2,"unit":"clove"},{"ingredientId":"red_lentil_dry","quantity":250,"unit":"g"},{"ingredientId":"water","quantity":1200,"unit":"ml"},{"ingredientId":"cumin","quantity":3,"unit":"g"},{"ingredientId":"turmeric","quantity":1,"unit":"g"},{"ingredientId":"salt","quantity":5,"unit":"g"},{"ingredientId":"lemon","quantity":1,"unit":"piece"}],
+      "steps":["Rinse lentils. Soften chopped onion and carrot in oil for 6 minutes.","Add garlic and spices for 30 seconds, then add lentils and water.","Simmer 20 to 25 minutes until lentils are soft. Blend if desired, season, and serve with lemon."]
+    },
+    {
+      "id":"hummus_bowl","name":{"en":"Hummus bowl","ar":"طبق حمص بالطحينة"},"cuisine":"Levantine","servings":4,"prepMinutes":15,"cookMinutes":0,"difficulty":"beginner","image":null,"tools":["food_processor","spatula","serving_bowl"],"dietaryTags":["vegan","vegetarian"],
+      "ingredients":[{"ingredientId":"chickpea_cooked","quantity":480,"unit":"g"},{"ingredientId":"tahini","quantity":80,"unit":"g"},{"ingredientId":"lemon","quantity":1,"unit":"piece"},{"ingredientId":"garlic","quantity":1,"unit":"clove"},{"ingredientId":"water","quantity":60,"unit":"ml"},{"ingredientId":"salt","quantity":3,"unit":"g"},{"ingredientId":"olive_oil","quantity":20,"unit":"ml"},{"ingredientId":"paprika","quantity":1,"unit":"g"}],
+      "steps":["Process chickpeas, tahini, lemon juice, garlic, and salt.","Add water gradually and process until texture is smooth enough for serving.","Spoon into bowl and finish with olive oil and paprika."]
+    },
+    {
+      "id":"mujaddara_quick","name":{"en":"Quick mujaddara","ar":"مجدرة سريعة"},"cuisine":"Levantine","servings":4,"prepMinutes":10,"cookMinutes":35,"difficulty":"developing","image":null,"tools":["knife","cutting_board","saucepan","frying_pan","wooden_spoon"],"dietaryTags":["vegan","vegetarian"],
+      "ingredients":[{"ingredientId":"brown_lentil_cooked","quantity":500,"unit":"g"},{"ingredientId":"rice_basmati_dry","quantity":220,"unit":"g"},{"ingredientId":"water","quantity":450,"unit":"ml"},{"ingredientId":"onion","quantity":350,"unit":"g"},{"ingredientId":"olive_oil","quantity":50,"unit":"ml"},{"ingredientId":"cumin","quantity":3,"unit":"g"},{"ingredientId":"salt","quantity":5,"unit":"g"}],
+      "steps":["Rinse rice. Cook it with water, cumin, and half the salt until tender.","Meanwhile, slowly brown thinly sliced onion in oil, stirring often.","Fold cooked lentils into rice, heat through, season, and top with onions."]
+    },
+    {
+      "id":"fatteh_chickpea","name":{"en":"Chickpea fatteh","ar":"فتة حمص"},"cuisine":"Levantine","servings":4,"prepMinutes":15,"cookMinutes":10,"difficulty":"beginner","image":null,"tools":["oven","baking_tray","mixing_bowl","saucepan","whisk"],"dietaryTags":[],
+      "ingredients":[{"ingredientId":"bread_pita","quantity":2,"unit":"piece"},{"ingredientId":"chickpea_cooked","quantity":400,"unit":"g"},{"ingredientId":"yogurt_plain","quantity":400,"unit":"g"},{"ingredientId":"tahini","quantity":50,"unit":"g"},{"ingredientId":"lemon","quantity":1,"unit":"piece"},{"ingredientId":"garlic","quantity":1,"unit":"clove"},{"ingredientId":"salt","quantity":3,"unit":"g"},{"ingredientId":"olive_oil","quantity":15,"unit":"ml"},{"ingredientId":"paprika","quantity":1,"unit":"g"}],
+      "steps":["Tear pita and bake at 190 C until crisp, checking after 6 minutes.","Warm chickpeas with a splash of water. Whisk yogurt, tahini, lemon juice, garlic, and salt.","Layer crisp bread, chickpeas, and yogurt sauce. Finish with oil and paprika; serve at once."]
+    },
+    {
+      "id":"zaatar_labneh_toast","name":{"en":"Za'atar labneh toast","ar":"توست لبنة وزعتر"},"cuisine":"Levantine","servings":2,"prepMinutes":5,"cookMinutes":5,"difficulty":"beginner","image":null,"tools":["toaster","knife","small_bowl"],"dietaryTags":[],
+      "ingredients":[{"ingredientId":"bread_sliced","quantity":4,"unit":"slice"},{"ingredientId":"labneh","quantity":160,"unit":"g"},{"ingredientId":"zaatar_blend","quantity":8,"unit":"g"},{"ingredientId":"olive_oil","quantity":10,"unit":"ml"},{"ingredientId":"cucumber","quantity":120,"unit":"g"}],
+      "steps":["Toast bread to preferred colour.","Spread labneh over toast and sprinkle with za'atar.","Drizzle with oil and serve with sliced cucumber."]
+    },
+    {
+      "id":"herb_omelette","name":{"en":"Herb omelette","ar":"عجة بالأعشاب"},"cuisine":"Everyday","servings":2,"prepMinutes":8,"cookMinutes":8,"difficulty":"beginner","image":"/images/recipe-omelette.webp","tools":["knife","cutting_board","mixing_bowl","fork","frying_pan","spatula"],"dietaryTags":["vegetarian"],
+      "ingredients":[{"ingredientId":"egg","quantity":4,"unit":"piece"},{"ingredientId":"parsley","quantity":15,"unit":"g"},{"ingredientId":"mint","quantity":5,"unit":"g"},{"ingredientId":"salt","quantity":2,"unit":"g"},{"ingredientId":"black_pepper","quantity":1,"unit":"g"},{"ingredientId":"olive_oil","quantity":10,"unit":"ml"}],
+      "steps":["Chop herbs. Beat eggs with herbs, salt, and pepper.","Warm oil over medium-low heat and add egg mixture.","Lift set edges toward centre. Fold when mostly set and finish to preferred doneness."]
+    },
+    {
+      "id":"chicken_rice_one_pot","name":{"en":"One-pot spiced chicken rice","ar":"أرز بالدجاج في حلة واحدة"},"cuisine":"MENA-inspired","servings":4,"prepMinutes":15,"cookMinutes":40,"difficulty":"developing","image":null,"tools":["knife","cutting_board","large_saucepan","lid","tongs"],"dietaryTags":[],
+      "ingredients":[{"ingredientId":"chicken_thigh","quantity":600,"unit":"g"},{"ingredientId":"rice_basmati_dry","quantity":300,"unit":"g"},{"ingredientId":"onion","quantity":150,"unit":"g"},{"ingredientId":"garlic","quantity":2,"unit":"clove"},{"ingredientId":"olive_oil","quantity":20,"unit":"ml"},{"ingredientId":"mixed_spice","quantity":5,"unit":"g"},{"ingredientId":"turmeric","quantity":2,"unit":"g"},{"ingredientId":"chicken_stock","quantity":650,"unit":"ml"},{"ingredientId":"salt","quantity":4,"unit":"g"}],
+      "steps":["Brown chicken in oil in batches, then set aside. Soften chopped onion in same pan.","Add garlic and spices, then stir in rinsed rice and stock.","Return chicken, cover, and simmer gently until rice is tender and chicken is fully cooked. Rest covered for 5 minutes."]
+    },
+    {
+      "id":"sheet_pan_chicken_veg","name":{"en":"Sheet-pan chicken and vegetables","ar":"دجاج وخضار في صينية"},"cuisine":"Mediterranean","servings":4,"prepMinutes":15,"cookMinutes":35,"difficulty":"beginner","image":null,"tools":["knife","cutting_board","mixing_bowl","baking_tray","oven"],"dietaryTags":[],
+      "ingredients":[{"ingredientId":"chicken_breast","quantity":600,"unit":"g"},{"ingredientId":"courgette","quantity":300,"unit":"g"},{"ingredientId":"bell_pepper","quantity":300,"unit":"g"},{"ingredientId":"red_onion","quantity":150,"unit":"g"},{"ingredientId":"olive_oil","quantity":35,"unit":"ml"},{"ingredientId":"lemon","quantity":1,"unit":"piece"},{"ingredientId":"paprika","quantity":3,"unit":"g"},{"ingredientId":"salt","quantity":5,"unit":"g"},{"ingredientId":"black_pepper","quantity":1,"unit":"g"}],
+      "steps":["Heat oven to 210 C. Cut chicken and vegetables into similar-size pieces.","Toss with oil, lemon juice, paprika, salt, and pepper. Spread in one layer.","Roast until vegetables brown and chicken is fully cooked, turning once after 18 minutes."]
+    },
+    {
+      "id":"fish_tahini_tray","name":{"en":"Fish with tahini tray","ar":"صينية سمك بالطحينة"},"cuisine":"MENA","servings":4,"prepMinutes":15,"cookMinutes":25,"difficulty":"developing","image":null,"tools":["oven","baking_dish","mixing_bowl","whisk"],"dietaryTags":[],
+      "ingredients":[{"ingredientId":"white_fish_fillet","quantity":600,"unit":"g"},{"ingredientId":"tahini","quantity":100,"unit":"g"},{"ingredientId":"lemon","quantity":2,"unit":"piece"},{"ingredientId":"water","quantity":120,"unit":"ml"},{"ingredientId":"garlic","quantity":2,"unit":"clove"},{"ingredientId":"cumin","quantity":2,"unit":"g"},{"ingredientId":"salt","quantity":4,"unit":"g"},{"ingredientId":"onion","quantity":120,"unit":"g"}],
+      "steps":["Heat oven to 200 C. Place fish and sliced onion in baking dish.","Whisk tahini, lemon juice, water, garlic, cumin, and salt until pourable.","Pour sauce around fish and bake until fish is opaque and flakes easily. Cooking time depends on fillet thickness."]
+    },
+    {
+      "id":"tuna_white_bean_salad","name":{"en":"Tuna and white bean salad","ar":"سلطة تونة وفاصوليا بيضاء"},"cuisine":"Mediterranean","servings":3,"prepMinutes":12,"cookMinutes":0,"difficulty":"beginner","image":null,"tools":["colander","knife","cutting_board","mixing_bowl"],"dietaryTags":[],
+      "ingredients":[{"ingredientId":"tuna_canned","quantity":240,"unit":"g"},{"ingredientId":"white_bean_cooked","quantity":300,"unit":"g"},{"ingredientId":"cherry_tomato","quantity":200,"unit":"g"},{"ingredientId":"red_onion","quantity":60,"unit":"g"},{"ingredientId":"parsley","quantity":15,"unit":"g"},{"ingredientId":"lemon","quantity":1,"unit":"piece"},{"ingredientId":"olive_oil","quantity":25,"unit":"ml"},{"ingredientId":"salt","quantity":2,"unit":"g"}],
+      "steps":["Drain tuna and beans. Halve tomatoes and thinly slice onion.","Combine with chopped parsley.","Dress with lemon juice, oil, and salt; toss gently."]
+    },
+    {
+      "id":"bulgur_chickpea_pilaf","name":{"en":"Bulgur and chickpea pilaf","ar":"برغل بالحمص"},"cuisine":"Levantine","servings":4,"prepMinutes":10,"cookMinutes":25,"difficulty":"beginner","image":null,"tools":["knife","cutting_board","saucepan","lid","wooden_spoon"],"dietaryTags":[],
+      "ingredients":[{"ingredientId":"bulgur_dry","quantity":280,"unit":"g"},{"ingredientId":"chickpea_cooked","quantity":300,"unit":"g"},{"ingredientId":"onion","quantity":120,"unit":"g"},{"ingredientId":"tomato_paste","quantity":30,"unit":"g"},{"ingredientId":"olive_oil","quantity":25,"unit":"ml"},{"ingredientId":"vegetable_stock","quantity":600,"unit":"ml"},{"ingredientId":"cumin","quantity":2,"unit":"g"},{"ingredientId":"salt","quantity":3,"unit":"g"}],
+      "steps":["Soften chopped onion in oil. Stir in tomato paste and cumin for 1 minute.","Add bulgur, chickpeas, stock, and salt. Bring to simmer.","Cover and cook gently until liquid is absorbed. Rest 5 minutes and fluff."]
+    },
+    {
+      "id":"couscous_roast_veg","name":{"en":"Couscous with roasted vegetables","ar":"كسكسي بالخضار المشوية"},"cuisine":"North African-inspired","servings":4,"prepMinutes":15,"cookMinutes":30,"difficulty":"beginner","image":null,"tools":["oven","baking_tray","mixing_bowl","kettle","fork"],"dietaryTags":["vegan","vegetarian"],
+      "ingredients":[{"ingredientId":"couscous_dry","quantity":280,"unit":"g"},{"ingredientId":"water","quantity":320,"unit":"ml"},{"ingredientId":"aubergine","quantity":300,"unit":"g"},{"ingredientId":"courgette","quantity":250,"unit":"g"},{"ingredientId":"bell_pepper","quantity":200,"unit":"g"},{"ingredientId":"olive_oil","quantity":35,"unit":"ml"},{"ingredientId":"cumin","quantity":2,"unit":"g"},{"ingredientId":"salt","quantity":4,"unit":"g"},{"ingredientId":"mint","quantity":10,"unit":"g"}],
+      "steps":["Heat oven to 220 C. Toss diced vegetables with oil, cumin, and half the salt; roast until browned.","Cover couscous with just-boiled measured water and remaining salt. Cover for 8 minutes.","Fluff couscous and fold in roasted vegetables and chopped mint."]
+    },
+    {
+      "id":"tomato_basil_pasta","name":{"en":"Tomato basil pasta","ar":"مكرونة بالطماطم والريحان"},"cuisine":"Italian","servings":4,"prepMinutes":10,"cookMinutes":25,"difficulty":"beginner","image":null,"tools":["large_saucepan","colander","frying_pan","wooden_spoon"],"dietaryTags":[],
+      "ingredients":[{"ingredientId":"pasta_dry","quantity":350,"unit":"g"},{"ingredientId":"tomato_passata","quantity":500,"unit":"ml"},{"ingredientId":"garlic","quantity":2,"unit":"clove"},{"ingredientId":"olive_oil","quantity":25,"unit":"ml"},{"ingredientId":"basil","quantity":20,"unit":"g"},{"ingredientId":"salt","quantity":5,"unit":"g"},{"ingredientId":"black_pepper","quantity":1,"unit":"g"}],
+      "steps":["Cook pasta in water according to package timing; reserve some cooking water and drain.","Gently cook garlic in oil, add passata, and simmer 12 minutes.","Add pasta and basil to sauce. Loosen with reserved water if needed, then season."]
+    },
+    {
+      "id":"pea_spinach_rice","name":{"en":"Pea and spinach rice","ar":"أرز بالبسلة والسبانخ"},"cuisine":"Everyday","servings":4,"prepMinutes":10,"cookMinutes":25,"difficulty":"beginner","image":null,"tools":["saucepan","lid","wooden_spoon"],"dietaryTags":["vegan","vegetarian"],
+      "ingredients":[{"ingredientId":"rice_basmati_dry","quantity":300,"unit":"g"},{"ingredientId":"water","quantity":600,"unit":"ml"},{"ingredientId":"green_pea_frozen","quantity":180,"unit":"g"},{"ingredientId":"spinach","quantity":150,"unit":"g"},{"ingredientId":"olive_oil","quantity":20,"unit":"ml"},{"ingredientId":"garlic","quantity":2,"unit":"clove"},{"ingredientId":"salt","quantity":4,"unit":"g"},{"ingredientId":"black_pepper","quantity":1,"unit":"g"}],
+      "steps":["Rinse rice. Gently cook garlic in oil for 30 seconds.","Add rice, water, peas, and salt. Cover and simmer until rice is tender.","Fold in spinach, cover for 3 minutes to wilt, then add pepper and fluff."]
+    },
+    {
+      "id":"sweet_potato_chickpea_tray","name":{"en":"Sweet potato chickpea tray","ar":"صينية بطاطا حلوة وحمص"},"cuisine":"MENA-inspired","servings":4,"prepMinutes":15,"cookMinutes":35,"difficulty":"beginner","image":null,"tools":["oven","baking_tray","mixing_bowl","knife","cutting_board"],"dietaryTags":["vegan","vegetarian"],
+      "ingredients":[{"ingredientId":"sweet_potato","quantity":700,"unit":"g"},{"ingredientId":"chickpea_cooked","quantity":400,"unit":"g"},{"ingredientId":"red_onion","quantity":150,"unit":"g"},{"ingredientId":"olive_oil","quantity":35,"unit":"ml"},{"ingredientId":"cumin","quantity":3,"unit":"g"},{"ingredientId":"paprika","quantity":3,"unit":"g"},{"ingredientId":"salt","quantity":4,"unit":"g"},{"ingredientId":"tahini","quantity":60,"unit":"g"},{"ingredientId":"lemon","quantity":1,"unit":"piece"},{"ingredientId":"water","quantity":40,"unit":"ml"}],
+      "steps":["Heat oven to 210 C. Toss diced sweet potato, chickpeas, and onion with oil, spices, and salt.","Roast in one layer until sweet potato is tender and edges brown.","Whisk tahini, lemon juice, and water. Spoon sauce over tray when serving."]
+    },
+    {
+      "id":"beef_kofta_pan","name":{"en":"Pan-cooked beef kofta","ar":"كفتة لحم في الطاسة"},"cuisine":"MENA","servings":4,"prepMinutes":15,"cookMinutes":15,"difficulty":"developing","image":null,"tools":["knife","cutting_board","mixing_bowl","frying_pan","tongs"],"dietaryTags":[],
+      "ingredients":[{"ingredientId":"beef_mince","quantity":600,"unit":"g"},{"ingredientId":"onion","quantity":100,"unit":"g"},{"ingredientId":"parsley","quantity":20,"unit":"g"},{"ingredientId":"mixed_spice","quantity":5,"unit":"g"},{"ingredientId":"salt","quantity":5,"unit":"g"},{"ingredientId":"black_pepper","quantity":1,"unit":"g"},{"ingredientId":"olive_oil","quantity":10,"unit":"ml"}],
+      "steps":["Finely chop onion and parsley. Mix with beef, spice, salt, and pepper without overworking.","Shape into 12 short logs. Warm oil in pan over medium heat.","Cook in batches, turning to brown all sides, until fully cooked through."]
+    },
+    {
+      "id":"mushroom_spinach_wrap","name":{"en":"Mushroom spinach wrap","ar":"راب بالمشروم والسبانخ"},"cuisine":"Everyday","servings":2,"prepMinutes":10,"cookMinutes":12,"difficulty":"beginner","image":null,"tools":["knife","cutting_board","frying_pan","spatula"],"dietaryTags":[],
+      "ingredients":[{"ingredientId":"tortilla_wheat","quantity":2,"unit":"piece"},{"ingredientId":"mushroom","quantity":250,"unit":"g"},{"ingredientId":"spinach","quantity":120,"unit":"g"},{"ingredientId":"feta","quantity":80,"unit":"g"},{"ingredientId":"olive_oil","quantity":15,"unit":"ml"},{"ingredientId":"garlic","quantity":1,"unit":"clove"},{"ingredientId":"black_pepper","quantity":1,"unit":"g"}],
+      "steps":["Cook sliced mushrooms in oil until browned. Add garlic for 30 seconds.","Add spinach and cook until wilted. Stir in pepper.","Divide filling and feta between tortillas, roll, and toast seam-side down if desired."]
+    },
+    {
+      "id":"date_oat_breakfast","name":{"en":"Date oat breakfast","ar":"شوفان بالتمر"},"cuisine":"Everyday MENA","servings":2,"prepMinutes":5,"cookMinutes":8,"difficulty":"beginner","image":null,"tools":["knife","cutting_board","saucepan","wooden_spoon"],"dietaryTags":["vegetarian"],
+      "ingredients":[{"ingredientId":"oats_rolled","quantity":100,"unit":"g"},{"ingredientId":"milk","quantity":400,"unit":"ml"},{"ingredientId":"date_fruit","quantity":80,"unit":"g"},{"ingredientId":"cinnamon","quantity":1,"unit":"g"},{"ingredientId":"almond","quantity":25,"unit":"g"}],
+      "steps":["Remove date pits if present and chop dates and almonds.","Simmer oats, milk, dates, and cinnamon, stirring until creamy.","Divide between bowls and top with almonds."]
+    }
+  ]
+}

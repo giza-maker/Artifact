@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Nomli — Your kitchen. Your next level.</title>
+  <desc id="desc">Branded Nomli share card with the orange N-and-spoon logo and a warmly lit kitchen scene.</desc>
+  <defs>
+    <linearGradient id="overlay" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#120e0b" stop-opacity="0.58"/>
+      <stop offset="0.52" stop-color="#120e0b" stop-opacity="0.78"/>
+      <stop offset="1" stop-color="#120e0b" stop-opacity="0.88"/>
+    </linearGradient>
+    <radialGradient id="focus" cx="50%" cy="45%" r="48%">
+      <stop offset="0" stop-color="#120e0b" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#120e0b" stop-opacity="0.48"/>
+    </radialGradient>
+  </defs>
+
+  <image width="1200" height="630" xlink:href="hero-1280.webp" preserveAspectRatio="xMidYMid slice"/>
+  <rect width="1200" height="630" fill="url(#overlay)"/>
+  <rect width="1200" height="630" fill="url(#focus)"/>
+
+  <rect x="558" y="78" width="84" height="7" rx="3.5" fill="#f97316"/>
+
+  <!-- Primary lockup remains intact in square and WhatsApp center crops. -->
+  <g>
+    <image x="393" y="150" width="92" height="92" xlink:href="../favicon.svg"/>
+    <text x="510" y="233" fill="#fff8f1" font-family="Arial, Helvetica, sans-serif" font-size="112" font-weight="800" letter-spacing="-5">Nomli</text>
+  </g>
+
+  <text x="600" y="322" text-anchor="middle" fill="#f5d9c4" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="650">Your kitchen. Your next level.</text>
+
+  <g transform="translate(600 405)" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="27" font-weight="700">
+    <text x="-130" y="0" fill="#fff8f1">Learn</text>
+    <circle cx="-63" cy="-9" r="4" fill="#f97316"/>
+    <text x="12" y="0" fill="#fff8f1">Manage</text>
+    <circle cx="98" cy="-9" r="4" fill="#f97316"/>
+    <text x="154" y="0" fill="#fff8f1">Play</text>
+  </g>
+
+  <text x="600" y="535" text-anchor="middle" fill="#d2c1b5" font-family="Arial, Helvetica, sans-serif" font-size="19" font-weight="600" letter-spacing="1.4">NOMLI · KITCHEN COMPANION</text>
+  <rect x="0" y="622" width="1200" height="8" fill="#f97316"/>
+</svg>

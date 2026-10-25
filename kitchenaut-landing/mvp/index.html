@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#100f0e" />
+    <title>Nomli | Your everyday kitchen</title>
+    <meta
+      name="description"
+      content="Try Nomli's mobile kitchen companion for inventory, ingredient scanning, guided cooking and help from Zara. Interactive prototype with sample data."
+    />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link
+      rel="preload"
+      as="font"
+      href="./fonts/dm-sans.woff2"
+      type="font/woff2"
+      crossorigin
+    />
+    <script type="module" crossorigin src="./assets/index-CCUdgvUg.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-DXB0EV-a.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#view">Skip to app content</a>
+    <div class="app-device">
+      <div class="device-status" aria-hidden="true">
+        <span>9:41</span><span class="dynamic-island"></span
+        ><span class="status-icons"
+          ><svg viewBox="0 0 28 14" width="28" height="14">
+            <path
+              fill="currentColor"
+              d="M1 9h3v5H1zm5-3h3v8H6zm5-3h3v11h-3zm5-3h3v14h-3z"
+            />
+            <rect
+              x="22"
+              y="2"
+              width="5"
+              height="11"
+              rx="1"
+              fill="currentColor"
+            /></svg
+        ></span>
+      </div>
+      <header class="app-topbar">
+        <a class="brand-word" href="#kitchen" aria-label="Nomli kitchen"
+          ><img src="./favicon.svg" alt="" width="26" height="26" />Nomli</a
+        >
+        <div class="topbar-actions">
+          <span class="prototype-chip" aria-label="Prototype using simulated data"
+            >Prototype · simulated</span
+          ><button
+            class="icononly"
+            data-action="menu"
+            aria-label="Open app menu"
+          >
+            <svg class="ui-icon" aria-hidden="true">
+              <use href="./icons.svg#list" />
+            </svg>
+          </button>
+        </div>
+      </header>
+      <main class="app-scroll" id="main">
+        <div class="app-content">
+          <div id="view" tabindex="-1" aria-busy="true">
+            <section class="card" role="status">
+              <h1>Your kitchen is warming up.</h1>
+              <p>
+                Loading the interactive Nomli demo. If loading stalls, reload or
+                use the local meeting package.
+              </p>
+            </section>
+          </div>
+          <footer class="app-footer">
+            Prototype only. Inventory, scanning, cooking guidance and Zara's
+            assistant responses use local sample data.
+            <button class="text-link" data-action="reset-ask">
+              Reset demo
+            </button>
+          </footer>
+        </div>
+      </main>
+      <nav
+        class="bottom-nav"
+        id="bottom-nav"
+        aria-label="Main app navigation"
+      ></nav>
+    </div>
+    <dialog id="modal" aria-labelledby="modal-title">
+      <div id="modal-content"></div>
+    </dialog>
+    <p id="announcer" class="sr-only" role="status" aria-live="polite"></p>
+    <div id="toast" class="toast" role="status" hidden></div>
+    <noscript><p>Enable JavaScript to try this mobile prototype.</p></noscript>
+  </body>
+</html>

@@ -1,0 +1,3 @@
+fixtures/*.pdf binary
+android/** -whitespace
+web/public/fonts/* -whitespace

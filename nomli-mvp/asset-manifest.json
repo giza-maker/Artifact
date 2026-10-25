@@ -1,0 +1,331 @@
+{
+  "schemaVersion": 1,
+  "provenance": "Brand media reused from kitchenaut-landing/ASSETS.md; Phosphor MIT and fonts OFL licenses included. Content and fixtures authored synthetically for Nomli. See content/LICENSE.md.",
+  "assets": [
+    {
+      "path": "content/ingredients.json",
+      "bytes": 26703,
+      "sha256": "055c09b362115b16c065e7b932649c83bfd2d39f006946c80350ad1ca7723e22"
+    },
+    {
+      "path": "content/LICENSE.md",
+      "bytes": 1261,
+      "sha256": "a6ef3c1bfa3e6640817926bbb10272a5646a7f89339dda0d22b2cc953a865f32"
+    },
+    {
+      "path": "content/README.md",
+      "bytes": 2279,
+      "sha256": "fca217baf0c753c7e00bee89af4da872f0b15632415e33becced4410c4eebd33"
+    },
+    {
+      "path": "content/recipes.json",
+      "bytes": 20304,
+      "sha256": "0e7816bdc21b3cee4512165c6617a23fc3c0fa964794bb8f622fe4220dd5efc8"
+    },
+    {
+      "path": "content/voice-commands.json",
+      "bytes": 9822,
+      "sha256": "687b9449472c4a23ce64ab29d3df5a9fd144c33ffe7a21231232e12cceb78d24"
+    },
+    {
+      "path": "fixtures/barcode-products.json",
+      "bytes": 2558,
+      "sha256": "c92b2f91b95369589ac3124f5b5842e48ab77cbb73b04d8b05fe4b0116e06d20"
+    },
+    {
+      "path": "fixtures/digital-receipt-synthetic.pdf",
+      "bytes": 2531,
+      "sha256": "321b73e74668cecf2826e588c01bf7372aaf392905564a72135936237d22efa4"
+    },
+    {
+      "path": "fixtures/digital-receipt-synthetic.png",
+      "bytes": 64549,
+      "sha256": "7e0822bc3d606852f186f3ccc360cca66b8c452e021fb9ea65e42246cb1f0709"
+    },
+    {
+      "path": "fixtures/README.md",
+      "bytes": 1050,
+      "sha256": "a48374d7dd0cee0373a6ba35c55955b560b793f731ab6a75506d2e25e0cc46ac"
+    },
+    {
+      "path": "fixtures/receipts.json",
+      "bytes": 4260,
+      "sha256": "b7d3385481966862bd07ea946c3d8ed58d18cfc34870b31d43b8655ea0369749"
+    },
+    {
+      "path": "web/public/ASSETS.md",
+      "bytes": 1767,
+      "sha256": "a8dec563238e1cfd0dcbf2d038858908c8b9e5833e706d55a87f05d1d9fe6c84"
+    },
+    {
+      "path": "web/public/favicon.svg",
+      "bytes": 382,
+      "sha256": "9fe08e9622ed17e9a0b79ced46ee09bdc3565430eef13c6da0362f2d9fd6984a"
+    },
+    {
+      "path": "web/public/fonts/dm-sans.woff2",
+      "bytes": 36932,
+      "sha256": "9fea608a947e67020c33cad9a6fe3d60c54119dfb8cff87768a8117a15ed7543"
+    },
+    {
+      "path": "web/public/fonts/dmsans-OFL.txt",
+      "bytes": 4482,
+      "sha256": "9af36190332437f5ecd09974de43c1f7c77a310a996cdd8ceb25628b458840e1"
+    },
+    {
+      "path": "web/public/fonts/fraunces-OFL.txt",
+      "bytes": 4391,
+      "sha256": "bdf4c22802eaf804f998195871c6b8938aac2ac14b2d78a8bd66a6f1eced833b"
+    },
+    {
+      "path": "web/public/fonts/fraunces.woff2",
+      "bytes": 67304,
+      "sha256": "7234ed860a9cc83045413c4faee63c960a8f2d1917adcf728119307d56e0d783"
+    },
+    {
+      "path": "web/public/ICONS_LICENSE.txt",
+      "bytes": 1092,
+      "sha256": "ddbe6082ec3cf979db47e5af549d2849c5d6182b3e005ef91ce1dbb9eb122f11"
+    },
+    {
+      "path": "web/public/icons.svg",
+      "bytes": 20981,
+      "sha256": "fde0c9852b86624a8fe829425b707436b1747777ed8e499914843bb76ad35749"
+    },
+    {
+      "path": "web/public/images/basil-128.webp",
+      "bytes": 1690,
+      "sha256": "8b8fe251a5b6f1a42fb37b0d31ff9886443c5c5dfc520c865d12868f59aaf8cd"
+    },
+    {
+      "path": "web/public/images/basil-256.webp",
+      "bytes": 4882,
+      "sha256": "10f24d3ad5c7d69ba90d00df4780d8e3fa63e1c932b8a37995d588a3412cf84b"
+    },
+    {
+      "path": "web/public/images/dish-1280.webp",
+      "bytes": 27844,
+      "sha256": "014860fbcd7ee5b0a6aacad7aec9c2c94ea9024a67360ed877022fef923e5445"
+    },
+    {
+      "path": "web/public/images/dish-2048.webp",
+      "bytes": 59534,
+      "sha256": "210ce822ca238996859a3506f4a0f7ba8bb08fdf1e9e655a4909d897977142a1"
+    },
+    {
+      "path": "web/public/images/dish-800.webp",
+      "bytes": 13274,
+      "sha256": "b2637b4bfb3c7e0bef6cd88462222a84c44293b6e58221f35a3133614a3a5578"
+    },
+    {
+      "path": "web/public/images/dish-m-1000.webp",
+      "bytes": 49940,
+      "sha256": "fa8d2749a4edff35ec9645fbf0c32fe04a099a1aa00e2ecd5b61f056d1c4359e"
+    },
+    {
+      "path": "web/public/images/dish-m-600.webp",
+      "bytes": 22380,
+      "sha256": "d91e5fea1b68998c33f92703a46523b681183b43458a86506c429989214d2530"
+    },
+    {
+      "path": "web/public/images/dishplate-1280.webp",
+      "bytes": 33374,
+      "sha256": "238bd097f0d6c4dfb059dd335b076f0c895cac9735357faa9100221d953e63f8"
+    },
+    {
+      "path": "web/public/images/dishplate-800.webp",
+      "bytes": 15834,
+      "sha256": "0e26a0fa38345d4d2f33529629cdd5d244ba332008135fa9b7844e93a4da4d1e"
+    },
+    {
+      "path": "web/public/images/eggs-128.webp",
+      "bytes": 836,
+      "sha256": "f84527df3d7c525ca7d3c3487413e4a80137fa7252082257a6d7254a50bf628f"
+    },
+    {
+      "path": "web/public/images/eggs-256.webp",
+      "bytes": 2006,
+      "sha256": "4adbae48210838f829ba9cccaf2b4899face90e5a2142b52ee46013dde0db0d8"
+    },
+    {
+      "path": "web/public/images/fridge-1280.webp",
+      "bytes": 25140,
+      "sha256": "18778d694ccde510b9e6a1cde10e6fa248faa5c28c1af55b916bef9ba42a32ac"
+    },
+    {
+      "path": "web/public/images/fridge-800.webp",
+      "bytes": 13346,
+      "sha256": "9d1af5ae5bd05676ca9f68ffdce11b712fa637083d8d6e177d3518bf3c345b4b"
+    },
+    {
+      "path": "web/public/images/fridge-vf-480.webp",
+      "bytes": 11546,
+      "sha256": "ca89dcc5e2f17f9c3fcde2cb2477d4c86c025a5065366484cb945cc4d33195d9"
+    },
+    {
+      "path": "web/public/images/fridge-vf-800.webp",
+      "bytes": 23406,
+      "sha256": "c984690e407f4638a3e1844fdcad63bbfaa64e0e99058e32b8412ea1e2335830"
+    },
+    {
+      "path": "web/public/images/hero-1280.webp",
+      "bytes": 18864,
+      "sha256": "be3efb1de2c7afac23bfa768a55cdbc7870a40a7294925a722221e2a1f369b07"
+    },
+    {
+      "path": "web/public/images/hero-2048.webp",
+      "bytes": 40694,
+      "sha256": "2f3ce4cc3a22bfddeaa118faa0c900b14107f0dbebf6a2b503567edd1d541855"
+    },
+    {
+      "path": "web/public/images/hero-800.webp",
+      "bytes": 9496,
+      "sha256": "8fb542db3ab5e04666e8324e1ee8f87ba2d247337d723d296df76c421c13ae00"
+    },
+    {
+      "path": "web/public/images/hero-m-1000.webp",
+      "bytes": 30488,
+      "sha256": "68bac680e1e7aee22b7d10628013f73f00bbe8819ba80a6f435a8b9d912eb2dd"
+    },
+    {
+      "path": "web/public/images/hero-m-600.webp",
+      "bytes": 13964,
+      "sha256": "11ad055bd43234d08695c4d9a9beeced910d3e31140127e46cc10ff6c4513194"
+    },
+    {
+      "path": "web/public/images/ingredients-1280.webp",
+      "bytes": 26572,
+      "sha256": "fc8501467a83e10008240fe6fc17ded559ffe9df632f36ac3f08247cff2409de"
+    },
+    {
+      "path": "web/public/images/ingredients-800.webp",
+      "bytes": 10158,
+      "sha256": "d80af725b62bb222bb3d9768ea745b242faa7d5cd7b2cae1908204712b37f4d9"
+    },
+    {
+      "path": "web/public/images/nomli-app-icon-512.png",
+      "bytes": 15152,
+      "sha256": "c87c98d958a0e153b688aed0627cfc4c53dc90bb1ed1e87493b945bed26bf9a0"
+    },
+    {
+      "path": "web/public/images/nomli-share-20261024.png",
+      "bytes": 418645,
+      "sha256": "6a52cf66e0e576849a4d772ffdc7969c0466a48b440809a57af786dbc9e2c96d"
+    },
+    {
+      "path": "web/public/images/nomli-share-20261024.svg",
+      "bytes": 2321,
+      "sha256": "e22448baf04186e617581d760dc0be1e7927575c7e33f2b02049a1b55044ef57"
+    },
+    {
+      "path": "web/public/images/plate-320.webp",
+      "bytes": 8856,
+      "sha256": "7a952843ae74815de5fc298e77774b86b3eb941b8eee4c1d0bc6371b442df786"
+    },
+    {
+      "path": "web/public/images/plate-640.webp",
+      "bytes": 25660,
+      "sha256": "b9a9a7c7489ea22307706480d747f1ce3b067fbacf12ec9d105cb0f5bfefeb70"
+    },
+    {
+      "path": "web/public/images/prep-1280.webp",
+      "bytes": 42670,
+      "sha256": "54c1452983d4bb77e8fbb6033e84d5046ccfef9fe72e96d48953e2b86b71c0e3"
+    },
+    {
+      "path": "web/public/images/prep-800.webp",
+      "bytes": 18668,
+      "sha256": "de3635e70eb614d5cfa3f21a08c1a1aa93823cb55ce22827e39d632b6c877e92"
+    },
+    {
+      "path": "web/public/images/prep-close-320.webp",
+      "bytes": 10072,
+      "sha256": "e9be807f80da25d644b172382f57ba7166e0bbc1fd3ebaabc1d2da655202e0b7"
+    },
+    {
+      "path": "web/public/images/prep-close-640.webp",
+      "bytes": 38960,
+      "sha256": "a16de6f4d775bc9c516962b5f8718690a136a197b1be4dc29796171237cc97c7"
+    },
+    {
+      "path": "web/public/images/prep2-1280.webp",
+      "bytes": 46908,
+      "sha256": "171ed1e60f566eb71ff7cfd3905a5e4b7aee37486c26d0351218f75ef65a2fa1"
+    },
+    {
+      "path": "web/public/images/prep2-800.webp",
+      "bytes": 21438,
+      "sha256": "e5e09eabec6a11bf6ee543a04701037f6f52c18ebcc796ab3bc9e602198b9b55"
+    },
+    {
+      "path": "web/public/images/receipt-camera.webp",
+      "bytes": 159058,
+      "sha256": "8a96ff82d21f0db9f6bb3000aca5fe942aa41736017773be92c4e06f53844802"
+    },
+    {
+      "path": "web/public/images/recipe-omelette.webp",
+      "bytes": 334868,
+      "sha256": "3039065803d6fc282cbe2ad8ba13641c42de3b88cd0ea1a8d27a64f880058cff"
+    },
+    {
+      "path": "web/public/images/recipe-salad.webp",
+      "bytes": 331256,
+      "sha256": "d5f140783431b6db4da397bfaa15978430bfdc96cff5d4ad136036f61890557d"
+    },
+    {
+      "path": "web/public/images/recipe-skillet.webp",
+      "bytes": 388074,
+      "sha256": "74e3eb0a15d345d46350260a7886e9960dd04287c6915ce5a7799f24eabb7a6e"
+    },
+    {
+      "path": "web/public/images/school-preview.png",
+      "bytes": 44371,
+      "sha256": "3aa80719d87428c31758edab7a5b5644e848c1ace484a809e570853ab173829b"
+    },
+    {
+      "path": "web/public/images/tomato-128.webp",
+      "bytes": 1290,
+      "sha256": "02036763db913ea1bc6b6a26c6647aec31713502f732ac2aa74852aa964fbb00"
+    },
+    {
+      "path": "web/public/images/tomato-256.webp",
+      "bytes": 3376,
+      "sha256": "7ff177f88d71f44ca319026dee123df342bab97a112166ee8763e5ef4dc9852f"
+    },
+    {
+      "path": "web/public/images/waste-1280.webp",
+      "bytes": 14132,
+      "sha256": "b80543be2b6173d923017b83ec4e54c9c69ac301151133d5b6b5194af0d70383"
+    },
+    {
+      "path": "web/public/images/waste-2048.webp",
+      "bytes": 32920,
+      "sha256": "0e7160c2b1396b302146c6fbc53139706a9692ec668349a6294b811aeebd5dc5"
+    },
+    {
+      "path": "web/public/images/waste-800.webp",
+      "bytes": 6604,
+      "sha256": "1f8cd4895b37ad57ad0d08a12be0fb01af32d13a3a342b31187956fd9fa3f1de"
+    },
+    {
+      "path": "web/public/images/waste-m-1000.webp",
+      "bytes": 15392,
+      "sha256": "4fd397dfb63961e47b33e5b47e91081de4f190780ba5a79535fb9185b5773f3e"
+    },
+    {
+      "path": "web/public/images/waste-m-600.webp",
+      "bytes": 6598,
+      "sha256": "12241884a3ead149cb3747291fb77ef4b2151bab690887eb92338bf768266aba"
+    },
+    {
+      "path": "web/public/images/zara-192.webp",
+      "bytes": 2408,
+      "sha256": "8532b809ebf70bcddb32fed3d349005d9e045a6f258d10a2c62a9bc38f0471c9"
+    },
+    {
+      "path": "web/public/images/zara-96.webp",
+      "bytes": 1128,
+      "sha256": "b3ba55ef44288b183b8beb9d536924ca4d4034aa2faa5eceb062abc4be53fbe6"
+    }
+  ]
+}
