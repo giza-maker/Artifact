@@ -1,2 +1,3 @@
+* -text -whitespace
 assets/* -whitespace
 fonts/* -whitespace

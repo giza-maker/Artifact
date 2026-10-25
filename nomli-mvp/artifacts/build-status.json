@@ -4,9 +4,10 @@
   "domainTests": "9 passed",
   "contentValidation": "passed",
   "capacitorSync": "passed",
-  "androidSdk": "API 36 download in progress",
+  "androidSdk": "API 36 installed",
   "gradle": "8.14.3 distribution download in progress",
   "apk": "not compiled",
   "device": "No connected Android device",
-  "liveServices": "not configured"
+  "liveServices": "not configured",
+  "automatedTests": "12 passed"
 }

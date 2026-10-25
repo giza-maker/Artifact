@@ -6,7 +6,7 @@ Preparation date: 25 October 2026. Package versions are pinned in `package-lock.
 
 - Node 22.14.0, npm 11.1.0.
 - Java 21.0.10 found inside the existing Antigravity Red Hat Java extension. `scripts/build-android.ps1` detects it when `JAVA_HOME` is unset; no global Java setting was changed.
-- Android SDK under `%LOCALAPPDATA%\Android\Sdk`; API 36 installation initiated for Capacitor 8. Existing build tools include 36.0.0.
+- Android SDK under `%LOCALAPPDATA%\Android\Sdk`; API 36 installed for Capacitor 8. Existing build tools include 36.0.0.
 - Capacitor 8.5.3, Android target/compile API 36, minimum API 26 (Android 8) for barcode support.
 - Official Gradle wrapper 8.14.3, binary distribution. Android Studio is optional for command-line builds and has not been installed.
 

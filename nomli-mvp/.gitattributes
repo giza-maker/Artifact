@@ -1,3 +1,6 @@
 fixtures/*.pdf binary
+web/public/** -text -whitespace
+content/** -text
+fixtures/** -text
 android/** -whitespace
 web/public/fonts/* -whitespace
