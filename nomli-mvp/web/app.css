@@ -1202,6 +1202,13 @@ body.embedded .app-shell {
     width: 76px;
   }
 }
+
+/* Intrinsic image dimensions reserve space; cards follow their actual column width. */
+.recipe-card > img {
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+}
 @media (max-height: 780px) {
   body {
     padding-block: 0;
