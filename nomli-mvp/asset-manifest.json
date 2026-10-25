@@ -9,13 +9,13 @@
     },
     {
       "path": "content/LICENSE.md",
-      "bytes": 1261,
-      "sha256": "a6ef3c1bfa3e6640817926bbb10272a5646a7f89339dda0d22b2cc953a865f32"
+      "bytes": 1260,
+      "sha256": "a91998c59e389ec3f58d39da648c0480baa2420a97039ce16cd1bc995745f3b0"
     },
     {
       "path": "content/README.md",
-      "bytes": 2279,
-      "sha256": "fca217baf0c753c7e00bee89af4da872f0b15632415e33becced4410c4eebd33"
+      "bytes": 2278,
+      "sha256": "5dd802a565c2822f2c2b6a226a130767d67b2a20d35b736132f80d02cef39a70"
     },
     {
       "path": "content/recipes.json",
@@ -44,8 +44,8 @@
     },
     {
       "path": "fixtures/README.md",
-      "bytes": 1050,
-      "sha256": "a48374d7dd0cee0373a6ba35c55955b560b793f731ab6a75506d2e25e0cc46ac"
+      "bytes": 1196,
+      "sha256": "378ad37b716d8f4a3fee11a9e99506c1f6aaccae04c584814373b21e3cf9924a"
     },
     {
       "path": "fixtures/receipts.json",

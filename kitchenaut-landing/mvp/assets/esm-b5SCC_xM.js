@@ -1,0 +1,2 @@
+const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["./web-DD0gaf_p.js","./dist-CRpQ3CoJ.js"])))=>i.map(i=>d[i]);
+import{t as e}from"./index-BrszvCiW.js";import{r as t}from"./dist-CRpQ3CoJ.js";var n=t(`Preferences`,{web:()=>e(()=>import(`./web-DD0gaf_p.js`).then(e=>new e.PreferencesWeb),__vite__mapDeps([0,1]),import.meta.url)});export{n as Preferences};

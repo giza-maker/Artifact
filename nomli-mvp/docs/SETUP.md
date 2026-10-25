@@ -27,4 +27,4 @@ npm run android:debug
 
 No Android device was connected during preparation. An emulator image is optional and has not been downloaded. Use a physical Android 8+ phone for camera, barcode, permission, keyboard, safe-area, background-timer and offline persistence tests before treating the APK as a functional MVP.
 
-The APK uses debug signing. Production release signing, Play Store submission, privacy policy and cloud credentials are separate setup work. No credentials or signing keystore are included.
+Debug APK builds use debug signing. Production release signing, Play Store submission, privacy policy and cloud credentials are separate setup work. No credentials or signing keystore are included.

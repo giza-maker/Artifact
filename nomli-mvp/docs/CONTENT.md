@@ -31,7 +31,7 @@ Voice confirmation values:
 
 - `none`: read-only request can run without mutation confirmation.
 - `conditional`: confirm when matching, scope, or current state is ambiguous.
-- `required`: destructive action, date mutation, bulk clear, or external purchase must be confirmed.
+- `required`: inventory/shopping mutations, stopping cooking, or an external purchase must be confirmed through application review.
 
 ## Validation
 

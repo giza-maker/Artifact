@@ -1,4 +1,5 @@
 "use strict";
+import { createTimerNotifications } from "./timer-notifications.js";
 (function leanNomli() {
   const D = window.NOMLI_DATA;
   const KEY = "nomli-kitchen-mvp-v1";
@@ -115,6 +116,13 @@
     }
   }
   let S = load();
+  const timerNotifications = createTimerNotifications(
+    () => window.NomliNative,
+    save,
+  );
+  function cancelCookingNotification() {
+    timerNotifications.cancel(S.cooking).catch(() => {});
+  }
   const hash = location.hash.slice(1);
   if (routes.includes(hash)) S.route = hash;
   function save() {
@@ -662,6 +670,7 @@
       const seconds = timerSeconds();
       S.cooking.seconds = seconds;
       if (seconds === 0) {
+        cancelCookingNotification();
         S.cooking.running = false;
         S.cooking.deadline = null;
         clearInterval(timerHandle);
@@ -718,6 +727,7 @@
       }
       if (!S.cooking) return;
       if (S.cooking.running) {
+        cancelCookingNotification();
         S.cooking.seconds = timerSeconds();
         S.cooking.running = false;
         S.cooking.deadline = null;
@@ -726,10 +736,13 @@
         S.cooking.seconds = seconds;
         S.cooking.deadline = Date.now() + seconds * 1000;
         S.cooking.running = true;
-        window.NomliNative?.scheduleTimer?.(
-          seconds,
-          "Nomli cooking timer",
-        ).catch?.(() => {});
+        timerNotifications
+          .schedule(S.cooking, seconds)
+          .catch(() =>
+            announce(
+              "Device notifications unavailable. Keep Nomli open to see the timer alert.",
+            ),
+          );
       }
       save();
       render();
@@ -800,6 +813,7 @@
         S.items[x.id].qty -= x.qty;
       });
       S.meals.push({ id: `meal-${Date.now()}`, rid: r.id, used, date: D.date });
+      cancelCookingNotification();
       S.cooking = null;
       save();
       announce("Meal saved. Inventory updated.");
@@ -833,6 +847,7 @@
         `<p>Restore stocked sample inventory and clear meals, receipts, shopping and preferences?</p>${button("Reset demo", "reset-confirm", "", "btn-primary")}`,
       );
     if (a === "reset-confirm") {
+      cancelCookingNotification();
       S = seed();
       save();
       closeModal();
@@ -870,6 +885,7 @@
       return navigate("recipe");
     }
     if (a === "cook-start") {
+      cancelCookingNotification();
       S.recipe = id;
       S.cooking = { rid: id, step: 0, seconds: 120, running: false };
       save();
@@ -881,6 +897,9 @@
       return render();
     }
     if (a === "cook-next") {
+      cancelCookingNotification();
+      S.cooking.running = false;
+      S.cooking.deadline = null;
       const r = recipe(id);
       if (S.cooking.step < r.steps.length - 1) {
         S.cooking.step++;

@@ -6,6 +6,7 @@ dist/
 !.env.example
 artifacts/*.apk
 artifacts/*.zip
+artifacts/*.sha256
 android/.gradle/
 android/.kotlin/
 android/local.properties

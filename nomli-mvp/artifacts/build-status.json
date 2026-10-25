@@ -1,0 +1,12 @@
+{
+  "prepared": "2026-10-25",
+  "webBuild": "passed",
+  "domainTests": "9 passed",
+  "contentValidation": "passed",
+  "capacitorSync": "passed",
+  "androidSdk": "API 36 download in progress",
+  "gradle": "8.14.3 distribution download in progress",
+  "apk": "not compiled",
+  "device": "No connected Android device",
+  "liveServices": "not configured"
+}
