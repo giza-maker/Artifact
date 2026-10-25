@@ -6,7 +6,7 @@ Preparation date: 25 October 2026. Package versions are pinned in `package-lock.
 
 - Node 22.14.0, npm 11.1.0.
 - Java 21.0.10 found inside the existing Antigravity Red Hat Java extension. It runs Gradle but lacks `jlink` and JDK modules, so it cannot compile Android. Local APK compilation requires a full JDK 21; the build script checks this before starting.
-- Android SDK under `%LOCALAPPDATA%\Android\Sdk`; API 36 installed for Capacitor 8. Existing build tools include 36.0.0.
+- Android SDK under `%LOCALAPPDATA%\Android\Sdk`; API 36 installed for Capacitor 8. Windows build tools 34.0.0 and 35.0.0 are complete; the local 36.0.0 folder is incomplete. CI provides complete 36.0.0 tools.
 - Capacitor 8.5.3, Android target/compile API 36, minimum API 26 (Android 8) for barcode support.
 - Official Gradle wrapper 8.14.3, binary distribution. Android Studio is optional for command-line builds and has not been installed.
 

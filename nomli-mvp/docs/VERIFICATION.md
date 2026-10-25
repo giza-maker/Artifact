@@ -15,4 +15,12 @@
 
 Android compilation status is recorded separately in `artifacts/build-status.json` after setup. Web build and Capacitor sync do not by themselves prove native runtime behavior. No physical device was connected. Live auth, database, OCR, LLM, voice, concurrent updates and production security remain implementation/validation work.
 
-Java 21.0.10, Android API 36 and Gradle 8.14.3 verified locally. APK compilation and device QA have not been run. Gradle may download Maven dependencies during the first build.
+Java 21.0.10, Android API 36 and Gradle 8.14.3 verified locally. APK compilation and package verification passed in CI; physical-device QA has not been run. Gradle may download Maven dependencies during the first build.
+
+## Android APK build
+
+- GitHub Actions run 40206456176 passed from source commit 87d90f8ed91388f3a3e3677bd1d1a1425fea5880.
+- Package com.nomli.mvp, version 0.1.0-demo, minimum API 26, target API 36.
+- APK: 42,023,655 bytes. Signature v2 and 16 KB ZIP alignment verified both in CI and locally.
+- Downloaded CI archive digest and APK SHA-256 match; ZIP CRC checks pass. Every bundled web asset matches the local production build. No environment or private-keystore files are packaged.
+- Physical-device camera, barcode, permission and timer testing remains pending.
