@@ -2,7 +2,12 @@
   "products": [
     {
       "id": "P001",
+      "variantLabel": {
+        "ar": "٣٠ مل",
+        "en": "30 ml"
+      },
       "brand": "Celimax",
+      "type": "serum",
       "name": {
         "ar": "سيروم ذا فيتا-إيه ريتينول شوت لشد البشرة",
         "en": "The Vita-A Retinol Shot Tightening Serum"
@@ -46,18 +51,28 @@
         "en": "Do not combine multiple retinoid products. Avoid during pregnancy. Follow manufacturer directions and use daytime sun protection. Consult a qualified professional for personal advice."
       },
       "sourceUrl": "https://celimax.us/products/the-vita-a-retinol-shot-tightening-serum-30ml",
-      "sourceLabel": "Manufacturer information",
+      "sourceLabel": {
+        "ar": "معلومات الشركة المصنّعة",
+        "en": "Manufacturer information"
+      },
       "localVerification": "pending",
       "price": null,
       "stock": null,
       "batch": null,
       "expiry": null,
       "retinoid": true,
-      "color": "#B7D433"
+      "color": "#B7D433",
+      "sourceType": "manufacturer",
+      "imageScale": 1.6
     },
     {
       "id": "P002",
+      "variantLabel": {
+        "ar": "٣٠ مل",
+        "en": "30 ml"
+      },
       "brand": "Arencia",
+      "type": "serum",
       "name": {
         "ar": "ريتينال بوستر شوت",
         "en": "Retinal Booster Shot Serum"
@@ -101,18 +116,28 @@
         "en": "Do not combine multiple retinoid products. Avoid during pregnancy. Follow manufacturer directions and use daytime sun protection. Consult a qualified professional for personal advice."
       },
       "sourceUrl": "https://arencia.us/products/retinal-booster-shot-advanced-retinal-caffeine-formula",
-      "sourceLabel": "Manufacturer information",
+      "sourceLabel": {
+        "ar": "معلومات الشركة المصنّعة",
+        "en": "Manufacturer information"
+      },
       "localVerification": "pending",
       "price": null,
       "stock": null,
       "batch": null,
       "expiry": null,
       "retinoid": true,
-      "color": "#C5A33B"
+      "color": "#C5A33B",
+      "sourceType": "manufacturer",
+      "imageScale": 1
     },
     {
       "id": "P003",
+      "variantLabel": {
+        "ar": "٣٠ مل",
+        "en": "30 ml"
+      },
       "brand": "Arencia",
+      "type": "serum",
       "name": {
         "ar": "سيروم بي دي آر إن بوستر شوت",
         "en": "PDRN Booster Shot Serum"
@@ -155,18 +180,28 @@
         "en": "Review the ingredient list on the pack and stop use if irritation occurs. Consult a qualified professional for personal advice."
       },
       "sourceUrl": "https://arencia.us/products/pdrn-booster-shot-rosy-pdrn-peptides-for-glowy-healthy-skin",
-      "sourceLabel": "Manufacturer information",
+      "sourceLabel": {
+        "ar": "معلومات الشركة المصنّعة",
+        "en": "Manufacturer information"
+      },
       "localVerification": "pending",
       "price": null,
       "stock": null,
       "batch": null,
       "expiry": null,
       "retinoid": false,
-      "color": "#EBA6B8"
+      "color": "#EBA6B8",
+      "sourceType": "manufacturer",
+      "imageScale": 1
     },
     {
       "id": "P004",
+      "variantLabel": {
+        "ar": "٣٠ مل",
+        "en": "30 ml"
+      },
       "brand": "Arencia",
+      "type": "serum",
       "name": {
         "ar": "سيروم فيتامين سي بوستر شوت",
         "en": "Vitamin C Booster Shot Serum"
@@ -209,18 +244,28 @@
         "en": "Review the ingredient list on the pack and stop use if irritation occurs. The manufacturer notes that formula color may vary naturally between batches."
       },
       "sourceUrl": "https://arencia.us/products/vitamin-c-booster-shot-pure-vitamin-c-glutathione-for-bright-healthy-skin",
-      "sourceLabel": "Manufacturer information",
+      "sourceLabel": {
+        "ar": "معلومات الشركة المصنّعة",
+        "en": "Manufacturer information"
+      },
       "localVerification": "pending",
       "price": null,
       "stock": null,
       "batch": null,
       "expiry": null,
       "retinoid": false,
-      "color": "#AAB744"
+      "color": "#AAB744",
+      "sourceType": "manufacturer",
+      "imageScale": 1
     },
     {
       "id": "P005",
+      "variantLabel": {
+        "ar": "١٥ مل",
+        "en": "15 ml"
+      },
       "brand": "Celimax",
+      "type": "serum",
       "name": {
         "ar": "ذا فيتا-إيه ريتينال شوت بوستر لشد البشرة",
         "en": "The Vita-A Retinal Shot Tightening Booster"
@@ -264,14 +309,1197 @@
         "en": "Do not combine multiple retinoid products. Avoid during pregnancy. Follow manufacturer directions and use daytime sun protection. Consult a qualified professional for personal advice."
       },
       "sourceUrl": "https://celimax.us/products/the-vita-a-retinal-shot-tightening-booster",
-      "sourceLabel": "Manufacturer information",
+      "sourceLabel": {
+        "ar": "معلومات الشركة المصنّعة",
+        "en": "Manufacturer information"
+      },
       "localVerification": "pending",
       "price": null,
       "stock": null,
       "batch": null,
       "expiry": null,
       "retinoid": true,
-      "color": "#B8D63A"
+      "color": "#B8D63A",
+      "sourceType": "manufacturer",
+      "imageScale": 1.3
+    },
+    {
+      "id": "P006",
+      "variantLabel": {
+        "ar": "٣٠ مل",
+        "en": "30 ml"
+      },
+      "brand": "Anua",
+      "type": "serum",
+      "name": {
+        "ar": "سيروم أزيليك أسيد 15 للتهدئة المكثفة",
+        "en": "Azelaic Acid 15 Intense Calming Serum"
+      },
+      "shortName": {
+        "ar": "أزيليك 15",
+        "en": "Azelaic 15 Serum"
+      },
+      "image": "assets/products/p006.webp",
+      "moods": [
+        "smooth"
+      ],
+      "category": "clarifying",
+      "ingredient": {
+        "ar": "حمض الأزيليك، مركب سيكا",
+        "en": "Azelaic acid, CICA complex"
+      },
+      "format": {
+        "ar": "سيروم خفيف",
+        "en": "Lightweight serum"
+      },
+      "sizeLabel": {
+        "ar": "30 مل / 1.01 أونصة سائلة",
+        "en": "30ml / 1.01 fl. oz."
+      },
+      "description": {
+        "ar": "سيروم تجميلي خفيف بحمض الأزيليك ومكونات سيكا.",
+        "en": "A lightweight cosmetic serum with azelaic acid and CICA ingredients."
+      },
+      "why": {
+        "ar": "خيار منسق ضمن فئته لبناء روتين واضح من دون تكرار غير ضروري.",
+        "en": "A curated option in its category for a clear routine without unnecessary duplication."
+      },
+      "use": {
+        "ar": "يُستخدم وفق تعليمات الشركة على العبوة وفي الخطوة المناسبة من الروتين.",
+        "en": "Use according to manufacturer directions on the pack at the appropriate routine step."
+      },
+      "caution": {
+        "ar": "راجع قائمة المكونات على العبوة وأوقف الاستخدام عند التهيج. استخدم واقي شمس نهارًا عند الحاجة.",
+        "en": "Review the ingredient list on the pack and stop use if irritation occurs. Use daytime sun protection when appropriate."
+      },
+      "sourceUrl": "https://anuashop.jp/products/side0010",
+      "sourceLabel": {
+        "ar": "معلومات الشركة المصنّعة",
+        "en": "Manufacturer information"
+      },
+      "localVerification": "pending",
+      "price": null,
+      "stock": null,
+      "batch": null,
+      "expiry": null,
+      "retinoid": false,
+      "color": "#B9D6B8",
+      "sourceType": "manufacturer",
+      "imageScale": 1.6
+    },
+    {
+      "id": "P007",
+      "variantLabel": {
+        "ar": "٤٠ مل",
+        "en": "40 ml"
+      },
+      "brand": "Anua",
+      "type": "toner",
+      "name": {
+        "ar": "تونر هارتليف 77 المهدئ",
+        "en": "Heartleaf 77 Soothing Toner"
+      },
+      "shortName": {
+        "ar": "تونر هارتليف 40 مل",
+        "en": "Heartleaf Toner 40ml"
+      },
+      "image": "assets/products/p007-clean.webp",
+      "moods": [
+        "hydrate"
+      ],
+      "category": "soothing",
+      "ingredient": {
+        "ar": "ماء الهارتليف، بانثينول، هيالورونات",
+        "en": "Heartleaf water, panthenol, hyaluronates"
+      },
+      "format": {
+        "ar": "تونر مائي",
+        "en": "Watery toner"
+      },
+      "sizeLabel": {
+        "ar": "المنتج المصور: 40 مل / 1.35 أونصة سائلة",
+        "en": "Pictured SKU: 40ml / 1.35 fl. oz."
+      },
+      "description": {
+        "ar": "تونر مائي خفيف بخلاصة الهارتليف ومكونات مرطبة.",
+        "en": "A lightweight watery toner with heartleaf and moisturizing ingredients."
+      },
+      "why": {
+        "ar": "خيار منسق ضمن فئته لبناء روتين واضح من دون تكرار غير ضروري.",
+        "en": "A curated option in its category for a clear routine without unnecessary duplication."
+      },
+      "use": {
+        "ar": "يُستخدم وفق تعليمات الشركة على العبوة وفي الخطوة المناسبة من الروتين.",
+        "en": "Use according to manufacturer directions on the pack at the appropriate routine step."
+      },
+      "caution": {
+        "ar": "راجع قائمة المكونات على العبوة وأوقف الاستخدام عند التهيج. استخدم واقي شمس نهارًا عند الحاجة.",
+        "en": "Review the ingredient list on the pack and stop use if irritation occurs. Use daytime sun protection when appropriate."
+      },
+      "sourceUrl": "https://anua.com/products/heartleaf-77-soothing-toner",
+      "sourceLabel": {
+        "ar": "معلومات الشركة المصنّعة",
+        "en": "Manufacturer information"
+      },
+      "localVerification": "pending",
+      "price": null,
+      "stock": null,
+      "batch": null,
+      "expiry": null,
+      "retinoid": false,
+      "color": "#D7E0C5",
+      "sourceType": "manufacturer",
+      "verificationNote": {
+        "ar": "الصورة من المخزون المرفق لحجم ٤٠ مل؛ صفحة الشركة مرجع لعائلة المنتج.",
+        "en": "Photo shows the supplied 40 ml unit; the maker page refers to the product family."
+      },
+      "originalImage": "assets/products/p007.webp",
+      "imageTreatment": "reference-background-cleanup",
+      "imageScale": 1
+    },
+    {
+      "id": "P008",
+      "variantLabel": {
+        "ar": "٢٥٠ مل",
+        "en": "250 ml"
+      },
+      "brand": "Anua",
+      "type": "toner",
+      "name": {
+        "ar": "تونر هارتليف 77 المهدئ",
+        "en": "Heartleaf 77 Soothing Toner"
+      },
+      "shortName": {
+        "ar": "تونر هارتليف 250 مل",
+        "en": "Heartleaf Toner 250ml"
+      },
+      "image": "assets/products/p008.webp",
+      "moods": [
+        "hydrate"
+      ],
+      "category": "soothing",
+      "ingredient": {
+        "ar": "ماء الهارتليف، بانثينول، هيالورونات",
+        "en": "Heartleaf water, panthenol, hyaluronates"
+      },
+      "format": {
+        "ar": "تونر مائي",
+        "en": "Watery toner"
+      },
+      "sizeLabel": {
+        "ar": "المنتج المصور: 250 مل / 8.45 أونصة سائلة",
+        "en": "Pictured SKU: 250ml / 8.45 fl. oz."
+      },
+      "description": {
+        "ar": "تونر مائي خفيف بخلاصة الهارتليف ومكونات مرطبة.",
+        "en": "A lightweight watery toner with heartleaf and moisturizing ingredients."
+      },
+      "why": {
+        "ar": "خيار منسق ضمن فئته لبناء روتين واضح من دون تكرار غير ضروري.",
+        "en": "A curated option in its category for a clear routine without unnecessary duplication."
+      },
+      "use": {
+        "ar": "يُستخدم وفق تعليمات الشركة على العبوة وفي الخطوة المناسبة من الروتين.",
+        "en": "Use according to manufacturer directions on the pack at the appropriate routine step."
+      },
+      "caution": {
+        "ar": "راجع قائمة المكونات على العبوة وأوقف الاستخدام عند التهيج. استخدم واقي شمس نهارًا عند الحاجة.",
+        "en": "Review the ingredient list on the pack and stop use if irritation occurs. Use daytime sun protection when appropriate."
+      },
+      "sourceUrl": "https://anua.com/products/heartleaf-77-soothing-toner",
+      "sourceLabel": {
+        "ar": "معلومات الشركة المصنّعة",
+        "en": "Manufacturer information"
+      },
+      "localVerification": "pending",
+      "price": null,
+      "stock": null,
+      "batch": null,
+      "expiry": null,
+      "retinoid": false,
+      "color": "#C8D7B8",
+      "sourceType": "manufacturer",
+      "imageScale": 1
+    },
+    {
+      "id": "P009",
+      "variantLabel": {
+        "ar": "٣٠ مل",
+        "en": "30 ml"
+      },
+      "brand": "Anua",
+      "type": "serum",
+      "name": {
+        "ar": "سيروم بي دي آر إن هيالورونيك أسيد كابسول 100",
+        "en": "PDRN Hyaluronic Acid Capsule 100 Serum"
+      },
+      "shortName": {
+        "ar": "سيروم بي دي آر إن 100",
+        "en": "PDRN 100 Serum"
+      },
+      "image": "assets/products/p009.webp",
+      "moods": [
+        "hydrate",
+        "glow"
+      ],
+      "category": "hydration",
+      "ingredient": {
+        "ar": "صوديوم دي إن إيه، حمض الهيالورونيك، كولاجين متحلل",
+        "en": "Sodium DNA, hyaluronic acid, hydrolyzed collagen"
+      },
+      "format": {
+        "ar": "سيروم كبسولي خفيف",
+        "en": "Lightweight capsule serum"
+      },
+      "sizeLabel": {
+        "ar": "30 مل / 1.01 أونصة سائلة",
+        "en": "30ml / 1.01 fl. oz."
+      },
+      "description": {
+        "ar": "سيروم تجميلي مرطب بصوديوم دي إن إيه وأنواع من حمض الهيالورونيك.",
+        "en": "A moisturizing cosmetic serum with sodium DNA and forms of hyaluronic acid."
+      },
+      "why": {
+        "ar": "خيار منسق ضمن فئته لبناء روتين واضح من دون تكرار غير ضروري.",
+        "en": "A curated option in its category for a clear routine without unnecessary duplication."
+      },
+      "use": {
+        "ar": "يُستخدم وفق تعليمات الشركة على العبوة وفي الخطوة المناسبة من الروتين.",
+        "en": "Use according to manufacturer directions on the pack at the appropriate routine step."
+      },
+      "caution": {
+        "ar": "راجع قائمة المكونات على العبوة وأوقف الاستخدام عند التهيج. استخدم واقي شمس نهارًا عند الحاجة.",
+        "en": "Review the ingredient list on the pack and stop use if irritation occurs. Use daytime sun protection when appropriate."
+      },
+      "sourceUrl": "https://anua.com/products/pdrn-hyaluronic-acid-capsule-100-serum",
+      "sourceLabel": {
+        "ar": "معلومات الشركة المصنّعة",
+        "en": "Manufacturer information"
+      },
+      "localVerification": "pending",
+      "price": null,
+      "stock": null,
+      "batch": null,
+      "expiry": null,
+      "retinoid": false,
+      "color": "#5BC9C4",
+      "sourceType": "manufacturer",
+      "imageScale": 1.35
+    },
+    {
+      "id": "P010",
+      "variantLabel": {
+        "ar": "٣٠ مل",
+        "en": "30 ml"
+      },
+      "brand": "Anua",
+      "type": "serum",
+      "name": {
+        "ar": "سيروم نياسيناميد 10 وتي إكس إيه 4",
+        "en": "Niacinamide 10 TXA 4 Serum"
+      },
+      "shortName": {
+        "ar": "سيروم نياسيناميد وتي إكس إيه",
+        "en": "Niacinamide TXA Serum"
+      },
+      "image": "assets/products/p010.webp",
+      "moods": [
+        "glow",
+        "smooth"
+      ],
+      "category": "tone",
+      "ingredient": {
+        "ar": "نياسيناميد، حمض الترانيكساميك، أربوتين",
+        "en": "Niacinamide, tranexamic acid, arbutin"
+      },
+      "format": {
+        "ar": "سيروم مائي خفيف",
+        "en": "Lightweight watery serum"
+      },
+      "sizeLabel": {
+        "ar": "30 مل / 1.01 أونصة سائلة",
+        "en": "30ml / 1.01 fl. oz."
+      },
+      "description": {
+        "ar": "سيروم تجميلي مائي للروتين الموجه لمظهر تفاوت اللون.",
+        "en": "A watery cosmetic serum for routines focused on the look of uneven tone."
+      },
+      "why": {
+        "ar": "خيار منسق ضمن فئته لبناء روتين واضح من دون تكرار غير ضروري.",
+        "en": "A curated option in its category for a clear routine without unnecessary duplication."
+      },
+      "use": {
+        "ar": "يُستخدم وفق تعليمات الشركة على العبوة وفي الخطوة المناسبة من الروتين.",
+        "en": "Use according to manufacturer directions on the pack at the appropriate routine step."
+      },
+      "caution": {
+        "ar": "راجع قائمة المكونات على العبوة وأوقف الاستخدام عند التهيج. استخدم واقي شمس نهارًا عند الحاجة.",
+        "en": "Review the ingredient list on the pack and stop use if irritation occurs. Use daytime sun protection when appropriate."
+      },
+      "sourceUrl": "https://anua.com/products/niacinamide-10-txa-4-serum-2",
+      "sourceLabel": {
+        "ar": "معلومات الشركة المصنّعة",
+        "en": "Manufacturer information"
+      },
+      "localVerification": "pending",
+      "price": null,
+      "stock": null,
+      "batch": null,
+      "expiry": null,
+      "retinoid": false,
+      "color": "#D899A6",
+      "sourceType": "manufacturer",
+      "imageScale": 1.35
+    },
+    {
+      "id": "P011",
+      "variantLabel": {
+        "ar": "١٥٠ مل",
+        "en": "150 ml"
+      },
+      "brand": "Anua",
+      "type": "cleanser",
+      "name": {
+        "ar": "غسول هارتليف كويرسيتينول لتنظيف المسام",
+        "en": "Heartleaf Quercetinol Pore Deep Cleansing Foam"
+      },
+      "shortName": {
+        "ar": "غسول هارتليف الرغوي",
+        "en": "Heartleaf Cleansing Foam"
+      },
+      "image": "assets/products/p011.webp",
+      "moods": [
+        "smooth"
+      ],
+      "category": "cleanser",
+      "ingredient": {
+        "ar": "هارتليف، بيتايين ساليسيلات، كويرسيتين",
+        "en": "Heartleaf, betaine salicylate, quercetin"
+      },
+      "format": {
+        "ar": "غسول رغوي",
+        "en": "Foaming cleanser"
+      },
+      "sizeLabel": {
+        "ar": "150 مل / 5.07 أونصة سائلة",
+        "en": "150ml / 5.07 fl. oz."
+      },
+      "description": {
+        "ar": "غسول رغوي للوجه يزيل الشوائب والزيوت السطحية.",
+        "en": "A foaming facial cleanser for removing impurities and surface oil."
+      },
+      "why": {
+        "ar": "خيار منسق ضمن فئته لبناء روتين واضح من دون تكرار غير ضروري.",
+        "en": "A curated option in its category for a clear routine without unnecessary duplication."
+      },
+      "use": {
+        "ar": "يُستخدم وفق تعليمات الشركة على العبوة وفي الخطوة المناسبة من الروتين.",
+        "en": "Use according to manufacturer directions on the pack at the appropriate routine step."
+      },
+      "caution": {
+        "ar": "راجع قائمة المكونات على العبوة وأوقف الاستخدام عند التهيج. استخدم واقي شمس نهارًا عند الحاجة.",
+        "en": "Review the ingredient list on the pack and stop use if irritation occurs. Use daytime sun protection when appropriate."
+      },
+      "sourceUrl": "https://anua.com/products/heartleaf-quercetinol-pore-deep-cleansing-foam",
+      "sourceLabel": {
+        "ar": "معلومات الشركة المصنّعة",
+        "en": "Manufacturer information"
+      },
+      "localVerification": "pending",
+      "price": null,
+      "stock": null,
+      "batch": null,
+      "expiry": null,
+      "retinoid": false,
+      "color": "#A8C9A7",
+      "sourceType": "manufacturer",
+      "imageScale": 1
+    },
+    {
+      "id": "P012",
+      "variantLabel": {
+        "ar": "٢٠٠ مل",
+        "en": "200 ml"
+      },
+      "brand": "Anua",
+      "type": "moisturizer",
+      "name": {
+        "ar": "لوشن هارتليف 70 اليومي",
+        "en": "Heartleaf 70 Daily Lotion"
+      },
+      "shortName": {
+        "ar": "لوشن هارتليف 70",
+        "en": "Heartleaf 70 Lotion"
+      },
+      "image": "assets/products/p012.webp",
+      "moods": [
+        "hydrate"
+      ],
+      "category": "moisturizer",
+      "ingredient": {
+        "ar": "هارتليف، حمض الهيالورونيك",
+        "en": "Heartleaf, hyaluronic acid"
+      },
+      "format": {
+        "ar": "لوشن مرطب خفيف",
+        "en": "Lightweight moisturizing lotion"
+      },
+      "sizeLabel": {
+        "ar": "200 مل / 6.76 أونصة سائلة",
+        "en": "200ml / 6.76 fl. oz."
+      },
+      "description": {
+        "ar": "لوشن وجه خفيف للاستخدام بعد السيروم.",
+        "en": "A lightweight face lotion for use after serum."
+      },
+      "why": {
+        "ar": "خيار منسق ضمن فئته لبناء روتين واضح من دون تكرار غير ضروري.",
+        "en": "A curated option in its category for a clear routine without unnecessary duplication."
+      },
+      "use": {
+        "ar": "يُستخدم وفق تعليمات الشركة على العبوة وفي الخطوة المناسبة من الروتين.",
+        "en": "Use according to manufacturer directions on the pack at the appropriate routine step."
+      },
+      "caution": {
+        "ar": "راجع قائمة المكونات على العبوة وأوقف الاستخدام عند التهيج. استخدم واقي شمس نهارًا عند الحاجة.",
+        "en": "Review the ingredient list on the pack and stop use if irritation occurs. Use daytime sun protection when appropriate."
+      },
+      "sourceUrl": "https://anua.com/products/heartleaf-70-daily-lotion-copy-1",
+      "sourceLabel": {
+        "ar": "معلومات الشركة المصنّعة",
+        "en": "Manufacturer information"
+      },
+      "localVerification": "pending",
+      "price": null,
+      "stock": null,
+      "batch": null,
+      "expiry": null,
+      "retinoid": false,
+      "color": "#DCE5CF",
+      "sourceType": "manufacturer",
+      "imageScale": 1
+    },
+    {
+      "id": "P013",
+      "variantLabel": {
+        "ar": "٢٠٠ مل",
+        "en": "200 ml"
+      },
+      "brand": "Anua",
+      "type": "cleanser",
+      "name": {
+        "ar": "زيت تنظيف هارتليف للتحكم بالمسام",
+        "en": "Heartleaf Pore Control Cleansing Oil"
+      },
+      "shortName": {
+        "ar": "زيت تنظيف هارتليف",
+        "en": "Heartleaf Cleansing Oil"
+      },
+      "image": "assets/products/p013.webp",
+      "moods": [
+        "smooth"
+      ],
+      "category": "cleansing-oil",
+      "ingredient": {
+        "ar": "زيوت دوار الشمس والجوجوبا وبذور العنب، هارتليف",
+        "en": "Sunflower, jojoba and grape-seed oils, heartleaf"
+      },
+      "format": {
+        "ar": "زيت تنظيف",
+        "en": "Cleansing oil"
+      },
+      "sizeLabel": {
+        "ar": "200 مل / 6.76 أونصة سائلة",
+        "en": "200ml / 6.76 fl. oz."
+      },
+      "description": {
+        "ar": "زيت تنظيف يُستحلب بالماء لإزالة المكياج وواقي الشمس.",
+        "en": "An emulsifying cleansing oil for removing makeup and sunscreen."
+      },
+      "why": {
+        "ar": "خيار منسق ضمن فئته لبناء روتين واضح من دون تكرار غير ضروري.",
+        "en": "A curated option in its category for a clear routine without unnecessary duplication."
+      },
+      "use": {
+        "ar": "يُستخدم وفق تعليمات الشركة على العبوة وفي الخطوة المناسبة من الروتين.",
+        "en": "Use according to manufacturer directions on the pack at the appropriate routine step."
+      },
+      "caution": {
+        "ar": "راجع قائمة المكونات على العبوة وأوقف الاستخدام عند التهيج. استخدم واقي شمس نهارًا عند الحاجة.",
+        "en": "Review the ingredient list on the pack and stop use if irritation occurs. Use daytime sun protection when appropriate."
+      },
+      "sourceUrl": "https://anua.com/products/heartleaf-pore-control-cleansing-oil-200ml",
+      "sourceLabel": {
+        "ar": "معلومات الشركة المصنّعة",
+        "en": "Manufacturer information"
+      },
+      "localVerification": "pending",
+      "price": null,
+      "stock": null,
+      "batch": null,
+      "expiry": null,
+      "retinoid": false,
+      "color": "#C9D9B0",
+      "sourceType": "manufacturer",
+      "imageScale": 1
+    },
+    {
+      "id": "P014",
+      "variantLabel": {
+        "ar": "١٥٠ مل",
+        "en": "150 ml"
+      },
+      "brand": "Anua",
+      "type": "moisturizer",
+      "name": {
+        "ar": "حليب بيتش 77 نياسين المرطب",
+        "en": "Peach 77 Niacin Conditioning Milk"
+      },
+      "shortName": {
+        "ar": "حليب بيتش 77",
+        "en": "Peach 77 Milk"
+      },
+      "image": "assets/products/p014.webp",
+      "moods": [
+        "hydrate",
+        "glow"
+      ],
+      "category": "moisturizer",
+      "ingredient": {
+        "ar": "ماء الخوخ، نياسيناميد، سيراميد، بانثينول",
+        "en": "Peach water, niacinamide, ceramide, panthenol"
+      },
+      "format": {
+        "ar": "لوشن حليبي خفيف",
+        "en": "Lightweight milk lotion"
+      },
+      "sizeLabel": {
+        "ar": "150 مل / 5.07 أونصة سائلة",
+        "en": "150ml / 5.07 fl. oz."
+      },
+      "description": {
+        "ar": "لوشن حليبي خفيف يُستخدم بعد السيروم.",
+        "en": "A lightweight milk lotion used after serum."
+      },
+      "why": {
+        "ar": "خيار منسق ضمن فئته لبناء روتين واضح من دون تكرار غير ضروري.",
+        "en": "A curated option in its category for a clear routine without unnecessary duplication."
+      },
+      "use": {
+        "ar": "يُستخدم وفق تعليمات الشركة على العبوة وفي الخطوة المناسبة من الروتين.",
+        "en": "Use according to manufacturer directions on the pack at the appropriate routine step."
+      },
+      "caution": {
+        "ar": "راجع قائمة المكونات على العبوة وأوقف الاستخدام عند التهيج. استخدم واقي شمس نهارًا عند الحاجة.",
+        "en": "Review the ingredient list on the pack and stop use if irritation occurs. Use daytime sun protection when appropriate."
+      },
+      "sourceUrl": "https://anua.com/products/peach-77-niacin-conditioning-milk-1-1",
+      "sourceLabel": {
+        "ar": "معلومات الشركة المصنّعة",
+        "en": "Manufacturer information"
+      },
+      "localVerification": "pending",
+      "price": null,
+      "stock": null,
+      "batch": null,
+      "expiry": null,
+      "retinoid": false,
+      "color": "#F3B8B8",
+      "sourceType": "manufacturer",
+      "imageScale": 1
+    },
+    {
+      "id": "P015",
+      "variantLabel": {
+        "ar": "٥٠ مل",
+        "en": "50 ml"
+      },
+      "brand": "Anua",
+      "type": "moisturizer",
+      "name": {
+        "ar": "كريم بيتش 77 نياسين الغني",
+        "en": "Peach 77 Niacin Enriched Cream"
+      },
+      "shortName": {
+        "ar": "كريم بيتش 77",
+        "en": "Peach 77 Cream"
+      },
+      "image": "assets/products/p015.webp",
+      "moods": [
+        "hydrate",
+        "glow"
+      ],
+      "category": "moisturizer",
+      "ingredient": {
+        "ar": "ماء الخوخ، نياسيناميد، بانثينول، سيراميد",
+        "en": "Peach water, niacinamide, panthenol, ceramide"
+      },
+      "format": {
+        "ar": "كريم مرطب",
+        "en": "Moisturizing cream"
+      },
+      "sizeLabel": {
+        "ar": "50 مل / 1.69 أونصة سائلة",
+        "en": "50ml / 1.69 fl. oz."
+      },
+      "description": {
+        "ar": "كريم مرطب غير ثقيل للاستخدام كخطوة أخيرة.",
+        "en": "A non-heavy moisturizing cream for the final routine step."
+      },
+      "why": {
+        "ar": "خيار منسق ضمن فئته لبناء روتين واضح من دون تكرار غير ضروري.",
+        "en": "A curated option in its category for a clear routine without unnecessary duplication."
+      },
+      "use": {
+        "ar": "يُستخدم وفق تعليمات الشركة على العبوة وفي الخطوة المناسبة من الروتين.",
+        "en": "Use according to manufacturer directions on the pack at the appropriate routine step."
+      },
+      "caution": {
+        "ar": "راجع قائمة المكونات على العبوة وأوقف الاستخدام عند التهيج. استخدم واقي شمس نهارًا عند الحاجة.",
+        "en": "Review the ingredient list on the pack and stop use if irritation occurs. Use daytime sun protection when appropriate."
+      },
+      "sourceUrl": "https://anua.com/products/peach-77-niacin-enriched-cream-1",
+      "sourceLabel": {
+        "ar": "معلومات الشركة المصنّعة",
+        "en": "Manufacturer information"
+      },
+      "localVerification": "pending",
+      "price": null,
+      "stock": null,
+      "batch": null,
+      "expiry": null,
+      "retinoid": false,
+      "color": "#EFA7AF",
+      "sourceType": "manufacturer",
+      "imageScale": 1
+    },
+    {
+      "id": "P016",
+      "variantLabel": {
+        "ar": "١٦٠ مل / ٧٠ وسادة",
+        "en": "160 ml / 70 pads"
+      },
+      "brand": "Anua",
+      "type": "pads",
+      "name": {
+        "ar": "باد هارتليف 77 كلير",
+        "en": "Heartleaf 77 Clear Pad"
+      },
+      "shortName": {
+        "ar": "باد هارتليف 77",
+        "en": "Heartleaf 77 Pads"
+      },
+      "image": "assets/products/p016.webp",
+      "moods": [
+        "smooth",
+        "hydrate"
+      ],
+      "category": "pads",
+      "ingredient": {
+        "ar": "ماء الهارتليف، بي إتش إيه، سنتيلا",
+        "en": "Heartleaf water, PHA, centella"
+      },
+      "format": {
+        "ar": "وسادات تونر مزدوجة الملمس",
+        "en": "Dual-texture toner pads"
+      },
+      "sizeLabel": {
+        "ar": "160 مل / 5.41 أونصة سائلة، 70 وسادة",
+        "en": "160ml / 5.41 fl. oz., 70 pads"
+      },
+      "description": {
+        "ar": "وسادات تونر مبللة للعناية اللطيفة بملمس البشرة.",
+        "en": "Pre-soaked toner pads for gentle texture care."
+      },
+      "why": {
+        "ar": "خيار منسق ضمن فئته لبناء روتين واضح من دون تكرار غير ضروري.",
+        "en": "A curated option in its category for a clear routine without unnecessary duplication."
+      },
+      "use": {
+        "ar": "يُستخدم وفق تعليمات الشركة على العبوة وفي الخطوة المناسبة من الروتين.",
+        "en": "Use according to manufacturer directions on the pack at the appropriate routine step."
+      },
+      "caution": {
+        "ar": "راجع قائمة المكونات على العبوة وأوقف الاستخدام عند التهيج. استخدم واقي شمس نهارًا عند الحاجة.",
+        "en": "Review the ingredient list on the pack and stop use if irritation occurs. Use daytime sun protection when appropriate."
+      },
+      "sourceUrl": "https://anua.com/products/heartleaf-77-toner-pad-160ml",
+      "sourceLabel": {
+        "ar": "معلومات الشركة المصنّعة",
+        "en": "Manufacturer information"
+      },
+      "localVerification": "pending",
+      "price": null,
+      "stock": null,
+      "batch": null,
+      "expiry": null,
+      "retinoid": false,
+      "color": "#AFCDA9",
+      "sourceType": "manufacturer",
+      "imageScale": 1
+    },
+    {
+      "id": "P017",
+      "variantLabel": {
+        "ar": "١٠٠ مل",
+        "en": "100 ml"
+      },
+      "brand": "Anua",
+      "type": "moisturizer",
+      "name": {
+        "ar": "كريم هارتليف 70 المهدئ",
+        "en": "Heartleaf 70 Soothing Cream"
+      },
+      "shortName": {
+        "ar": "كريم هارتليف 70",
+        "en": "Heartleaf 70 Cream"
+      },
+      "image": "assets/products/p017-clean.webp",
+      "moods": [
+        "hydrate"
+      ],
+      "category": "moisturizer",
+      "ingredient": {
+        "ar": "هارتليف، بانثينول، سيراميد",
+        "en": "Heartleaf, panthenol, ceramide"
+      },
+      "format": {
+        "ar": "كريم مرطب",
+        "en": "Moisturizing cream"
+      },
+      "sizeLabel": {
+        "ar": "المنتج المصور: 100 مل / 3.38 أونصة؛ مطابقة القائمة الرسمية قيد التأكيد",
+        "en": "Pictured SKU: 100ml / 3.38 fl. oz.; official listing match pending"
+      },
+      "description": {
+        "ar": "كريم مرطب بالهارتليف والبانثينول والسيراميد.",
+        "en": "A moisturizing cream with heartleaf, panthenol, and ceramide."
+      },
+      "why": {
+        "ar": "خيار منسق ضمن فئته لبناء روتين واضح من دون تكرار غير ضروري.",
+        "en": "A curated option in its category for a clear routine without unnecessary duplication."
+      },
+      "use": {
+        "ar": "يُستخدم وفق تعليمات الشركة على العبوة وفي الخطوة المناسبة من الروتين.",
+        "en": "Use according to manufacturer directions on the pack at the appropriate routine step."
+      },
+      "caution": {
+        "ar": "راجع قائمة المكونات على العبوة وأوقف الاستخدام عند التهيج. استخدم واقي شمس نهارًا عند الحاجة.",
+        "en": "Review the ingredient list on the pack and stop use if irritation occurs. Use daytime sun protection when appropriate."
+      },
+      "sourceUrl": "assets/products/p017.webp",
+      "sourceLabel": {
+        "ar": "صورة المنتج المورّدة",
+        "en": "Supplied product photo"
+      },
+      "localVerification": "pending",
+      "price": null,
+      "stock": null,
+      "batch": null,
+      "expiry": null,
+      "retinoid": false,
+      "color": "#C4DDBD",
+      "sourceType": "intake",
+      "relatedManufacturerUrl": "https://anua.com/products/heartleaf-70-intense-calming-cream-50ml",
+      "verificationNote": {
+        "ar": "الاسم والحجم من صورة العبوة المورّدة. مطابقة نسخة ١٠٠ مل مع صفحة مصنّع حالية قيد التأكيد.",
+        "en": "Name and size follow the supplied packaging photo. A current maker page matching this 100 ml version remains unconfirmed."
+      },
+      "originalImage": "assets/products/p017.webp",
+      "imageTreatment": "reference-background-cleanup",
+      "imageScale": 1
+    },
+    {
+      "id": "P018",
+      "variantLabel": {
+        "ar": "٢٠ غ",
+        "en": "20 g"
+      },
+      "brand": "Anua",
+      "type": "serum",
+      "name": {
+        "ar": "سيروم جرين ليمون فيتا سي للبقع",
+        "en": "Green Lemon Vita C Blemish Serum"
+      },
+      "shortName": {
+        "ar": "سيروم جرين ليمون فيتا سي",
+        "en": "Green Lemon Vita C Serum"
+      },
+      "image": "assets/products/p018.webp",
+      "moods": [
+        "glow"
+      ],
+      "category": "glow",
+      "ingredient": {
+        "ar": "فيتامين سي، فيتامين إي، حمض الفيروليك",
+        "en": "Vitamin C, vitamin E, ferulic acid"
+      },
+      "format": {
+        "ar": "سيروم فيتامين سي",
+        "en": "Vitamin C serum"
+      },
+      "sizeLabel": {
+        "ar": "20 غ / 0.70 أونصة",
+        "en": "20g / 0.70 oz."
+      },
+      "description": {
+        "ar": "سيروم تجميلي بفيتامين سي ضمن صيغة وزنها 20 غرامًا.",
+        "en": "A vitamin C cosmetic serum in a 20g format."
+      },
+      "why": {
+        "ar": "خيار منسق ضمن فئته لبناء روتين واضح من دون تكرار غير ضروري.",
+        "en": "A curated option in its category for a clear routine without unnecessary duplication."
+      },
+      "use": {
+        "ar": "يُستخدم وفق تعليمات الشركة على العبوة وفي الخطوة المناسبة من الروتين.",
+        "en": "Use according to manufacturer directions on the pack at the appropriate routine step."
+      },
+      "caution": {
+        "ar": "راجع قائمة المكونات على العبوة وأوقف الاستخدام عند التهيج. استخدم واقي شمس نهارًا عند الحاجة.",
+        "en": "Review the ingredient list on the pack and stop use if irritation occurs. Use daytime sun protection when appropriate."
+      },
+      "sourceUrl": "https://www.cosmeterie.ie/anua/20-green-lemon-vita-c-blemish-serum",
+      "sourceLabel": {
+        "ar": "مرجع المنتج والصورة",
+        "en": "Product and image reference"
+      },
+      "localVerification": "pending",
+      "price": null,
+      "stock": null,
+      "batch": null,
+      "expiry": null,
+      "retinoid": false,
+      "color": "#88A83E",
+      "sourceType": "retailer",
+      "verificationNote": {
+        "ar": "الهوية والحجم من العبوة المورّدة؛ الصورة من مرجع بيع موثق في ملاحظات المصادر.",
+        "en": "Identity and size follow the supplied pack; image comes from the retailer reference documented in source notes."
+      },
+      "imageScale": 1
+    },
+    {
+      "id": "P019",
+      "variantLabel": {
+        "ar": "٣٠ مل",
+        "en": "30 ml"
+      },
+      "brand": "Arencia",
+      "type": "serum",
+      "name": {
+        "ar": "إريزر شوت بوستر حمض الجليكوليك",
+        "en": "Eraser Shot Glycolic Acid Booster Serum"
+      },
+      "shortName": {
+        "ar": "إريزر شوت جليكوليك",
+        "en": "Eraser Shot Glycolic"
+      },
+      "image": "assets/products/p019.webp",
+      "moods": [
+        "smooth"
+      ],
+      "category": "exfoliant",
+      "ingredient": {
+        "ar": "حمض الجليكوليك، أحماض متعددة، نياسيناميد",
+        "en": "Glycolic acid, multi-acid complex, niacinamide"
+      },
+      "format": {
+        "ar": "سيروم بوستر خفيف",
+        "en": "Lightweight booster serum"
+      },
+      "sizeLabel": {
+        "ar": "30 مل / 1.01 أونصة سائلة",
+        "en": "30ml / 1.01 fl. oz."
+      },
+      "description": {
+        "ar": "بوستر تجميلي مقشر للعناية بمظهر الملمس والمسام.",
+        "en": "An exfoliating cosmetic booster for the look of texture and pores."
+      },
+      "why": {
+        "ar": "خيار منسق ضمن فئته لبناء روتين واضح من دون تكرار غير ضروري.",
+        "en": "A curated option in its category for a clear routine without unnecessary duplication."
+      },
+      "use": {
+        "ar": "يُستخدم وفق تعليمات الشركة على العبوة وفي الخطوة المناسبة من الروتين.",
+        "en": "Use according to manufacturer directions on the pack at the appropriate routine step."
+      },
+      "caution": {
+        "ar": "راجع قائمة المكونات على العبوة وأوقف الاستخدام عند التهيج. استخدم واقي شمس نهارًا عند الحاجة.",
+        "en": "Review the ingredient list on the pack and stop use if irritation occurs. Use daytime sun protection when appropriate."
+      },
+      "sourceUrl": "https://arencia.us/products/eraser-shot-glycolic-acid-booster-daily-clarifying-multi-acid-formula",
+      "sourceLabel": {
+        "ar": "معلومات الشركة المصنّعة",
+        "en": "Manufacturer information"
+      },
+      "localVerification": "pending",
+      "price": null,
+      "stock": null,
+      "batch": null,
+      "expiry": null,
+      "retinoid": false,
+      "color": "#81A45A",
+      "sourceType": "manufacturer",
+      "imageScale": 1
+    },
+    {
+      "id": "P020",
+      "variantLabel": {
+        "ar": "٣٠ مل",
+        "en": "30 ml"
+      },
+      "brand": "Arencia",
+      "type": "serum",
+      "name": {
+        "ar": "إن إيه دي بلس تايم ريويند بوستر شوت",
+        "en": "NAD+ Time-Rewind Booster Shot Serum"
+      },
+      "shortName": {
+        "ar": "إن إيه دي بلس بوستر شوت",
+        "en": "NAD+ Booster Shot"
+      },
+      "image": "assets/products/p020.webp",
+      "moods": [
+        "glow",
+        "smooth"
+      ],
+      "category": "serum",
+      "ingredient": {
+        "ar": "مركب إن إيه دي بلس، ببتيدات، ريسفيراترول",
+        "en": "NAD+ complex, peptides, resveratrol"
+      },
+      "format": {
+        "ar": "سيروم بوستر",
+        "en": "Booster serum"
+      },
+      "sizeLabel": {
+        "ar": "30 مل / 1.01 أونصة سائلة",
+        "en": "30ml / 1.01 fl. oz."
+      },
+      "description": {
+        "ar": "سيروم تجميلي خفيف بمركب إن إيه دي بلس والببتيدات.",
+        "en": "A lightweight cosmetic serum with an NAD+ complex and peptides."
+      },
+      "why": {
+        "ar": "خيار منسق ضمن فئته لبناء روتين واضح من دون تكرار غير ضروري.",
+        "en": "A curated option in its category for a clear routine without unnecessary duplication."
+      },
+      "use": {
+        "ar": "يُستخدم وفق تعليمات الشركة على العبوة وفي الخطوة المناسبة من الروتين.",
+        "en": "Use according to manufacturer directions on the pack at the appropriate routine step."
+      },
+      "caution": {
+        "ar": "راجع قائمة المكونات على العبوة وأوقف الاستخدام عند التهيج. استخدم واقي شمس نهارًا عند الحاجة.",
+        "en": "Review the ingredient list on the pack and stop use if irritation occurs. Use daytime sun protection when appropriate."
+      },
+      "sourceUrl": "https://arencia.us/products/nad-time-rewind-booster-shot-firming-revitalizing-serum",
+      "sourceLabel": {
+        "ar": "معلومات الشركة المصنّعة",
+        "en": "Manufacturer information"
+      },
+      "localVerification": "pending",
+      "price": null,
+      "stock": null,
+      "batch": null,
+      "expiry": null,
+      "retinoid": false,
+      "color": "#8E6A43",
+      "sourceType": "manufacturer",
+      "imageScale": 1
+    },
+    {
+      "id": "P021",
+      "variantLabel": {
+        "ar": "٥٠ مل",
+        "en": "50 ml"
+      },
+      "brand": "Celimax",
+      "type": "moisturizer",
+      "name": {
+        "ar": "كريم ذا فيتا-إيه ريتينال شوت المزدوج",
+        "en": "The Vita-A Retinal Shot Tightening Dual Cream"
+      },
+      "shortName": {
+        "ar": "كريم ريتينال شوت المزدوج",
+        "en": "Retinal Shot Dual Cream"
+      },
+      "image": "assets/products/p021.webp",
+      "moods": [
+        "night",
+        "smooth"
+      ],
+      "category": "retinoid",
+      "ingredient": {
+        "ar": "ريتينال، نياسيناميد، بانثينول",
+        "en": "Retinal, niacinamide, panthenol"
+      },
+      "format": {
+        "ar": "كريم مزدوج ليلي",
+        "en": "Dual night cream"
+      },
+      "sizeLabel": {
+        "ar": "50 مل / 1.69 أونصة سائلة",
+        "en": "50ml / 1.69 fl. oz."
+      },
+      "description": {
+        "ar": "كريم ليلي مزدوج يحتوي على الريتينال.",
+        "en": "A dual-format night cream containing retinal."
+      },
+      "why": {
+        "ar": "خيار منسق ضمن فئته لبناء روتين واضح من دون تكرار غير ضروري.",
+        "en": "A curated option in its category for a clear routine without unnecessary duplication."
+      },
+      "use": {
+        "ar": "يُستخدم وفق تعليمات الشركة على العبوة وفي الخطوة المناسبة من الروتين.",
+        "en": "Use according to manufacturer directions on the pack at the appropriate routine step."
+      },
+      "caution": {
+        "ar": "لا تجمع بين عدة منتجات ريتينويد. يُتجنب أثناء الحمل. استخدم واقي شمس نهارًا.",
+        "en": "Do not combine multiple retinoid products. Avoid during pregnancy. Use daytime sun protection."
+      },
+      "sourceUrl": "https://celimax.us/products/the-vita-a-retinal-shot-tightening-dual-cream",
+      "sourceLabel": {
+        "ar": "معلومات الشركة المصنّعة",
+        "en": "Manufacturer information"
+      },
+      "localVerification": "pending",
+      "price": null,
+      "stock": null,
+      "batch": null,
+      "expiry": null,
+      "retinoid": true,
+      "color": "#B5D33D",
+      "sourceType": "manufacturer",
+      "imageScale": 1.25
+    },
+    {
+      "id": "P022",
+      "variantLabel": {
+        "ar": "الحجم قيد التأكيد",
+        "en": "Size pending"
+      },
+      "brand": "Mixa",
+      "type": "moisturizer",
+      "name": {
+        "ar": "كريم سيراميد بروتكت متعدد الاستخدام",
+        "en": "Ceramide Protect Multi-Use Cream"
+      },
+      "shortName": {
+        "ar": "كريم سيراميد بروتكت",
+        "en": "Ceramide Protect Cream"
+      },
+      "image": "assets/products/p022.webp",
+      "moods": [
+        "hydrate",
+        "smooth"
+      ],
+      "category": "moisturizer",
+      "ingredient": {
+        "ar": "سيراميدات، سكوالان، جلسرين",
+        "en": "Ceramides, squalane, glycerin"
+      },
+      "format": {
+        "ar": "كريم متعدد الاستخدام",
+        "en": "Multi-use cream"
+      },
+      "sizeLabel": {
+        "ar": "الحجم المحلي المصور غير مقروء؛ الشركة تعرض 400 مل",
+        "en": "Pictured local size unreadable; manufacturer lists 400ml"
+      },
+      "description": {
+        "ar": "كريم مرطب متعدد الاستخدام للوجه واليدين والجسم.",
+        "en": "A multi-use moisturizing cream for face, hands, and body."
+      },
+      "why": {
+        "ar": "خيار منسق ضمن فئته لبناء روتين واضح من دون تكرار غير ضروري.",
+        "en": "A curated option in its category for a clear routine without unnecessary duplication."
+      },
+      "use": {
+        "ar": "يُستخدم وفق تعليمات الشركة على العبوة وفي الخطوة المناسبة من الروتين.",
+        "en": "Use according to manufacturer directions on the pack at the appropriate routine step."
+      },
+      "caution": {
+        "ar": "راجع قائمة المكونات على العبوة وأوقف الاستخدام عند التهيج. استخدم واقي شمس نهارًا عند الحاجة.",
+        "en": "Review the ingredient list on the pack and stop use if irritation occurs. Use daytime sun protection when appropriate."
+      },
+      "sourceUrl": "https://www.mixa.pl/produkt/mixa-ceramide-protect-nawilzajacy-krem-ochronny-do-twarzy-dloni-i-ciala",
+      "sourceLabel": {
+        "ar": "معلومات الشركة المصنّعة",
+        "en": "Manufacturer information"
+      },
+      "localVerification": "pending",
+      "price": null,
+      "stock": null,
+      "batch": null,
+      "expiry": null,
+      "retinoid": false,
+      "color": "#7FA7CC",
+      "sourceType": "manufacturer",
+      "imageScale": 1
+    },
+    {
+      "id": "P023",
+      "variantLabel": {
+        "ar": "الحجم قيد التأكيد",
+        "en": "Size pending"
+      },
+      "brand": "Mixa",
+      "type": "moisturizer",
+      "name": {
+        "ar": "كريم سيكا ريبير متعدد الاستخدام",
+        "en": "Crème Cica Réparation Multi-Use Cream"
+      },
+      "shortName": {
+        "ar": "كريم سيكا ريبير",
+        "en": "Cica Repair Cream"
+      },
+      "image": "assets/products/p023.webp",
+      "moods": [
+        "hydrate",
+        "smooth"
+      ],
+      "category": "moisturizer",
+      "ingredient": {
+        "ar": "يوريا، نياسيناميد، جلسرين",
+        "en": "Urea, niacinamide, glycerin"
+      },
+      "format": {
+        "ar": "كريم متعدد الاستخدام",
+        "en": "Multi-use cream"
+      },
+      "sizeLabel": {
+        "ar": "الحجم المحلي المصور غير مقروء؛ المقاس الرسمي المطابق قيد التأكيد",
+        "en": "Pictured local size unreadable; matching official size pending"
+      },
+      "description": {
+        "ar": "كريم متعدد الاستخدام للوجه واليدين والجسم الجاف.",
+        "en": "A multi-use cream for dry face, hands, and body."
+      },
+      "why": {
+        "ar": "خيار منسق ضمن فئته لبناء روتين واضح من دون تكرار غير ضروري.",
+        "en": "A curated option in its category for a clear routine without unnecessary duplication."
+      },
+      "use": {
+        "ar": "يُستخدم وفق تعليمات الشركة على العبوة وفي الخطوة المناسبة من الروتين.",
+        "en": "Use according to manufacturer directions on the pack at the appropriate routine step."
+      },
+      "caution": {
+        "ar": "راجع قائمة المكونات على العبوة وأوقف الاستخدام عند التهيج. استخدم واقي شمس نهارًا عند الحاجة.",
+        "en": "Review the ingredient list on the pack and stop use if irritation occurs. Use daytime sun protection when appropriate."
+      },
+      "sourceUrl": "https://www.mixa.fr/corps/creme-cica-reparation-visage-corps-mains",
+      "sourceLabel": {
+        "ar": "معلومات الشركة المصنّعة",
+        "en": "Manufacturer information"
+      },
+      "localVerification": "pending",
+      "price": null,
+      "stock": null,
+      "batch": null,
+      "expiry": null,
+      "retinoid": false,
+      "color": "#D86455",
+      "sourceType": "manufacturer",
+      "imageScale": 1
     }
   ]
 }

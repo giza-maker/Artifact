@@ -21,6 +21,7 @@
     document.title = text('NURIMI — بشرتك أهم.','NURIMI — Your skin comes first.');
     window.NurimiShop?.setLanguage(lang);
     renderTokens(); renderReceiptPicker(); renderVoice();
+    document.dispatchEvent(new CustomEvent('nurimi:language-change',{detail:{lang}}));
   }
   function showWorld(world, push = true) {
     state.world = world === 'brand' ? 'brand' : 'shop';
@@ -83,20 +84,20 @@
 
   function renderReceiptPicker(){
     if(!state.products.length)return;
-    $('#receipt-product').innerHTML=state.products.map(p=>`<option value="${p.id}" ${state.receipt===p.id?'selected':''}>${escape(p.brand)} — ${escape(value(p.shortName))}</option>`).join('');
+    $('#receipt-product').innerHTML=state.products.map(p=>`<option value="${p.id}" ${state.receipt===p.id?'selected':''}>${escape(p.brand)} — ${escape(value(p.shortName))}${p.variantLabel?" · "+escape(value(p.variantLabel)):""}</option>`).join('');
     renderReceipt();
   }
   function renderReceipt(){
     const p=state.products.find(p=>p.id===state.receipt);if(!p)return;
     $('#receipt-product-image').src=p.image;$('#receipt-product-image').alt=`${p.brand} ${value(p.name)}`;
-    const rows=[ [text('الاختيار','The pick'),value(p.format)], [text('مكوّن بارز','Featured ingredient'),value(p.ingredient)], [text('سبب الاختيار','Why in the edit'),value(p.why)], [text('الاستخدام','Directions'),value(p.use)], [text('ننتبه لـ','Keep in mind'),value(p.caution)], [text('الدفعة والصلاحية','Batch & expiry'),text('تُضاف بعد التحقق المحلي','Pending local verification')], [text('السعر والمخزون','Price & stock'),text('قيد التأكيد','To be confirmed')] ];
-    $('#builder-ticket').innerHTML=`<div class="ticket-brand"><img src="assets/brand/logo.svg" alt="nurimi."><span dir="ltr">SKIN RECEIPT / ${escape(p.id)}</span></div><p class="receipt-brand" dir="ltr">${escape(p.brand)}</p><h3>${escape(value(p.name))}</h3><dl>${rows.map(([key,val])=>`<div><dt>${escape(key)}</dt><dd>${escape(val)}</dd></div>`).join('')}</dl><p class="receipt-source">${text('مرجع معلومات المنتج:','Product information:')} <a href="${escape(p.sourceUrl)}" target="_blank" rel="noopener">${escape(p.brand)} ↗</a><br>${text('تعريف المنتج من المصنع لا يؤكد بيانات الدفعة المحلية.','Manufacturer identification does not verify the local inventory batch.')}</p>`;
+    const rows=[ [text('الحجم','Size'),value(p.sizeLabel)], [text('الاختيار','The pick'),value(p.format)], [text('مكوّن بارز','Featured ingredient'),value(p.ingredient)], [text('سبب الاختيار','Why in the edit'),value(p.why)], [text('الاستخدام','Directions'),value(p.use)], [text('ننتبه لـ','Keep in mind'),value(p.caution)], [text('الدفعة والصلاحية','Batch & expiry'),text('تُضاف بعد التحقق المحلي','Pending local verification')], [text('السعر والمخزون','Price & stock'),text('قيد التأكيد','To be confirmed')] ];
+    $('#builder-ticket').innerHTML=`<div class="ticket-brand"><img src="assets/brand/logo.svg" alt="nurimi."><span dir="ltr">SKIN RECEIPT / ${escape(p.id)}</span></div><p class="receipt-brand" dir="ltr">${escape(p.brand)}</p><h3>${escape(value(p.name))}</h3><dl>${rows.map(([key,val])=>`<div><dt>${escape(key)}</dt><dd>${escape(val)}</dd></div>`).join('')}</dl><p class="receipt-source">${text('مرجع معلومات المنتج:','Product information:')} <a href="${escape(p.sourceUrl)}" target="_blank" rel="noopener">${escape(value(p.sourceLabel)||p.brand)} ↗</a><br>${text('مرجع المنتج لا يؤكد بيانات الدفعة المحلية.','The product reference does not verify the local inventory batch.')}</p>`;
   }
   function downloadText(name,content){const url=URL.createObjectURL(new Blob([content],{type:'text/plain;charset=utf-8'}));const link=document.createElement('a');link.href=url;link.download=name;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
   $('#receipt-product').addEventListener('change',e=>{state.receipt=e.target.value;renderReceipt();});
   $('#download-receipt').addEventListener('click',()=>{
     const p=state.products.find(p=>p.id===state.receipt);if(!p)return;
-    const lines=['NURIMI / نوريمي','SKIN RECEIPT / '+p.id,p.brand,value(p.name),'',value(p.description),'',text('المكوّن: ','Ingredient: ')+value(p.ingredient),text('الاستخدام: ','Directions: ')+value(p.use),text('تنبيه: ','Caution: ')+value(p.caution),'',text('السعر، المخزون، الدفعة والصلاحية: قيد التأكيد المحلي.','Price, stock, batch and expiry: pending local verification.'),p.sourceUrl,'',text('نسخة تجريبية. ليست وصفة علاجية أو إثبات اعتماد محلي.','Prototype. Not medical advice or proof of local product clearance.')];
+    const lines=['NURIMI / نوريمي','SKIN RECEIPT / '+p.id,p.brand,value(p.name),text('الحجم: ','Size: ')+value(p.sizeLabel),'',value(p.description),'',text('المكوّن: ','Ingredient: ')+value(p.ingredient),text('الاستخدام: ','Directions: ')+value(p.use),text('تنبيه: ','Caution: ')+value(p.caution),'',text('السعر، المخزون، الدفعة والصلاحية: قيد التأكيد المحلي.','Price, stock, batch and expiry: pending local verification.'),`${value(p.sourceLabel)||p.brand}: ${p.sourceUrl}`,'',text('نسخة تجريبية. ليست وصفة علاجية أو إثبات اعتماد محلي.','Prototype. Not medical advice or proof of local product clearance.')];
     downloadText(`NURIMI-Skin-Receipt-${p.id}-${state.lang}.txt`,lines.join('\n'));
     $('#site-status').textContent=text('تم تنزيل كرت البشرة.','Skin Receipt downloaded.');
   });

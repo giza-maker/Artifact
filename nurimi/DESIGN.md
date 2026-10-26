@@ -2,13 +2,13 @@
 
 ## Scope and source
 
-Arabic-first Saudi own-inventory Korean-skincare retailer. Build a brand showcase and a complete shopping prototype for the existing five Arencia/Celimax SKUs. No third-party sellers, booking product, or inherited MAWJ branding.
+Arabic-first Saudi own-inventory skincare retailer. Build a brand showcase and shopping prototype around the supplied full inventory: 22 identities / 23 size variants from Arencia, Celimax, Anua and Mixa. No third-party sellers, booking product, or inherited MAWJ branding. Korean beauty and French essentials both belong in the range.
 
 Highest visual reference: user-selected `approved_nurimi_brand_reference.png` in the intake. Preserve rounded lowercase `nurimi.` wordmark, terminal dot, circular i-dots, coral four-point sparkle, plum #3B2158 and ivory #FFF9F3. Main Arabic line: بشرتك أهم. Later concept decks provide experiments, not a blanket logo redesign approval.
 
 ## Design read
 
-Playful grown-up K-beauty with clear product information. A tactile cream canvas, oversized Arabic typography, real manufacturer packshots, sharp plum rules, and coral punctuation. No generic beauty-model hero, flower collage, candy gradients, false social proof, or black/gold luxury detour.
+Playful grown-up beauty with clear product information. A tactile cream canvas, oversized Arabic typography, original manufacturer packshots, sharp plum rules, and coral punctuation. A generated physical studio turns the four-point coral sparkle into a translucent sculpture; macro cream and gel imagery adds texture. These are illustrative campaign environments, never synthetic replacement labels or claims about a particular formula. No generic beauty-model hero, flower collage, false social proof, or black/gold luxury detour.
 
 The signature is a useful retail ritual: look behind the hype. A Spark Lens focuses on packaging and product facts, Skin Receipts expose source and verification state, and Skin Moods help browse goals without diagnosing skin. Shopping and brand studio are two views of one system.
 
@@ -21,7 +21,7 @@ The signature is a useful retail ritual: look behind the hype. A Spark Lens focu
 - Container 1280px; desktop 48px inset; mobile 20px. 12-column macro grid / four-column mobile rhythm.
 - Type: Arabic headline 76–112px desktop / 52–68px mobile, body 15–18px, secondary 12px minimum. English headline 72–92px / 48–64px.
 - Radius 10/18/28; packaging/receipt shapes reference supplied brand assets; no arbitrary pills on all cards.
-- Motion: one-shot entrances, direct press/selection feedback, focus lens reveals. Transform and opacity; no perpetual expensive loops or scroll-event animation. Reduced motion removes decorative movement.
+- Motion: one-shot product arrivals, selectable spotlights, focus lens reveals, and one silent macro film. Transform and opacity for interface motion; video pauses offscreen. Reduced motion removes decorative movement; data-saving mode requires manual playback.
 - Native dialogs, button/input semantics, 44px targets, keyboard and focus restoration. Structural RTL, isolated Latin/ingredient/number strings.
 
 ## Product truth

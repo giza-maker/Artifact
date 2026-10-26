@@ -29,3 +29,47 @@ The demo warning is intentionally general: do not combine multiple retinoid prod
 - https://www.aad.org/public/everyday-care/skin-care-secrets/anti-aging/retinoid-retinol/
 
 This is content guidance for a prototype, not individualized medical advice.
+
+## Catalog expansion — 2026-10-26
+
+Deterministic ID map. Existing `P001`–`P005` remain unchanged. Duplicate intake photos #11 and #20 do not create SKUs.
+
+| ID | Intake photo | Product / variant | Manufacturer source |
+|---|---:|---|---|
+| P006 | 1 | Anua Azelaic Acid 15 Intense Calming Serum, 30 ml | https://anuashop.jp/products/side0010 |
+| P007 | 2 | Anua Heartleaf 77 Soothing Toner, 40 ml | https://anua.com/products/heartleaf-77-soothing-toner |
+| P008 | 4 | Anua Heartleaf 77 Soothing Toner, 250 ml | https://anua.com/products/heartleaf-77-soothing-toner |
+| P009 | 5 | Anua PDRN Hyaluronic Acid Capsule 100 Serum, 30 ml | https://anua.com/products/pdrn-hyaluronic-acid-capsule-100-serum |
+| P010 | 6 | Anua Niacinamide 10 TXA 4 Serum, 30 ml | https://anua.com/products/niacinamide-10-txa-4-serum-2 |
+| P011 | 7 | Anua Heartleaf Quercetinol Pore Deep Cleansing Foam, 150 ml | https://anua.com/products/heartleaf-quercetinol-pore-deep-cleansing-foam |
+| P012 | 8/11 | Anua Heartleaf 70 Daily Lotion, 200 ml | https://anua.com/products/heartleaf-70-daily-lotion-copy-1 |
+| P013 | 9 | Anua Heartleaf Pore Control Cleansing Oil, 200 ml | https://anua.com/products/heartleaf-pore-control-cleansing-oil-200ml |
+| P014 | 10 | Anua Peach 77 Niacin Conditioning Milk, 150 ml | https://anua.com/products/peach-77-niacin-conditioning-milk-1-1 |
+| P015 | 12 | Anua Peach 77 Niacin Enriched Cream, 50 ml | https://anua.com/products/peach-77-niacin-enriched-cream-1 |
+| P016 | 13 | Anua Heartleaf 77 Clear Pad, 160 ml / 70 pads | https://anua.com/products/heartleaf-77-toner-pad-160ml |
+| P017 | 14 | Anua Heartleaf 70 Soothing Cream, pictured 100 ml | https://anua.com/products/heartleaf-70-intense-calming-cream-50ml |
+| P018 | 15 | Anua Green Lemon Vita C Blemish Serum, 20 g | Manufacturer page retired; intake label is primary identity/size evidence. |
+| P019 | 16 | Arencia Eraser Shot Glycolic Acid Booster Serum, 30 ml | https://arencia.us/products/eraser-shot-glycolic-acid-booster-daily-clarifying-multi-acid-formula |
+| P020 | 17 | Arencia NAD+ Time-Rewind Booster Shot Serum, 30 ml | https://arencia.us/products/nad-time-rewind-booster-shot-firming-revitalizing-serum |
+| P021 | 18 | Celimax Retinal Shot Tightening Dual Cream, 50 ml | https://celimax.us/products/the-vita-a-retinal-shot-tightening-dual-cream |
+| P022 | 3 | Mixa Ceramide Protect multi-use cream, local size pending | https://www.mixa.pl/produkt/mixa-ceramide-protect-nawilzajacy-krem-ochronny-do-twarzy-dloni-i-ciala |
+| P023 | 21 | Mixa Crème Cica Réparation multi-use cream, local size pending | https://www.mixa.fr/corps/creme-cica-reparation-visage-corps-mains |
+
+### Packshot provenance and exceptions
+
+- `P006` uses clean Anua Japan official CDN packshot. `P008`–`P016` use clean Anua official CDN lead packshots. `P007` uses supplied intake photo #2 because current official galleries do not provide the exact 40 ml variant; using the 250 ml packshot would misrepresent the SKU.
+- `P019` and `P020` use clean Arencia official CDN packshots. `P021` uses clean Celimax official CDN packshot. `P022` and `P023` use clean Mixa official-site packshots.
+- `P018` official product page is no longer published. Final card uses a clean, unwatermarked product-only packshot from Cosmeterie (`https://www.cosmeterie.ie/anua/20-green-lemon-vita-c-blemish-serum`) rather than the temporary Anua campaign banner. Rights/source replacement remains unresolved.
+- `P017` uses supplied intake photo #14. Intake says 100 ml “Heartleaf 70 Soothing Cream,” while current Anua official page is a different 50 ml “Heartleaf 70% Intense Calming Cream.” Record preserves photographed name/size and flags official match pending; the wrong 50 ml jar substitution was removed.
+- `P020` uses an alternate badge-free Arencia official-gallery image. `P022` and `P023` use plain official Mixa packshots from product-page rich content, avoiding award badges and promotional banners.
+- Mixa official regional pages list 400 ml for matching jar products, but photographed front labels do not expose size. Catalog intentionally keeps local sizes pending.
+
+All expansion images were resized only to fit within 1200 × 1200 and encoded as WebP. No packaging, label, color, or silhouette edits were made.
+
+### Reference labels in the interface
+
+P017 links to the supplied photograph as its primary evidence; the related 50 ml manufacturer page is retained separately as `relatedManufacturerUrl` and is not presented as an exact 100 ml match. P018 links to the documented retailer reference and labels it as a product/image reference. Other source links retain manufacturer labels. P007 explicitly distinguishes the supplied 40 ml photo from the maker's product-family page. None verifies the local batch.
+
+### Anua presentation cutouts
+
+Final P007 and P017 cards use `p007-clean.webp` and `p017-clean.webp`, transparent background-cleanup edits made with OpenAI image generation from the exact supplied photographs. Names, front artwork, sizes and packaging forms were visually compared with their references. Small occluded edges were reconstructed, so these are presentation images rather than literal pixel masks. P007's reconstructed lower batch/expiry ink was removed entirely; no generated code is presented as evidence. Both original photographs remain available and are recorded in `originalImage`. Final images are 675 × 1200 WebP, 58,700 and 50,486 bytes respectively. No product identity, front label or size was substituted.

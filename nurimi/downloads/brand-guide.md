@@ -1,19 +1,19 @@
 # NURIMI brand guide
 
-English working edition, October 2026
+English working edition, October 2026 - expanded inventory
 
 ## 1. Skin first
 
 **SKIN FIRST.**
 
-NURIMI is an Arabic-first Saudi retailer for a focused edit of Korean skincare. The selected identity is warm, direct, playful, and grown-up. Its job is to make discovery enjoyable while keeping product facts easy to inspect.
+NURIMI is an Arabic-first Saudi retailer selling its own skincare inventory: **22 product identities and 23 SKU-size variants** across **Anua, Mixa, Arencia, and Celimax**. Korean skincare remains important; Mixa adds French essentials. The identity stays warm, direct, playful, and grown-up. Product facts stay easy to inspect.
 
 Primary line: **بشرتك أهم.**
 English counterpart: **Your skin comes first.**
 
 ## 2. Point of view
 
-NURIMI sells its own inventory. It is not a marketplace and does not present itself as a Korean manufacturer. The retail experience should feel Saudi-native and Korean-informed: Arabic leads, manufacturer identities stay visible, and the shop explains what is known before asking for a purchase.
+NURIMI sells its own inventory. It is not a marketplace or manufacturer. The experience feels Saudi-native and internationally curated: Arabic leads, original brand identities stay visible, and the shop explains what is known before asking for a purchase.
 
 The useful tension is playful and credible. Wit opens the conversation. Product names, ingredients, maker directions, cautions, and verification state carry it forward.
 
@@ -23,11 +23,11 @@ Voice examples:
 - Utility: **Famous is interesting. Fit matters more.**
 - Product information: **Ingredients before exaggeration.**
 
-Avoid miracle language, invented clinical support, false scarcity, and claims that stock or sourcing has been audited. Current owner-stated Saudi stock and the five-SKU edit still need operator verification.
+Avoid miracle language, invented clinical support, fake certification, false scarcity, and audited-sourcing claims. Price, quantity, local SKU mapping, batch, and expiry still need operator verification.
 
 ## 3. Mark system
 
-The selected mark is the rounded lowercase `nurimi.` wordmark in plum, with circular dots and one coral four-point sparkle. Preserve the terminal dot, proportions, and sparkle placement. Do not rebuild it from a typeface.
+Use the supplied original rounded lowercase `nurimi.` logo artwork. Preserve terminal dot, circular i-dots, proportions, and coral four-point sparkle. Do not rebuild it from a typeface.
 
 Use:
 
@@ -37,7 +37,7 @@ Use:
 
 Clear space: keep at least the height of the terminal dot on every side. Recommended minimum widths are 120 px on screen and 32 mm in print. Test each production method at final size.
 
-Status: the current SVG is a digitized concept. It remains pending owner approval, optical tracing validation, and trademark clearance. It is not a cleared legal master.
+Status: use the supplied original artwork. Owner approval, optical validation, and trademark clearance remain launch gates.
 
 ## 4. Color
 
@@ -72,16 +72,18 @@ Suggested hierarchy: display 72-92 px on desktop, body 15-18 px, and secondary t
 
 Tone is concise, witty, and useful. Say what the product is, cite maker directions, and label missing local fields as **To verify / قيد التحقق**. Humor must never replace a warning or imply a diagnosis.
 
-## 6. Signature mechanics
+## 6. Inventory and signature mechanics
+
+Keep each of the 22 identities distinct and model the 23 SKU-size variants explicitly. Never infer one local size, price, quantity, batch, or expiry from another variant.
 
 ### Skin Receipt
 
-A factual retail card. Minimum fields are product ID, original brand, full name, listed size, maker source, local verification state, price, stock, batch, expiry, and claim-review status. A truthful sample today reads:
+A factual retail card. Minimum fields are product ID, original brand, full name, listed size, maker source, local verification state, price, quantity, stock, batch, expiry, and claim-review status. A truthful sample today reads:
 
 > P003 · Arencia · PDRN Booster Shot Serum
 > Manufacturer listing: 30 ml / local SKU to confirm
 > Source: manufacturer information
-> Price: to verify · Stock: to verify · Batch: to verify · Expiry: to verify
+> Price: to verify · Quantity: to verify · Stock: to verify · Batch: to verify · Expiry: to verify
 
 ### Spark Lens
 
@@ -95,23 +97,26 @@ These mechanics remain concepts pending owner approval and user testing.
 
 ## 7. Applications
 
-NURIMI is the retail layer. Arencia and Celimax remain the product makers. Keep physical packaging, labels, names, and manufacturer marks intact. Do not recolor packs, add NURIMI labels to manufacturer containers, or imply private-label ownership.
+NURIMI is the retail layer. Anua, Mixa, Arencia, and Celimax remain the original brands. Keep physical packaging, labels, names, and manufacturer marks intact. Do not recolor packs, add NURIMI labels to manufacturer containers, or imply private-label ownership.
 
 Starter packaging may use an ivory or kraft shipping carton, a one-color plum stamp, coral seal, and a bilingual Skin Receipt insert. The concept image is presentation material, not a printer-ready dieline. Production requires printer dimensions, material selection, proofs, and reviewed claims.
 
-The shop prototype should show only the existing five product records. Prices, quantities, batches, expiry dates, sourcing status, local notification status, and shipping service level remain pending where the dataset is null.
+Campaign scenery may use the four-point coral glass sculpture in `assets/campaign/hero-world.webp` and atmospheric `texture-world.webp`. These are illustrative. Actual product packaging must always originate from supplied product photography. Background cleanup may preserve exact front artwork and size while producing transparent cutouts; two Anua cutouts use this treatment and are not synthetic packages. Never generate package names, sizes, batch markings, expiry markings, or use scenery as evidence of formula, ingredients, efficacy, certification, or clinical results.
+
+The inventory includes 22 product identities and 23 SKU-size variants. Prices, quantities, local SKU mapping, batches, and expiry dates remain pending where unverified.
 
 ## 8. Handoff and readiness
 
 Current implementation files:
 
 - `assets/brand/logo.svg`, `logo.png`, `logo-white.svg`
-- `assets/brand/packaging.webp`
-- `assets/products/p001.webp` through `p005.webp`
+- `assets/campaign/hero-world.webp`, `texture-world.webp`
+- `assets/products/p001.webp` through `p023.webp`
+- 22 product identities / 23 SKU-size variants across Anua, Mixa, Arencia, and Celimax
 - `assets/fonts/jakartasans.woff2`, `alexandria.woff2`, `arabic-body.woff2`
 - `data/products.json`
 - `DESIGN.md`
 
-Before public launch, confirm trademark rights, approve the final traced logo, review Arabic and Korean language, verify each local SKU and its source, confirm price and stock, record batch and expiry, review cosmetic claims and cautions, select the commerce platform, and obtain production packaging proofs.
+Before public launch, confirm trademark rights, approve the final logo, review Arabic and maker naming, verify each local SKU and size mapping, confirm price, quantity, and stock, record batch and expiry, review cosmetic claims and cautions, select commerce and fulfillment processes, and obtain production packaging proofs.
 
 Font sources: [Plus Jakarta Sans](https://github.com/tokotype/PlusJakartaSans), [Alexandria](https://github.com/Gue3bara/Alexandria), and [Noto Sans Arabic](https://github.com/notofonts/arabic). Project font files are licensed under the SIL Open Font License; retain the supplied license texts.

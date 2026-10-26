@@ -1,39 +1,32 @@
-# NURIMI design QA
+# NURIMI design QA — campaign redesign
 
 Final result: passed
 
-Reviewed 25 October 2026. Arabic-first own-inventory retail concept; English toggle. Static prototype, no connected commerce backend.
+Reviewed 26 October 2026. Saudi own-inventory skincare prototype, Arabic first with English toggle. Catalog: 22 product identities, 23 SKU-size variants, four brands.
 
-## Reference fidelity
+## Design and media
 
-Compared supplied approved NURIMI identity against digitized vector in one side-by-side view. Rounded lowercase mark, terminal dot, circular i-dots, source-derived four-point sparkle, plum and ivory anchors preserved. Coral normalized to #F29AA8. The retail interface is a new application of that identity, not a pixel copy of a brand board. Packaging is a labeled generated application concept.
+Selected rounded NURIMI wordmark, coral four-point sparkle, plum and ivory anchors retained. Reviewed desktop hero, mobile home, catalog, product details, texture panel and brand-studio receipts. Generated physical scenery and macro textures are illustrative. Product references remain separate. A rejected five-point sculpture clip is excluded from the public artifact.
 
-## Visual review
+Final texture film: silent H.264, 1152 × 658, 24 fps, 6.583 seconds, faststart, 490,442 bytes. Playback and pause controls verified in browser; film pauses when its image panel leaves view. Reduced-motion and data-saving paths reviewed in source. Interface motion uses one-shot or interaction-driven transforms and opacity.
 
-- Reviewed default desktop shopping and brand-studio compositions, plus full-page captures.
-- Reviewed Arabic mobile home, product detail, comparison, brand controls and catalog at 390 × 844.
-- Checked Arabic and English at 320 × 740. Corrected clipped mobile headline and tightened narrow header spacing. No document overflow in either language.
-- Typography uses self-hosted Alexandria, Noto Sans Arabic and Plus Jakarta Sans. Real product packshots retain manufacturer identity.
-- Plum on ivory: 13.01:1. White on cherry: 5.97:1. Core text/action combinations pass AA normal-text contrast.
+P007 and P017 cutouts preserve supplied product identities and sizes. Original photographs remain available. Reconstructed batch/expiry ink removed from P007; no generated marking treated as evidence. Wrong-size substitutes, promotional price badges and award imagery rejected. Two Mixa local sizes remain pending; P018's retired manufacturer-page exception documented.
 
-## Interaction review
+## Browser checks
 
-- World switching, browser hash navigation, language toggle and mobile menu.
-- Hero shelf/facts switch, goal filtering, brand filtering, saved-only filtering and reset.
-- Search empty and matching states; search-to-product dialog handoff.
-- Two-product comparison with factual retinoid notice.
-- Product quantity, add to bag, bag quantity, delivery/city choice, review and sample confirmation. Selection and item quantities survive each step.
-- Dialog keyboard focus enters current content and restores to opening control; checkout confirmation receives focus.
-- Logo backgrounds and clear-space toggle; global palette selection; copy confirmation.
-- Spark Lens preset buttons and arrow-key movement; product receipt switching in Arabic and English.
-- Download paths and brand ZIP validated. PDF rendered and reviewed across eight pages.
+- Arabic and English layouts checked at 390 × 844 and 320 × 740. No document overflow; mobile headline and header corrected.
+- Selectable hero spotlight changes the main product and keeps the secondary product distinct.
+- Brand/category shortcuts filter the catalog and transfer keyboard focus to its heading.
+- Progressive catalog shows 8, 16, then 23 variants. Expanding focuses first new product; collapsing returns focus to the catalog heading.
+- Brand/type filters, saved picks, search and two-product comparison remain functional.
+- Repeat quick add describes its action and announces updated quantity.
+- Sizes stay visible in cards, product detail, bag, comparison, receipts and checkout review.
+- Sample checkout retains items, quantities, standard delivery and Jeddah selection through confirmation. No personal data, order transmission or payment.
+- Brand-studio source labels distinguish manufacturer, supplied photo and retailer references; downloaded receipts preserve attribution.
+- Native dialogs retain keyboard focus management and restore opening controls.
 
-## Performance and honesty
+## Release checks
 
-No browser console errors observed. JavaScript syntax checked. Motion uses one-shot opacity/transform reveals and direct transform-based magnifier movement, with reduced-motion support. Native dialogs, buttons, inputs and selects remain keyboard operable.
+JavaScript syntax, unique HTML IDs, icon references, local assets, 23 unique product IDs and null commercial values checked. Core contrast anchors remain plum/ivory 13.01:1 and white/cherry 5.97:1. Updated eight-page PDF rendered and visually reviewed. Brand ZIP validated with 20 entries, current guide, editable artwork, tokens and campaign assets.
 
-All commercial values remain unverified: price, stock, batch and expiry are null. No invented reviews, urgency, delivery SLA, certification or clinical outcome. Sample checkout requests no personal data and transmits no order or payment.
-
-## Scope of result
-
-Design and shopping prototype passed review. Production commerce still requires verified inventory and pricing, merchant information, fulfillment rules, payment integration and final brand approval.
+This passes design/prototype review. Merchant details, actual prices and quantities, local unit verification, fulfillment and payment integration remain required for commerce launch.

@@ -1,5 +1,11 @@
 # NURIMI brand asset notes
 
+## Campaign and expanded range — 26 October 2026
+
+Campaign scenery and a macro texture still were generated with OpenAI image generation. The silent texture film was generated with Fal.ai and optimized for the website. Exact prompt, endpoint, job and encoding records: [campaign provenance](assets/campaign/provenance.md). No generated environment claims to depict a specific product formula. Original product packaging remains separate from the generated scenery.
+
+The inventory now includes 22 identities / 23 size variants across Anua, Arencia, Celimax and Mixa. Product image and source exceptions are recorded in [catalog source notes](data/source-notes.md). Two Anua inventory photos are cleaned into transparent presentation cutouts; visible product names, sizes and packaging forms follow supplied photographs. Those cutouts are not literal pixel masks, batch-code evidence, or proof of local stock. P017's original photograph remains its primary source reference. P018 uses a documented retailer packshot because its manufacturer page is retired.
+
 ## Status
 
 Concept digitization from supplied references. Needs brand-owner optical approval and trademark/legal clearance before designation as cleared master artwork.
