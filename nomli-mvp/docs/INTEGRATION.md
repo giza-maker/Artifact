@@ -1,46 +1,53 @@
 # Integration boundary
 
-This package contains a working local prototype, Android shell, curated starter content and tested pure domain functions. It does not contain a deployed API, account service, OCR model or live agent. No provider requests are made by the demo.
+M2 is a single-user, local-first validation build. Inventory and confirmed receipt data remain on the device. Recognition is the only current network-dependent product path.
 
-Current validation scope is one user on one phone. M1 stores validated, versioned state in native Preferences, with web localStorage fallback and explicit JSON backup/restore. No account or remote inventory database is required. Next slice: camera receipt → protected vision endpoint → editable review → local save → recipe match → cooking consumption review. Keep the same four-tab UI.
+The deployed scan endpoint is `https://nomli-scan-proxy.ahmed-aljazayeerly.workers.dev`. It uses Gemini 3.1 Flash-Lite with a Gemini API key stored as an encrypted Cloudflare secret. The app stores the endpoint and device access code entered by the user, never the provider key. A private setup QR can fill those fields; the user must still test and save the connection.
 
-Provider keys still belong on a protected server endpoint, with bounded requests and usage limits. Local inventory remains authoritative for this validation build. The multi-user contracts below describe later architecture and do not make accounts a prerequisite for M2.
+Selected receipt files pass through the Cloudflare Worker to Google for recognition. The app does not retain uploaded file bytes after processing. Confirmed structured inventory and receipt data are stored locally. Inventory backup/restore excludes scan connection configuration.
 
-## Provider adapters
+## Current scan contract
 
-| Capability | Prepared asset | Remaining implementation |
+- `GET /api/v1/health` checks whether the configured provider, key and rate limiter are ready. Requests require the device access code and an allowed origin.
+- `POST /api/v1/scan-drafts` accepts one base64-encoded JPEG, PNG, WebP or PDF plus its file name and scan kind. It returns an editable draft; it does not write inventory.
+- Images are limited to 4 MiB. PDFs are limited to 2 MiB and three pages. Client and Worker validate file signatures against the declared MIME type.
+- Cloudflare rate limiting is approximately 10 recognition requests per 60 seconds per Cloudflare location. It is abuse protection, not a hard account or billing cap.
+- The client deduplicates identical file bytes combined with scan kind. A confirmed draft updates receipt and inventory state atomically in local persistence.
+- Users can review and edit quantity, unit, storage, date, merchant, currency, tax and discount before saving.
+
+Synthetic PNG and PDF calls succeeded against the deployed endpoint in about five and four seconds. After an initial multipack error was corrected, both produced the expected item quantities, AED 39.62 total and AED 1.89 tax. Reviewed save/reload, duplicate-file protection and backup roundtrip passed with those actual results. These small fixture checks are not an accuracy benchmark.
+
+Gemini free-tier and paid quotas depend on the API account and its billing setup. A Gemini consumer subscription, including Ultra, does not by itself grant or define API quota.
+
+## Capability status
+
+| Capability | M2 status | Remaining work |
 | --- | --- | --- |
-| Camera / barcode | Official Capacitor plugins and device bridge | Device permission and camera QA; product lookup adapter |
-| Grocery product lookup | Synthetic barcode fixtures | Open Food Facts API adapter, cache, regional coverage fallback; identify user agent |
-| Paper/digital receipts | Bilingual receipt fixtures, editable UI, integer-money domain module | Azure Document Intelligence receipt adapter, file validation, job polling and confidence review |
-| Photo inventory / expiry | Camera bridge and review screens | Vision extraction adapter; printed-date provenance; multiple inventory lots |
-| Cooking assistant | Curated recipes, tool schemas, assistant policy | Authenticated server endpoint, model evaluation, grounded recipe selection, streaming |
-| Voice | Bilingual command fixtures and transcript review demo | Push-to-talk capture/transcription; review before change; interruption and noisy-kitchen testing |
-| Storage / auth | Supabase client installed and server environment template | Supabase project, schema/RLS, migrations, sync, atomic transactions and authorization tests |
+| Receipt image/PDF recognition | Deployed Cloudflare proxy, Gemini adapter, bounded upload validation and editable review | Broader accuracy evaluation and physical-device QA |
+| Local inventory | Native Preferences with localStorage fallback, atomic saves, identical-file dedupe and validated backups | Physical-device persistence and recovery QA |
+| Camera / document selection | Capacitor camera bridge and Android SAF picker | Device permissions and camera/picker QA |
+| Barcode products | Native barcode capture and synthetic fixtures | Product lookup adapter, cache and regional fallback |
+| Cooking assistant | Curated recipes, cooking UI, tool schemas and scripted help | Robust consumption, broader unit handling and live grounded assistant |
+| Voice | Command fixtures and editable transcript demo | Push-to-talk capture, transcription, review and noisy-kitchen testing |
+| Accounts / cloud storage | Supabase client dependency and future contract notes | Project, schema, RLS, migrations, sync, transactions and authorization tests |
 
-API keys belong on the server. Only the Supabase URL and publishable key may enter the client bundle, after row-level security is configured. Never ship a service-role, Azure or OpenAI key in the APK.
+## Future multi-user contract
 
-## Proposed server contract
+The routes below describe later account-backed architecture. They are not implemented by the M2 Worker and do not make accounts a prerequisite for local validation.
 
-Use authenticated, bounded requests. Derive owner from the verified session. Never accept owner identity or confirmed review status from the model as proof of authorization.
+- `POST /api/v1/scan-drafts`: authenticated upload returning `202` plus a draft ID, with a documented retention policy.
+- `GET /api/v1/scan-drafts/:id`: owner-scoped draft retrieval.
+- `POST /api/v1/receipt-imports`: reviewed draft version, server confirmation and idempotency key; replay returns `200`, conflicting reuse returns `409`.
+- `POST /api/v1/assistant-turns`: bounded cooking context and curated recipe candidates, returning a reply plus proposed changes. Models never write inventory directly.
+- `POST /api/v1/consumptions`: reviewed quantities applied in one owner-scoped database transaction; stale or insufficient stock returns `409`.
 
-- `POST /api/v1/scan-drafts`: validated image/PDF upload → 202 with draft ID; enforce upload size/type/page limits and a private retention policy.
-- `GET /api/v1/scan-drafts/:id`: owner's draft only → 200 with extracted fields, confidence and review flags; 404 for unavailable/other-owner IDs.
-- `POST /api/v1/receipt-imports`: explicit reviewed draft version + server-issued confirmation + idempotency key → 201; replay → 200; changed payload on the same key → 409.
-- `POST /api/v1/assistant-turns`: bounded text, current cooking context and curated recipe candidates → streamed reply and proposed changes. No direct model writes.
-- `POST /api/v1/consumptions`: reviewed, versioned quantities → atomic stock check/update; insufficient or stale stock → 409.
-
-All writes need a database transaction and owner-scoped idempotency constraint. The pure `server/domain.mjs` functions demonstrate validation and immutable updates; they do not provide concurrent transaction isolation or tenant authorization. Use them behind authenticated handlers, not directly as internet endpoints.
-
-Errors use `{ "error": { "code": "...", "message": "..." } }`: 400 malformed, 401 unauthenticated, 404 unavailable record, 409 conflict, 413 upload too large, 422 review/semantic validation, 429 limited, 502 upstream failure. Do not log full receipts or audio by default.
+Future remote writes need authenticated owner derivation, database transactions and owner-scoped idempotency constraints. Never trust owner identity or review status supplied by a model. Do not log full receipts or audio by default.
 
 ## Official references
 
 - [Capacitor 8 setup](https://capacitorjs.com/docs/getting-started/environment-setup)
 - [Barcode plugin](https://capacitorjs.com/docs/apis/barcode-scanner)
 - [Android command-line builds](https://developer.android.com/build/building-cmdline)
-- [Azure receipt model](https://learn.microsoft.com/en-us/azure/ai-services/document-intelligence/prebuilt/receipt)
+- [Gemini API documentation](https://ai.google.dev/gemini-api/docs)
 - [Supabase row-level security](https://supabase.com/docs/guides/database/postgres/row-level-security)
 - [Open Food Facts API](https://openfoodfacts.github.io/openfoodfacts-server/api/)
-
-Choose and verify exact OpenAI model IDs when connecting credentials. Model choice is intentionally configuration, not hardcoded into this preparation package.

@@ -1,6 +1,21 @@
 # Verification record
 
-## Milestone 1 — 26 October 2026
+## Milestone 2, 26 October 2026
+
+- 69 automated tests pass. Coverage includes scan client validation, native picker handling, editable scan drafts, integer money, atomic local persistence, identical-file deduplication, configuration separation, backup behavior and server proxy boundaries.
+- Package remains `com.nomli.mvp.validation`. M2 version is `0.3.0-m2` with `versionCode` 3.
+- Live Cloudflare endpoint `https://nomli-scan-proxy.ahmed-aljazayeerly.workers.dev` is deployed. Gemini 3.1 Flash-Lite credential is stored as an encrypted server-side secret and is absent from client configuration.
+- Synthetic receipt PNG and PDF calls completed in about five and four seconds. Both returned the three expected items, chickpeas 1,600 g, tahini 500 g, oil 1 L, AED 39.62 total and AED 1.89 tax. An initial multipack extraction error was corrected with explicit printed-pack arithmetic instructions. These small fixture checks are not an OCR accuracy benchmark.
+- Actual remote drafts were passed through mandatory storage review, atomic import, save/reload, identical-file replay and backup roundtrip. All passed. Local browser verified connection validation, readiness and source selection; native file selection and full phone scan flow remain device checks.
+- Review supports corrections to quantity, unit, storage, date, merchant, currency, tax and discount before one atomic local save. Repeating identical file bytes with the same scan kind is deduplicated.
+- Scan connection configuration is separate from inventory backup data. Android supports a private setup QR that fills the connection form; the user must run the connection test and choose Save.
+- Images are limited to 4 MiB. PDFs are limited to 2 MiB and three pages. The configured Cloudflare limiter allows approximately 10 scan requests per 60 seconds per Cloudflare location; it is not a hard billing cap.
+- Inventory is offline. Recognition requires internet and sends selected files to Google through the Cloudflare proxy. The app does not retain uploaded file bytes after processing.
+- No physical-phone QA has run. Native SAF picker behavior, camera permissions, Preferences across force-stop, keyboard behavior and update installation remain unverified on device.
+- Live Zara, voice recognition, barcode product lookup and robust cooking behavior remain unimplemented. Accounts, cloud inventory sync and the documented multi-user server contract are future work.
+- Gemini API quota depends on API account and billing state. A Gemini app subscription, including Ultra, does not by itself define free or paid API quota.
+
+## Milestone 1, 26 October 2026
 
 - 24 automated tests pass, including 12 storage tests covering empty state, migration, native Preferences precedence, failed writes, serialized saves, backup roundtrip, corruption recovery, unsafe fields, units and size limits. Content checks and production build pass; Capacitor sync includes four official plugins plus the custom registered Android backup plugin.
 - Independent code review found and fixed restore/save ordering, failed-consumption success reporting, and malformed search backup fields. Controls lock while critical mutations persist; replacement joins the same save queue.

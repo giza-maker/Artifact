@@ -1,0 +1,9 @@
+NOMLI_DEVICE_TOKEN=replace-with-at-least-32-random-characters
+SCAN_PROVIDER=gemini
+GEMINI_API_KEY=replace-me
+GEMINI_MODEL=gemini-3.1-flash-lite
+# OPENAI_API_KEY=replace-me
+# OPENAI_MODEL=gpt-6-luna
+ALLOWED_ORIGINS=http://127.0.0.1:5173,https://localhost
+LOCAL_DEV=true
+

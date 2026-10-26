@@ -1,12 +1,10 @@
-# Nomli kitchen MVP — milestone 1
+# Nomli kitchen MVP, milestone 2
 
-Single-user local inventory: fresh empty kitchen, add/edit/delete quantities and units, storage locations, optional expiry provenance, native Preferences persistence and validated JSON backup export/restore. Android document pickers save/open backups without broad storage permissions. Restore requires preview and typed `REPLACE`; corrupt saved data stays locked until explicit recovery.
+Single-user local inventory with reviewed receipt recognition. M2 accepts receipt images and PDFs, sends them to a protected Cloudflare endpoint, opens an editable draft, then saves confirmed changes to local inventory in one atomic operation. Users can correct quantity, unit, storage, date, merchant, currency, tax and discount before saving.
 
-Validation package: `com.nomli.mvp.validation`, app label **Nomli Test**, version **0.2.0-m1**. It installs alongside the earlier demo. Published milestone APKs are signed locally with one retained private validation key; GitHub Actions never receives that key. Keep the ignored `.tools/signing` directory safe for future update signing.
+Validation package: `com.nomli.mvp.validation`, app label **Nomli Test**, version **0.3.0-m2** (`versionCode` 3). It updates the M1 validation app and remains separate from the earlier demo package. Published milestone APKs use the retained local validation signing key; GitHub Actions does not receive that key.
 
-Scan recognition and live Zara remain future milestones. M1 disables sample scanning writes so synthetic results cannot enter real inventory. Cooking screens remain available from the prototype; recipes currently require the catalog's exact units and linked IDs.
-
-Focused mobile prototype: **Kitchen · Scan · Cook · Zara**. Original full-vision mockup remains in `kitchenaut-landing/app/`.
+Inventory works offline. Receipt recognition needs internet access. Current recognition service is `https://nomli-scan-proxy.ahmed-aljazayeerly.workers.dev`, backed by Gemini 3.1 Flash-Lite. Provider credentials are encrypted server-side and never bundled in the app.
 
 ## Start
 
@@ -16,33 +14,51 @@ npm ci --legacy-peer-deps
 npm run dev
 ```
 
-Open the local URL Vite prints. `npm run build` produces a static `dist/` folder with relative asset paths. Serve over HTTP; opening HTML directly with `file://` will not run ES modules reliably.
+Open the local URL Vite prints. `npm run build` produces a static `dist/` folder with relative asset paths. Serve it over HTTP; `file://` does not run ES modules reliably.
 
 ```powershell
 npm run check
 npm run android:debug
 ```
 
-Android build needs Java 21, Android API 36 and build tools 36. Existing host Java/SDK can be reused; see [setup](docs/SETUP.md). First Gradle/Maven build needs network access. `android:debug` syncs web assets, then writes `artifacts/Nomli-MVP-debug.apk` when compilation succeeds.
+Android builds need Java 21, Android API 36 and build tools 36. Existing host Java/SDK can be reused; see [setup](docs/SETUP.md). First Gradle/Maven build needs network access. `android:debug` syncs web assets and writes `artifacts/Nomli-MVP-debug.apk` after a successful compilation.
+
+## M2 scan flow
+
+1. Open **Scan connection**. On Android, scan the private setup QR to fill the endpoint and device access code, or enter them manually.
+2. Run **Test connection**, then save the configuration.
+3. Pick or capture a receipt image or PDF. Android uses the native Storage Access Framework picker.
+4. Review every extracted line and receipt field. Edit quantity, unit, storage, date, merchant, currency, tax or discount as needed.
+5. Save. Inventory and receipt state update atomically. Reusing identical file bytes with the same scan kind is deduplicated.
+
+Scan connection configuration is stored separately from inventory and is not included in inventory backups. Keep the setup QR and device access code private.
 
 ## Included
 
-- Original Nomli mark, Android launcher/splash assets, food/kitchen/Zara imagery, local fonts and Phosphor icons with provenance/licenses.
-- Inventory add/edit, storage/sort, shopping list and grocery budget/receipt utilities.
-- Scan is reserved for M2. Native camera/barcode previews work independently of inventory; sample scanning imports are disabled in M1.
-- Four sample recipes in the mockup: matching by stock, tools, exclusions, servings and swaps; cooking steps, timer, session resume and reviewed consumption.
+- Fresh local inventory with add, edit and delete; fractional quantities; canonical units; storage locations; optional expiry provenance; sorting and search.
+- Native Preferences persistence with browser localStorage fallback. Validated JSON backup export/restore uses Android document pickers and requires preview plus typed `REPLACE`.
+- Reviewed image/PDF receipt flow with atomic local save and duplicate-file protection.
+- Image uploads up to 4 MiB. PDFs up to 2 MiB and three pages. JPEG, PNG, WebP and PDF content is checked against its declared type.
+- Approximate Cloudflare rate limit of 10 recognition requests per 60 seconds per Cloudflare location. This is abuse protection, not a hard billing cap.
+- Four sample recipes in the mockup, cooking steps, timer, session resume and reviewed consumption.
 - Contextual scripted Zara, current-step help and editable sample voice transcript.
-- Independent local persistence. No learning, quests, XP, community or investor-tour routes.
 - Starter content: 88 bilingual ingredients, 20 structured recipes, 24 Arabic/English voice cases, three receipt fixtures, six synthetic barcode records and a synthetic digital receipt PDF/image.
-- Capacitor Android shell and official camera, barcode, notifications and preferences plugins. Camera/barcode capture tools appear on native Android; recognition and product lookup remain unconnected.
-- Pure server domain functions, bounded tool schemas, assistant policy, configuration templates and integration contract.
+- Capacitor Android shell with camera, barcode, notifications and preferences plugins plus native backup and scan bridges.
+- Tested scan client, validation schema, integer-money logic, persistence, deduplication and bounded server proxy.
 
-## What is simulated
+## Privacy and limits
 
-Zara replies are scripted and labeled as a demo. The app does not access the microphone, live OCR, LLMs or a remote database. Native capture returns a real device photo/barcode for preview only; it does not perform recognition or alter stock. Backup import reads only a JSON file explicitly selected by the user. No cloud project or provider key has been configured.
+Selected receipt files are sent through the Cloudflare proxy to Google for recognition. The app does not retain uploaded file bytes after processing. Confirmed structured results remain in local app storage.
 
-The UI uses the original four count-based demo recipes. The separate 20-recipe catalog uses explicit canonical units for implementation; it is not automatically imported into the demo. Map `piece` to a product-specific count, preserve `clove`/`slice`/`bunch` identity and require reviewed package sizes. Do not convert those counts to grams by assumption.
+Gemini quota depends on the Google account and billing configuration behind the server key. A Gemini app subscription, including an Ultra subscription, does not by itself determine API free-tier or paid quota.
 
-Synthetic fixtures test parsing/review contracts. They do not measure OCR or speech-recognition accuracy. Seventeen catalog recipes intentionally have no image yet; the four demo dishes have matching local imagery.
+Synthetic PNG and PDF receipts completed live calls in about five and four seconds. After correcting an initial multipack error, both returned the expected quantities, AED 39.62 total and AED 1.89 tax. Reviewed save/reload, duplicate-file protection and backup roundtrip passed with those actual results. These small fixture checks are not an accuracy benchmark.
 
-Next milestones: real reviewed scanning; preparation/cooking and robust consumption; live Zara; physical-device validation. Accounts and cloud inventory sync are deferred. See [integration boundaries](docs/INTEGRATION.md), [content details](docs/CONTENT.md), [verification](docs/VERIFICATION.md), and [design contract](DESIGN.md).
+## Not implemented or verified
+
+- No physical-phone QA has been completed. Native picker, camera permissions, Preferences behavior across force-stop, keyboard behavior and update installation still need device testing.
+- Live Zara, voice recognition, barcode product lookup and robust cooking behavior are not connected.
+- Accounts, cloud inventory sync, multi-user authorization and database transactions remain future work.
+- Receipt recognition can be wrong. Review is mandatory before local data changes.
+
+M1 evidence remains in [verification](docs/VERIFICATION.md). See [integration boundaries](docs/INTEGRATION.md), [content details](docs/CONTENT.md), [verification](docs/VERIFICATION.md), and [design contract](DESIGN.md).

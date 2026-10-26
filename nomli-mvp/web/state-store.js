@@ -6,6 +6,7 @@ const NATIVE_KEY = "state-v1";
 const MAX_BACKUP_BYTES = 1024 * 1024;
 const MAX_STATE_BYTES = 1024 * 1024;
 const MAX_ITEMS = 500;
+const MAX_SCAN_IMPORTS = 2000;
 const MAX_QTY = 1e9;
 const UNITS = new Set([
   "g",
@@ -35,6 +36,8 @@ const ITEM_AREAS = new Set(["Fridge", "Freezer", "Pantry", "Spices"]);
 const SORTS = new Set(["expiry", "name", "quantity"]);
 const PROVENANCE = new Set([null, "user", "printed", "estimated"]);
 const FORBIDDEN = new Set(["__proto__", "prototype", "constructor"]);
+const SENSITIVE = new Set(["scanconfig", "devicetoken", "apikey"]);
+const HEX_DIGEST = /^[a-f0-9]{64}$/i;
 
 function fail(message) {
   throw new TypeError(message);
@@ -60,6 +63,8 @@ function inspect(value, depth = 0) {
   plain(value, "State value");
   for (const key of Object.keys(value)) {
     if (FORBIDDEN.has(key)) fail("State contains a forbidden property name.");
+    if (SENSITIVE.has(key.toLowerCase()))
+      fail("State must not contain credentials or secret configuration.");
     inspect(value[key], depth + 1);
   }
 }
@@ -172,6 +177,29 @@ export function validateState(value) {
     fail("Budget must be a positive safe integer.");
   for (const field of ["meals", "shopping", "receipts", "chat"])
     if (!Array.isArray(state[field])) fail(`${field} must be a list.`);
+  if (state.scanImports !== undefined) {
+    if (
+      !Array.isArray(state.scanImports) ||
+      state.scanImports.length > MAX_SCAN_IMPORTS
+    )
+      fail("Scan imports are invalid.");
+    for (const entry of state.scanImports) {
+      plain(entry, "Scan import");
+      if (!HEX_DIGEST.test(entry.fingerprint))
+        fail("Scan import fingerprint is invalid.");
+      if (!HEX_DIGEST.test(entry.signature))
+        fail("Scan import signature is invalid.");
+      if (typeof entry.financeExcluded !== "boolean")
+        fail("Scan import finance exclusion is invalid.");
+      if (
+        Object.keys(entry).some(
+          (key) =>
+            !["fingerprint", "signature", "financeExcluded"].includes(key),
+        )
+      )
+        fail("Scan import contains an unknown field.");
+    }
+  }
   for (const entry of state.shopping) {
     plain(entry, "Shopping entry");
     safeId(entry.id, "Shopping item id");
@@ -183,6 +211,34 @@ export function validateState(value) {
     plain(receipt, "Receipt");
     shortString(receipt.source, "Receipt source", 128);
     shortString(receipt.name, "Receipt name", 200);
+    if (
+      receipt.fingerprint !== undefined &&
+      !HEX_DIGEST.test(receipt.fingerprint)
+    )
+      fail("Receipt fingerprint is invalid.");
+    if (
+      receipt.currency !== undefined &&
+      receipt.currency !== null &&
+      (typeof receipt.currency !== "string" ||
+        !/^[A-Z]{3}$/.test(receipt.currency))
+    )
+      fail("Receipt currency is invalid.");
+    for (const field of ["date", "receiptDate"])
+      if (
+        receipt[field] !== undefined &&
+        receipt[field] !== null &&
+        !validDate(receipt[field])
+      )
+        fail("Receipt date is invalid.");
+    for (const field of ["totalMinor", "taxMinor", "discountMinor"])
+      if (receipt[field] !== undefined && receipt[field] !== null &&
+        (!Number.isSafeInteger(receipt[field]) || receipt[field] < 0 || receipt[field] > 1e12))
+        fail(`Receipt ${field} total is invalid.`);
+    if (
+      receipt.financeExcluded !== undefined &&
+      typeof receipt.financeExcluded !== "boolean"
+    )
+      fail("Receipt finance exclusion is invalid.");
     if (!Array.isArray(receipt.lines) || receipt.lines.length > 500)
       fail("Receipt lines are invalid.");
     for (const line of receipt.lines) {
@@ -283,6 +339,7 @@ function freshState(data) {
     meals: [],
     shopping: [],
     receipts: [],
+    scanImports: [],
     budget: 160000,
     profile: { allergies: [], cuisine: "Any", time: 20, household: 2 },
     chat: [],
@@ -297,8 +354,10 @@ function parseStored(raw) {
   return validateState(value);
 }
 
-function normalizeForData(value, data) {
+function normalizeForData(value, data, { includeScanImports = false } = {}) {
   const state = copy(value);
+  if (includeScanImports && !Array.isArray(state.scanImports))
+    state.scanImports = [];
   if (!ROUTES.has(state.route)) state.route = "kitchen";
   const recipes = new Map(
     (data?.recipes || []).map((recipe) => [recipe.id, recipe]),
@@ -361,7 +420,7 @@ export function createStateStore({
       const current = parseStored(raw);
       if (current)
         return {
-          state: normalizeForData(current, data),
+          state: normalizeForData(current, data, { includeScanImports: true }),
           recoveryRequired: false,
         };
     } catch (error) {
@@ -377,7 +436,7 @@ export function createStateStore({
       if (legacy) {
         await save(legacy);
         return {
-          state: normalizeForData(legacy, data),
+          state: normalizeForData(legacy, data, { includeScanImports: true }),
           recoveryRequired: false,
           notice: "Existing kitchen data migrated.",
         };
@@ -432,5 +491,6 @@ export const STATE_STORE_LIMITS = Object.freeze({
   maxBackupBytes: MAX_BACKUP_BYTES,
   maxStateBytes: MAX_STATE_BYTES,
   maxItems: MAX_ITEMS,
+  maxScanImports: MAX_SCAN_IMPORTS,
   maxQty: MAX_QTY,
 });

@@ -1,6 +1,20 @@
 "use strict";
 import { createTimerNotifications } from "./timer-notifications.js";
 import { createStateStore } from "./state-store.js";
+import {
+  getScanConfig,
+  saveScanConfig,
+  scanFile,
+  testScanConnection,
+  validateScanConfig,
+} from "./scan-client.js";
+import {
+  currencyDigits,
+  formatMinorInput,
+  formatMoneyMinor,
+  parseMinorAmount,
+} from "./scan-money.js";
+import { commitScanDraft, reviewScanDraft } from "./scan-domain.js";
 (async function leanNomli() {
   const D = window.NOMLI_DATA;
   const store = createStateStore({
@@ -66,6 +80,9 @@ import { createStateStore } from "./state-store.js";
     lastFocus,
     scanEpoch = 0;
   let scanTimers = [];
+  let scanConfig = { apiUrl: "", deviceToken: "" };
+  let scanDraft = null;
+  let scanAbort = null;
 
   let loadResult;
   try {
@@ -81,6 +98,11 @@ import { createStateStore } from "./state-store.js";
   let saveQueue = Promise.resolve();
   let operationBusy = false;
   let storageError = "";
+  try {
+    scanConfig = await getScanConfig();
+  } catch {
+    scanConfig = { apiUrl: "", deviceToken: "" };
+  }
   const timerNotifications = createTimerNotifications(
     () => window.NomliNative,
     save,
@@ -120,8 +142,8 @@ import { createStateStore } from "./state-store.js";
     setBusy(true, modal.open ? modal : document);
     await saveQueue.catch(() => {});
     const before = structuredClone(S);
-    mutator();
     try {
+      mutator();
       if (replace) {
         const snapshot = structuredClone(S);
         saveQueue = saveQueue
@@ -188,6 +210,8 @@ import { createStateStore } from "./state-store.js";
   }
   function cancelScan() {
     scanEpoch++;
+    scanAbort?.abort();
+    scanAbort = null;
     scanTimers.forEach(clearTimeout);
     scanTimers = [];
   }
@@ -260,7 +284,7 @@ import { createStateStore } from "./state-store.js";
     const soon = Object.values(S.items).filter(
       (x) => x.qty > 0 && daysLeft(x) !== null && daysLeft(x) <= 2,
     ).length;
-    return (
+    const markup =
       heading(
         "YOUR KITCHEN",
         Object.keys(S.items).length
@@ -269,7 +293,7 @@ import { createStateStore } from "./state-store.js";
         `${Object.values(S.items).filter((x) => x.qty > 0).length} ingredients on hand${soon ? ` · ${soon} use soon` : ""}`,
         button("Add ingredient", "item-edit", "new", "btn-primary"),
       ) +
-      `<p class="milestone-banner">Milestone 1 · Local inventory</p><button class="scan-banner" data-action="go" data-id="scan"><img src="images/fridge-vf-480.webp" alt=""><span>${icon("scan")}<b>Scan unavailable · DEMO only</b><small>Fixed samples; no recognition API</small></span>${icon("arrow-right")}</button><section class="card inventory-card"><div class="card-header"><h2>Inventory</h2><button class="icononly" data-action="item-edit" data-id="new" aria-label="Add ingredient">${icon("plus")}</button></div><div class="inventory-tools"><label class="field">Search<input type="search" data-change="search" value="${esc(S.search || "")}" placeholder="Search ingredients"></label><div class="inventory-sort"><label>Storage <select data-change="storage">${options(["All", "Fridge", "Freezer", "Pantry", "Spices"], S.storage)}</select></label><label>Sort <select data-change="sort">${options(["expiry", "name", "quantity"], S.sort)}</select></label></div></div>${rows.length ? rows.map(([id, x]) => itemRow(id, x)).join("") : `<div class="inventory-empty">${icon("refrigerator")}<h3>${Object.keys(S.items).length ? "No ingredients match" : "Your inventory is empty"}</h3><p>${Object.keys(S.items).length ? "Clear search or filters." : "Add first ingredient. Expiry stays optional and never gets invented."}</p>${Object.keys(S.items).length ? "" : button("Add first ingredient", "item-edit", "new", "btn-primary")}</div>`}</section><div class="quick-grid">${[
+      `<p class="milestone-banner">Milestone 2 · Local inventory + reviewed scans</p><button class="scan-banner" data-action="go" data-id="scan"><img src="images/fridge-vf-480.webp" alt=""><span>${icon("scan")}<b>Scan groceries or receipts</b><small>Protected connection · review before save</small></span>${icon("arrow-right")}</button><section class="card inventory-card"><div class="card-header"><h2>Inventory</h2><button class="icononly" data-action="item-edit" data-id="new" aria-label="Add ingredient">${icon("plus")}</button></div><div class="inventory-tools"><label class="field">Search<input type="search" data-change="search" value="${esc(S.search || "")}" placeholder="Search ingredients"></label><div class="inventory-sort"><label>Storage <select data-change="storage">${options(["All", "Fridge", "Freezer", "Pantry", "Spices"], S.storage)}</select></label><label>Sort <select data-change="sort">${options(["expiry", "name", "quantity"], S.sort)}</select></label></div></div>${rows.length ? rows.map(([id, x]) => itemRow(id, x)).join("") : `<div class="inventory-empty">${icon("refrigerator")}<h3>${Object.keys(S.items).length ? "No ingredients match" : "Your inventory is empty"}</h3><p>${Object.keys(S.items).length ? "Clear search or filters." : "Add first ingredient. Expiry stays optional and never gets invented."}</p>${Object.keys(S.items).length ? "" : button("Add first ingredient", "item-edit", "new", "btn-primary")}</div>`}</section><div class="quick-grid">${[
         ["shopping", "shopping-cart", "Shopping", "Restock list"],
         ["expenses", "wallet", "Spending", "Receipts & budget"],
         ["profile", "gear", "Preferences", "Diet, time & tools"],
@@ -278,20 +302,29 @@ import { createStateStore } from "./state-store.js";
           ([r, ic, t, s]) =>
             `<button data-action="go" data-id="${r}">${icon(ic)}<b>${t}</b><small>${s}</small></button>`,
         )
-        .join("")}</div>`
-    );
+        .join("")}</div>`;
+    return markup;
   }
   function scanView() {
-    const native = window.NomliNative?.isNative
-      ? `<section class="card"><h2>Device tools</h2><p class="muted">Capture is real. Recognition service is not configured; results will not alter inventory.</p><div class="actions">${button("Take/select photo", "native-camera")}${button("Scan barcode", "native-barcode")}</div></section>`
-      : "";
+    const connected = Boolean(scanConfig.apiUrl && scanConfig.deviceToken);
     return (
       heading(
         "MILESTONE 2",
-        "Scan is coming next",
-        "Recognition is unavailable. Captured images and barcodes remain previews and never change real inventory.",
+        "Scan into your kitchen",
+        connected
+          ? "Choose a source. Every extracted line stays editable until you confirm."
+          : "Connect your protected scanner before choosing a photo or receipt.",
       ) +
-      `<section class="card"><h2>No fabricated stock</h2><p class="muted">Add ingredients manually in Kitchen. Demo recognition results cannot be saved into local inventory.</p>${button("Add ingredient manually", "item-edit", "new", "btn-primary")}</section>${native}<p class="details">${window.NomliNative?.isNative ? "Device tools only capture a preview. Recognition and product lookup are not connected." : "Camera, file, OCR, barcode database and recognition services are not connected."}</p>`
+      `<p class="milestone-banner">M2 · reviewed imports</p>
+      ${connected ? "" : `<section class="notice notice-warning" role="status"><b>Scanner not connected</b><p>Add HTTPS API URL and device access code in Scan connection. No provider key belongs in this app.</p>${button("Connect scanner", "scan-settings", "", "btn-primary")}</section>`}
+      <section class="card scan-source-card" aria-labelledby="scan-source-title"><div class="card-header"><div><p class="eyebrow">SOURCE</p><h2 id="scan-source-title">What are you scanning?</h2></div>${button("Connection", "scan-settings", "", "btn-quiet")}</div>
+      <div class="scan-source-grid">
+        <button data-action="scan-choose" data-id="groceries" ${connected ? "" : "disabled"}>${icon("camera")}<b>Grocery photo</b><small>Camera or gallery</small></button>
+        <button data-action="scan-choose" data-id="expiry" ${connected ? "" : "disabled"}>${icon("calendar-blank")}<b>Expiry label</b><small>Camera or image</small></button>
+        <button data-action="scan-choose" data-id="receipt-paper" ${connected ? "" : "disabled"}>${icon("receipt")}<b>Paper receipt</b><small>Photo, image or PDF</small></button>
+        <button data-action="scan-choose" data-id="receipt-digital" ${connected ? "" : "disabled"}>${icon("upload-simple")}<b>Digital receipt</b><small>Image or PDF file</small></button>
+      </div></section>
+      <section class="card scan-guardrail"><h2>Review before saving</h2><p class="muted">Unknown quantities, units and dates stay blank. Exclude non-food lines, correct extracted values, then choose whether each line creates or merges an ingredient.</p></section>`
     );
   }
   function selectedIngredient(r, ing) {
@@ -466,18 +499,43 @@ import { createStateStore } from "./state-store.js";
     );
   }
   function expensesView() {
-    const receiptTotal = S.receipts
-        .flatMap((r) => r.lines)
-        .reduce((n, x) => n + x.cents, 0),
-      total = receiptTotal;
+    const totals = S.receipts.reduce((byCurrency, receipt) => {
+      if (
+        receipt.source !== "scan" ||
+        receipt.financeExcluded ||
+        !receipt.currency
+      )
+        return byCurrency;
+      byCurrency[receipt.currency] =
+        (byCurrency[receipt.currency] || 0) + (receipt.totalMinor || 0);
+      return byCurrency;
+    }, {});
+    const sarTotal = totals.SAR || 0;
     return (
       heading(
         "KITCHEN UTILITY",
         "Grocery spending",
-        "Real total from locally saved receipts. Receipt capture remains DEMO.",
+        "Confirmed receipt totals, kept separate by currency.",
         button("Back to kitchen", "go", "kitchen"),
       ) +
-      `<section class="card spend-hero"><small>LOCAL RECEIPTS</small><h2>${money(total)}</h2><p>${money(Math.max(0, S.budget - total))} left of ${money(S.budget)}</p><form data-form="budget">${errors()}${field("Monthly budget (SAR)", "budget", (S.budget / 100).toFixed(2), "number", 'min="1" max="1000000" step="0.01" required')}<button class="btn btn-secondary">Update budget</button></form></section><div class="receipt-shortcuts"><button disabled title="Coming in milestone 2">${icon("camera")}Paper receipt · M2</button><button disabled title="Coming in milestone 2">${icon("upload-simple")}Digital receipt · M2</button></div><section class="card purchase-history">${S.receipts.map((r) => `<div class="item-row"><div><b>${esc(r.name)}</b><small>${r.lines.length} reviewed items</small></div><strong>${money(r.lines.reduce((n, x) => n + x.cents, 0))}</strong></div>`).join("") || '<p class="empty">No receipts saved.</p>'}</section>`
+      `<section class="card spend-hero"><small>CONFIRMED SCANS</small>${
+        Object.keys(totals).length
+          ? Object.entries(totals)
+              .map(
+                ([currency, total]) =>
+                  `<h2>${currencyDigits(currency) === null ? `${esc(currency)} · unsupported currency` : esc(formatMoneyMinor(total, currency))}</h2>`,
+              )
+              .join("")
+          : "<h2>No spending yet</h2>"
+      }<p>${money(Math.max(0, S.budget - sarTotal))} left of ${money(S.budget)} SAR budget</p><form data-form="budget">${errors()}${field("Monthly budget (SAR)", "budget", (S.budget / 100).toFixed(2), "number", 'min="1" max="1000000" step="0.01" required')}<button class="btn btn-secondary">Update budget</button></form></section><div class="receipt-shortcuts"><button data-action="go" data-id="scan">${icon("camera")}Scan paper receipt</button><button data-action="go" data-id="scan">${icon("upload-simple")}Import digital receipt</button></div><section class="card purchase-history">${
+        S.receipts
+          .filter((r) => r.source === "scan")
+          .map(
+            (r) =>
+              `<div class="item-row"><div><b>${esc(r.name)}</b><small>${r.lines.length} reviewed items${r.financeExcluded ? " · spending excluded" : ""}</small></div><strong>${r.financeExcluded || !r.currency || currencyDigits(r.currency) === null ? "—" : esc(formatMoneyMinor(r.totalMinor, r.currency))}</strong></div>`,
+          )
+          .join("") || '<p class="empty">No scanned receipts saved.</p>'
+      }</section>`
     );
   }
   function profileView() {
@@ -674,108 +732,169 @@ import { createStateStore } from "./state-store.js";
       announce(`Import rejected: ${error?.message || "invalid backup"}`);
     }
   }
-  function scanMode(mode) {
-    const receipt = ["paper", "digital"].includes(mode),
-      digital = mode === "digital";
-    let scene;
-    if (mode === "fridge")
-      scene =
-        '<img src="images/fridge-vf-480.webp" alt="Sample stocked refrigerator">';
-    else if (mode === "paper")
-      scene =
-        '<img src="images/receipt-camera.webp" alt="Sample paper grocery receipt">';
-    else if (digital)
-      scene = `<div class="sample-receipt"><b>${esc(D.receipts.digital.store)}</b><small>grocery-receipt.pdf · sample</small>${D.receipts.digital.lines.map((x) => `<p><span>${esc(S.items[x.id]?.name || D.items[x.id].name)}</span><b>${money(x.cents)}</b></p>`).join("")}</div>`;
-    else if (mode === "barcode")
-      scene =
-        '<img src="images/fridge-vf-480.webp" alt="Sample kitchen background"><div class="product-label"><b>SOURDOUGH BREAD</b><span>4 slices · sample pack</span><div class="barcode-lines" aria-label="Illustrative barcode"></div><small>SYN-NOMLI-BREAD · fictional</small></div>';
-    else
-      scene = `<img src="images/fridge-vf-480.webp" alt="Sample kitchen background"><div class="date-label"><b>FREE-RANGE EGGS</b><span>BEST BEFORE</span><strong>${datePlus(5)}</strong><small>Sample package label</small></div>`;
+  function scanConnectionForm() {
+    const suggestedApiUrl =
+      scanConfig.apiUrl ||
+      "https://nomli-scan-proxy.ahmed-aljazayeerly.workers.dev";
     openModal(
-      {
-        fridge: "Scan fridge",
-        barcode: "Scan barcode",
-        expiry: "Read expiry label",
-        paper: "Scan paper receipt",
-        digital: "Import digital receipt",
-      }[mode],
-      `<p class="camera-caption">${digital ? "Select fixed sample PDF" : "Frame fixed sample, then capture"}.</p><div class="camera-view ${receipt ? "receipt-camera" : ""} ${digital ? "digital-camera" : ""}" data-camera>${scene}<div class="camera-brackets"></div><div class="scan-beam" hidden></div><span class="scan-status" data-scan-status>Sample ${digital ? "file" : "camera"} · ready</span></div><div class="capture-actions"><button class="capture-button" data-action="scan-capture" data-id="${mode}" aria-label="${digital ? "Import sample PDF" : "Capture sample"}">${icon(digital ? "upload-simple" : "camera")}</button><p>${digital ? "Import sample PDF" : "Tap to capture"}</p></div><p class="details">Finite simulation. No camera, file, OCR or recognition service is accessed.</p>`,
-      "camera",
+      "Scan connection",
+      `<form data-form="scan-config">${errors()}${field("HTTPS API URL", "apiUrl", suggestedApiUrl, "url", 'placeholder="https://scanner.example.com" autocomplete="url" required')}${field("Device access code", "deviceToken", scanConfig.deviceToken || "", "password", 'autocomplete="off" minlength="32" maxlength="512" required')}<p class="details">Stored separately on this device. Excluded from Nomli backups and source code. Use a device code, never a provider API key.</p><div class="form-actions">${window.NomliNative?.isNative ? '<button type="button" class="btn btn-secondary" data-action="scan-setup-qr">Scan setup QR</button>' : ""}<button type="button" class="btn btn-secondary" data-action="scan-test">Test connection</button><button class="btn btn-primary">Save connection</button></div><p class="scan-connection-status" data-connection-status role="status" aria-live="polite"></p></form>`,
     );
   }
-  function scanReview(mode) {
-    if (mode === "paper" || mode === "digital") return receiptForm(mode);
-    const ids =
-      mode === "fridge"
-        ? ["tomatoes", "basil", "eggs"]
-        : [mode === "barcode" ? "bread" : "eggs"];
+  function scanSourceDialog(source) {
+    const digital = source === "receipt-digital";
+    const receipt = source.startsWith("receipt");
     openModal(
-      `Review ${mode} result`,
-      `<p class="badge badge-demo">DEMO result · editable</p><form data-form="scan" data-mode="${mode}">${errors()}${ids
-        .map((id) => {
-          const x = S.items[id] || { ...D.items[id], qty: 0 };
-          return `<fieldset><legend>${esc(x.name)}</legend>${field(`Quantity (${x.unit})`, `qty-${id}`, mode === "fridge" ? Math.max(x.qty, { tomatoes: 3, basil: 1, eggs: 6 }[id]) : Math.max(x.qty, 1), "number", 'min="0.01" max="10000" step="0.01" required')}${field("Reviewed date", `expiry-${id}`, datePlus(mode === "expiry" ? 5 : D.items[id].days), "date", "required")}</fieldset>`;
-        })
-        .join(
-          "",
-        )}<label class="checkbox-field"><input type="checkbox" name="confirmed" required>I reviewed every quantity and date.</label><button class="btn btn-primary">Save reviewed stock</button></form><p class="details">DEMO only. Nothing changes until confirmation.</p>`,
+      digital ? "Choose digital receipt" : "Choose scan source",
+      `<p>${digital ? "Select a receipt image or PDF." : "Use device camera/gallery, or select a file."}</p><div class="scan-choice-actions">${!digital && window.NomliNative?.isNative ? button("Camera or gallery", "scan-native", source, "btn-primary") : ""}${button(digital ? "Choose receipt file" : "Choose file", "scan-browser", source, !digital && window.NomliNative?.isNative ? "btn-secondary" : "btn-primary")}</div><p class="details">${receipt ? "Accepted: JPEG, PNG, WebP (4 MiB) or PDF (2 MiB)." : "Accepted: JPEG, PNG or WebP up to 4 MiB."}</p>`,
     );
   }
-  function captureScan(mode) {
-    const epoch = ++scanEpoch,
-      beam = $(".scan-beam", modal),
-      status = $("[data-scan-status]", modal),
-      capture = $("[data-action='scan-capture']", modal);
-    if (!status || capture?.disabled) return;
-    if (capture) capture.disabled = true;
-    if (beam) beam.hidden = false;
-    status.textContent = "Capturing fixed sample…";
-    scanTimers.push(
-      setTimeout(() => {
-        if (epoch !== scanEpoch || !modal.open) return;
-        status.textContent =
-          mode === "barcode"
-            ? "Matching sample barcode…"
-            : mode === "expiry"
-              ? "Reading sample date…"
-              : ["paper", "digital"].includes(mode)
-                ? "Extracting sample lines…"
-                : "Finding sample groceries…";
-      }, 650),
-    );
-    scanTimers.push(
-      setTimeout(() => {
-        if (epoch !== scanEpoch || !modal.open) return;
-        status.textContent = "Ready for your review";
-      }, 1300),
-    );
-    scanTimers.push(
-      setTimeout(() => {
-        if (epoch !== scanEpoch || !modal.open) return;
-        scanReview(mode);
-      }, 1750),
-    );
-  }
-  function receiptForm(source) {
-    if (S.receipts.some((r) => r.source === source)) {
-      openModal(
-        "Receipt already saved",
-        `<p>This fixed ${esc(source)} sample has already updated stock and spending. Saving it twice is blocked.</p>${button("View spending", "go", "expenses", "btn-primary")}`,
+  function chooseScanFile(source) {
+    return new Promise((resolve) => {
+      const receipt = source.startsWith("receipt");
+      const input = Object.assign(document.createElement("input"), {
+        type: "file",
+        accept: receipt
+          ? "image/jpeg,image/png,image/webp,application/pdf,.pdf"
+          : "image/jpeg,image/png,image/webp",
+      });
+      input.addEventListener(
+        "change",
+        () => resolve(input.files?.[0] || null),
+        { once: true },
       );
-      return;
-    }
-    const r = D.receipts[source];
+      input.click();
+    });
+  }
+  function assertScanFile(file, receipt) {
+    if (!file) throw new Error("No file selected.");
+    if (file.size <= 0) throw new Error("Selected file is empty.");
+    const maxBytes =
+      file.type === "application/pdf" ? 2 * 1024 * 1024 : 4 * 1024 * 1024;
+    if (file.size > maxBytes)
+      throw new Error(
+        file.type === "application/pdf"
+          ? "PDF exceeds the 2 MiB limit."
+          : "Image exceeds the 4 MiB limit.",
+      );
+    const allowed = receipt
+      ? ["image/jpeg", "image/png", "image/webp", "application/pdf"]
+      : ["image/jpeg", "image/png", "image/webp"];
+    if (!allowed.includes(file.type))
+      throw new Error(
+        receipt
+          ? "Choose a JPEG, PNG, WebP or PDF."
+          : "Choose a JPEG, PNG or WebP image.",
+      );
+  }
+  async function runScan(source, payload) {
+    const kind =
+      source === "expiry"
+        ? "expiry"
+        : source.startsWith("receipt")
+          ? "receipt"
+          : "groceries";
+    scanAbort?.abort();
     openModal(
-      `Review ${r.name.toLowerCase()}`,
-      `<p class="badge badge-demo">DEMO extraction · ${esc(r.store)}</p><form data-form="receipt" data-source="${source}">${errors()}${r.lines
-        .map((l) => {
-          const x = S.items[l.id] || { ...D.items[l.id], qty: 0, expiry: "" };
-          return `<fieldset><legend>${esc(x.name)}</legend>${field("Item name", `name-${l.id}`, x.name, "text", 'maxlength="48" required')}${field(`Quantity (${x.unit})`, `qty-${l.id}`, l.qty, "number", 'min="0.01" max="10000" step="0.01" required')}${field("Line total (SAR)", `price-${l.id}`, (l.cents / 100).toFixed(2), "number", 'min="0" max="100000" step="0.01" required')}${field("Reviewed combined-stock date", `expiry-${l.id}`, x.expiry || datePlus(D.items[l.id].days), "date", "required")}</fieldset>`;
-        })
+      "Reading scan",
+      `<section class="scan-live" aria-busy="true"><span class="scan-spinner" aria-hidden="true">${icon("circle-notch")}</span><h3>Securely reading ${kind === "receipt" ? "receipt" : kind === "expiry" ? "label" : "groceries"}</h3><p class="muted">Uploading to your configured scanner. You can cancel safely.</p><button class="btn btn-secondary" data-action="scan-cancel">Cancel</button></section>`,
+    );
+    const controller = new AbortController();
+    const ownerEpoch = ++scanEpoch;
+    scanAbort = controller;
+    try {
+      const raw = await scanFile({
+        ...payload,
+        kind,
+        config: scanConfig,
+        signal: controller.signal,
+      });
+      if (
+        controller.signal.aborted ||
+        scanAbort !== controller ||
+        scanEpoch !== ownerEpoch
+      )
+        return;
+      scanDraft = reviewScanDraft(raw, {
+        catalog: Object.entries(S.items).map(([id, item]) => ({ id, ...item })),
+      });
+      showScanReview();
+    } catch (error) {
+      if (
+        error?.name === "AbortError" ||
+        controller.signal.aborted ||
+        scanAbort !== controller ||
+        scanEpoch !== ownerEpoch
+      )
+        return;
+      openModal(
+        "Scan could not finish",
+        `<section class="notice notice-warning" role="alert"><b>Nothing was changed</b><p>${esc(error?.message || "Scanner request failed.")}</p></section><div class="form-actions">${button("Try another source", "go", "scan", "btn-primary")}${button("Connection", "scan-settings", "", "btn-secondary")}</div>`,
+      );
+    } finally {
+      if (scanAbort === controller) scanAbort = null;
+    }
+  }
+  function showScanReview() {
+    const draft = scanDraft;
+    if (!draft) return;
+    const currency = draft.currency || "Not provided";
+    const moneyDigits = currencyDigits(draft.currency);
+    const amountStep =
+      moneyDigits === 0 ? "1" : moneyDigits === 3 ? "0.001" : "0.01";
+    const moneyCurrencies = [
+      "",
+      "SAR",
+      "AED",
+      "EGP",
+      "USD",
+      "EUR",
+      "GBP",
+      "JOD",
+      "KWD",
+      "BHD",
+      "OMR",
+      "QAR",
+      "JPY",
+    ];
+    if (draft.currency && !moneyCurrencies.includes(draft.currency))
+      moneyCurrencies.push(draft.currency);
+    const lines = draft.lines
+      .map((line, index) => {
+        const match =
+          line.ingredientId && S.items[line.ingredientId]
+            ? line.ingredientId
+            : "";
+        if (draft.kind === "expiry")
+          return `<fieldset class="scan-line" data-line-id="${esc(line.lineId)}"><legend>Label ${index + 1}</legend><label class="checkbox-field scan-include"><input type="checkbox" name="include-${esc(line.lineId)}" checked><span>Include expiry update</span></label>${field("Detected item", `name-${line.lineId}`, line.name || "", "text", 'maxlength="200" required')}${field("Printed expiry", `expiry-${line.lineId}`, line.expiry || "", "date", "required")}<label class="field">Apply to existing ingredient<select name="target-${esc(line.lineId)}" required><option value="">Choose ingredient</option>${Object.entries(
+            S.items,
+          )
+            .map(
+              ([id, item]) =>
+                `<option value="${esc(id)}"${id === match ? " selected" : ""}>${esc(item.name)}</option>`,
+            )
+            .join(
+              "",
+            )}</select></label>${line.warnings?.length ? `<p class="scan-line-warning">${esc(line.warnings.join(" "))}</p>` : ""}</fieldset>`;
+        return `<fieldset class="scan-line" data-line-id="${esc(line.lineId)}"><legend>Line ${index + 1}</legend><label class="checkbox-field scan-include"><input type="checkbox" name="include-${esc(line.lineId)}" checked><span>Include food item</span></label>${field("Name", `name-${line.lineId}`, line.name || "", "text", 'maxlength="200" required')}
+      <div class="field-grid">${field("Quantity", `quantity-${line.lineId}`, line.quantity ?? "", "number", 'min="0" max="1000000000" step="any" inputmode="decimal" required')}<label class="field">Unit<select name="unit-${esc(line.lineId)}" required><option value="">Choose unit</option>${["g", "kg", "ml", "l", "count", "pieces", "bunches", "cloves", "slices"].map((unit) => `<option value="${unit}"${unit === line.unit ? " selected" : ""}>${unit}</option>`).join("")}</select></label></div>
+        <div class="field-grid"><label class="field">Location<select name="storage-${esc(line.lineId)}" required><option value="">Choose location</option>${options(["Fridge", "Freezer", "Pantry", "Spices"], line.storage || "")}</select></label>${field("Expiry (optional)", `expiry-${line.lineId}`, line.expiry || "", "date")}</div>
+      <div class="field-grid">${field(`Line cost (${draft.currency || "choose currency"}, optional)`, `cost-${line.lineId}`, line.lineTotalMinor == null || moneyDigits === null ? "" : formatMinorInput(line.lineTotalMinor, draft.currency), "number", `min="0" step="${amountStep}" inputmode="decimal" data-scan-money`)}<label class="field">Inventory action<select name="target-${esc(line.lineId)}"><option value="">Create new item</option>${Object.entries(
+        S.items,
+      )
+        .map(
+          ([id, item]) =>
+            `<option value="${esc(id)}"${id === match ? " selected" : ""}>Merge into ${esc(item.name)}</option>`,
+        )
         .join(
           "",
-        )}<p class="notice">Original sample total: ${money(r.lines.reduce((n, x) => n + x.cents, 0))}. <b data-revised-total>Reviewed total: ${money(r.lines.reduce((n, x) => n + x.cents, 0))}</b></p><label class="checkbox-field"><input type="checkbox" name="confirmed" required>I reviewed items, quantities, dates and total.</label><button class="btn btn-primary">Save once to kitchen & spending</button></form>`,
-      "camera",
+        )}</select></label></div>${line.warnings?.length ? `<p class="scan-line-warning">${esc(line.warnings.join(" "))}</p>` : ""}</fieldset>`;
+      })
+      .join("");
+    openModal(
+      "Review scan",
+      `<form data-form="scan-import" data-money-currency="${esc(draft.currency || "")}">${errors()}<div class="scan-result-meta"><span><b>${draft.lines.length}</b> extracted lines</span><span><b>${esc(currency)}</b> currency</span>${draft.merchant ? `<span><b>${esc(draft.merchant)}</b> merchant</span>` : ""}</div>${draft.kind === "receipt" ? `<fieldset class="scan-receipt-meta"><legend>Receipt details</legend><div class="field-grid">${field("Merchant / source", "scanMerchant", draft.merchant || "", "text", 'maxlength="200"')}${field("Receipt date (optional)", "scanReceiptDate", draft.receiptDate || "", "date")}</div><div class="field-grid"><label class="field">Currency<select name="scanCurrency">${moneyCurrencies.map((code) => `<option value="${code}"${code === (draft.currency || "") ? " selected" : ""}>${code || "Choose currency"}</option>`).join("")}</select></label>${field(`Receipt total (${draft.currency || "choose currency"})`, "scanTotal", draft.totalMinor == null || moneyDigits === null ? "" : formatMinorInput(draft.totalMinor, draft.currency), "number", `min="0" step="${amountStep}" inputmode="decimal" data-scan-money`)}</div><div class="field-grid">${field(`Additional tax (${draft.currency || "choose currency"})`, "scanTax", draft.taxMinor == null || moneyDigits === null ? "" : formatMinorInput(draft.taxMinor, draft.currency), "number", `min="0" step="${amountStep}" inputmode="decimal" data-scan-money`)}${field(`Receipt-level discount (${draft.currency || "choose currency"})`, "scanDiscount", draft.discountMinor == null || moneyDigits === null ? "" : formatMinorInput(draft.discountMinor, draft.currency), "number", `min="0" step="${amountStep}" inputmode="decimal" data-scan-money`)}</div><p class="details">Enter only tax added after line prices. Leave tax at zero when VAT is already included. Discount is subtracted from the line subtotal.</p>${moneyDigits === null && draft.currency ? '<p class="scan-line-warning">Unsupported currency. Choose a supported currency and re-enter all monetary amounts.</p>' : ""}<p class="scan-money-warning" data-money-warning role="status"></p><label class="checkbox-field"><input type="checkbox" name="excludeFinance"><span>Save inventory only; exclude this receipt from spending</span></label><p class="details">Choose this when excluding receipt lines or when currency and totals are incomplete or do not match.</p></fieldset>` : ""}${draft.warnings?.length ? `<section class="notice notice-warning"><b>Review needed</b><p>${esc(draft.warnings.join(" "))}</p></section>` : ""}<div class="scan-lines">${lines || '<p class="empty">Scanner returned no food lines.</p>'}</div><label class="checkbox-field scan-confirm"><input type="checkbox" name="confirmed" required><span>I checked every included line and chose create or merge.</span></label><button class="btn btn-primary" ${draft.lines.length ? "" : "disabled"}>Add reviewed items</button><p class="details">One confirmed save updates inventory${draft.kind === "receipt" ? " and receipt spending unless you explicitly exclude finance" : ""}. Cancel leaves both unchanged.</p></form>`,
+      "scan-review",
     );
   }
   function startTimer() {
@@ -823,11 +942,9 @@ import { createStateStore } from "./state-store.js";
       const el = event.target.closest("[data-action]");
       if (!el) return;
       const action = el.dataset.action;
-      if (!["scan-capture", "timer-wall", "assistant-voice"].includes(action))
-        return;
+      if (!["timer-wall", "assistant-voice"].includes(action)) return;
       event.preventDefault();
       event.stopImmediatePropagation();
-      if (action === "scan-capture") return captureScan(el.dataset.id);
       if (action === "assistant-voice") {
         const q = "What can I cook with what I have?";
         S.chat.push({
@@ -871,21 +988,6 @@ import { createStateStore } from "./state-store.js";
       const form = event.target.closest("form[data-form]");
       if (!form) return;
       const kind = form.dataset.form;
-      if (kind === "receipt") {
-        const incompatible = D.receipts[form.dataset.source].lines.find(
-          (line) =>
-            S.items[line.id] && S.items[line.id].unit !== D.items[line.id].unit,
-        );
-        if (incompatible) {
-          event.preventDefault();
-          event.stopImmediatePropagation();
-          return formError(
-            form,
-            `${S.items[incompatible.id].name} uses ${S.items[incompatible.id].unit}, but this DEMO receipt uses ${D.items[incompatible.id].unit}. Correct its unit in Kitchen first.`,
-          );
-        }
-        return;
-      }
       if (!["assistant", "budget", "meal"].includes(kind)) return;
       event.preventDefault();
       event.stopImmediatePropagation();
@@ -1052,7 +1154,115 @@ import { createStateStore } from "./state-store.js";
       backgroundSave();
       return navigate("shopping");
     }
-    if (a === "scan-mode") return scanMode(id);
+    if (a === "scan-settings") return scanConnectionForm();
+    if (a === "scan-choose") return scanSourceDialog(id);
+    if (a === "scan-cancel") {
+      cancelScan();
+      closeModal();
+      return navigate("scan");
+    }
+    if (a === "scan-browser") {
+      try {
+        if (window.NomliNative?.isNative && window.NomliNative?.pickScanFile) {
+          const nativePhoto = await window.NomliNative.pickScanFile({
+            allowPdf: id.startsWith("receipt"),
+          });
+          if (!nativePhoto || nativePhoto.cancelled) return;
+          return runScan(id, { nativePhoto });
+        }
+        const file = await chooseScanFile(id);
+        if (!file) return;
+        assertScanFile(file, id.startsWith("receipt"));
+        return runScan(id, { file });
+      } catch (error) {
+        return announce(error?.message || "File could not be opened.");
+      }
+    }
+    if (a === "scan-native") {
+      try {
+        const nativePhoto = await window.NomliNative?.camera?.();
+        if (!nativePhoto) return;
+        return runScan(id, { nativePhoto });
+      } catch (error) {
+        return announce(error?.message || "Camera or gallery was cancelled.");
+      }
+    }
+    if (a === "scan-setup-qr") {
+      const form = el.closest('form[data-form="scan-config"]');
+      const status = $("[data-connection-status]", form);
+      try {
+        const result = await window.NomliNative?.barcode?.({
+          instructions: "Scan your private Nomli setup QR",
+        });
+        if (!document.contains(form)) return;
+        if (!result?.ScanResult) {
+          status.textContent = "Setup scan cancelled. Nothing changed.";
+          return;
+        }
+        let payload;
+        try {
+          payload = JSON.parse(result.ScanResult);
+        } catch {
+          throw new Error("This is not a valid Nomli setup QR.");
+        }
+        if (payload?.type !== "nomli-scan-setup" || payload?.version !== 1)
+          throw new Error("This is not a valid Nomli setup QR.");
+        const candidate = validateScanConfig({
+          apiUrl: payload.apiUrl,
+          deviceToken: payload.deviceToken,
+        });
+        form.elements.apiUrl.value = candidate.apiUrl;
+        form.elements.deviceToken.value = candidate.deviceToken;
+        status.textContent = "Setup loaded. Test, then save connection.";
+      } catch (error) {
+        if (!document.contains(form)) return;
+        status.textContent = /cancel/i.test(String(error?.message || ""))
+          ? "Setup scan cancelled. Nothing changed."
+          : error?.message || "Setup QR could not be read.";
+      }
+      return;
+    }
+    if (a === "scan-test") {
+      const form = el.closest('form[data-form="scan-config"]');
+      const status = $("[data-connection-status]", form);
+      const fd = new FormData(form);
+      const candidate = {
+        apiUrl: String(fd.get("apiUrl") || "").trim(),
+        deviceToken: String(fd.get("deviceToken") || ""),
+      };
+      if (!form.checkValidity())
+        return formError(form, "Enter HTTPS API URL and device access code.");
+      try {
+        validateScanConfig(candidate);
+      } catch (error) {
+        return formError(
+          form,
+          error?.message || "Connection details are invalid.",
+        );
+      }
+      const controller = new AbortController();
+      const errorBox = $("[data-error]", form);
+      if (errorBox) { errorBox.hidden = true; errorBox.textContent = ""; }
+      for (const field of form.elements) {
+        field.removeAttribute?.("aria-invalid");
+        if (field.getAttribute?.("aria-describedby") === "form-error") field.removeAttribute("aria-describedby");
+      }
+      el.disabled = true;
+      status.textContent = "Testing secure connection…";
+      try {
+        const result = await testScanConnection(candidate, {
+          signal: controller.signal,
+        });
+        status.textContent = result?.ready
+          ? "Scanner is ready."
+          : "Scanner responded but is not ready.";
+      } catch (error) {
+        status.textContent = `Connection failed: ${error?.message || "scanner unavailable"}`;
+      } finally {
+        el.disabled = false;
+      }
+      return;
+    }
     if (a === "recipe") {
       S.recipe = id;
       backgroundSave();
@@ -1124,6 +1334,44 @@ import { createStateStore } from "./state-store.js";
   });
   document.addEventListener("change", (e) => {
     if (operationBusy) return;
+    if (e.target.matches('[data-form="scan-import"] [name="scanCurrency"]')) {
+      const form = e.target.closest('form[data-form="scan-import"]');
+      const nextCurrency = e.target.value;
+      if (nextCurrency !== form.dataset.moneyCurrency) {
+        form.querySelectorAll("[data-scan-money]").forEach((input) => {
+          input.value = "";
+          const digits = currencyDigits(nextCurrency);
+          input.step = digits === 0 ? "1" : digits === 3 ? "0.001" : "0.01";
+          const label = input.closest("label");
+          if (label?.firstChild?.nodeType === Node.TEXT_NODE)
+            label.firstChild.nodeValue =
+              input.name === "scanTotal"
+                ? `Receipt total (${nextCurrency || "choose currency"})`
+                : input.name === "scanTax"
+                  ? `Additional tax (${nextCurrency || "choose currency"})`
+                  : input.name === "scanDiscount"
+                    ? `Receipt-level discount (${nextCurrency || "choose currency"})`
+                    : `Line cost (${nextCurrency || "choose currency"}, optional)`;
+        });
+        form.dataset.moneyCurrency = nextCurrency;
+        const warning = $("[data-money-warning]", form);
+        if (warning)
+          warning.textContent = nextCurrency
+            ? "Currency changed. Re-enter receipt total and every line cost; prior numbers were cleared to avoid reinterpretation."
+            : "Choose a supported currency or exclude this receipt from spending.";
+      }
+      return;
+    }
+    const include = e.target.closest('.scan-line input[name^="include-"]');
+    if (include) {
+      include
+        .closest("fieldset")
+        .querySelectorAll("input:not([name^='include-']), select")
+        .forEach((control) => {
+          control.disabled = !include.checked;
+        });
+      return;
+    }
     const el = e.target.closest("[data-change]");
     if (!el) return;
     const what = el.dataset.change;
@@ -1158,6 +1406,164 @@ import { createStateStore } from "./state-store.js";
       return formError(form, "Review required fields before saving.");
     const fd = new FormData(form),
       kind = form.dataset.form;
+    if (kind === "scan-config") {
+      const candidate = {
+        apiUrl: String(fd.get("apiUrl") || "").trim(),
+        deviceToken: String(fd.get("deviceToken") || ""),
+      };
+      try {
+        validateScanConfig(candidate);
+      } catch (error) {
+        return formError(
+          form,
+          error?.message || "Connection details are invalid.",
+        );
+      }
+      setBusy(true, form);
+      try {
+        await saveScanConfig(candidate);
+        scanConfig = candidate;
+      } catch (error) {
+        setBusy(false, form);
+        return formError(
+          form,
+          `Connection was not saved: ${error?.message || "device storage failed"}`,
+        );
+      }
+      setBusy(false, form);
+      closeModal();
+      announce("Scan connection saved on this device.");
+      return render();
+    }
+    if (kind === "scan-import") {
+      if (!scanDraft)
+        return formError(form, "Scan review expired. Scan the source again.");
+      const excludedLineIds = [];
+      const mergeTargets = {};
+      const reviewedCurrency =
+        scanDraft.kind === "receipt"
+          ? String(fd.get("scanCurrency") || "")
+              .trim()
+              .toUpperCase() || null
+          : scanDraft.currency;
+      try {
+        for (const fieldName of ["scanTotal", "scanTax", "scanDiscount"]) {
+          const amount = String(fd.get(fieldName) ?? "");
+          if (amount !== "") parseMinorAmount(amount, reviewedCurrency);
+        }
+        for (const line of scanDraft.lines) {
+          const cost = String(fd.get(`cost-${line.lineId}`) ?? "");
+          if (cost !== "") parseMinorAmount(cost, reviewedCurrency);
+        }
+      } catch (error) {
+        return formError(
+          form,
+          error?.message || "Review monetary amounts and currency.",
+        );
+      }
+      const editedLines = scanDraft.lines.map((line) => {
+        const included = fd.has(`include-${line.lineId}`);
+        if (!included) {
+          excludedLineIds.push(line.lineId);
+          return line;
+        }
+        const quantityText = String(fd.get(`quantity-${line.lineId}`) ?? "");
+        const costText = String(fd.get(`cost-${line.lineId}`) ?? "");
+        const target = String(fd.get(`target-${line.lineId}`) || "");
+        if (target) mergeTargets[line.lineId] = target;
+        return {
+          ...line,
+          name: String(fd.get(`name-${line.lineId}`) || "").trim(),
+          quantity: quantityText === "" ? null : Number(quantityText),
+          unit: String(fd.get(`unit-${line.lineId}`) || "") || null,
+          storage: String(fd.get(`storage-${line.lineId}`) || "") || null,
+          expiry: String(fd.get(`expiry-${line.lineId}`) || "") || null,
+          expiryProvenance: fd.get(`expiry-${line.lineId}`) ? "printed" : null,
+          lineTotalMinor:
+            costText === ""
+              ? null
+              : parseMinorAmount(costText, reviewedCurrency),
+        };
+      });
+      if (excludedLineIds.length === scanDraft.lines.length)
+        return formError(form, "Include at least one food item.");
+      const receiptTotalText = String(fd.get("scanTotal") ?? "");
+      const receiptTaxText = String(fd.get("scanTax") ?? "");
+      const receiptDiscountText = String(fd.get("scanDiscount") ?? "");
+      const editedDraft = {
+        ...scanDraft,
+        merchant:
+          scanDraft.kind === "receipt"
+            ? String(fd.get("scanMerchant") || "").trim() || null
+            : scanDraft.merchant,
+        receiptDate:
+          scanDraft.kind === "receipt"
+            ? String(fd.get("scanReceiptDate") || "").trim() || null
+            : scanDraft.receiptDate,
+        currency: reviewedCurrency,
+        totalMinor:
+          scanDraft.kind === "receipt" && receiptTotalText !== ""
+            ? parseMinorAmount(receiptTotalText, reviewedCurrency)
+            : scanDraft.kind === "receipt"
+              ? null
+              : scanDraft.totalMinor,
+        taxMinor:
+          scanDraft.kind === "receipt" && receiptTaxText !== ""
+            ? parseMinorAmount(receiptTaxText, reviewedCurrency)
+            : scanDraft.kind === "receipt"
+              ? null
+              : scanDraft.taxMinor,
+        discountMinor:
+          scanDraft.kind === "receipt" && receiptDiscountText !== ""
+            ? parseMinorAmount(receiptDiscountText, reviewedCurrency)
+            : scanDraft.kind === "receipt"
+              ? null
+              : scanDraft.discountMinor,
+        lines: editedLines,
+      };
+      let result;
+      try {
+        result = commitScanDraft(S, editedDraft, {
+          confirmed: fd.has("confirmed"),
+          excludeFinance: fd.has("excludeFinance"),
+          edits: {},
+          mergeTargets,
+          excludedLineIds,
+        });
+      } catch (error) {
+        return formError(
+          form,
+          error?.message || "Review could not be committed.",
+        );
+      }
+      const saved = await commit(() => {
+        result = commitScanDraft(S, editedDraft, {
+          confirmed: fd.has("confirmed"),
+          excludeFinance: fd.has("excludeFinance"),
+          edits: {},
+          mergeTargets,
+          excludedLineIds,
+        });
+        S = result.state;
+      }, "");
+      if (saved) {
+        announce(
+          result.replayed
+            ? "This reviewed scan was already saved; nothing changed."
+            : editedDraft.kind === "receipt" && result.financeExcluded
+              ? "Inventory updated. Receipt spending was explicitly excluded."
+              : editedDraft.kind === "receipt"
+                ? "Reviewed scan saved. Inventory and spending updated once."
+                : "Reviewed scan saved. Inventory updated once.",
+        );
+        scanDraft = null;
+        closeModal();
+        return navigate(
+          editedDraft.kind === "receipt" ? "expenses" : "kitchen",
+        );
+      }
+      return;
+    }
     if (kind === "backup") {
       if (fd.get("confirmation") !== "REPLACE")
         return formError(form, "Type REPLACE exactly to continue.");
@@ -1217,43 +1623,6 @@ import { createStateStore } from "./state-store.js";
       if (provenance === "printed") S.items[id].printedExpiry = expiry;
       else if (prior.printedExpiry !== expiry) delete S.items[id].printedExpiry;
     }
-    if (kind === "scan") {
-      [...form.querySelectorAll("fieldset")].forEach((fs) => {
-        const id = $("[name^='qty-']", fs).name.slice(4);
-        S.items[id] ||= { ...D.items[id], qty: 0 };
-        S.items[id].qty = Number(fd.get("qty-" + id));
-        S.items[id].expiry = fd.get("expiry-" + id);
-        S.items[id].estimated = false;
-        S.items[id].expiryProvenance = "printed";
-      });
-    }
-    if (kind === "receipt") {
-      const source = form.dataset.source;
-      if (S.receipts.some((r) => r.source === source))
-        return formError(form, "This sample receipt was already saved.");
-      const lines = D.receipts[source].lines.map((l) => ({
-        id: l.id,
-        name: String(fd.get("name-" + l.id)).trim(),
-        qty: Number(fd.get("qty-" + l.id)),
-        cents: Math.round(Number(fd.get("price-" + l.id)) * 100),
-        expiry: fd.get("expiry-" + l.id),
-      }));
-      if (lines.some((x) => !Number.isSafeInteger(x.cents) || x.cents < 0))
-        return formError(
-          form,
-          "Enter valid line totals with no more than two decimals.",
-        );
-      lines.forEach((l) => {
-        S.items[l.id] ||= { ...D.items[l.id], qty: 0 };
-        S.items[l.id].name = l.name;
-        S.items[l.id].qty += l.qty;
-        S.items[l.id].expiry = l.expiry;
-        S.items[l.id].estimated = false;
-        S.items[l.id].expiryProvenance = "printed";
-        S.shopping = S.shopping.filter((x) => x.id !== l.id);
-      });
-      S.receipts.push({ source, name: D.receipts[source].name, lines });
-    }
     if (kind === "profile") {
       S.profile.cuisine = fd.get("cuisine");
       S.profile.time = Number(fd.get("time"));
@@ -1276,10 +1645,6 @@ import { createStateStore } from "./state-store.js";
     }
     setBusy(false, form);
     closeModal();
-    if (kind === "receipt") {
-      announce("Reviewed receipt saved once. Stock and spending updated.");
-      return navigate("expenses");
-    }
     if (kind === "meal") {
       announce("Meal saved. Inventory updated.");
       return navigate("kitchen");

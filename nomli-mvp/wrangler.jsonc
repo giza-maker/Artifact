@@ -1,0 +1,15 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "nomli-scan-proxy",
+  "main": "server/scan-proxy.mjs",
+  "compatibility_date": "2026-10-26",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": { "enabled": true, "head_sampling_rate": 0.1 },
+  "vars": {
+    "SCAN_PROVIDER": "gemini",
+    "GEMINI_MODEL": "gemini-3.1-flash-lite",
+    "ALLOWED_ORIGINS": "https://localhost",
+    "LOCAL_DEV": "false"
+  },
+  "ratelimits": [{ "name": "SCAN_RATE_LIMITER", "namespace_id": "72461026", "simple": { "limit": 10, "period": 60 } }]
+}

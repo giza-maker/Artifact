@@ -1,4 +1,5 @@
 let backupPlugin;
+let scanPlugin;
 
 async function getBackupPlugin() {
   if (!backupPlugin) {
@@ -6,6 +7,14 @@ async function getBackupPlugin() {
     backupPlugin = registerPlugin("NomliBackup");
   }
   return backupPlugin;
+}
+
+async function getScanPlugin() {
+  if (!scanPlugin) {
+    const { registerPlugin } = await import("@capacitor/core");
+    scanPlugin = registerPlugin("NomliScan");
+  }
+  return scanPlugin;
 }
 
 // Capture only. Recognition/lookup must run server-side and return an editable draft.
@@ -26,12 +35,19 @@ window.NomliNative = Object.freeze({
       saveToGallery: false,
     });
   },
-  async barcode() {
+  async pickScanFile({ allowPdf = false } = {}) {
+    const plugin = await getScanPlugin();
+    return plugin.pickScanFile({ allowPdf: allowPdf === true });
+  },
+  async barcode({ instructions = "Center a grocery barcode" } = {}) {
     const { CapacitorBarcodeScanner, CapacitorBarcodeScannerTypeHint } =
       await import("@capacitor/barcode-scanner");
     return CapacitorBarcodeScanner.scanBarcode({
       hint: CapacitorBarcodeScannerTypeHint.ALL,
-      scanInstructions: "Center a grocery barcode",
+      scanInstructions:
+        typeof instructions === "string" && instructions.trim()
+          ? instructions.trim()
+          : "Center a grocery barcode",
       scanButton: false,
     });
   },
