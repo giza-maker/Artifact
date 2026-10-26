@@ -8,7 +8,7 @@ Highest visual reference: user-selected `approved_nurimi_brand_reference.png` in
 
 ## Design read
 
-Playful grown-up beauty with clear product information. A tactile cream canvas, oversized Arabic typography, original manufacturer packshots, sharp plum rules, and coral punctuation. A generated physical studio turns the four-point coral sparkle into a translucent sculpture; macro cream and gel imagery adds texture. These are illustrative campaign environments, never synthetic replacement labels or claims about a particular formula. No generic beauty-model hero, flower collage, false social proof, or black/gold luxury detour.
+Playful grown-up beauty with clear product information. A tactile cream canvas, oversized Arabic typography, sharp plum rules, and coral punctuation. Twenty-three generated product scenes extend the system across four sets: Anua uses sage, glass and water; Arencia uses lilac, a curved platform and a glass crescent; Celimax uses ivory, frosted rectangular glass and a sage edge; Mixa uses butter, ceramic and peach. Original packaging remains available in each product dialog. A separate generated physical studio turns the four-point coral sparkle into a translucent sculpture, while macro cream and gel imagery adds texture. These are illustrative environments, never replacement-label evidence or claims about a formula. No generic beauty-model hero, flower collage, false social proof, or black/gold luxury detour.
 
 The signature is a useful retail ritual: look behind the hype. A Spark Lens focuses on packaging and product facts, Skin Receipts expose source and verification state, and Skin Moods help browse goals without diagnosing skin. Shopping and brand studio are two views of one system.
 
@@ -26,8 +26,8 @@ The signature is a useful retail ritual: look behind the hype. A Spark Lens focu
 
 ## Product truth
 
-Manufacturer page/packshot informs identification and neutral description. It does not verify the seller's Saudi batch, stock, price, expiry, sourcing, product notification, or delivery. These fields remain null/pending. Prototype bag can accept items and simulate review/completion with no charge or transmission. Retinoid comparison never becomes an instruction to combine products.
+Manufacturer pages and packshots inform identification and neutral description. Visual ingredient, benefit and use cards expose their supporting evidence without claiming clinical certainty. They do not verify the seller's Saudi batch, stock, price, expiry, sourcing, product notification, delivery or exact local formula. Exact local INCI matching remains pending for P016 160 ml and P017 100 ml; P018 uses documented reference evidence because its manufacturer page is retired. These fields remain null or pending. Prototype bag can accept items and simulate review/completion with no charge or transmission. Retinoid comparison never becomes an instruction to combine products.
 
 ## Delivery
 
-Buildless HTML/CSS/JS, portable to existing GitHub Pages artifact deployment under `nurimi/`. Preserve sibling artifacts. Product dataset, design tokens, digitized SVG source, receipt text and brand guidelines are editable/downloadable. No production merchant integration or live checkout.
+Buildless HTML/CSS/JS, portable to existing GitHub Pages artifact deployment under `nurimi/`. Preserve sibling artifacts. `product-details.css`, `data/product-breakdowns.json` and `data/breakdown-sources.md` define the expanded product-detail system. Generated scene records live in `assets/product-scenes/provenance.md`, and `downloads/NURIMI-product-visuals.zip` packages the product visuals. Product data, design tokens, digitized SVG source, receipt text and brand guidelines remain editable or downloadable. No production merchant integration or live checkout.

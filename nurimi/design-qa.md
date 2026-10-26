@@ -30,3 +30,13 @@ P007 and P017 cutouts preserve supplied product identities and sizes. Original p
 JavaScript syntax, unique HTML IDs, icon references, local assets, 23 unique product IDs and null commercial values checked. Core contrast anchors remain plum/ivory 13.01:1 and white/cherry 5.97:1. Updated eight-page PDF rendered and visually reviewed. Brand ZIP validated with 20 entries, current guide, editable artwork, tokens and campaign assets.
 
 This passes design/prototype review. Merchant details, actual prices and quantities, local unit verification, fulfillment and payment integration remain required for commerce launch.
+
+## Product photography and detail release — 26 October 2026
+
+All 23 SKU scenes reviewed together and individually for identity, form and visible size. The four sets share square framing, complete packages and soft directional light: Anua sage/glass/water, Arencia lilac/glass crescent, Celimax ivory/frosted glass and Mixa butter/ceramic. P016's wrong 205 ml jar reference was rejected; final scene uses the supplied 160 ml retail box. P018's printed 20% artwork was restored as packaging artwork only. Original supplied Mixa and P016 photos remain available. Generated microtype is presentation artwork rather than formula or batch evidence.
+
+Product details now show selected ingredient roles, cosmetic benefits, usage, caution and source notes. P016 exact local formula and P017 100 ml formula stay pending; P018's retired-page evidence is labeled. No ingredient list was borrowed from a different-size package for those uncertain variants.
+
+Desktop and 390 px mobile product scene, original-photo toggle, ingredient navigation and benefit panels visually reviewed. Additional 320 × 740 Arabic review confirms no dialog overflow, 44 px close/quantity targets and keyboard focus on the selected section heading. New detail quantity → add → view bag retained quantity two. Bag and comparison thumbnails use the generated scene with normal blending. Native dialog close restores focus. English pending-formula state reviewed. Reduced-motion paths remain in place; no continuous decorative animation added.
+
+Structural checks pass: 23 catalog records match 23 breakdown records and 23 square scenes; all local image references, source sections, icon IDs and bilingual copy exist; commercial fields remain null. JavaScript syntax and ZIP CRC pass. All scene WebPs total 845,678 bytes. The separate product-visuals kit includes scenes, generation record, hashes and breakdown sources.

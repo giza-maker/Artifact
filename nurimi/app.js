@@ -89,7 +89,7 @@
   }
   function renderReceipt(){
     const p=state.products.find(p=>p.id===state.receipt);if(!p)return;
-    $('#receipt-product-image').src=p.image;$('#receipt-product-image').alt=`${p.brand} ${value(p.name)}`;
+    $('#receipt-product-image').src=p.sceneImage||p.image;$('#receipt-product-image').alt=`${p.brand} ${value(p.name)}`;
     const rows=[ [text('الحجم','Size'),value(p.sizeLabel)], [text('الاختيار','The pick'),value(p.format)], [text('مكوّن بارز','Featured ingredient'),value(p.ingredient)], [text('سبب الاختيار','Why in the edit'),value(p.why)], [text('الاستخدام','Directions'),value(p.use)], [text('ننتبه لـ','Keep in mind'),value(p.caution)], [text('الدفعة والصلاحية','Batch & expiry'),text('تُضاف بعد التحقق المحلي','Pending local verification')], [text('السعر والمخزون','Price & stock'),text('قيد التأكيد','To be confirmed')] ];
     $('#builder-ticket').innerHTML=`<div class="ticket-brand"><img src="assets/brand/logo.svg" alt="nurimi."><span dir="ltr">SKIN RECEIPT / ${escape(p.id)}</span></div><p class="receipt-brand" dir="ltr">${escape(p.brand)}</p><h3>${escape(value(p.name))}</h3><dl>${rows.map(([key,val])=>`<div><dt>${escape(key)}</dt><dd>${escape(val)}</dd></div>`).join('')}</dl><p class="receipt-source">${text('مرجع معلومات المنتج:','Product information:')} <a href="${escape(p.sourceUrl)}" target="_blank" rel="noopener">${escape(value(p.sourceLabel)||p.brand)} ↗</a><br>${text('مرجع المنتج لا يؤكد بيانات الدفعة المحلية.','The product reference does not verify the local inventory batch.')}</p>`;
   }

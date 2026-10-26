@@ -73,3 +73,12 @@ P017 links to the supplied photograph as its primary evidence; the related 50 ml
 ### Anua presentation cutouts
 
 Final P007 and P017 cards use `p007-clean.webp` and `p017-clean.webp`, transparent background-cleanup edits made with OpenAI image generation from the exact supplied photographs. Names, front artwork, sizes and packaging forms were visually compared with their references. Small occluded edges were reconstructed, so these are presentation images rather than literal pixel masks. P007's reconstructed lower batch/expiry ink was removed entirely; no generated code is presented as evidence. Both original photographs remain available and are recorded in `originalImage`. Final images are 675 × 1200 WebP, 58,700 and 50,486 bytes respectively. No product identity, front label or size was substituted.
+
+
+## Product-scene release — 26 October 2026
+
+The final catalog now uses 23 generated brand-scene photographs rather than the earlier plain packshots described above. `assets/product-scenes/provenance.md` and `manifest.json` record inputs, prompts, known limitations and final file hashes. Original packaging remains available in each product dialog. The scene images never verify formula or commercial inventory facts.
+
+P016 was regenerated from the exact supplied 160 ml Clear Pad retail box; the earlier 205 ml manufacturer jar remains only an archived image reference, not the displayed product. `p016-inventory.webp` is the original packaging toggle. PHA, centella and exfoliation claims were removed until the exact local back-label is matched. Mixa originals now use exact supplied jar photos `p022-inventory.webp` and `p023-inventory.webp`; their volumes remain pending. P017's 100 ml formula remains unconfirmed. P018's retired-page limitation remains explicit.
+
+Selected ingredient, benefit and use cards are recorded separately in `product-breakdowns.json`, with primary sources and exceptions in `breakdown-sources.md`. They are not full INCI lists.

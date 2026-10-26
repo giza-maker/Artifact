@@ -6,6 +6,12 @@ Campaign scenery and a macro texture still were generated with OpenAI image gene
 
 The inventory now includes 22 identities / 23 size variants across Anua, Arencia, Celimax and Mixa. Product image and source exceptions are recorded in [catalog source notes](data/source-notes.md). Two Anua inventory photos are cleaned into transparent presentation cutouts; visible product names, sizes and packaging forms follow supplied photographs. Those cutouts are not literal pixel masks, batch-code evidence, or proof of local stock. P017's original photograph remains its primary source reference. P018 uses a documented retailer packshot because its manufacturer page is retired.
 
+## Product scenes and detail evidence
+
+The catalog includes 23 generated scene images in `assets/product-scenes/`. Four visual sets keep manufacturer packaging distinct: Anua uses sage, glass and water; Arencia uses lilac, a curved platform and a glass crescent; Celimax uses ivory, frosted rectangular glass and a sage edge; Mixa uses butter, ceramic and peach. Product dialogs retain an original-packaging view. Generation inputs and output records are documented in [product-scene provenance](assets/product-scenes/provenance.md), and `downloads/NURIMI-product-visuals.zip` packages the product visuals.
+
+`data/product-breakdowns.json` supplies visual ingredient, benefit and use cards. Supporting links and review boundaries are recorded in [breakdown sources](data/breakdown-sources.md). Featured ingredients are not full local INCI lists, and cosmetic descriptions do not assert clinical certainty. Exact local INCI matching remains pending for the supplied P016 160 ml and P017 100 ml variants. P018 uses documented reference evidence because its manufacturer page is retired.
+
 ## Status
 
 Concept digitization from supplied references. Needs brand-owner optical approval and trademark/legal clearance before designation as cleared master artwork.

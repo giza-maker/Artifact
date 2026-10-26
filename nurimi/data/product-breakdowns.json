@@ -1,0 +1,1761 @@
+{
+  "reviewed": "2026-10-26",
+  "products": {
+    "P001": {
+      "intro": {
+        "ar": "سيروم ليلي بالريتينول يجمع العناية بمظهر الملمس مع مكونات داعمة للترطيب.",
+        "en": "A retinol night serum that pairs texture-focused care with hydration-supporting ingredients."
+      },
+      "ingredients": [
+        {
+          "name": {
+            "ar": "ريتينول",
+            "en": "Retinol"
+          },
+          "role": {
+            "ar": "ريتينويد للعناية بمظهر الملمس والخطوط.",
+            "en": "A retinoid used for the look of texture and lines."
+          },
+          "icon": "moon"
+        },
+        {
+          "name": {
+            "ar": "بانثينول",
+            "en": "Panthenol"
+          },
+          "role": {
+            "ar": "مرطب يساعد على راحة البشرة.",
+            "en": "A humectant that supports skin comfort."
+          },
+          "icon": "droplet"
+        },
+        {
+          "name": {
+            "ar": "ببتيدات",
+            "en": "Peptides"
+          },
+          "role": {
+            "ar": "تدعم مظهر بشرة أكثر نعومة.",
+            "en": "Support a smoother-looking finish."
+          },
+          "icon": "sparkles"
+        }
+      ],
+      "benefits": [
+        {
+          "title": {
+            "ar": "عناية ليلية بالملمس",
+            "en": "Night texture care"
+          },
+          "description": {
+            "ar": "مصمم لتحسين مظهر عدم تجانس الملمس تدريجيًا.",
+            "en": "Designed to refine the look of uneven texture over time."
+          },
+          "icon": "moon"
+        },
+        {
+          "title": {
+            "ar": "ترطيب داعم",
+            "en": "Supportive hydration"
+          },
+          "description": {
+            "ar": "يوازن خطوة الريتينول بمكونات مرطبة.",
+            "en": "Balances the retinol step with moisturizing ingredients."
+          },
+          "icon": "droplet"
+        }
+      ],
+      "useMoment": {
+        "ar": "مساءً في خطوة السيروم، ثم مرطب.",
+        "en": "Evening serum step, followed by moisturizer."
+      },
+      "caution": {
+        "ar": "ابدأ تدريجيًا. لا تجمعه مع ريتينويد آخر. تجنبه أثناء الحمل واستخدم واقي شمس نهارًا.",
+        "en": "Introduce gradually. Do not pair with another retinoid. Avoid during pregnancy and use daytime sunscreen."
+      },
+      "evidence": {
+        "status": "manufacturer",
+        "note": {
+          "ar": "التركيبة والمكونات البارزة من صفحة Celimax؛ الوحدة المحلية ما زالت بحاجة للتحقق.",
+          "en": "Format and featured ingredients come from Celimax; local-unit verification remains pending."
+        },
+        "urls": [
+          "https://celimax.us/products/the-vita-a-retinol-shot-tightening-serum-30ml"
+        ]
+      }
+    },
+    "P002": {
+      "intro": {
+        "ar": "سيروم ريتينال خفيف للاستخدام المسائي مع مكونات مرطبة ومريحة.",
+        "en": "A lightweight retinal serum for evening use with moisturizing, comfort-focused ingredients."
+      },
+      "ingredients": [
+        {
+          "name": {
+            "ar": "ريتينال",
+            "en": "Retinal"
+          },
+          "role": {
+            "ar": "ريتينويد للعناية بمظهر الملمس والخطوط.",
+            "en": "A retinoid used for the look of texture and lines."
+          },
+          "icon": "moon"
+        },
+        {
+          "name": {
+            "ar": "إكتوين",
+            "en": "Ectoin"
+          },
+          "role": {
+            "ar": "يساعد على دعم الترطيب وراحة البشرة.",
+            "en": "Helps support hydration and skin comfort."
+          },
+          "icon": "shield-check"
+        },
+        {
+          "name": {
+            "ar": "ببتيدات",
+            "en": "Peptides"
+          },
+          "role": {
+            "ar": "تدعم مظهرًا أكثر نعومة.",
+            "en": "Support a smoother-looking finish."
+          },
+          "icon": "sparkles"
+        }
+      ],
+      "benefits": [
+        {
+          "title": {
+            "ar": "ملمس أكثر نعومة",
+            "en": "Smoother-looking texture"
+          },
+          "description": {
+            "ar": "خطوة مركزة لمظهر الملمس غير المتجانس.",
+            "en": "A focused step for the look of uneven texture."
+          },
+          "icon": "sparkles"
+        },
+        {
+          "title": {
+            "ar": "قوام خفيف",
+            "en": "Lightweight layer"
+          },
+          "description": {
+            "ar": "يناسب خطوة السيروم قبل المرطب.",
+            "en": "Fits easily before moisturizer."
+          },
+          "icon": "droplet"
+        }
+      ],
+      "useMoment": {
+        "ar": "مساءً بعد التونر وقبل المرطب.",
+        "en": "Evening, after toner and before moisturizer."
+      },
+      "caution": {
+        "ar": "ابدأ تدريجيًا. لا تجمعه مع ريتينويد آخر. تجنبه أثناء الحمل واستخدم واقي شمس نهارًا.",
+        "en": "Introduce gradually. Do not pair with another retinoid. Avoid during pregnancy and use daytime sunscreen."
+      },
+      "evidence": {
+        "status": "manufacturer",
+        "note": {
+          "ar": "مستند إلى صفحة Arencia الرسمية؛ لا تُعد أرقام اسم المنتج دليلاً على تركيز إضافي.",
+          "en": "Based on Arencia's official page; product-name numbers are not treated as additional concentration evidence."
+        },
+        "urls": [
+          "https://arencia.us/products/retinal-booster-shot-advanced-retinal-caffeine-formula"
+        ]
+      }
+    },
+    "P003": {
+      "intro": {
+        "ar": "سيروم مرطب بصوديوم دي إن إيه والببتيدات والبانثينول.",
+        "en": "A moisturizing serum featuring sodium DNA, peptides, and panthenol."
+      },
+      "ingredients": [
+        {
+          "name": {
+            "ar": "صوديوم دي إن إيه",
+            "en": "Sodium DNA"
+          },
+          "role": {
+            "ar": "مكوّن مميز في تركيبة السيروم المرطبة.",
+            "en": "A featured component in the moisturizing serum formula."
+          },
+          "icon": "sparkles"
+        },
+        {
+          "name": {
+            "ar": "بانثينول",
+            "en": "Panthenol"
+          },
+          "role": {
+            "ar": "مرطب يدعم راحة البشرة.",
+            "en": "A humectant that supports skin comfort."
+          },
+          "icon": "droplet"
+        },
+        {
+          "name": {
+            "ar": "نياسيناميد",
+            "en": "Niacinamide"
+          },
+          "role": {
+            "ar": "يدعم مظهر لون أكثر تجانسًا.",
+            "en": "Supports a more even-looking tone."
+          },
+          "icon": "sun"
+        }
+      ],
+      "benefits": [
+        {
+          "title": {
+            "ar": "دفعة ترطيب",
+            "en": "Hydration boost"
+          },
+          "description": {
+            "ar": "يضيف طبقة خفيفة من الترطيب.",
+            "en": "Adds a lightweight layer of hydration."
+          },
+          "icon": "droplet"
+        },
+        {
+          "title": {
+            "ar": "إشراقة ناعمة",
+            "en": "Soft radiance"
+          },
+          "description": {
+            "ar": "يدعم مظهر البشرة الممتلئة والمشرقة.",
+            "en": "Supports a plumper, radiant-looking finish."
+          },
+          "icon": "sparkles"
+        }
+      ],
+      "useMoment": {
+        "ar": "صباحًا أو مساءً في خطوة السيروم.",
+        "en": "Morning or evening at the serum step."
+      },
+      "caution": {
+        "ar": "راجع قائمة العبوة وأوقف الاستخدام عند التهيج.",
+        "en": "Check the pack ingredient list and stop if irritation occurs."
+      },
+      "evidence": {
+        "status": "manufacturer",
+        "note": {
+          "ar": "المكونات البارزة والاستخدام التجميلي من Arencia؛ PDRN ليس نسبة معلنة هنا.",
+          "en": "Featured ingredients and cosmetic use come from Arencia; PDRN is not presented here as a stated percentage."
+        },
+        "urls": [
+          "https://arencia.us/products/pdrn-booster-shot-rosy-pdrn-peptides-for-glowy-healthy-skin"
+        ]
+      }
+    },
+    "P004": {
+      "intro": {
+        "ar": "سيروم فيتامين سي للعناية بمظهر البهتان وعدم تجانس اللون.",
+        "en": "A vitamin C serum for the look of dullness and uneven tone."
+      },
+      "ingredients": [
+        {
+          "name": {
+            "ar": "فيتامين سي",
+            "en": "Vitamin C"
+          },
+          "role": {
+            "ar": "مضاد أكسدة يدعم الإشراقة.",
+            "en": "An antioxidant that supports radiance."
+          },
+          "icon": "sun"
+        },
+        {
+          "name": {
+            "ar": "نياسيناميد",
+            "en": "Niacinamide"
+          },
+          "role": {
+            "ar": "يدعم مظهر لون أكثر تجانسًا.",
+            "en": "Supports a more even-looking tone."
+          },
+          "icon": "sparkles"
+        },
+        {
+          "name": {
+            "ar": "جلوتاثيون",
+            "en": "Glutathione"
+          },
+          "role": {
+            "ar": "مضاد أكسدة مكمّل في التركيبة.",
+            "en": "A complementary antioxidant in the formula."
+          },
+          "icon": "shield-check"
+        }
+      ],
+      "benefits": [
+        {
+          "title": {
+            "ar": "مظهر أكثر إشراقًا",
+            "en": "Brighter-looking finish"
+          },
+          "description": {
+            "ar": "يستهدف مظهر البهتان.",
+            "en": "Targets the look of dullness."
+          },
+          "icon": "sun"
+        },
+        {
+          "title": {
+            "ar": "دعم مضاد للأكسدة",
+            "en": "Antioxidant support"
+          },
+          "description": {
+            "ar": "يوفر خطوة سيروم غنية بمضادات الأكسدة.",
+            "en": "Provides an antioxidant-focused serum step."
+          },
+          "icon": "shield-check"
+        }
+      ],
+      "useMoment": {
+        "ar": "صباحًا أو مساءً؛ واقي الشمس ضروري نهارًا.",
+        "en": "Morning or evening; sunscreen is essential by day."
+      },
+      "caution": {
+        "ar": "ابدأ تدريجيًا إذا كانت بشرتك حساسة، وتجنب الجمع مع مقشرات قوية في الروتين نفسه.",
+        "en": "Introduce gradually if sensitive, and avoid strong exfoliants in the same routine."
+      },
+      "evidence": {
+        "status": "manufacturer",
+        "note": {
+          "ar": "صفحة Arencia تسند هوية السيروم ومكوناته البارزة؛ لا تُنقل نسب دعائية.",
+          "en": "Arencia supports serum identity and featured ingredients; promotional percentages are omitted."
+        },
+        "urls": [
+          "https://arencia.us/products/vitamin-c-booster-shot-pure-vitamin-c-glutathione-for-bright-healthy-skin"
+        ]
+      }
+    },
+    "P005": {
+      "intro": {
+        "ar": "بوستر ريتينال ليلي مركز للعناية بمظهر الملمس، مع بانثينول داعم.",
+        "en": "A concentrated retinal night booster for texture-focused care, with supportive panthenol."
+      },
+      "ingredients": [
+        {
+          "name": {
+            "ar": "ريتينال",
+            "en": "Retinal"
+          },
+          "role": {
+            "ar": "ريتينويد للعناية بمظهر الملمس والخطوط.",
+            "en": "A retinoid for the look of texture and lines."
+          },
+          "icon": "moon"
+        },
+        {
+          "name": {
+            "ar": "ماتريكسيل",
+            "en": "Matrixyl"
+          },
+          "role": {
+            "ar": "مزيج ببتيدات يدعم مظهر النعومة.",
+            "en": "A peptide blend supporting a smoother look."
+          },
+          "icon": "sparkles"
+        },
+        {
+          "name": {
+            "ar": "بانثينول",
+            "en": "Panthenol"
+          },
+          "role": {
+            "ar": "يساعد على الترطيب والراحة.",
+            "en": "Helps with hydration and comfort."
+          },
+          "icon": "droplet"
+        }
+      ],
+      "benefits": [
+        {
+          "title": {
+            "ar": "خطوة ليلية مركزة",
+            "en": "Focused night step"
+          },
+          "description": {
+            "ar": "خيار مخصص للعناية بمظهر الملمس.",
+            "en": "A dedicated option for texture-focused care."
+          },
+          "icon": "moon"
+        },
+        {
+          "title": {
+            "ar": "دعم الترطيب",
+            "en": "Hydration support"
+          },
+          "description": {
+            "ar": "يجمع الريتينال مع مكونات مرطبة.",
+            "en": "Pairs retinal with moisturizing ingredients."
+          },
+          "icon": "droplet"
+        }
+      ],
+      "useMoment": {
+        "ar": "مساءً قبل المرطب وفق تعليمات العبوة.",
+        "en": "Evening before moisturizer, following pack directions."
+      },
+      "caution": {
+        "ar": "ابدأ تدريجيًا. لا تجمعه مع ريتينويد آخر. تجنبه أثناء الحمل واستخدم واقي شمس نهارًا.",
+        "en": "Introduce gradually. Do not pair with another retinoid. Avoid during pregnancy and use daytime sunscreen."
+      },
+      "evidence": {
+        "status": "manufacturer",
+        "note": {
+          "ar": "مستند إلى صفحة Celimax الرسمية؛ لا تُنقل ادعاءات الاختبارات أو النسب.",
+          "en": "Based on Celimax's official page; testing claims and percentages are omitted."
+        },
+        "urls": [
+          "https://celimax.us/products/the-vita-a-retinal-shot-tightening-booster"
+        ]
+      }
+    },
+    "P006": {
+      "intro": {
+        "ar": "سيروم بحمض الأزيليك للعناية بمظهر اللمعان والملمس مع مركب سيكا.",
+        "en": "An azelaic-acid serum for the look of shine and texture, paired with a cica complex."
+      },
+      "ingredients": [
+        {
+          "name": {
+            "ar": "حمض الأزيليك",
+            "en": "Azelaic acid"
+          },
+          "role": {
+            "ar": "يدعم مظهر ملمس ولون أكثر تجانسًا.",
+            "en": "Supports more even-looking texture and tone."
+          },
+          "icon": "sparkles"
+        },
+        {
+          "name": {
+            "ar": "مركب سيكا",
+            "en": "Cica complex"
+          },
+          "role": {
+            "ar": "يدعم إحساس الراحة في التركيبة.",
+            "en": "Supports a comfortable feel in the formula."
+          },
+          "icon": "leaf"
+        }
+      ],
+      "benefits": [
+        {
+          "title": {
+            "ar": "توازن المظهر",
+            "en": "Balanced look"
+          },
+          "description": {
+            "ar": "موجه لمظهر اللمعان والملمس غير المتجانس.",
+            "en": "Targets the look of shine and uneven texture."
+          },
+          "icon": "sparkles"
+        },
+        {
+          "title": {
+            "ar": "عناية مريحة",
+            "en": "Comfort-focused care"
+          },
+          "description": {
+            "ar": "يجمع المكوّن النشط مع مكونات نباتية داعمة.",
+            "en": "Pairs the active with supportive botanical ingredients."
+          },
+          "icon": "leaf"
+        }
+      ],
+      "useMoment": {
+        "ar": "صباحًا أو مساءً بعد التنظيف وقبل المرطب.",
+        "en": "Morning or evening after cleansing and before moisturizer."
+      },
+      "caution": {
+        "ar": "اختبره تدريجيًا، وتجنب الجمع مع مقشرات قوية إذا ظهر تهيج.",
+        "en": "Introduce gradually; avoid strong exfoliants if irritation develops."
+      },
+      "evidence": {
+        "status": "manufacturer",
+        "note": {
+          "ar": "صفحة Anua اليابانية الرسمية تسند الهوية والاستخدام العام.",
+          "en": "Anua Japan's official page supports identity and general cosmetic use."
+        },
+        "urls": [
+          "https://anuashop.jp/products/side0010"
+        ]
+      }
+    },
+    "P007": {
+      "intro": {
+        "ar": "نسخة سفر من تونر هارتليف المائي لخطوة خفيفة بعد التنظيف.",
+        "en": "A travel-size version of the watery Heartleaf toner for a light post-cleanse step."
+      },
+      "ingredients": [
+        {
+          "name": {
+            "ar": "ماء الهارتليف",
+            "en": "Heartleaf water"
+          },
+          "role": {
+            "ar": "المكوّن النباتي المميز في عائلة التونر.",
+            "en": "The featured botanical in the toner family."
+          },
+          "icon": "leaf"
+        }
+      ],
+      "benefits": [
+        {
+          "title": {
+            "ar": "طبقة خفيفة",
+            "en": "Light layer"
+          },
+          "description": {
+            "ar": "يهيئ البشرة للخطوات التالية من دون ثقل.",
+            "en": "Prepares skin for following steps without heaviness."
+          },
+          "icon": "droplet"
+        },
+        {
+          "title": {
+            "ar": "حجم مناسب للتنقل",
+            "en": "Travel-friendly format"
+          },
+          "description": {
+            "ar": "عبوة صغيرة للروتين خارج المنزل.",
+            "en": "A compact format for routines on the go."
+          },
+          "icon": "package"
+        }
+      ],
+      "useMoment": {
+        "ar": "بعد التنظيف، يُربت باليد أو بقطنة.",
+        "en": "After cleansing, pat in by hand or with a cotton pad."
+      },
+      "caution": {
+        "ar": "قائمة مكونات العبوة المحلية قيد المطابقة؛ راجع الملصق قبل الاستخدام.",
+        "en": "Local-pack INCI matching remains pending; check the label before use."
+      },
+      "evidence": {
+        "status": "manufacturer",
+        "note": {
+          "ar": "صفحة الشركة تسند عائلة التونر؛ صورة الاستلام تثبت نسخة 40 مل، لكن مطابقة INCI المحلية لم تُنجز.",
+          "en": "Manufacturer page supports the toner family; intake imagery identifies the 40 ml variant, but local INCI matching is pending."
+        },
+        "urls": [
+          "https://anua.com/products/heartleaf-77-soothing-toner"
+        ]
+      }
+    },
+    "P008": {
+      "intro": {
+        "ar": "تونر هارتليف مائي للاستخدام اليومي بعد التنظيف.",
+        "en": "A watery Heartleaf toner for daily use after cleansing."
+      },
+      "ingredients": [
+        {
+          "name": {
+            "ar": "ماء الهارتليف",
+            "en": "Heartleaf water"
+          },
+          "role": {
+            "ar": "المكوّن النباتي المميز في عائلة التونر.",
+            "en": "The featured botanical in the toner family."
+          },
+          "icon": "leaf"
+        }
+      ],
+      "benefits": [
+        {
+          "title": {
+            "ar": "ترطيب خفيف",
+            "en": "Light hydration"
+          },
+          "description": {
+            "ar": "يضيف طبقة مائية قبل السيروم.",
+            "en": "Adds a watery layer before serum."
+          },
+          "icon": "droplet"
+        },
+        {
+          "title": {
+            "ar": "تحضير بسيط",
+            "en": "Simple prep"
+          },
+          "description": {
+            "ar": "يناسب روتينًا يوميًا متعدد الطبقات.",
+            "en": "Fits an everyday layered routine."
+          },
+          "icon": "check"
+        }
+      ],
+      "useMoment": {
+        "ar": "بعد التنظيف، يُربت باليد أو بقطنة.",
+        "en": "After cleansing, pat in by hand or with a cotton pad."
+      },
+      "caution": {
+        "ar": "مطابقة قائمة مكونات الوحدة المحلية ما زالت معلقة؛ راجع العبوة.",
+        "en": "Exact local-unit INCI matching remains pending; check the pack."
+      },
+      "evidence": {
+        "status": "manufacturer",
+        "note": {
+          "ar": "صفحة Anua تسند عائلة المنتج؛ النسختان 40 و250 مل لا تُعاملان كدليل تلقائي على INCI متطابق.",
+          "en": "Anua supports the product family; the 40 ml and 250 ml variants are not assumed to have identical local INCI without pack verification."
+        },
+        "urls": [
+          "https://anua.com/products/heartleaf-77-soothing-toner"
+        ]
+      }
+    },
+    "P009": {
+      "intro": {
+        "ar": "سيروم مرطب بصوديوم دي إن إيه وحمض الهيالورونيك بقوام خفيف.",
+        "en": "A lightweight hydrating serum with sodium DNA and hyaluronic acid."
+      },
+      "ingredients": [
+        {
+          "name": {
+            "ar": "صوديوم دي إن إيه",
+            "en": "Sodium DNA"
+          },
+          "role": {
+            "ar": "مكوّن مميز ضمن تركيبة الترطيب.",
+            "en": "A featured component within the hydrating formula."
+          },
+          "icon": "sparkles"
+        },
+        {
+          "name": {
+            "ar": "حمض الهيالورونيك",
+            "en": "Hyaluronic acid"
+          },
+          "role": {
+            "ar": "مرطب يجذب الماء إلى سطح البشرة.",
+            "en": "A humectant that draws water to the skin surface."
+          },
+          "icon": "droplet"
+        },
+        {
+          "name": {
+            "ar": "كولاجين متحلل",
+            "en": "Hydrolyzed collagen"
+          },
+          "role": {
+            "ar": "مكوّن مكيّف للبشرة يدعم ملمسًا ناعمًا.",
+            "en": "A skin-conditioning ingredient supporting a smooth feel."
+          },
+          "icon": "shield-check"
+        }
+      ],
+      "benefits": [
+        {
+          "title": {
+            "ar": "ترطيب ممتلئ",
+            "en": "Plump hydration"
+          },
+          "description": {
+            "ar": "يساعد على مظهر أكثر امتلاءً ونداوة.",
+            "en": "Helps skin look plumper and dewier."
+          },
+          "icon": "droplet"
+        },
+        {
+          "title": {
+            "ar": "لمسة خفيفة",
+            "en": "Light finish"
+          },
+          "description": {
+            "ar": "يناسب وضعه تحت الكريم أو واقي الشمس.",
+            "en": "Layers under cream or sunscreen."
+          },
+          "icon": "sparkles"
+        }
+      ],
+      "useMoment": {
+        "ar": "صباحًا أو مساءً قبل المرطب.",
+        "en": "Morning or evening before moisturizer."
+      },
+      "caution": {
+        "ar": "اسم Capsule 100 لا يُعامل كنسبة تركيز. راجع قائمة العبوة.",
+        "en": "“Capsule 100” is not treated as a concentration claim. Check the pack ingredient list."
+      },
+      "evidence": {
+        "status": "manufacturer",
+        "note": {
+          "ar": "مستند إلى صفحة Anua الرسمية؛ لا يُفسر الرقم 100 كتركيز.",
+          "en": "Based on Anua's official page; the number 100 is not interpreted as concentration."
+        },
+        "urls": [
+          "https://anua.com/products/pdrn-hyaluronic-acid-capsule-100-serum"
+        ]
+      }
+    },
+    "P010": {
+      "intro": {
+        "ar": "سيروم للعناية بمظهر البقع وعدم تجانس اللون مع نياسيناميد وTXA وأربوتين.",
+        "en": "A serum for the look of spots and uneven tone with niacinamide, TXA, and arbutin."
+      },
+      "ingredients": [
+        {
+          "name": {
+            "ar": "نياسيناميد",
+            "en": "Niacinamide"
+          },
+          "role": {
+            "ar": "يدعم مظهر لون أكثر تجانسًا.",
+            "en": "Supports a more even-looking tone."
+          },
+          "icon": "sparkles"
+        },
+        {
+          "name": {
+            "ar": "حمض الترانيكساميك",
+            "en": "Tranexamic acid"
+          },
+          "role": {
+            "ar": "يستخدم تجميليًا للعناية بمظهر تفاوت اللون.",
+            "en": "Used cosmetically for the look of uneven tone."
+          },
+          "icon": "sun"
+        },
+        {
+          "name": {
+            "ar": "أربوتين",
+            "en": "Arbutin"
+          },
+          "role": {
+            "ar": "مكوّن داعم للإشراقة.",
+            "en": "A radiance-supporting ingredient."
+          },
+          "icon": "leaf"
+        }
+      ],
+      "benefits": [
+        {
+          "title": {
+            "ar": "لون أكثر تجانسًا",
+            "en": "More even-looking tone"
+          },
+          "description": {
+            "ar": "يركز على مظهر العلامات والبقع.",
+            "en": "Focuses on the appearance of marks and spots."
+          },
+          "icon": "sun"
+        },
+        {
+          "title": {
+            "ar": "إشراقة يومية",
+            "en": "Everyday radiance"
+          },
+          "description": {
+            "ar": "يضيف خطوة موجهة للبهتان.",
+            "en": "Adds a dullness-focused step."
+          },
+          "icon": "sparkles"
+        }
+      ],
+      "useMoment": {
+        "ar": "صباحًا أو مساءً قبل المرطب؛ واقي الشمس نهارًا.",
+        "en": "Morning or evening before moisturizer; sunscreen by day."
+      },
+      "caution": {
+        "ar": "ابدأ تدريجيًا إذا كانت بشرتك حساسة وأوقفه عند التهيج.",
+        "en": "Introduce gradually if sensitive and stop if irritation occurs."
+      },
+      "evidence": {
+        "status": "manufacturer",
+        "note": {
+          "ar": "المكونات والهدف التجميلي من صفحة Anua؛ لا تُكرر نسب الاسم كادعاءات أداء.",
+          "en": "Ingredients and cosmetic purpose come from Anua; name percentages are not repeated as performance claims."
+        },
+        "urls": [
+          "https://anua.com/products/niacinamide-10-txa-4-serum-2"
+        ]
+      }
+    },
+    "P011": {
+      "intro": {
+        "ar": "غسول رغوي للوجه مصمم لإزالة الشوائب والزهم ضمن خطوة التنظيف.",
+        "en": "A foaming facial cleanser designed to remove impurities and excess oil."
+      },
+      "ingredients": [
+        {
+          "name": {
+            "ar": "هارتليف",
+            "en": "Heartleaf"
+          },
+          "role": {
+            "ar": "مكوّن نباتي مميز في التركيبة.",
+            "en": "A featured botanical in the formula."
+          },
+          "icon": "leaf"
+        },
+        {
+          "name": {
+            "ar": "بيتين ساليسيلات",
+            "en": "Betaine salicylate"
+          },
+          "role": {
+            "ar": "مقشر لطيف للعناية بمظهر المسام والملمس.",
+            "en": "A mild exfoliant for the look of pores and texture."
+          },
+          "icon": "sparkles"
+        },
+        {
+          "name": {
+            "ar": "كيرسيتين",
+            "en": "Quercetin"
+          },
+          "role": {
+            "ar": "مكوّن نباتي مضاد للأكسدة.",
+            "en": "A botanical antioxidant ingredient."
+          },
+          "icon": "shield-check"
+        }
+      ],
+      "benefits": [
+        {
+          "title": {
+            "ar": "تنظيف رغوي",
+            "en": "Foaming cleanse"
+          },
+          "description": {
+            "ar": "يزيل الأوساخ والزهم من سطح البشرة.",
+            "en": "Removes surface dirt and excess oil."
+          },
+          "icon": "droplet"
+        },
+        {
+          "title": {
+            "ar": "عناية بالملمس",
+            "en": "Texture care"
+          },
+          "description": {
+            "ar": "يوفر تقشيرًا خفيفًا ضمن منتج يُشطف.",
+            "en": "Provides light exfoliation in a rinse-off step."
+          },
+          "icon": "sparkles"
+        }
+      ],
+      "useMoment": {
+        "ar": "على بشرة مبللة، يُرغى ثم يُشطف جيدًا.",
+        "en": "Lather on damp skin, then rinse thoroughly."
+      },
+      "caution": {
+        "ar": "تجنب منطقة العين. خفف الاستخدام إذا ظهر جفاف أو تهيج.",
+        "en": "Avoid the eye area. Reduce use if dryness or irritation develops."
+      },
+      "evidence": {
+        "status": "manufacturer",
+        "note": {
+          "ar": "النوع والمكونات البارزة من صفحة Anua الرسمية.",
+          "en": "Format and featured ingredients come from Anua's official page."
+        },
+        "urls": [
+          "https://anua.com/products/heartleaf-quercetinol-pore-deep-cleansing-foam"
+        ]
+      }
+    },
+    "P012": {
+      "intro": {
+        "ar": "لوشن يومي خفيف بالهارتليف وحمض الهيالورونيك للترطيب.",
+        "en": "A lightweight daily lotion with Heartleaf and hyaluronic acid for hydration."
+      },
+      "ingredients": [
+        {
+          "name": {
+            "ar": "هارتليف",
+            "en": "Heartleaf"
+          },
+          "role": {
+            "ar": "مكوّن نباتي مميز يدعم الإحساس بالراحة.",
+            "en": "A featured botanical supporting a comfortable feel."
+          },
+          "icon": "leaf"
+        },
+        {
+          "name": {
+            "ar": "حمض الهيالورونيك",
+            "en": "Hyaluronic acid"
+          },
+          "role": {
+            "ar": "مرطب يجذب الماء إلى سطح البشرة.",
+            "en": "A humectant that draws water to the skin surface."
+          },
+          "icon": "droplet"
+        }
+      ],
+      "benefits": [
+        {
+          "title": {
+            "ar": "ترطيب يومي",
+            "en": "Daily hydration"
+          },
+          "description": {
+            "ar": "يوفر طبقة مرطبة خفيفة.",
+            "en": "Provides a light moisturizing layer."
+          },
+          "icon": "droplet"
+        },
+        {
+          "title": {
+            "ar": "قوام لوشن",
+            "en": "Lotion texture"
+          },
+          "description": {
+            "ar": "يناسب من يفضل مرطبًا أقل ثقلًا.",
+            "en": "Suits those who prefer a lighter moisturizer."
+          },
+          "icon": "leaf"
+        }
+      ],
+      "useMoment": {
+        "ar": "بعد السيروم صباحًا أو مساءً.",
+        "en": "After serum, morning or evening."
+      },
+      "caution": {
+        "ar": "راجع قائمة العبوة وأوقف الاستخدام عند التهيج.",
+        "en": "Check the pack ingredient list and stop if irritation occurs."
+      },
+      "evidence": {
+        "status": "manufacturer",
+        "note": {
+          "ar": "مستند إلى صفحة Anua الرسمية للوشن اليومي.",
+          "en": "Based on Anua's official Daily Lotion page."
+        },
+        "urls": [
+          "https://anua.com/products/heartleaf-70-daily-lotion-copy-1"
+        ]
+      }
+    },
+    "P013": {
+      "intro": {
+        "ar": "زيت تنظيف يذيب المكياج وواقي الشمس قبل الغسول المائي.",
+        "en": "A cleansing oil that dissolves makeup and sunscreen before a water-based cleanser."
+      },
+      "ingredients": [
+        {
+          "name": {
+            "ar": "زيت دوار الشمس",
+            "en": "Sunflower seed oil"
+          },
+          "role": {
+            "ar": "زيت مطرٍ يساعد على إذابة البقايا الدهنية.",
+            "en": "An emollient oil that helps dissolve oil-based residue."
+          },
+          "icon": "sun"
+        },
+        {
+          "name": {
+            "ar": "زيت الجوجوبا",
+            "en": "Jojoba oil"
+          },
+          "role": {
+            "ar": "مطرٍ يدعم انزلاق الزيت وملمس البشرة.",
+            "en": "An emollient supporting slip and skin feel."
+          },
+          "icon": "droplet"
+        },
+        {
+          "name": {
+            "ar": "هارتليف",
+            "en": "Heartleaf"
+          },
+          "role": {
+            "ar": "مكوّن نباتي مميز في التركيبة.",
+            "en": "A featured botanical in the formula."
+          },
+          "icon": "leaf"
+        }
+      ],
+      "benefits": [
+        {
+          "title": {
+            "ar": "إزالة الخطوة الزيتية",
+            "en": "Oil-based removal"
+          },
+          "description": {
+            "ar": "يساعد على إذابة المكياج وواقي الشمس.",
+            "en": "Helps dissolve makeup and sunscreen."
+          },
+          "icon": "droplet"
+        },
+        {
+          "title": {
+            "ar": "استحلاب وشطف",
+            "en": "Emulsify and rinse"
+          },
+          "description": {
+            "ar": "يتحول مع الماء ليسهل شطفه.",
+            "en": "Turns milky with water for easier rinsing."
+          },
+          "icon": "sparkles"
+        }
+      ],
+      "useMoment": {
+        "ar": "يُدلك على بشرة جافة، يُستحلب بالماء ثم يُشطف.",
+        "en": "Massage onto dry skin, emulsify with water, then rinse."
+      },
+      "caution": {
+        "ar": "تجنب دخول المنتج العينين واشطف جيدًا.",
+        "en": "Avoid direct eye contact and rinse thoroughly."
+      },
+      "evidence": {
+        "status": "manufacturer",
+        "note": {
+          "ar": "طريقة الاستخدام والمكونات الزيتية البارزة من Anua.",
+          "en": "Use method and featured oils come from Anua."
+        },
+        "urls": [
+          "https://anua.com/products/heartleaf-pore-control-cleansing-oil-200ml"
+        ]
+      }
+    },
+    "P014": {
+      "intro": {
+        "ar": "حليب تكييف خفيف بالخوخ والنياسيناميد يضيف ترطيبًا وإشراقة.",
+        "en": "A lightweight conditioning milk with peach and niacinamide for hydration and radiance."
+      },
+      "ingredients": [
+        {
+          "name": {
+            "ar": "ماء الخوخ",
+            "en": "Peach water"
+          },
+          "role": {
+            "ar": "قاعدة نباتية مميزة في التركيبة.",
+            "en": "A featured botanical base in the formula."
+          },
+          "icon": "leaf"
+        },
+        {
+          "name": {
+            "ar": "نياسيناميد",
+            "en": "Niacinamide"
+          },
+          "role": {
+            "ar": "يدعم مظهر لون أكثر تجانسًا.",
+            "en": "Supports a more even-looking tone."
+          },
+          "icon": "sparkles"
+        },
+        {
+          "name": {
+            "ar": "سيراميد",
+            "en": "Ceramide"
+          },
+          "role": {
+            "ar": "دهون داعمة لحاجز البشرة.",
+            "en": "A barrier-supporting skin lipid."
+          },
+          "icon": "shield-check"
+        }
+      ],
+      "benefits": [
+        {
+          "title": {
+            "ar": "ترطيب حليبي خفيف",
+            "en": "Light milky hydration"
+          },
+          "description": {
+            "ar": "يضيف ترطيبًا من دون قوام كريم ثقيل.",
+            "en": "Adds moisture without a heavy cream texture."
+          },
+          "icon": "droplet"
+        },
+        {
+          "title": {
+            "ar": "إشراقة ناعمة",
+            "en": "Soft radiance"
+          },
+          "description": {
+            "ar": "يدعم مظهرًا أكثر نضارة وتجانسًا.",
+            "en": "Supports a fresher, more even-looking finish."
+          },
+          "icon": "sparkles"
+        }
+      ],
+      "useMoment": {
+        "ar": "بعد التونر وقبل الكريم، صباحًا أو مساءً.",
+        "en": "After toner and before cream, morning or evening."
+      },
+      "caution": {
+        "ar": "راجع قائمة العبوة إذا كانت لديك حساسية من العطور أو المستخلصات النباتية.",
+        "en": "Check the pack if sensitive to fragrance or botanical extracts."
+      },
+      "evidence": {
+        "status": "manufacturer",
+        "note": {
+          "ar": "النوع والمكونات البارزة من صفحة Anua الرسمية.",
+          "en": "Format and featured ingredients come from Anua's official page."
+        },
+        "urls": [
+          "https://anua.com/products/peach-77-niacin-conditioning-milk-1-1"
+        ]
+      }
+    },
+    "P015": {
+      "intro": {
+        "ar": "كريم غني بالخوخ والنياسيناميد والبانثينول والسيراميد.",
+        "en": "A rich cream featuring peach, niacinamide, panthenol, and ceramide."
+      },
+      "ingredients": [
+        {
+          "name": {
+            "ar": "ماء الخوخ",
+            "en": "Peach water"
+          },
+          "role": {
+            "ar": "قاعدة نباتية مميزة في التركيبة.",
+            "en": "A featured botanical base in the formula."
+          },
+          "icon": "leaf"
+        },
+        {
+          "name": {
+            "ar": "بانثينول",
+            "en": "Panthenol"
+          },
+          "role": {
+            "ar": "مرطب يدعم راحة البشرة.",
+            "en": "A humectant supporting skin comfort."
+          },
+          "icon": "droplet"
+        },
+        {
+          "name": {
+            "ar": "سيراميد",
+            "en": "Ceramide"
+          },
+          "role": {
+            "ar": "دهون داعمة لحاجز البشرة.",
+            "en": "A barrier-supporting skin lipid."
+          },
+          "icon": "shield-check"
+        }
+      ],
+      "benefits": [
+        {
+          "title": {
+            "ar": "ترطيب غني",
+            "en": "Rich hydration"
+          },
+          "description": {
+            "ar": "يمنح خطوة كريم أكثر امتلاءً.",
+            "en": "Provides a more cushioning cream step."
+          },
+          "icon": "droplet"
+        },
+        {
+          "title": {
+            "ar": "دعم الحاجز",
+            "en": "Barrier support"
+          },
+          "description": {
+            "ar": "يجمع السيراميد مع مكونات مرطبة.",
+            "en": "Pairs ceramide with moisturizing ingredients."
+          },
+          "icon": "shield-check"
+        }
+      ],
+      "useMoment": {
+        "ar": "آخر خطوة ترطيب صباحًا أو مساءً.",
+        "en": "Final moisturizing step, morning or evening."
+      },
+      "caution": {
+        "ar": "راجع قائمة العبوة إذا كانت لديك حساسية من العطور أو المستخلصات النباتية.",
+        "en": "Check the pack if sensitive to fragrance or botanical extracts."
+      },
+      "evidence": {
+        "status": "manufacturer",
+        "note": {
+          "ar": "مستند إلى صفحة Anua الرسمية للكريم.",
+          "en": "Based on Anua's official cream page."
+        },
+        "urls": [
+          "https://anua.com/products/peach-77-niacin-enriched-cream-1"
+        ]
+      }
+    },
+    "P016": {
+      "intro": {
+        "ar": "وسادات تونر هارتليف جاهزة للاستخدام ضمن خطوة ما بعد التنظيف.",
+        "en": "Ready-to-use Heartleaf toner pads for the post-cleanse step."
+      },
+      "ingredients": [
+        {
+          "name": {
+            "ar": "هارتليف",
+            "en": "Heartleaf"
+          },
+          "role": {
+            "ar": "الاسم النباتي الظاهر على عبوة ١٦٠ مل. التركيبة الكاملة تنتظر مطابقة الملصق الخلفي.",
+            "en": "Named on the 160 ml pack. The full formula awaits a matching back-label check."
+          },
+          "icon": "leaf"
+        }
+      ],
+      "benefits": [
+        {
+          "title": {
+            "ar": "خطوة جاهزة",
+            "en": "Ready-to-use step"
+          },
+          "description": {
+            "ar": "وسادة مبللة لتطبيق التونر دون قطن منفصل.",
+            "en": "A pre-soaked pad applies toner without separate cotton."
+          },
+          "icon": "check"
+        },
+        {
+          "title": {
+            "ar": "بعد التنظيف",
+            "en": "After cleansing"
+          },
+          "description": {
+            "ar": "صيغة وسادات لخطوة التونر؛ فوائد التركيبة تنتظر التحقق من هذه النسخة.",
+            "en": "A pad format for the toner step; formula benefits await verification of this variant."
+          },
+          "icon": "droplet"
+        }
+      ],
+      "useMoment": {
+        "ar": "بعد التنظيف؛ تمرر الوسادة بلطف ثم يُربت السائل.",
+        "en": "After cleansing; swipe gently, then pat in the essence."
+      },
+      "caution": {
+        "ar": "لا تفرك بقوة. خفف الاستخدام إذا ظهر جفاف، واستخدم واقي شمس نهارًا.",
+        "en": "Do not scrub. Reduce use if dryness develops, and use daytime sunscreen."
+      },
+      "evidence": {
+        "status": "intake-limited",
+        "note": {
+          "ar": "الهوية وحجم ١٦٠ مل من العبوة الموردة. صفحة Anua الحالية تعرض عبوة مختلفة؛ لم ننقل PHA أو سنتيلا أو وعود التقشير لهذه النسخة.",
+          "en": "Identity and 160 ml size come from the supplied pack. Anua’s current page shows different packaging; PHA, centella and exfoliation claims have not been transferred to this variant."
+        },
+        "urls": [
+          "https://anua.com/products/heartleaf-77-toner-pad-160ml"
+        ]
+      }
+    },
+    "P017": {
+      "intro": {
+        "ar": "كريم هارتليف مهدئ مصور بحجم 100 مل؛ المطابقة الرسمية الدقيقة ما زالت معلقة.",
+        "en": "A pictured 100 ml Heartleaf soothing cream whose exact official match remains pending."
+      },
+      "ingredients": [],
+      "benefits": [
+        {
+          "title": {
+            "ar": "خطوة كريم",
+            "en": "Cream step"
+          },
+          "description": {
+            "ar": "صيغة كريم مخصصة لتكون خطوة الترطيب الأخيرة.",
+            "en": "A cream format intended as the final moisturizing step."
+          },
+          "icon": "droplet"
+        }
+      ],
+      "useMoment": {
+        "ar": "يُستخدم كخطوة كريم وفق تعليمات العبوة المصورة.",
+        "en": "Use as a cream step following directions on the pictured pack."
+      },
+      "caution": {
+        "ar": "لا تعتمد على تركيبة عبوة 50 مل المختلفة. تحقق من ظهر عبوة 100 مل قبل نشر المكونات أو الادعاءات.",
+        "en": "Do not rely on the different 50 ml jar formula. Verify the 100 ml back label before publishing ingredients or claims."
+      },
+      "evidence": {
+        "status": "intake-limited",
+        "note": {
+          "ar": "الدليل المتاح هو واجهة العبوة المصورة فقط. صفحة Anua الحالية تخص منتجًا مختلفًا بحجم 50 مل، لذلك لم تُستعر تركيبتها.",
+          "en": "Available evidence is the pictured front pack only. Anua's current page is for a different 50 ml product, so its formula was not borrowed."
+        },
+        "urls": [
+          "assets/products/p017.webp",
+          "https://anua.com/products/heartleaf-70-intense-calming-cream-50ml"
+        ]
+      }
+    },
+    "P018": {
+      "intro": {
+        "ar": "سيروم فيتامين سي بعبوة مصورة 20 غ؛ صفحة الشركة الأصلية متوقفة.",
+        "en": "A pictured 20 g vitamin C serum whose original manufacturer page is retired."
+      },
+      "ingredients": [
+        {
+          "name": {
+            "ar": "فيتامين سي",
+            "en": "Vitamin C"
+          },
+          "role": {
+            "ar": "مضاد أكسدة للعناية بمظهر البهتان.",
+            "en": "An antioxidant used for the look of dullness."
+          },
+          "icon": "sun"
+        },
+        {
+          "name": {
+            "ar": "فيتامين هـ",
+            "en": "Vitamin E"
+          },
+          "role": {
+            "ar": "مضاد أكسدة مكمّل ومكيّف للبشرة.",
+            "en": "A complementary antioxidant and skin conditioner."
+          },
+          "icon": "shield-check"
+        }
+      ],
+      "benefits": [
+        {
+          "title": {
+            "ar": "عناية بالإشراقة",
+            "en": "Radiance care"
+          },
+          "description": {
+            "ar": "سيروم موجه لمظهر البهتان وعدم تجانس اللون.",
+            "en": "A serum aimed at the look of dullness and uneven tone."
+          },
+          "icon": "sun"
+        }
+      ],
+      "useMoment": {
+        "ar": "وفق تعليمات العبوة؛ واقي الشمس نهارًا.",
+        "en": "Follow pack directions; use sunscreen by day."
+      },
+      "caution": {
+        "ar": "الدليل محدود. تحقق من قائمة المكونات وتاريخ الصلاحية على الوحدة قبل الاستخدام.",
+        "en": "Evidence is limited. Verify the unit's ingredient list and expiry before use."
+      },
+      "evidence": {
+        "status": "retired-page",
+        "note": {
+          "ar": "الهوية والحجم من ملصق الاستلام؛ مرجع بائع أرشيفي يدعم فيتاميني C وE، وليس قائمة INCI مصنّعة حالية.",
+          "en": "Identity and size come from intake labeling; an archived retailer reference supports vitamins C and E, not a current manufacturer INCI."
+        },
+        "urls": [
+          "https://www.cosmeterie.ie/anua/20-green-lemon-vita-c-blemish-serum"
+        ]
+      }
+    },
+    "P019": {
+      "intro": {
+        "ar": "بوستر أحماض بحمض الجليكوليك للعناية بمظهر الملمس والبهتان.",
+        "en": "A glycolic-acid booster for the look of texture and dullness."
+      },
+      "ingredients": [
+        {
+          "name": {
+            "ar": "حمض الجليكوليك",
+            "en": "Glycolic acid"
+          },
+          "role": {
+            "ar": "AHA يقشر سطح البشرة للعناية بمظهر الملمس.",
+            "en": "An AHA that exfoliates the surface for texture care."
+          },
+          "icon": "sparkles"
+        },
+        {
+          "name": {
+            "ar": "مزيج أحماض",
+            "en": "Multi-acid blend"
+          },
+          "role": {
+            "ar": "يدعم خطوة التقشير في التركيبة.",
+            "en": "Supports the formula's exfoliating step."
+          },
+          "icon": "droplet"
+        },
+        {
+          "name": {
+            "ar": "نياسيناميد",
+            "en": "Niacinamide"
+          },
+          "role": {
+            "ar": "يدعم مظهر لون أكثر تجانسًا.",
+            "en": "Supports a more even-looking tone."
+          },
+          "icon": "sun"
+        }
+      ],
+      "benefits": [
+        {
+          "title": {
+            "ar": "تنعيم المظهر",
+            "en": "Surface smoothing"
+          },
+          "description": {
+            "ar": "يساعد على تحسين مظهر الخشونة والملمس.",
+            "en": "Helps refine the look of roughness and texture."
+          },
+          "icon": "sparkles"
+        },
+        {
+          "title": {
+            "ar": "إشراقة",
+            "en": "Radiance"
+          },
+          "description": {
+            "ar": "يدعم مظهرًا أقل بهتانًا.",
+            "en": "Supports a less dull-looking finish."
+          },
+          "icon": "sun"
+        }
+      ],
+      "useMoment": {
+        "ar": "مساءً وبوتيرة تدريجية، قبل المرطب.",
+        "en": "Evening, introduced gradually, before moisturizer."
+      },
+      "caution": {
+        "ar": "لا تجمعه مع مقشرات قوية أو ريتينويد في الروتين نفسه. استخدم واقي شمس نهارًا.",
+        "en": "Do not combine with strong exfoliants or retinoids in the same routine. Use daytime sunscreen."
+      },
+      "evidence": {
+        "status": "manufacturer",
+        "note": {
+          "ar": "الأحماض والهدف التجميلي من صفحة Arencia؛ أرقام الاختبارات محذوفة.",
+          "en": "Acids and cosmetic purpose come from Arencia; test statistics are omitted."
+        },
+        "urls": [
+          "https://arencia.us/products/eraser-shot-glycolic-acid-booster-daily-clarifying-multi-acid-formula"
+        ]
+      }
+    },
+    "P020": {
+      "intro": {
+        "ar": "سيروم بوستر خفيف بمركب NAD+ والببتيدات والريسفيراترول.",
+        "en": "A lightweight booster serum with an NAD+ complex, peptides, and resveratrol."
+      },
+      "ingredients": [
+        {
+          "name": {
+            "ar": "مركب NAD+",
+            "en": "NAD+ complex"
+          },
+          "role": {
+            "ar": "المكوّن المميز في تركيبة البوستر.",
+            "en": "The featured component in the booster formula."
+          },
+          "icon": "sparkles"
+        },
+        {
+          "name": {
+            "ar": "ببتيدات",
+            "en": "Peptides"
+          },
+          "role": {
+            "ar": "تدعم مظهرًا أكثر نعومة.",
+            "en": "Support a smoother-looking finish."
+          },
+          "icon": "shield-check"
+        },
+        {
+          "name": {
+            "ar": "ريسفيراترول",
+            "en": "Resveratrol"
+          },
+          "role": {
+            "ar": "مضاد أكسدة داعم في التركيبة.",
+            "en": "A supporting antioxidant in the formula."
+          },
+          "icon": "leaf"
+        }
+      ],
+      "benefits": [
+        {
+          "title": {
+            "ar": "مظهر أكثر نعومة",
+            "en": "Smoother appearance"
+          },
+          "description": {
+            "ar": "يضيف خطوة سيروم موجهة للملمس.",
+            "en": "Adds a texture-focused serum step."
+          },
+          "icon": "sparkles"
+        },
+        {
+          "title": {
+            "ar": "دعم مضاد للأكسدة",
+            "en": "Antioxidant support"
+          },
+          "description": {
+            "ar": "يجمع مكونات داعمة للمظهر الحيوي.",
+            "en": "Combines ingredients supporting a lively-looking finish."
+          },
+          "icon": "shield-check"
+        }
+      ],
+      "useMoment": {
+        "ar": "صباحًا أو مساءً قبل المرطب.",
+        "en": "Morning or evening before moisturizer."
+      },
+      "caution": {
+        "ar": "راجع قائمة العبوة وأوقف الاستخدام عند التهيج.",
+        "en": "Check the pack ingredient list and stop if irritation occurs."
+      },
+      "evidence": {
+        "status": "manufacturer",
+        "note": {
+          "ar": "المكونات البارزة والهيئة من صفحة Arencia؛ لا تُنقل وعود مقاومة العمر.",
+          "en": "Featured ingredients and format come from Arencia; anti-aging promises are omitted."
+        },
+        "urls": [
+          "https://arencia.us/products/nad-time-rewind-booster-shot-firming-revitalizing-serum"
+        ]
+      }
+    },
+    "P021": {
+      "intro": {
+        "ar": "كريم ليلي مزدوج بالريتينال مع نياسيناميد وبانثينول.",
+        "en": "A dual night cream with retinal, niacinamide, and panthenol."
+      },
+      "ingredients": [
+        {
+          "name": {
+            "ar": "ريتينال",
+            "en": "Retinal"
+          },
+          "role": {
+            "ar": "ريتينويد للعناية بمظهر الملمس والخطوط.",
+            "en": "A retinoid for the look of texture and lines."
+          },
+          "icon": "moon"
+        },
+        {
+          "name": {
+            "ar": "نياسيناميد",
+            "en": "Niacinamide"
+          },
+          "role": {
+            "ar": "يدعم مظهر لون أكثر تجانسًا.",
+            "en": "Supports a more even-looking tone."
+          },
+          "icon": "sparkles"
+        },
+        {
+          "name": {
+            "ar": "بانثينول",
+            "en": "Panthenol"
+          },
+          "role": {
+            "ar": "مرطب يدعم راحة البشرة.",
+            "en": "A humectant supporting skin comfort."
+          },
+          "icon": "droplet"
+        }
+      ],
+      "benefits": [
+        {
+          "title": {
+            "ar": "كريم ريتينويد ليلي",
+            "en": "Retinoid night cream"
+          },
+          "description": {
+            "ar": "يجمع خطوة الريتينال والترطيب في صيغة كريم.",
+            "en": "Combines retinal care and moisturizing in a cream format."
+          },
+          "icon": "moon"
+        },
+        {
+          "title": {
+            "ar": "تركيبتان في عبوة",
+            "en": "Two formulas"
+          },
+          "description": {
+            "ar": "يجمع تركيبة ريتينال مع تركيبة مرطبة تحتوي على بانثينول.",
+            "en": "Brings a retinal formula and a panthenol-containing moisturizing formula into one product."
+          },
+          "icon": "sparkles"
+        }
+      ],
+      "useMoment": {
+        "ar": "مساءً كخطوة الكريم وفق تعليمات العبوة.",
+        "en": "Evening as the cream step, following pack directions."
+      },
+      "caution": {
+        "ar": "لا تجمعه مع ريتينويد آخر. تجنبه أثناء الحمل واستخدم واقي شمس نهارًا.",
+        "en": "Do not pair with another retinoid. Avoid during pregnancy and use daytime sunscreen."
+      },
+      "evidence": {
+        "status": "manufacturer",
+        "note": {
+          "ar": "الهيئة والمكونات البارزة من صفحة Celimax الرسمية.",
+          "en": "Format and featured ingredients come from Celimax's official page."
+        },
+        "urls": [
+          "https://celimax.us/products/the-vita-a-retinal-shot-tightening-dual-cream",
+          "https://www.celimax.co.kr/product/%EB%A0%88%ED%8B%B0%EB%82%A0-%EC%83%B7-%ED%83%80%EC%9D%B4%ED%8A%B8%EB%8B%9D-%EB%93%80%EC%96%BC-%ED%81%AC%EB%A6%BC-50ml/415/category/1/display/2/"
+        ]
+      }
+    },
+    "P022": {
+      "intro": {
+        "ar": "كريم متعدد الاستخدام بالسيراميدات والسكوالان والجلسرين للوجه واليدين والجسم.",
+        "en": "A multi-use cream with ceramides, squalane, and glycerin for face, hands, and body."
+      },
+      "ingredients": [
+        {
+          "name": {
+            "ar": "سيراميدات",
+            "en": "Ceramides"
+          },
+          "role": {
+            "ar": "دهون داعمة لحاجز البشرة.",
+            "en": "Barrier-supporting skin lipids."
+          },
+          "icon": "shield-check"
+        },
+        {
+          "name": {
+            "ar": "سكوالان",
+            "en": "Squalane"
+          },
+          "role": {
+            "ar": "مطرٍ يخفف الإحساس بالجفاف.",
+            "en": "An emollient that softens dry-feeling skin."
+          },
+          "icon": "droplet"
+        },
+        {
+          "name": {
+            "ar": "جلسرين",
+            "en": "Glycerin"
+          },
+          "role": {
+            "ar": "مرطب يجذب الماء إلى سطح البشرة.",
+            "en": "A humectant that draws water to the skin surface."
+          },
+          "icon": "droplet"
+        }
+      ],
+      "benefits": [
+        {
+          "title": {
+            "ar": "ترطيب متعدد المناطق",
+            "en": "Multi-area moisture"
+          },
+          "description": {
+            "ar": "كريم واحد للوجه واليدين والجسم.",
+            "en": "One cream for face, hands, and body."
+          },
+          "icon": "droplet"
+        },
+        {
+          "title": {
+            "ar": "دعم الحاجز",
+            "en": "Barrier support"
+          },
+          "description": {
+            "ar": "يجمع دهونًا مطرية مع مرطب جاذب للماء.",
+            "en": "Combines emollient lipids with a water-binding humectant."
+          },
+          "icon": "shield-check"
+        }
+      ],
+      "useMoment": {
+        "ar": "يوضع على المناطق الجافة عند الحاجة.",
+        "en": "Apply to dry areas as needed."
+      },
+      "caution": {
+        "ar": "حجم الوحدة المحلية غير مؤكد؛ تحقق من العبوة وقائمة المكونات.",
+        "en": "Local-unit size is unconfirmed; verify the pack and ingredient list."
+      },
+      "evidence": {
+        "status": "manufacturer",
+        "note": {
+          "ar": "صفحة Mixa البولندية تسند المنتج والاستخدام المتعدد؛ لا يُستنتج حجم الوحدة المحلية منها.",
+          "en": "Mixa Poland supports the product and multi-use format; local-unit size is not inferred from it."
+        },
+        "urls": [
+          "https://www.mixa.pl/produkt/mixa-ceramide-protect-nawilzajacy-krem-ochronny-do-twarzy-dloni-i-ciala"
+        ]
+      }
+    },
+    "P023": {
+      "intro": {
+        "ar": "كريم متعدد الاستخدام باليوريا والنياسيناميد والجلسرين للبشرة الجافة.",
+        "en": "A multi-use cream with urea, niacinamide, and glycerin for dry skin."
+      },
+      "ingredients": [
+        {
+          "name": {
+            "ar": "يوريا",
+            "en": "Urea"
+          },
+          "role": {
+            "ar": "مرطب يساعد على تليين ملمس البشرة الجافة.",
+            "en": "A humectant that helps soften dry-feeling skin."
+          },
+          "icon": "droplet"
+        },
+        {
+          "name": {
+            "ar": "نياسيناميد",
+            "en": "Niacinamide"
+          },
+          "role": {
+            "ar": "يدعم حاجز البشرة ومظهرها المتجانس.",
+            "en": "Supports the skin barrier and an even-looking finish."
+          },
+          "icon": "shield-check"
+        },
+        {
+          "name": {
+            "ar": "جلسرين",
+            "en": "Glycerin"
+          },
+          "role": {
+            "ar": "مرطب يجذب الماء إلى سطح البشرة.",
+            "en": "A humectant that draws water to the skin surface."
+          },
+          "icon": "droplet"
+        }
+      ],
+      "benefits": [
+        {
+          "title": {
+            "ar": "راحة للبشرة الجافة",
+            "en": "Dry-skin comfort"
+          },
+          "description": {
+            "ar": "يوفر ترطيبًا مطريًا للمناطق الجافة.",
+            "en": "Provides cushioning moisture to dry areas."
+          },
+          "icon": "droplet"
+        },
+        {
+          "title": {
+            "ar": "استخدام متعدد",
+            "en": "Multi-use care"
+          },
+          "description": {
+            "ar": "مخصص للوجه واليدين والجسم.",
+            "en": "Designed for face, hands, and body."
+          },
+          "icon": "check"
+        }
+      ],
+      "useMoment": {
+        "ar": "يوضع على المناطق الجافة عند الحاجة.",
+        "en": "Apply to dry areas as needed."
+      },
+      "caution": {
+        "ar": "راجع تعليمات العبوة وقائمة المكونات وأوقف الاستخدام عند التهيج.",
+        "en": "Check pack directions and ingredients; stop if irritation occurs."
+      },
+      "evidence": {
+        "status": "manufacturer",
+        "note": {
+          "ar": "صفحة Mixa الفرنسية تسند المنتج والاستخدام والمكونات البارزة؛ لا يُستنتج الحجم المحلي.",
+          "en": "Mixa France supports the product, use, and featured ingredients; local size is not inferred."
+        },
+        "urls": [
+          "https://www.mixa.fr/corps/creme-cica-reparation-visage-corps-mains"
+        ]
+      }
+    }
+  }
+}

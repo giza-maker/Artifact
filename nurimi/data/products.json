@@ -63,7 +63,8 @@
       "retinoid": true,
       "color": "#B7D433",
       "sourceType": "manufacturer",
-      "imageScale": 1.6
+      "imageScale": 1.6,
+      "sceneImage": "assets/product-scenes/p001.webp"
     },
     {
       "id": "P002",
@@ -128,7 +129,8 @@
       "retinoid": true,
       "color": "#C5A33B",
       "sourceType": "manufacturer",
-      "imageScale": 1
+      "imageScale": 1,
+      "sceneImage": "assets/product-scenes/p002.webp"
     },
     {
       "id": "P003",
@@ -192,7 +194,8 @@
       "retinoid": false,
       "color": "#EBA6B8",
       "sourceType": "manufacturer",
-      "imageScale": 1
+      "imageScale": 1,
+      "sceneImage": "assets/product-scenes/p003.webp"
     },
     {
       "id": "P004",
@@ -256,7 +259,8 @@
       "retinoid": false,
       "color": "#AAB744",
       "sourceType": "manufacturer",
-      "imageScale": 1
+      "imageScale": 1,
+      "sceneImage": "assets/product-scenes/p004.webp"
     },
     {
       "id": "P005",
@@ -321,7 +325,8 @@
       "retinoid": true,
       "color": "#B8D63A",
       "sourceType": "manufacturer",
-      "imageScale": 1.3
+      "imageScale": 1.3,
+      "sceneImage": "assets/product-scenes/p005.webp"
     },
     {
       "id": "P006",
@@ -385,7 +390,8 @@
       "retinoid": false,
       "color": "#B9D6B8",
       "sourceType": "manufacturer",
-      "imageScale": 1.6
+      "imageScale": 1.6,
+      "sceneImage": "assets/product-scenes/p006.webp"
     },
     {
       "id": "P007",
@@ -455,7 +461,8 @@
       },
       "originalImage": "assets/products/p007.webp",
       "imageTreatment": "reference-background-cleanup",
-      "imageScale": 1
+      "imageScale": 1,
+      "sceneImage": "assets/product-scenes/p007.webp"
     },
     {
       "id": "P008",
@@ -519,7 +526,8 @@
       "retinoid": false,
       "color": "#C8D7B8",
       "sourceType": "manufacturer",
-      "imageScale": 1
+      "imageScale": 1,
+      "sceneImage": "assets/product-scenes/p008.webp"
     },
     {
       "id": "P009",
@@ -584,7 +592,8 @@
       "retinoid": false,
       "color": "#5BC9C4",
       "sourceType": "manufacturer",
-      "imageScale": 1.35
+      "imageScale": 1.35,
+      "sceneImage": "assets/product-scenes/p009.webp"
     },
     {
       "id": "P010",
@@ -649,7 +658,8 @@
       "retinoid": false,
       "color": "#D899A6",
       "sourceType": "manufacturer",
-      "imageScale": 1.35
+      "imageScale": 1.35,
+      "sceneImage": "assets/product-scenes/p010.webp"
     },
     {
       "id": "P011",
@@ -713,7 +723,8 @@
       "retinoid": false,
       "color": "#A8C9A7",
       "sourceType": "manufacturer",
-      "imageScale": 1
+      "imageScale": 1,
+      "sceneImage": "assets/product-scenes/p011.webp"
     },
     {
       "id": "P012",
@@ -777,7 +788,8 @@
       "retinoid": false,
       "color": "#DCE5CF",
       "sourceType": "manufacturer",
-      "imageScale": 1
+      "imageScale": 1,
+      "sceneImage": "assets/product-scenes/p012.webp"
     },
     {
       "id": "P013",
@@ -841,7 +853,8 @@
       "retinoid": false,
       "color": "#C9D9B0",
       "sourceType": "manufacturer",
-      "imageScale": 1
+      "imageScale": 1,
+      "sceneImage": "assets/product-scenes/p013.webp"
     },
     {
       "id": "P014",
@@ -906,7 +919,8 @@
       "retinoid": false,
       "color": "#F3B8B8",
       "sourceType": "manufacturer",
-      "imageScale": 1
+      "imageScale": 1,
+      "sceneImage": "assets/product-scenes/p014.webp"
     },
     {
       "id": "P015",
@@ -971,7 +985,8 @@
       "retinoid": false,
       "color": "#EFA7AF",
       "sourceType": "manufacturer",
-      "imageScale": 1
+      "imageScale": 1,
+      "sceneImage": "assets/product-scenes/p015.webp"
     },
     {
       "id": "P016",
@@ -996,20 +1011,20 @@
       ],
       "category": "pads",
       "ingredient": {
-        "ar": "ماء الهارتليف، بي إتش إيه، سنتيلا",
-        "en": "Heartleaf water, PHA, centella"
+        "ar": "هارتليف؛ قائمة المكونات الكاملة قيد التحقق",
+        "en": "Heartleaf; full ingredient list pending verification"
       },
       "format": {
-        "ar": "وسادات تونر مزدوجة الملمس",
-        "en": "Dual-texture toner pads"
+        "ar": "وسادات تونر مبللة",
+        "en": "Pre-soaked toner pads"
       },
       "sizeLabel": {
         "ar": "160 مل / 5.41 أونصة سائلة، 70 وسادة",
         "en": "160ml / 5.41 fl. oz., 70 pads"
       },
       "description": {
-        "ar": "وسادات تونر مبللة للعناية اللطيفة بملمس البشرة.",
-        "en": "Pre-soaked toner pads for gentle texture care."
+        "ar": "وسادات تونر هارتليف جاهزة للاستخدام ضمن خطوة ما بعد التنظيف.",
+        "en": "Ready-to-use Heartleaf toner pads for the post-cleanse step."
       },
       "why": {
         "ar": "خيار منسق ضمن فئته لبناء روتين واضح من دون تكرار غير ضروري.",
@@ -1035,8 +1050,14 @@
       "expiry": null,
       "retinoid": false,
       "color": "#AFCDA9",
-      "sourceType": "manufacturer",
-      "imageScale": 1
+      "sourceType": "intake-limited",
+      "imageScale": 1,
+      "sceneImage": "assets/product-scenes/p016.webp",
+      "originalImage": "assets/products/p016-inventory.webp",
+      "verificationNote": {
+        "ar": "الحجم ١٦٠ مل من العبوة المورّدة. مطابقة قائمة المكونات لهذه النسخة قيد التحقق.",
+        "en": "The supplied pack shows 160 ml. This variant’s ingredient-list match remains pending."
+      }
     },
     {
       "id": "P017",
@@ -1107,7 +1128,8 @@
       },
       "originalImage": "assets/products/p017.webp",
       "imageTreatment": "reference-background-cleanup",
-      "imageScale": 1
+      "imageScale": 1,
+      "sceneImage": "assets/product-scenes/p017.webp"
     },
     {
       "id": "P018",
@@ -1175,7 +1197,8 @@
         "ar": "الهوية والحجم من العبوة المورّدة؛ الصورة من مرجع بيع موثق في ملاحظات المصادر.",
         "en": "Identity and size follow the supplied pack; image comes from the retailer reference documented in source notes."
       },
-      "imageScale": 1
+      "imageScale": 1,
+      "sceneImage": "assets/product-scenes/p018.webp"
     },
     {
       "id": "P019",
@@ -1239,7 +1262,8 @@
       "retinoid": false,
       "color": "#81A45A",
       "sourceType": "manufacturer",
-      "imageScale": 1
+      "imageScale": 1,
+      "sceneImage": "assets/product-scenes/p019.webp"
     },
     {
       "id": "P020",
@@ -1304,7 +1328,8 @@
       "retinoid": false,
       "color": "#8E6A43",
       "sourceType": "manufacturer",
-      "imageScale": 1
+      "imageScale": 1,
+      "sceneImage": "assets/product-scenes/p020.webp"
     },
     {
       "id": "P021",
@@ -1369,7 +1394,8 @@
       "retinoid": true,
       "color": "#B5D33D",
       "sourceType": "manufacturer",
-      "imageScale": 1.25
+      "imageScale": 1.25,
+      "sceneImage": "assets/product-scenes/p021.webp"
     },
     {
       "id": "P022",
@@ -1434,7 +1460,9 @@
       "retinoid": false,
       "color": "#7FA7CC",
       "sourceType": "manufacturer",
-      "imageScale": 1
+      "imageScale": 1,
+      "originalImage": "assets/products/p022-inventory.webp",
+      "sceneImage": "assets/product-scenes/p022.webp"
     },
     {
       "id": "P023",
@@ -1499,7 +1527,9 @@
       "retinoid": false,
       "color": "#D86455",
       "sourceType": "manufacturer",
-      "imageScale": 1
+      "imageScale": 1,
+      "originalImage": "assets/products/p023-inventory.webp",
+      "sceneImage": "assets/product-scenes/p023.webp"
     }
   ]
 }
