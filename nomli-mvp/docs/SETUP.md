@@ -32,3 +32,5 @@ Debug APK builds use debug signing. Production release signing, Play Store submi
 ## Android build in CI
 
 `.github/workflows/nomli-android.yml` compiles on Ubuntu with a full Temurin JDK 21 and API 36. It runs the application checks, builds the APK, verifies its signature and ZIP alignment, then uploads `Nomli-MVP-debug` as a workflow artifact. Updates to the MVP on `gh-pages` trigger the build. It uses a read-only repository token and receives no application API keys.
+
+M1 validation builds use `com.nomli.mvp.validation` / **Nomli Test**, separate from the earlier demo. The downloadable APK is re-signed locally by `scripts/sign-validation-apk.ps1` using a retained private PKCS12 key and Windows-encrypted password in ignored `.tools/signing`. No signing key/password is uploaded to GitHub. Later milestone downloads must use that same key and a higher versionCode to preserve upgrade compatibility. CI's temporary debug-signed artifact is a build input, not the published validation APK.

@@ -29,7 +29,7 @@ Android build needs Java 21, Android API 36 and build tools 36. Existing host Ja
 
 - Original Nomli mark, Android launcher/splash assets, food/kitchen/Zara imagery, local fonts and Phosphor icons with provenance/licenses.
 - Inventory add/edit, storage/sort, shopping list and grocery budget/receipt utilities.
-- Five staged scanning demos: groceries, barcode, expiry, paper receipt, digital receipt. Every change has editable review.
+- Scan is reserved for M2. Native camera/barcode previews work independently of inventory; sample scanning imports are disabled in M1.
 - Four sample recipes in the mockup: matching by stock, tools, exclusions, servings and swaps; cooking steps, timer, session resume and reviewed consumption.
 - Contextual scripted Zara, current-step help and editable sample voice transcript.
 - Independent local persistence. No learning, quests, XP, community or investor-tour routes.
@@ -39,7 +39,7 @@ Android build needs Java 21, Android API 36 and build tools 36. Existing host Ja
 
 ## What is simulated
 
-The web prototype uses fixed scans and scripted assistant replies. It never accesses the microphone, receipt files, live OCR, LLMs or a remote database. Native capture returns a real device photo/barcode for preview only; it does not perform recognition or alter stock. No cloud project or provider key has been configured.
+Zara replies are scripted and labeled as a demo. The app does not access the microphone, live OCR, LLMs or a remote database. Native capture returns a real device photo/barcode for preview only; it does not perform recognition or alter stock. Backup import reads only a JSON file explicitly selected by the user. No cloud project or provider key has been configured.
 
 The UI uses the original four count-based demo recipes. The separate 20-recipe catalog uses explicit canonical units for implementation; it is not automatically imported into the demo. Map `piece` to a product-specific count, preserve `clove`/`slice`/`bunch` identity and require reviewed package sizes. Do not convert those counts to grams by assumption.
 
