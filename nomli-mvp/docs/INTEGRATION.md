@@ -2,7 +2,9 @@
 
 This package contains a working local prototype, Android shell, curated starter content and tested pure domain functions. It does not contain a deployed API, account service, OCR model or live agent. No provider requests are made by the demo.
 
-Recommended first implementation slice: authenticated user → one inventory record → photo receipt draft → editable review → atomic save → recipe match → cooking consumption review. Keep the same four-tab UI.
+Current validation scope is one user on one phone. M1 stores validated, versioned state in native Preferences, with web localStorage fallback and explicit JSON backup/restore. No account or remote inventory database is required. Next slice: camera receipt → protected vision endpoint → editable review → local save → recipe match → cooking consumption review. Keep the same four-tab UI.
+
+Provider keys still belong on a protected server endpoint, with bounded requests and usage limits. Local inventory remains authoritative for this validation build. The multi-user contracts below describe later architecture and do not make accounts a prerequisite for M2.
 
 ## Provider adapters
 

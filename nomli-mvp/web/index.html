@@ -10,7 +10,7 @@
     <title>Nomli | Your everyday kitchen</title>
     <meta
       name="description"
-      content="Try Nomli's mobile kitchen companion for inventory, ingredient scanning, guided cooking and help from Zara. Interactive prototype with sample data."
+      content="Nomli milestone 1: private local kitchen inventory with manual quantities, expiry details and backup. Scan and Zara are clearly marked future demos."
     />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link
@@ -49,8 +49,10 @@
           ><img src="/favicon.svg" alt="" width="26" height="26" />Nomli</a
         >
         <div class="topbar-actions">
-          <span class="prototype-chip" aria-label="Prototype using simulated data"
-            >Prototype · simulated</span
+          <span
+            class="prototype-chip"
+            aria-label="Milestone 1 local inventory; Scan and Zara are demos"
+            >M1 · local inventory</span
           ><button
             class="icononly"
             data-action="menu"
@@ -66,18 +68,18 @@
         <div class="app-content">
           <div id="view" tabindex="-1" aria-busy="true">
             <section class="card" role="status">
-              <h1>Your kitchen is warming up.</h1>
+              <h1>Loading local inventory.</h1>
               <p>
-                Loading the interactive Nomli demo. If loading stalls, reload or
-                use the local meeting package.
+                Reading data stored on this device. Existing data is never
+                replaced automatically when loading fails.
               </p>
             </section>
           </div>
           <footer class="app-footer">
-            Prototype only. Inventory, scanning, cooking guidance and Zara's
-            assistant responses use local sample data.
+            Inventory is stored locally. Scan and Zara remain unavailable DEMO
+            experiences; no recognition or AI API is connected.
             <button class="text-link" data-action="reset-ask">
-              Reset demo
+              Clear local data
             </button>
           </footer>
         </div>

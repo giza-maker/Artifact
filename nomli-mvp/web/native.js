@@ -1,3 +1,13 @@
+let backupPlugin;
+
+async function getBackupPlugin() {
+  if (!backupPlugin) {
+    const { registerPlugin } = await import("@capacitor/core");
+    backupPlugin = registerPlugin("NomliBackup");
+  }
+  return backupPlugin;
+}
+
 // Capture only. Recognition/lookup must run server-side and return an editable draft.
 // These methods never change inventory or claim that OCR/AI is connected.
 window.NomliNative = Object.freeze({
@@ -64,6 +74,14 @@ window.NomliNative = Object.freeze({
     const { Preferences } = await import("@capacitor/preferences");
     const result = await Preferences.get({ key: `nomli:${key}` });
     return result.value ? JSON.parse(result.value) : null;
+  },
+  async exportBackup(text, fileName) {
+    const plugin = await getBackupPlugin();
+    return plugin.exportBackup({ text, fileName });
+  },
+  async importBackup() {
+    const plugin = await getBackupPlugin();
+    return plugin.importBackup();
   },
 });
 if (window.NomliNative.isNative) document.body.classList.add("native-app");

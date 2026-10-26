@@ -5,7 +5,7 @@
 Nomli is a lean mobile kitchen companion. Four primary destinations have equal weight:
 
 - **Kitchen** — current inventory, quantities, freshness and corrections.
-- **Scan** — simulated camera or receipt capture, followed by explicit review.
+- **Scan** — upcoming M2 recognition; native capture previews only in M1.
 - **Cook** — recipe discovery, readiness and guided cooking.
 - **Zara** — contextual kitchen assistance with clear prototype limitations.
 
@@ -26,7 +26,7 @@ Do not add school, XP, quests, community, investor-tour or social-product langua
 - Phone or embedded browser: edge-to-edge `100dvh` shell with safe-area padding.
 - Status bar and header frame one independently scrolling main region. Bottom navigation stays visible in a four-column grid.
 - Default route and Nomli brand link are `#kitchen`.
-- A short, visible `Prototype · simulated` disclosure remains in app chrome.
+- A short, visible `M1 · local inventory` disclosure remains in app chrome. Scan and Zara disclose their unavailable/demo status.
 - Panels and dialog bodies scroll within viewport bounds. Camera simulation may fill device; other dialogs present as bottom sheets.
 
 ## Interaction and accessibility
@@ -35,7 +35,7 @@ Do not add school, XP, quests, community, investor-tour or social-product langua
 - Every icon-only control needs an accessible name. Decorative icons and brand mark use empty alt text or `aria-hidden`.
 - Keep visible `:focus-visible` treatment. Dialog logic must set initial focus, contain focus, close on Escape and restore trigger focus.
 - Announce async state through `#announcer`; use `#toast` only for supplementary status.
-- Forms need persistent labels, associated errors, `aria-invalid` when invalid and review/confirmation before simulated inventory mutation.
+- Forms need persistent labels, associated errors, `aria-invalid` when invalid and explicit confirmation before inventory deletion or backup replacement. Restore shows a validated preview and requires typed `REPLACE`.
 - Honor `prefers-reduced-motion`. Animate only transform and opacity; avoid continuous scroll- or layout-driven motion.
 
 ## Required document hooks

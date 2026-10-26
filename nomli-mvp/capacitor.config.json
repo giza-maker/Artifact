@@ -1,6 +1,6 @@
 {
-  "appId": "com.nomli.mvp",
-  "appName": "Nomli",
+  "appId": "com.nomli.mvp.validation",
+  "appName": "Nomli Test",
   "webDir": "dist",
   "server": { "androidScheme": "https" },
   "android": { "backgroundColor": "#100f0e" }

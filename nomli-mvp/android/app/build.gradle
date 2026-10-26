@@ -4,11 +4,11 @@ android {
     namespace = "com.nomli.mvp"
     compileSdk = rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "com.nomli.mvp"
+        applicationId "com.nomli.mvp.validation"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "0.1.0-demo"
+        versionCode 2
+        versionName "0.2.0-m1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -16,7 +16,24 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    signingConfigs {
+        validation {
+            def signingPath = System.getenv('NOMLI_ANDROID_KEYSTORE_PATH')
+            if (signingPath) {
+                storeFile file(signingPath)
+                storePassword System.getenv('NOMLI_ANDROID_KEYSTORE_PASSWORD')
+                keyAlias 'nomli-validation'
+                keyPassword System.getenv('NOMLI_ANDROID_KEYSTORE_PASSWORD')
+                storeType 'PKCS12'
+            }
+        }
+    }
     buildTypes {
+        debug {
+            if (System.getenv('NOMLI_ANDROID_KEYSTORE_PATH')) {
+                signingConfig signingConfigs.validation
+            }
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'

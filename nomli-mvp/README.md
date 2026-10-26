@@ -1,4 +1,10 @@
-# Nomli kitchen MVP starter
+# Nomli kitchen MVP — milestone 1
+
+Single-user local inventory: fresh empty kitchen, add/edit/delete quantities and units, storage locations, optional expiry provenance, native Preferences persistence and validated JSON backup export/restore. Android document pickers save/open backups without broad storage permissions. Restore requires preview and typed `REPLACE`; corrupt saved data stays locked until explicit recovery.
+
+Validation package: `com.nomli.mvp.validation`, app label **Nomli Test**, version **0.2.0-m1**. It installs alongside the earlier demo. Published milestone APKs are signed locally with one retained private validation key; GitHub Actions never receives that key. Keep the ignored `.tools/signing` directory safe for future update signing.
+
+Scan recognition and live Zara remain future milestones. M1 disables sample scanning writes so synthetic results cannot enter real inventory. Cooking screens remain available from the prototype; recipes currently require the catalog's exact units and linked IDs.
 
 Focused mobile prototype: **Kitchen · Scan · Cook · Zara**. Original full-vision mockup remains in `kitchenaut-landing/app/`.
 
@@ -39,4 +45,4 @@ The UI uses the original four count-based demo recipes. The separate 20-recipe c
 
 Synthetic fixtures test parsing/review contracts. They do not measure OCR or speech-recognition accuracy. Seventeen catalog recipes intentionally have no image yet; the four demo dishes have matching local imagery.
 
-Next implementation work: authenticated database + atomic persistence, OCR/vision extraction, product lookup, voice capture/transcription, live cooking-agent endpoint and device QA. See [integration boundaries](docs/INTEGRATION.md), [content details](docs/CONTENT.md), [verification](docs/VERIFICATION.md), and [design contract](DESIGN.md).
+Next milestones: real reviewed scanning; preparation/cooking and robust consumption; live Zara; physical-device validation. Accounts and cloud inventory sync are deferred. See [integration boundaries](docs/INTEGRATION.md), [content details](docs/CONTENT.md), [verification](docs/VERIFICATION.md), and [design contract](DESIGN.md).

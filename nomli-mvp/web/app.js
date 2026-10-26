@@ -1,8 +1,14 @@
 "use strict";
 import { createTimerNotifications } from "./timer-notifications.js";
-(function leanNomli() {
+import { createStateStore } from "./state-store.js";
+(async function leanNomli() {
   const D = window.NOMLI_DATA;
-  const KEY = "nomli-kitchen-mvp-v1";
+  const store = createStateStore({
+    data: D,
+    native: window.NomliNative,
+    storage: window.localStorage,
+    now: () => new Date(),
+  });
   const $ = (q, root = document) => root.querySelector(q);
   const esc = (v) =>
     String(v ?? "").replace(
@@ -24,12 +30,16 @@ import { createTimerNotifications } from "./timer-notifications.js";
       .toISOString()
       .slice(0, 10);
   const daysLeft = (item) =>
-    Math.round(
-      (Date.parse(item.expiry + "T12:00:00Z") -
-        Date.parse(D.date + "T12:00:00Z")) /
-        86400000,
-    );
-  const num = (n) => Number(Number(n).toFixed(2)).toString();
+    item?.expiry
+      ? Math.round(
+          (Date.parse(item.expiry + "T12:00:00Z") - Date.now()) / 86400000,
+        )
+      : null;
+  const num = (n) =>
+    Number(n).toLocaleString("en", {
+      maximumFractionDigits: 6,
+      useGrouping: false,
+    });
   const recipe = (id) => D.recipes.find((r) => r.id === id) || D.recipes[0];
   const nav = [
     ["kitchen", "refrigerator", "Kitchen"],
@@ -57,65 +67,20 @@ import { createTimerNotifications } from "./timer-notifications.js";
     scanEpoch = 0;
   let scanTimers = [];
 
-  function seed() {
-    return {
-      version: 1,
-      route: "kitchen",
-      items: Object.fromEntries(
-        Object.entries(D.items).map(([id, x]) => [
-          id,
-          { ...x, expiry: datePlus(x.days), estimated: false },
-        ]),
-      ),
-      tools: Object.fromEntries(D.tools.map((x) => [x.id, x.on])),
-      sort: "expiry",
-      storage: "All",
-      servings: {},
-      swaps: {},
-      matchOnly: false,
-      recipe: D.recipes[0].id,
-      cooking: null,
-      meals: [],
-      shopping: [],
-      receipts: [],
-      budget: 160000,
-      profile: { allergies: [], cuisine: "Any", time: 20, household: 2 },
-      chat: [],
-    };
+  let loadResult;
+  try {
+    loadResult = await store.load();
+  } catch (error) {
+    view.setAttribute("aria-busy", "false");
+    view.innerHTML = `<section class="card notice notice-warning" role="alert"><h1>Inventory could not load</h1><p>${esc(error?.message || "Local storage is unavailable.")}</p></section>`;
+    return;
   }
-  function validState(x) {
-    return (
-      x &&
-      x.version === 1 &&
-      x.items &&
-      x.tools &&
-      x.profile &&
-      Array.isArray(x.profile.allergies) &&
-      x.servings &&
-      x.swaps &&
-      Number.isSafeInteger(x.budget) &&
-      x.budget > 0 &&
-      Array.isArray(x.meals) &&
-      Array.isArray(x.shopping) &&
-      Array.isArray(x.receipts) &&
-      Array.isArray(x.chat) &&
-      Object.keys(D.items).every(
-        (id) =>
-          x.items[id] &&
-          Number.isFinite(x.items[id].qty) &&
-          x.items[id].qty >= 0,
-      )
-    );
-  }
-  function load() {
-    try {
-      const x = JSON.parse(localStorage.getItem(KEY));
-      return validState(x) ? x : seed();
-    } catch (_) {
-      return seed();
-    }
-  }
-  let S = load();
+  let S = loadResult.state;
+  let recoveryRequired = Boolean(loadResult.recoveryRequired);
+  let importCandidate = null;
+  let saveQueue = Promise.resolve();
+  let operationBusy = false;
+  let storageError = "";
   const timerNotifications = createTimerNotifications(
     () => window.NomliNative,
     save,
@@ -126,9 +91,56 @@ import { createTimerNotifications } from "./timer-notifications.js";
   const hash = location.hash.slice(1);
   if (routes.includes(hash)) S.route = hash;
   function save() {
+    const snapshot = structuredClone(S);
+    saveQueue = saveQueue.catch(() => {}).then(() => store.save(snapshot));
+    return saveQueue;
+  }
+  function backgroundSave() {
+    save()
+      .then(() => {
+        storageError = "";
+      })
+      .catch((error) => {
+        storageError = `Changes could not be saved: ${error?.message || "storage failed"}`;
+        render();
+        announce(storageError);
+      });
+  }
+  function setBusy(busy, scope = document) {
+    operationBusy = busy;
+    scope.querySelectorAll("button, input, select").forEach((control) => {
+      if (busy) control.dataset.wasDisabled = control.disabled ? "1" : "0";
+      if (!busy && control.dataset.wasDisabled === undefined) return;
+      control.disabled = busy || control.dataset.wasDisabled === "1";
+      if (!busy) delete control.dataset.wasDisabled;
+    });
+  }
+  async function commit(mutator, success, replace = false) {
+    if (operationBusy) return false;
+    setBusy(true, modal.open ? modal : document);
+    await saveQueue.catch(() => {});
+    const before = structuredClone(S);
+    mutator();
     try {
-      localStorage.setItem(KEY, JSON.stringify(S));
-    } catch (_) {}
+      if (replace) {
+        const snapshot = structuredClone(S);
+        saveQueue = saveQueue
+          .catch(() => {})
+          .then(() => store.replace(snapshot));
+        await saveQueue;
+        recoveryRequired = false;
+      } else await save();
+      if (success) announce(success);
+      storageError = "";
+      return true;
+    } catch (error) {
+      S = before;
+      render();
+      announce(`Not saved: ${error?.message || "storage failed"}`);
+      return false;
+    } finally {
+      setBusy(false, modal.open ? modal : document);
+    }
   }
   function announce(text) {
     $("#announcer").textContent = text;
@@ -196,7 +208,7 @@ import { createTimerNotifications } from "./timer-notifications.js";
   function navigate(route) {
     if (!routes.includes(route)) return;
     S.route = route;
-    save();
+    backgroundSave();
     history.pushState(null, "", "#" + route);
     render();
     $(".app-scroll")?.scrollTo(0, 0);
@@ -225,31 +237,39 @@ import { createTimerNotifications } from "./timer-notifications.js";
     );
   }
   function itemRow(id, item) {
-    const urgent = item.qty > 0 && daysLeft(item) <= 2;
-    return `<div class="inventory-row">${photo(id) ? `<img class="inventory-photo" src="images/${photo(id)}" alt="">` : `<span class="inventory-icon">${icon(item.storage === "Freezer" ? "refrigerator" : "fork-knife")}</span>`}<div class="inventory-copy"><b>${esc(item.name)}</b><span>${num(item.qty)} ${esc(item.unit)} <small>${esc(item.storage)}</small></span><small class="${urgent ? "use-soon" : "muted"}">${item.qty <= 0 ? "Out of stock" : daysLeft(item) + " days left"}${item.estimated ? " · review date" : ""}</small></div><button class="icononly" data-action="item-edit" data-id="${id}" aria-label="Edit ${esc(item.name)}">${icon("pencil")}</button>${item.qty <= item.low ? `<button class="icononly" data-action="shopping-add" data-id="${id}" aria-label="Add ${esc(item.name)} to shopping">${icon("plus")}</button>` : ""}</div>`;
+    const left = daysLeft(item),
+      urgent = item.qty > 0 && left !== null && left <= 2;
+    const freshness = !item.expiry
+      ? "No expiry recorded"
+      : `${left < 0 ? `${Math.abs(left)} days past date` : `${left} days left`} · ${item.expiryProvenance || (item.estimated ? "estimated" : "user")}`;
+    return `<div class="inventory-row">${photo(id) ? `<img class="inventory-photo" src="images/${photo(id)}" alt="">` : `<span class="inventory-icon">${icon(item.storage === "Freezer" ? "refrigerator" : "fork-knife")}</span>`}<div class="inventory-copy"><b>${esc(item.name)}</b><span>${num(item.qty)} ${esc(item.unit)} <small>${esc(item.storage)}</small></span><small class="${urgent ? "use-soon" : "muted"}">${esc(freshness)}</small></div><button class="icononly" data-action="item-edit" data-id="${id}" aria-label="Edit ${esc(item.name)}">${icon("pencil")}</button></div>`;
   }
   function kitchenView() {
     let rows = Object.entries(S.items).filter(
-      ([, x]) => S.storage === "All" || x.storage === S.storage,
+      ([, x]) =>
+        (S.storage === "All" || x.storage === S.storage) &&
+        (!S.search || x.name.toLowerCase().includes(S.search.toLowerCase())),
     );
     rows.sort((a, b) =>
       S.sort === "name"
         ? a[1].name.localeCompare(b[1].name)
         : S.sort === "quantity"
           ? a[1].qty - b[1].qty
-          : daysLeft(a[1]) - daysLeft(b[1]),
+          : (daysLeft(a[1]) ?? Infinity) - (daysLeft(b[1]) ?? Infinity),
     );
     const soon = Object.values(S.items).filter(
-      (x) => x.qty > 0 && daysLeft(x) <= 2,
+      (x) => x.qty > 0 && daysLeft(x) !== null && daysLeft(x) <= 2,
     ).length;
     return (
       heading(
         "YOUR KITCHEN",
-        "Stocked and ready",
+        Object.keys(S.items).length
+          ? "Your real inventory"
+          : "Start your inventory",
         `${Object.values(S.items).filter((x) => x.qty > 0).length} ingredients on hand${soon ? ` · ${soon} use soon` : ""}`,
         button("Add ingredient", "item-edit", "new", "btn-primary"),
       ) +
-      `<button class="scan-banner" data-action="go" data-id="scan"><img src="images/fridge-vf-480.webp" alt=""><span>${icon("scan")}<b>Review a sample scan</b><small>Fridge, barcode, expiry or receipt</small></span>${icon("arrow-right")}</button><section class="card"><div class="card-header"><h2>Inventory</h2><button class="icononly" data-action="item-edit" data-id="new" aria-label="Add ingredient">${icon("plus")}</button></div><div class="inventory-sort"><label>Storage <select data-change="storage">${options(["All", "Fridge", "Freezer", "Pantry", "Spices"], S.storage)}</select></label><label>Sort <select data-change="sort">${options(["expiry", "name", "quantity"], S.sort)}</select></label></div>${rows.map(([id, x]) => itemRow(id, x)).join("")}</section><div class="quick-grid">${[
+      `<p class="milestone-banner">Milestone 1 · Local inventory</p><button class="scan-banner" data-action="go" data-id="scan"><img src="images/fridge-vf-480.webp" alt=""><span>${icon("scan")}<b>Scan unavailable · DEMO only</b><small>Fixed samples; no recognition API</small></span>${icon("arrow-right")}</button><section class="card inventory-card"><div class="card-header"><h2>Inventory</h2><button class="icononly" data-action="item-edit" data-id="new" aria-label="Add ingredient">${icon("plus")}</button></div><div class="inventory-tools"><label class="field">Search<input type="search" data-change="search" value="${esc(S.search || "")}" placeholder="Search ingredients"></label><div class="inventory-sort"><label>Storage <select data-change="storage">${options(["All", "Fridge", "Freezer", "Pantry", "Spices"], S.storage)}</select></label><label>Sort <select data-change="sort">${options(["expiry", "name", "quantity"], S.sort)}</select></label></div></div>${rows.length ? rows.map(([id, x]) => itemRow(id, x)).join("") : `<div class="inventory-empty">${icon("refrigerator")}<h3>${Object.keys(S.items).length ? "No ingredients match" : "Your inventory is empty"}</h3><p>${Object.keys(S.items).length ? "Clear search or filters." : "Add first ingredient. Expiry stays optional and never gets invented."}</p>${Object.keys(S.items).length ? "" : button("Add first ingredient", "item-edit", "new", "btn-primary")}</div>`}</section><div class="quick-grid">${[
         ["shopping", "shopping-cart", "Shopping", "Restock list"],
         ["expenses", "wallet", "Spending", "Receipts & budget"],
         ["profile", "gear", "Preferences", "Diet, time & tools"],
@@ -267,24 +287,11 @@ import { createTimerNotifications } from "./timer-notifications.js";
       : "";
     return (
       heading(
-        "EDITABLE REVIEW",
-        "Scan simulations",
-        "Choose a fixed sample, then review every quantity and date before saving.",
+        "MILESTONE 2",
+        "Scan is coming next",
+        "Recognition is unavailable. Captured images and barcodes remain previews and never change real inventory.",
       ) +
-      `<div class="grid grid-2">${[
-        ["fridge", "scan", "Fridge groceries", "Three detected ingredients"],
-        ["barcode", "barcode", "Barcode", "One matched product"],
-        ["expiry", "calendar-blank", "Expiry label", "One proposed date"],
-        ["paper", "receipt", "Paper receipt", "Three extracted lines"],
-        ["digital", "upload-simple", "Digital receipt", "Sample PDF lines"],
-      ]
-        .map(
-          ([id, ic, t, s]) =>
-            `<button class="card feature-button" data-action="scan-mode" data-id="${id}">${icon(ic)}<b>${t}</b><small>${s}</small></button>`,
-        )
-        .join(
-          "",
-        )}</div>${native}<p class="details">${window.NomliNative?.isNative ? "Sample scan cards are simulated. Device tools access your camera or photo library. Recognition and product lookup are not connected." : "Simulation only. No camera, file, OCR, barcode database or recognition service is used."}</p>`
+      `<section class="card"><h2>No fabricated stock</h2><p class="muted">Add ingredients manually in Kitchen. Demo recognition results cannot be saved into local inventory.</p>${button("Add ingredient manually", "item-edit", "new", "btn-primary")}</section>${native}<p class="details">${window.NomliNative?.isNative ? "Device tools only capture a preview. Recognition and product lookup are not connected." : "Camera, file, OCR, barcode database and recognition services are not connected."}</p>`
     );
   }
   function selectedIngredient(r, ing) {
@@ -316,7 +323,12 @@ import { createTimerNotifications } from "./timer-notifications.js";
         r,
         id === ing.id ? ing.qty : ing.swaps?.find((x) => x.id === id)?.qty || 0,
       );
-      if (!S.items[id] || S.items[id].qty + 1e-9 < need)
+      const expectedUnit = D.items[id]?.unit;
+      if (
+        !S.items[id] ||
+        S.items[id].unit !== expectedUnit ||
+        S.items[id].qty + 1e-9 < need
+      )
         missing.push({ id, need, have: S.items[id]?.qty || 0 });
     });
     const excluded = selectedAllergens(r).filter((a) =>
@@ -368,14 +380,17 @@ import { createTimerNotifications } from "./timer-notifications.js";
       `<article class="featured-meal"><img src="${r.image}" alt="${esc(r.name)}"></article><section class="card"><div class="card-header"><h2>Ingredients</h2><label>Servings <select data-change="servings" data-id="${r.id}">${options([1, 2, 3, 4, 6], serv)}</select></label></div>${r.ingredients
         .map((ing) => {
           const chosen = selectedIngredient(r, ing),
-            choice = chosen === "skip" ? { name: "Skip" } : S.items[chosen];
+            choice =
+              chosen === "skip"
+                ? { name: "Skip", qty: 0, unit: "" }
+                : S.items[chosen] || { ...D.items[chosen], qty: 0 };
           const need = scaled(
             r,
             chosen === ing.id
               ? ing.qty
               : ing.swaps?.find((x) => x.id === chosen)?.qty || 0,
           );
-          return `<div class="item-row"><div><b>${esc(choice.name)}</b><small>${num(need)} ${esc(choice.unit || "")} needed · ${num(choice.qty || 0)} available</small></div>${ing.swaps ? `<label><span class="sr-only">Swap ${esc(S.items[ing.id].name)}</span><select data-change="swap" data-id="${r.id}:${ing.id}">${[ing.id, ...ing.swaps.map((x) => x.id)].map((id) => `<option value="${id}"${id === chosen ? " selected" : ""}>${id === "skip" ? "Skip" : esc(S.items[id].name)}</option>`).join("")}</select></label>` : ""}</div>`;
+          return `<div class="item-row"><div><b>${esc(choice.name)}</b><small>${num(need)} ${esc(choice.unit || "")} needed · ${num(choice.qty || 0)} available${S.items[chosen] && S.items[chosen].unit !== D.items[chosen]?.unit ? " · incompatible unit" : ""}</small></div>${ing.swaps ? `<label><span class="sr-only">Swap ${esc(D.items[ing.id]?.name || ing.id)}</span><select data-change="swap" data-id="${r.id}:${ing.id}">${[ing.id, ...ing.swaps.map((x) => x.id)].map((id) => `<option value="${id}"${id === chosen ? " selected" : ""}>${id === "skip" ? "Skip" : esc(S.items[id]?.name || D.items[id]?.name || id)}</option>`).join("")}</select></label>` : ""}</div>`;
         })
         .join(
           "",
@@ -424,12 +439,14 @@ import { createTimerNotifications } from "./timer-notifications.js";
               ? ing.qty
               : ing.swaps?.find((x) => x.id === id)?.qty || 0,
           );
+          const current = S.items[id];
+          if (!current || current.unit !== D.items[id]?.unit) return "";
           return field(
-            `${S.items[id].name} used (${S.items[id].unit})`,
+            `${current.name} used (${current.unit})`,
             `used-${id}`,
             q,
             "number",
-            `min="0" max="${S.items[id].qty}" step="0.01" required`,
+            `min="0" max="${current.qty}" step="0.01" required`,
           );
         })
         .join(
@@ -452,15 +469,15 @@ import { createTimerNotifications } from "./timer-notifications.js";
     const receiptTotal = S.receipts
         .flatMap((r) => r.lines)
         .reduce((n, x) => n + x.cents, 0),
-      total = 124000 + receiptTotal;
+      total = receiptTotal;
     return (
       heading(
         "KITCHEN UTILITY",
         "Grocery spending",
-        "Editable sample receipts save once and use integer cents.",
+        "Real total from locally saved receipts. Receipt capture remains DEMO.",
         button("Back to kitchen", "go", "kitchen"),
       ) +
-      `<section class="card spend-hero"><small>OCTOBER SAMPLE</small><h2>${money(total)}</h2><p>${money(Math.max(0, S.budget - total))} left of ${money(S.budget)}</p><form data-form="budget">${errors()}${field("Monthly sample budget (SAR)", "budget", (S.budget / 100).toFixed(2), "number", 'min="1" max="1000000" step="0.01" required')}<button class="btn btn-secondary">Update budget</button></form></section><div class="receipt-shortcuts"><button data-action="scan-mode" data-id="paper">${icon("camera")}Paper receipt</button><button data-action="scan-mode" data-id="digital">${icon("upload-simple")}Digital receipt</button></div><section class="card purchase-history">${S.receipts.map((r) => `<div class="item-row"><div><b>${esc(r.name)}</b><small>${r.lines.length} reviewed items · 25 Oct</small></div><strong>${money(r.lines.reduce((n, x) => n + x.cents, 0))}</strong></div>`).join("") || '<p class="empty">No sample receipts saved.</p>'}</section>`
+      `<section class="card spend-hero"><small>LOCAL RECEIPTS</small><h2>${money(total)}</h2><p>${money(Math.max(0, S.budget - total))} left of ${money(S.budget)}</p><form data-form="budget">${errors()}${field("Monthly budget (SAR)", "budget", (S.budget / 100).toFixed(2), "number", 'min="1" max="1000000" step="0.01" required')}<button class="btn btn-secondary">Update budget</button></form></section><div class="receipt-shortcuts"><button disabled title="Coming in milestone 2">${icon("camera")}Paper receipt · M2</button><button disabled title="Coming in milestone 2">${icon("upload-simple")}Digital receipt · M2</button></div><section class="card purchase-history">${S.receipts.map((r) => `<div class="item-row"><div><b>${esc(r.name)}</b><small>${r.lines.length} reviewed items</small></div><strong>${money(r.lines.reduce((n, x) => n + x.cents, 0))}</strong></div>`).join("") || '<p class="empty">No receipts saved.</p>'}</section>`
     );
   }
   function profileView() {
@@ -483,7 +500,7 @@ import { createTimerNotifications } from "./timer-notifications.js";
     const text = q.toLowerCase(),
       ready = D.recipes.filter((r) => assessment(r).ready),
       expiring = Object.values(S.items).filter(
-        (x) => x.qty > 0 && daysLeft(x) <= 2,
+        (x) => x.qty > 0 && daysLeft(x) !== null && daysLeft(x) <= 2,
       );
     if (/expir|soon|fresh/.test(text))
       return expiring.length
@@ -501,7 +518,9 @@ import { createTimerNotifications } from "./timer-notifications.js";
   }
   function assistantView() {
     const expiring = Object.entries(S.items)
-        .filter(([, x]) => x.qty > 0 && daysLeft(x) <= 2)
+        .filter(
+          ([, x]) => x.qty > 0 && daysLeft(x) !== null && daysLeft(x) <= 2,
+        )
         .map(([, x]) => x.name),
       ready = D.recipes.filter((r) => assessment(r).ready);
     const tips = [
@@ -551,7 +570,7 @@ import { createTimerNotifications } from "./timer-notifications.js";
     clearInterval(timerHandle);
     timerHandle = null;
     view.dataset.screen = S.route;
-    view.innerHTML = (screens[S.route] || kitchenView)();
+    view.innerHTML = `${storageError ? `<section class="notice notice-warning recovery-notice" role="alert"><b>Storage error</b><p>${esc(storageError)}</p></section>` : ""}${recoveryRequired ? `<section class="notice notice-warning recovery-notice" role="alert"><b>Stored data needs recovery.</b><p>${esc(loadResult.notice || "Import a valid backup or explicitly clear local data. Current data will not be overwritten automatically.")}</p></section>` : ""}${(screens[S.route] || kitchenView)()}`;
     view.setAttribute("aria-busy", "false");
     renderNav();
     $("[data-title]", view)?.focus({ preventScroll: true });
@@ -563,15 +582,97 @@ import { createTimerNotifications } from "./timer-notifications.js";
         ? {
             name: "",
             qty: 1,
-            unit: "pieces",
+            unit: "count",
             storage: "Fridge",
-            expiry: datePlus(3),
+            expiry: null,
+            expiryProvenance: null,
           }
         : S.items[id];
     openModal(
       id === "new" ? "Add ingredient" : "Edit ingredient",
-      `<form data-form="item" data-id="${id}">${errors()}${field("Ingredient name", "name", item.name, "text", 'maxlength="48" required')}${field("Quantity on hand", "qty", item.qty, "number", 'min="0" max="100000" step="0.01" required')}<label class="field">Unit<select name="unit">${options(["pieces", "slices", "cloves", "bunches", "ml", "g"], item.unit)}</select></label><label class="field">Storage<select name="storage">${options(["Fridge", "Freezer", "Pantry", "Spices"], item.storage)}</select></label>${field("Reviewed date", "expiry", item.expiry, "date", "required")}<button class="btn btn-primary">Save ingredient</button></form>`,
+      `<form data-form="item" data-id="${id}">${errors()}${field("Ingredient name", "name", item.name, "text", 'maxlength="48" required')}${field("Quantity on hand", "qty", item.qty, "number", 'min="0" max="100000" step="any" inputmode="decimal" required')}<label class="field">Unit<select name="unit">${options(["g", "kg", "ml", "l", "count", "pieces", "bunches", "slices", "cloves"], item.unit)}</select></label><label class="field">Location<select name="storage">${options(["Fridge", "Freezer", "Pantry", "Spices"], item.storage)}</select></label>${field("Expiry (optional)", "expiry", item.expiry || "", "date")}<label class="field">Expiry source<select name="expiryProvenance">${options(["user", "printed", "estimated"], item.expiryProvenance || (item.estimated ? "estimated" : "user"))}</select><small>Used only when expiry is entered.</small></label><div class="modal-actions">${id === "new" ? "" : button("Delete ingredient", "item-delete", id, "btn-quiet")}<button class="btn btn-primary">Save ingredient</button></div></form>`,
     );
+  }
+  async function exportBackup() {
+    try {
+      await saveQueue;
+      const text = store.exportBackup(S),
+        fileName = `nomli-backup-${new Date().toISOString().slice(0, 10)}.json`;
+      if (window.NomliNative?.isNative) {
+        const result = await window.NomliNative.exportBackup(text, fileName);
+        if (result?.cancelled) return;
+      } else {
+        const url = URL.createObjectURL(
+          new Blob([text], { type: "application/json" }),
+        );
+        const link = Object.assign(document.createElement("a"), {
+          href: url,
+          download: fileName,
+        });
+        link.click();
+        setTimeout(() => URL.revokeObjectURL(url), 0);
+      }
+      announce("Backup exported.");
+    } catch (error) {
+      announce(`Export failed: ${error?.message || "unknown error"}`);
+    }
+  }
+  async function chooseBackupText() {
+    if (window.NomliNative?.isNative) {
+      const result = await window.NomliNative.importBackup();
+      return result?.cancelled ? null : result?.text;
+    }
+    return new Promise((resolve) => {
+      const input = Object.assign(document.createElement("input"), {
+        type: "file",
+        accept: "application/json,.json",
+      });
+      let settled = false;
+      const settle = (value) => {
+        if (!settled) {
+          settled = true;
+          resolve(value);
+        }
+      };
+      input.addEventListener(
+        "change",
+        async () => {
+          try {
+            const file = input.files?.[0];
+            if (!file) return settle(null);
+            if (file.size > 1024 * 1024)
+              throw new Error("Backup exceeds the 1 MiB limit.");
+            settle(await file.text());
+          } catch (error) {
+            settle(Promise.reject(error));
+          }
+        },
+        { once: true },
+      );
+      window.addEventListener(
+        "focus",
+        () =>
+          setTimeout(() => {
+            if (!input.files?.length) settle(null);
+          }, 300),
+        { once: true },
+      );
+      input.click();
+    });
+  }
+  async function importBackup() {
+    try {
+      const text = await chooseBackupText();
+      if (text == null) return;
+      const candidate = store.parseBackup(text);
+      importCandidate = candidate;
+      openModal(
+        "Preview backup",
+        `<form data-form="backup"><p>This will replace current local data with <b>${Object.keys(candidate.items).length} ingredients</b>, ${candidate.shopping.length} shopping entries and ${candidate.receipts.length} receipts.</p>${errors()}${field("Type REPLACE to confirm", "confirmation", "", "text", 'autocomplete="off" required pattern="REPLACE"')}<button class="btn btn-primary">Replace local data</button></form><p class="details">Nothing changes until explicit confirmation.</p>`,
+      );
+    } catch (error) {
+      announce(`Import rejected: ${error?.message || "invalid backup"}`);
+    }
   }
   function scanMode(mode) {
     const receipt = ["paper", "digital"].includes(mode),
@@ -584,7 +685,7 @@ import { createTimerNotifications } from "./timer-notifications.js";
       scene =
         '<img src="images/receipt-camera.webp" alt="Sample paper grocery receipt">';
     else if (digital)
-      scene = `<div class="sample-receipt"><b>${esc(D.receipts.digital.store)}</b><small>grocery-receipt.pdf · sample</small>${D.receipts.digital.lines.map((x) => `<p><span>${esc(S.items[x.id].name)}</span><b>${money(x.cents)}</b></p>`).join("")}</div>`;
+      scene = `<div class="sample-receipt"><b>${esc(D.receipts.digital.store)}</b><small>grocery-receipt.pdf · sample</small>${D.receipts.digital.lines.map((x) => `<p><span>${esc(S.items[x.id]?.name || D.items[x.id].name)}</span><b>${money(x.cents)}</b></p>`).join("")}</div>`;
     else if (mode === "barcode")
       scene =
         '<img src="images/fridge-vf-480.webp" alt="Sample kitchen background"><div class="product-label"><b>SOURDOUGH BREAD</b><span>4 slices · sample pack</span><div class="barcode-lines" aria-label="Illustrative barcode"></div><small>SYN-NOMLI-BREAD · fictional</small></div>';
@@ -610,7 +711,14 @@ import { createTimerNotifications } from "./timer-notifications.js";
         : [mode === "barcode" ? "bread" : "eggs"];
     openModal(
       `Review ${mode} result`,
-      `<p class="badge badge-demo">Simulated result · editable</p><form data-form="scan" data-mode="${mode}">${errors()}${ids.map((id) => `<fieldset><legend>${esc(S.items[id].name)}</legend>${field(`Quantity (${S.items[id].unit})`, `qty-${id}`, mode === "fridge" ? Math.max(S.items[id].qty, { tomatoes: 3, basil: 1, eggs: 6 }[id]) : Math.max(S.items[id].qty, 1), "number", 'min="0.01" max="10000" step="0.01" required')}${field("Reviewed date", `expiry-${id}`, datePlus(mode === "expiry" ? 5 : D.items[id].days), "date", "required")}</fieldset>`).join("")}<label class="checkbox-field"><input type="checkbox" name="confirmed" required>I reviewed every quantity and date.</label><button class="btn btn-primary">Save reviewed stock</button></form><p class="details">Nothing changes until confirmation.</p>`,
+      `<p class="badge badge-demo">DEMO result · editable</p><form data-form="scan" data-mode="${mode}">${errors()}${ids
+        .map((id) => {
+          const x = S.items[id] || { ...D.items[id], qty: 0 };
+          return `<fieldset><legend>${esc(x.name)}</legend>${field(`Quantity (${x.unit})`, `qty-${id}`, mode === "fridge" ? Math.max(x.qty, { tomatoes: 3, basil: 1, eggs: 6 }[id]) : Math.max(x.qty, 1), "number", 'min="0.01" max="10000" step="0.01" required')}${field("Reviewed date", `expiry-${id}`, datePlus(mode === "expiry" ? 5 : D.items[id].days), "date", "required")}</fieldset>`;
+        })
+        .join(
+          "",
+        )}<label class="checkbox-field"><input type="checkbox" name="confirmed" required>I reviewed every quantity and date.</label><button class="btn btn-primary">Save reviewed stock</button></form><p class="details">DEMO only. Nothing changes until confirmation.</p>`,
     );
   }
   function captureScan(mode) {
@@ -659,7 +767,14 @@ import { createTimerNotifications } from "./timer-notifications.js";
     const r = D.receipts[source];
     openModal(
       `Review ${r.name.toLowerCase()}`,
-      `<p class="badge badge-demo">Simulated extraction · ${esc(r.store)}</p><form data-form="receipt" data-source="${source}">${errors()}${r.lines.map((l) => `<fieldset><legend>${esc(S.items[l.id].name)}</legend>${field("Item name", `name-${l.id}`, S.items[l.id].name, "text", 'maxlength="48" required')}${field(`Quantity (${S.items[l.id].unit})`, `qty-${l.id}`, l.qty, "number", 'min="0.01" max="10000" step="0.01" required')}${field("Line total (SAR)", `price-${l.id}`, (l.cents / 100).toFixed(2), "number", 'min="0" max="100000" step="0.01" required')}${field("Reviewed combined-stock date", `expiry-${l.id}`, S.items[l.id].expiry, "date", "required")}</fieldset>`).join("")}<p class="notice">Original sample total: ${money(r.lines.reduce((n, x) => n + x.cents, 0))}. <b data-revised-total>Reviewed total: ${money(r.lines.reduce((n, x) => n + x.cents, 0))}</b></p><label class="checkbox-field"><input type="checkbox" name="confirmed" required>I reviewed items, quantities, dates and total.</label><button class="btn btn-primary">Save once to kitchen & spending</button></form>`,
+      `<p class="badge badge-demo">DEMO extraction · ${esc(r.store)}</p><form data-form="receipt" data-source="${source}">${errors()}${r.lines
+        .map((l) => {
+          const x = S.items[l.id] || { ...D.items[l.id], qty: 0, expiry: "" };
+          return `<fieldset><legend>${esc(x.name)}</legend>${field("Item name", `name-${l.id}`, x.name, "text", 'maxlength="48" required')}${field(`Quantity (${x.unit})`, `qty-${l.id}`, l.qty, "number", 'min="0.01" max="10000" step="0.01" required')}${field("Line total (SAR)", `price-${l.id}`, (l.cents / 100).toFixed(2), "number", 'min="0" max="100000" step="0.01" required')}${field("Reviewed combined-stock date", `expiry-${l.id}`, x.expiry || datePlus(D.items[l.id].days), "date", "required")}</fieldset>`;
+        })
+        .join(
+          "",
+        )}<p class="notice">Original sample total: ${money(r.lines.reduce((n, x) => n + x.cents, 0))}. <b data-revised-total>Reviewed total: ${money(r.lines.reduce((n, x) => n + x.cents, 0))}</b></p><label class="checkbox-field"><input type="checkbox" name="confirmed" required>I reviewed items, quantities, dates and total.</label><button class="btn btn-primary">Save once to kitchen & spending</button></form>`,
       "camera",
     );
   }
@@ -676,7 +791,7 @@ import { createTimerNotifications } from "./timer-notifications.js";
         clearInterval(timerHandle);
         announce("Timer finished.");
       }
-      save();
+      backgroundSave();
       const el = $("[data-timer]");
       if (el)
         el.textContent = `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
@@ -719,7 +834,7 @@ import { createTimerNotifications } from "./timer-notifications.js";
           q: `Sample voice transcript: ${q}`,
           a: assistantAnswer(q),
         });
-        save();
+        backgroundSave();
         render();
         return announce(
           "Sample transcript added. Microphone was not accessed.",
@@ -744,7 +859,7 @@ import { createTimerNotifications } from "./timer-notifications.js";
             ),
           );
       }
-      save();
+      backgroundSave();
       render();
     },
     true,
@@ -752,20 +867,21 @@ import { createTimerNotifications } from "./timer-notifications.js";
 
   document.addEventListener(
     "submit",
-    (event) => {
+    async (event) => {
       const form = event.target.closest("form[data-form]");
       if (!form) return;
       const kind = form.dataset.form;
       if (kind === "receipt") {
         const incompatible = D.receipts[form.dataset.source].lines.find(
-          (line) => S.items[line.id].unit !== D.items[line.id].unit,
+          (line) =>
+            S.items[line.id] && S.items[line.id].unit !== D.items[line.id].unit,
         );
         if (incompatible) {
           event.preventDefault();
           event.stopImmediatePropagation();
           return formError(
             form,
-            `${S.items[incompatible.id].name} uses ${S.items[incompatible.id].unit}, but this sample receipt uses ${D.items[incompatible.id].unit}. Correct its unit in Kitchen first.`,
+            `${S.items[incompatible.id].name} uses ${S.items[incompatible.id].unit}, but this DEMO receipt uses ${D.items[incompatible.id].unit}. Correct its unit in Kitchen first.`,
           );
         }
         return;
@@ -779,7 +895,7 @@ import { createTimerNotifications } from "./timer-notifications.js";
       if (kind === "assistant") {
         const q = String(fd.get("question")).trim();
         S.chat.push({ q, a: assistantAnswer(q) });
-        save();
+        backgroundSave();
         return render();
       }
       if (kind === "budget") {
@@ -789,10 +905,13 @@ import { createTimerNotifications } from "./timer-notifications.js";
             form,
             "Use a budget with no more than two decimal places.",
           );
-        S.budget = Math.round(Number(raw) * 100);
-        save();
-        announce("Budget updated.");
-        return render();
+        if (
+          await commit(() => {
+            S.budget = Math.round(Number(raw) * 100);
+          }, "Budget updated.")
+        )
+          render();
+        return;
       }
       if (!S.cooking)
         return formError(form, "Cooking session is no longer active.");
@@ -801,6 +920,11 @@ import { createTimerNotifications } from "./timer-notifications.js";
       for (const ing of r.ingredients) {
         const id = selectedIngredient(r, ing);
         if (id === "skip") continue;
+        if (!S.items[id] || S.items[id].unit !== D.items[id]?.unit)
+          return formError(
+            form,
+            `${D.items[id]?.name || id} is missing or uses an incompatible unit. Return to Kitchen and review stock.`,
+          );
         const qty = Number(fd.get("used-" + id));
         if (!Number.isFinite(qty) || qty < 0 || qty > S.items[id].qty)
           return formError(
@@ -809,15 +933,23 @@ import { createTimerNotifications } from "./timer-notifications.js";
           );
         used.push({ id, qty });
       }
-      used.forEach((x) => {
-        S.items[x.id].qty -= x.qty;
-      });
-      S.meals.push({ id: `meal-${Date.now()}`, rid: r.id, used, date: D.date });
-      cancelCookingNotification();
-      S.cooking = null;
-      save();
-      announce("Meal saved. Inventory updated.");
-      navigate("kitchen");
+      const completedCooking = S.cooking;
+      const saved = await commit(() => {
+        used.forEach((x) => {
+          S.items[x.id].qty -= x.qty;
+        });
+        S.meals.push({
+          id: `meal-${crypto.randomUUID()}`,
+          rid: r.id,
+          used,
+          date: D.date,
+        });
+        S.cooking = null;
+      }, "Meal saved. Inventory updated.");
+      if (saved) {
+        timerNotifications.cancel(completedCooking).catch(() => {});
+        navigate("kitchen");
+      }
     },
     true,
   );
@@ -825,6 +957,7 @@ import { createTimerNotifications } from "./timer-notifications.js";
   document.addEventListener("click", async (e) => {
     const el = e.target.closest("[data-action],[data-route]");
     if (!el) return;
+    if (operationBusy) return;
     if (el.dataset.route) return navigate(el.dataset.route);
     const a = el.dataset.action,
       id = el.dataset.id || "";
@@ -839,61 +972,102 @@ import { createTimerNotifications } from "./timer-notifications.js";
         button("Shopping list", "go", "shopping") +
           button("Spending", "go", "expenses") +
           button("Preferences & tools", "go", "profile") +
-          button("Reset local demo", "reset-ask"),
+          button("Export backup", "backup-export") +
+          button("Import backup", "backup-import") +
+          button("Reset local inventory", "reset-ask"),
       );
+    if (a === "backup-export") return exportBackup();
+    if (a === "backup-import") return importBackup();
     if (a === "reset-ask")
       return openModal(
-        "Reset local demo",
-        `<p>Restore stocked sample inventory and clear meals, receipts, shopping and preferences?</p>${button("Reset demo", "reset-confirm", "", "btn-primary")}`,
+        "Clear local data",
+        `<p>Clear inventory, meals, receipts, shopping and assistant history on this device?</p>${button("Clear local data", "reset-confirm", "", "btn-primary")}`,
       );
     if (a === "reset-confirm") {
       cancelCookingNotification();
-      S = seed();
-      save();
-      closeModal();
-      return navigate("kitchen");
+      if (
+        await commit(
+          () => {
+            S.items = {};
+            S.meals = [];
+            S.shopping = [];
+            S.receipts = [];
+            S.chat = [];
+            S.cooking = null;
+          },
+          "Local data cleared.",
+          true,
+        )
+      ) {
+        closeModal();
+        return navigate("kitchen");
+      }
     }
     if (a === "item-edit") return itemForm(id);
+    if (a === "item-delete")
+      return openModal(
+        "Delete ingredient",
+        `<p>Delete <b>${esc(S.items[id]?.name || "this ingredient")}</b>? Recipes will treat it as missing.</p>${button("Delete", "item-delete-confirm", id, "btn-primary")}`,
+      );
+    if (a === "item-delete-confirm") {
+      if (
+        await commit(() => {
+          delete S.items[id];
+          S.shopping = S.shopping.filter((x) => x.id !== id);
+        }, "Ingredient deleted.")
+      ) {
+        closeModal();
+        render();
+      }
+      return;
+    }
     if (a === "shopping-add") {
-      if (!S.shopping.some((x) => x.id === id))
-        S.shopping.push({ id, reason: "Low stock", got: false });
-      save();
-      render();
-      return announce("Added to shopping list.");
+      if (
+        await commit(() => {
+          if (!S.shopping.some((x) => x.id === id))
+            S.shopping.push({ id, reason: "Low stock", got: false });
+        }, "Added to shopping list.")
+      )
+        render();
+      return;
     }
     if (a === "shopping-remove") {
-      S.shopping = S.shopping.filter((x) => x.id !== id);
-      save();
-      return render();
+      if (
+        await commit(() => {
+          S.shopping = S.shopping.filter((x) => x.id !== id);
+        }, "Shopping item removed.")
+      )
+        render();
+      return;
     }
     if (a === "shopping-missing") {
       assessment(recipe(id)).missing.forEach((x) => {
         if (!S.shopping.some((y) => y.id === x.id))
           S.shopping.push({
             id: x.id,
-            reason: `Need ${num(x.need - x.have)} ${S.items[x.id].unit}`,
+            reason: `Need ${num(x.need - x.have)} ${D.items[x.id]?.unit || "compatible units"}`,
             got: false,
           });
       });
-      save();
+      backgroundSave();
       return navigate("shopping");
     }
     if (a === "scan-mode") return scanMode(id);
     if (a === "recipe") {
       S.recipe = id;
-      save();
+      backgroundSave();
       return navigate("recipe");
     }
     if (a === "cook-start") {
       cancelCookingNotification();
       S.recipe = id;
       S.cooking = { rid: id, step: 0, seconds: 120, running: false };
-      save();
+      backgroundSave();
       return navigate("cooking");
     }
     if (a === "timer") {
       S.cooking.running = !S.cooking.running;
-      save();
+      backgroundSave();
       return render();
     }
     if (a === "cook-next") {
@@ -905,7 +1079,7 @@ import { createTimerNotifications } from "./timer-notifications.js";
         S.cooking.step++;
         S.cooking.seconds = 120;
         S.cooking.running = false;
-        save();
+        backgroundSave();
         return render();
       }
       return navigate("review");
@@ -919,7 +1093,9 @@ import { createTimerNotifications } from "./timer-notifications.js";
             .join(", ") || "No complete match yet.",
         expiry:
           Object.values(S.items)
-            .filter((x) => x.qty > 0 && daysLeft(x) <= 2)
+            .filter(
+              (x) => x.qty > 0 && daysLeft(x) !== null && daysLeft(x) <= 2,
+            )
             .map((x) => x.name)
             .join(", ") || "Nothing within two days.",
         shopping:
@@ -927,7 +1103,7 @@ import { createTimerNotifications } from "./timer-notifications.js";
           "Shopping list is clear.",
       };
       S.chat.push({ q: el.textContent.trim(), a: answers[id] });
-      save();
+      backgroundSave();
       return render();
     }
     if (a === "native-camera" || a === "native-barcode") {
@@ -947,11 +1123,13 @@ import { createTimerNotifications } from "./timer-notifications.js";
     }
   });
   document.addEventListener("change", (e) => {
+    if (operationBusy) return;
     const el = e.target.closest("[data-change]");
     if (!el) return;
     const what = el.dataset.change;
     if (what === "storage") S.storage = el.value;
     if (what === "sort") S.sort = el.value;
+    if (what === "search") S.search = el.value.trim();
     if (what === "match") S.matchOnly = el.checked;
     if (what === "servings") S.servings[el.dataset.id] = Number(el.value);
     if (what === "swap") S.swaps[el.dataset.id] = el.value;
@@ -959,7 +1137,7 @@ import { createTimerNotifications } from "./timer-notifications.js";
       const x = S.shopping.find((x) => x.id === el.dataset.id);
       if (x) x.got = el.checked;
     }
-    save();
+    backgroundSave();
     render();
   });
   document.addEventListener("input", (e) => {
@@ -972,7 +1150,7 @@ import { createTimerNotifications } from "./timer-notifications.js";
     $("[data-revised-total]", form).textContent =
       "Reviewed total: " + money(cents);
   });
-  document.addEventListener("submit", (e) => {
+  document.addEventListener("submit", async (e) => {
     const form = e.target.closest("form[data-form]");
     if (!form) return;
     e.preventDefault();
@@ -980,34 +1158,73 @@ import { createTimerNotifications } from "./timer-notifications.js";
       return formError(form, "Review required fields before saving.");
     const fd = new FormData(form),
       kind = form.dataset.form;
+    if (kind === "backup") {
+      if (fd.get("confirmation") !== "REPLACE")
+        return formError(form, "Type REPLACE exactly to continue.");
+      const candidate = importCandidate;
+      if (!candidate)
+        return formError(
+          form,
+          "Import preview expired. Choose the file again.",
+        );
+      if (
+        await commit(
+          () => {
+            S = structuredClone(candidate);
+          },
+          "Backup restored.",
+          true,
+        )
+      ) {
+        importCandidate = null;
+        closeModal();
+        return navigate("kitchen");
+      }
+      return;
+    }
+    if (operationBusy) return;
+    const beforeMutation = structuredClone(S);
     if (kind === "item") {
       const id =
-        form.dataset.id === "new" ? `custom-${Date.now()}` : form.dataset.id;
+        form.dataset.id === "new"
+          ? `custom-${crypto.randomUUID()}`
+          : form.dataset.id;
       if (!String(fd.get("name")).trim())
         return formError(form, "Enter an ingredient name.");
+      const quantity = Number(fd.get("qty"));
+      if (!Number.isFinite(quantity) || quantity < 0 || quantity > 100000)
+        return formError(form, "Quantity must be between 0 and 100,000.");
       if (D.items[id] && fd.get("unit") !== D.items[id].unit)
         return formError(
           form,
           `Keep ${D.items[id].unit} for this linked demo ingredient. Add a separate ingredient for another unit.`,
         );
+      const prior = S.items[id] || {};
+      const expiry = fd.get("expiry") || null;
+      const provenance = expiry ? fd.get("expiryProvenance") : null;
       S.items[id] = {
-        ...(S.items[id] || {}),
+        ...prior,
         name: String(fd.get("name")).trim(),
-        qty: Number(fd.get("qty")),
+        qty: quantity,
         unit: fd.get("unit"),
         storage: fd.get("storage"),
-        expiry: fd.get("expiry"),
+        expiry,
+        expiryProvenance: provenance,
         low: 0,
         category: "Other",
-        estimated: false,
+        estimated: provenance === "estimated",
       };
+      if (provenance === "printed") S.items[id].printedExpiry = expiry;
+      else if (prior.printedExpiry !== expiry) delete S.items[id].printedExpiry;
     }
     if (kind === "scan") {
       [...form.querySelectorAll("fieldset")].forEach((fs) => {
         const id = $("[name^='qty-']", fs).name.slice(4);
+        S.items[id] ||= { ...D.items[id], qty: 0 };
         S.items[id].qty = Number(fd.get("qty-" + id));
         S.items[id].expiry = fd.get("expiry-" + id);
         S.items[id].estimated = false;
+        S.items[id].expiryProvenance = "printed";
       });
     }
     if (kind === "receipt") {
@@ -1027,10 +1244,12 @@ import { createTimerNotifications } from "./timer-notifications.js";
           "Enter valid line totals with no more than two decimals.",
         );
       lines.forEach((l) => {
+        S.items[l.id] ||= { ...D.items[l.id], qty: 0 };
         S.items[l.id].name = l.name;
         S.items[l.id].qty += l.qty;
         S.items[l.id].expiry = l.expiry;
         S.items[l.id].estimated = false;
+        S.items[l.id].expiryProvenance = "printed";
         S.shopping = S.shopping.filter((x) => x.id !== l.id);
       });
       S.receipts.push({ source, name: D.receipts[source].name, lines });
@@ -1044,7 +1263,18 @@ import { createTimerNotifications } from "./timer-notifications.js";
         D.tools.map((x) => [x.id, fd.getAll("tool").includes(x.id)]),
       );
     }
-    save();
+    setBusy(true, form);
+    try {
+      await save();
+    } catch (error) {
+      S = beforeMutation;
+      setBusy(false, form);
+      return formError(
+        form,
+        `Not saved: ${error?.message || "storage failed"}`,
+      );
+    }
+    setBusy(false, form);
     closeModal();
     if (kind === "receipt") {
       announce("Reviewed receipt saved once. Stock and spending updated.");
@@ -1054,7 +1284,7 @@ import { createTimerNotifications } from "./timer-notifications.js";
       announce("Meal saved. Inventory updated.");
       return navigate("kitchen");
     }
-    announce("Saved.");
+    if (kind !== "item") announce("Saved.");
     render();
   });
   function syncHash() {
@@ -1065,7 +1295,7 @@ import { createTimerNotifications } from "./timer-notifications.js";
     }
     if (routes.includes(r)) {
       S.route = r;
-      save();
+      backgroundSave();
       render();
     }
   }

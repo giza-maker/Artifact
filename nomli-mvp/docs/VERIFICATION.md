@@ -1,5 +1,14 @@
 # Verification record
 
+## Milestone 1 — 26 October 2026
+
+- 24 automated tests pass, including 12 storage tests covering empty state, migration, native Preferences precedence, failed writes, serialized saves, backup roundtrip, corruption recovery, unsafe fields, units and size limits. Content checks and production build pass; Capacitor sync includes four official plugins plus the custom registered Android backup plugin.
+- Independent code review found and fixed restore/save ordering, failed-consumption success reporting, and malformed search backup fields. Controls lock while critical mutations persist; replacement joins the same save queue.
+- Browser verified fresh empty state, ingredient creation, edit, 0.001 fractional display, optional expiry provenance and persistence after reload. Browser download automation stalled, so a completed backup download is not counted as verified.
+- Android SAF file-picker runtime, native Preferences across force-stop, system keyboard and update installation require testing on a physical phone. Automated tests use storage doubles; APK signature checks alone do not establish these runtime behaviors.
+
+Earlier prototype evidence below remains historical and does not imply that M1 enables sample scans.
+
 25 October 2026.
 
 - Production web build passes with pinned Vite/Capacitor packages.

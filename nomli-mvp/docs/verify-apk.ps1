@@ -1,4 +1,4 @@
-param([string]$ApkPath)
+param([string]$ApkPath, [string]$ExpectedPackage = 'com.nomli.mvp.validation')
 $ErrorActionPreference = 'Stop'
 $taskRoot = Split-Path -Parent $PSScriptRoot
 if (-not $ApkPath) { $ApkPath = Join-Path $taskRoot 'artifacts\Nomli-MVP-debug.apk' }
@@ -11,7 +11,7 @@ $taskBuildTools = Get-ChildItem -LiteralPath (Join-Path $taskSdk 'build-tools') 
 if (-not $taskBuildTools) { throw 'No complete Android build-tools installation found.' }
 $taskBadging = & (Join-Path $taskBuildTools 'aapt2.exe') dump badging $taskApk
 if ($LASTEXITCODE -ne 0) { throw 'APK resource/manifest parsing failed.' }
-if (-not ($taskBadging -match "package: name='com.nomli.mvp'")) { throw 'Unexpected APK package identity.' }
+if (-not ($taskBadging -match ("package: name='" + [regex]::Escape($ExpectedPackage) + "'"))) { throw 'Unexpected APK package identity.' }
 & (Join-Path $taskBuildTools 'zipalign.exe') -c -P 16 4 $taskApk
 if ($LASTEXITCODE -ne 0) { throw 'APK alignment check failed.' }
 & (Join-Path $taskBuildTools 'apksigner.bat') verify --verbose --print-certs $taskApk
