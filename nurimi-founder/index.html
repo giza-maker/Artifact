@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#3B2158">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-src 'none'">
+  <meta name="description" content="NURIMI founder decision workspace for evidence-led product and economic decisions.">
+  <title>NURIMI | Founder desk</title>
+  <link rel="stylesheet" href="styles.css?v=f06f23d032">
+  <link rel="stylesheet" href="workspace.css?v=5ccc2c5cf2">
+  <link rel="icon" type="image/svg+xml" href="assets/monogram.svg">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to decision workspace</a>
+  <div class="app-shell">
+    <aside id="sidebar" class="sidebar" aria-label="Workspace navigation">
+      <div class="sidebar-top">
+        <a class="brand" href="#overview" aria-label="NURIMI founder desk home">
+          <img src="assets/logo.svg" alt="NURIMI" width="128" height="34">
+          <span>Founder desk</span>
+        </a>
+        <nav id="primary-nav" class="primary-nav" aria-label="Primary"></nav>
+      </div>
+      <div class="sidebar-bottom">
+        <div id="save-indicator" class="save-indicator" role="status" aria-live="polite">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span>Saved locally</span>
+        </div>
+        <p class="local-note">Decisions stay in this browser until exported.</p>
+        <a class="shop-link" href="../nurimi/" target="_blank" rel="noopener">
+          Open NURIMI shop <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </aside>
+
+    <div class="workspace">
+      <header id="app-header" class="app-header">
+        <button class="icon-button menu-button" type="button" data-action="menu" aria-label="Open navigation" aria-haspopup="dialog" aria-controls="app-dialog">
+          <span class="menu-lines" aria-hidden="true"></span>
+        </button>
+        <div class="header-context">
+          <div id="breadcrumb" class="breadcrumb" aria-label="Breadcrumb">Founder desk</div>
+          <div id="research-date" class="research-date">Research snapshot</div>
+        </div>
+        <div class="header-actions">
+          <button class="icon-button" type="button" data-action="search" aria-label="Search workspace">
+            <span class="search-glyph" aria-hidden="true"></span>
+          </button>
+          <button class="button button-ghost language-button" type="button" data-action="language" aria-label="Switch language">عربي</button>
+          <button class="button button-primary" type="button" data-action="export">Export memo</button>
+        </div>
+      </header>
+
+      <main id="main" tabindex="-1">
+        <div id="view" aria-busy="true">
+          <div class="loading-state" role="status">
+            <span class="loading-mark" aria-hidden="true"></span>
+            <p>Preparing founder workspace…</p>
+          </div>
+        </div>
+        <div id="app-status" class="sr-only" role="status" aria-live="polite"></div>
+      </main>
+    </div>
+  </div>
+
+  <nav id="mobile-nav" class="mobile-nav" aria-label="Mobile navigation"></nav>
+
+  <dialog id="app-dialog" aria-labelledby="dialog-title">
+    <div id="dialog-content"></div>
+  </dialog>
+
+  <script type="module" src="app.js?v=aacacd0e1f"></script>
+</body>
+</html>

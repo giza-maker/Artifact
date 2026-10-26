@@ -1,0 +1,1 @@
+{"name":"nurimi-founder-desk","version":"1.0.0","private":true,"type":"module","scripts":{"test":"node model-tests.mjs","check":"node --check app.js && node --check views.js && node --check models.js"}}

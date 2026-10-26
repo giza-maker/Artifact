@@ -1,0 +1,1172 @@
+[
+  {
+    "id": "salla-zid:S1",
+    "title": "Salla plans",
+    "url": "https://salla.com/plans",
+    "accessed": "2026-10-27",
+    "published_or_updated": null,
+    "claims": [
+      "Basic free; Plus SAR990/year; Pro SAR2990/year; Special quote",
+      "Plus payments/domain/shipping; Pro staff/VAT/CSS-JS"
+    ],
+    "limits": "Live page challenged automated reader; official Exa snapshot used. VAT inclusion not stated."
+  },
+  {
+    "id": "salla-zid:S2",
+    "title": "Compare Salla plans",
+    "url": "https://help.salla.sa/en/article/manage-your-store-package/rhzl2dh5f5f9uz0qo813nttb",
+    "accessed": "2026-10-27",
+    "published_or_updated": "2026-10-22",
+    "claims": [
+      "Basic/Plus/Pro/Special positioning",
+      "Auto-renewal rules"
+    ],
+    "limits": "Feature summary, not tax-inclusive quote."
+  },
+  {
+    "id": "salla-zid:S3",
+    "title": "Managing subscriptions and trials",
+    "url": "https://help.salla.sa/en/article/managing-your-store-plan-subscriptions-invoices-and-upgrades/gbc2ct0nerndys7sk4l2rvc1",
+    "accessed": "2026-10-27",
+    "published_or_updated": "2026-04-17",
+    "claims": [
+      "14-day paid-plan trial",
+      "Additional subscriptions billed individually"
+    ],
+    "limits": "Does not establish multi-store entitlement."
+  },
+  {
+    "id": "salla-zid:S4",
+    "title": "Manage multiple stores",
+    "url": "https://help.salla.sa/en/article/manage-multiple-stores/t9z4bp7g0vo1rcdvq4h4k9b3",
+    "accessed": "2026-10-27",
+    "published_or_updated": "2026-05-03",
+    "claims": [
+      "Linked-store switching all plans",
+      "Same phone/unified email; merge irreversible"
+    ],
+    "limits": "No shared subscription, inventory, or theme-license claim."
+  },
+  {
+    "id": "salla-zid:S5",
+    "title": "Managing themes and versions",
+    "url": "https://help.salla.sa/en/article/managing-themes-customization-and-store-content-protection/noq1evfqv961rl0kmv3f2lek",
+    "accessed": "2026-10-27",
+    "published_or_updated": "2026-04-30",
+    "claims": [
+      "Duplicate, preview, schedule, geo/language publish theme versions",
+      "Active version cannot be deleted"
+    ],
+    "limits": "Not full backup/PITR promise."
+  },
+  {
+    "id": "salla-zid:S6",
+    "title": "Customize theme using code",
+    "url": "https://help.salla.sa/en/article/customizing-the-theme-using-code/nh50c1dsu3w8pu1mbl62k4dw",
+    "accessed": "2026-10-27",
+    "published_or_updated": null,
+    "claims": [
+      "Pro/Special, custom domain, and permission required for CSS/JS"
+    ],
+    "limits": "Dashboard injection path; not private package acceptance."
+  },
+  {
+    "id": "salla-zid:S7",
+    "title": "Salla Merchant API get started",
+    "url": "https://docs.salla.dev/get-started",
+    "accessed": "2026-10-27",
+    "published_or_updated": null,
+    "claims": [
+      "Scoped OAuth2; tokens; API surface; universal rate limiting",
+      "Webhooks and exports"
+    ],
+    "limits": "No numeric global rate or webhook retry schedule."
+  },
+  {
+    "id": "salla-zid:S8",
+    "title": "Salla webhooks",
+    "url": "https://docs.salla.dev/webhooks",
+    "accessed": "2026-10-27",
+    "published_or_updated": "2026-10-12",
+    "claims": [
+      "Token/signature security",
+      "Order/product/refund/shipment event catalog"
+    ],
+    "limits": "Retry cadence/ordering/replay not published."
+  },
+  {
+    "id": "salla-zid:S9",
+    "title": "Salla core webhook development",
+    "url": "https://docs.salla.dev/playbook/building/core-development",
+    "accessed": "2026-10-27",
+    "published_or_updated": null,
+    "claims": [
+      "Verify, fast 2xx, queue, idempotency; duplicates/retries expected"
+    ],
+    "limits": "Playbook guidance, not delivery SLA."
+  },
+  {
+    "id": "salla-zid:S10",
+    "title": "Salla import/update products",
+    "url": "https://help.salla.sa/en/article/importing-and-updating-products/x5tfaz1nppnd7o1gkbk2vzm2",
+    "accessed": "2026-10-27",
+    "published_or_updated": null,
+    "claims": [
+      "Excel import/export and bulk update, including options"
+    ],
+    "limits": "Does not prove lossless round-trip of every field."
+  },
+  {
+    "id": "salla-zid:S11",
+    "title": "Enable Apple Pay",
+    "url": "https://help.salla.sa/en/article/enable-apple-pay/vnmcb3lad5fiwd7xnrmbteql",
+    "accessed": "2026-10-27",
+    "published_or_updated": "2026-04-17",
+    "claims": [
+      "Apple Pay auto-enabled with mada+Visa; supported device/browser conditions",
+      "No Apple-specific extra fee beyond payment fees"
+    ],
+    "limits": "Actual fee amount is dashboard-calculated."
+  },
+  {
+    "id": "salla-zid:S12",
+    "title": "Salla refunds",
+    "url": "https://help.salla.sa/article/%D8%A5%D8%AF%D8%A7%D8%B1%D8%A9-%D8%A7%D8%B3%D8%AA%D8%B1%D8%AC%D8%A7%D8%B9-%D8%A7%D9%84%D8%B7%D9%84%D8%A8%D8%A7%D8%AA/lwd3jzhb0qs7v51b50rcc50a",
+    "accessed": "2026-10-27",
+    "published_or_updated": "2026-05-04",
+    "claims": [
+      "Full/partial returns, optional restock/label",
+      "mada same-day typical; Visa/Mastercard ~14 days; 30-day restriction"
+    ],
+    "limits": "Timing depends on bank; not SLA."
+  },
+  {
+    "id": "salla-zid:S13",
+    "title": "Salla vs Shopify",
+    "url": "https://salla.com/en-sa/salla-vs-shopify",
+    "accessed": "2026-10-27",
+    "published_or_updated": null,
+    "claims": [
+      "Promotional mada fee 1% + SAR1; zero platform commission",
+      "200+ shipping providers; Arabic/English; mada/Apple Pay"
+    ],
+    "limits": "Marketing comparison; incomplete fee schedule."
+  },
+  {
+    "id": "salla-zid:S14",
+    "title": "Salla status",
+    "url": "https://status.salla.com/",
+    "accessed": "2026-10-27",
+    "published_or_updated": null,
+    "claims": [
+      "Operational snapshot and 90-day component status"
+    ],
+    "limits": "Status history is not contractual SLA."
+  },
+  {
+    "id": "salla-zid:Z1",
+    "title": "Zid pricing",
+    "url": "https://zid.sa/en/pricing/",
+    "accessed": "2026-10-27",
+    "published_or_updated": null,
+    "claims": [
+      "Starter free; Rise 99/month or 990/year; Growth 299/month or 2990/year; Pro quote",
+      "Plan payment/domain/staff/inventory/CSS/API gates"
+    ],
+    "limits": "Campaign rendering contains conflicting values; VAT inclusion unstated."
+  },
+  {
+    "id": "salla-zid:Z2",
+    "title": "Activate a custom Zid theme",
+    "url": "https://help.zid.sa/sdk-theme/",
+    "accessed": "2026-10-27",
+    "published_or_updated": null,
+    "claims": [
+      "Professional+ or annual custom-theme add-on",
+      "Expiry reverts store to default theme; preview/edit/delete available"
+    ],
+    "limits": "Add-on price not public."
+  },
+  {
+    "id": "salla-zid:Z3",
+    "title": "Build first Vitrin theme",
+    "url": "https://zid.sa/en/partners/developers/blog/first-theme/",
+    "accessed": "2026-10-27",
+    "published_or_updated": "2026-09-09",
+    "claims": [
+      "Vitrin CLI workflow and private development stores",
+      "Full-order and RTL/theme validation testing"
+    ],
+    "limits": "Developer preview does not waive merchant production plan gate."
+  },
+  {
+    "id": "salla-zid:Z4",
+    "title": "Vitrin CLI in depth",
+    "url": "https://zid.sa/en/partners/developers/blog/vitrin-cli/",
+    "accessed": "2026-10-27",
+    "published_or_updated": "2026-10-25",
+    "claims": [
+      "Build/preview/install/activate lifecycle",
+      "Preview installs inactive version"
+    ],
+    "limits": "Blog-level documentation; production terms separate."
+  },
+  {
+    "id": "salla-zid:Z5",
+    "title": "Vitrin changelog",
+    "url": "https://docs.zid.sa/vitrin-changelog-1769483m0",
+    "accessed": "2026-10-27",
+    "published_or_updated": "2026-08-20 latest visible",
+    "claims": [
+      "Required theme updates for multi-inventory/language modal, Apple Pay quick checkout, bank discounts"
+    ],
+    "limits": "Changelog obligations may evolve."
+  },
+  {
+    "id": "salla-zid:Z6",
+    "title": "Zid ERP integration guide v1.2.0",
+    "url": "https://zid.sa/media/partners-developers/files/zid-erp-integration-guide-v1.2.0.pdf",
+    "accessed": "2026-10-27",
+    "published_or_updated": null,
+    "claims": [
+      "60 requests/min/app/store",
+      "Webhook raw-body signature, acknowledgement codes, retries, no order/exactly-once/replay, reconciliation",
+      "Product/stock/location event/API coverage"
+    ],
+    "limits": "Conflicts with later roundup on retry timing/429; verify live behavior."
+  },
+  {
+    "id": "salla-zid:Z7",
+    "title": "Developer updates roundup",
+    "url": "https://zid.sa/en/partners/developers/blog/developer-updates-roundup/",
+    "accessed": "2026-10-27",
+    "published_or_updated": "2026-09-27",
+    "claims": [
+      "Webhook Basic Auth mandatory; health endpoints",
+      "60 req/min; retry timing and broken threshold"
+    ],
+    "limits": "Some delivery semantics conflict with ERP guide."
+  },
+  {
+    "id": "salla-zid:Z8",
+    "title": "ZidPay help category",
+    "url": "https://help.zid.sa/category/zid-pay/",
+    "accessed": "2026-10-27",
+    "published_or_updated": null,
+    "claims": [
+      "Fees vary by network/plan; example Growth mada 1%+SAR1 plus 15% VAT",
+      "SAR3 payout fee; SAR100 minimum"
+    ],
+    "limits": "Internal conflict over fixed per-transaction fee and settlement frequency."
+  },
+  {
+    "id": "salla-zid:Z9",
+    "title": "ZidPay refunds",
+    "url": "https://help.zid.sa/refund-requests/",
+    "accessed": "2026-10-27",
+    "published_or_updated": "2026-08-06",
+    "claims": [
+      "Full/partial refunds; sufficient balance; 2–7 business days",
+      "No extra refund fee; 30-day restriction"
+    ],
+    "limits": "Bank processing variability."
+  },
+  {
+    "id": "salla-zid:Z10",
+    "title": "ZidPay payment step",
+    "url": "https://help.zid.sa/zidpay-paymentpage/",
+    "accessed": "2026-10-27",
+    "published_or_updated": "2023-07-15",
+    "claims": [
+      "Stock reserved after card detail confirmation and restored on payment/3DS failure",
+      "Apple Pay in-store flow"
+    ],
+    "limits": "Stale; no reservation TTL or concurrency guarantee."
+  },
+  {
+    "id": "salla-zid:Z11",
+    "title": "Zid store language and currencies",
+    "url": "https://help.zid.sa/store-language/",
+    "accessed": "2026-10-27",
+    "published_or_updated": "2026-08-03",
+    "claims": [
+      "English activation; merchant content requires manual English entry",
+      "Currency display/payment caveats"
+    ],
+    "limits": "No hreflang/canonical proof."
+  },
+  {
+    "id": "salla-zid:Z12",
+    "title": "Zid SEO settings",
+    "url": "https://help.zid.sa/seo-store/",
+    "accessed": "2026-10-27",
+    "published_or_updated": "2026-08-18",
+    "claims": [
+      "SEO fields for home/products/categories/pages; sitemap"
+    ],
+    "limits": "No technical multilingual SEO guarantee."
+  },
+  {
+    "id": "salla-zid:Z13",
+    "title": "Zid status",
+    "url": "https://status.zid.sa/",
+    "accessed": "2026-10-27",
+    "published_or_updated": "2026-10-26 snapshot",
+    "claims": [
+      "Operational snapshot",
+      "2026-10-25 merchant import/export partial outage"
+    ],
+    "limits": "Status history is not contractual SLA."
+  },
+  {
+    "id": "salla-zid:R1",
+    "title": "npm registry: @salla.sa/theme-raed 1.0.63 metadata and README",
+    "url": "https://www.npmjs.com/package/@salla.sa/theme-raed/v/1.0.63",
+    "accessed": "2026-10-27",
+    "published_or_updated": null,
+    "claims": [
+      "1.0.63 is latest; React 19.2.8 and Twilight theme engine dependency",
+      "README requires pnpm10 and specific Node versions, uses Salla CLI beta, and says Salla builds/publishes repository"
+    ],
+    "limits": "Registry package metadata is first-party package evidence, not proof of merchant production acceptance or successful clean build."
+  },
+  {
+    "id": "salla-zid:R2",
+    "title": "npm registry: esbuild 0.28.2",
+    "url": "https://www.npmjs.com/package/esbuild/v/0.28.2",
+    "accessed": "2026-10-27",
+    "published_or_updated": null,
+    "claims": [
+      "Version 0.28.2 and registry tarball resolve"
+    ],
+    "limits": "Does not explain earlier transient pnpm metadata/network failure."
+  },
+  {
+    "id": "salla-zid:R3",
+    "title": "Salla theme setup",
+    "url": "https://docs.salla.dev/twilight-engine/setup-theme",
+    "accessed": "2026-10-27",
+    "published_or_updated": "2026-07-29",
+    "claims": [
+      "Theme can be public, beta, or private",
+      "Private theme installs by installation link; live-store installation request"
+    ],
+    "limits": "No explicit same-owner multi-store license entitlement."
+  },
+  {
+    "id": "salla-zid:R4",
+    "title": "Publish a Salla theme",
+    "url": "https://docs.salla.dev/twilight-engine/publish-theme",
+    "accessed": "2026-10-27",
+    "published_or_updated": "2026-07-29",
+    "claims": [
+      "Availability can target all or selected stores",
+      "Private updates require fresh Salla review; theme price is one-time"
+    ],
+    "limits": "Does not define whether one purchase/license covers multiple stores."
+  },
+  {
+    "id": "salla-zid:R5",
+    "title": "Salla theme metadata review",
+    "url": "https://docs.salla.dev/twilight-engine/metadata-review",
+    "accessed": "2026-10-27",
+    "published_or_updated": null,
+    "claims": [
+      "Minimum SAR250 public theme and SAR1000 private theme",
+      "Preview-store and support expectations"
+    ],
+    "limits": "Minimum developer pricing, not total merchant cost or multi-store entitlement."
+  },
+  {
+    "id": "shopify-custom:S01",
+    "title": "Supported countries for Shopify Payments",
+    "url": "https://help.shopify.com/en/manual/payments/shopify-payments/supported-countries",
+    "accessed": "2026-10-27",
+    "published_updated": "not stated; live help page",
+    "claims": [
+      "Saudi Arabia is absent from supported countries",
+      "unsupported locations require a third-party provider"
+    ],
+    "limits": "List can change; verify immediately before launch."
+  },
+  {
+    "id": "shopify-custom:S02",
+    "title": "Shopify Saudi Arabia pricing",
+    "url": "https://www.shopify.com/sa/pricing",
+    "accessed": "2026-10-27",
+    "published_updated": "live pricing page",
+    "claims": [
+      "Annual Basic/Grow/Advanced prices are USD 19/54/299 per month",
+      "Plus starts at USD 2,300",
+      "Third-party transaction fees are 2%/1%/0.6%/0.2%",
+      "annual billing saves 25%"
+    ],
+    "limits": "Promotions, billing cadence, tax, currency conversion, and negotiated Plus terms vary."
+  },
+  {
+    "id": "shopify-custom:S03",
+    "title": "Managing VAT requirements for Shopify billing in Saudi Arabia and UAE",
+    "url": "https://help.shopify.com/en/manual/your-account/manage-billing/billing-charges/types-of-charges/taxes/billing-taxes-saudi-arabia-uae",
+    "accessed": "2026-10-27",
+    "published_updated": "not stated",
+    "claims": [
+      "Saudi stores are charged 15% VAT",
+      "valid VAT registration can make Shopify billing eligible for exemption"
+    ],
+    "limits": "Concerns Shopify invoices, not merchant tax compliance."
+  },
+  {
+    "id": "shopify-custom:S04",
+    "title": "Third-party payment providers and availability",
+    "url": "https://help.shopify.com/en/manual/payments/third-party-providers/payment-gateway-availability",
+    "accessed": "2026-10-27",
+    "published_updated": "live help page",
+    "claims": [
+      "Country-filtered gateway page is Shopify's current source",
+      "provider availability can differ by store configuration"
+    ],
+    "limits": "Dynamic directory did not yield a reliable static Saudi-only list; actual admin activation is required."
+  },
+  {
+    "id": "shopify-custom:S05",
+    "title": "Can I Enable Apple Pay for a Shopify Website?",
+    "url": "https://support.tap.company/en/support/solutions/articles/153000140230-can-i-enable-apple-pay-for-a-shopify-eebsite-",
+    "accessed": "2026-10-27",
+    "published_updated": "modified date shown without year",
+    "claims": [
+      "Tap says eligible Saudi Shopify merchants can use Apple Pay",
+      "requires Tap account/plugin and SAR or another listed currency"
+    ],
+    "limits": "Provider claim; eligibility, plugin path, device/browser and commercial approval still need live validation."
+  },
+  {
+    "id": "shopify-custom:S06",
+    "title": "PayTabs Shopify Plugin: Supported Payment Methods",
+    "url": "https://support.paytabs.com/en/support/solutions/articles/60000760093-1-5-shopify-plugin-supported-payment-methods",
+    "accessed": "2026-10-27",
+    "published_updated": "2024-01-30",
+    "claims": [
+      "Saudi plugin lists mada",
+      "PayTabs says Apple Pay is not supported in its Shopify plugin",
+      "flow redirects to provider page"
+    ],
+    "limits": "Older provider documentation; reconfirm current behavior and Shopify listing."
+  },
+  {
+    "id": "shopify-custom:S07",
+    "title": "Assigning domains and languages to markets",
+    "url": "https://help.shopify.com/en/manual/markets/customizations/domains-and-languages",
+    "accessed": "2026-10-27",
+    "published_updated": "live help page",
+    "claims": [
+      "Languages can use subfolders, subdomains, or separate domains",
+      "Shopify generates hreflang",
+      "Translate & Adapt supports translations"
+    ],
+    "limits": "Markets is localization, not retailer tenancy."
+  },
+  {
+    "id": "shopify-custom:S08",
+    "title": "Add language translations using Translate & Adapt",
+    "url": "https://help.shopify.com/manual/markets/languages/translate-adapt-app",
+    "accessed": "2026-10-27",
+    "published_updated": "live help page",
+    "claims": [
+      "Manual and automatic translation workflows",
+      "policies require manual translation",
+      "lists unsupported content types"
+    ],
+    "limits": "Third-party app strings and some Shopify resources remain outside coverage."
+  },
+  {
+    "id": "shopify-custom:S09",
+    "title": "Localization and translation",
+    "url": "https://help.shopify.com/en/manual/markets/languages/manage-languages",
+    "accessed": "2026-10-27",
+    "published_updated": "live help page",
+    "claims": [
+      "Arabic/RTL requires theme compatibility",
+      "checkout has a bounded set of pre-translated options"
+    ],
+    "limits": "Theme-specific rendering must be tested."
+  },
+  {
+    "id": "shopify-custom:S10",
+    "title": "About headless commerce",
+    "url": "https://shopify.dev/docs/storefronts/headless/overview",
+    "accessed": "2026-10-27",
+    "published_updated": "live developer documentation",
+    "claims": [
+      "Headless separates storefront from Shopify backend",
+      "Shopify says headless costs more than a theme",
+      "multiple headless storefronts share API permissions"
+    ],
+    "limits": "Does not quantify project-specific engineering cost."
+  },
+  {
+    "id": "shopify-custom:S11",
+    "title": "Storefront API reference and GraphQL Admin API rate limits",
+    "url": "https://shopify.dev/docs/api/storefront/latest",
+    "accessed": "2026-10-27",
+    "published_updated": "2026-10 API surface",
+    "claims": [
+      "Buyer traffic has no fixed per-minute Storefront limit",
+      "checkout/bots can be throttled",
+      "tokenless complexity limit is 1,000"
+    ],
+    "limits": "Shopify may enforce abuse controls; checkout must handle throttling."
+  },
+  {
+    "id": "shopify-custom:S12",
+    "title": "GraphQL Admin API rate limits",
+    "url": "https://shopify.dev/docs/apps/build/apis/graphql-admin/rate-limits",
+    "accessed": "2026-10-27",
+    "published_updated": "live developer documentation",
+    "claims": [
+      "Standard/Advanced/Plus restore rates are 100/200/1000 points per second",
+      "bulk operations avoid single-query cost limits"
+    ],
+    "limits": "Limits can be reduced temporarily and vary by API/surface."
+  },
+  {
+    "id": "shopify-custom:S13",
+    "title": "Shopify API versioning",
+    "url": "https://shopify.dev/docs/api/usage/versioning",
+    "accessed": "2026-10-27",
+    "published_updated": "live developer documentation",
+    "claims": [
+      "Quarterly stable versions",
+      "minimum 12-month support",
+      "unsupported versions fall forward",
+      "webhooks are versioned"
+    ],
+    "limits": "Requires active deprecation monitoring and regression tests."
+  },
+  {
+    "id": "shopify-custom:S14",
+    "title": "Overview of expansion stores for Shopify Plus",
+    "url": "https://help.shopify.com/en/manual/organization-settings/expansion-stores",
+    "accessed": "2026-10-27",
+    "published_updated": "live help page",
+    "claims": [
+      "One main plus nine expansion stores included",
+      "stores do not share data by default",
+      "apps and theme licenses are per store",
+      "extra stores require approval/fee"
+    ],
+    "limits": "Contract and permitted use require Shopify confirmation for distinct retailers."
+  },
+  {
+    "id": "shopify-custom:S15",
+    "title": "Backups and duplication",
+    "url": "https://help.shopify.com/en/manual/shopify-admin/duplicate-store",
+    "accessed": "2026-10-27",
+    "published_updated": "live help page",
+    "claims": [
+      "CSV and theme copies form Shopify's manual backup path",
+      "orders cannot be imported through admin",
+      "several resources/settings do not transfer"
+    ],
+    "limits": "Not a managed point-in-time restore system."
+  },
+  {
+    "id": "shopify-custom:S16",
+    "title": "Medusa architecture and infrastructure modules",
+    "url": "https://docs.medusajs.com/learn/introduction/architecture",
+    "accessed": "2026-10-27",
+    "published_updated": "current Medusa v2 docs",
+    "claims": [
+      "Express/API, workflows, modules, PostgreSQL architecture",
+      "Redis providers are documented for production event/workflow/cache/locking use"
+    ],
+    "limits": "Deployment topology and capacity remain application-specific."
+  },
+  {
+    "id": "shopify-custom:S17",
+    "title": "Install Medusa",
+    "url": "https://docs.medusajs.com/learn/installation",
+    "accessed": "2026-10-27",
+    "published_updated": "current docs",
+    "claims": [
+      "Node 20.19+ or 22.12+ LTS and PostgreSQL prerequisites"
+    ],
+    "limits": "Development installation, not a production runbook."
+  },
+  {
+    "id": "shopify-custom:S18",
+    "title": "Medusa Payment Module Provider",
+    "url": "https://docs.medusajs.com/resources/commerce-modules/payment/payment-provider",
+    "accessed": "2026-10-27",
+    "published_updated": "edited 2025-05-20",
+    "claims": [
+      "Documented provider list contains Stripe",
+      "system provider is manual/COD placeholder",
+      "custom providers extend AbstractPaymentProvider"
+    ],
+    "limits": "No official Saudi PSP provider is documented; community package quality was not treated as first-party evidence."
+  },
+  {
+    "id": "shopify-custom:S19",
+    "title": "Medusa Store Module",
+    "url": "https://docs.medusajs.com/resources/commerce-modules/store",
+    "accessed": "2026-10-27",
+    "published_updated": "current docs",
+    "claims": [
+      "Medusa does not natively support multi-tenancy",
+      "multiple stores require custom links to commerce resources"
+    ],
+    "limits": "Possible customization is not equivalent to built-in isolation."
+  },
+  {
+    "id": "shopify-custom:S20",
+    "title": "Manage Sales Channels in Medusa Admin",
+    "url": "https://docs.medusajs.com/user-guide/settings/sales-channels",
+    "accessed": "2026-10-27",
+    "published_updated": "current docs",
+    "claims": [
+      "Sales channels associate products, orders, stock locations and shipping",
+      "product visibility alone does not prevent purchase without custom enforcement"
+    ],
+    "limits": "Channels are not hard tenants."
+  },
+  {
+    "id": "shopify-custom:S21",
+    "title": "Medusa Cloud plans and pricing",
+    "url": "https://docs.medusajs.com/cloud/pricing",
+    "accessed": "2026-10-27",
+    "published_updated": "live pricing page",
+    "claims": [
+      "Develop/Launch/Scale start at USD 29/99/299",
+      "zero GMV fee",
+      "Redis/backups/autoscaling/worker gates and retention"
+    ],
+    "limits": "Usage overages, taxes and enterprise terms can change."
+  },
+  {
+    "id": "shopify-custom:S22",
+    "title": "Medusa repository license and Enterprise license",
+    "url": "https://github.com/medusajs/medusa/blob/develop/ENTERPRISE-LICENSE.md",
+    "accessed": "2026-10-27",
+    "published_updated": "repository current branch",
+    "claims": [
+      "Current project is open-core",
+      "core is MIT while listed Enterprise materials need a commercial agreement"
+    ],
+    "limits": "Pin and inspect the exact release; develop branch can change."
+  },
+  {
+    "id": "shopify-custom:S23",
+    "title": "Agentic Commerce on Shopify: How It Works",
+    "url": "https://www.shopify.com/blog/how-agentic-commerce-works",
+    "accessed": "2026-10-27",
+    "published_updated": "2026-06-18",
+    "claims": [
+      "Agentic Storefronts distribute catalog to AI channels",
+      "current eligibility emphasizes US buyers",
+      "orders return to Shopify admin"
+    ],
+    "limits": "Shopify-authored product/marketing material; regional coverage is changing rapidly."
+  },
+  {
+    "id": "shopify-custom:S24",
+    "title": "Shop MCP developer changelog",
+    "url": "https://shopify.dev/changelog/posts/add-shopping-and-shop-pay-checkout-to-any-agent-with-shop-mcp",
+    "accessed": "2026-10-27",
+    "published_updated": "2026-10-13",
+    "claims": [
+      "Shop MCP supports catalog, carts, Shop Pay checkout and orders",
+      "no checkout webhooks at launch"
+    ],
+    "limits": "Very new surface; not needed for initial Saudi launch."
+  },
+  {
+    "id": "shopify-custom:S25",
+    "title": "Third-party transaction fees on Shopify bills",
+    "url": "https://help.shopify.com/en/manual/your-account/manage-billing/billing-charges/types-of-charges/third-party-charges/third-party-transaction-fees",
+    "accessed": "2026-10-27",
+    "published_updated": "live help page",
+    "claims": [
+      "Fee formula is [(products minus discounts) plus tax plus shipping] times plan rate",
+      "fees are additional to PSP processing fees",
+      "manual methods and POS are exempt"
+    ],
+    "limits": "General page says fees are not returned; Shopify's refund-order page gives a country-specific exception when Shopify Payments is unavailable."
+  },
+  {
+    "id": "shopify-custom:S26",
+    "title": "Refunding orders",
+    "url": "https://help.shopify.com/en/manual/fulfillment/managing-orders/refunding-orders",
+    "accessed": "2026-10-27",
+    "published_updated": "live help page",
+    "claims": [
+      "Where Shopify Payments is unavailable, Shopify transaction fees are credited in proportion to a refund",
+      "credit requires refund through Shopify admin; gateway-only refund gets no Shopify credit"
+    ],
+    "limits": "Does not govern whether a third-party PSP returns its own processing fee; test actual Saudi billing because another Shopify page states the general no-return rule."
+  },
+  {
+    "id": "shopify-custom:S27",
+    "title": "Shopify API versioning release schedule",
+    "url": "https://shopify.dev/docs/api/usage/versioning",
+    "accessed": "2026-10-27",
+    "published_updated": "schedule state dated 2026-10-26",
+    "claims": [
+      "2026-10 is latest stable",
+      "released 2026-10-01 and accessible until 2027-10-16 15:00 UTC"
+    ],
+    "limits": "Only versioned APIs follow this schedule; unversioned surfaces may change anytime."
+  },
+  {
+    "id": "shopify-custom:S28",
+    "title": "Medusa v2.22.0 release",
+    "url": "https://github.com/medusajs/medusa/releases/tag/v2.22.0",
+    "accessed": "2026-10-27",
+    "published_updated": "2026-10-21",
+    "claims": [
+      "Requires Node.js 22.22.0 or later",
+      "adds customer CSV export",
+      "adds multiple payment accounts per region or sales channel"
+    ],
+    "limits": "Release notes do not remove custom Saudi PSP or multi-tenant isolation work."
+  },
+  {
+    "id": "saudi-market:SAMA-2025-CASHLESS",
+    "title": "Electronic payments share reaches 85% of retail payments in 2025",
+    "url": "https://www.sama.gov.sa/ar-sa/MediaCenter/News/Pages/news-1139.aspx",
+    "accessed": "2026-10-27",
+    "published_updated": "2026-04-12; data period 2025",
+    "claims": [
+      "85% share of retail payment transaction count",
+      "14.6bn electronic transactions"
+    ],
+    "limits": "Retail payments, not e-commerce or beauty GMV."
+  },
+  {
+    "id": "saudi-market:SAMA-Q3-2025",
+    "title": "Key Economic Developments Q3 2025",
+    "url": "https://sama.gov.sa/en-US/Publications/EconomicReports/DevelopmentReports/Key_Economic_Developments_Q3_2025-EN.pdf",
+    "accessed": "2026-10-27",
+    "published_updated": "Q3 2025",
+    "claims": [
+      "mada e-commerce +71% YoY",
+      "POS value and transaction context"
+    ],
+    "limits": "mada only; growth rate not market size."
+  },
+  {
+    "id": "saudi-market:SAMA-PAYMENTS-2023",
+    "title": "Report on Payments Usage Study 2023",
+    "url": "https://www.sama.gov.sa/en-US/Documents/Report_on_Payments_Usage_Study_2023_en.pdf",
+    "accessed": "2026-10-27",
+    "published_updated": "2023",
+    "claims": [
+      "last e-commerce purchase payment preference: debit card 50%, COD 25%"
+    ],
+    "limits": "Survey preference and 2023 period; not beauty-specific."
+  },
+  {
+    "id": "saudi-market:GASTAT-ICT-2025",
+    "title": "Households and Individuals ICT Access and Usage Statistics 2025",
+    "url": "https://www.stats.gov.sa/documents/d/guest/ict-access-and-usage-2025-ar-1-pdf",
+    "accessed": "2026-10-27",
+    "published_updated": "2025",
+    "claims": [
+      "99.0% internet use ages 15–74",
+      "98.4% use mobile phone for internet",
+      "96.2% social participation among internet users",
+      "71.0% buy online; 80.2% Saudis",
+      "cosmetics bought by 40.2% of online buyers"
+    ],
+    "limits": "Category incidence among online buyers, not beauty spend/TAM or social conversion."
+  },
+  {
+    "id": "saudi-market:GASTAT-EST-2024",
+    "title": "Establishments ICT Access and Usage Statistics 2024",
+    "url": "https://www.stats.gov.sa/documents/20117/2435267/Establishments%2BICT%2BAccess%2Band%2BUsage%2BStatistics%2B2024-EN.pdf/2b4e45e8-ccbe-9767-1615-2f7d21236a9c",
+    "accessed": "2026-10-27",
+    "published_updated": "2024",
+    "claims": [
+      "98.0% internet access",
+      "29.0% sell/display online",
+      "46.8% order online"
+    ],
+    "limits": "Establishments, not consumers or beauty."
+  },
+  {
+    "id": "saudi-market:SBC-AUTH",
+    "title": "E-commerce authentication",
+    "url": "https://business.sa/eservices/details/4d6e9d30-e989-4940-08ce-08dbf015747a",
+    "accessed": "2026-10-27",
+    "published_updated": "current page",
+    "claims": [
+      "CR/freelance document",
+      "matched bank account",
+      "domain/store requirements",
+      "required policies/contact",
+      "free; 5–7 business days"
+    ],
+    "limits": "Eligibility depends on applicant and licensed activity."
+  },
+  {
+    "id": "saudi-market:MOC-EVAL-2025",
+    "title": "Ministry of Commerce announces results of e-commerce store evaluation",
+    "url": "https://mc.gov.sa/en/mediacenter/News/Pages/18-08-25-01.aspx",
+    "accessed": "2026-10-27",
+    "published_updated": "2025-08-18",
+    "claims": [
+      "ten compliance criteria including SBC, policies, CR/VAT/licences, contact and HTTPS"
+    ],
+    "limits": "Evaluation criteria summary, not full legal text."
+  },
+  {
+    "id": "saudi-market:MOC-LAW-GUIDE",
+    "title": "Trader Guide to the E-Commerce Law",
+    "url": "https://mc.gov.sa/en/guides/Documents/MerchantGuide.pdf",
+    "accessed": "2026-10-27",
+    "published_updated": "undated official guide",
+    "claims": [
+      "merchant disclosures and consumer protections"
+    ],
+    "limits": "Guide; consult Arabic law/regulations for authoritative interpretation."
+  },
+  {
+    "id": "saudi-market:MOC-CONSUMER-GUIDE",
+    "title": "Guide to Consumer Rights and Responsibilities 2022",
+    "url": "https://mc.gov.sa/en/guides/Documents/CustomerGuide.pdf",
+    "accessed": "2026-10-27",
+    "published_updated": "2022",
+    "claims": [
+      "store information, invoice, delivery, privacy and return guidance",
+      "exposed cosmetics health/safety exception"
+    ],
+    "limits": "Guidance; exceptions fact-specific."
+  },
+  {
+    "id": "saudi-market:MOC-ECOM-LAW-AR",
+    "title": "E-Commerce Law and Executive Regulations",
+    "url": "https://mc.gov.sa/ar/Regulations/Pages/Details.aspx?hw=%D8%A7%D9%84%D8%A5%D9%84%D9%83%D8%AA%D8%B1%D9%88%D9%86%D9%8A%D8%A9&lawId=aaa4d4cf-ca57-41ff-a3f9-aa8500a3512c",
+    "accessed": "2026-10-27",
+    "published_updated": "official consolidated page",
+    "claims": [
+      "Article 13 seven days after receipt and exceptions",
+      "Article 14 delivery delay over 15 days/agreed date",
+      "regulation health-resale exception"
+    ],
+    "limits": "Arabic legal text; applicability and exception facts require counsel."
+  },
+  {
+    "id": "saudi-market:ZATCA-VAT-INVOICE",
+    "title": "Guideline for Tax Invoicing and Records under VAT Provisions",
+    "url": "https://zatca.gov.sa/en/HelpCenter/guidelines/Documents/Guideline-for-Tax-Invoicing-and-Records-under-VAT-Provisions.pdf",
+    "accessed": "2026-10-27",
+    "published_updated": "current official guideline",
+    "claims": [
+      "mandatory threshold SAR375,000",
+      "voluntary SAR187,500",
+      "invoice/record requirements"
+    ],
+    "limits": "Apply tests to actual person/entity and supplies."
+  },
+  {
+    "id": "saudi-market:ZATCA-EINV-PHASES",
+    "title": "E-invoicing roll-out phases",
+    "url": "https://zatca.gov.sa/en/E-Invoicing/Introduction/Pages/Roll-out-phases.aspx",
+    "accessed": "2026-10-27",
+    "published_updated": "current page",
+    "claims": [
+      "Phase 1 scope/date",
+      "Phase 2 waves and six-month notice"
+    ],
+    "limits": "Phase 2 eligibility is entity/turnover/notification specific."
+  },
+  {
+    "id": "saudi-market:SDAIA-PDPL",
+    "title": "Personal Data Protection Law",
+    "url": "https://sdaia.gov.sa/en/SDAIA/about/Documents/Personal%20Data%20English%20V2-23April2023-%20Reviewed-.pdf",
+    "accessed": "2026-10-27",
+    "published_updated": "amended 2023",
+    "claims": [
+      "scope",
+      "rights",
+      "collection disclosure",
+      "cross-border disclosure"
+    ],
+    "limits": "English translation; Arabic official text prevails."
+  },
+  {
+    "id": "saudi-market:SDAIA-REGS",
+    "title": "Implementing Regulation of PDPL and transfer regulation",
+    "url": "https://sdaia.gov.sa/en/SDAIA/about/Documents/ImplementingRegulation.pdf",
+    "accessed": "2026-10-27",
+    "published_updated": "current official PDF",
+    "claims": [
+      "notice fields",
+      "legitimate interest",
+      "direct marketing",
+      "cross-border framework"
+    ],
+    "limits": "Safeguard/risk-assessment route depends on transfer facts."
+  },
+  {
+    "id": "saudi-market:SFDA-COSMETIC-REG",
+    "title": "Implementing Regulation of Cosmetic Products Law",
+    "url": "https://www.sfda.gov.sa/sites/default/files/2021-03/Implementing%20Regulation%20of%20Cosmetic%20Products%20Law%201_0.pdf",
+    "accessed": "2026-10-27",
+    "published_updated": "official PDF posted 2021",
+    "claims": [
+      "listing before import/trade",
+      "lister duties",
+      "label and safety requirements"
+    ],
+    "limits": "Older English text; current systems/standards must be checked."
+  },
+  {
+    "id": "saudi-market:SFDA-SHIPMENT-2025",
+    "title": "Frequent issues regarding shipments to Saudi Arabia clearance",
+    "url": "https://www.sfda.gov.sa/sites/default/files/2025-04/FrequentIssuesRegardingShipmentsToSaudiArabiaClearanceE.pdf",
+    "accessed": "2026-10-27",
+    "published_updated": "2025-04",
+    "claims": [
+      "GHAD listing/match",
+      "conformity, prohibited substances, claims, transport/storage issues"
+    ],
+    "limits": "Shipment observations, not complete procedure."
+  },
+  {
+    "id": "saudi-market:SFDA-LABEL-FAQ",
+    "title": "Cosmetics verification at ports of entry",
+    "url": "http://www.sfda.gov.sa/ar/faq/60287",
+    "accessed": "2026-10-27",
+    "published_updated": "current FAQ",
+    "claims": [
+      "Arabic/English label fields",
+      "INCI",
+      "expiry/PAO",
+      "batch",
+      "claims examples"
+    ],
+    "limits": "FAQ may not reflect every product exception."
+  },
+  {
+    "id": "saudi-market:SFDA-STANDARDS-2025",
+    "title": "SFDA adopts updated Gulf cosmetics regulations",
+    "url": "https://sfda.gov.sa/ar/news/18685",
+    "accessed": "2026-10-27",
+    "published_updated": "2025-06-24",
+    "claims": [
+      "SFDA.CO/GSO 1943:2024 and 2528:2024 adopted"
+    ],
+    "limits": "Full standards are paid/controlled documents."
+  },
+  {
+    "id": "saudi-market:MADA-ECOM",
+    "title": "mada e-commerce",
+    "url": "https://www.mada.com.sa/ar/alkhdmat/mada-e-commerce",
+    "accessed": "2026-10-27",
+    "published_updated": "current page",
+    "claims": [
+      "3-D Secure and transaction capabilities",
+      "provider via bank"
+    ],
+    "limits": "No merchant price."
+  },
+  {
+    "id": "saudi-market:MADA-FAQ",
+    "title": "mada FAQ",
+    "url": "https://www.mada.com.sa/en/help/faqs",
+    "accessed": "2026-10-27",
+    "published_updated": "current page",
+    "claims": [
+      "POS MSC maximum 0.80%, capped SAR40"
+    ],
+    "limits": "POS pricing; must not be applied to e-commerce gateway fees."
+  },
+  {
+    "id": "saudi-market:SPL-ECOM",
+    "title": "SPL E-Commerce Services",
+    "url": "https://splonline.com.sa/en/e-commerce-services/",
+    "accessed": "2026-10-27",
+    "published_updated": "current page",
+    "claims": [
+      "pickup, delivery channels, COD, API, reverse logistics"
+    ],
+    "limits": "No transparent contracted business rates/SLA."
+  },
+  {
+    "id": "saudi-market:SPL-SME",
+    "title": "SPL SMEs Platform",
+    "url": "https://splonline.com.sa/en/smes/",
+    "accessed": "2026-10-27",
+    "published_updated": "current page",
+    "claims": [
+      "public bundles SAR29.95/25/22/20 per shipment approximately",
+      "one-year coupon validity"
+    ],
+    "limits": "Confirm VAT, dimensions, pickup, COD, returns and current eligibility; official pages show inconsistent catalogue pricing."
+  },
+  {
+    "id": "primary:1",
+    "title": "Salla React overview",
+    "url": "https://docs.salla.dev/twilight/react/start/what-is-a-theme",
+    "accessed": "2026-10-27",
+    "published_updated": "live page unless noted",
+    "claims": [
+      "Managed React theme architecture; not a merchant acceptance test"
+    ],
+    "limits": "Point-in-time source; does not establish merchant-specific acceptance or price."
+  },
+  {
+    "id": "primary:2",
+    "title": "Salla framework availability",
+    "url": "https://docs.salla.dev/twilight/react/start/frameworks",
+    "accessed": "2026-10-27",
+    "published_updated": "live page unless noted",
+    "claims": [
+      "TanStack Start available, Next.js planned on research date"
+    ],
+    "limits": "Point-in-time source; does not establish merchant-specific acceptance or price."
+  },
+  {
+    "id": "primary:3",
+    "title": "Salla quick start",
+    "url": "https://docs.salla.dev/twilight/react/start/quick-start",
+    "accessed": "2026-10-27",
+    "published_updated": "live page unless noted",
+    "claims": [
+      "Documented tooling and local demo; runtime docs conflict with package README"
+    ],
+    "limits": "Point-in-time source; does not establish merchant-specific acceptance or price."
+  },
+  {
+    "id": "primary:4",
+    "title": "Salla React theme package",
+    "url": "https://registry.npmjs.org/@salla.sa%2Ftheme-raed/1.0.63",
+    "accessed": "2026-10-27",
+    "published_updated": "live page unless noted",
+    "claims": [
+      "Exact downloaded starter source and dependency metadata"
+    ],
+    "limits": "Point-in-time source; does not establish merchant-specific acceptance or price."
+  },
+  {
+    "id": "primary:5",
+    "title": "Salla CLI package",
+    "url": "https://registry.npmjs.org/@salla.sa%2Fcli/3.2.63",
+    "accessed": "2026-10-27",
+    "published_updated": "live page unless noted",
+    "claims": [
+      "CLI requires Node >=22.12.0"
+    ],
+    "limits": "Point-in-time source; does not establish merchant-specific acceptance or price."
+  },
+  {
+    "id": "primary:6",
+    "title": "Salla engine package",
+    "url": "https://registry.npmjs.org/@salla.sa%2Ftwilight-theme-engine/1.0.133",
+    "accessed": "2026-10-27",
+    "published_updated": "live page unless noted",
+    "claims": [
+      "Registry version captured; not clean-build validated"
+    ],
+    "limits": "Point-in-time source; does not establish merchant-specific acceptance or price."
+  },
+  {
+    "id": "primary:7",
+    "title": "Published esbuild metadata",
+    "url": "https://registry.npmjs.org/esbuild/0.28.2",
+    "accessed": "2026-10-27",
+    "published_updated": "live page unless noted",
+    "claims": [
+      "Independent npm lookup succeeded after transient pnpm metadata error"
+    ],
+    "limits": "Point-in-time source; does not establish merchant-specific acceptance or price."
+  },
+  {
+    "id": "primary:8",
+    "title": "Salla Twig source package",
+    "url": "https://raw.githubusercontent.com/SallaApp/theme-raed/master/package.json",
+    "accessed": "2026-10-27",
+    "published_updated": "live page unless noted",
+    "claims": [
+      "Current source dependency/runtime snapshot, not accepted merchant release"
+    ],
+    "limits": "Point-in-time source; does not establish merchant-specific acceptance or price."
+  },
+  {
+    "id": "primary:9",
+    "title": "Nice One investor results",
+    "url": "https://ir.niceonesa.com/",
+    "accessed": "2026-10-27",
+    "published_updated": "live page unless noted",
+    "claims": [
+      "Q2 2026 headline revenue and loss"
+    ],
+    "limits": "Point-in-time source; does not establish merchant-specific acceptance or price."
+  },
+  {
+    "id": "primary:10",
+    "title": "Nice One exchange announcement",
+    "url": "https://www.saudiexchange.sa/wps/portal/saudiexchange/newsandreports/issuer-news/issuer-announcements/issuer-announcements-details/?anCat=1&anId=97016&cs=4193&locale=en",
+    "accessed": "2026-10-27",
+    "published_updated": "live page unless noted",
+    "claims": [
+      "Published28July2026; Q2/H1results; indexed full text; direct reader returned403"
+    ],
+    "limits": "Point-in-time source; does not establish merchant-specific acceptance or price."
+  },
+  {
+    "id": "primary:11",
+    "title": "Core Web Vitals",
+    "url": "https://developers.google.com/search/docs/appearance/core-web-vitals",
+    "accessed": "2026-10-27",
+    "published_updated": "live page unless noted",
+    "claims": [
+      "Loading, interaction and layout metrics; field/lab distinction"
+    ],
+    "limits": "Point-in-time source; does not establish merchant-specific acceptance or price."
+  },
+  {
+    "id": "primary:12",
+    "title": "Salla React publication",
+    "url": "https://docs.salla.dev/twilight/react/local-development/publish",
+    "accessed": "2026-10-27",
+    "published_updated": "live page unless noted",
+    "claims": [
+      "Partner/repository/review gates; no authenticated publication performed"
+    ],
+    "limits": "Point-in-time source; does not establish merchant-specific acceptance or price."
+  },
+  {
+    "id": "primary:13",
+    "title": "Medusa release history",
+    "url": "https://github.com/medusajs/medusa/releases",
+    "accessed": "2026-10-27",
+    "published_updated": "live page unless noted",
+    "claims": [
+      "v2.22.0 current release and Node22.22.0+ requirement; use exact release notes"
+    ],
+    "limits": "Point-in-time source; does not establish merchant-specific acceptance or price."
+  },
+  {
+    "id": "primary:14",
+    "title": "SFDA port label FAQ HTTPS",
+    "url": "https://www.sfda.gov.sa/ar/faq/60287",
+    "accessed": "2026-10-27",
+    "published_updated": "live page unless noted",
+    "claims": [
+      "Label, INCI and exact variant checks; verify applicable product rules"
+    ],
+    "limits": "Point-in-time source; does not establish merchant-specific acceptance or price."
+  },
+  {
+    "id": "primary:15",
+    "title": "Shopify fee calculation",
+    "url": "https://help.shopify.com/en/manual/your-account/manage-billing/your-invoice/charges#third-party-transaction-fees",
+    "accessed": "2026-10-27",
+    "published_updated": "live page unless noted",
+    "claims": [
+      "Fee base includes products less discounts plus shipping and tax; region-specific refund treatment must be confirmed"
+    ],
+    "limits": "Point-in-time source; does not establish merchant-specific acceptance or price."
+  }
+]

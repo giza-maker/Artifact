@@ -1,0 +1,54 @@
+{
+  "research_date": "2026-10-27",
+  "source": "C:\\Users\\ahmed\\Documents\\GitHub\\Artifact\\nurimi",
+  "sku_variants": 23,
+  "makers": {
+    "Celimax": 3,
+    "Arencia": 5,
+    "Anua": 13,
+    "Mixa": 2
+  },
+  "null_fields": {
+    "price": 23,
+    "stock": 23,
+    "batch": 23,
+    "expiry": 23
+  },
+  "local_verification": {
+    "pending": 23
+  },
+  "missing_barcode_records": 23,
+  "matching_breakdown_records": 23,
+  "catalogue_eligible_for_production": 0,
+  "frontend_findings": {
+    "cart_storage": "browser localStorage; prototype only",
+    "checkout": "client-rendered sample confirmation; no transmitted order/payment",
+    "products": "static JSON fetched by shop.js",
+    "product_urls": "dialog state; no independent product routes",
+    "canonical": "one GitHub Pages URL",
+    "source_locations": [
+      "shop.js:12",
+      "shop.js:18",
+      "shop.js:190",
+      "shop.js:202",
+      "shop.js:257",
+      "index.html:7"
+    ]
+  },
+  "reuse": [
+    "identity assets",
+    "font files",
+    "approved Arabic and English copy",
+    "23 generated scenes",
+    "original packaging references",
+    "source-linked product breakdowns",
+    "responsive layout direction"
+  ],
+  "replace": [
+    "demo bag",
+    "sample checkout",
+    "static price/stock as operational truth",
+    "single document product routing",
+    "public brand-studio navigation in production store"
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "kind": "platform_neutral_configuration_dry_run",
+  "checks": [
+    {
+      "name": "23 variants read from actual source",
+      "passed": true
+    },
+    {
+      "name": "unique source IDs",
+      "passed": true
+    },
+    {
+      "name": "all 23 source breakdowns matched",
+      "passed": true
+    },
+    {
+      "name": "missing commercial facts fail publication",
+      "passed": true
+    },
+    {
+      "name": "separate storage namespaces",
+      "passed": true
+    },
+    {
+      "name": "distinct layouts through configuration",
+      "passed": true
+    },
+    {
+      "name": "distinct merchandise scope through configuration",
+      "passed": true
+    },
+    {
+      "name": "distinct visual tokens through configuration",
+      "passed": true
+    },
+    {
+      "name": "nurimi: deterministic output",
+      "passed": true
+    },
+    {
+      "name": "nurimi: exact source records preserved",
+      "passed": true
+    },
+    {
+      "name": "nurimi: no invented prices or stock",
+      "passed": true
+    },
+    {
+      "name": "nurimi: zero unverified records eligible",
+      "passed": true
+    },
+    {
+      "name": "sada-internal-test: deterministic output",
+      "passed": true
+    },
+    {
+      "name": "sada-internal-test: exact source records preserved",
+      "passed": true
+    },
+    {
+      "name": "sada-internal-test: no invented prices or stock",
+      "passed": true
+    },
+    {
+      "name": "sada-internal-test: zero unverified records eligible",
+      "passed": true
+    },
+    {
+      "name": "unknown product IDs rejected",
+      "passed": true
+    },
+    {
+      "name": "cross-store namespace collision rejected",
+      "passed": true
+    },
+    {
+      "name": "all existing public files unchanged",
+      "passed": true
+    }
+  ],
+  "executed_at_utc": "2026-10-26T21:30:14.026643+00:00",
+  "reproduce_command": "python audit-and-repeat.py",
+  "script_sha256": "6b5dde1d5b558fc712d2740b78abb7ab372eb84e8fcff269d4ba800812887a07",
+  "input_sha256": {
+    "data\\products.json": "e18bd9b6b761b1e2a0f296c1fc37b94a3930aacff735f477a8473ce175b65c05",
+    "data\\product-breakdowns.json": "7750f02c04803ed0f1ddebb18ca144925035018d9731fc3cd4778e279632e027"
+  },
+  "fixture_ids": [
+    "nurimi",
+    "sada-internal-test"
+  ],
+  "output_sha256": {
+    "nurimi\\brand.json": "93f20aff2fedf111b09b6b1368e7c218ba3906a4260f6fe3f7ef112657dded9c",
+    "nurimi\\catalog.draft.json": "961d8a6c6c2cff757c929e8422f1f9b6c53d63f37baef49fffbeef9c35632541",
+    "nurimi\\publication-manifest.json": "662bad4f37bc661a326d6b51ecf477654563e9ce73f567964749b8247c576803",
+    "nurimi\\tokens.css": "88b615d8e2bdb3eaa098db956fc229b7d94b87472dc860567780ab1440761919",
+    "sada-internal-test\\brand.json": "a4efb0c7a7b33c3fb967cc2c4bdc6d68b486552c17d7651be9f5b9dff1ad39a6",
+    "sada-internal-test\\catalog.draft.json": "a8a1f2c1822312b5193574b9a282b715db23a2c45aa438ce90aac886895fd5c0",
+    "sada-internal-test\\publication-manifest.json": "1106fded13cc75045a2c48e443f672e2d4fb97a6115010b9aa959331a75b11eb",
+    "sada-internal-test\\tokens.css": "5ba88ce4e4075c0b17055f76a192d4c1ff4b12ffcaeab7f9ba6548372ae93c05"
+  },
+  "passed": 19,
+  "failed": 0,
+  "machine_generation_seconds": 0.0044,
+  "elapsed_excludes": "research, configuration authoring, merchant onboarding, theme porting and deployment",
+  "production_store_deployed": false,
+  "payment_or_order_tested": false,
+  "platform_roundtrip_tested": false,
+  "what_this_proves": "same packager produces deterministic, separately scoped brand artifacts; unknown SKU facts remain blocked",
+  "what_this_does_not_prove": "Salla/Zid/Shopify deployment, checkout, payment correctness, inventory isolation or second-brand launch lead time"
+}

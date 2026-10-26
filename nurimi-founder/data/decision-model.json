@@ -1,0 +1,185 @@
+{
+  "as_of": "2026-10-27",
+  "kind": "judgement_and_planning_assumptions_not_benchmark_or_quote",
+  "weights_percent": {
+    "launch_speed": 18,
+    "saudi_integration": 18,
+    "brand_flexibility": 12,
+    "arabic_rtl": 10,
+    "operational_reliability": 12,
+    "maintenance": 10,
+    "portability": 8,
+    "total_cost": 12
+  },
+  "scores": {
+    "Salla native": {
+      "criterion_scores": {
+        "launch_speed": 4,
+        "saudi_integration": 5,
+        "brand_flexibility": 4,
+        "arabic_rtl": 5,
+        "operational_reliability": 4,
+        "maintenance": 5,
+        "portability": 3,
+        "total_cost": 4
+      },
+      "weighted_out_of_10": 8.6
+    },
+    "Zid Vitrin": {
+      "criterion_scores": {
+        "launch_speed": 4,
+        "saudi_integration": 5,
+        "brand_flexibility": 4,
+        "arabic_rtl": 5,
+        "operational_reliability": 4,
+        "maintenance": 4,
+        "portability": 3,
+        "total_cost": 3
+      },
+      "weighted_out_of_10": 8.16
+    },
+    "Shopify native": {
+      "criterion_scores": {
+        "launch_speed": 4,
+        "saudi_integration": 3,
+        "brand_flexibility": 5,
+        "arabic_rtl": 4,
+        "operational_reliability": 4,
+        "maintenance": 4,
+        "portability": 4,
+        "total_cost": 3
+      },
+      "weighted_out_of_10": 7.64
+    },
+    "Shopify headless": {
+      "criterion_scores": {
+        "launch_speed": 2,
+        "saudi_integration": 3,
+        "brand_flexibility": 5,
+        "arabic_rtl": 3,
+        "operational_reliability": 3,
+        "maintenance": 2,
+        "portability": 4,
+        "total_cost": 2
+      },
+      "weighted_out_of_10": 5.84
+    },
+    "Medusa custom": {
+      "criterion_scores": {
+        "launch_speed": 1,
+        "saudi_integration": 2,
+        "brand_flexibility": 5,
+        "arabic_rtl": 3,
+        "operational_reliability": 2,
+        "maintenance": 1,
+        "portability": 5,
+        "total_cost": 2
+      },
+      "weighted_out_of_10": 4.84
+    }
+  },
+  "sensitivity": {
+    "case": "reduce local integration weight8points, add8 to portability",
+    "weights": {
+      "launch_speed": 18,
+      "saudi_integration": 10,
+      "brand_flexibility": 12,
+      "arabic_rtl": 10,
+      "operational_reliability": 12,
+      "maintenance": 10,
+      "portability": 16,
+      "total_cost": 12
+    },
+    "scores": {
+      "Salla native": 8.28,
+      "Zid Vitrin": 7.84,
+      "Shopify native": 7.8,
+      "Shopify headless": 6.0,
+      "Medusa custom": 5.32
+    }
+  },
+  "annual_cost_assumptions_sar": {
+    "salla_pro_list": 2990,
+    "domain_planning": 100,
+    "apps_monitoring_allowance": 1200,
+    "engineering_hour_planning": 200,
+    "operations_hour_planning": 100,
+    "shared_engineering_hours_per_month": 4,
+    "per_store_engineering_hours_per_month": 1,
+    "per_store_operations_control_hours_per_month": 1
+  },
+  "scenarios": [
+    {
+      "stores": 1,
+      "annual_subscription_floor_sar": 2990,
+      "annual_software_allowance_sar": 4290,
+      "annual_software_and_modelled_care_sar": 17490
+    },
+    {
+      "stores": 3,
+      "annual_subscription_floor_sar": 8970,
+      "annual_software_allowance_sar": 12870,
+      "annual_software_and_modelled_care_sar": 33270
+    },
+    {
+      "stores": 5,
+      "annual_subscription_floor_sar": 14950,
+      "annual_software_allowance_sar": 21450,
+      "annual_software_and_modelled_care_sar": 49050
+    }
+  ],
+  "first_store_hours": {
+    "engineering": [
+      72,
+      112
+    ],
+    "design_qa": [
+      8,
+      16
+    ],
+    "operations": [
+      16,
+      32
+    ],
+    "aggregate": [
+      96,
+      160
+    ]
+  },
+  "first_store_labour_sar": [
+    17200,
+    28000
+  ],
+  "additional_brand_engineering_hours": [
+    16,
+    32
+  ],
+  "owner_confirmed_context": {
+    "merchant_setup": "not_confirmed",
+    "fulfilment": "Saudi stock/warehouse partner",
+    "warehouse_contract_and_performance": "not_verified"
+  },
+  "unit_economics_example": {
+    "all_inputs_are_assumptions": true,
+    "vat_registered": true,
+    "gross_basket_sar": 230,
+    "net_sales_sar": 200,
+    "landed_cost_sar": 110,
+    "payment_cost_sar": 5.6,
+    "delivery_subsidy_sar": 12,
+    "pick_pack_sar": 7,
+    "packaging_sar": 3,
+    "return_spoilage_reserve_sar": 6,
+    "contribution_before_acquisition_sar": 56.4,
+    "cac_sar": 45,
+    "contribution_after_acquisition_sar": 11.4
+  },
+  "shopify_break_even": {
+    "fx_planning_sar_per_usd": 3.75,
+    "annual_billed_monthly_difference_usd": 35,
+    "platform_fee_percentage_point_difference": 1,
+    "monthly_fee_bearing_value_sar": 13125.0,
+    "limits": "Same PSP rate assumed. Fee base includes tax/shipping. Excludes tax on subscription/FX effects."
+  },
+  "unpriced": "tax treatment, theme entitlement, gateway contract, courier, warehouse, accounting/WMS, inventory, marketing, user research and new brand creation"
+}
