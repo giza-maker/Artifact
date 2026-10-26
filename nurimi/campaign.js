@@ -4,28 +4,83 @@
   const $$ = s => [...document.querySelectorAll(s)];
   const reduced = matchMedia('(prefers-reduced-motion: reduce)');
   const label = (ar,en) => document.documentElement.lang === 'ar' ? ar : en;
-  let spotlight = 'P003';
-  if(!reduced.matches){
-    const products=$$('.campaign-product').map(element=>({element,transform:getComputedStyle(element).transform}));
-    products.forEach(({element,transform},index)=>element.animate([{opacity:0,transform:'translateY(28px) rotate(0deg) scale(.94)'},{opacity:1,transform}],{duration:950,delay:index*120,easing:'cubic-bezier(.2,.7,.2,1)'}));
+  const local = value => value?.[document.documentElement.lang] || value?.en || '';
+  const safe = value => String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const arrow = '<svg class="icon arrow" aria-hidden="true"><use href="assets/icons.svg#arrow-left"></use></svg>';
+  const makerEdits = {
+    Anua: {
+      key:'anua', ar:'أنوا', ids:['P008','P013','P014'],
+      title:{ar:'من أول تنظيف لآخر ترطيب.',en:'From first cleanse to final layer.'},
+      description:{ar:'تونر هارتليف، زيت التنظيف، وعناية بيتش. اختيارات لخطوات مختلفة من روتينك.',en:'Heartleaf toner, cleansing oil and Peach care. Explore the different steps in Anua’s range.'}
+    },
+    Arencia: {
+      key:'arencia', ar:'أرينسيا', ids:['P003','P004','P002'],
+      title:{ar:'خطوة السيروم، بطريقتك.',en:'Your take on the serum step.'},
+      description:{ar:'تعرّف على بوسترات PDRN، فيتامين سي، والريتينال، ومكونات كل اختيار.',en:'Get to know PDRN, Vitamin C and Retinal Booster Shots, with the ingredients behind each choice.'}
+    },
+    Celimax: {
+      key:'celimax', ar:'سيليماكس', ids:['P001','P005','P021'],
+      title:{ar:'تعرّف على عناية فيتا-إيه.',en:'Get to know the Vita-A range.'},
+      description:{ar:'سيروم، بوستر، وكريم ليلي. قارن صيغ الريتينول والريتينال واقرأ تعليمات كل منتج.',en:'A serum, booster and night cream. Compare retinol and retinal formats, and read each product’s directions.'},
+      note:{ar:'خيارات للمقارنة، وليست روتينًا لاستخدامها معًا.',en:'Alternatives to compare, not a routine to layer together.'}
+    },
+    Mixa: {
+      key:'mixa', ar:'ميكسا', ids:['P022','P023'],
+      title:{ar:'عناية تمتد أبعد من الوجه.',en:'Care beyond your face.'},
+      description:{ar:'سيراميد بروتكت وسيكا ريباراسيون. كريمات متعددة الاستخدام للوجه واليدين والجسم.',en:'Ceramide Protect and Cica Réparation. Multi-use creams for the face, hands and body.'}
+    }
+  };
+  let selectedMaker = 'Anua';
+  let makerStatus = 'loading';
+  function scrollToShop(){
+    $('#catalog-title')?.focus({preventScroll:true});
+    $('#shop-section')?.scrollIntoView({behavior:reduced.matches?'auto':'smooth',block:'start'});
   }
-  function scrollToShop(){ $('#catalog-title')?.focus({preventScroll:true});$('#shop-section').scrollIntoView({behavior:reduced.matches?'instant':'smooth',block:'start'}); }
-  $$('[data-brand-edit]').forEach(button=>button.addEventListener('click',()=>{window.NurimiShop?.resetFilters();window.NurimiShop?.setBrand(button.dataset.brandEdit);scrollToShop();}));
-  $$('[data-category-edit]').forEach(button=>button.addEventListener('click',()=>{window.NurimiShop?.resetFilters();window.NurimiShop?.setType(button.dataset.categoryEdit);scrollToShop();}));
-  function updateSpotlight(id, animate=true){
-    const product=window.NurimiShop?.getProducts().find(p=>p.id===id);if(!product)return;
-    spotlight=id;const button=$('#campaign-main'),image=$('#campaign-main-image');
-    button.dataset.product=id;button.setAttribute('aria-label',label('استكشف ','Explore ')+product.name[document.documentElement.lang]);
-    image.src=product.image;image.alt=product.name[document.documentElement.lang];
-    const side=$('.campaign-product-side'),sideProduct=window.NurimiShop?.getProducts().find(p=>p.id===(id==='P004'?'P003':'P004'));
-    if(sideProduct){side.dataset.product=sideProduct.id;side.setAttribute('aria-label',label('استكشف ','Explore ')+sideProduct.name[document.documentElement.lang]);side.querySelector('img').src=sideProduct.image;side.querySelector('img').alt=sideProduct.name[document.documentElement.lang];}
-    if(animate&&!reduced.matches){button.classList.remove('is-changing');requestAnimationFrame(()=>button.classList.add('is-changing'));}
-    $$('[data-spotlight]').forEach(tab=>tab.setAttribute('aria-pressed',String(tab.dataset.spotlight===id)));
+  function countLabel(count){
+    if(document.documentElement.lang!=='ar')return `${count} ${count===1?'pick':'picks'}`;
+    if(count===2)return 'اختياران';
+    return `${new Intl.NumberFormat('ar-SA').format(count)} ${count<=10?'اختيارات':'اختيارًا'}`;
   }
-  $$('[data-spotlight]').forEach(button=>button.addEventListener('click',()=>updateSpotlight(button.dataset.spotlight)));
-  $('#campaign-main').addEventListener('animationend',e=>e.currentTarget.classList.remove('is-changing'));
-  document.addEventListener('nurimi:products-ready',()=>updateSpotlight(spotlight,false));
-  document.addEventListener('nurimi:language-change',()=>{updateSpotlight(spotlight,false);motionLabel();});
+  function renderMaker(announce=false){
+    const edit=makerEdits[selectedMaker], panel=$('#maker-panel');
+    if(!panel)return;
+    panel.dataset.makerWorld=edit.key;
+    $$('[data-maker-select]').forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.makerSelect===selectedMaker)));
+    const products=window.NurimiShop?.getProducts() || [];
+    if(products.length)makerStatus='ready';
+    const picks=edit.ids.map(id=>products.find(p=>p.id===id)).filter(Boolean);
+    if(!picks.length){
+      const loading=makerStatus==='loading';
+      panel.setAttribute('aria-busy',String(loading));
+      panel.innerHTML=`<div class="maker-panel-loading"><h3 id="maker-panel-title">${loading?label('تُحمّل تفاصيل التشكيلة.','Loading the collection.'):label('تعذر عرض تفاصيل التشكيلة.','Collection details are unavailable.')}</h3>${loading?'':`<p>${label('تحقق من الاتصال وأعد المحاولة.','Check your connection and try again.')}</p><button type="button" class="maker-collection-link" data-retry-products>${label('إعادة المحاولة','Try again')}</button>`}</div>`;
+      return;
+    }
+    panel.setAttribute('aria-busy','false');
+    const count=products.filter(p=>p.brand===selectedMaker).length;
+    panel.innerHTML=`<div class="maker-panel-body"><div class="maker-panel-copy"><p class="maker-panel-count"><bdi>${safe(selectedMaker)}</bdi> / ${countLabel(count)}</p><h3 id="maker-panel-title">${safe(local(edit.title))}</h3><p>${safe(local(edit.description))}</p>${edit.note?`<p class="maker-panel-note">${safe(local(edit.note))}</p>`:''}<button class="maker-collection-link" type="button" data-brand-edit="${safe(selectedMaker)}">${label('تسوّق '+edit.ar,'Shop '+selectedMaker)} ${arrow}</button></div><div class="maker-products" data-count="${picks.length}">${picks.map(p=>`<button class="maker-product" type="button" data-product="${safe(p.id)}" aria-label="${safe(label('استكشف ','Explore ')+local(p.name))}"><span class="maker-product-image"><img src="${safe(p.sceneImage||p.image)}" alt="" width="1024" height="1024" loading="lazy" decoding="async"></span><span class="maker-product-name">${safe(local(p.shortName||p.name))}</span><span class="maker-product-size">${safe(local(p.variantLabel))}</span></button>`).join('')}</div></div>`;
+    $('[data-maker-status]').textContent=announce?label('تشكيلة '+edit.ar+'، '+countLabel(count),selectedMaker+' collection, '+countLabel(count)):'';
+  }
+  document.addEventListener('click',event=>{
+    if(event.target.closest('[data-retry-products]')){makerStatus='loading';renderMaker();return;}
+    const maker=event.target.closest('[data-maker-select]');
+    if(maker){
+      if(maker.dataset.makerSelect===selectedMaker)return;
+      selectedMaker=maker.dataset.makerSelect;
+      renderMaker(true);
+      return;
+    }
+    const brand=event.target.closest('[data-brand-edit]');
+    if(brand){
+      window.NurimiShop?.resetFilters();window.NurimiShop?.setBrand(brand.dataset.brandEdit);scrollToShop();
+      return;
+    }
+    const category=event.target.closest('[data-category-edit]');
+    if(category){window.NurimiShop?.resetFilters();window.NurimiShop?.setType(category.dataset.categoryEdit);scrollToShop();}
+  });
+  document.addEventListener('nurimi:products-ready',event=>{makerStatus=event.detail?.error?'error':'ready';renderMaker();});
+  document.addEventListener('nurimi:language-change',()=>{renderMaker();motionLabel();});
+  renderMaker();
+
   const video=$('#campaign-video'),control=$('#campaign-motion');
   let inView=false, userPaused=Boolean(navigator.connection?.saveData), available=false;
   function motionLabel(){

@@ -1,5 +1,9 @@
 # NURIMI brand asset notes
 
+## Four-brand storefront hero
+
+The hero now gives Anua, Arencia, Celimax and Mixa equal photographic space using their existing generated product scenes. The following brand showcase uses the same brand-specific sets and source-linked product details. Wordmarks are unchanged first-party assets from the makers' official sites, not generated approximations; exact CDN URLs and hashes are in [maker wordmark provenance](assets/makers/provenance.md). Mixa's original transparent canvas is optically sized in CSS. Product-brand marks identify the range and do not assert a partnership or authorized-retailer status.
+
 ## Campaign and expanded range — 26 October 2026
 
 Campaign scenery and a macro texture still were generated with OpenAI image generation. The silent texture film was generated with Fal.ai and optimized for the website. Exact prompt, endpoint, job and encoding records: [campaign provenance](assets/campaign/provenance.md). No generated environment claims to depict a specific product formula. Original product packaging remains separate from the generated scenery.

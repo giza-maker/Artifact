@@ -12,6 +12,8 @@ Playful grown-up beauty with clear product information. A tactile cream canvas, 
 
 The signature is a useful retail ritual: look behind the hype. A Spark Lens focuses on packaging and product facts, Skin Receipts expose source and verification state, and Skin Moods help browse goals without diagnosing skin. Shopping and brand studio are two views of one system.
 
+The storefront hero gives all four makers equal space: Anua Heartleaf toner, Arencia PDRN Booster Shot, Celimax Vita-A serum and Mixa Ceramide Protect. Four square photographic worlds sit beneath the NURIMI headline with first-party wordmarks and direct collection links. Mobile uses a two-by-two composition so every maker is visible together. The following brand selector changes the collection story, background and product previews without moving keyboard focus; each collection links into the filtered catalog. Three-product previews use native horizontal scrolling on compact screens. Celimax previews are alternatives to compare, not a combined retinoid routine.
+
 ## Tokens
 
 - Core ivory #FFF9F3; ink plum #3B2158; body muted #6B5879; CTA cherry #B82B55 with white; logo coral #F29AA8.
@@ -21,7 +23,7 @@ The signature is a useful retail ritual: look behind the hype. A Spark Lens focu
 - Container 1280px; desktop 48px inset; mobile 20px. 12-column macro grid / four-column mobile rhythm.
 - Type: Arabic headline 76–112px desktop / 52–68px mobile, body 15–18px, secondary 12px minimum. English headline 72–92px / 48–64px.
 - Radius 10/18/28; packaging/receipt shapes reference supplied brand assets; no arbitrary pills on all cards.
-- Motion: one-shot product arrivals, selectable spotlights, focus lens reveals, and one silent macro film. Transform and opacity for interface motion; video pauses offscreen. Reduced motion removes decorative movement; data-saving mode requires manual playback.
+- Motion: one-shot brand arrivals, selectable collections, focus lens reveals, and one silent macro film. Transform and opacity for interface motion; video pauses offscreen. Reduced motion removes decorative movement; data-saving mode requires manual playback.
 - Native dialogs, button/input semantics, 44px targets, keyboard and focus restoration. Structural RTL, isolated Latin/ingredient/number strings.
 
 ## Product truth

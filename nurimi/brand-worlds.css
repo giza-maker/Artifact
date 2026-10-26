@@ -1,0 +1,70 @@
+/* Four equally visible collections. Existing NURIMI tokens stay authoritative. */
+[data-maker-world=anua]{--maker-ground:#e7eedf;--maker-soft:#f0f4ea;--maker-line:#cbd8c2}
+[data-maker-world=arencia]{--maker-ground:#eadff5;--maker-soft:#f4edf9;--maker-line:#d8c5e5}
+[data-maker-world=celimax]{--maker-ground:#eef0e6;--maker-soft:#f4f4ec;--maker-line:#d6ddcb}
+[data-maker-world=mixa]{--maker-ground:#fff0ca;--maker-soft:#fff6e1;--maker-line:#ead8ad}
+.maker-hero{background:var(--ivory);padding:34px 0 38px}
+.maker-hero-heading{display:grid;grid-template-columns:1.7fr 1fr;align-items:end;gap:50px;margin-bottom:29px}
+.maker-kicker{font-family:Jakarta,sans-serif;font-size:9px;font-weight:650;letter-spacing:.14em;margin:0 0 14px;width:max-content;max-width:100%}
+.maker-hero h1{font-family:Alexandria,sans-serif;font-weight:600;font-size:clamp(42px,4.5vw,68px);line-height:1.4;letter-spacing:-.045em;margin:0;text-wrap:balance}
+.maker-hero h1 span{display:block}.maker-hero h1 span:last-child{color:var(--cherry)}
+.maker-hero-intro{max-width:350px;padding-bottom:6px}
+.maker-hero-intro>p{font-size:14px;line-height:1.9;margin:0 0 20px;text-wrap:pretty}
+.maker-hero-intro .button{min-height:50px;font-size:12px;gap:27px}
+.maker-hero-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;direction:rtl}
+.hero-maker{padding:0;border:0;background:transparent;text-align:inherit;color:var(--plum);min-width:0;cursor:pointer;border-radius:14px 14px 0 0}
+.hero-maker-art{display:block;overflow:hidden;aspect-ratio:1;border-radius:14px;background:var(--maker-ground)}
+.hero-maker-art img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(.2,.7,.2,1)}
+.hero-maker-caption{display:flex;align-items:center;justify-content:space-between;min-height:66px;padding:12px 5px 0;gap:14px}
+.maker-wordmark{font-family:Jakarta,sans-serif;font-size:31px;font-weight:600;line-height:1.2;letter-spacing:-.055em;display:inline-flex;align-items:center}
+.maker-wordmark-mixa{font-weight:800;letter-spacing:-.07em}.maker-wordmark-celimax{font-weight:500}.maker-wordmark-arencia{font-weight:500}
+.hero-maker-caption>.icon{width:20px;height:20px;transition:transform .25s ease}
+.hero-maker:is(:hover,:focus-visible) .hero-maker-art img{transform:scale(1.035)}
+.hero-maker:is(:hover,:focus-visible) .hero-maker-caption>.icon{transform:translateX(-5px)}
+.hero-maker:focus-visible{outline:2px solid var(--cherry);outline-offset:5px}
+.maker-section{padding-block:54px 15px}
+.maker-section-heading{max-width:650px;margin-bottom:28px}
+.maker-section-heading h2{font-family:Alexandria,sans-serif;font-size:36px;line-height:1.6;letter-spacing:-.035em;font-weight:550;margin:0 0 9px;text-wrap:balance}
+.maker-section-heading p{font-size:13px;color:var(--muted);line-height:1.9;margin:0}
+.maker-selectors{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-bottom:1px solid var(--line);margin-bottom:24px}
+.maker-selectors button{min-height:83px;min-width:0;border:0;border-bottom:3px solid transparent;background:transparent;color:var(--muted);padding:10px 15px 18px;cursor:pointer}
+.maker-selectors button[aria-pressed=true]{border-bottom-color:var(--plum);color:var(--plum)}
+.maker-selectors button:hover{color:var(--plum)}.maker-selectors button:focus-visible{outline:2px solid var(--cherry);outline-offset:-5px}
+.maker-panel{min-height:390px;background:var(--maker-soft);border:1px solid var(--maker-line);border-radius:22px;overflow:hidden}
+.maker-panel-body{display:grid;grid-template-columns:.82fr 1.85fr;align-items:center;gap:32px;padding:35px}
+.maker-panel-copy{min-width:0}.maker-panel-count{font-size:10px;color:var(--muted);margin:0 0 15px}
+.maker-panel-copy h3{font-family:Alexandria,sans-serif;font-size:26px;font-weight:550;line-height:1.7;letter-spacing:-.025em;text-wrap:balance;margin:0 0 13px}
+.maker-panel-copy>p:not(.maker-panel-count){font-size:12px;line-height:1.95;margin:0 0 16px;color:#655471}
+.maker-panel-copy>p.maker-panel-note{font-size:10px;padding:10px 0 0;border-top:1px solid var(--maker-line)}
+.maker-collection-link{display:inline-flex;align-items:center;gap:15px;border:0;border-bottom:1px solid var(--plum);padding:8px 0;min-height:46px;background:transparent;font-size:12px;font-weight:600;color:var(--plum);text-align:start;cursor:pointer}
+.maker-collection-link .icon{width:17px;height:17px}
+.maker-products{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;min-width:0}.maker-products[data-count="2"]{grid-template-columns:repeat(2,minmax(0,1fr));max-width:560px;margin-inline:auto}
+.maker-product{padding:0;border:0;background:transparent;color:var(--plum);text-align:start;min-width:0;cursor:pointer;align-self:start}
+.maker-product-image{display:block;aspect-ratio:1;overflow:hidden;border-radius:11px;background:var(--maker-ground)}
+.maker-product img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s cubic-bezier(.2,.7,.2,1)}
+.maker-product:is(:hover,:focus-visible) img{transform:scale(1.03)}
+.maker-product-name{display:block;font-size:11px;font-weight:550;line-height:1.8;margin-top:12px;min-height:40px}
+.maker-product-size{display:block;font-size:10px;font-weight:400;line-height:1.7;color:var(--muted);margin-top:3px}
+.maker-product:focus-visible{outline:2px solid var(--cherry);outline-offset:5px;border-radius:11px}
+.maker-panel-loading{margin:40px;font-size:13px;line-height:1.9}
+.maker-panel-loading h3{font-size:18px;font-weight:550;margin-bottom:10px}
+.maker-logo{display:block;width:auto;max-width:145px;height:36px;object-fit:contain;object-position:center}
+.hero-maker-caption .maker-logo-mixa{height:66px;max-width:150px;margin-block:-12px}
+.maker-selectors .maker-logo{margin-inline:auto}.maker-selectors .maker-logo-mixa{height:53px;margin-block:-9px}
+[lang=en] .maker-hero h1{font-family:Jakarta,sans-serif;font-size:clamp(37px,4.3vw,65px);line-height:1.1;letter-spacing:-.06em}
+[lang=en] .maker-hero-grid{direction:ltr}
+[lang=en] .maker-section-heading h2,[lang=en] .maker-panel-copy h3{font-family:Jakarta,sans-serif;line-height:1.25;letter-spacing:-.045em}
+[lang=en] .maker-panel-copy h3{font-size:28px}
+[lang=en] .hero-maker:is(:hover,:focus-visible) .hero-maker-caption>.icon{transform:translateX(5px) scaleX(-1)}
+@media(prefers-reduced-motion:no-preference){.hero-maker{animation:maker-arrive .7s cubic-bezier(.2,.7,.2,1) both}.hero-maker:nth-child(2){animation-delay:.07s}.hero-maker:nth-child(3){animation-delay:.14s}.hero-maker:nth-child(4){animation-delay:.21s}.maker-panel-body{animation:maker-arrive .32s ease both}}
+@keyframes maker-arrive{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:1000px){.maker-hero-heading{gap:30px;grid-template-columns:1.4fr 1fr}.maker-hero h1{font-size:48px}.maker-hero-intro>p{font-size:12px}.maker-hero-grid{gap:9px}.maker-wordmark{font-size:27px}.maker-panel-body{padding:25px;gap:24px;grid-template-columns:.85fr 1.5fr}.maker-products{gap:8px}.maker-panel-copy h3{font-size:24px}.maker-product-name{font-size:10px}.maker-logo{max-width:125px;height:32px}[lang=en] .maker-hero h1{font-size:44px}}
+@media(max-width:700px){.maker-hero{padding-block:23px 19px}.maker-hero-heading{display:block;margin-bottom:23px}.maker-kicker{font-size:7px;letter-spacing:.1em;margin-bottom:11px}.maker-hero h1{font-size:38px;line-height:1.45;letter-spacing:-.055em}.maker-hero h1>span{display:inline}.maker-hero h1>span+span{margin-inline-start:10px}.maker-hero-intro{max-width:none;padding:0;margin-top:12px}.maker-hero-intro>p{font-size:11px;line-height:1.85;max-width:340px;margin-bottom:12px}.maker-hero-intro .button{min-height:44px;font-size:11px;padding-inline:17px;gap:22px}.maker-hero-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px 10px}.hero-maker-art{border-radius:10px}.hero-maker{border-radius:10px 10px 0 0}.hero-maker-caption{min-height:39px;padding:9px 2px 0}.hero-maker-caption>.icon{width:15px;height:15px}.maker-wordmark{font-size:24px}.maker-logo{height:26px;max-width:110px}.maker-section{padding-block:35px 3px}.maker-section-heading{margin-bottom:18px}.maker-section-heading h2{font-size:27px;line-height:1.7;margin-bottom:5px}.maker-section-heading p{font-size:11px;max-width:290px}.maker-selectors{margin-bottom:16px}.maker-selectors button{min-height:65px;padding:8px 4px 12px}.maker-selectors .maker-wordmark{font-size:18px}.maker-selectors .maker-logo{max-width:70px;height:23px}.maker-panel{min-height:0;border-radius:17px}.maker-panel-body{display:flex;flex-direction:column;align-items:stretch;gap:23px;padding:23px 18px}.maker-panel-count{font-size:9px;margin-bottom:9px}.maker-panel-copy h3{font-size:24px;line-height:1.65;margin-bottom:10px}.maker-panel-copy>p:not(.maker-panel-count){font-size:11px;margin-bottom:10px;max-width:360px}.maker-panel-copy>p.maker-panel-note{font-size:9px}.maker-collection-link{font-size:11px;min-height:44px}.maker-products{gap:8px}.maker-product-image{border-radius:8px}.maker-product-name{font-size:9px;line-height:1.8;margin-top:8px;min-height:48px}.maker-product-size{font-size:9px;margin-top:2px}.maker-products[data-count="2"]{max-width:none;margin:0}.maker-panel-loading{margin:25px;font-size:11px}[lang=en] .maker-hero h1{font-size:37px;line-height:1.08;max-width:340px}[lang=en] .maker-hero h1>span{display:block}[lang=en] .maker-hero h1>span+span{margin:0}[lang=en] .maker-section-heading h2{font-size:29px}[lang=en] .maker-panel-copy h3{font-size:27px}[lang=en] .maker-product-name{font-size:10px}}
+@media(max-width:370px){.maker-hero h1{font-size:32px}.maker-hero h1>span+span{margin-inline-start:6px}.maker-wordmark{font-size:22px}.maker-logo{max-width:98px;height:24px}.maker-selectors .maker-logo{max-width:61px;height:21px}.maker-selectors .maker-wordmark{font-size:16px}.maker-panel-body{padding:20px 14px}.maker-products{gap:7px}[lang=en] .maker-hero h1{font-size:33px}[lang=en] .maker-hero-intro>p{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.hero-maker-art img,.hero-maker-caption>.icon,.maker-product img{transition:none}.hero-maker:is(:hover,:focus-visible) .hero-maker-art img,.hero-maker:is(:hover,:focus-visible) .hero-maker-caption>.icon,.maker-product:is(:hover,:focus-visible) img{transform:none}}
+@media(max-width:700px){.hero-maker-caption .maker-logo-mixa{height:47px;max-width:110px;margin-block:-9px}.maker-selectors .maker-logo-mixa{height:39px;max-width:70px;margin-block:-8px}}
+@media(max-width:370px){.hero-maker-caption .maker-logo-mixa{height:44px;max-width:98px}.maker-selectors .maker-logo-mixa{height:35px;max-width:61px}}
+@media(max-width:700px){.maker-hero h1>span{display:block}.maker-hero h1>span+span{margin-inline-start:0}.maker-hero h1{line-height:1.35}}
+@media(max-width:700px){.maker-products:not([data-count="2"]){display:flex;overflow-x:auto;scroll-snap-type:x proximity;gap:12px;padding:6px 2px 10px;margin-inline:-2px;scrollbar-width:thin}.maker-products:not([data-count="2"]) .maker-product{flex:0 0 142px;scroll-snap-align:start}.maker-product-name{font-size:11px;min-height:42px}.maker-product-size{font-size:10px}.maker-product:focus-visible{outline-offset:-2px}}
+@media(max-width:700px){[lang=en] .maker-hero h1{font-size:clamp(28px,8vw,35px);line-height:1.15}}
+@media(prefers-reduced-motion:reduce){[lang=en] .hero-maker:is(:hover,:focus-visible) .hero-maker-caption>.icon{transform:scaleX(-1)}}

@@ -2,6 +2,14 @@
 
 Final result: passed
 
+## Four-brand hero and collection showcase
+
+The former Arencia-only hero is replaced by four equally sized scenes for Anua, Arencia, Celimax and Mixa. Official maker wordmarks are visually checked against their first-party files. Desktop shows one row; compact layouts show a two-by-two composition. All four maker captions fit together at 390 × 844 Arabic and 320 × 740 English. The headline wraps into two clear lines and the document has no horizontal overflow.
+
+Every hero collection link filters the right brand and focuses the catalog heading: Anua 13 variants, Arencia 5, Celimax 3 and Mixa 2. All four showcase selectors change the copy, photographic world and correct product IDs while retaining focus on the selected control. A showcase product opens the existing detail dialog; closing restores focus to that product. Celimax alternatives include the existing retinoid-stacking caution. Mixa volumes remain pending.
+
+Missing-data fixture tested in a temporary local page: showcase displays an explicit unavailable state and retry button, with `aria-busy=false`; retry returns a clear error rather than indefinite loading. Temporary fixture removed before release. Motion remains transform/opacity only, with reduced-motion alternatives and no automatic carousel. Existing macro-film behavior retained.
+
 Reviewed 26 October 2026. Saudi own-inventory skincare prototype, Arabic first with English toggle. Catalog: 22 product identities, 23 SKU-size variants, four brands.
 
 ## Design and media
