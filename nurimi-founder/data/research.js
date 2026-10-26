@@ -24,9 +24,10 @@ const sources = {
 export const RESEARCH = {
   asOf: "2026-10-27",
   nav: [
-    { id: "overview", title: b("Recommendation", "التوصية"), short: b("Start managed", "ابدأ بمنصة مُدارة"), description: b("Use Salla Pro with a supported published theme, then prove the full order path before scaling.", "استخدم سلة برو مع ثيم منشور ومدعوم، ثم أثبت مسار الطلب الكامل قبل التوسع.") },
+    { id: "overview", title: b("Decision overview", "نظرة القرار"), short: b("Choose the objective", "حدد الهدف"), description: b("Compare fastest first sale with an owned repeatable commerce system. Fund evidence before choosing.", "قارن سرعة أول بيع ببناء منظومة تجارة نملكها ونكررها. موّل الإثبات قبل الاختيار.") },
     { id: "market", title: b("Market signals", "إشارات السوق"), short: b("Demand context", "سياق الطلب"), description: b("Saudi digital adoption supports mobile-first commerce, but does not prove NURIMI demand or conversion.", "يدعم الانتشار الرقمي في السعودية تجارةً تبدأ من الجوال، لكنه لا يثبت الطلب على نوريمي أو معدل التحويل.") },
     { id: "stack", title: b("Production stack", "منظومة الإنتاج"), short: b("Who owns what", "توزيع المسؤوليات"), description: b("Keep authoritative order and payment data in the platform. Keep reusable brand assets, schemas, tests and procedures under NURIMI control.", "احتفظ بالبيانات المعتمدة للطلبات والمدفوعات داخل المنصة، وبأصول العلامة القابلة لإعادة الاستخدام والمخططات والاختبارات والإجراءات تحت سيطرة نوريمي.") },
+    { id: "build", title: b("Build paths", "مسارات البناء"), short: b("Managed, hybrid or owned", "مُدار أو هجين أو مملوك"), description: b("Custom Next.js storefront, Medusa commerce, Saudi PSP adapters, implementation phases, ownership and editable build budgets.", "واجهة Next.js خاصة وتجارة Medusa ومحولات دفع سعودي ومراحل تنفيذ وملكية وميزانيات بناء قابلة للتعديل.") },
     { id: "economics", title: b("Economics", "الجدوى المالية"), short: b("Costs and margin", "التكاليف والهامش"), description: b("Separate list prices, planning assumptions and unpriced operating costs before committing.", "افصل بين أسعار القوائم وافتراضات التخطيط والتكاليف التشغيلية غير المسعّرة قبل الالتزام.") },
     { id: "launch", title: b("Launch gates", "بوابات الإطلاق"), short: b("Evidence before release", "أدلة ما قبل الإطلاق"), description: b("Every gate starts unverified. Release only the verified SKU subset through a tested order path.", "تبدأ جميع البوابات بحالة غير متحقق منها. لا تطلق إلا مجموعة المنتجات المتحقق منها عبر مسار طلب مختبر.") },
     { id: "factory", title: b("Brand factory", "مصنع العلامات"), short: b("Repeat with control", "تكرار منضبط"), description: b("Create separate stores from tagged shared source while isolating sellers, stock, customers, consent and settlements.", "أنشئ متاجر منفصلة من مصدر مشترك ذي إصدارات محددة، مع عزل البائع والمخزون والعملاء والموافقات والتسويات.") },
@@ -114,8 +115,8 @@ export const RESEARCH = {
     { id: "false-confidence", title: b("Research scores treated as proof", "معاملة درجات البحث كدليل"), severity: "medium", impact: b("Premature commitment based on decimal differences or local prototypes.", "التزام مبكر مبني على فروق عشرية أو نماذج محلية."), action: b("Let hard gates and measured merchant trials override judgement scores.", "دع البوابات الحاسمة وتجارب التاجر المقاسة تتقدم على درجات التقدير."), owner: b("Founder", "المؤسس"), gateIds: ["theme-entitlement", "payment-refund", "performance-recovery"] },
   ],
   facts: [
-    { label: b("Recommended route", "المسار الموصى به"), value: "Salla Pro + published supported theme", kind: "assumption" },
-    { label: b("Decision confidence", "الثقة في القرار"), value: "Moderate", kind: "assumption" },
+    { label: b("Initial speed-first route", "مسار الإطلاق السريع الأول"), value: "Salla Pro + published supported theme", kind: "assumption" },
+    { label: b("Initial route confidence", "الثقة في المسار الأول"), value: "Moderate", kind: "assumption" },
     { label: b("Current variants", "المتغيرات الحالية"), value: 23, kind: "audit" },
     { label: b("Variants passing proposed publication gate", "المتغيرات المجتازة لبوابة النشر المقترحة"), value: 0, kind: "audit" },
     { label: b("Variant readiness", "جاهزية المتغيرات"), value: "price=null; stock=null; batch=null; expiry=null; localVerification=pending", kind: "audit" },
@@ -124,7 +125,7 @@ export const RESEARCH = {
     { label: b("Merchant registration", "تسجيل التاجر"), value: "Unconfirmed", kind: "owner" },
     { label: b("Business bank account", "الحساب البنكي التجاري"), value: "Unconfirmed", kind: "owner" },
     { label: b("Salla screening score", "درجة فرز سلة"), value: "8.6/10 judgement", kind: "assumption" },
-    { label: b("First-store labour", "عمل المتجر الأول"), value: "96-160 hours; SAR 17,200-28,000", kind: "assumption" },
+    { label: b("Initial managed-store labour", "عمل المتجر المُدار في البحث الأول"), value: "96-160 hours; SAR 17,200-28,000", kind: "assumption" },
     { label: b("Local repeatability proof", "إثبات التكرار المحلي"), value: "19 checks passed; 0 failed", kind: "audit" },
     { label: b("Salla Pro public list price", "سعر قائمة سلة برو المنشور"), value: "SAR 2,990/store/year; VAT and licences unconfirmed", kind: "source" },
   ],

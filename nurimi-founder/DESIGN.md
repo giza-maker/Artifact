@@ -6,6 +6,8 @@ An editorial financial decision desk, not a generic SaaS dashboard. Warm ivory g
 
 Signature move: the live economic waterfall. It reads like a ruled ledger—labels first, directional bars second, exact figures last. Cherry marks downside or decision pressure; semantic green marks viable contribution.
 
+Build paths adds a three-way ownership selector and a ruled implementation plan. Selected route uses solid plum; labour, budget and phase allocation update together. Every cost surface names its scenario and exclusions. The managed reference blueprint and initial research memo stay labelled; neither dictates the custom implementation.
+
 ## Tokens
 
 - Brand: plum `#3B2158`, deep plum `#28133E`, cherry `#B82B55`.

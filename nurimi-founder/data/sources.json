@@ -1168,5 +1168,61 @@
       "Fee base includes products less discounts plus shipping and tax; region-specific refund treatment must be confirmed"
     ],
     "limits": "Point-in-time source; does not establish merchant-specific acceptance or price."
+  },
+  {
+    "id": "build:salla-cart",
+    "title": "Salla checkout API scope",
+    "url": "https://docs.salla.dev/checkout-apis/overview",
+    "accessed": "2026-10-27",
+    "published_or_updated": null,
+    "claims": [
+      "Cart lifecycle, line items, coupons and ownership APIs support custom entry flows.",
+      "This API collection excludes payment submission and full checkout-step orchestration."
+    ],
+    "limits": "Merchant entitlement, integration reliability and actual payment acceptance remain unverified."
+  },
+  {
+    "id": "build:salla-handoff",
+    "title": "Salla hosted checkout handoff",
+    "url": "https://docs.salla.dev/checkout-apis/key-concepts",
+    "accessed": "2026-10-27",
+    "published_or_updated": null,
+    "claims": [
+      "Cart responses include checkout_url for redirecting to hosted checkout."
+    ],
+    "limits": "Does not prove custom checkout payment submission or account access."
+  },
+  {
+    "id": "build:medusa-deploy",
+    "title": "Medusa production deployment resources",
+    "url": "https://docs.medusajs.com/learn/deployment/general",
+    "accessed": "2026-10-27",
+    "published_or_updated": null,
+    "claims": [
+      "General deployment requires PostgreSQL, Redis, server and worker processes."
+    ],
+    "limits": "A deployment guide, not an audited NURIMI deployment or hosting quote."
+  },
+  {
+    "id": "build:moyasar-events",
+    "title": "Moyasar payment webhook reference",
+    "url": "https://docs.moyasar.com/api/other/webhooks/webhook-reference",
+    "accessed": "2026-10-27",
+    "published_or_updated": null,
+    "claims": [
+      "Payment and refund lifecycle events are available; delivery retries are finite."
+    ],
+    "limits": "Not merchant approval or proof of a working Medusa adapter. Ingestion, validation, deduplication and reconciliation need testing."
+  },
+  {
+    "id": "build:next-hosting",
+    "title": "Next.js self-hosting responsibilities",
+    "url": "https://nextjs.org/docs/app/guides/self-hosting",
+    "accessed": "2026-10-27",
+    "published_or_updated": null,
+    "claims": [
+      "Self-hosting includes reverse-proxy and caching/production configuration responsibilities."
+    ],
+    "limits": "Does not establish Saudi residency compliance, performance or provider cost."
   }
 ]
