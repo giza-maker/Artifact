@@ -12,7 +12,11 @@ Playful grown-up beauty with clear product information. A tactile cream canvas, 
 
 The signature is a useful retail ritual: look behind the hype. A Spark Lens focuses on packaging and product facts, Skin Receipts expose source and verification state, and Skin Moods help browse goals without diagnosing skin. Shopping and brand studio are two views of one system.
 
-The storefront hero gives all four makers equal space: Anua Heartleaf toner, Arencia PDRN Booster Shot, Celimax Vita-A serum and Mixa Ceramide Protect. Four square photographic worlds sit beneath the NURIMI headline with first-party wordmarks and direct collection links. Mobile uses a two-by-two composition so every maker is visible together. The following brand selector changes the collection story, background and product previews without moving keyboard focus; each collection links into the filtered catalog. Three-product previews use native horizontal scrolling on compact screens. Celimax previews are alternatives to compare, not a combined retinoid routine.
+The hero gives all four makers equal space and acts as navigation into the second section. Each brand has a native fragment link (`#makers-anua`, `#makers-arencia`, `#makers-celimax`, `#makers-mixa`) that selects the matching presentation and moves keyboard focus to its heading. Logos appear once in the hero; the repeated logo selector row is removed.
+
+The second section is an interactive product presentation: a persistent brand picker, previous/next controls and a real 1–4 counter surround one featured product. Product thumbnails update the image, summary, benefit labels and detail CTA together after image decoding. Request tokens prevent stale image loads from winning rapid selection. Brand changes use one-shot opacity/transform reveals; reduced motion skips them. The explicit product-detail button opens the existing dialog, while a separate shop-brand action filters the catalog. URL fragments and browser history retain the selected maker.
+
+Arabic shopper copy uses clear, natural language with restrained Saudi phrasing. Preserve the approved line بشرتك أهم. Use بطاقة المنتج for the shopper-facing Skin Receipt label, direct navigation labels, and source-bounded product benefits. Avoid forced shelf metaphors, literal translations and vague support language. Product/ingredient names, cautions, evidence notes, English data and pending commercial facts remain protected.
 
 ## Tokens
 

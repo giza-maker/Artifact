@@ -24,7 +24,7 @@
             "en": "Panthenol"
           },
           "role": {
-            "ar": "مرطب يساعد على راحة البشرة.",
+            "ar": "يساعد على الترطيب ويمنح البشرة إحساسًا بالراحة.",
             "en": "A humectant that supports skin comfort."
           },
           "icon": "droplet"
@@ -44,29 +44,29 @@
       "benefits": [
         {
           "title": {
-            "ar": "عناية ليلية بالملمس",
+            "ar": "مظهر أكثر نعومة",
             "en": "Night texture care"
           },
           "description": {
-            "ar": "مصمم لتحسين مظهر عدم تجانس الملمس تدريجيًا.",
+            "ar": "مصمم للعناية التدريجية بمظهر الملمس غير المتجانس.",
             "en": "Designed to refine the look of uneven texture over time."
           },
           "icon": "moon"
         },
         {
           "title": {
-            "ar": "ترطيب داعم",
+            "ar": "مع مكونات مرطبة",
             "en": "Supportive hydration"
           },
           "description": {
-            "ar": "يوازن خطوة الريتينول بمكونات مرطبة.",
+            "ar": "يجمع الريتينول مع مكونات تساعد على الترطيب.",
             "en": "Balances the retinol step with moisturizing ingredients."
           },
           "icon": "droplet"
         }
       ],
       "useMoment": {
-        "ar": "مساءً في خطوة السيروم، ثم مرطب.",
+        "ar": "مساءً في خطوة السيروم، يليه المرطب.",
         "en": "Evening serum step, followed by moisturizer."
       },
       "caution": {
@@ -86,7 +86,7 @@
     },
     "P002": {
       "intro": {
-        "ar": "سيروم ريتينال خفيف للاستخدام المسائي مع مكونات مرطبة ومريحة.",
+        "ar": "سيروم ريتينال خفيف للاستخدام مساءً، مع مكونات مرطبة تساعد على راحة البشرة.",
         "en": "A lightweight retinal serum for evening use with moisturizing, comfort-focused ingredients."
       },
       "ingredients": [
@@ -107,7 +107,7 @@
             "en": "Ectoin"
           },
           "role": {
-            "ar": "يساعد على دعم الترطيب وراحة البشرة.",
+            "ar": "يساعد على ترطيب البشرة وإبقائها مرتاحة.",
             "en": "Helps support hydration and skin comfort."
           },
           "icon": "shield-check"
@@ -131,7 +131,7 @@
             "en": "Smoother-looking texture"
           },
           "description": {
-            "ar": "خطوة مركزة لمظهر الملمس غير المتجانس.",
+            "ar": "خطوة مركزة للعناية بمظهر الملمس غير المتجانس.",
             "en": "A focused step for the look of uneven texture."
           },
           "icon": "sparkles"
@@ -142,7 +142,7 @@
             "en": "Lightweight layer"
           },
           "description": {
-            "ar": "يناسب خطوة السيروم قبل المرطب.",
+            "ar": "قوامه مناسب لخطوة السيروم قبل المرطب.",
             "en": "Fits easily before moisturizer."
           },
           "icon": "droplet"
@@ -179,7 +179,7 @@
             "en": "Sodium DNA"
           },
           "role": {
-            "ar": "مكوّن مميز في تركيبة السيروم المرطبة.",
+            "ar": "أحد المكونات البارزة في تركيبة السيروم المرطبة.",
             "en": "A featured component in the moisturizing serum formula."
           },
           "icon": "sparkles"
@@ -190,7 +190,7 @@
             "en": "Panthenol"
           },
           "role": {
-            "ar": "مرطب يدعم راحة البشرة.",
+            "ar": "يساعد على الترطيب ويمنح البشرة إحساسًا بالراحة.",
             "en": "A humectant that supports skin comfort."
           },
           "icon": "droplet"
@@ -210,18 +210,18 @@
       "benefits": [
         {
           "title": {
-            "ar": "دفعة ترطيب",
+            "ar": "ترطيب خفيف",
             "en": "Hydration boost"
           },
           "description": {
-            "ar": "يضيف طبقة خفيفة من الترطيب.",
+            "ar": "يمنح البشرة طبقة خفيفة من الترطيب.",
             "en": "Adds a lightweight layer of hydration."
           },
           "icon": "droplet"
         },
         {
           "title": {
-            "ar": "إشراقة ناعمة",
+            "ar": "مظهر مشرق",
             "en": "Soft radiance"
           },
           "description": {
@@ -304,11 +304,11 @@
         },
         {
           "title": {
-            "ar": "دعم مضاد للأكسدة",
+            "ar": "مكونات مضادة للأكسدة",
             "en": "Antioxidant support"
           },
           "description": {
-            "ar": "يوفر خطوة سيروم غنية بمضادات الأكسدة.",
+            "ar": "سيروم يركز على مكونات مضادة للأكسدة.",
             "en": "Provides an antioxidant-focused serum step."
           },
           "icon": "shield-check"
@@ -335,7 +335,7 @@
     },
     "P005": {
       "intro": {
-        "ar": "بوستر ريتينال ليلي مركز للعناية بمظهر الملمس، مع بانثينول داعم.",
+        "ar": "بوستر ريتينال ليلي مركز للعناية بمظهر الملمس، مع بانثينول للترطيب والراحة.",
         "en": "A concentrated retinal night booster for texture-focused care, with supportive panthenol."
       },
       "ingredients": [
@@ -376,18 +376,18 @@
       "benefits": [
         {
           "title": {
-            "ar": "خطوة ليلية مركزة",
+            "ar": "عناية ليلية",
             "en": "Focused night step"
           },
           "description": {
-            "ar": "خيار مخصص للعناية بمظهر الملمس.",
+            "ar": "خطوة مخصصة للعناية بمظهر الملمس.",
             "en": "A dedicated option for texture-focused care."
           },
           "icon": "moon"
         },
         {
           "title": {
-            "ar": "دعم الترطيب",
+            "ar": "ترطيب",
             "en": "Hydration support"
           },
           "description": {
@@ -439,7 +439,7 @@
             "en": "Cica complex"
           },
           "role": {
-            "ar": "يدعم إحساس الراحة في التركيبة.",
+            "ar": "يساعد على منح البشرة إحساسًا بالراحة.",
             "en": "Supports a comfortable feel in the formula."
           },
           "icon": "leaf"
@@ -448,22 +448,22 @@
       "benefits": [
         {
           "title": {
-            "ar": "توازن المظهر",
+            "ar": "العناية باللمعان",
             "en": "Balanced look"
           },
           "description": {
-            "ar": "موجه لمظهر اللمعان والملمس غير المتجانس.",
+            "ar": "للعناية بمظهر اللمعان والملمس غير المتجانس.",
             "en": "Targets the look of shine and uneven texture."
           },
           "icon": "sparkles"
         },
         {
           "title": {
-            "ar": "عناية مريحة",
+            "ar": "مع مكونات نباتية",
             "en": "Comfort-focused care"
           },
           "description": {
-            "ar": "يجمع المكوّن النشط مع مكونات نباتية داعمة.",
+            "ar": "يجمع المكوّن النشط مع مكونات نباتية مساندة.",
             "en": "Pairs the active with supportive botanical ingredients."
           },
           "icon": "leaf"
@@ -500,7 +500,7 @@
             "en": "Heartleaf water"
           },
           "role": {
-            "ar": "المكوّن النباتي المميز في عائلة التونر.",
+            "ar": "المكوّن النباتي البارز في مجموعة التونر.",
             "en": "The featured botanical in the toner family."
           },
           "icon": "leaf"
@@ -509,7 +509,7 @@
       "benefits": [
         {
           "title": {
-            "ar": "طبقة خفيفة",
+            "ar": "تونر خفيف",
             "en": "Light layer"
           },
           "description": {
@@ -561,7 +561,7 @@
             "en": "Heartleaf water"
           },
           "role": {
-            "ar": "المكوّن النباتي المميز في عائلة التونر.",
+            "ar": "المكوّن النباتي البارز في مجموعة التونر.",
             "en": "The featured botanical in the toner family."
           },
           "icon": "leaf"
@@ -581,7 +581,7 @@
         },
         {
           "title": {
-            "ar": "تحضير بسيط",
+            "ar": "قبل السيروم",
             "en": "Simple prep"
           },
           "description": {
@@ -622,7 +622,7 @@
             "en": "Sodium DNA"
           },
           "role": {
-            "ar": "مكوّن مميز ضمن تركيبة الترطيب.",
+            "ar": "أحد المكونات البارزة في تركيبة الترطيب.",
             "en": "A featured component within the hydrating formula."
           },
           "icon": "sparkles"
@@ -644,7 +644,7 @@
             "en": "Hydrolyzed collagen"
           },
           "role": {
-            "ar": "مكوّن مكيّف للبشرة يدعم ملمسًا ناعمًا.",
+            "ar": "مكوّن ملطف يساعد على نعومة ملمس البشرة.",
             "en": "A skin-conditioning ingredient supporting a smooth feel."
           },
           "icon": "shield-check"
@@ -653,18 +653,18 @@
       "benefits": [
         {
           "title": {
-            "ar": "ترطيب ممتلئ",
+            "ar": "ترطيب",
             "en": "Plump hydration"
           },
           "description": {
-            "ar": "يساعد على مظهر أكثر امتلاءً ونداوة.",
+            "ar": "يدعم مظهر البشرة الممتلئة والندية.",
             "en": "Helps skin look plumper and dewier."
           },
           "icon": "droplet"
         },
         {
           "title": {
-            "ar": "لمسة خفيفة",
+            "ar": "قوام خفيف",
             "en": "Light finish"
           },
           "description": {
@@ -695,7 +695,7 @@
     },
     "P010": {
       "intro": {
-        "ar": "سيروم للعناية بمظهر البقع وعدم تجانس اللون مع نياسيناميد وTXA وأربوتين.",
+        "ar": "سيروم بالنياسيناميد وTXA والأربوتين، للعناية بمظهر البقع وتفاوت اللون.",
         "en": "A serum for the look of spots and uneven tone with niacinamide, TXA, and arbutin."
       },
       "ingredients": [
@@ -716,7 +716,7 @@
             "en": "Tranexamic acid"
           },
           "role": {
-            "ar": "يستخدم تجميليًا للعناية بمظهر تفاوت اللون.",
+            "ar": "يُستخدم في مستحضرات التجميل للعناية بمظهر تفاوت اللون.",
             "en": "Used cosmetically for the look of uneven tone."
           },
           "icon": "sun"
@@ -740,7 +740,7 @@
             "en": "More even-looking tone"
           },
           "description": {
-            "ar": "يركز على مظهر العلامات والبقع.",
+            "ar": "للعناية بمظهر العلامات والبقع.",
             "en": "Focuses on the appearance of marks and spots."
           },
           "icon": "sun"
@@ -751,7 +751,7 @@
             "en": "Everyday radiance"
           },
           "description": {
-            "ar": "يضيف خطوة موجهة للبهتان.",
+            "ar": "يضيف إلى الروتين خطوة للعناية بمظهر البهتان.",
             "en": "Adds a dullness-focused step."
           },
           "icon": "sparkles"
@@ -778,7 +778,7 @@
     },
     "P011": {
       "intro": {
-        "ar": "غسول رغوي للوجه مصمم لإزالة الشوائب والزهم ضمن خطوة التنظيف.",
+        "ar": "غسول رغوي للوجه يزيل الشوائب والزهم في خطوة التنظيف.",
         "en": "A foaming facial cleanser designed to remove impurities and excess oil."
       },
       "ingredients": [
@@ -788,7 +788,7 @@
             "en": "Heartleaf"
           },
           "role": {
-            "ar": "مكوّن نباتي مميز في التركيبة.",
+            "ar": "مكوّن نباتي بارز في التركيبة.",
             "en": "A featured botanical in the formula."
           },
           "icon": "leaf"
@@ -830,7 +830,7 @@
         },
         {
           "title": {
-            "ar": "عناية بالملمس",
+            "ar": "مظهر أكثر نعومة",
             "en": "Texture care"
           },
           "description": {
@@ -861,7 +861,7 @@
     },
     "P012": {
       "intro": {
-        "ar": "لوشن يومي خفيف بالهارتليف وحمض الهيالورونيك للترطيب.",
+        "ar": "لوشن يومي خفيف للترطيب، بالهارتليف وحمض الهيالورونيك.",
         "en": "A lightweight daily lotion with Heartleaf and hyaluronic acid for hydration."
       },
       "ingredients": [
@@ -871,7 +871,7 @@
             "en": "Heartleaf"
           },
           "role": {
-            "ar": "مكوّن نباتي مميز يدعم الإحساس بالراحة.",
+            "ar": "مكوّن نباتي بارز يساعد على منح البشرة إحساسًا بالراحة.",
             "en": "A featured botanical supporting a comfortable feel."
           },
           "icon": "leaf"
@@ -895,14 +895,14 @@
             "en": "Daily hydration"
           },
           "description": {
-            "ar": "يوفر طبقة مرطبة خفيفة.",
+            "ar": "يمنح البشرة طبقة خفيفة من الترطيب.",
             "en": "Provides a light moisturizing layer."
           },
           "icon": "droplet"
         },
         {
           "title": {
-            "ar": "قوام لوشن",
+            "ar": "لوشن خفيف",
             "en": "Lotion texture"
           },
           "description": {
@@ -954,7 +954,7 @@
             "en": "Jojoba oil"
           },
           "role": {
-            "ar": "مطرٍ يدعم انزلاق الزيت وملمس البشرة.",
+            "ar": "يمنح الزيت قوامًا سهل التوزيع على البشرة.",
             "en": "An emollient supporting slip and skin feel."
           },
           "icon": "droplet"
@@ -974,7 +974,7 @@
       "benefits": [
         {
           "title": {
-            "ar": "إزالة الخطوة الزيتية",
+            "ar": "إزالة المكياج وواقي الشمس",
             "en": "Oil-based removal"
           },
           "description": {
@@ -985,7 +985,7 @@
         },
         {
           "title": {
-            "ar": "استحلاب وشطف",
+            "ar": "يُشطف بالماء",
             "en": "Emulsify and rinse"
           },
           "description": {
@@ -1016,7 +1016,7 @@
     },
     "P014": {
       "intro": {
-        "ar": "حليب تكييف خفيف بالخوخ والنياسيناميد يضيف ترطيبًا وإشراقة.",
+        "ar": "حليب خفيف بالخوخ والنياسيناميد، يضيف الترطيب ويدعم مظهر الإشراقة.",
         "en": "A lightweight conditioning milk with peach and niacinamide for hydration and radiance."
       },
       "ingredients": [
@@ -1026,7 +1026,7 @@
             "en": "Peach water"
           },
           "role": {
-            "ar": "قاعدة نباتية مميزة في التركيبة.",
+            "ar": "قاعدة نباتية بارزة في التركيبة.",
             "en": "A featured botanical base in the formula."
           },
           "icon": "leaf"
@@ -1057,7 +1057,7 @@
       "benefits": [
         {
           "title": {
-            "ar": "ترطيب حليبي خفيف",
+            "ar": "ترطيب خفيف",
             "en": "Light milky hydration"
           },
           "description": {
@@ -1068,7 +1068,7 @@
         },
         {
           "title": {
-            "ar": "إشراقة ناعمة",
+            "ar": "مظهر مشرق",
             "en": "Soft radiance"
           },
           "description": {
@@ -1109,7 +1109,7 @@
             "en": "Peach water"
           },
           "role": {
-            "ar": "قاعدة نباتية مميزة في التركيبة.",
+            "ar": "قاعدة نباتية بارزة في التركيبة.",
             "en": "A featured botanical base in the formula."
           },
           "icon": "leaf"
@@ -1144,14 +1144,14 @@
             "en": "Rich hydration"
           },
           "description": {
-            "ar": "يمنح خطوة كريم أكثر امتلاءً.",
+            "ar": "يمنح البشرة ترطيبًا بقوام كريم غني.",
             "en": "Provides a more cushioning cream step."
           },
           "icon": "droplet"
         },
         {
           "title": {
-            "ar": "دعم الحاجز",
+            "ar": "يدعم حاجز البشرة",
             "en": "Barrier support"
           },
           "description": {
@@ -1162,7 +1162,7 @@
         }
       ],
       "useMoment": {
-        "ar": "آخر خطوة ترطيب صباحًا أو مساءً.",
+        "ar": "كآخر خطوة للترطيب صباحًا أو مساءً.",
         "en": "Final moisturizing step, morning or evening."
       },
       "caution": {
@@ -1182,7 +1182,7 @@
     },
     "P016": {
       "intro": {
-        "ar": "وسادات تونر هارتليف جاهزة للاستخدام ضمن خطوة ما بعد التنظيف.",
+        "ar": "وسادات تونر هارتليف جاهزة للاستخدام بعد التنظيف.",
         "en": "Ready-to-use Heartleaf toner pads for the post-cleanse step."
       },
       "ingredients": [
@@ -1201,7 +1201,7 @@
       "benefits": [
         {
           "title": {
-            "ar": "خطوة جاهزة",
+            "ar": "وسادات جاهزة للاستخدام",
             "en": "Ready-to-use step"
           },
           "description": {
@@ -1216,14 +1216,14 @@
             "en": "After cleansing"
           },
           "description": {
-            "ar": "صيغة وسادات لخطوة التونر؛ فوائد التركيبة تنتظر التحقق من هذه النسخة.",
+            "ar": "وسادات للاستخدام في خطوة التونر. فوائد التركيبة قيد التحقق لهذه النسخة.",
             "en": "A pad format for the toner step; formula benefits await verification of this variant."
           },
           "icon": "droplet"
         }
       ],
       "useMoment": {
-        "ar": "بعد التنظيف؛ تمرر الوسادة بلطف ثم يُربت السائل.",
+        "ar": "بعد التنظيف، مرر الوسادة بلطف ثم ربّت السائل على البشرة.",
         "en": "After cleansing; swipe gently, then pat in the essence."
       },
       "caution": {
@@ -1243,18 +1243,18 @@
     },
     "P017": {
       "intro": {
-        "ar": "كريم هارتليف مهدئ مصور بحجم 100 مل؛ المطابقة الرسمية الدقيقة ما زالت معلقة.",
+        "ar": "تظهر الصورة كريم هارتليف مهدئًا بحجم 100 مل، وما زالت مطابقته الرسمية الدقيقة قيد التحقق.",
         "en": "A pictured 100 ml Heartleaf soothing cream whose exact official match remains pending."
       },
       "ingredients": [],
       "benefits": [
         {
           "title": {
-            "ar": "خطوة كريم",
+            "ar": "قوام كريمي",
             "en": "Cream step"
           },
           "description": {
-            "ar": "صيغة كريم مخصصة لتكون خطوة الترطيب الأخيرة.",
+            "ar": "كريم مخصص لخطوة الترطيب الأخيرة.",
             "en": "A cream format intended as the final moisturizing step."
           },
           "icon": "droplet"
@@ -1282,7 +1282,7 @@
     },
     "P018": {
       "intro": {
-        "ar": "سيروم فيتامين سي بعبوة مصورة 20 غ؛ صفحة الشركة الأصلية متوقفة.",
+        "ar": "تظهر الصورة سيروم فيتامين سي بعبوة 20 غ، بينما لم تعد صفحة الشركة الأصلية متاحة.",
         "en": "A pictured 20 g vitamin C serum whose original manufacturer page is retired."
       },
       "ingredients": [
@@ -1303,7 +1303,7 @@
             "en": "Vitamin E"
           },
           "role": {
-            "ar": "مضاد أكسدة مكمّل ومكيّف للبشرة.",
+            "ar": "مضاد أكسدة مكمّل وملطف للبشرة.",
             "en": "A complementary antioxidant and skin conditioner."
           },
           "icon": "shield-check"
@@ -1353,7 +1353,7 @@
             "en": "Glycolic acid"
           },
           "role": {
-            "ar": "AHA يقشر سطح البشرة للعناية بمظهر الملمس.",
+            "ar": "حمض ألفا هيدروكسي يقشر سطح البشرة للعناية بمظهر الملمس.",
             "en": "An AHA that exfoliates the surface for texture care."
           },
           "icon": "sparkles"
@@ -1384,11 +1384,11 @@
       "benefits": [
         {
           "title": {
-            "ar": "تنعيم المظهر",
+            "ar": "مظهر أكثر نعومة",
             "en": "Surface smoothing"
           },
           "description": {
-            "ar": "يساعد على تحسين مظهر الخشونة والملمس.",
+            "ar": "يساعد على تحسين مظهر الخشونة وعدم تجانس الملمس.",
             "en": "Helps refine the look of roughness and texture."
           },
           "icon": "sparkles"
@@ -1406,7 +1406,7 @@
         }
       ],
       "useMoment": {
-        "ar": "مساءً وبوتيرة تدريجية، قبل المرطب.",
+        "ar": "مساءً قبل المرطب، مع إدخاله إلى الروتين تدريجيًا.",
         "en": "Evening, introduced gradually, before moisturizer."
       },
       "caution": {
@@ -1436,7 +1436,7 @@
             "en": "NAD+ complex"
           },
           "role": {
-            "ar": "المكوّن المميز في تركيبة البوستر.",
+            "ar": "المكوّن البارز في تركيبة البوستر.",
             "en": "The featured component in the booster formula."
           },
           "icon": "sparkles"
@@ -1471,18 +1471,18 @@
             "en": "Smoother appearance"
           },
           "description": {
-            "ar": "يضيف خطوة سيروم موجهة للملمس.",
+            "ar": "يضيف إلى الروتين سيرومًا للعناية بمظهر الملمس.",
             "en": "Adds a texture-focused serum step."
           },
           "icon": "sparkles"
         },
         {
           "title": {
-            "ar": "دعم مضاد للأكسدة",
+            "ar": "مكونات مضادة للأكسدة",
             "en": "Antioxidant support"
           },
           "description": {
-            "ar": "يجمع مكونات داعمة للمظهر الحيوي.",
+            "ar": "يجمع مكونات تدعم مظهر البشرة الحيوي.",
             "en": "Combines ingredients supporting a lively-looking finish."
           },
           "icon": "shield-check"
@@ -1541,7 +1541,7 @@
             "en": "Panthenol"
           },
           "role": {
-            "ar": "مرطب يدعم راحة البشرة.",
+            "ar": "يساعد على الترطيب ويمنح البشرة إحساسًا بالراحة.",
             "en": "A humectant supporting skin comfort."
           },
           "icon": "droplet"
@@ -1550,11 +1550,11 @@
       "benefits": [
         {
           "title": {
-            "ar": "كريم ريتينويد ليلي",
+            "ar": "عناية ليلية بالريتينال",
             "en": "Retinoid night cream"
           },
           "description": {
-            "ar": "يجمع خطوة الريتينال والترطيب في صيغة كريم.",
+            "ar": "يجمع الريتينال والترطيب في كريم واحد.",
             "en": "Combines retinal care and moisturizing in a cream format."
           },
           "icon": "moon"
@@ -1565,7 +1565,7 @@
             "en": "Two formulas"
           },
           "description": {
-            "ar": "يجمع تركيبة ريتينال مع تركيبة مرطبة تحتوي على بانثينول.",
+            "ar": "يضم تركيبة بالريتينال وأخرى مرطبة تحتوي على البانثينول.",
             "en": "Brings a retinal formula and a panthenol-containing moisturizing formula into one product."
           },
           "icon": "sparkles"
@@ -1614,7 +1614,7 @@
             "en": "Squalane"
           },
           "role": {
-            "ar": "مطرٍ يخفف الإحساس بالجفاف.",
+            "ar": "مطرٍ يساعد على تخفيف الإحساس بالجفاف.",
             "en": "An emollient that softens dry-feeling skin."
           },
           "icon": "droplet"
@@ -1634,7 +1634,7 @@
       "benefits": [
         {
           "title": {
-            "ar": "ترطيب متعدد المناطق",
+            "ar": "للوجه واليدين والجسم",
             "en": "Multi-area moisture"
           },
           "description": {
@@ -1645,11 +1645,11 @@
         },
         {
           "title": {
-            "ar": "دعم الحاجز",
+            "ar": "يدعم حاجز البشرة",
             "en": "Barrier support"
           },
           "description": {
-            "ar": "يجمع دهونًا مطرية مع مرطب جاذب للماء.",
+            "ar": "يجمع دهونًا مطرية مع مكوّن مرطب يجذب الماء.",
             "en": "Combines emollient lipids with a water-binding humectant."
           },
           "icon": "shield-check"
@@ -1686,7 +1686,7 @@
             "en": "Urea"
           },
           "role": {
-            "ar": "مرطب يساعد على تليين ملمس البشرة الجافة.",
+            "ar": "مرطب يساعد على تنعيم ملمس البشرة الجافة.",
             "en": "A humectant that helps soften dry-feeling skin."
           },
           "icon": "droplet"
@@ -1721,14 +1721,14 @@
             "en": "Dry-skin comfort"
           },
           "description": {
-            "ar": "يوفر ترطيبًا مطريًا للمناطق الجافة.",
+            "ar": "يمنح المناطق الجافة ترطيبًا وملمسًا أكثر ليونة.",
             "en": "Provides cushioning moisture to dry areas."
           },
           "icon": "droplet"
         },
         {
           "title": {
-            "ar": "استخدام متعدد",
+            "ar": "للوجه واليدين والجسم",
             "en": "Multi-use care"
           },
           "description": {

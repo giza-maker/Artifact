@@ -7,7 +7,7 @@
   const text = (ar,en) => state.lang === 'ar' ? ar : en;
   const value = obj => obj?.[state.lang] || obj?.ar || obj?.en || '';
   const escape = input => String(input ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-  const copyLines = [ ['بشرتك أهم.','Your skin comes first.'], ['مشهور؟ حلو. مناسب لك؟ أهم.','Famous? Good. For you? Better.'], ['المكونات قبل المبالغات.','Ingredients before exaggeration.'] ];
+  const copyLines = [ ['بشرتك أهم.','Your skin comes first.'], ['منتج مشهور؟ الأهم يناسب بشرتك.','Famous? Good. For you? Better.'], ['المكونات أولًا.','Ingredients before exaggeration.'] ];
 
   function setLanguage(lang) {
     state.lang = lang;
@@ -42,7 +42,7 @@
     if(scrollLink) {
       e.preventDefault(); const id=scrollLink.dataset.scroll || scrollLink.dataset.studioScroll;
       if(scrollLink.dataset.scroll && state.world!=='shop') showWorld('shop');
-      closeMenu(); $(`#${id}`)?.scrollIntoView({behavior:reduced.matches?'instant':'smooth',block:'start'});
+      closeMenu(); const destination=$(`#${id}`);const heading=destination?.querySelector('h1,h2');if(heading){if(!heading.hasAttribute('tabindex'))heading.setAttribute('tabindex','-1');heading.focus({preventScroll:true});}destination?.scrollIntoView({behavior:reduced.matches?'auto':'smooth',block:'start'});
     }
   });
   window.addEventListener('popstate',()=>showWorld(location.hash==='#brand'?'brand':'shop',false));
@@ -90,16 +90,16 @@
   function renderReceipt(){
     const p=state.products.find(p=>p.id===state.receipt);if(!p)return;
     $('#receipt-product-image').src=p.sceneImage||p.image;$('#receipt-product-image').alt=`${p.brand} ${value(p.name)}`;
-    const rows=[ [text('الحجم','Size'),value(p.sizeLabel)], [text('الاختيار','The pick'),value(p.format)], [text('مكوّن بارز','Featured ingredient'),value(p.ingredient)], [text('سبب الاختيار','Why in the edit'),value(p.why)], [text('الاستخدام','Directions'),value(p.use)], [text('ننتبه لـ','Keep in mind'),value(p.caution)], [text('الدفعة والصلاحية','Batch & expiry'),text('تُضاف بعد التحقق المحلي','Pending local verification')], [text('السعر والمخزون','Price & stock'),text('قيد التأكيد','To be confirmed')] ];
-    $('#builder-ticket').innerHTML=`<div class="ticket-brand"><img src="assets/brand/logo.svg" alt="nurimi."><span dir="ltr">SKIN RECEIPT / ${escape(p.id)}</span></div><p class="receipt-brand" dir="ltr">${escape(p.brand)}</p><h3>${escape(value(p.name))}</h3><dl>${rows.map(([key,val])=>`<div><dt>${escape(key)}</dt><dd>${escape(val)}</dd></div>`).join('')}</dl><p class="receipt-source">${text('مرجع معلومات المنتج:','Product information:')} <a href="${escape(p.sourceUrl)}" target="_blank" rel="noopener">${escape(value(p.sourceLabel)||p.brand)} ↗</a><br>${text('مرجع المنتج لا يؤكد بيانات الدفعة المحلية.','The product reference does not verify the local inventory batch.')}</p>`;
+    const rows=[ [text('الحجم','Size'),value(p.sizeLabel)], [text('نوع المنتج','The pick'),value(p.format)], [text('مكوّن بارز','Featured ingredient'),value(p.ingredient)], [text('الفائدة','Why in the edit'),value(p.why)], [text('الاستخدام','Directions'),value(p.use)], [text('تنبيه','Keep in mind'),value(p.caution)], [text('الدفعة والصلاحية','Batch & expiry'),text('تُضاف بعد التحقق المحلي','Pending local verification')], [text('السعر والمخزون','Price & stock'),text('قيد التأكيد','To be confirmed')] ];
+    $('#builder-ticket').innerHTML=`<div class="ticket-brand"><img src="assets/brand/logo.svg" alt="nurimi."><span dir="ltr">SKIN RECEIPT / ${escape(p.id)}</span></div><p class="receipt-brand" dir="ltr">${escape(p.brand)}</p><h3>${escape(value(p.name))}</h3><dl>${rows.map(([key,val])=>`<div><dt>${escape(key)}</dt><dd>${escape(val)}</dd></div>`).join('')}</dl><p class="receipt-source">${text('مصدر معلومات المنتج:','Product information:')} <a href="${escape(p.sourceUrl)}" target="_blank" rel="noopener">${escape(value(p.sourceLabel)||p.brand)} ↗</a><br>${text('مصدر معلومات المنتج لا يؤكد بيانات الدفعة المحلية.','The product reference does not verify the local inventory batch.')}</p>`;
   }
   function downloadText(name,content){const url=URL.createObjectURL(new Blob([content],{type:'text/plain;charset=utf-8'}));const link=document.createElement('a');link.href=url;link.download=name;link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
   $('#receipt-product').addEventListener('change',e=>{state.receipt=e.target.value;renderReceipt();});
   $('#download-receipt').addEventListener('click',()=>{
     const p=state.products.find(p=>p.id===state.receipt);if(!p)return;
-    const lines=['NURIMI / نوريمي','SKIN RECEIPT / '+p.id,p.brand,value(p.name),text('الحجم: ','Size: ')+value(p.sizeLabel),'',value(p.description),'',text('المكوّن: ','Ingredient: ')+value(p.ingredient),text('الاستخدام: ','Directions: ')+value(p.use),text('تنبيه: ','Caution: ')+value(p.caution),'',text('السعر، المخزون، الدفعة والصلاحية: قيد التأكيد المحلي.','Price, stock, batch and expiry: pending local verification.'),`${value(p.sourceLabel)||p.brand}: ${p.sourceUrl}`,'',text('نسخة تجريبية. ليست وصفة علاجية أو إثبات اعتماد محلي.','Prototype. Not medical advice or proof of local product clearance.')];
+    const lines=['NURIMI / نوريمي','SKIN RECEIPT / '+p.id,p.brand,value(p.name),text('الحجم: ','Size: ')+value(p.sizeLabel),'',value(p.description),'',text('المكوّن: ','Ingredient: ')+value(p.ingredient),text('الاستخدام: ','Directions: ')+value(p.use),text('تنبيه: ','Caution: ')+value(p.caution),'',text('السعر والمخزون والدفعة والصلاحية: قيد التحقق المحلي.','Price, stock, batch and expiry: pending local verification.'),`${value(p.sourceLabel)||p.brand}: ${p.sourceUrl}`,'',text('نسخة تجريبية. لا تُعد نصيحة طبية أو إثباتًا لاعتماد المنتج محليًا.','Prototype. Not medical advice or proof of local product clearance.')];
     downloadText(`NURIMI-Skin-Receipt-${p.id}-${state.lang}.txt`,lines.join('\n'));
-    $('#site-status').textContent=text('تم تنزيل كرت البشرة.','Skin Receipt downloaded.');
+    $('#site-status').textContent=text('تم تنزيل بطاقة المنتج.','Skin Receipt downloaded.');
   });
   document.addEventListener('nurimi:products-ready',e=>{state.products=e.detail.products||[];renderReceiptPicker();});
   const existing=window.NurimiShop?.getProducts?.();if(existing?.length){state.products=existing;renderReceiptPicker();}
