@@ -21,6 +21,10 @@ Build paths expands the initial Salla fast-launch baseline. It gives a custom Ne
 
 Build estimates and the older managed-store portfolio model are separate scenarios, not additive. Prices/hours are editable planning judgement. The proof allowance is included in setup; proof hours and phase-one hours remain identical. See `data/build-guide.md` for assumptions and formulas.
 
+The Managed vs custom screen now starts with paired cost and responsibility tables, with hybrid optional. Common store count, labour rate, capacity, contingency and external lead apply across columns; route-specific edits survive switching. Maintenance capacity grows with each additional store using editable assumptions. Unit-economics technical break-even follows the selected build plan; the original portfolio tab remains a separately labelled managed example.
+
+Decision records flag incompatible delivery-model/vendor choices and offer explicit alignment or clearing, preserving notes. Eight local evidence records need an owner and note to count as complete; they never certify readiness. Seven additional cash categories start unpriced (`null`), distinct from explicit zero. Priced cash allowances remain separate from technical subtotals. JSON round-trip and older version-1 imports preserve/initialise the relevant state without retaining stale evidence. The founder brief includes comparison, conflict state, review date, route estimates, cash gaps and exit criteria.
+
 Arabic/English interface with RTL; the complete original research memo and primary-source notes retain English/source language where disclosed.
 
 State is browser-local under `nurimi:founder:v1`. No server, telemetry, merchant account or payment connection. Workspace JSON export/import moves local notes, scenarios and trial marks. Founder-brief export produces a standalone readable HTML report with current assumptions and the original memo. Import/reset requires an explicit in-app action.

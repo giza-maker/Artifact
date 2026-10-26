@@ -8,6 +8,8 @@ Signature move: the live economic waterfall. It reads like a ruled ledger—labe
 
 Build paths adds a three-way ownership selector and a ruled implementation plan. Selected route uses solid plum; labour, budget and phase allocation update together. Every cost surface names its scenario and exclusions. The managed reference blueprint and initial research memo stay labelled; neither dictates the custom implementation.
 
+Managed vs custom now opens on the paired decision table. Comparison precedes selection. On mobile each factor keeps managed and owned values together; optional hybrid follows that pair. Shared assumptions remain in a native disclosure, and implementation detail is a separate native disclosure reached from each column. Evidence and cash unknowns remain explicit. Conflicting choices receive an amber text warning with reversible resolution actions.
+
 ## Tokens
 
 - Brand: plum `#3B2158`, deep plum `#28133E`, cherry `#B82B55`.

@@ -7,6 +7,7 @@ export const BUILD_PRESETS = Object.freeze({
     monthlyBase: 100,
     monthlyPerStore: 450,
     maintenanceHours: 4,
+    maintenancePerStoreHours: 1,
     discoveryHours: 8,
   }),
   hybrid: Object.freeze({
@@ -15,6 +16,7 @@ export const BUILD_PRESETS = Object.freeze({
     monthlyBase: 600,
     monthlyPerStore: 430,
     maintenanceHours: 8,
+    maintenancePerStoreHours: 2,
     discoveryHours: 24,
   }),
   owned: Object.freeze({
@@ -23,6 +25,7 @@ export const BUILD_PRESETS = Object.freeze({
     monthlyBase: 950,
     monthlyPerStore: 180,
     maintenanceHours: 12,
+    maintenancePerStoreHours: 3,
     discoveryHours: 32,
   }),
 });
@@ -69,7 +72,8 @@ export function buildPlan(inputs = {}) {
   const labour = setupHoursTotal * clean.hourlyRate;
   const contingencyMultiplier = 1 + clean.contingencyPercent / 100;
   const setupBudget = labour * contingencyMultiplier;
-  const monthlyRun = clean.monthlyBase + clean.stores * clean.monthlyPerStore + clean.maintenanceHours * clean.hourlyRate;
+  const maintenanceHoursTotal = clean.maintenanceHours + (clean.stores - 1) * clean.maintenancePerStoreHours;
+  const monthlyRun = clean.monthlyBase + clean.stores * clean.monthlyPerStore + maintenanceHoursTotal * clean.hourlyRate;
   const annualRun = monthlyRun * 12;
   const engineeringWeeks = setupHoursTotal / clean.deliveryHoursPerWeek;
 
@@ -80,6 +84,7 @@ export function buildPlan(inputs = {}) {
     labour,
     setupBudget,
     monthlyRun,
+    maintenanceHoursTotal,
     annualRun,
     firstYear: setupBudget + annualRun,
     engineeringWeeks,

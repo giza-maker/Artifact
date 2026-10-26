@@ -1,11 +1,14 @@
-import { RESEARCH as R } from './data/research.js?v=538cd8e627';
+import { RESEARCH as R } from './data/research.js?v=cf3edb5e15';
 import { DEFAULT_UNIT, DEFAULT_PORTFOLIO, DEFAULT_WEIGHTS, scorePlatforms, unitEconomics, portfolioCosts, sanitizeNumber } from './models.js?v=576e792f61';
-import { createViews, esc, icon } from './views.js?v=af8a236ab5';
-import { BUILD_DEFAULTS, BUILD_PRESETS, cleanBuildInputs, buildPlan } from './build-models.js?v=551fdc5aff';
-import { createBuildViews } from './build-views.js?v=5ab1c1bd0e';
+import { createViews, esc, icon } from './views.js?v=d0c460a878';
+import { BUILD_DEFAULTS, BUILD_PRESETS, cleanBuildInputs, buildPlan } from './build-models.js?v=92ee1f3623';
+import { DEFAULT_COMPARISON, cleanComparison, routeForPlatform } from './comparison-models.js?v=c594c77897';
+import { CASH_FIELDS } from './comparison-views.js?v=7543cb51df';
+import { DECISION_GAPS } from './data/comparison-content.js?v=f32872d805';
+import { createBuildViews } from './build-views.js?v=0c1f4d4ec7';
 
 const KEY='nurimi:founder:v1', VERSION=1, ids=new Set(R.nav.map(v=>v.id));
-const defaults=()=>({version:VERSION,lang:'en',route:'overview',build:{...BUILD_DEFAULTS},unit:{...DEFAULT_UNIT},portfolio:{...DEFAULT_PORTFOLIO},weights:{...DEFAULT_WEIGHTS},gates:{},platformGates:{},verifiedSkus:0,allocation:6,stackTab:'compare',econTab:'unit',stackInspect:'salla',factory:{brand:'nurimi',name:'',accent:'',layout:''},decisions:{platform:'undecided',launchMode:'verified',rationale:'',reversal:'',nextAction:''},scenarios:[],sourceQuery:'',sourceArea:'all',evidenceTab:'sources'});
+const defaults=()=>({version:VERSION,lang:'en',route:'overview',build:{...BUILD_DEFAULTS},buildProfiles:{},buildPlanOpen:false,comparison:{...DEFAULT_COMPARISON},cash:Object.fromEntries(CASH_FIELDS.map(k=>[k,null])),decisionGaps:{},unit:{...DEFAULT_UNIT},portfolio:{...DEFAULT_PORTFOLIO},weights:{...DEFAULT_WEIGHTS},gates:{},platformGates:{},verifiedSkus:0,allocation:6,stackTab:'compare',econTab:'unit',stackInspect:'salla',factory:{brand:'nurimi',name:'',accent:'',layout:''},decisions:{platform:'undecided',launchMode:'verified',rationale:'',reversal:'',nextAction:'',reviewDate:''},scenarios:[],sourceQuery:'',sourceArea:'all',evidenceTab:'sources'});
 const cleanText=(v,max=3000)=>typeof v==='string'?v.slice(0,max):'';
 const cleanInputs=(source,base)=>Object.fromEntries(Object.entries(base).map(([k,v])=>[k,typeof v==='boolean'?(source?.[k]==null?v:source[k]===true):sanitizeNumber(source?.[k],v,0,k==='stores'?10:k.toLowerCase().includes('percent')||k==='vatRate'?100:1000000)]));
 function cleanState(raw) {
@@ -13,11 +16,16 @@ function cleanState(raw) {
   d.lang=raw.lang==='ar'?'ar':'en';d.route=ids.has(raw.route)?raw.route:'overview';d.unit=cleanInputs(raw.unit,DEFAULT_UNIT);d.portfolio=cleanInputs(raw.portfolio,DEFAULT_PORTFOLIO);d.portfolio.stores=Math.max(1,Math.round(d.portfolio.stores));
   d.weights=Object.fromEntries(Object.keys(DEFAULT_WEIGHTS).map(k=>[k,sanitizeNumber(raw.weights?.[k],DEFAULT_WEIGHTS[k],0,50)]));
   d.build=cleanBuildInputs(raw.build);
+  d.buildProfiles={};for(const route of Object.keys(BUILD_PRESETS)){if(raw.buildProfiles?.[route]&&typeof raw.buildProfiles[route]==='object')d.buildProfiles[route]=cleanBuildInputs({...raw.buildProfiles[route],route});}
+  d.buildProfiles[d.build.route]={...d.build};d.buildPlanOpen=raw.buildPlanOpen===true;d.comparison=cleanComparison(raw.comparison);
+  for(const key of CASH_FIELDS){const value=raw.cash?.[key];const n=(typeof value==='number'||typeof value==='string')&&String(value).trim()!==''?Number(value):NaN;d.cash[key]=Number.isFinite(n)&&n>=0?Math.min(1000000000,n):null;}
+  for(const gap of DECISION_GAPS){const value=raw.decisionGaps?.[gap.id];if(value&&typeof value==='object')d.decisionGaps[gap.id]={status:['unknown','working','recorded'].includes(value.status)?value.status:'unknown',owner:cleanText(value.owner,100),evidence:cleanText(value.evidence,2000)};}
+
   for(const g of R.gates){const v=raw.gates?.[g.id];if(v&&typeof v==='object')d.gates[g.id]={status:['pending','progress','verified','blocked'].includes(v.status)?v.status:'pending',owner:cleanText(v.owner,100),evidence:cleanText(v.evidence,2000)};}
   for(const p of R.platforms){const v=raw.platformGates?.[p.id];if(v&&typeof v==='object')d.platformGates[p.id]=Object.fromEntries(['merchant','theme','operations'].map(k=>[k,['unknown','pass','fail'].includes(v[k])?v[k]:'unknown']));}
   d.verifiedSkus=Math.round(sanitizeNumber(raw.verifiedSkus,0,0,23));d.allocation=Math.round(sanitizeNumber(raw.allocation,6,0,10));
   const f=raw.factory||{};d.factory={brand:f.brand==='sada'?'sada':'nurimi',name:cleanText(f.name,40),accent:/^#[0-9a-f]{6}$/i.test(f.accent)?f.accent:'',layout:['editorial','compact'].includes(f.layout)?f.layout:''};
-  const c=raw.decisions||{};d.decisions={platform:c.platform==='undecided'?'undecided':R.platforms.some(p=>p.id===c.platform)?c.platform:'undecided',launchMode:c.launchMode==='full'?'full':'verified',rationale:cleanText(c.rationale),reversal:cleanText(c.reversal),nextAction:cleanText(c.nextAction,2000)};
+  const c=raw.decisions||{};d.decisions={platform:c.platform==='undecided'?'undecided':R.platforms.some(p=>p.id===c.platform)?c.platform:'undecided',launchMode:c.launchMode==='full'?'full':'verified',rationale:cleanText(c.rationale),reversal:cleanText(c.reversal),nextAction:cleanText(c.nextAction,2000),reviewDate:/^\d{4}-\d{2}-\d{2}$/.test(c.reviewDate||'')?c.reviewDate:''};
   if(Object.values(d.platformGates[d.decisions.platform]||{}).includes('fail'))d.decisions.platform='undecided';
   d.stackTab=raw.stackTab==='blueprint'?'blueprint':'compare';d.econTab=raw.econTab==='portfolio'?'portfolio':'unit';
   d.stackInspect=R.platforms.some(p=>p.id===raw.stackInspect)?raw.stackInspect:'salla';
@@ -39,6 +47,12 @@ const view=document.getElementById('view'), dialog=document.getElementById('app-
 let trigger=null, saveTimer, sources=[], memoHTML='', sourcesPromise=null, memoPromise=null, sourceVisible=16;
 const uiIcons={overview:'sparkles',market:'globe',stack:'layers',build:'layers',economics:'receipt',launch:'check',factory:'grid',decisions:'clipboard',evidence:'search'};
 
+function rememberBuild(){state.buildProfiles[state.build.route]={...state.build};}
+function selectBuildRoute(route){
+  if(!BUILD_PRESETS[route])return;rememberBuild();
+  const common=Object.fromEntries(['stores','hourlyRate','deliveryHoursPerWeek','contingencyPercent','externalLeadWeeks'].map(k=>[k,state.build[k]]));
+  state.build=cleanBuildInputs({...BUILD_PRESETS[route],...(state.buildProfiles[route]||{}),...common,route});rememberBuild();
+}
 function announce(text){const e=document.getElementById('app-status');if(e)e.textContent=text;}
 function save() {
   clearTimeout(saveTimer);const e=document.getElementById('save-indicator');if(e)e.textContent=t('Saving…','جارٍ الحفظ…');
@@ -64,12 +78,14 @@ function renderNav(){
 }
 function routeFromHash(){const id=location.hash.slice(1).split('?')[0];return ids.has(id)?id:'overview';}
 function render(focus=true){
+  const openDetails=!focus?[...view.querySelectorAll('details[open][id]')].map(el=>el.id):[];
   const active=document.activeElement;
   const focusSelector=!focus&&view.contains(active)?(active.id?`#${CSS.escape(active.id)}`:['data-action','data-tab','data-preset','data-platform','data-brand','data-index'].filter(k=>active.hasAttribute(k)).map(k=>`[${k}="${CSS.escape(active.getAttribute(k))}"]`).join('')):null;
   state.route=routeFromHash();hydrateShell();view.innerHTML=state.route==='build'?builds.render():views.render(state.route);
   view.setAttribute('aria-busy','false');
   views.updateEconomics();views.updateStack();views.updateFactory();
   builds.update();
+  for(const id of openDetails){const detail=document.getElementById(id);if(detail?.tagName==='DETAILS')detail.open=true;}
   if(state.route==='evidence'){if(state.evidenceTab==='sources')renderSources();else if(state.evidenceTab==='memo')renderMemo();}
   if(focus){document.getElementById('page-title')?.focus({preventScroll:true});window.scrollTo({top:0,behavior:'instant'});}
   else if(focusSelector)(view.querySelector(focusSelector)||document.getElementById('page-title'))?.focus({preventScroll:true});
@@ -135,8 +151,11 @@ document.addEventListener('click',async e=>{
     case'search':showSearch();break;
     case'export':showExport();break;
     case'close-dialog':dialog.close();break;
-    case'build-route':{const route=el.dataset.buildRoute;if(!BUILD_PRESETS[route])break;state.build=cleanBuildInputs({...state.build,...BUILD_PRESETS[route],route});save();render(false);document.querySelector(`[data-build-route="${route}"]`)?.focus({preventScroll:true});announce(t('Build route loaded. Estimates are planning assumptions.','تم تحميل مسار البناء. التقديرات افتراضات تخطيط.'));break;}
-    case'build-reset':state.build=cleanBuildInputs({...BUILD_DEFAULTS,...BUILD_PRESETS[state.build.route],route:state.build.route});save();render(false);announce(t('Current build route reset.','أُعيدت افتراضات مسار البناء الحالي.'));break;
+    case'build-route':{const route=el.dataset.buildRoute;selectBuildRoute(route);save();render(false);document.querySelector(`[data-action="build-route"][data-build-route="${route}"]`)?.focus({preventScroll:true});announce(t('Plan loaded; route-specific edits are preserved.','تم تحميل الخطة مع حفظ تعديلات كل مسار.'));break;}
+    case'compare-inspect':selectBuildRoute(el.dataset.buildRoute);state.buildPlanOpen=true;save();render(false);{const plan=document.getElementById('implementation-plan');plan?.querySelector('summary')?.focus({preventScroll:true});plan?.scrollIntoView({block:'start',behavior:'instant'});}break;
+    case'build-reset':{const common=Object.fromEntries(['stores','hourlyRate','deliveryHoursPerWeek','contingencyPercent','externalLeadWeeks'].map(k=>[k,state.build[k]]));state.build=cleanBuildInputs({...BUILD_DEFAULTS,...BUILD_PRESETS[state.build.route],...common,route:state.build.route});rememberBuild();save();render(false);announce(t('Route estimates reset; common comparison assumptions retained.','أُعيدت تقديرات المسار مع بقاء افتراضات المقارنة المشتركة.'));break;}
+    case'align-build-preference':{const route=routeForPlatform(state.decisions.platform);if(route){selectBuildRoute(route);save();render(false);document.getElementById('decision-build-model')?.focus({preventScroll:true});}break;}
+    case'clear-platform-preference':state.decisions.platform='undecided';save();render(false);document.querySelector('[data-decision="platform"]')?.focus({preventScroll:true});break;
     case'stack-tab':state.stackTab=el.dataset.tab;render(false);document.querySelector(`[data-action=\"stack-tab\"][data-tab=\"${state.stackTab}\"]`)?.focus({preventScroll:true});break;
     case'econ-tab':state.econTab=el.dataset.tab;render(false);document.querySelector(`[data-action=\"econ-tab\"][data-tab=\"${state.econTab}\"]`)?.focus({preventScroll:true});break;
     case'evidence-tab':state.evidenceTab=el.dataset.tab;render(false);document.querySelector(`[data-action=\"evidence-tab\"][data-tab=\"${state.evidenceTab}\"]`)?.focus({preventScroll:true});break;
@@ -165,7 +184,10 @@ document.addEventListener('click',async e=>{
 
 document.addEventListener('input',e=>{
   const el=e.target;
-  if(el.matches('[data-build-model]')){if(el.value==='')return;const key=el.dataset.buildModel;if(key in state.build){state.build=cleanBuildInputs({...state.build,[key]:el.value});save();builds.update();}return;}
+  if(el.matches('[data-build-model]')){if(el.value==='')return;const key=el.dataset.buildModel;if(key in state.build){state.build=cleanBuildInputs({...state.build,[key]:el.value});rememberBuild();save();builds.update();}return;}
+  if(el.matches('[data-comparison-model]')){const key=el.dataset.comparisonModel;if(el.type==='number'&&el.value==='')return;state.comparison=cleanComparison({...state.comparison,[key]:el.type==='checkbox'?el.checked:el.value});save();if(key==='includeHybrid')render(false);else builds.updateComparison();return;}
+  if(el.matches('[data-cash-model]')){const key=el.dataset.cashModel;if(CASH_FIELDS.includes(key))state.cash[key]=el.value===''?null:sanitizeNumber(el.value,0,0,1000000000);save();builds.updateComparison();return;}
+  if(el.matches('[data-gap-owner],[data-gap-evidence]')){const id=el.dataset.gapOwner||el.dataset.gapEvidence;state.decisionGaps[id]??={status:'unknown',owner:'',evidence:''};state.decisionGaps[id][el.dataset.gapOwner?'owner':'evidence']=el.value;save();builds.updateComparison();return;}
   if(el.matches('[data-model]')){if(el.type==='number'&&el.value==='')return;const scope=el.dataset.model,key=el.name;const dest=scope==='state'?state:state[scope];if(dest&&Object.prototype.hasOwnProperty.call(dest,key)){dest[key]=el.type==='checkbox'?el.checked:sanitizeNumber(el.value,0,el.min?Number(el.min):0,el.max?Number(el.max):1000000);if(key==='stores'||key==='verifiedSkus')dest[key]=Math.round(dest[key]);save();views.updateEconomics();}return;}
   if(el.matches('[data-weight]')){state.weights[el.dataset.weight]=Number(el.value);document.querySelector(`[data-weight-output="${el.dataset.weight}"]`).textContent=num(Number(el.value));save();views.updateStack();return;}
   if(el.matches('[data-gate-owner],[data-gate-evidence]')){const id=el.dataset.gateOwner||el.dataset.gateEvidence;state.gates[id]??={status:'pending',owner:'',evidence:''};state.gates[id][el.dataset.gateOwner?'owner':'evidence']=el.value;save();return;}
@@ -176,9 +198,14 @@ document.addEventListener('input',e=>{
   if(el.id==='factory-color'){state.factory.accent=el.value;save();views.updateFactory();return;}
   if(el.id==='allocation-range'){state.allocation=Number(el.value);save();views.updateFactory();return;}
 });
+document.addEventListener('toggle',e=>{if(e.target.id==='implementation-plan'){state.buildPlanOpen=e.target.open;save();}},true);
 let pendingImport=null;
 document.addEventListener('change',async e=>{
   const el=e.target;
+  if(el.id==='decision-build-model'){selectBuildRoute(el.value);save();render(false);document.getElementById('decision-build-model')?.focus({preventScroll:true});return;}
+  if(el.matches('[data-comparison-model]')&&el.type==='number'){el.value=state.comparison[el.dataset.comparisonModel];return;}
+  if(el.matches('[data-cash-model]')){el.value=state.cash[el.dataset.cashModel]??'';return;}
+  if(el.matches('[data-gap-status]')){const id=el.dataset.gapStatus;state.decisionGaps[id]??={owner:'',evidence:''};state.decisionGaps[id].status=el.value;save();builds.updateComparison();return;}
   if(el.matches('[data-build-model]')){el.value=state.build[el.dataset.buildModel];document.querySelectorAll('[data-build-model]').forEach(input=>{if(input!==el)input.value=state.build[input.dataset.buildModel];});return;}
   if(el.matches('[data-model]')&&el.type==='number'){const dest=el.dataset.model==='state'?state:state[el.dataset.model];if(dest&&el.name in dest)el.value=dest[el.name];return;}
   if(el.matches('[data-platform-gate]')){state.platformGates[el.dataset.platformGate]??={};state.platformGates[el.dataset.platformGate][el.dataset.gateKey]=el.value;if(el.value==='fail'&&state.decisions.platform===el.dataset.platformGate)state.decisions.platform='undecided';save();views.updateStack();const detail=document.getElementById('platform-detail');if(detail){const key=el.dataset.gateKey;detail.innerHTML=views.platformDetail(R.platforms.find(p=>p.id===state.stackInspect));detail.querySelector(`[data-gate-key=\"${key}\"]`)?.focus({preventScroll:true});}return;}

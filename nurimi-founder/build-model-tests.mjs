@@ -6,7 +6,7 @@ const close = (actual, expected, tolerance = 1e-9) => assert.ok(Math.abs(actual 
 assert.deepEqual(BUILD_DEFAULTS, {
   route: "owned", stores: 1, hourlyRate: 200, deliveryHoursPerWeek: 60, contingencyPercent: 20,
   setupHours: 520, repeatHours: 72, monthlyBase: 950, monthlyPerStore: 180,
-  maintenanceHours: 12, discoveryHours: 32, externalLeadWeeks: 3,
+  maintenanceHours: 12, maintenancePerStoreHours: 3, discoveryHours: 32, externalLeadWeeks: 3,
 });
 assert.equal(BUILD_PRESETS.native.setupHours, 96);
 assert.equal(BUILD_PRESETS.hybrid.discoveryHours, 24);
@@ -26,13 +26,14 @@ assert.equal(defaults.discoveryIncludedInSetup, true);
 
 const threeStores = buildPlan({ stores: 3 });
 assert.equal(threeStores.setupHoursTotal, 664);
-assert.equal(threeStores.monthlyRun, 3890);
+assert.equal(threeStores.monthlyRun, 5090);
+assert.equal(threeStores.maintenanceHoursTotal, 18);
 
 const native = buildPlan({ route: "native", stores: 2, externalLeadWeeks: 10 });
 assert.equal(native.setupHours, 96);
 assert.equal(native.repeatHours, 28);
 assert.equal(native.setupHoursTotal, 124);
-assert.equal(native.monthlyRun, 1800);
+assert.equal(native.monthlyRun, 2000);
 assert.equal(native.earliestCalendarWeeks, 10);
 
 const hybrid = cleanBuildInputs({ route: "hybrid" });
@@ -72,7 +73,7 @@ assert.ok(Object.values(buildPlan(malformed)).filter((value) => typeof value ===
 
 const custom = buildPlan({
   stores: 2, setupHours: 100, repeatHours: 20, hourlyRate: 10, contingencyPercent: 25,
-  monthlyBase: 30, monthlyPerStore: 5, maintenanceHours: 2, deliveryHoursPerWeek: 40,
+  monthlyBase: 30, monthlyPerStore: 5, maintenanceHours: 2, maintenancePerStoreHours: 0, deliveryHoursPerWeek: 40,
   discoveryHours: 8, externalLeadWeeks: 1,
 });
 assert.equal(custom.setupHoursTotal, 120);

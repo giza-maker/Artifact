@@ -46,11 +46,23 @@ All amounts in the interactive Build paths model are editable architecture judge
 - Default owned setup: SAR124,800; monthly technical run: SAR3,530; first-year technical allowance: SAR167,160.
 - Owned proof: 32 hours / SAR7,680 including contingency, already included in setup.
 
-Setup hours = first-store hours + additional-store count × repeat hours. Setup budget = hours × rate × (1 + contingency). Monthly technical run = shared services + store count × per-store services + shared maintenance hours × rate. First-year technical allowance = setup + twelve months of run cost. Proof hours cannot exceed first-store hours. Phase one equals proof hours; remaining first-store effort is distributed across other phases.
+Setup hours = first-store hours + additional-store count × repeat hours. Setup budget = hours × rate × (1 + contingency). Monthly technical run = shared services + store count × per-store services + total maintenance hours × rate. Total maintenance hours = base maintenance + additional-store count × extra maintenance per store. The new planning assumptions add 1/2/3 monthly maintenance hours per additional native/hybrid/owned store; replace with a priced support plan. First-year technical allowance = setup + twelve months of run cost. Proof hours cannot exceed first-store hours. Phase one equals proof hours; remaining first-store effort is distributed across other phases.
 
 The earliest calendar scenario takes the larger of engineering effort/capacity and external prerequisite lead time, assuming both start on day one. Sequential delays, reviews, defects and launch learning can extend it. Maintenance capacity must be revised as the portfolio grows.
 
 Inventory, marketing, retail labour, variable PSP/carrier charges, legal/tax work, taxes and unentered licences are excluded. These estimates are separate from the older managed-store portfolio model; do not add both. Replace every assumption with provider quotes and measured proof effort before authorising the full build.
+
+## Direct comparison and decision completeness
+
+The comparison now shows managed and owned commerce simultaneously, with hybrid optional. All columns use the same store count, labour rate, productive capacity, contingency and external lead. Each route retains its own estimates. The horizon subtotal is setup plus monthly technical operation multiplied by the chosen months; it is not the business's total cost or required funding. No cheapest-route recommendation follows from this subtotal alone.
+
+Compare control of storefront, checkout, admin/data, Saudi payment access, integrations, operations, security/recovery, brand isolation, dependency and exit work. Vendor selection and delivery-model selection must agree before a founder brief can be treated as a coherent decision. Matching them still does not prove account eligibility or release readiness.
+
+Seven cash categories remain unpriced until entered: opening stock, warehouse deposits/setup, launch marketing, legal/product/tax work, retail-team runway, settlement/refund/shipping/loss buffers, and exit/licences outside technical inputs. Explicit zero differs from unknown. Priced allowances are shown separately and never silently added to technical totals. Peak working capital still needs supplier terms, inventory ageing, settlement/tax timing, returns and a cash-flow schedule.
+
+Eight proposed evidence records cover merchant/bank/PSP, verified products, invoice/warehouse loop, security/recovery/access, exit/contracts, cash cycle, demand/unit economics and second-brand separation. Local record completeness requires status, accountable owner and evidence note. It is not external validation. Review date, rationale and reversal evidence belong in the decision record.
+
+Exit proof includes re-import and reconciliation of core data, continued authorised order/refund/invoice access, consent and suppression records, domains/SEO/analytics continuity, payment-token transfer limits, contract termination and provider deletion confirmation where agreed. An export file alone does not prove recovery or migration.
 
 ## Official capability references
 
