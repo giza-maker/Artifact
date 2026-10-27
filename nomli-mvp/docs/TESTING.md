@@ -6,7 +6,7 @@ No device or emulator is connected. Every phone check below is **pending**. This
 
 ## Evidence boundaries
 
-- M5 baseline: 161 passing JavaScript tests. Current M6 suite: 169 JavaScript tests. Test counts describe automated JavaScript coverage, not Android device acceptance; attach the current run result in [VERIFICATION.md](VERIFICATION.md).
+- M5 baseline: 161 passing JavaScript tests. Current M6 suite: 171 JavaScript tests. Test counts describe automated JavaScript coverage, not Android device acceptance; attach the current run result in [VERIFICATION.md](VERIFICATION.md).
 - Browser checks with a synthetic native bridge double can exercise app flow and injected native results. They cannot establish microphone capture, permission dialogs, camera/QR/SAF behavior, notifications or Android lifecycle cleanup.
 - Record actual device results separately. Keep pending items unchecked until exercised on a physical phone.
 

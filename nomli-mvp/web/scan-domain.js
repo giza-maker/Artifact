@@ -68,6 +68,16 @@ function catalogIds(catalog) {
   return new Set(Object.keys(catalog || {}));
 }
 
+function reviewWarnings(values, diagnostics) {
+  const warnings = [...new Set([
+    ...(Array.isArray(values) ? values.filter((value) => typeof value === "string" && value.length <= 500) : []),
+    ...diagnostics,
+  ])];
+  const required = new Set(diagnostics);
+  let providerSlots = 100 - required.size;
+  return warnings.filter((warning) => required.has(warning) || providerSlots-- > 0);
+}
+
 export function reviewScanDraft(raw, { catalog = [] } = {}) {
   if (!plain(raw)) fail("INVALID_DRAFT", "AI scan output must be an object.");
   const known = catalogIds(catalog);
@@ -84,9 +94,7 @@ export function reviewScanDraft(raw, { catalog = [] } = {}) {
     discountMinor: raw.discountMinor === undefined ? 0 : (nullableMoney(raw.discountMinor) ? raw.discountMinor : null),
     lines: lines.map((line, index) => {
       const candidate = plain(line) ? line : {};
-      const warnings = Array.isArray(candidate.warnings)
-        ? candidate.warnings.filter((x) => typeof x === "string" && x.length <= 500).slice(0, 97)
-        : [];
+      const warnings = [];
       const quantity = nullableQty(candidate.quantity) ? candidate.quantity : null;
       const unit = UNITS.has(candidate.unit) ? candidate.unit : null;
       const storage = STORAGE.has(candidate.storage) ? candidate.storage : null;
@@ -106,16 +114,15 @@ export function reviewScanDraft(raw, { catalog = [] } = {}) {
         expiry: printedExpiry ? expiry : null,
         expiryProvenance: printedExpiry ? "printed" : null,
         storage,
-        warnings,
+        warnings: reviewWarnings(candidate.warnings, warnings),
       };
     }),
-    warnings: Array.isArray(raw.warnings)
-      ? raw.warnings.filter((x) => typeof x === "string" && x.length <= 500).slice(0, 97)
-      : [],
+    warnings: [],
   };
   if (!normalized.currency && normalized.kind === "receipt") normalized.warnings.push("Currency requires review; finance import excluded.");
   if (normalized.totalMinor === null && normalized.kind === "receipt") normalized.warnings.push("Receipt total requires review; finance import excluded.");
   if ((normalized.taxMinor === null || normalized.discountMinor === null) && normalized.kind === "receipt") normalized.warnings.push("Receipt tax or discount requires review; finance import excluded.");
+  normalized.warnings = reviewWarnings(raw.warnings, normalized.warnings);
   validateScanDraft(normalized);
   return normalized;
 }

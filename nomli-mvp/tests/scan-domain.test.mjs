@@ -274,3 +274,34 @@ test("expiry merge rejects inherited stock properties without prototype mutation
     }
   }
 });
+
+test("repeated scan review keeps bounded diagnostics unique and preserves provider warnings", () => {
+  const providerWarnings = Array.from({ length: 100 }, (_, index) => `Provider warning ${index}`);
+  let reviewed = {
+    kind: "receipt", fingerprint, currency: null, totalMinor: null, taxMinor: null,
+    discountMinor: null, warnings: providerWarnings,
+    lines: [rawLine({ quantity: null, unit: null, storage: null, ingredientId: "ungrounded", warnings: providerWarnings })],
+  };
+  const lineDiagnostics = ["Quantity requires review.", "Unit requires review.", "Storage requires review.", "Ingredient match was not grounded and was removed."];
+  const rootDiagnostics = ["Currency requires review; finance import excluded.", "Receipt total requires review; finance import excluded.", "Receipt tax or discount requires review; finance import excluded."];
+  let first;
+  for (let pass = 0; pass < 5; pass++) {
+    reviewed = reviewScanDraft(reviewed);
+    for (const [warnings, diagnostics] of [[reviewed.lines[0].warnings, lineDiagnostics], [reviewed.warnings, rootDiagnostics]]) {
+      assert.ok(warnings.length <= 100);
+      assert.ok(warnings.includes(providerWarnings[0]));
+      for (const diagnostic of diagnostics) assert.equal(warnings.filter((value) => value === diagnostic).length, 1);
+    }
+    assert.equal(reviewed.lines[0].quantity, null);
+    assert.equal(reviewed.lines[0].unit, null);
+    assert.equal(reviewed.lines[0].storage, null);
+    if (!first) first = structuredClone(reviewed);
+    else assert.deepEqual(reviewed, first);
+  }
+});
+
+test("normalizing reviewed unknowns does not duplicate review warnings", () => {
+  const first = draft({ currency: null, totalMinor: null, taxMinor: null, discountMinor: null, warnings: ["Blurred receipt."], lines: [rawLine({ quantity: null, unit: null, storage: null, warnings: ["Blurred label."] })] });
+  const second = reviewScanDraft(reviewScanDraft(first, { catalog: ["milk"] }), { catalog: ["milk"] });
+  assert.deepEqual(second, first);
+});

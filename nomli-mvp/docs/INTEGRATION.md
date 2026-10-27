@@ -64,7 +64,7 @@ M6 uses version `0.7.0-m6`, code `7`, the same validation package and signing ce
 
 Scan imports now require own dictionary entries for merge targets, including IDs matching inherited object properties. Review dictionaries have null prototypes. Failed native timer cancellation retains its alert ID; replacing or removing that timer owner must cancel the alert before the new state is saved. Failure rolls back the transition, leaving it retryable. Android backup export reports success only after file streams close.
 
-All 169 JavaScript tests and content checks pass at this checkpoint. Live synthetic PNG/PDF scans returned the expected quantities and total, and a deployed Zara correction proposal passed validation. No physical device or emulator is connected. See the [M6 phone checklist](TESTING.md); current build evidence belongs in the [verification record](VERIFICATION.md).
+All 171 JavaScript tests and content checks pass at this checkpoint. Live synthetic PNG/PDF scans returned the expected quantities and total, and a deployed Zara correction proposal passed validation. No physical device or emulator is connected. See the [M6 phone checklist](TESTING.md); current build evidence belongs in the [verification record](VERIFICATION.md).
 
 ## Capability status
 
