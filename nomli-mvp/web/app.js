@@ -7,6 +7,7 @@ import {
   applyAssistantProposal,
 } from "./assistant-domain.js";
 import { createTimerNotifications } from "./timer-notifications.js";
+import { retireReplacedTimer } from "./timer-transition.js";
 import { createStateStore } from "./state-store.js";
 import {
   getScanConfig,
@@ -218,19 +219,6 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
   function cancelCookingNotification() {
     timerNotifications.cancel(S.cooking).catch(() => {});
   }
-  async function retireCookingNotification(session) {
-    if (!session) return true;
-    session.running = false;
-    try {
-      await timerNotifications.cancel(session);
-      return true;
-    } catch {
-      announce(
-        "Device alert could not be updated. Keep Nomli open to track the timer.",
-      );
-      return false;
-    }
-  }
   const hash = location.hash.slice(1);
   if (routes.includes(hash)) S.route = hash;
   function save() {
@@ -268,6 +256,8 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     const before = structuredClone(S);
     try {
       mutator();
+      // Retire the native alert before a save can drop its durable owner.
+      await retireReplacedTimer(before.cooking, S.cooking, timerNotifications);
       if (replace) {
         const snapshot = structuredClone(S);
         saveQueue = saveQueue
@@ -419,7 +409,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         `${Object.values(S.items).filter((x) => x.qty > 0).length} ingredients on hand${soon ? ` · ${soon} use soon` : ""}`,
         button("Add ingredient", "item-edit", "new", "btn-primary"),
       ) +
-      `<p class="milestone-banner">Milestone 5 · Scan, cook and speak to Zara</p><button class="scan-banner" data-action="go" data-id="scan"><img src="images/fridge-vf-480.webp" alt=""><span>${icon("scan")}<b>Scan groceries or receipts</b><small>Protected connection · review before save</small></span>${icon("arrow-right")}</button><section class="card inventory-card"><div class="card-header"><h2>Inventory</h2><button class="icononly" data-action="item-edit" data-id="new" aria-label="Add ingredient">${icon("plus")}</button></div><div class="inventory-tools"><label class="field">Search<input type="search" data-change="search" value="${esc(S.search || "")}" placeholder="Search ingredients"></label><div class="inventory-sort"><label>Storage <select data-change="storage">${options(["All", "Fridge", "Freezer", "Pantry", "Spices"], S.storage)}</select></label><label>Sort <select data-change="sort">${options(["expiry", "name", "quantity"], S.sort)}</select></label></div></div>${rows.length ? rows.map(([id, x]) => itemRow(id, x)).join("") : `<div class="inventory-empty">${icon("refrigerator")}<h3>${Object.keys(S.items).length ? "No ingredients match" : "Your inventory is empty"}</h3><p>${Object.keys(S.items).length ? "Clear search or filters." : "Add first ingredient. Expiry stays optional and never gets invented."}</p>${Object.keys(S.items).length ? "" : button("Add first ingredient", "item-edit", "new", "btn-primary")}</div>`}</section><div class="quick-grid">${[
+      `<p class="milestone-banner">Milestone 6 · Reviewed scans, cooking and Zara</p><button class="scan-banner" data-action="go" data-id="scan"><img src="images/fridge-vf-480.webp" alt=""><span>${icon("scan")}<b>Scan groceries or receipts</b><small>Protected connection · review before save</small></span>${icon("arrow-right")}</button><section class="card inventory-card"><div class="card-header"><h2>Inventory</h2><button class="icononly" data-action="item-edit" data-id="new" aria-label="Add ingredient">${icon("plus")}</button></div><div class="inventory-tools"><label class="field">Search<input type="search" data-change="search" value="${esc(S.search || "")}" placeholder="Search ingredients"></label><div class="inventory-sort"><label>Storage <select data-change="storage">${options(["All", "Fridge", "Freezer", "Pantry", "Spices"], S.storage)}</select></label><label>Sort <select data-change="sort">${options(["expiry", "name", "quantity"], S.sort)}</select></label></div></div>${rows.length ? rows.map(([id, x]) => itemRow(id, x)).join("") : `<div class="inventory-empty">${icon("refrigerator")}<h3>${Object.keys(S.items).length ? "No ingredients match" : "Your inventory is empty"}</h3><p>${Object.keys(S.items).length ? "Clear search or filters." : "Add first ingredient. Expiry stays optional and never gets invented."}</p>${Object.keys(S.items).length ? "" : button("Add first ingredient", "item-edit", "new", "btn-primary")}</div>`}</section><div class="quick-grid">${[
         ["shopping", "shopping-cart", "Shopping", "Restock list"],
         ["expenses", "wallet", "Spending", "Receipts & budget"],
         ["profile", "gear", "Preferences", "Diet, time & tools"],
@@ -1123,8 +1113,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
       // Settle permission/scheduling before another action can replace this session.
       setBusy(true);
       try {
-        const retired = await retireCookingNotification(oldSession);
-        if (retired && S.cooking?.running)
+        if (S.cooking?.running)
           await timerNotifications.schedule(S.cooking, seconds);
       } catch {
         announce(
@@ -1285,7 +1274,6 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
             };
           }, "Timer set. Press Start timer when ready.")
         ) {
-          await retireCookingNotification(oldSession);
           render();
         }
         return;
@@ -1334,7 +1322,6 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         S = result.state;
       }, "Meal saved. Inventory updated.");
       if (saved) {
-        retireCookingNotification(completedCooking);
         navigate("cook");
       }
     },
@@ -1461,7 +1448,6 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         `<p>Clear inventory, meals, receipts, shopping and assistant history on this device?</p>${button("Clear local data", "reset-confirm", "", "btn-primary")}`,
       );
     if (a === "reset-confirm") {
-      const oldSession = S.cooking;
       if (
         await commit(
           () => {
@@ -1476,7 +1462,6 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
           true,
         )
       ) {
-        await retireCookingNotification(oldSession);
         closeModal();
         return navigate("kitchen");
       }
@@ -1687,7 +1672,6 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
           S.cooking = null;
         }, "Session cancelled. Inventory unchanged.")
       ) {
-        await retireCookingNotification(c);
         closeModal();
         navigate("cook");
       }
@@ -1717,7 +1701,6 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
           };
         }, "")
       ) {
-        await retireCookingNotification(c);
         navigate(S.cooking.phase === "review" ? "review" : "cooking");
       }
       return;
@@ -1936,8 +1919,8 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
       if (!scanDraft)
         return formError(form, "Scan review expired. Scan the source again.");
       const excludedLineIds = [];
-      const mergeTargets = {};
-      const reviewedLinks = {};
+      const mergeTargets = Object.create(null);
+      const reviewedLinks = Object.create(null);
       const reviewedCurrency =
         scanDraft.kind === "receipt"
           ? String(fd.get("scanCurrency") || "")
@@ -2093,7 +2076,6 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
           form,
           "Import preview expired. Choose the file again.",
         );
-      const oldSession = S.cooking;
       if (
         await commit(
           () => {
@@ -2110,8 +2092,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
       ) {
         setBusy(true);
         try {
-          const retired = await retireCookingNotification(oldSession);
-          if (retired && S.cooking?.running && timerSeconds() > 0)
+          if (S.cooking?.running && timerSeconds() > 0)
             await timerNotifications.schedule(S.cooking, timerSeconds());
         } catch {
           announce(

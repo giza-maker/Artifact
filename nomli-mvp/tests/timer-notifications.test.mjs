@@ -120,3 +120,44 @@ test("cancel during initial persistence prevents native scheduling", async () =>
   await pending;
   assert.equal(scheduled, false);
 });
+
+test("native cancellation failure retains ID so cancellation can be retried", async () => {
+  const cancelled = [];
+  const failure = new Error("Native cancellation failed");
+  let failures = 1;
+  const session = { running: false, notificationId: 12 };
+  const notifications = createTimerNotifications(() => ({
+    isNative: true,
+    cancelTimer: async id => {
+      cancelled.push(id);
+      if (failures-- > 0) throw failure;
+    },
+  }));
+  await assert.rejects(notifications.cancel(session), error => error === failure);
+  assert.equal(session.notificationId, 12);
+  await notifications.cancel(session);
+  assert.deepEqual(cancelled, [12, 12]);
+  assert.equal(session.notificationId, null);
+});
+
+test("failed persistence plus failed cleanup retains cancellation ownership", async () => {
+  const failure = new Error("Storage full");
+  const cancelled = [];
+  let failures = 1;
+  const session = { running: true };
+  const notifications = createTimerNotifications(() => ({
+    isNative: true,
+    scheduleTimer: async () => 42,
+    cancelTimer: async id => {
+      cancelled.push(id);
+      if (failures-- > 0) throw new Error("Native cancellation failed");
+    },
+  }), async () => {
+    if (session.notificationId === 42) throw failure;
+  });
+  await assert.rejects(notifications.schedule(session, 120), error => error === failure);
+  assert.equal(session.notificationId, 42);
+  await notifications.cancel(session);
+  assert.deepEqual(cancelled, [42, 42]);
+  assert.equal(session.notificationId, null);
+});

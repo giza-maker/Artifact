@@ -180,15 +180,15 @@ export function commitScanDraft(state, draft, { confirmed = false, edits = {}, m
   for (const line of included) {
     if (!line.name) fail("REVIEW_REQUIRED", `Line ${line.lineId} still has unknown name.`);
     if (reviewed.kind === "expiry") {
-      if (!mergeTargets[line.lineId] || !line.expiry || line.expiryProvenance !== "printed") fail("REVIEW_REQUIRED", `Expiry line ${line.lineId} requires existing item and printed date.`);
+      if (!Object.hasOwn(mergeTargets, line.lineId) || !mergeTargets[line.lineId] || !line.expiry || line.expiryProvenance !== "printed") fail("REVIEW_REQUIRED", `Expiry line ${line.lineId} requires existing item and printed date.`);
     } else if (line.quantity === null || line.unit === null || line.storage === null) fail("REVIEW_REQUIRED", `Line ${line.lineId} still has unknown stock fields.`);
   }
   const next = copy(state);
   const importedItemIds = [];
   for (const line of included) {
-    const targetId = mergeTargets[line.lineId] ?? null;
+    const targetId = Object.hasOwn(mergeTargets, line.lineId) ? (mergeTargets[line.lineId] ?? null) : null;
     if (targetId !== null) {
-      const target = next.items[targetId];
+      const target = Object.hasOwn(next.items, targetId) ? next.items[targetId] : null;
       if (!target) fail("INVALID_MERGE_TARGET", `Merge target ${targetId} does not exist.`);
       if (reviewed.kind !== "expiry") {
         const added = convertScanQuantity(line.quantity, line.unit, target.unit);

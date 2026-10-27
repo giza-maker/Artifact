@@ -137,12 +137,14 @@ public class NomliBackupPlugin extends Plugin {
             int read;
             while ((read = input.read(buffer)) != -1) output.write(buffer, 0, read);
             output.flush();
-            call.resolve(new JSObject());
         } catch (IOException | SecurityException | IllegalArgumentException e) {
             call.reject("Could not write selected backup file.");
+            return;
         } finally {
             deleteQuietly(pending);
         }
+        // Providers can fail while closing: report success only after both streams close.
+        call.resolve(new JSObject());
     }
 
     @ActivityCallback

@@ -246,3 +246,31 @@ test("import history cap blocks new imports but permits replay", () => {
   assert.equal(state.receipts.length, 0);
 });
 
+
+test("inherited merge mappings never select a stock target", () => {
+  for (const lineId of ["constructor", "toString", "__proto__"]) {
+    const reviewed = draft({ kind: "groceries", lines: [rawLine({ lineId })] });
+    const result = commitScanDraft(baseState(), reviewed, { confirmed: true });
+    assert.equal(result.importedItemIds.length, 1);
+    assert.equal(result.state.items[result.importedItemIds[0]].qty, 1);
+  }
+});
+
+test("expiry merge rejects inherited stock properties without prototype mutation", () => {
+  const state = baseState();
+  const before = structuredClone(state);
+  const reviewed = draft({ kind: "expiry", lines: [rawLine({ quantity: null, unit: null, storage: null, expiry: "2026-12-01", expiryProvenance: "printed" })] });
+  const descriptors = Object.getOwnPropertyDescriptors(Object.prototype);
+  try {
+    assert.throws(
+      () => commitScanDraft(state, reviewed, { confirmed: true, mergeTargets: { "milk-line": "__proto__" } }),
+      (error) => error.code === "INVALID_MERGE_TARGET",
+    );
+    assert.deepEqual(Object.getOwnPropertyDescriptors(Object.prototype), descriptors);
+    assert.deepEqual(state, before);
+  } finally {
+    for (const key of Object.getOwnPropertyNames(Object.prototype)) {
+      if (!Object.hasOwn(descriptors, key)) delete Object.prototype[key];
+    }
+  }
+});

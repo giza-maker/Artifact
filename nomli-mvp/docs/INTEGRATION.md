@@ -1,6 +1,6 @@
 # Integration boundary
 
-M5 is a single-user, local-first validation build. Inventory and confirmed receipt data remain on the device. Receipt recognition and explicit Zara sends use the paired service.
+M6 is a single-user, local-first validation build. Inventory and confirmed receipt data remain on the device. Receipt recognition and explicit Zara sends use the paired service.
 
 The deployed scan endpoint is `https://nomli-scan-proxy.ahmed-aljazayeerly.workers.dev`. Scanning uses `GEMINI_MODEL=gemini-3.5-flash-lite`; Zara uses `GEMINI_ASSISTANT_MODEL=gemini-3.5-flash-lite`. Both reuse the existing Gemini API key stored as an encrypted Cloudflare secret. The app stores the endpoint and device access code entered by the user, never the provider key. A private setup QR can fill those fields; the user must still test and save the connection.
 
@@ -58,9 +58,17 @@ Native deadline is 35 seconds including permission, capture stops after 20 secon
 
 All 161 JavaScript tests pass, including 13 controller and six bridge tests covering cancellation, late callbacks, cleanup, errors and length limits. These are mocked/pure JavaScript checks, not actual Android audio or device QA. Native permission flows, provider availability, noisy Arabic recognition, Bluetooth/call interruption, background microphone release, camera/picker, notifications and update-on-phone checks remain pending. See [voice checklist](VOICE.md).
 
+## M6 regression hardening
+
+M6 uses version `0.7.0-m6`, code `7`, the same validation package and signing certificate. Inventory, receipt scanning, cooking, live Zara and reviewed voice remain in scope. No accounts or new API keys are required. APK verification is pending.
+
+Scan imports now require own dictionary entries for merge targets, including IDs matching inherited object properties. Review dictionaries have null prototypes. Failed native timer cancellation retains its alert ID; replacing or removing that timer owner must cancel the alert before the new state is saved. Failure rolls back the transition, leaving it retryable. Android backup export reports success only after file streams close.
+
+All 169 JavaScript tests and content checks pass at this checkpoint. Live synthetic PNG/PDF scans returned the expected quantities and total, and a deployed Zara correction proposal passed validation. No physical device or emulator is connected. See the [M6 phone checklist](TESTING.md); current build evidence belongs in the [verification record](VERIFICATION.md).
+
 ## Capability status
 
-| Capability | M5 status | Remaining work |
+| Capability | M6 status | Remaining work |
 | --- | --- | --- |
 | Receipt image/PDF recognition | Deployed Cloudflare proxy, Gemini adapter, bounded upload validation and editable review | Broader accuracy evaluation and physical-device QA |
 | Local inventory | Native Preferences with localStorage fallback, atomic saves, identical-file dedupe and validated backups | Physical-device persistence and recovery QA |

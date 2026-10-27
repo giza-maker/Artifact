@@ -54,3 +54,21 @@ test('bad mappings, unknown identities, invalid weights and incompatible units r
     assert.throws(()=>applyScanCookingLinks({...result,importedItemIds:['missing']},{draft:d}));
   }
 });
+
+test('provider line ids survive review, commit and cooking links with consistent normalization',()=>{
+  const validIds=['constructor','toString','prototype','hasOwnProperty','0','food._:-1','a'.repeat(128)];
+  const normalizedIds=['__proto__','_food','-food','a'.repeat(129)];
+  for(const providerId of [...validIds,...normalizedIds]) {
+    const d=draft([line(providerId)]);
+    const reviewedId=validIds.includes(providerId)?providerId:'line-1';
+    assert.equal(d.lines[0].lineId,reviewedId);
+    const result=commit(stock(),d);
+    const links=Object.create(null);
+    links[reviewedId]=link();
+    const next=applyScanCookingLinks(result,{draft:d,links});
+    const item=next.state.items[next.importedItemIds[0]];
+    assert.equal(item.qty,2);
+    assert.equal(item.ingredientId,ingredientId);
+    assert.equal(item.gramsPerUnit,80);
+  }
+});
