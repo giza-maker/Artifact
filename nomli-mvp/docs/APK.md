@@ -1,4 +1,22 @@
-# Nomli milestone 5 APK
+# Nomli milestone 6 APK
+
+[Download Nomli-M6.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m6-v0.7.0/Nomli-M6.apk). Install over existing **Nomli Test**. Package `com.nomli.mvp.validation`, version **0.7.0-m6**, versionCode **7**, minimum API **26**, target API **36**. Retained signing certificate matches M1–M5. Actual update installation remains a phone check.
+
+M6 fixes scan merge-target ownership, repeated/overflowing scan warnings, timer cancellation ownership across saved transitions and backup export success before stream closure. Existing scanning, linked inventory, preparation, cooking, reviewed actual-use deduction/undo, live Zara and reviewed Arabic/English voice remain available. Use the existing private Scan connection; no new account or Nomli API key is required.
+
+Built from `d30cd583d40ccdb1c5ce6656d46a888d18f453f4` in successful [CI run 40549447675](https://github.com/giza-maker/Artifact/actions/runs/40549447675); Android job took 2m 34s. All **171 JavaScript tests**, content checks, production build, Capacitor sync and Android compilation pass. APK: **42,091,800 bytes**. SHA-256:
+
+```text
+2afe8e7eb19a4dd458b3a8396b9b2f22bb24985b91b919c290c5256a6325c2d8
+```
+
+APK Signature Schemes v2/v3, 16 KB alignment and ZIP CRC pass. Certificate SHA-256: `8c02c3045c97327f5415451feb9ccb0db326322b90d460dde9f28a7c0b559ef0`. All 72 packaged production web assets match byte-for-byte; two empty Cordova placeholders are expected. Configured provider key/device code and test harness are absent. GitHub asset size and SHA-256 match the local APK.
+
+Live synthetic PNG/PDF scans returned expected quantities and AED 39.62 total. Direct production Zara calls returned a reviewed quantity correction and an Arabic step-2 answer with 200 g oats and no active-session proposals. Browser checks covered stock conversion, preparation/reload, timer cancellation rollback/retry, voice review, deduction/undo, receipt/spending and backup restore. Browser native features were simulated; a local Zara relay failed safely while direct production calls passed. These checks are not general accuracy or availability benchmarks.
+
+No physical-phone or emulator QA ran. Actual microphone/permissions, language support, camera/QR/SAF, background notifications, keyboard/accessibility, force-stop persistence and installation remain pending in the [M6 acceptance checklist](TESTING.md).
+
+## Historical M5 release
 
 [Download Nomli-M5.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m5-v0.6.0/Nomli-M5.apk). Install over existing **Nomli Test** using the retained validation update channel. Package `com.nomli.mvp.validation`, version **0.6.0-m5**, versionCode **6**, minimum API **26**, target API **36**. Package metadata and signing certificate match were verified; actual update installation remains a phone check.
 

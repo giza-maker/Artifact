@@ -6,7 +6,7 @@ Validation package: `com.nomli.mvp.validation`, app label **Nomli Test**, versio
 
 Inventory works offline. Receipt recognition and live Zara need internet access. Current recognition service is `https://nomli-scan-proxy.ahmed-aljazayeerly.workers.dev`, with Gemini 3.5 Flash-Lite for scanning and Zara. Provider credentials are encrypted server-side and never bundled in the app.
 
-M6 APK build verification pending: [Nomli-M6.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m6-v0.7.0/Nomli-M6.apk). See the [phone acceptance checklist](docs/TESTING.md).
+Verified M6 APK: [Nomli-M6.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m6-v0.7.0/Nomli-M6.apk). See the [phone acceptance checklist](docs/TESTING.md).
 
 Historical verified M5 APK: [Nomli-M5.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m5-v0.6.0/Nomli-M5.apk). Same validation package and retained signing certificate verified; install/update and physical-phone QA remain pending. See [voice checks](docs/VOICE.md).
 
@@ -90,7 +90,7 @@ Synthetic PNG and PDF receipts completed live calls in about five and four secon
 
 ## Not implemented or verified
 
-- Historical M5 compilation and package checks pass. M6 APK verification remains pending. Install/update verification and physical-phone QA remain pending. Native picker, camera permissions, Preferences behavior across force-stop and keyboard behavior still need device testing.
+- M6 compilation, signing, package and uploaded-checksum checks pass. Install/update verification and physical-phone QA remain pending. Native picker, camera permissions, Preferences behavior across force-stop and keyboard behavior still need device testing.
 - Android voice is implemented but unverified on a physical phone. Barcode product lookup is not connected. Recipes remain curated; Zara does not rewrite recipes or generate a new catalog.
 - Accounts, cloud inventory sync, multi-user authorization and database transactions remain future work.
 - Receipt recognition can be wrong. Review is mandatory before local data changes.

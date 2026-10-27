@@ -1,8 +1,8 @@
 # M6 phone acceptance
 
-M6 target: `0.7.0-m6`, versionCode `7`, package `com.nomli.mvp.validation`, with the retained validation signing certificate. Scope: single-user, local-first MVP. Use [APK evidence](APK.md), [integration contracts](INTEGRATION.md) and [voice behavior](VOICE.md) alongside this checklist.
+M6 version: `0.7.0-m6`, versionCode `7`, package `com.nomli.mvp.validation`, with the retained validation signing certificate. Scope: single-user, local-first MVP. Use [APK evidence](APK.md), [integration contracts](INTEGRATION.md) and [voice behavior](VOICE.md) alongside this checklist.
 
-No device or emulator is connected. Every phone check below is **pending**. This document does not verify the final M6 APK, its signature, packaged assets or installation; release evidence belongs in the release verification record.
+No device or emulator is connected. Every phone check below is **pending**. M6 compilation, signature, package, bundled assets and published checksum pass; see the [verification record](VERIFICATION.md). Installation and native runtime checks below remain unverified.
 
 ## Evidence boundaries
 
