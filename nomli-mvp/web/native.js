@@ -57,6 +57,7 @@ window.NomliNative = Object.freeze({
     );
     if (!Number.isInteger(seconds) || seconds < 1 || seconds > 86400)
       throw new Error("Timer must be 1–86400 seconds.");
+    const alertAt = Date.now() + seconds * 1000;
     const permission = await LocalNotifications.requestPermissions();
     if (permission.display !== "granted")
       throw new Error("Notification permission not granted.");
@@ -67,7 +68,7 @@ window.NomliNative = Object.freeze({
           id,
           title,
           body: "Time to check your cooking.",
-          schedule: { at: new Date(Date.now() + seconds * 1000) },
+          schedule: { at: new Date(alertAt) },
         },
       ],
     });
