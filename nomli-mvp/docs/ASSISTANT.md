@@ -1,6 +1,6 @@
 # Zara M4: use and phone checks
 
-M4 adds live text assistance through the existing paired Scan connection. Validation build: `com.nomli.mvp.validation`, version `0.5.0-m4`, code 5, retained validation certificate/update channel. M4 APK build verification and physical-phone testing remain pending. Planned APK: [Nomli-M4.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m4-v0.5.0/Nomli-M4.apk).
+M4 adds live text assistance through the existing paired Scan connection. Validation build: `com.nomli.mvp.validation`, version `0.5.0-m4`, code 5, retained validation certificate/update channel. M4 APK compilation and package verification pass; physical-phone testing remains pending. APK: [Nomli-M4.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m4-v0.5.0/Nomli-M4.apk).
 
 ## Connection and data
 
@@ -14,7 +14,7 @@ Up to 20 question/answer exchanges remain on device and are included in inventor
 
 Run these checks on a test inventory. Record device, Android version, installed app version and observed result. These are instructions, not completed QA evidence.
 
-1. **Connection reuse and explicit Send:** update the validation package when an APK has passed build verification. Open Zara using the saved Scan connection. Tap a suggestion; confirm it only fills the question. Send “What can I cook for four people?” Check quantities, missing ingredients and tools against inventory and the curated recipe screen.
+1. **Connection reuse and explicit Send:** install the verified M4 APK over the validation package. Open Zara using the saved Scan connection. Tap a suggestion; confirm it only fills the question. Send “What can I cook for four people?” Check quantities, missing ingredients and tools against inventory and the curated recipe screen.
 2. **Cancel:** send a question, then tap **Cancel request** while pending. Confirm the question stays editable and no late answer or proposal changes inventory. Send again explicitly when ready.
 3. **Quantity review:** create or edit linked oats to 500 g outside any cooking session. Ask “Set my oats quantity to 350 g.” Confirm the answer offers a proposal without changing stock. Open **Review proposed change**; verify 500 → 350 g. Cancel and check stock remains 500 g. Ask again, review, tick confirmation and apply; verify 350 g after reopening Kitchen.
 4. **Recipe proposal:** ask to open a known curated recipe for four servings. Review recipe and servings, cancel once, then request again and confirm. Confirm recipe opens at four servings and stock remains unchanged. Preparation, tools and final consumption still require their normal reviews.
@@ -30,4 +30,4 @@ Questions allow 2,000 characters. Requests allow 192 KiB; replies allow 64 KiB. 
 
 Only `set_quantity` and `open_recipe` plus servings proposals are supported. Known IDs, numeric bounds and catalog allergen exclusions are checked; exclusions do not guarantee allergen-free food. A separate review and confirmation are required. Stale context and active cooking block proposal application. Zara does not rewrite recipes, generate a catalog or provide live voice capture.
 
-Four synthetic live checks passed with Gemini 3.5: exact four-serving readiness; oats 500 → 350 g proposal and confirmed pure-domain application; a four-serving recipe proposal; Arabic active-step reply with zero proposals. Calls took about 2.8, 5.5, 20.1 and 5.1 seconds. These are small fixture checks, not benchmarks or physical-device evidence. Gemini 3.1 was temporarily unavailable: assistant checks returned repeated 503 responses and scanning returned a provider error. Both paths now use Gemini 3.5 Flash-Lite. Automated suite had 142 passing tests at this documentation checkpoint. See [verification record](VERIFICATION.md) for final build/test evidence.
+Four synthetic live checks passed with Gemini 3.5: exact four-serving readiness; oats 500 → 350 g proposal and confirmed pure-domain application; a four-serving recipe proposal; Arabic active-step reply with zero proposals. Calls took about 2.8, 5.5, 20.1 and 5.1 seconds. These are small fixture checks, not benchmarks or physical-device evidence. Gemini 3.1 was temporarily unavailable: assistant checks returned repeated 503 responses and scanning returned a provider error. Both paths now use Gemini 3.5 Flash-Lite. All 142 automated tests pass. See [verification record](VERIFICATION.md) for final build/test evidence.
