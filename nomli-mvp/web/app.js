@@ -1082,7 +1082,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         }, "Proposed change saved.")
       ) {
         closeModal();
-        render();
+        navigate(S.route);
       } else {
         assistantReview = review;
         assistantContext = review?.context ?? null;
