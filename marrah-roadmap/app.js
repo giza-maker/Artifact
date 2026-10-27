@@ -1,7 +1,8 @@
 import {scenarios, calculate} from './model.js';
-import {mountNavigation} from './navigation.js?v=20261027-chapters-2';
+import {mountNavigation} from './navigation.js?v=20261028-mockups';
 import {mountPresentation, enhanceFinance} from './presentation.js';
 import {mountStory} from './story.js';
+import {mountMockups} from './mockups.js?v=20261028';
 
 const app = document.querySelector('#app');
 const params = new URLSearchParams(location.search);
@@ -12,7 +13,7 @@ let sector = params.get('sector') || 'qsr';
 let scenario = params.get('case') === 'downside' ? 'downside' : 'base';
 let layout = params.get('layout') === 'document' ? 'document' : 'chapters';
 let inputs = {...scenarios[scenario]};
-let cleanupNavigation=()=>{},cleanupPresentation=()=>{},cleanupStory=()=>{};
+let cleanupNavigation=()=>{},cleanupPresentation=()=>{},cleanupStory=()=>{},cleanupMockups=()=>{};
 let journeyStep = 0, sourceLimit = 8, backlogLimit = 8;
 let sourceQuery = '', backlogQuery = '', backlogScope = 'all', backlogPriority = 'all';
 let research, evidence, backlog;
@@ -40,9 +41,12 @@ for (const [key,,,min,max] of modelFields) {
 
 function updateURL() {
   const url = new URL(location.href);
+  const preview=url.searchParams.get('preview'),demo=url.searchParams.get('demo');
   url.search = '';
   for (const [key,value] of Object.entries({lang,view:audience,country,sector,case:scenario})) url.searchParams.set(key,value);
   if(layout==='document')url.searchParams.set('layout','document');
+  if(['customer','staff','merchant'].includes(preview))url.searchParams.set('preview',preview);
+  if(['retail','cafe','service'].includes(demo))url.searchParams.set('demo',demo);
   for (const [key] of modelFields) if (inputs[key] !== scenarios[scenario][key]) url.searchParams.set(`m_${key}`,inputs[key]);
   history.replaceState(null,'',url);
 }
@@ -66,7 +70,7 @@ const copy = {
 };
 
 function render() {
-  cleanupNavigation();cleanupPresentation();cleanupStory();
+  cleanupNavigation();cleanupPresentation();cleanupStory();cleanupMockups();
   document.documentElement.lang=lang;
   document.documentElement.dir=lang==='ar'?'rtl':'ltr';
   document.title=l('Marrah | Gulf merchant platform: investment & production roadmap','مرّة | خارطة الاستثمار والإنتاج لمنصة التجار الخليجية');
@@ -171,6 +175,7 @@ function render() {
   bind();renderJourney();renderCountry();renderSector();renderModel();renderBacklog();renderSources();
   cleanupPresentation=mountPresentation({lang,research});
   cleanupStory=mountStory({lang,research});
+  cleanupMockups=mountMockups({lang});
   cleanupNavigation=mountNavigation({lang,audience,layout,onModeChange:mode=>{layout=mode;updateURL();},onRestore:restoreURLState});
   updateURL();
 }

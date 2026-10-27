@@ -4,7 +4,7 @@ const assert=require('node:assert/strict');
 const {chromium}=require(process.env.PLAYWRIGHT_MODULE||'playwright');
 const BASE_URL=process.env.MARRAH_URL||'http://127.0.0.1:5180/marrah-roadmap/';
 const CHROME=process.env.CHROME_PATH||undefined;
-const CHAPTERS=['overview','opportunity','experience','markets','economics','blueprint','roadmap','innovation','collaborate','evidence'];
+const CHAPTERS=['overview','opportunity','experience','markets','economics','blueprint','roadmap','innovation','app-preview','collaborate','evidence'];
 const checks=[];
 async function check(name,fn){const t=Date.now();await fn();checks.push({name,ms:Date.now()-t});process.stdout.write(`PASS ${name}\n`);}
 async function loaded(page,url=BASE_URL){await page.goto(url,{waitUntil:'domcontentloaded'});await page.locator('#audience').waitFor({state:'attached'});await page.locator('.chapter-view.is-active').waitFor();}
@@ -26,11 +26,11 @@ async function hasText(l,s){assert.ok((await l.innerText()).includes(s));}
   await check('default one-chapter view and desktop rail',async()=>{
    assert.equal(await page.locator('.chapter-view:not([hidden])').count(),1);
    assert.equal(await page.locator('.chapter-view.is-active').getAttribute('id'),'overview');
-   assert.equal(await page.locator('.chapter-rail a[data-chapter]').count(),10);
+   assert.equal(await page.locator('.chapter-rail a[data-chapter]').count(),CHAPTERS.length);
    assert.equal(await page.locator('.chapter-rail').isVisible(),true);
    assert.equal(await page.locator('#chapter-select').isVisible(),false);
   });
-  await check('all ten chapter routes',async()=>{
+  await check('all chapter routes',async()=>{
    for(const id of CHAPTERS){await chapter(page,id);assert.equal(new URL(page.url()).hash,`#${id}`);assert.equal(await page.locator('.chapter-view:not([hidden])').count(),1);assert.equal(await page.locator(`.chapter-rail [data-chapter="${id}"]`).getAttribute('aria-current'),'page');}
   });
   await check('previous and next boundaries',async()=>{
@@ -40,13 +40,13 @@ async function hasText(l,s){assert.ok((await l.innerText()).includes(s));}
    await chapter(page,'evidence');assert.equal(await page.locator('.chapter-next').isHidden(),true);
   });
   await check('full document query and chapter restore',async()=>{
-   await page.locator('.document-toggle').click();assert.equal(new URL(page.url()).searchParams.get('layout'),'document');assert.equal(await page.locator('.chapter-view:not([hidden])').count(),10);
-   await page.reload({waitUntil:'domcontentloaded'});await page.locator('#audience').waitFor();assert.equal(await page.locator('.chapter-view:not([hidden])').count(),10);
+   await page.locator('.document-toggle').click();assert.equal(new URL(page.url()).searchParams.get('layout'),'document');assert.equal(await page.locator('.chapter-view:not([hidden])').count(),CHAPTERS.length);
+   await page.reload({waitUntil:'domcontentloaded'});await page.locator('#audience').waitFor();assert.equal(await page.locator('.chapter-view:not([hidden])').count(),CHAPTERS.length);
    await page.locator('.document-toggle').click();assert.equal(new URL(page.url()).searchParams.get('layout'),null);assert.equal(await page.locator('.chapter-view:not([hidden])').count(),1);
   });
   await check('command menu filter, arrows, Escape, focus',async()=>{
    const trigger=page.locator('.chapter-search');await trigger.focus();await page.keyboard.press('Control+K');
-   assert.equal(await page.locator('#chapter-dialog').evaluate(n=>n.open),true);assert.equal(await page.evaluate(()=>document.activeElement.id),'chapter-search-input');assert.equal(await page.locator('.chapter-result').count(),10);
+   assert.equal(await page.locator('#chapter-dialog').evaluate(n=>n.open),true);assert.equal(await page.evaluate(()=>document.activeElement.id),'chapter-search-input');assert.equal(await page.locator('.chapter-result').count(),CHAPTERS.length);
    await page.locator('#chapter-search-input').fill('technology');assert.equal(await page.locator('.chapter-result').getAttribute('data-chapter'),'blueprint');
    await page.locator('#chapter-search-input').fill('no-chapter-can-match');assert.equal(await page.locator('.chapter-empty').isVisible(),true);
    await page.locator('#chapter-search-input').fill('');await page.keyboard.press('ArrowDown');assert.equal(await page.locator('.chapter-result').first().evaluate(n=>n===document.activeElement),true);
@@ -105,8 +105,8 @@ async function hasText(l,s){assert.ok((await l.innerText()).includes(s));}
    for(const r of ['downloads/gulf-production-roadmap.pdf','downloads/uae-worked-example-economics.xlsx','downloads/gulf-production-backbone.zip']){const res=await context.request.get(new URL(r,BASE_URL).href);assert.equal(res.status(),200,r);assert.ok((await res.body()).length>0);}
    await chapter(page,'collaborate');for(const id of ['investor','partner','builder']){const event=page.waitForEvent('download');await page.locator(`[data-brief="${id}"]`).click();const d=await event;assert.match(d.suggestedFilename(),new RegExp(`marrah-${id}-brief-(en|ar)\\.txt`));assert.equal(await d.failure(),null);await d.delete();}
   });
-  await check('print exposes ten chapters then restores',async()=>{
-   await chapter(page,'roadmap');assert.equal(await page.locator('.chapter-view:not([hidden])').count(),1);await page.evaluate(()=>window.dispatchEvent(new Event('beforeprint')));assert.equal(await page.locator('.chapter-view:not([hidden])').count(),10);assert.equal(await page.locator('details:not([open])').count(),0);
+  await check('print exposes all chapters then restores',async()=>{
+   await chapter(page,'roadmap');assert.equal(await page.locator('.chapter-view:not([hidden])').count(),1);await page.evaluate(()=>window.dispatchEvent(new Event('beforeprint')));assert.equal(await page.locator('.chapter-view:not([hidden])').count(),CHAPTERS.length);assert.equal(await page.locator('details:not([open])').count(),0);
    await page.evaluate(()=>window.dispatchEvent(new Event('afterprint')));assert.equal(await page.locator('.chapter-view:not([hidden])').count(),1);assert.equal(await page.locator('.chapter-view.is-active').getAttribute('id'),'roadmap');
   });
   await check('desktop 1440 has rail and no overflow',async()=>{
@@ -115,7 +115,7 @@ async function hasText(l,s){assert.ok((await l.innerText()).includes(s));}
   await check('mobile RTL reduced-motion controls and fit',async()=>{
    const c=await browser.newContext({viewport:{width:375,height:812},isMobile:true,hasTouch:true,reducedMotion:'reduce'}),p=await c.newPage();await loaded(p,`${BASE_URL}?lang=ar#experience`);
    assert.equal(await p.locator('html').getAttribute('dir'),'rtl');assert.equal(await p.locator('.chapter-rail').isVisible(),false);assert.equal(await p.locator('#chapter-select').isVisible(),true);await p.locator('#chapter-select').selectOption('markets');assert.equal(new URL(p.url()).hash,'#markets');
-   await p.locator('.mobile-document-toggle').click();assert.equal(await p.locator('.chapter-view:not([hidden])').count(),10);const fit=await p.evaluate(()=>({cw:document.documentElement.clientWidth,sw:document.documentElement.scrollWidth,reduced:matchMedia('(prefers-reduced-motion: reduce)').matches}));assert.equal(fit.cw,375);assert.ok(fit.sw<=fit.cw,JSON.stringify(fit));assert.equal(fit.reduced,true);await c.close();
+   await p.locator('.mobile-document-toggle').click();assert.equal(await p.locator('.chapter-view:not([hidden])').count(),CHAPTERS.length);const fit=await p.evaluate(()=>({cw:document.documentElement.clientWidth,sw:document.documentElement.scrollWidth,reduced:matchMedia('(prefers-reduced-motion: reduce)').matches}));assert.equal(fit.cw,375);assert.ok(fit.sw<=fit.cw,JSON.stringify(fit));assert.equal(fit.reduced,true);await c.close();
   });
   await check('network fallbacks and no main-flow errors',async()=>{
    for(const failure of ['404','abort']){const c=await browser.newContext({viewport:{width:900,height:700}}),p=await c.newPage();await p.route('**/data/research.json',r=>failure==='404'?r.fulfill({status:404,contentType:'application/json',body:'{}'}):r.abort('failed'));await p.goto(BASE_URL,{waitUntil:'domcontentloaded'});await p.getByText('The interactive brief could not load.').waitFor();assert.deepEqual(await p.locator('#app a').evaluateAll(as=>as.map(a=>a.getAttribute('href'))),['downloads/gulf-production-roadmap.pdf','downloads/gulf-production-backbone.zip']);await c.close();}

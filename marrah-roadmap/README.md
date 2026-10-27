@@ -2,7 +2,7 @@
 
 Public showcase: https://giza-maker.github.io/Artifact/marrah-roadmap/
 
-Standalone bilingual investment and production brief. Research cut-off: 27 October 2026. Default reading mode shows one chapter at a time, with ten chapters, a persistent index, keyboard search and previous/next navigation. Full document mode remains available. This folder publishes the roadmap, not the existing MVP. No backend, credentials, accounts, messaging sends, analytics trackers or third-party runtime scripts are required.
+Standalone bilingual investment and production brief. Research cut-off: 27 October 2026. Default reading mode shows one chapter at a time, with eleven chapters, a persistent index, keyboard search and previous/next navigation. Full document mode remains available. This folder publishes the roadmap, not the existing MVP. No backend, credentials, accounts, messaging sends, analytics trackers or third-party runtime scripts are required.
 
 ## Read and share
 
@@ -13,6 +13,14 @@ Standalone bilingual investment and production brief. Research cut-off: 27 Octob
 The Copy this view action preserves locale, perspective, country, sector, scenario and edited model assumptions in the URL. It copies locally; it sends nothing to another person. Downloadable role briefs define discussion outputs without inventing contact details.
 
 Existing chapter hashes such as `#roadmap` remain valid. `?layout=document` opens every chapter. Use Find chapter or Ctrl/Command+K to search the index; Arrow keys, Enter and Escape work in the native dialog. Mobile uses a compact chapter selector. A user-started receipt-to-reward simulation and clickable G0–G5 diagram explain the proposal without creating orders or rewards. G3 and G4 remain parallel options; a selected gate is not a completed gate.
+
+## App mockups
+
+Added 28 October 2026 at `#app-preview`. Direct role links use `?preview=staff#app-preview` or `?preview=merchant#app-preview`; Customer is the default. `demo=retail`, `demo=cafe` and `demo=service` select the fictional business scenario. Locale and reading perspective remain independent.
+
+Customer screens include tracking, collection codes, sample receipts, channel preferences, loyalty progress and a Wallet card concept. Staff screens include queue filters, search, order detail, ready/collected actions and a link to the selected customer's tracker. Merchant screens include a fictional period snapshot, exact chart data, queue counts, preparation averages and loyalty summaries.
+
+All changes stay in browser memory and reset on reload. No new purchase, message, Wallet pass, customer account or merchant result is produced. Historical totals are illustrative; live queue cards reflect the eight local fixtures. These fixtures are presentation material, not production domain models. The MVP remains on hold and its files are outside this change.
 
 The core brief covers six GCC countries, six sectors, seven competitor comparisons, financial scenarios, technology alternatives, delivery gates, ten open first-release decisions and an innovation portfolio. The source catalogue contains 104 evidence entries from 94 distinct URLs. The candidate backlog has 75 core and 24 expansion items; these are not all launch scope.
 
@@ -33,6 +41,7 @@ Open http://127.0.0.1:5180/marrah-roadmap/. Use an HTTP server because modules a
 ```sh
 node --test marrah-roadmap/tests/model.test.mjs
 node marrah-roadmap/tests/showcase-smoke.cjs
+node marrah-roadmap/tests/mockups-smoke.cjs
 ```
 
 Browser smoke requires Playwright available to Node and a browser installed through Playwright, or `CHROME_PATH` pointing to Chrome. `PLAYWRIGHT_MODULE` can select an existing Playwright installation. `MARRAH_URL` overrides the local target for a deployed smoke check.

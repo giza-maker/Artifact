@@ -4,6 +4,7 @@ export const chapters = [
   ['overview','At a glance','نظرة سريعة','The idea, the plan and where to begin.','الفكرة والخطة ونقطة البداية.'],
   ['opportunity','The opportunity','الفرصة','Merchant value, demand and the investment thesis.','قيمة التاجر والطلب وأطروحة الاستثمار.'],
   ['experience','Customer journey','رحلة العميل','Play the receipt-to-reward concept.','شاهد تصوّر الرحلة من الفاتورة إلى المكافأة.'],
+  ['app-preview','App mockups','نماذج التطبيق','Explore customer, staff and merchant screens with fictional data.','استكشف واجهات العميل والموظف والتاجر ببيانات خيالية.'],
   ['markets','Markets & sectors','الأسواق والقطاعات','Explore six Gulf countries and six workflows.','استكشف ست دول خليجية وستة مسارات عمل.'],
   ['economics','Economics','الاقتصاديات','Test assumptions, contribution and cash runway.','اختبر الافتراضات والمساهمة والسيولة.'],
   ['blueprint','Product & technology','المنتج والتقنية','The shared core, interfaces and stack choices.','النواة المشتركة والواجهات والخيارات التقنية.'],
@@ -48,7 +49,7 @@ export function mountNavigation({lang='en',audience='investor',layout='chapters'
   const atlas=document.createElement('div');atlas.className='overview-atlas';
   atlas.setAttribute('aria-label',l('Choose what to explore','اختر ما تريد استكشافه'));
   atlas.innerHTML=`
-    <a href="#experience" data-chapter="experience" class="atlas-tile tile-journey"><span class="atlas-kicker">${l('The concept','التصوّر')}</span><div class="atlas-journey" aria-hidden="true"><span>QR</span><span>→</span><span>${l('Ready','جاهز')}</span><span>→</span><span>✦</span></div><h3>${l('A visit becomes a relationship.','زيارة تتحول إلى علاقة.')}</h3><p>${l('Play the customer journey, from receipt to reward.','شاهد رحلة العميل من الفاتورة إلى المكافأة.')}</p><span class="atlas-arrow" aria-hidden="true">↗</span></a>
+    <a href="#app-preview" data-chapter="app-preview" class="atlas-tile tile-journey"><span class="atlas-kicker">${l('The app concept','تصوّر التطبيق')}</span><div class="atlas-journey" aria-hidden="true"><span>QR</span><span>→</span><span>${l('Ready','جاهز')}</span><span>→</span><span>✦</span></div><h3>${l('See the app from every side.','شاهد التطبيق من كل زاوية.')}</h3><p>${l('Explore customer, staff and merchant mockups.','استكشف نماذج العميل والموظف والتاجر.')}</p><span class="atlas-arrow" aria-hidden="true">↗</span></a>
     <a href="#economics" data-chapter="economics" class="atlas-tile tile-economics"><span class="atlas-kicker">${l('The business case','الحالة التجارية')}</span><div class="atlas-scenario" aria-hidden="true">${l('Base','أساسي')} <span>↔</span> ${l('Downside','متشائم')}</div><h3>${l('Make the numbers answer.','دع الأرقام تجيب.')}</h3><p>${l('Change assumptions. See merchant value and funding move.','غيّر الافتراضات وشاهد أثرها على قيمة التاجر والتمويل.')}</p><span class="atlas-arrow" aria-hidden="true">↗</span></a>
     <a href="#markets" data-chapter="markets" class="atlas-tile tile-markets"><span class="atlas-kicker">${l('The Gulf opportunity','الفرصة الخليجية')}</span><div class="atlas-countries" aria-hidden="true">${['SA','AE','QA','OM','BH','KW'].map(c=>`<span>${c}</span>`).join('')}</div><h3>${l('Six markets. One first proof.','ست أسواق. واختبار أول واحد.')}</h3><p>${l('Choose a country, a sector and a supported connector.','اختر دولة وقطاعًا وموصلًا مدعومًا.')}</p><span class="atlas-arrow" aria-hidden="true">↗</span></a>
     <a href="#roadmap" data-chapter="roadmap" class="atlas-tile tile-roadmap"><span class="atlas-kicker">${l('The delivery plan','خطة التسليم')}</span><div class="atlas-gates" aria-hidden="true"><span>G0</span><i></i><span>G1</span><i></i><span>G2</span><i></i><span>G3 / G4</span></div><h3>${l('Progress through proof.','تقدّم وفق الأدلة.')}</h3><p>${l('Explore gates, costs and the evidence needed to proceed.','استكشف البوابات والتكلفة وأدلة الاستمرار.')}</p><span class="atlas-arrow" aria-hidden="true">↗</span></a>
@@ -64,7 +65,7 @@ export function mountNavigation({lang='en',audience='investor',layout='chapters'
     orientation.before(detail);detail.append(orientation);overview.append(detail);
   }
   const heroAction=overview.querySelector('.hero .actions a');
-  if(heroAction){heroAction.href='#experience';heroAction.innerHTML=`${l('See how it works','شاهد كيف تعمل')} <span aria-hidden="true">↗</span>`;}
+  if(heroAction){heroAction.href='#app-preview';heroAction.innerHTML=`${l('Explore app mockups','استكشف نماذج التطبيق')} <span aria-hidden="true">↗</span>`;}
   const secondaryAction=overview.querySelector('.hero .actions a:nth-child(2)');
   if(secondaryAction){secondaryAction.href='#roadmap';secondaryAction.removeAttribute('target');secondaryAction.removeAttribute('rel');secondaryAction.innerHTML=`${l('Explore the roadmap','استكشف الخارطة')} <span aria-hidden="true">↗</span>`;}
 
