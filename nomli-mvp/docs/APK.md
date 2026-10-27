@@ -1,4 +1,20 @@
-# Nomli M7.1 hotfix APK
+# Nomli M7.2 receipt APK
+
+[Download Nomli-M7.2.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m7.2-v0.8.2/Nomli-M7.2.apk). Update existing Nomli Test. Package com.nomli.mvp.validation, version 0.8.2-m7.2, code 10, minimum API 26, target API 36. Same signing key and inventory schema; no reset or new account/API key needed.
+
+Receipt text follows Arabic/English direction automatically. Quantities, prices and optional unit weights accept Arabic-Indic, Persian and ASCII digits with unambiguous decimal/grouping separators. Monetary arithmetic stays exact in integer minor units.
+
+Receipt recognition uses the faster primary model checked against these fixtures. One fallback attempt is allowed for timeout or upstream 502/503/504, within the original 60-second deadline. Auth, quota, schema and cancellation errors do not retry. Upstream inference may still incur cost after cancellation. Manual retry reuses the selected source. Every result remains a draft until reviewed.
+
+APK source bd68c5fb2ec1b82ba03ccb8206a0b3363adbc65b; CI 40604058146 (3m 53s), including 218 JavaScript checks. Final scanner source bb7e473361ce39e9dec7595d093823254e6bfd2d; 225 JavaScript checks pass locally after routing/fallback changes. Content validation, Vite build, Capacitor sync and Android compilation pass. APK 43,891,693 bytes; SHA-256 e4c41e43f66046e835b9be923e43ed6a957018ddba8664b77836995b71eced50. Retained signing certificate, v2/v3 signatures, 16 KB alignment and ZIP CRC pass. All 90 production web assets match local dist; two empty Cordova placeholders expected. Configured secrets and QA harness absent. Published asset size/digest match local APK. Server-only routing/fallback changes do not alter bundled client assets.
+
+Four synthetic bilingual receipts passed production OCR: Arabic/English labels and Arabic/Persian/ASCII numerals, in PNG and one-page PDF. All returned SAR 2300 minor units, zero additional tax/discount, 1.5 kg tomatoes and 2 L/2000 ml milk, with the printed date. Observed times: 3.83 s, 3.78 s, 13.64 s, 3.50 s. Two existing AED receipt fixtures and grocery image regions also passed via the real scan client with exact-file fingerprint validation. These are fixture observations, not latency guarantees or proof for the user's original receipt.
+
+390 × 844 browser QA used actual Capacitor core/Android native-bridge.js and production native wrapper with synthetic Android transport. Arabic/Persian receipt edits saved exact SAR 23.00 and two inventory lines, retained after reload. Malformed grouping blocked with field focus; retry reused the same source; cancel left saved inventory unchanged. Long review panel scrolled (622 px viewport, 3229 px content), with no horizontal overflow or console errors. Device picker, camera, storage and speech were simulated.
+
+Physical microphone, camera, filesystem, permission prompts and update installation remain phone checks. User supplied an error screenshot, so the specific original receipt has not been retested.
+
+## Historical M7.1 APK
 
 [Download Nomli-M7.1.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m7.1-v0.8.1/Nomli-M7.1.apk). Install over existing Nomli Test. Package com.nomli.mvp.validation, version 0.8.1-m7.1, code 9, minimum API 26, target API 36. Same signing key and inventory schema; no reset or new account/API key needed.
 

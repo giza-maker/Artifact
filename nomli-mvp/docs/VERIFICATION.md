@@ -1,3 +1,19 @@
+# M7.2 receipt recovery and bilingual input — verified
+
+APK source bd68c5fb2ec1b82ba03ccb8206a0b3363adbc65b; CI 40604058146 (3m 53s), including 218 JavaScript checks. Final scanner source bb7e473361ce39e9dec7595d093823254e6bfd2d; 225 JavaScript checks pass locally after routing/fallback changes. Content validation, Vite build, Capacitor sync and Android compilation pass. APK 43,891,693 bytes; SHA-256 e4c41e43f66046e835b9be923e43ed6a957018ddba8664b77836995b71eced50. Retained signing certificate, v2/v3 signatures, 16 KB alignment and ZIP CRC pass. All 90 production web assets match local dist; two empty Cordova placeholders expected. Configured secrets and QA harness absent. Published asset size/digest match local APK. Server-only routing/fallback changes do not alter bundled client assets.
+
+Four synthetic bilingual receipts passed production OCR: Arabic/English labels and Arabic/Persian/ASCII numerals, in PNG and one-page PDF. All returned SAR 2300 minor units, zero additional tax/discount, 1.5 kg tomatoes and 2 L/2000 ml milk, with the printed date. Observed times: 3.83 s, 3.78 s, 13.64 s, 3.50 s. Two existing AED receipt fixtures and grocery image regions also passed via the real scan client with exact-file fingerprint validation. These are fixture observations, not latency guarantees or proof for the user's original receipt.
+
+390 × 844 browser QA used actual Capacitor core/Android native-bridge.js and production native wrapper with synthetic Android transport. Arabic/Persian receipt edits saved exact SAR 23.00 and two inventory lines, retained after reload. Malformed grouping blocked with field focus; retry reused the same source; cancel left saved inventory unchanged. Long review panel scrolled (622 px viewport, 3229 px content), with no horizontal overflow or console errors. Device picker, camera, storage and speech were simulated.
+
+The initial Gemini 3.5 production PNG/PDF calls timed out after approximately 60 seconds; identical PNG later completed in 3 seconds. Direct Arabic extraction on Gemini 3.1 completed correctly in 2.27 seconds. Worker 9f0404b5-624a-4e09-b49f-f63a462d0ce4 uses Gemini 3.1 for receipts; Gemini 3.5 for grocery/expiry scans, receipt fallback and the existing assistant. No image downsampling or fingerprint protocol changes were introduced.
+
+Tests cover timeout recovery, one fallback maximum, no retry for quota/auth/schema/cancel, deadline exhaustion and late responses, redirect rejection, log privacy, localized exact money and commit/save/reload/replay. Only timing, status and whitelisted token metadata reach scanner logs; receipt contents and credentials are excluded. Cloudflare incoming request cancellation is enabled explicitly.
+
+Numeric support applies to receipt review and cooking-link weights; it is not a complete Arabic translation of every app screen. Ambiguous comma-only values are rejected for correction. No live receipt writes inventory or spending without confirmation. Original receipt and physical phone update remain unverified.
+
+## Historical verification
+
 # M7.1 plugin-loading hang — fixed and packaged
 
 Reproduced production native.js against the actual installed Capacitor dependency, with only native transport simulated. Preferences roundtrip passed; photo save, voice status and backup export never settled. No native method was dispatched. Capacitor generated UNIMPLEMENTED errors for NomliScan.then, NomliVoice.then and NomliBackup.then.
