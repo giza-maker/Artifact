@@ -33,6 +33,10 @@ import {
 } from "./scan-money.js";
 import { commitScanDraft, reviewScanDraft } from "./scan-domain.js";
 import {
+  parseScanQuantity,
+  validateScanReviewFields,
+} from "./scan-review-fields.js";
+import {
   COOK_INGREDIENTS,
   COOK_RECIPES,
   COOK_TOOLS,
@@ -117,6 +121,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     lastFocus,
     scanEpoch = 0;
   let scanTimers = [];
+  let scanRetry = null;
   let scanConfig = { apiUrl: "", deviceToken: "" };
   let assistantDraft = "",
     assistantError = "",
@@ -358,6 +363,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     scanTimers = [];
   }
   function openModal(title, body, screen = "") {
+    scanRetry = null;
     if (modal.dataset.screen === "item-edit" && screen !== "item-edit")
       releaseItemPhoto();
     if (modal.dataset.screen === "scan-review" && screen !== "scan-review")
@@ -375,6 +381,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
   }
   function closeModal() {
     cancelScan();
+    scanRetry = null;
     if (modal.open) modal.close();
     lastFocus?.focus?.();
   }
@@ -948,7 +955,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         : S.items[id];
     openModal(
       id === "new" ? "Add ingredient" : "Edit ingredient",
-      `<form data-form="item" data-id="${id}">${errors()}${photoEditor(id, item)}${field("Ingredient name", "name", item.name, "text", 'maxlength="200" required')}${field("Quantity on hand", "qty", item.qty, "number", 'min="0" max="1000000000" step="any" inputmode="decimal" required')}<label class="field">Unit<select name="unit">${options(["g", "kg", "ml", "l", "count", "pieces", "bunches", "slices", "cloves"], item.unit)}</select></label><div class="cook-link-fields">${renderIngredientLinkFields({ name: item.name, ingredientId: item.ingredientId, unit: item.unit, gramsPerUnit: item.gramsPerUnit })}</div><label class="field">Location<select name="storage">${options(["Fridge", "Freezer", "Pantry", "Spices"], item.storage)}</select></label>${field("Expiry (optional)", "expiry", item.expiry || "", "date")}<label class="field">Expiry source<select name="expiryProvenance">${options(["user", "printed", "estimated"], item.expiryProvenance || (item.estimated ? "estimated" : "user"))}</select><small>Used only when expiry is entered.</small></label><div class="modal-actions">${id === "new" ? "" : button("Delete ingredient", "item-delete", id, "btn-quiet")}<button class="btn btn-primary">Save ingredient</button></div></form>`,
+      `<form data-form="item" data-id="${id}">${errors()}${photoEditor(id, item)}${field("Ingredient name", "name", item.name, "text", 'maxlength="200" dir="auto" required')}${field("Quantity on hand", "qty", item.qty, "number", 'min="0" max="1000000000" step="any" inputmode="decimal" required')}<label class="field">Unit<select name="unit">${options(["g", "kg", "ml", "l", "count", "pieces", "bunches", "slices", "cloves"], item.unit)}</select></label><div class="cook-link-fields">${renderIngredientLinkFields({ name: item.name, ingredientId: item.ingredientId, unit: item.unit, gramsPerUnit: item.gramsPerUnit })}</div><label class="field">Location<select name="storage">${options(["Fridge", "Freezer", "Pantry", "Spices"], item.storage)}</select></label>${field("Expiry (optional)", "expiry", item.expiry || "", "date")}<label class="field">Expiry source<select name="expiryProvenance">${options(["user", "printed", "estimated"], item.expiryProvenance || (item.estimated ? "estimated" : "user"))}</select><small>Used only when expiry is entered.</small></label><div class="modal-actions">${id === "new" ? "" : button("Delete ingredient", "item-delete", id, "btn-quiet")}<button class="btn btn-primary">Save ingredient</button></div></form>`,
       "item-edit",
     );
   }
@@ -1091,6 +1098,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
       );
   }
   async function runScan(source, payload) {
+    scanRetry = null;
     const kind =
       source === "expiry"
         ? "expiry"
@@ -1101,12 +1109,30 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     releaseScanPhoto();
     openModal(
       "Reading scan",
-      `<section class="scan-live" aria-busy="true"><span class="scan-spinner" aria-hidden="true">${icon("circle-notch")}</span><h3>Securely reading ${kind === "receipt" ? "receipt" : kind === "expiry" ? "label" : "groceries"}</h3><p class="muted">Uploading to your configured scanner. You can cancel safely.</p><button class="btn btn-secondary" data-action="scan-cancel">Cancel</button></section>`,
+      `<section class="scan-live" aria-busy="true"><span class="scan-spinner" aria-hidden="true">${icon("circle-notch")}</span><h3>Securely reading ${kind === "receipt" ? "receipt" : kind === "expiry" ? "label" : "groceries"}</h3><p class="muted" data-scan-progress role="status">Sending your source and reading printed details. You can cancel safely.</p><button class="btn btn-secondary" data-action="scan-cancel">Cancel</button></section>`,
       "scan-reading",
     );
     const controller = new AbortController();
     const ownerEpoch = ++scanEpoch;
     scanAbort = controller;
+    for (const [delay, message] of [
+      [
+        15000,
+        "Scanner is still working. Your kitchen stays unchanged until you review and save.",
+      ],
+      [
+        40000,
+        "Recognition is taking longer than usual. You can wait or cancel safely.",
+      ],
+    ])
+      scanTimers.push(
+        setTimeout(() => {
+          if (scanEpoch === ownerEpoch && !controller.signal.aborted) {
+            const status = $("[data-scan-progress]", modal);
+            if (status) status.textContent = message;
+          }
+        }, delay),
+      );
     try {
       if (kind === "groceries") {
         try {
@@ -1191,8 +1217,9 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         return;
       openModal(
         "Scan could not finish",
-        `<section class="notice notice-warning" role="alert"><b>Nothing was changed</b><p>${esc(error?.message || "Scanner request failed.")}</p></section><div class="form-actions">${button("Try another source", "go", "scan", "btn-primary")}${button("Connection", "scan-settings", "", "btn-secondary")}</div>`,
+        `<section class="notice notice-warning" role="alert"><b>Nothing was changed</b><p>${esc(error?.message || "Scanner request failed.")}</p></section><div class="form-actions">${button("Retry same scan", "scan-retry", "", "btn-primary")}${button("Try another source", "go", "scan", "btn-secondary")}${button("Connection", "scan-settings", "", "btn-quiet")}</div>`,
       );
+      scanRetry = { source, payload };
     } finally {
       if (scanAbort === controller) scanAbort = null;
     }
@@ -1213,8 +1240,6 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     if (!draft) return;
     const currency = draft.currency || "Not provided";
     const moneyDigits = currencyDigits(draft.currency);
-    const amountStep =
-      moneyDigits === 0 ? "1" : moneyDigits === 3 ? "0.001" : "0.01";
     const moneyCurrencies = [
       "",
       "SAR",
@@ -1239,7 +1264,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
             ? line.ingredientId
             : "";
         if (draft.kind === "expiry")
-          return `<fieldset class="scan-line" data-line-id="${esc(line.lineId)}"><legend>Label ${index + 1}</legend><label class="checkbox-field scan-include"><input type="checkbox" name="include-${esc(line.lineId)}" checked><span>Include expiry update</span></label>${field("Detected item", `name-${line.lineId}`, line.name || "", "text", 'maxlength="200" required')}${field("Printed expiry", `expiry-${line.lineId}`, line.expiry || "", "date", "required")}<label class="field">Apply to existing ingredient<select name="target-${esc(line.lineId)}" required><option value="">Choose ingredient</option>${Object.entries(
+          return `<fieldset class="scan-line" data-line-id="${esc(line.lineId)}"><legend>Label ${index + 1}</legend><label class="checkbox-field scan-include"><input type="checkbox" name="include-${esc(line.lineId)}" checked><span>Include expiry update</span></label>${field("Detected item", `name-${line.lineId}`, line.name || "", "text", 'maxlength="200" dir="auto" required')}${field("Printed expiry", `expiry-${line.lineId}`, line.expiry || "", "date", "required")}<label class="field">Apply to existing ingredient<select name="target-${esc(line.lineId)}" required><option value="">Choose ingredient</option>${Object.entries(
             S.items,
           )
             .map(
@@ -1249,11 +1274,11 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
             .join(
               "",
             )}</select></label>${line.warnings?.length ? `<p class="scan-line-warning">${esc(line.warnings.join(" "))}</p>` : ""}</fieldset>`;
-        return `<fieldset class="scan-line" data-line-id="${esc(line.lineId)}"><legend>Line ${index + 1}</legend>${scanLinePhoto(line)}<label class="checkbox-field scan-include"><input type="checkbox" name="include-${esc(line.lineId)}" checked><span>Include food item</span></label>${field("Name", `name-${line.lineId}`, line.name || "", "text", 'maxlength="200" required')}
-      <div class="field-grid">${field("Quantity", `quantity-${line.lineId}`, line.quantity ?? "", "number", 'min="0" max="1000000000" step="any" inputmode="decimal" required')}<label class="field">Unit<select name="unit-${esc(line.lineId)}" required><option value="">Choose unit</option>${["g", "kg", "ml", "l", "count", "pieces", "bunches", "cloves", "slices"].map((unit) => `<option value="${unit}"${unit === line.unit ? " selected" : ""}>${unit}</option>`).join("")}</select></label></div>
+        return `<fieldset class="scan-line" data-line-id="${esc(line.lineId)}"><legend>Line ${index + 1}</legend>${scanLinePhoto(line)}<label class="checkbox-field scan-include"><input type="checkbox" name="include-${esc(line.lineId)}" checked><span>Include food item</span></label>${field("Name", `name-${line.lineId}`, line.name || "", "text", 'maxlength="200" dir="auto" required')}
+      <div class="field-grid">${field("Quantity", `quantity-${line.lineId}`, line.quantity ?? "", "text", 'maxlength="128" inputmode="decimal" dir="ltr" data-scan-quantity required')}<label class="field">Unit<select name="unit-${esc(line.lineId)}" required><option value="">Choose unit</option>${["g", "kg", "ml", "l", "count", "pieces", "bunches", "cloves", "slices"].map((unit) => `<option value="${unit}"${unit === line.unit ? " selected" : ""}>${unit}</option>`).join("")}</select></label></div>
       <div class="cook-link-fields">${renderIngredientLinkFields({ prefix: `cook-${line.lineId}-`, name: line.name, unit: line.unit })}</div>
         <div class="field-grid"><label class="field">Location<select name="storage-${esc(line.lineId)}" required><option value="">Choose location</option>${options(["Fridge", "Freezer", "Pantry", "Spices"], line.storage || "")}</select></label>${field("Expiry (optional)", `expiry-${line.lineId}`, line.expiry || "", "date")}</div>
-      <div class="field-grid">${field(`Line cost (${draft.currency || "choose currency"}, optional)`, `cost-${line.lineId}`, line.lineTotalMinor == null || moneyDigits === null ? "" : formatMinorInput(line.lineTotalMinor, draft.currency), "number", `min="0" step="${amountStep}" inputmode="decimal" data-scan-money`)}<label class="field">Inventory action<select name="target-${esc(line.lineId)}"><option value="">Create new item</option>${Object.entries(
+      <div class="field-grid">${field(`Line cost (${draft.currency || "choose currency"}, optional)`, `cost-${line.lineId}`, line.lineTotalMinor == null || moneyDigits === null ? "" : formatMinorInput(line.lineTotalMinor, draft.currency), "text", 'maxlength="128" inputmode="decimal" dir="ltr" data-scan-money')}<label class="field">Inventory action<select name="target-${esc(line.lineId)}"><option value="">Create new item</option>${Object.entries(
         S.items,
       )
         .map(
@@ -1267,7 +1292,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
       .join("");
     openModal(
       "Review scan",
-      `<form data-form="scan-import" data-money-currency="${esc(draft.currency || "")}">${errors()}${scanPhotoReview()}<div class="scan-result-meta"><span><b>${draft.lines.length}</b> extracted lines</span><span><b>${esc(currency)}</b> currency</span>${draft.merchant ? `<span><b>${esc(draft.merchant)}</b> merchant</span>` : ""}</div>${draft.kind === "receipt" ? `<fieldset class="scan-receipt-meta"><legend>Receipt details</legend><div class="field-grid">${field("Merchant / source", "scanMerchant", draft.merchant || "", "text", 'maxlength="200"')}${field("Receipt date (optional)", "scanReceiptDate", draft.receiptDate || "", "date")}</div><div class="field-grid"><label class="field">Currency<select name="scanCurrency">${moneyCurrencies.map((code) => `<option value="${code}"${code === (draft.currency || "") ? " selected" : ""}>${code || "Choose currency"}</option>`).join("")}</select></label>${field(`Receipt total (${draft.currency || "choose currency"})`, "scanTotal", draft.totalMinor == null || moneyDigits === null ? "" : formatMinorInput(draft.totalMinor, draft.currency), "number", `min="0" step="${amountStep}" inputmode="decimal" data-scan-money`)}</div><div class="field-grid">${field(`Additional tax (${draft.currency || "choose currency"})`, "scanTax", draft.taxMinor == null || moneyDigits === null ? "" : formatMinorInput(draft.taxMinor, draft.currency), "number", `min="0" step="${amountStep}" inputmode="decimal" data-scan-money`)}${field(`Receipt-level discount (${draft.currency || "choose currency"})`, "scanDiscount", draft.discountMinor == null || moneyDigits === null ? "" : formatMinorInput(draft.discountMinor, draft.currency), "number", `min="0" step="${amountStep}" inputmode="decimal" data-scan-money`)}</div><p class="details">Enter only tax added after line prices. Leave tax at zero when VAT is already included. Discount is subtracted from the line subtotal.</p>${moneyDigits === null && draft.currency ? '<p class="scan-line-warning">Unsupported currency. Choose a supported currency and re-enter all monetary amounts.</p>' : ""}<p class="scan-money-warning" data-money-warning role="status"></p><label class="checkbox-field"><input type="checkbox" name="excludeFinance"><span>Save inventory only; exclude this receipt from spending</span></label><p class="details">Choose this when excluding receipt lines or when currency and totals are incomplete or do not match.</p></fieldset>` : ""}${draft.warnings?.length ? `<section class="notice notice-warning"><b>Review needed</b><p>${esc(draft.warnings.join(" "))}</p></section>` : ""}<div class="scan-lines">${lines || '<p class="empty">Scanner returned no food lines.</p>'}</div><label class="checkbox-field scan-confirm"><input type="checkbox" name="confirmed" required><span>I checked every included line and chose create or merge.</span></label><button class="btn btn-primary" ${draft.lines.length ? "" : "disabled"}>Add reviewed items</button><p class="details">One confirmed save updates inventory${draft.kind === "receipt" ? " and receipt spending unless you explicitly exclude finance" : ""}. Cancel leaves both unchanged.</p></form>`,
+      `<form data-form="scan-import" aria-describedby="scan-number-help" data-money-currency="${esc(draft.currency || "")}">${errors()}<p class="details" id="scan-number-help">Arabic and English digits accepted: <bdi dir="ltr">١٢٫٥٠ / 12.50</bdi>. Names follow Arabic or English text direction automatically.</p>${scanPhotoReview()}<div class="scan-result-meta"><span><b>${draft.lines.length}</b> extracted lines</span><span><b>${esc(currency)}</b> currency</span>${draft.merchant ? `<span><bdi dir="auto"><b>${esc(draft.merchant)}</b></bdi> merchant</span>` : ""}</div>${draft.kind === "receipt" ? `<fieldset class="scan-receipt-meta"><legend>Receipt details</legend><div class="field-grid">${field("Merchant / source", "scanMerchant", draft.merchant || "", "text", 'maxlength="200" dir="auto"')}${field("Receipt date (optional)", "scanReceiptDate", draft.receiptDate || "", "date")}</div><div class="field-grid"><label class="field">Currency<select name="scanCurrency">${moneyCurrencies.map((code) => `<option value="${code}"${code === (draft.currency || "") ? " selected" : ""}>${code || "Choose currency"}</option>`).join("")}</select></label>${field(`Receipt total (${draft.currency || "choose currency"})`, "scanTotal", draft.totalMinor == null || moneyDigits === null ? "" : formatMinorInput(draft.totalMinor, draft.currency), "text", 'maxlength="128" inputmode="decimal" dir="ltr" data-scan-money')}</div><div class="field-grid">${field(`Additional tax (${draft.currency || "choose currency"})`, "scanTax", draft.taxMinor == null || moneyDigits === null ? "" : formatMinorInput(draft.taxMinor, draft.currency), "text", 'maxlength="128" inputmode="decimal" dir="ltr" data-scan-money')}${field(`Receipt-level discount (${draft.currency || "choose currency"})`, "scanDiscount", draft.discountMinor == null || moneyDigits === null ? "" : formatMinorInput(draft.discountMinor, draft.currency), "text", 'maxlength="128" inputmode="decimal" dir="ltr" data-scan-money')}</div><p class="details">Enter only tax added after line prices. Leave tax at zero when VAT is already included. Discount is subtracted from the line subtotal.</p>${moneyDigits === null && draft.currency ? '<p class="scan-line-warning">Unsupported currency. Choose a supported currency and re-enter all monetary amounts.</p>' : ""}<p class="scan-money-warning" data-money-warning role="status"></p><label class="checkbox-field"><input type="checkbox" name="excludeFinance"><span>Save inventory only; exclude this receipt from spending</span></label><p class="details">Choose this when excluding receipt lines or when currency and totals are incomplete or do not match.</p></fieldset>` : ""}${draft.warnings?.length ? `<section class="notice notice-warning"><b>Review needed</b><p>${esc(draft.warnings.join(" "))}</p></section>` : ""}<div class="scan-lines">${lines || '<p class="empty">Scanner returned no food lines.</p>'}</div><label class="checkbox-field scan-confirm"><input type="checkbox" name="confirmed" required><span>I checked every included line and chose create or merge.</span></label><button class="btn btn-primary" ${draft.lines.length ? "" : "disabled"}>Add reviewed items</button><p class="details">One confirmed save updates inventory${draft.kind === "receipt" ? " and receipt spending unless you explicitly exclude finance" : ""}. Cancel leaves both unchanged.</p></form>`,
       "scan-review",
     );
   }
@@ -1905,6 +1930,11 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     }
     if (a === "scan-settings") return scanConnectionForm();
     if (a === "scan-choose") return scanSourceDialog(id);
+    if (a === "scan-retry") {
+      const retry = scanRetry;
+      if (retry) return runScan(retry.source, retry.payload);
+      return navigate("scan");
+    }
     if (a === "scan-cancel") {
       cancelScan();
       closeModal();
@@ -2193,8 +2223,8 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
       if (nextCurrency !== form.dataset.moneyCurrency) {
         form.querySelectorAll("[data-scan-money]").forEach((input) => {
           input.value = "";
-          const digits = currencyDigits(nextCurrency);
-          input.step = digits === 0 ? "1" : digits === 3 ? "0.001" : "0.01";
+          input.setCustomValidity("");
+          input.removeAttribute("aria-invalid");
           const label = input.closest("label");
           if (label?.firstChild?.nodeType === Node.TEXT_NODE)
             label.firstChild.nodeValue =
@@ -2253,6 +2283,15 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     render();
   });
   document.addEventListener("input", (e) => {
+    if (e.target.matches('[data-form="scan-import"] input')) {
+      e.target.setCustomValidity("");
+      if (e.target.hasAttribute("aria-invalid")) {
+        const box = $("[data-error]", e.target.form);
+        if (box) box.hidden = true;
+        e.target.removeAttribute("aria-describedby");
+      }
+      e.target.removeAttribute("aria-invalid");
+    }
     const form = e.target.closest('[data-form="receipt"]');
     if (!form || !e.target.name.startsWith("price-")) return;
     const cents = [...form.querySelectorAll('[name^="price-"]')].reduce(
@@ -2266,8 +2305,16 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     const form = e.target.closest("form[data-form]");
     if (!form) return;
     e.preventDefault();
+    if (form.dataset.form === "scan-import") validateScanReviewFields(form);
     if (!form.checkValidity())
-      return formError(form, "Review required fields before saving.");
+      return formError(
+        form,
+        form.dataset.form === "scan-import"
+          ? [...form.elements].find(
+              (input) => input.willValidate && !input.validity.valid,
+            )?.validationMessage || "Review required fields before saving."
+          : "Review required fields before saving.",
+      );
     const fd = new FormData(form),
       kind = form.dataset.form;
     if (kind === "scan-config") {
@@ -2347,7 +2394,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
           return {
             ...line,
             name: String(fd.get(`name-${line.lineId}`) || "").trim(),
-            quantity: quantityText === "" ? null : Number(quantityText),
+            quantity: parseScanQuantity(quantityText),
             unit: String(fd.get(`unit-${line.lineId}`) || "") || null,
             storage: String(fd.get(`storage-${line.lineId}`) || "") || null,
             expiry: String(fd.get(`expiry-${line.lineId}`) || "") || null,

@@ -136,7 +136,7 @@ async function request(config, path, { signal, fetchImpl = globalThis.fetch, tim
     if (controller.signal.aborted) throw aborted();
     if (!response.ok) {
       const code = body?.error?.code || `http_${response.status}`;
-      const messages = { unauthorized: "Scanner access code was rejected. Check Scan connection.", not_configured: "Scanner's provider key is not configured yet.", rate_limit_exceeded: "Scan limit reached. Wait a minute and try again.", provider_timeout: "Recognition took too long. Try a clearer or smaller image.", provider_error: "Recognition provider could not process this file. Check its key, quota and model.", origin_not_allowed: "This app's origin is not allowed by the scanner connection." };
+      const messages = { unauthorized: "Scanner access code was rejected. Check Scan connection.", not_configured: "Scanner's provider key is not configured yet.", rate_limit_exceeded: "Scan limit reached. Wait a minute and try again.", provider_timeout: "Recognition service timed out. Retry this scan; nothing was saved.", provider_error: "Recognition provider could not process this file. Check its key, quota and model.", origin_not_allowed: "This app's origin is not allowed by the scanner connection." };
       const error = new ScanClientError(code, messages[code] || String(body?.error?.message || "Scan request failed.").slice(0, 300));
       error.httpStatus = response.status;
       throw error;

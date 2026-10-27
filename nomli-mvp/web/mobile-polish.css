@@ -335,6 +335,15 @@
 .field-grid {
   gap: 12px;
 }
+/* Bilingual receipt text chooses its own direction; amounts retain digit order. */
+[data-form="scan-import"] input[dir="auto"] {
+  unicode-bidi: plaintext;
+  text-align: start;
+}
+[data-form="scan-import"] input[dir="ltr"] {
+  unicode-bidi: isolate;
+  text-align: start;
+}
 
 /* Chat owns one scroll region. Composer remains above app navigation and keyboard. */
 body.zara-route .app-scroll {

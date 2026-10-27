@@ -3,6 +3,7 @@ import {
   getIngredient,
   suggestIngredientLinks,
 } from "./cook-catalog.js";
+import { parseLocalizedDecimal } from "./localized-number.js";
 
 const countUnits = new Set(["count", "pieces", "bunches", "cloves", "slices"]);
 const esc = (value) =>
@@ -52,7 +53,7 @@ export function renderIngredientLinkFields({
     <span class="details">Choose the product type explicitly. Suggestions do not save a link.</span>
   </label>
   <label class="field">Grams per current unit (optional)
-    <input type="number" name="${esc(prefix)}gramsPerUnit" min="0" max="1000000000" step="any" value="${esc(weight)}"${canWeigh ? "" : " disabled"}>
+    <input type="text" inputmode="decimal" dir="ltr" maxlength="128" name="${esc(prefix)}gramsPerUnit" value="${esc(weight)}"${canWeigh ? "" : " disabled"}>
     <span class="details">For count, pieces, bunches, cloves, or slices only. Enter measured or printed grams per current unit; never guess weights.</span>
   </label>`;
 }
@@ -73,13 +74,16 @@ export function readIngredientLink(formData, { prefix = "", unit } = {}) {
       throw new Error(
         "Grams per unit is only supported for count, pieces, bunches, cloves, or slices.",
       );
-    if (
-      typeof rawWeight !== "string" ||
-      !/^(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?$/i.test(rawWeight.trim())
-    ) {
+    if (typeof rawWeight !== "string") {
       throw new Error("Enter a valid positive grams per unit value.");
     }
-    const parsed = Number(rawWeight);
+    let canonical;
+    try {
+      canonical = parseLocalizedDecimal(rawWeight);
+    } catch {
+      throw new Error("Enter a valid positive grams per unit value.");
+    }
+    const parsed = Number(canonical);
     if (!Number.isFinite(parsed) || parsed <= 0 || parsed > 1e9) {
       throw new Error(
         "Grams per unit must be greater than zero and at most 1,000,000,000.",

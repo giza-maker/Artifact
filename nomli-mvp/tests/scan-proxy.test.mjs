@@ -10,7 +10,7 @@ const png = Buffer.from([137,80,78,71,13,10,26,10,0]);
 const raw = { version: 1, kind: "receipt", merchant: "Shop", currency: null, receiptDate: null, totalMinor: null, taxMinor: 0, discountMinor: 0, lines: [{ lineId: "1", name: "Milk", ingredientId: null, quantity: null, unit: null, lineTotalMinor: null, expiry: null, expiryProvenance: null, storage: null, warnings: [] }], warnings: [] };
 const upstream = (value = raw) => async () => Response.json({ candidates: [{ content: { parts: [{ text: JSON.stringify(value) }] } }] });
 const env = { NOMLI_DEVICE_TOKEN: token, LOCAL_DEV: "true", SCAN_PROVIDER: "gemini", GEMINI_API_KEY: "key", ALLOWED_ORIGINS: "https://localhost" };
-const req = (body, extra = {}) => new Request("https://scan.test/api/v1/scan-drafts", { method: "POST", headers: { authorization: `Bearer ${token}`, "content-type": "application/json", ...extra }, body: JSON.stringify(body) });
+const req = (body, extra = {}, signal) => new Request("https://scan.test/api/v1/scan-drafts", { method: "POST", headers: { authorization: `Bearer ${token}`, "content-type": "application/json", ...extra }, body: JSON.stringify(body), signal });
 const valid = { kind: "receipt", fileName: "receipt.png", mimeType: "image/png", data: png.toString("base64") };
 
 test("rejects authentication before body validation or provider call", async () => {
@@ -38,10 +38,12 @@ test("accepts PDFs through three pages; rejects four-page, encrypted, and corrup
   const makePdf = async (pages, encrypted = false) => { const pdf = await PDFDocument.create(); for (let i = 0; i < pages; i++) pdf.addPage(); if (encrypted) pdf.context.trailerInfo.Encrypt = pdf.context.register(pdf.context.obj({ Filter: PDFName.of("Standard") })); return Buffer.from(await pdf.save({ useObjectStreams: false })); };
   const pdfReq = (bytes) => req({ kind: "receipt", fileName: "receipt.pdf", mimeType: "application/pdf", data: bytes.toString("base64") });
   let providerBody; const taxed = { ...raw, currency: "GBP", totalMinor: 1189, taxMinor: 189, lines: [{ ...raw.lines[0], lineTotalMinor: 1000 }] };
-  const capture = async (_url, init) => { providerBody = JSON.parse(init.body); return Response.json({ candidates: [{ content: { parts: [{ text: JSON.stringify(taxed) }] } }] }); };
+  const capture = async (_url, init) => { providerBody = JSON.parse(init.body); assert.equal(init.redirect, "manual"); return Response.json({ candidates: [{ content: { parts: [{ text: JSON.stringify(taxed) }] } }] }); };
   let res = await createScanHandler({ fetchImpl: capture })(pdfReq(await makePdf(3)), env); assert.equal(res.status, 200); const draft = (await res.json()).draft; assert.equal(draft.taxMinor, 189); assert.equal(draft.discountMinor, 0);
   assert.equal(providerBody.generationConfig.responseMimeType, undefined); assert.equal(providerBody.generationConfig.responseJsonSchema, undefined);
   assert.equal(providerBody.generationConfig.responseFormat.text.mimeType, "APPLICATION_JSON"); assert.ok(providerBody.generationConfig.responseFormat.text.schema.required.includes("taxMinor")); assert.match(providerBody.contents[0].parts[1].text, /VAT already included.*must not be added again/);
+  assert.match(providerBody.contents[0].parts[1].text, /Arabic right-to-left.*English left-to-right/);
+  assert.match(providerBody.contents[0].parts[1].text, /Arabic-Indic.*Persian.*canonical JSON numbers/);
   assert.equal(providerBody.contents[0].parts[0].inline_data.mime_type, "application/pdf");
   const geminiLine = providerBody.generationConfig.responseFormat.text.schema.properties.lines.items.properties;
   assert.deepEqual(geminiLine.storage.anyOf, [{ type: "string" }, { type: "null" }]);
@@ -82,18 +84,78 @@ test("sanitizes provider HTTP and schema errors", async () => {
   assert.equal((await extra(req(valid), env)).status, 502);
 });
 
-test("maps upstream abort to timeout without retry", async () => {
+test("retries one timed-out provider attempt within the original deadline", async () => {
   let calls = 0;
   const handler = createScanHandler({ fetchImpl: async (_url, init) => { calls++; return await new Promise((_resolve, reject) => init.signal.addEventListener("abort", () => reject(Object.assign(new Error("aborted"), { name: "AbortError" })))); } });
   const original = globalThis.setTimeout; globalThis.setTimeout = (fn) => original(fn, 1);
-  try { const res = await handler(req(valid), env); assert.equal(res.status, 504); assert.equal(calls, 1); } finally { globalThis.setTimeout = original; }
+  try { const res = await handler(req(valid), env); assert.equal(res.status, 504); assert.equal(calls, 2); } finally { globalThis.setTimeout = original; }
+});
+
+test("returns a valid draft when the bounded retry recovers", async () => {
+  let calls = 0;
+  const handler = createScanHandler({ fetchImpl: async (_url, init) => {
+    calls++;
+    if (calls === 2) return upstream()();
+    return await new Promise((_resolve, reject) => init.signal.addEventListener("abort", () => reject(Object.assign(new Error("aborted"), { name: "AbortError" })), { once: true }));
+  } });
+  const original = globalThis.setTimeout; globalThis.setTimeout = (fn) => original(fn, 1);
+  try { const res = await handler(req(valid), env); assert.equal(res.status, 200); assert.equal(calls, 2); } finally { globalThis.setTimeout = original; }
+});
+
+test("does not start a retry after the global deadline is exhausted", async () => {
+  let calls = 0; let now = 1000;
+  const handler = createScanHandler({ fetchImpl: async (_url, init) => { calls++; return await new Promise((_resolve, reject) => init.signal.addEventListener("abort", () => reject(Object.assign(new Error("aborted"), { name: "AbortError" })), { once: true })); } });
+  const originalTimeout = globalThis.setTimeout; const originalNow = Date.now;
+  globalThis.setTimeout = (fn) => originalTimeout(() => { now += 60_001; fn(); }, 1); Date.now = () => now;
+  try { const res = await handler(req(valid), env); assert.equal(res.status, 504); assert.equal(calls, 1); } finally { globalThis.setTimeout = originalTimeout; Date.now = originalNow; }
+});
+
+test("does not accept a valid provider response after request cancellation", async () => {
+  let calls = 0; const controller = new AbortController();
+  const handler = createScanHandler({ fetchImpl: async () => { calls++; controller.abort(); return upstream()(); } });
+  const response = await handler(req(valid, {}, controller.signal), env);
+  assert.equal(response.status, 499); assert.equal(calls, 1);
+});
+
+test("rejects provider redirects without retry or logging private response data", async () => {
+  let calls = 0; const logs = []; const originalWarn = console.warn;
+  console.warn = (value) => logs.push(String(value));
+  try {
+    const handler = createScanHandler({ fetchImpl: async (_url, init) => { calls++; assert.equal(init.redirect, "manual"); return new Response("private receipt body", { status: 302, headers: { location: "https://private.test/?token=private-token" } }); } });
+    const response = await handler(req(valid), env);
+    assert.equal(response.status, 502); assert.equal(calls, 1);
+  } finally { console.warn = originalWarn; }
+  const output = logs.join("\n");
+  assert.doesNotMatch(output, /private receipt body|private-token|private\.test/);
+});
+
+test("provider metrics logs whitelist enums and nonnegative safe integers", async () => {
+  const logs = []; const originalInfo = console.info;
+  console.info = (value) => logs.push(String(value));
+  try {
+    const envelope = { candidates: [{ finishReason: "PRIVATE_RECEIPT_TEXT", content: { parts: [{ text: JSON.stringify(raw) }] } }], usageMetadata: { promptTokenCount: "secret", candidatesTokenCount: -1, thoughtsTokenCount: Number.MAX_SAFE_INTEGER + 1 } };
+    const response = await createScanHandler({ fetchImpl: async () => Response.json(envelope) })(req(valid), env);
+    assert.equal(response.status, 200);
+  } finally { console.info = originalInfo; }
+  const entry = JSON.parse(logs.at(-1));
+  assert.equal(entry.finishReason, null); assert.equal(entry.promptTokens, null); assert.equal(entry.candidateTokens, null); assert.equal(entry.thoughtTokens, null);
+  assert.doesNotMatch(logs.join("\n"), /PRIVATE_RECEIPT_TEXT|secret/);
 });
 
 test("deadline remains active while reading upstream body", async () => {
   let calls = 0;
   const handler = createScanHandler({ fetchImpl: async (_url, init) => { calls++; return new Response(new ReadableStream({ start(controller) { init.signal.addEventListener("abort", () => controller.error(Object.assign(new Error("aborted"), { name: "AbortError" }))); } })); } });
   const original = globalThis.setTimeout; globalThis.setTimeout = (fn) => original(fn, 1);
-  try { const res = await handler(req(valid), env); assert.equal(res.status, 504); assert.equal(calls, 1); } finally { globalThis.setTimeout = original; }
+  try { const res = await handler(req(valid), env); assert.equal(res.status, 504); assert.equal(calls, 2); } finally { globalThis.setTimeout = original; }
+});
+
+test("request cancellation aborts immediately without provider retry", async () => {
+  let calls = 0; let began;
+  const started = new Promise((resolve) => { began = resolve; });
+  const handler = createScanHandler({ fetchImpl: async (_url, init) => { calls++; began(); return await new Promise((_resolve, reject) => init.signal.addEventListener("abort", () => reject(Object.assign(new Error("aborted"), { name: "AbortError" })), { once: true })); } });
+  const controller = new AbortController();
+  const pending = handler(req(valid, {}, controller.signal), env); await started; controller.abort();
+  const response = await pending; assert.equal(response.status, 499); assert.equal(calls, 1);
 });
 
 test("uses one global authenticated-device rate-limit key", async () => {

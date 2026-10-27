@@ -8,8 +8,10 @@ import {
 } from "../web/scan-money.js";
 
 test("known currency exponents cover Gulf, regional, and zero-decimal currencies", () => {
-  for (const code of ["SAR", "AED", "EGP"]) assert.equal(currencyDigits(code), 2);
-  for (const code of ["KWD", "BHD", "OMR", "JOD", "TND", "IQD", "LYD"]) assert.equal(currencyDigits(code), 3);
+  for (const code of ["SAR", "AED", "EGP"])
+    assert.equal(currencyDigits(code), 2);
+  for (const code of ["KWD", "BHD", "OMR", "JOD", "TND", "IQD", "LYD"])
+    assert.equal(currencyDigits(code), 3);
   for (const code of ["JPY", "KRW"]) assert.equal(currencyDigits(code), 0);
   assert.equal(currencyDigits("sar"), 2);
   assert.equal(currencyDigits("ZZZ"), null);
@@ -30,13 +32,25 @@ test("decimal parsing produces exact safe integer minor values", () => {
   assert.equal(parseMinorAmount("900719925.123", "KWD"), 900719925123);
   assert.equal(parseMinorAmount("42", "JPY"), 42);
   assert.equal(parseMinorAmount("0001.20", "EGP"), 120);
+  assert.equal(parseMinorAmount("١٬٢٣٤٫٥٦", "SAR"), 123456);
+  assert.equal(parseMinorAmount("۱٬۲۳۴٫۵۶۷", "KWD"), 1234567);
+  assert.equal(parseMinorAmount("\u2067١٢٫٥\u2069", "EGP"), 1250);
+  assert.equal(parseMinorAmount("1,234.56", "USD"), 123456);
 });
 
 test("parsing rejects ambiguous or unsafe amounts", () => {
   for (const [value, currency] of [
-    ["1.001", "SAR"], ["1.0", "JPY"], ["1e3", "EGP"], ["-1", "EGP"],
-    ["1,000", "EGP"], ["", "EGP"], ["10000000000.01", "SAR"], ["1.00", "ZZZ"],
-  ]) assert.throws(() => parseMinorAmount(value, currency), TypeError);
+    ["1.001", "SAR"],
+    ["1.0", "JPY"],
+    ["1e3", "EGP"],
+    ["-1", "EGP"],
+    ["1,000", "EGP"],
+    ["12,34.56", "EGP"],
+    ["", "EGP"],
+    ["١٠٠٠٠٠٠٠٠٠٠٫٠١", "SAR"],
+    ["1.00", "ZZZ"],
+  ])
+    assert.throws(() => parseMinorAmount(value, currency), TypeError);
   assert.throws(() => formatMinorInput(1.5, "EGP"), TypeError);
   assert.throws(() => formatMoneyMinor(1, "ZZZ"), TypeError);
 });
