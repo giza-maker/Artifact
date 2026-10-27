@@ -266,7 +266,7 @@ test("failed persistence rollback permits same review retry; successful apply re
     applyAssistantProposal(live, review, { confirmed: true }),
   );
 });
-test("recipe proposal cannot apply twice after selection succeeds", () => {
+test("recipe changes reject stale replay while an already selected recipe can reopen safely", () => {
   const s = state(),
     context = buildAssistantContext(s);
   const review = reviewAssistantProposal(
@@ -293,9 +293,12 @@ test("recipe proposal cannot apply twice after selection succeeds", () => {
     },
     { context: buildAssistantContext(next) },
   );
-  assert.throws(() =>
-    applyAssistantProposal(next, second, { confirmed: true }),
-  );
+  next.route = "assistant";
+  const reopened = applyAssistantProposal(next, second, { confirmed: true });
+  assert.equal(reopened.route, "recipe");
+  assert.equal(reopened.servings[recipe.id], 4);
+  assert.equal(reopened.items, next.items);
+  assert.deepEqual(applyAssistantProposal(reopened, second, { confirmed: true }), reopened);
 });
 
 test("active cooking context retains frozen plan despite changed or deleted live lots", () => {

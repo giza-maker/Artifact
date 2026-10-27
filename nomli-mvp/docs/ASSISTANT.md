@@ -4,7 +4,7 @@ M4 adds live text assistance through the existing paired Scan connection. Valida
 
 ## Connection and data
 
-Open **Scan connection**, test the saved endpoint/device code and save. Existing paired setup works for Zara; do not enter a Gemini key on the phone. Scanning retains Gemini 3.1 Flash-Lite; Zara uses Gemini 3.5 Flash-Lite with the existing encrypted server key.
+Open **Scan connection**, test the saved endpoint/device code and save. Existing paired setup works for Zara; do not enter a Gemini key on the phone. Scanning and Zara use Gemini 3.5 Flash-Lite with the existing encrypted server key.
 
 Open **Zara** and inspect its disclosure. Only **Send question** sends data. Suggestions fill the question field. Each Send shares the question, last six exchanges, inventory, profile, tool preferences, requested servings, selected/current recipe and active cooking phase/step with its frozen allocation plan. Cloudflare forwards this to Google with curated catalog and stock assessments. Worker stores no chats. Provider retention is governed separately.
 
@@ -30,4 +30,4 @@ Questions allow 2,000 characters. Requests allow 192 KiB; replies allow 64 KiB. 
 
 Only `set_quantity` and `open_recipe` plus servings proposals are supported. Known IDs, numeric bounds and catalog allergen exclusions are checked; exclusions do not guarantee allergen-free food. A separate review and confirmation are required. Stale context and active cooking block proposal application. Zara does not rewrite recipes, generate a catalog or provide live voice capture.
 
-Four synthetic live checks passed with Gemini 3.5: exact four-serving readiness; oats 500 → 350 g proposal and confirmed pure-domain application; a four-serving recipe proposal; Arabic active-step reply with zero proposals. Calls took about 2.8, 5.5, 20.1 and 5.1 seconds. These are small fixture checks, not benchmarks or physical-device evidence. Gemini 3.1 had returned repeated 503 responses for assistant checks; scanner model remains unchanged. Automated suite had 140 passing tests at this documentation checkpoint. See [verification record](VERIFICATION.md) for final build/test evidence.
+Four synthetic live checks passed with Gemini 3.5: exact four-serving readiness; oats 500 → 350 g proposal and confirmed pure-domain application; a four-serving recipe proposal; Arabic active-step reply with zero proposals. Calls took about 2.8, 5.5, 20.1 and 5.1 seconds. These are small fixture checks, not benchmarks or physical-device evidence. Gemini 3.1 was temporarily unavailable: assistant checks returned repeated 503 responses and scanning returned a provider error. Both paths now use Gemini 3.5 Flash-Lite. Automated suite had 142 passing tests at this documentation checkpoint. See [verification record](VERIFICATION.md) for final build/test evidence.

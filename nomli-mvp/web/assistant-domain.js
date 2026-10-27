@@ -352,11 +352,8 @@ export function applyAssistantProposal(state, review, { confirmed } = {}) {
     };
     return next;
   }
-  if (
-    state.recipe === p.recipeId &&
-    state.servings?.[p.recipeId] === p.servings
-  )
-    fail();
+  // Opening an already selected recipe is still useful navigation. Repeating
+  // this assignment is harmless; quantity changes remain guarded above.
   const next = {
     ...state,
     recipe: p.recipeId,

@@ -2,7 +2,7 @@
 
 M4 is a single-user, local-first validation build. Inventory and confirmed receipt data remain on the device. Receipt recognition and explicit Zara sends use the paired service.
 
-The deployed scan endpoint is `https://nomli-scan-proxy.ahmed-aljazayeerly.workers.dev`. Scanning uses Gemini 3.1 Flash-Lite. Zara uses `GEMINI_ASSISTANT_MODEL=gemini-3.5-flash-lite`. Both reuse the existing Gemini API key stored as an encrypted Cloudflare secret. The app stores the endpoint and device access code entered by the user, never the provider key. A private setup QR can fill those fields; the user must still test and save the connection.
+The deployed scan endpoint is `https://nomli-scan-proxy.ahmed-aljazayeerly.workers.dev`. Scanning uses `GEMINI_MODEL=gemini-3.5-flash-lite`; Zara uses `GEMINI_ASSISTANT_MODEL=gemini-3.5-flash-lite`. Both reuse the existing Gemini API key stored as an encrypted Cloudflare secret. The app stores the endpoint and device access code entered by the user, never the provider key. A private setup QR can fill those fields; the user must still test and save the connection.
 
 Selected receipt files pass through the Cloudflare Worker to Google for recognition. The app does not retain uploaded file bytes after processing. Confirmed structured inventory and receipt data are stored locally. Inventory backup/restore excludes scan connection configuration.
 
@@ -40,7 +40,9 @@ These remain single-device persistence guarantees. M4 adds the assistant reply r
 - Explicit Send transmits context through Cloudflare to Google. Worker is stateless and stores no chats. Up to 20 exchanges persist locally; backups include questions and answers, excluding private connection configuration. This makes no claim about provider retention.
 - Cancellation keeps the draft question. Network, authentication, rate-limit, timeout and invalid-response failures leave inventory unchanged. Retry requires another Send.
 
-Gemini 3.1 returned repeated 503 responses during assistant checks, so Zara was configured separately to use 3.5. Four synthetic live checks passed: exact inventory/readiness for four servings; an explicit oats quantity proposal from 500 g to 350 g with confirmed pure-domain application; a recipe proposal for four servings; and an Arabic current-step answer with zero proposals during cooking. Observed calls took about 2.8, 5.5, 20.1 and 5.1 seconds respectively. These checks are not a performance or accuracy benchmark. Automated suite had 140 passing tests at this documentation checkpoint; final release evidence belongs in the verification record. Native phone QA remains pending.
+Gemini 3.1 was temporarily unavailable in live checks: assistant calls repeatedly returned 503 and scanning returned a provider error. Both scanning and Zara are now configured for Gemini 3.5 Flash-Lite. Four synthetic live checks passed: exact inventory/readiness for four servings; an explicit oats quantity proposal from 500 g to 350 g with confirmed pure-domain application; a recipe proposal for four servings; and an Arabic current-step answer with zero proposals during cooking. Observed calls took about 2.8, 5.5, 20.1 and 5.1 seconds respectively. These checks are not a performance or accuracy benchmark. Automated suite had 142 passing tests at this documentation checkpoint; final release evidence belongs in the verification record. Native phone QA remains pending.
+
+Current Gemini 3.5 synthetic PNG/PDF checks returned 1,600 g, 500 g and 1 L, with AED 39.62 total and AED 1.89 tax; expiry remained unknown. One PNG reply omitted discount, correctly leaving finance review incomplete until a human explicitly entered zero. These checks do not establish general receipt accuracy. Earlier M2 scan evidence above remains historical.
 
 See [Zara phone checks](ASSISTANT.md).
 
@@ -54,7 +56,7 @@ See [Zara phone checks](ASSISTANT.md).
 | Barcode products | Native barcode capture and synthetic fixtures | Product lookup adapter, cache and regional fallback |
 | Cooking | Static catalog, linked-stock allocation, prep/tool confirmation, resumable timer, reviewed deduction and undo | Physical-device QA |
 | Zara | Live Gemini replies and validated, separately confirmed proposals | Physical-device QA and broader answer evaluation |
-| Voice | Command fixtures and editable transcript demo | Push-to-talk capture, transcription, review and noisy-kitchen testing |
+| Voice | Command fixtures only | Push-to-talk capture, transcription, review and noisy-kitchen testing |
 | Accounts / cloud storage | Supabase client dependency and future contract notes | Project, schema, RLS, migrations, sync, transactions and authorization tests |
 
 ## Future multi-user contract

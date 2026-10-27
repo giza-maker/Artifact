@@ -46,7 +46,7 @@ Do not add school, XP, quests, community, investor-tour or social-product langua
 - Disclose inventory, profile, tool preferences, recipe/cooking context and recent history before sending. Show saved local conversation separately.
 - Render provider text as text. Allow only validated quantity or curated-recipe/servings proposals. Show before/after details in a separate dialog with an explicit confirmation checkbox and Apply action.
 - Reject stale proposals and proposals during an active cooking session. Substitution advice cannot change frozen allocations; require cancel/replan when deductions would differ.
-- Keep voice identified as a demo until capture and transcription exist.
+- Live voice remains planned. Do not expose a simulated recording flow as working capture or transcription.
 
 ## Required document hooks
 

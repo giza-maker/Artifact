@@ -4,7 +4,7 @@ Single-user local kitchen inventory with reviewed receipt recognition, curated c
 
 Validation package: `com.nomli.mvp.validation`, app label **Nomli Test**, version **0.5.0-m4** (`versionCode` 5). It uses the M1/M2 validation update channel and remains separate from the earlier demo package. Published milestone APKs use the retained local validation signing key; GitHub Actions does not receive that key.
 
-Inventory works offline. Receipt recognition and live Zara need internet access. Current recognition service is `https://nomli-scan-proxy.ahmed-aljazayeerly.workers.dev`, with Gemini 3.1 Flash-Lite for scanning and Gemini 3.5 Flash-Lite for Zara. Provider credentials are encrypted server-side and never bundled in the app.
+Inventory works offline. Receipt recognition and live Zara need internet access. Current recognition service is `https://nomli-scan-proxy.ahmed-aljazayeerly.workers.dev`, with Gemini 3.5 Flash-Lite for scanning and Zara. Provider credentials are encrypted server-side and never bundled in the app.
 
 M4 APK build verification pending. Planned download: [Nomli-M4.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m4-v0.5.0/Nomli-M4.apk). See the [Zara phone checklist](docs/ASSISTANT.md), [APK checklist](docs/APK.md) and [verification record](docs/VERIFICATION.md).
 
@@ -63,7 +63,7 @@ Each Send shares inventory, profile, tool preferences, selected/current recipe a
 - Image uploads up to 4 MiB. PDFs up to 2 MiB and three pages. JPEG, PNG, WebP and PDF content is checked against its declared type.
 - Approximate Cloudflare rate limit of 10 combined scan and Zara requests per 60 seconds per Cloudflare location. This is abuse protection, not a hard billing cap.
 - Static cooking catalog with 20 curated recipes and 88 bilingual ingredients; stock assessment, preparation checklist, tool confirmation, deadline timer resume, reviewed consumption and undo.
-- Live Zara grounded in current inventory, profile, tools and the curated catalog; quantity and recipe proposals require review. Voice remains an editable transcript demo.
+- Live Zara grounded in current inventory, profile, tools and the curated catalog; quantity and recipe proposals require review. Live voice remains planned; command fixtures are retained.
 - Starter content: 88 bilingual ingredients, 20 structured recipes, 24 Arabic/English voice cases, three receipt fixtures, six synthetic barcode records and a synthetic digital receipt PDF/image.
 - Capacitor Android shell with camera, barcode, notifications and preferences plugins plus native backup and scan bridges.
 - Tested scan client, validation schema, integer-money logic, persistence, deduplication and bounded server proxy.
