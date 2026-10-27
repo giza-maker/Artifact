@@ -1,5 +1,19 @@
 # Verification record
 
+## Milestone 3, 27 October 2026
+
+- Source commit: `08c8c47a300239e90f7b0c14ed077772246f34ea`. All 110 automated tests, content checks, production web build and Capacitor sync pass. [CI run 40516558999](https://github.com/giza-maker/Artifact/actions/runs/40516558999) succeeded. Verified APK is 42,063,128 bytes with SHA-256 `d0fb13d2a1c2cf5c954dd035cff22fc07a0cab700bfa1d802940fc7b49d0f1fe`. Published GitHub asset size and SHA-256 match the verified local APK.
+- `aapt` verified package `com.nomli.mvp.validation`, version `0.4.0-m3`, versionCode 4, minimum API 26 and target API 36. APK Signature Schemes v2/v3, 16 KB alignment and ZIP CRC checks pass. Certificate SHA-256 `8c02c3045c97327f5415451feb9ccb0db326322b90d460dde9f28a7c0b559ef0` matches the retained validation certificate. All 72 packaged production assets match byte-for-byte; two generated Cordova placeholder files are empty. The configured provider key and device access code are absent from the APK.
+- M3 uses 20 curated recipes and 88 ingredients. Explicit ingredient links and optional measured grams per count unit drive stock assessment, compatible conversion and earliest-expiry allocation. Catalog dietary filtering does not establish allergen-free food or cross-contact safety.
+- Domain review fixed allocation across mixed units and rejection of recorded past-date stock when a resumed session records actual use. Notification review fixed cleanup after persistence failure and ordering around the local transaction. Native alert scheduling now captures the deadline before the permission prompt; this code fix has not been verified on a phone.
+- Fresh-origin browser QA created five explicitly linked items: oats 500 g, milk 1,000 ml, dates 20 pieces with measured 8 g per piece, cinnamon 10 g and almonds 100 g. The date-oat recipe at four servings planned 200 g, 800 ml, 160 g, 2 g and 50 g respectively.
+- Partial preparation checklist state survived reload. A running three-minute timer survived reload. Changing recipe servings to one during the active session left its frozen four-serving plan unchanged.
+- Actual-use review recorded oats 180 g, milk 800 ml, dates 18 pieces, cinnamon 0 g and almonds 50 g. Save and reload retained stock quantities of 320 g, 200 ml, 2 pieces, 10 g and 50 g. After topping almonds up to 60 g, undo restored quantities to 500 g, 1,000 ml, 20 pieces, 10 g and 110 g, preserving the later 10 g top-up.
+- Browser console reported no errors during these flows. Within a centered 430 × 900 app shell (not the actual browser viewport), DOM measurements showed a 742 px main region with 1,208 px of content and `overflow: auto`; lower Save and Undo controls were reachable. Chrome CDP screenshot capture failed, so this record makes no screenshot-based visual assessment.
+- Final browser polish verified a custom timer value of 33 displays as 33, singular serving wording and readable allergen labels.
+- The M2 protected Gemini Worker and private setup QR remain unchanged. M3 did not repeat the M2 OCR fixture checks; those checks were not an accuracy benchmark. Live Zara and voice integration remain M4 work.
+- No physical-phone QA has run. Camera and QR permissions, native SAF picker, notifications, system keyboard, update installation and Preferences across force-stop remain device checks. Browser persistence and responsive DOM checks do not verify native runtime behavior.
+
 ## Milestone 2, 26 October 2026
 
 - 69 automated tests pass. Coverage includes scan client validation, native picker handling, editable scan drafts, integer money, atomic local persistence, identical-file deduplication, configuration separation, backup behavior and server proxy boundaries.

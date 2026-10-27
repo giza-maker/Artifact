@@ -6,6 +6,8 @@ Validation package: `com.nomli.mvp.validation`, app label **Nomli Test**, versio
 
 Inventory works offline. Receipt recognition needs internet access. Current recognition service is `https://nomli-scan-proxy.ahmed-aljazayeerly.workers.dev`, backed by Gemini 3.1 Flash-Lite. Provider credentials are encrypted server-side and never bundled in the app.
 
+[Download M3 APK](https://github.com/giza-maker/Artifact/releases/download/nomli-m3-v0.4.0/Nomli-M3.apk). See the [phone checklist](docs/APK.md) and [verification record](docs/VERIFICATION.md).
+
 ## Start
 
 ```powershell
@@ -67,7 +69,7 @@ Synthetic PNG and PDF receipts completed live calls in about five and four secon
 
 ## Not implemented or verified
 
-- M3 APK generation, install/update verification and physical-phone QA are pending. Native picker, camera permissions, Preferences behavior across force-stop and keyboard behavior still need device testing.
+- M3 APK compilation, signing, alignment and packaged-asset verification pass. Install/update verification and physical-phone QA remain pending. Native picker, camera permissions, Preferences behavior across force-stop and keyboard behavior still need device testing.
 - Live Zara, voice recognition and barcode product lookup are not connected. Cooking uses the local curated catalog; live assistant work remains M4.
 - Accounts, cloud inventory sync, multi-user authorization and database transactions remain future work.
 - Receipt recognition can be wrong. Review is mandatory before local data changes.

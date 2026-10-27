@@ -29,7 +29,7 @@ Gemini free-tier and paid quotas depend on the API account and its billing setup
 - Undo adds recorded use back to current quantities, preserving later top-ups. Deleted stock or changed ingredient identity, normalized unit or grams-per-unit conversion blocks undo.
 - M1/M2 state-version-1 backups remain compatible. New links, conversions, sessions and meal records have strict validation. Scan connection credentials remain outside inventory backups.
 
-These are single-device persistence guarantees. M3 adds no backend routes, accounts, provider keys or cloud inventory transactions. The protected Gemini Worker and private setup QR remain unchanged. APK and physical-phone verification are still pending.
+These are single-device persistence guarantees. M3 adds no backend routes, accounts, provider keys or cloud inventory transactions. The protected Gemini Worker and private setup QR remain unchanged. APK compilation, signing and package verification pass. Physical-phone validation remains pending.
 
 ## Capability status
 
