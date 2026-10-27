@@ -1,0 +1,1012 @@
+{
+  "as_of": "2026-10-27",
+  "sources": [
+    {
+      "id": "M01",
+      "title": "Annual Dubai Gastronomy Industry Report 2024",
+      "publisher": "Dubai Department of Economy and Tourism",
+      "url": "https://www.dubaidet.gov.ae/en/newsroom/press-releases/dubai-gastronomy-industry-report-2024",
+      "published": "2025-04-09",
+      "accessed": "2026-10-27",
+      "supporting_fact": "Almost 1,200 new restaurant licences in 2024; 1,100+ diner survey; 2.5 restaurant visits/week; 18.72m overnight visitors; accommodation/food services +3.7% in first nine months of 2024 and 3.4% of GDP.",
+      "evidence_quality": "High for reported Dubai statistics; medium for demand inference.",
+      "limitations": "Restaurant licences are not active café locations; survey is consumer sentiment and DET methodology is only summarized on page."
+    },
+    {
+      "id": "M02",
+      "title": "Over 34,000 food inspections conducted in first half of 2025",
+      "publisher": "Dubai Municipality",
+      "url": "https://www.dm.gov.ae/over-34000-food-inspections-conducted-in-first-half-of-2025/",
+      "published": "2025-07-30",
+      "accessed": "2026-10-27",
+      "supporting_fact": "34,700 inspections and approximately 2,336 new food establishments in H1 2025.",
+      "evidence_quality": "High government release.",
+      "limitations": "Food-establishment scope is broader than cafés/restaurants; openings not net active stock."
+    },
+    {
+      "id": "M03",
+      "title": "Over 26,000 food establishments operate Dubai",
+      "publisher": "Emirates News Agency quoting Dubai Municipality",
+      "url": "https://www.wam.ae/en/article/b1qrfvc-over-26000-food-establishments-operate-dubai",
+      "published": "2024-02-19",
+      "accessed": "2026-10-27",
+      "supporting_fact": "Dubai Municipality official stated more than 26,000 food establishments operate in Dubai.",
+      "evidence_quality": "Medium-high official news report.",
+      "limitations": "Broad food-establishment definition; no activity-code breakdown or deduplication method."
+    },
+    {
+      "id": "M04",
+      "title": "1.1 million food products registered in Dubai Municipality Food Import and Export System",
+      "publisher": "Dubai Municipality",
+      "url": "https://www.dm.gov.ae/1-1-million-food-products-registered-in-dubai-municipality-food-import-and-export-system/",
+      "published": "2023-06-23",
+      "accessed": "2026-10-27",
+      "supporting_fact": "More than 23,400 food establishments operated in Dubai at publication.",
+      "evidence_quality": "High government release.",
+      "limitations": "Older, broad category; not comparable directly to restaurant licences."
+    },
+    {
+      "id": "M05",
+      "title": "Small to Medium Sized Enterprises Market Conduct Regulation",
+      "publisher": "Central Bank of the UAE",
+      "url": "https://rulebook.centralbank.ae/en/rulebook/small-medium-sized-enterprises-sme-market-conduct-regulation",
+      "published": "2021-02-26",
+      "accessed": "2026-10-27",
+      "supporting_fact": "Federal SME thresholds: micro service <5 employees or <AED2m revenue; small service 6–50 employees or <AED20m revenue.",
+      "evidence_quality": "High regulatory source.",
+      "limitations": "Definition for regulation/segmentation, not count of SMEs or cafés."
+    },
+    {
+      "id": "M06",
+      "title": "Foodics Pricing UAE",
+      "publisher": "Foodics",
+      "url": "https://www.foodics.com/foodics-pricing-uae/",
+      "published": "2025-10-07",
+      "accessed": "2026-10-27",
+      "supporting_fact": "Public UAE monthly prices billed annually: AED199 Starter, AED375 Basic, AED556 Advanced; page mentions digital receipts, loyalty, BI and API integration.",
+      "evidence_quality": "Medium first-party commercial page.",
+      "limitations": "Page feature layout is ambiguous; hardware, implementation and exact entitlement require quote."
+    },
+    {
+      "id": "M07",
+      "title": "Integration Availability",
+      "publisher": "Foodics Help Center",
+      "url": "https://help.foodics.com/hc/en-us/articles/9527870053404-Integration-Availability",
+      "published": "2023-07-10",
+      "accessed": "2026-10-27",
+      "supporting_fact": "Unlisted integration is merchant-requested; merchant needs Advanced plan or API licence; Foodics says it supports the technical team.",
+      "evidence_quality": "High for documented process.",
+      "limitations": "May change; no API licence price or approval SLA."
+    },
+    {
+      "id": "M08",
+      "title": "Integrate with Simphony Point of Sale",
+      "publisher": "Oracle",
+      "url": "https://www.oracle.com/food-beverage/restaurant-pos-systems/pos-integrations/partners/",
+      "published": null,
+      "accessed": "2026-10-27",
+      "supporting_fact": "Simphony offers Transaction Services Gen2, BI API and JavaScript extensibility; partners enrol in OPN and submit integration inquiry.",
+      "evidence_quality": "High official technical overview.",
+      "limitations": "No UAE pricing or proof of custom receipt-QR permission."
+    },
+    {
+      "id": "M09",
+      "title": "Syrve UAE Pricing",
+      "publisher": "Syrve",
+      "url": "https://www.syrve.com/en-ae/pricing",
+      "published": null,
+      "accessed": "2026-10-27",
+      "supporting_fact": "AED250/350/450 per till/month ex VAT, annual AED2,500/3,500/4,500; page lists SMS, loyalty, customer display, analytics and APIs by tier.",
+      "evidence_quality": "Medium first-party pricing page.",
+      "limitations": "Entitlements, setup/hardware and API partner access need confirmation; vendor claims not independent."
+    },
+    {
+      "id": "M10",
+      "title": "Unified Restaurant Operations Platform and Integrations",
+      "publisher": "Grubtech",
+      "url": "https://grubtech.com/en/",
+      "published": null,
+      "accessed": "2026-10-27",
+      "supporting_fact": "Offers order management, KDS, delivery and analytics; integration directory lists POS connections including Foodics.",
+      "evidence_quality": "Medium first-party product claim.",
+      "limitations": "No public price; no receipt-template rights shown."
+    },
+    {
+      "id": "M11",
+      "title": "Deliverect Pricing",
+      "publisher": "Deliverect",
+      "url": "https://www.deliverect.com/en-us/pricing",
+      "published": null,
+      "accessed": "2026-10-27",
+      "supporting_fact": "Restaurants package includes POS integration, order/menu tools and analytics; pricing is quote-based on location, scale, locations and solution.",
+      "evidence_quality": "Medium first-party commercial page.",
+      "limitations": "No UAE amount; feature availability and implementation need quote."
+    },
+    {
+      "id": "M12",
+      "title": "Queberry Queue Management",
+      "publisher": "Queberry",
+      "url": "https://queberry.com/",
+      "published": null,
+      "accessed": "2026-10-27",
+      "supporting_fact": "Offers queue management, WhatsApp queueing, digital signage and business analytics, serving UAE and regional markets.",
+      "evidence_quality": "Medium first-party product claim.",
+      "limitations": "No public pricing or café-specific receipt integration evidence."
+    },
+    {
+      "id": "M13",
+      "title": "PassKit Pricing Rate Card",
+      "publisher": "PassKit",
+      "url": "https://passkit.com/pricing/rates/",
+      "published": null,
+      "accessed": "2026-10-27",
+      "supporting_fact": "Starts USD39.50/month; includes up to 250 multi-use and 250 single-use passes; tiered usage pricing.",
+      "evidence_quality": "High for current first-party self-serve rate statement.",
+      "limitations": "Taxes, team size, overage and enterprise/support requirements may change total."
+    },
+    {
+      "id": "M14",
+      "title": "Loopy Loyalty Pricing",
+      "publisher": "Loopy Loyalty",
+      "url": "https://loopyloyalty.com/pricing/",
+      "published": null,
+      "accessed": "2026-10-27",
+      "supporting_fact": "USD25/69/95 monthly for 1/3/10 locations, Apple/Google Wallet support and unlimited customers; annual USD250/690/950.",
+      "evidence_quality": "High for public first-party prices.",
+      "limitations": "Fair-use and product-fit constraints; not integrated pickup tracking evidence."
+    },
+    {
+      "id": "M15",
+      "title": "Stampli – Digital Loyalty Cards for Apple & Google Wallet",
+      "publisher": "Stampli UAE",
+      "url": "https://stampli.ae/",
+      "published": null,
+      "accessed": "2026-10-27",
+      "supporting_fact": "Advertises UAE digital stamp cards at AED69/179/369 monthly for Starter/Growth/Pro; Apple and Google Wallet passes, push notifications and staff scan tool; Pro includes multi-location support.",
+      "evidence_quality": "Medium first-party product and pricing page.",
+      "limitations": "The same page claims a 2x typical repeat-visit lift, customer counts and testimonials without disclosed methodology, sample, comparison period or independent corroboration; these claims are not used as evidence."
+    },
+    {
+      "id": "M16",
+      "title": "Digital Receipt Integration",
+      "publisher": "Foodics Developers",
+      "url": "https://developers.foodics.com/guides/digital_receipt_integration.html",
+      "published": null,
+      "accessed": "2026-10-27",
+      "supporting_fact": "Documents OAuth, account/receipt settings, customer-order created/updated webhooks, and closed/returned receipt-status logic.",
+      "evidence_quality": "High official technical documentation.",
+      "limitations": "Does not prove custom QR injection into native printed receipt, all-order coverage, or kitchen ready event."
+    },
+    {
+      "id": "M17",
+      "title": "Choosing a Membership",
+      "publisher": "Apple Developer",
+      "url": "https://developer.apple.com/support/compare-memberships/",
+      "published": null,
+      "accessed": "2026-10-27",
+      "supporting_fact": "Apple Developer Program listed at USD99 per membership year; advanced capabilities require membership.",
+      "evidence_quality": "High official programme page.",
+      "limitations": "Local currency/tax and exact Wallet certificate workflow must be checked at implementation."
+    },
+    {
+      "id": "M18",
+      "title": "Google Wallet Loyalty Object REST Resource",
+      "publisher": "Google for Developers",
+      "url": "https://developers.google.com/wallet/reference/rest/v1/loyaltyobject",
+      "published": null,
+      "accessed": "2026-10-27",
+      "supporting_fact": "Loyalty objects support account identifiers, loyalty points, barcodes, messages and lifecycle state.",
+      "evidence_quality": "High official API reference.",
+      "limitations": "No authoritative price statement found in reviewed source; approval and operational constraints remain."
+    },
+    {
+      "id": "M19",
+      "title": "Egyptian Economic Census 2022/2023",
+      "publisher": "CAPMAS",
+      "url": "https://metadata.capmas.gov.eg/en/index.php/catalog/821",
+      "published": "2026-10-04",
+      "accessed": "2026-10-27",
+      "supporting_fact": "Two-digit activity/governorate publication; sample universe 471,000 establishments; 96.68% response; questionnaire includes restaurants, food stores, cafés and drinking activities.",
+      "evidence_quality": "High official metadata.",
+      "limitations": "Combined category; metadata page supplies no target-café total or POS/digital adoption measure."
+    },
+    {
+      "id": "P01",
+      "publisher": "Meta for Developers",
+      "title": "Pricing on the WhatsApp Business Platform",
+      "url": "https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing",
+      "accessed": "2026-10-27",
+      "supported_fact": "Per-delivered-message categories and rates; service charged from 2026-10-01 after 1,000 monthly free messages per business phone number; in-window utility charged; current rate-card links and update calendar.",
+      "uncertainty": "Linked CSV/PDF CDN URLs are mutable; capture effective-date artifact during commercial sign-off.",
+      "contradictions": "Supersedes stale Business-site copy stating service and in-window utility are free."
+    },
+    {
+      "id": "P02",
+      "publisher": "Meta for Developers",
+      "title": "Upcoming pricing updates for Meta Business Agent, service and utility messages",
+      "url": "https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing/non-template-messages/",
+      "accessed": "2026-10-27",
+      "supported_fact": "Effective 2026-10-01 service and in-window utility become per-message charged; service rate equals utility/authentication market rate; payment method needed after free tier.",
+      "uncertainty": "AI Provider exception requires separate classification; ordinary cafe automation treated as standard third-party tooling, not AI Provider.",
+      "contradictions": "Explicitly conflicts with pre-October-2026 free-service assumptions."
+    },
+    {
+      "id": "P03",
+      "publisher": "Meta for Developers",
+      "title": "Template categorization",
+      "url": "https://developers.facebook.com/documentation/business-messaging/whatsapp/templates/template-categorization",
+      "accessed": "2026-10-27",
+      "supported_fact": "Template category determined by message objective/content; promotional or mixed intent is marketing, transactional order information can be utility.",
+      "uncertainty": "Final category and approval remain Meta review outcomes.",
+      "contradictions": null
+    },
+    {
+      "id": "P04",
+      "publisher": "Meta for Developers",
+      "title": "Get opt-in for WhatsApp",
+      "url": "https://developers.facebook.com/documentation/business-messaging/whatsapp/getting-opt-in",
+      "accessed": "2026-10-27",
+      "supported_fact": "Need phone number plus opt-in for named business; website/SMS/IVR/paper/in-person methods allowed; category-specific expectations/opt-outs recommended.",
+      "uncertainty": "Local law can impose stricter consent requirements.",
+      "contradictions": "QR scan alone is not listed as permission unless scan flow actually captures compliant consent."
+    },
+    {
+      "id": "P05",
+      "publisher": "Meta for Developers",
+      "title": "Embedded Signup",
+      "url": "https://developers.facebook.com/docs/whatsapp/embedded-signup/",
+      "accessed": "2026-10-27",
+      "supported_fact": "v4 onboarding, merchant asset ownership, permissions/App Review, 10-to-200 onboarding limits, payment/credit-line responsibilities, token/webhook steps.",
+      "uncertainty": "Account-model evolution marked beta and subject to change.",
+      "contradictions": "Old WABA-only integration assumptions are evolving into WAAC plus Messaging account."
+    },
+    {
+      "id": "P06",
+      "publisher": "Meta for Developers",
+      "title": "Onboard WhatsApp Business app users (Coexistence)",
+      "url": "https://developers.facebook.com/docs/whatsapp/embedded-signup/custom-flows/onboarding-business-app-users/",
+      "accessed": "2026-10-27",
+      "supported_fact": "Existing Business App number can coexist with Cloud API; app remains usable one-to-one and history syncs; customized onboarding and phone verification required.",
+      "uncertainty": "Merchant eligibility and rollout may vary; validate in live onboarding.",
+      "contradictions": "Standard Cloud API registration step is skipped for coexistence."
+    },
+    {
+      "id": "P07",
+      "publisher": "Apple Developer",
+      "title": "Getting Started with Apple Wallet",
+      "url": "https://developer.apple.com/wallet/get-started/",
+      "accessed": "2026-10-27",
+      "supported_fact": "Pass distribution/update model; expired certificate blocks new signing/updates while installed passes continue; revocation can break passes.",
+      "uncertainty": "Program fees and supported OS/device matrix may change.",
+      "contradictions": null
+    },
+    {
+      "id": "P08",
+      "publisher": "Apple Developer",
+      "title": "Wallet Human Interface Guidelines",
+      "url": "https://developer.apple.com/design/human-interface-guidelines/wallet/",
+      "accessed": "2026-10-27",
+      "supported_fact": "Use change messages only for time-critical information; never for marketing/noncritical communication.",
+      "uncertainty": "Design guidance is normative platform guidance but enforcement details are not published.",
+      "contradictions": "Apple loyalty marketing page broadly promotes engagement notifications; HIG specifically bars marketing via changeMessage."
+    },
+    {
+      "id": "P09",
+      "publisher": "Apple Developer",
+      "title": "Apple Developer Program License Agreement — Additional Terms for Passes",
+      "url": "https://developer.apple.com/support/terms/apple-developer-program-license-agreement/",
+      "accessed": "2026-10-27",
+      "supported_fact": "Pass Type ID cannot be shared/transferred except limited service-provider use; cannot sign third-party pass under own ID; pass-related promotional APNs must satisfy terms/consent.",
+      "uncertainty": "Contract interpretation and merchant/platform branding arrangement need counsel.",
+      "contradictions": null
+    },
+    {
+      "id": "P10",
+      "publisher": "Google for Developers",
+      "title": "Trigger Push Notifications — Generic pass",
+      "url": "https://developers.google.com/wallet/generic/use-cases/trigger-push-notifications",
+      "accessed": "2026-10-27",
+      "supported_fact": "TEXT_AND_NOTIFY max three per pass/24h; possible throttling; notifications user-controlled; nearby requires precise always-on location; 10 locations per class and object; Google controls trigger/text.",
+      "uncertainty": "Feature behavior and permissions vary by device/account.",
+      "contradictions": "Older FAQ language saying developer-authored push unsupported is narrower/stale relative to current Add Message API guidance."
+    },
+    {
+      "id": "P11",
+      "publisher": "UAE TDRA",
+      "title": "Cellular Phone Spam Regulatory Policy",
+      "url": "https://tdra.gov.ae/-/media/About/regulations-and-ruling/EN/cellular-phone-spam-regulatory-policy-English.ashx",
+      "accessed": "2026-10-27",
+      "supported_fact": "Marketing SMS requires consent evidence, 07:00–21:00 timing and AD-prefixed sender classification.",
+      "uncertainty": "Carrier implementation/registration documentation remains operationally provider-specific.",
+      "contradictions": null
+    },
+    {
+      "id": "P12",
+      "publisher": "UAE TDRA",
+      "title": "Marketing SMS FAQs",
+      "url": "https://tdra.gov.ae/en/faqs",
+      "accessed": "2026-10-27",
+      "supported_fact": "Explicit consent, free unsubscribe, consent record and permitted hours for promotional SMS.",
+      "uncertainty": "FAQ wording may summarize rather than replace regulation.",
+      "contradictions": null
+    },
+    {
+      "id": "P13",
+      "publisher": "Twilio",
+      "title": "United Arab Emirates SMS Guidelines",
+      "url": "https://www.twilio.com/en-us/guidelines/ae/sms",
+      "accessed": "2026-10-27",
+      "supported_fact": "Registered alphanumeric sender required; two-way/long/short code unsupported; promotional domestic-only with AD- prefix; URL sensitivity; two-week indicative provisioning.",
+      "uncertainty": "Vendor guidance, not law; routes and availability can change without notice.",
+      "contradictions": null
+    },
+    {
+      "id": "P14",
+      "publisher": "Twilio",
+      "title": "How to Register your Alphanumeric Sender ID in UAE",
+      "url": "https://help.twilio.com/articles/360046382293",
+      "accessed": "2026-10-27",
+      "supported_fact": "New registrations currently on hold; separate transactional/promotional process; international setup USD225 and monthly USD115 fees; documents required.",
+      "uncertainty": "Hold/fees may change; confirm with Twilio sales/compliance before plan commitment.",
+      "contradictions": "Guidelines describe supported preregistration while help center says new registrations are currently on hold."
+    },
+    {
+      "id": "P15",
+      "publisher": "Google for Developers",
+      "title": "Requesting publishing access — Loyalty cards",
+      "url": "https://developers.google.com/wallet/retail/loyalty-cards/test-and-go-live/request-publishing-access",
+      "accessed": "2026-10-27",
+      "supported_fact": "Demo Mode test-user restriction; Business Profile/payments profile and class required; Google review grants production publishing.",
+      "uncertainty": "Review duration/SLA and approval outcome unpublished.",
+      "contradictions": "Page summary mentions screenshots while current note says screenshots no longer required; use current note/console."
+    },
+    {
+      "id": "P16",
+      "publisher": "Central Bank of the UAE",
+      "title": "Retail Payment Services and Card Schemes Regulation — Licensing",
+      "url": "https://rulebook.centralbank.ae/en/rulebook/article-2-licensing-1",
+      "accessed": "2026-10-27",
+      "supported_fact": "No person may provide or promote listed Retail Payment Services in UAE without licence unless exempt.",
+      "uncertainty": "Whether a specific orchestration model crosses regulated boundary depends on contracts and fund/control flow.",
+      "contradictions": null
+    },
+    {
+      "id": "P17",
+      "publisher": "Central Bank of the UAE",
+      "title": "CBUAE Licensing",
+      "url": "https://centralbank.ae/en/licensing/",
+      "accessed": "2026-10-27",
+      "supported_fact": "Current licensed entities list and Retail Payment Service categories, including merchant acquiring and payment aggregation.",
+      "uncertainty": "List changes; recheck immediately before PSP contracting.",
+      "contradictions": null
+    },
+    {
+      "id": "P18",
+      "publisher": "Central Bank of the UAE",
+      "title": "Retail Payment Services and Card Schemes Regulation",
+      "url": "https://rulebook.centralbank.ae/en/rulebook/312-retail-payment-services-and-card-schemes-regulation",
+      "accessed": "2026-10-27",
+      "supported_fact": "In-force UAE framework covers licensing, AML/CFT, technology/security and user obligations for PSPs.",
+      "uncertainty": "Legal perimeter analysis requires UAE counsel.",
+      "contradictions": null
+    },
+    {
+      "id": "P19",
+      "publisher": "UAE Legislation",
+      "title": "Federal Decree-Law No. 45 of 2021 Concerning Protection of Personal Data",
+      "url": "https://www.uaelegislation.gov.ae/en/legislations/1972/download",
+      "accessed": "2026-10-27",
+      "supported_fact": "Federal PDPL principles, controller/processor duties and Articles 22–23 cross-border transfer mechanisms.",
+      "uncertainty": "Applicability/exemptions and implementing decisions must be assessed for entity/data context.",
+      "contradictions": null
+    },
+    {
+      "id": "P20",
+      "publisher": "DIFC Commissioner of Data Protection",
+      "title": "Data Export & Sharing: Transferring Personal Data",
+      "url": "https://www.difc.com/business/registrars-and-commissioners/commissioner-of-data-protection/data-export-and-sharing",
+      "accessed": "2026-10-27",
+      "supported_fact": "DIFC transfers require adequacy under Article 26 or safeguards/derogations under Article 27.",
+      "uncertainty": "Need entity-specific export assessment.",
+      "contradictions": null
+    },
+    {
+      "id": "P21",
+      "publisher": "ADGM Office of Data Protection",
+      "title": "Guidance on Data Protection Regulations 2021 Part 6: International Transfers",
+      "url": "https://assets.adgm.com/download/assets/ADGM+DPR+2021+Guidance+Part+6.pdf/e743e728595711ef80b936e29b0f3a63",
+      "accessed": "2026-10-27",
+      "supported_fact": "Foreign access is a transfer; onshore UAE is outside ADGM; no de minimis threshold; adequacy/safeguard/derogation routes.",
+      "uncertainty": "Apply current Regulations and adequacy list to actual vendor locations.",
+      "contradictions": null
+    },
+    {
+      "id": "E01",
+      "title": "Render regions",
+      "publisher": "Render",
+      "url": "https://render.com/docs/regions",
+      "accessed": "2026-10-27",
+      "supports": [
+        "Render service and datastore region list",
+        "region change requires migration",
+        "same-region private networking"
+      ]
+    },
+    {
+      "id": "E02",
+      "title": "Available regions",
+      "publisher": "Supabase",
+      "url": "https://supabase.com/docs/guides/platform/regions",
+      "accessed": "2026-10-27",
+      "supports": [
+        "Supabase primary region model",
+        "specific region list",
+        "region as data-location control rather than compliance proof"
+      ]
+    },
+    {
+      "id": "E03",
+      "title": "Change Project Region",
+      "publisher": "Supabase",
+      "url": "https://supabase.com/docs/guides/troubleshooting/change-project-region-eWJo5Z",
+      "accessed": "2026-10-27",
+      "supports": [
+        "Supabase region change requires new project and migration"
+      ]
+    },
+    {
+      "id": "E04",
+      "title": "Connect to Postgres",
+      "publisher": "Supabase",
+      "url": "https://supabase.com/docs/guides/database/connecting-to-postgres",
+      "accessed": "2026-10-27",
+      "supports": [
+        "Frontend Data API requires RLS",
+        "RLS with no policies denies requests",
+        "persistent backend connection choices"
+      ]
+    },
+    {
+      "id": "E05",
+      "title": "Wallet Developer Guide: Wallet ecosystem and pass updates",
+      "publisher": "Apple",
+      "url": "https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/PassKit_PG/Ecosystem.html",
+      "accessed": "2026-10-27",
+      "supports": [
+        "Server sends push notification and device fetches latest pass",
+        "updates distribute complete latest pass"
+      ]
+    },
+    {
+      "id": "E06",
+      "title": "Getting Started with Apple Wallet",
+      "publisher": "Apple",
+      "url": "https://developer.apple.com/wallet/get-started/",
+      "accessed": "2026-10-27",
+      "supports": [
+        "Apple-issued certificate signs passes",
+        "certificate expiry/revocation effects",
+        "web distribution without related app",
+        "pass updates"
+      ]
+    },
+    {
+      "id": "E07",
+      "title": "Wallet Developer Guide: Pass Design and Creation",
+      "publisher": "Apple",
+      "url": "https://developer.apple.com/library/archive/documentation/UserExperience/Conceptual/PassKit_PG/Creating.html",
+      "accessed": "2026-10-27",
+      "supports": [
+        "Pass type identifier and certificate relationship",
+        "manifest and PKCS#7 detached signature",
+        "signed compressed package"
+      ]
+    },
+    {
+      "id": "E08",
+      "title": "Azure geographies",
+      "publisher": "Microsoft Azure",
+      "url": "https://azure.microsoft.com/en-us/explore/global-infrastructure/geographies",
+      "accessed": "2026-10-27",
+      "supports": [
+        "Azure lists UAE North and UAE Central regions",
+        "service availability must be checked per region"
+      ]
+    },
+    {
+      "id": "E09",
+      "title": "Render pricing",
+      "publisher": "Render",
+      "url": "https://render.com/pricing",
+      "accessed": "2026-10-27",
+      "supports": [
+        "Contractual uptime SLA advertised for Enterprise",
+        "plan-dependent HA/PITR and support features"
+      ]
+    },
+    {
+      "id": "E10",
+      "title": "Service Level Agreement",
+      "publisher": "Supabase",
+      "url": "https://supabase.com/sla",
+      "accessed": "2026-10-27",
+      "supports": [
+        "99.9% uptime commitment for covered Enterprise products",
+        "scope, exclusions, and service credits"
+      ]
+    },
+    {
+      "id": "E11",
+      "title": "Production Checklist",
+      "publisher": "Supabase",
+      "url": "https://supabase.com/docs/guides/deployment/going-into-prod",
+      "accessed": "2026-10-27",
+      "supports": [
+        "PITR option and restore granularity",
+        "backup and production configuration considerations"
+      ]
+    },
+    {
+      "id": "A01",
+      "publisher": "Apple Developer",
+      "title": "Apple Developer Program License Agreement, Attachment 5 and section 2.9",
+      "url": "https://developer.apple.com/support/terms/apple-developer-program-license-agreement/",
+      "source_version": "page published 2026-10-26; accessed 2026-10-27",
+      "supports": "Own-brand pass rule, third-party-mark rights, service-provider exception, no signing third-party passes, licensee accountability",
+      "interpretation": "Merchant-owned credentials are the lowest-risk proposal; no legal clearance given."
+    },
+    {
+      "id": "A02",
+      "publisher": "PassKit",
+      "title": "PassKit Developer Documentation — Certificates API",
+      "url": "https://docs.passkit.io/common/certificates",
+      "source_version": "developer docs v1.1.159 site; accessed 2026-10-27",
+      "supports": "PassKit account can upload/manage Apple pass certificates tied to pass type/team/owner metadata",
+      "limitation": "Vendor documentation; does not determine Apple-contract compliance or merchant ownership."
+    },
+    {
+      "id": "A03",
+      "publisher": "Meta for Developers",
+      "title": "Pricing on the WhatsApp Business Platform",
+      "url": "https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing",
+      "source_version": "page updated 2026-09-30; accessed 2026-10-27",
+      "supports": "Rate-card links, 2026-10-01 service charging and 1,000 free service messages per business phone number/month"
+    },
+    {
+      "id": "A04",
+      "publisher": "Meta",
+      "title": "AED list rates artifact",
+      "url": "https://scontent-atl3-2.xx.fbcdn.net/v/t39.8562-6/829263173_1596473021329937_3163308178380957778_n.csv",
+      "source_version": "effective 2026-10-01; retrieved 2026-10-27; signed query URL decoded from Meta redirect",
+      "sha256": "3a5a0b92fac1f9de229bfadfd2bd5192da46573d5775225e52afc4d3e7b94c47",
+      "format_note": "XLSX/ZIP payload despite .csv suffix",
+      "archive": "downloads/meta-whatsapp-aed-rates-2026-10-01.xlsx"
+    },
+    {
+      "id": "A05",
+      "publisher": "Meta",
+      "title": "USD list rates artifact",
+      "url": "https://scontent-atl3-2.xx.fbcdn.net/v/t39.8562-6/829311379_1537421421402610_366484812346475911_n.csv",
+      "source_version": "effective 2026-10-01; retrieved 2026-10-27; signed query URL decoded from Meta redirect",
+      "sha256": "3e996b56a86d9e7f70a9cfded896c8f39a19cb0e88683ed06b28f191856c9260",
+      "format_note": "XLSX/ZIP payload despite .csv suffix",
+      "archive": "downloads/meta-whatsapp-usd-rates-2026-10-01.xlsx"
+    },
+    {
+      "id": "A06",
+      "publisher": "Twilio",
+      "title": "United Arab Emirates SMS Guidelines",
+      "url": "https://www.twilio.com/en-us/guidelines/ae/sms",
+      "source_version": "live guidance accessed 2026-10-27; no visible revision date",
+      "supports": "Registered alphanumeric sender requirement; one-way limitations; domestic promotional restrictions; URL sensitivity"
+    },
+    {
+      "id": "A07",
+      "publisher": "Twilio Help Center",
+      "title": "How to Register your Alphanumeric Sender ID in UAE",
+      "url": "https://help.twilio.com/articles/360046382293",
+      "source_version": "live help article accessed 2026-10-27; no visible revision date; fees effective 2025-01-01",
+      "supports": "New-registration hold, documents, domestic/international categories, USD 225 setup and USD 115 monthly international sender fees",
+      "limitation": "Vendor guidance; hold and fees require written reconfirmation."
+    },
+    {
+      "id": "G01",
+      "title": "Member States",
+      "publisher": "Cooperation Council for the Arab States of the Gulf — Secretariat General",
+      "url": "https://www.gcc-sg.org/en/AboutUs/MemberStates/Pages/default.aspx",
+      "retrieved": "2026-10-27",
+      "supports": "Official six-member scope: UAE, Bahrain, Saudi Arabia, Oman, Qatar and Kuwait.",
+      "limitations": "Geography only; no commercial-market evidence."
+    },
+    {
+      "id": "G02",
+      "title": "Business Demography Statistics 2024",
+      "publisher": "Saudi General Authority for Statistics",
+      "url": "https://www.stats.gov.sa/documents/20117/2435267/Business%2BDemography%2B2024%2BEN.pdf/7e34c0d6-904a-f02d-5ff0-19efdeaca37b?t=1767155572295",
+      "retrieved": "2026-10-27",
+      "supports": "1.022m active enterprises; activity distribution/counts and new/closed enterprise indicators.",
+      "limitations": "Enterprises are not merchant locations; broad ISIC activities do not isolate target workflows."
+    },
+    {
+      "id": "G03",
+      "title": "Structural Business Statistics for Wholesale and Retail Trade Activities 2024",
+      "publisher": "Saudi General Authority for Statistics",
+      "url": "https://www.stats.gov.sa/documents/20117/2435267/Wholesale%2Band%2BRetail%2BTrade%2BActivities%2B2024.EN%2B%282%29.pdf/e6b44df8-f707-5091-ab09-48ebbc3fd0bb?t=1767071812702",
+      "retrieved": "2026-10-27",
+      "supports": "SAR919bn wholesale/retail operating revenue; SAR410.3bn retail excluding vehicles; SAR203.6bn motor vehicle sale/repair.",
+      "limitations": "Revenue breadth is not software demand, outlet count or addressable TAM."
+    },
+    {
+      "id": "G04",
+      "title": "Monsha'at Reports",
+      "publisher": "Small and Medium Enterprises General Authority (Monsha'at)",
+      "url": "https://monshaat.gov.sa/en/monshaat-reports",
+      "retrieved": "2026-10-27",
+      "supports": "Official sector-report catalogue covers wholesale/retail, accommodation/food and other services, including technology context.",
+      "limitations": "Listed sector reports vary in age; catalogue does not establish current merchant counts or product demand."
+    },
+    {
+      "id": "G05",
+      "title": "MCIT Showcases Milestones of the SMEs Go Digital Program",
+      "publisher": "Qatar Ministry of Communications and Information Technology",
+      "url": "https://www.mcit.gov.qa/en/news/mcit-showcases-milestones-of-the-smes-go-digital-program-in-accelerating-sme-digital-transformation",
+      "retrieved": "2026-10-27",
+      "supports": "Programme sector scope; 173 SMEs onboarded, 94 matchmaking sessions, 59 providers and 30 adopted digital solutions as reported for 2025.",
+      "limitations": "Programme outputs, not national adoption or willingness-to-pay."
+    },
+    {
+      "id": "G06",
+      "title": "The National E-commerce Strategy",
+      "publisher": "Oman Ministry of Transport, Communications and Information Technology",
+      "url": "https://www.mtcit.gov.om/media-4/projects-initiatives-12/program-89/the-national-e-commerce-strategy-1298",
+      "retrieved": "2026-10-27",
+      "supports": "Official strategy pillars include SME enablement, payments, logistics, regulation, skills and digital commerce.",
+      "limitations": "Policy intent; no target-sector demand or merchant purchasing evidence."
+    },
+    {
+      "id": "G07",
+      "title": "National Digital Economy Strategy 2025",
+      "publisher": "Bahrain Information & eGovernment Authority",
+      "url": "https://www.iga.gov.bh/Media/Agencies/National%20Digital%20Economy%20Strategy.pdf",
+      "retrieved": "2026-10-27",
+      "supports": "Official strategy includes digital solutions for SMEs among transformative initiatives.",
+      "limitations": "Policy direction; no merchant count, budget or adoption evidence."
+    },
+    {
+      "id": "G08",
+      "title": "Salla Plans and Unified Commerce for Retail",
+      "publisher": "Salla",
+      "url": "https://salla.com/en/plans/",
+      "retrieved": "2026-10-27",
+      "supports": "First-party Saudi commerce plans, order/payment features and pricing; retail proposition links online and physical retail/POS.",
+      "limitations": "Vendor claims; entitlements can change; no proof of merchant outcomes or neutral handoff interoperability."
+    },
+    {
+      "id": "G09",
+      "title": "Zid Pricing",
+      "publisher": "Zid",
+      "url": "https://zid.sa/en/pricing/",
+      "retrieved": "2026-10-27",
+      "supports": "First-party Saudi pricing and advertised e-commerce, POS, WhatsApp, inventory/branch and API features by tier.",
+      "limitations": "Promotions/entitlements can change; integration and partner rights require confirmation."
+    },
+    {
+      "id": "G10",
+      "title": "Fresha Pricing and Product Scope",
+      "publisher": "Fresha",
+      "url": "https://www.fresha.com/pricing",
+      "retrieved": "2026-10-27",
+      "supports": "Bookings, reminders, deposits/prepayment, client management, team calendars and supported beauty/wellness categories.",
+      "limitations": "First-party global page; does not verify country-specific GCC contracting, availability or price."
+    },
+    {
+      "id": "G11",
+      "title": "Queueing Solution & Service Intelligence Pricing",
+      "publisher": "Qminder",
+      "url": "https://www.qminder.com/pricing/",
+      "retrieved": "2026-10-27",
+      "supports": "Queue/check-in, messaging, appointments, analytics, API/webhooks, security scope and public USD annual prices.",
+      "limitations": "Global first-party pricing, not a GCC local-currency offer; hardware, implementation and messaging may add cost."
+    },
+    {
+      "id": "G12",
+      "title": "Queberry Queue Management",
+      "publisher": "Queberry",
+      "url": "https://queberry.com/",
+      "retrieved": "2026-10-27",
+      "supports": "First-party UAE/regional queueing, WhatsApp, signage and analytics positioning.",
+      "limitations": "No official public price or independently verified outcomes."
+    },
+    {
+      "id": "G13",
+      "title": "Foodics UAE Pricing and Digital Receipt Integration",
+      "publisher": "Foodics",
+      "url": "https://developers.foodics.com/guides/digital_receipt_integration.html",
+      "retrieved": "2026-10-27",
+      "supports": "OAuth and customer-order webhook receipt path; combined with documented UAE commercial presence already reviewed in market workstream.",
+      "limitations": "Does not prove custom print-template QR, all-order coverage or kitchen-ready events; pricing is on a separate first-party page."
+    },
+    {
+      "id": "G14",
+      "title": "Annual Dubai Gastronomy Industry Report 2024",
+      "publisher": "Dubai Department of Economy and Tourism",
+      "url": "https://www.dubaidet.gov.ae/en/newsroom/press-releases/dubai-gastronomy-industry-report-2024",
+      "retrieved": "2026-10-27",
+      "supports": "Official Dubai restaurant-licence, dining-frequency, tourism and food-service activity signals used in existing market analysis.",
+      "limitations": "Restaurant licences are not active café/QSR locations; consumer survey does not show merchant willingness-to-pay."
+    },
+    {
+      "id": "G15",
+      "title": "86.7% Completion Rate for the National E-Commerce Plan (2022–2027)",
+      "publisher": "Oman Ministry of Commerce, Industry and Investment Promotion",
+      "url": "https://www.tejarah.gov.om/en/media/news/tgw4zkw3zcmgtnmpbckhgpdr",
+      "retrieved": "2026-10-27",
+      "supports": "Official report of 19,260 licensed e-commerce activities during stated 2024 window and 412 Maroof Oman verified stores.",
+      "limitations": "Activity/licence definition and stock-versus-flow interpretation are unclear; figures are not target merchant locations."
+    },
+    {
+      "id": "C01",
+      "publisher": "Saudi Data & AI Authority (SDAIA)",
+      "title": "Personal Data Protection Law",
+      "url": "https://sdaia.gov.sa/en/SDAIA/about/Documents/PersonalDataProtectionLaw.pdf",
+      "accessed": "2026-10-27",
+      "supported_fact": "Saudi PDPL controller duties and Article 29 conditions for transfers outside Kingdom.",
+      "uncertainty": "Entity-specific scope, legal basis and exceptions require Saudi counsel."
+    },
+    {
+      "id": "C02",
+      "publisher": "Saudi Data & AI Authority / National Data Management Office",
+      "title": "Regulation on Personal Data Transfer outside the Kingdom (official knowledge-center text)",
+      "url": "https://dgp.sdaia.gov.sa/wps/portal/pdp/knowledgecenter/details/RegulationonPersonalDataTransferOutsidetheKingdom/",
+      "accessed": "2026-10-27",
+      "supported_fact": "Articles 2–7 cover transfer purposes, adequacy assessment, safeguards/exemptions, onward transfers and specified risk-assessment cases.",
+      "uncertainty": "Arabic official portal text verified; current adequacy list and chosen safeguard must be checked for each vendor destination."
+    },
+    {
+      "id": "C03",
+      "publisher": "Saudi Zakat, Tax and Customs Authority (ZATCA)",
+      "title": "E-Invoicing Implementation Resolution — controls, requirements and technical specifications",
+      "url": "https://zatca.gov.sa/en/E-Invoicing/Introduction/LawsAndRegulations/Documents/20230519_E-Invoicing%20Implementation%20Resolution%20English.pdf",
+      "accessed": "2026-10-27",
+      "supported_fact": "Simplified electronic invoices require ZATCA-specified QR; compliant solution generates invoice fields and QR.",
+      "uncertainty": "Arabic text controls on discrepancy; taxpayer wave and POS implementation need merchant tax adviser."
+    },
+    {
+      "id": "C04",
+      "publisher": "Saudi Communications, Space & Technology Commission (CST)",
+      "title": "Regulations of the Provision of the Short Messaging Service SMS",
+      "url": "https://www.cst.gov.sa/en/regulations-and-licenses/regulations/Document-1560",
+      "accessed": "2026-10-27",
+      "supported_fact": "2024 SMS service regulation and permit framework; service covers provider/customer-directed promotional and informational messaging.",
+      "uncertainty": "Does not itself prove merchant sender-name approval or platform exemption; confirm with permitted provider/CST."
+    },
+    {
+      "id": "C05",
+      "publisher": "Oman Ministry of Transport, Communications and Information Technology (MTCIT)",
+      "title": "Executive Regulations of the Personal Data Protection Law — Ministerial Decision 34/2024",
+      "url": "https://mtcit.gov.om/library-3/legislations-policies-8/regulations-72/executive-regulations-of-the-personal-data-protection-law-1035",
+      "accessed": "2026-10-27",
+      "supported_fact": "Controller/processor duties, Article 5 permits, child data, breach, DPO, marketing and overseas-transfer controls under Royal Decree 6/2022.",
+      "uncertainty": "Permit and transfer requirements must be applied to actual data classes and processors."
+    },
+    {
+      "id": "C06",
+      "publisher": "Bahrain Personal Data Protection Authority",
+      "title": "Order concerning countries and territories with adequate protection and transfer authorization",
+      "url": "https://www.pdp.gov.bh/assets/pdf/executive-decisions/eng/trans-order-countries-and-territories-with-adequate-protection-en.pdf",
+      "accessed": "2026-10-27",
+      "supported_fact": "Transfers outside listed adequate territories can require case-by-case Authority authorization; includes group-transfer process.",
+      "uncertainty": "Check current adequate-country record and any later orders at launch."
+    },
+    {
+      "id": "C07",
+      "publisher": "Qatar National Cyber Security Agency (NCSA)",
+      "title": "Guidance Hub for Regulated Entities — PDPPL",
+      "url": "https://ncsa.gov.qa/en/pages/guidance-hub-for-regulated-entities",
+      "accessed": "2026-10-27",
+      "supported_fact": "Law 13/2016 PDPPL applies to electronically processed personal data; official controller, processor, privacy-by-design, DPIA, breach, rights and direct-marketing guidance.",
+      "uncertainty": "Organization-specific measures and cross-border position require local assessment."
+    },
+    {
+      "id": "C08",
+      "publisher": "Kuwait Communication and Information Technology Regulatory Authority (CITRA)",
+      "title": "Decision 26/2024 issuing Data Privacy Protection Regulation",
+      "url": "https://www.citra.gov.kw/sites/ar/Pages/DecisionsDetails.aspx?id=6",
+      "accessed": "2026-10-27",
+      "supported_fact": "Decision 26/2024 issues current regulation and repeals Decision 42/2021 and amendments.",
+      "uncertainty": "CITRA statutory/regulatory scope and interaction with other Kuwaiti laws need counsel; do not describe as blanket omnibus PDPL."
+    },
+    {
+      "id": "C09",
+      "publisher": "Stripe",
+      "title": "Global availability",
+      "url": "https://stripe.com/global",
+      "accessed": "2026-10-27",
+      "supported_fact": "UAE is listed for Stripe business account support; other five GCC states are not listed.",
+      "uncertainty": "Availability and product scope can change; recheck at contracting."
+    },
+    {
+      "id": "C10",
+      "publisher": "Stripe Support",
+      "title": "Requirements to open a Stripe account in another country",
+      "url": "https://support.stripe.com/questions/requirements-to-open-a-stripe-account-in-another-country",
+      "accessed": "2026-10-27",
+      "supported_fact": "Supported foreign-country account needs same-country legal entity, tax ID, physical location and physical bank account, plus other verification items.",
+      "uncertainty": "Underwriting and product eligibility remain account-specific."
+    },
+    {
+      "id": "C11",
+      "publisher": "Apple Developer",
+      "title": "Getting Started with Apple Wallet",
+      "url": "https://developer.apple.com/wallet/get-started/",
+      "accessed": "2026-10-27",
+      "supported_fact": "PassKit pass distribution/signing model and requirement to test barcode scanner hardware.",
+      "uncertainty": "Page does not promise every pass feature on every GCC device/account."
+    },
+    {
+      "id": "C12",
+      "publisher": "Google Wallet Help",
+      "title": "Supported countries for Google Wallet and tap to pay",
+      "url": "https://support.google.com/wallet/answer/12060037?hl=en",
+      "accessed": "2026-10-27",
+      "supported_fact": "Country selector includes all six GCC states; Wallet app can store passes/cards while specific items and payment methods vary by country, device and partner.",
+      "uncertainty": "Country listing is not issuer, bank, pass-type or production-publishing approval."
+    },
+    {
+      "id": "C13",
+      "publisher": "Apple Developer",
+      "title": "Complying with regional regulations",
+      "url": "https://developer.apple.com/documentation/passkit/complying-with-regional-regulations",
+      "accessed": "2026-10-27",
+      "supported_fact": "Saudi domestic debit requires mada support; UAE domestic debit/prepaid requires Jaywan support; PSP support must be confirmed.",
+      "uncertainty": "Payment acceptance still depends on merchant PSP, bank, device and card."
+    },
+    {
+      "id": "C14",
+      "publisher": "SIX Group — ISO 4217 Maintenance Agency",
+      "title": "Current Currency & Funds — List One",
+      "url": "https://www.six-group.com/en/products-services/financial-information/market-reference-data/data-standards.html",
+      "accessed": "2026-10-27",
+      "supported_fact": "Official current ISO 4217 code and minor-unit list: AED/SAR/QAR use 2; BHD/KWD/OMR use 3.",
+      "uncertainty": "Recheck current XML/XLS during implementation upgrades."
+    },
+    {
+      "id": "C15",
+      "publisher": "Meta for Developers",
+      "title": "WhatsApp Business Platform pricing and country calling-code market mapping",
+      "url": "https://developers.facebook.com/documentation/business-messaging/whatsapp/pricing",
+      "accessed": "2026-10-27",
+      "supported_fact": "Effective-date rate-card model and market mapping; local archived AED workbook supplies exact 2026-10-01 GCC rates.",
+      "uncertainty": "Rate cards are mutable; Bahrain is mapped to workbook region rather than a named row, so revalidate mapping before billing."
+    },
+    {
+      "id": "C16",
+      "publisher": "Google for Developers",
+      "title": "Generic Private Pass overview",
+      "url": "https://developers.google.com/wallet/generic-private-pass",
+      "accessed": "2026-10-27",
+      "supported_fact": "Sensitive-data passes need explicit Google permission, verification and extra privacy review.",
+      "uncertainty": "Approval does not establish compliance with local health-data law."
+    },
+    {
+      "id": "R01",
+      "publisher": "WebKit",
+      "title": "Web Push for Web Apps on iOS and iPadOS",
+      "url": "https://webkit.org/blog/13878/web-push-for-web-apps-on-ios-and-ipados/",
+      "supports": "Home Screen web app push and permission conditions; QR page alone does not imply background alert entitlement.",
+      "accessed": "2026-10-27"
+    },
+    {
+      "id": "R02",
+      "publisher": "Journal of Marketing Research and author university repository",
+      "title": "The Goal Gradient Hypothesis Resurrected",
+      "url": "https://drupalgsb-dev.cc.columbia.edu/sites/default/files-efs/pubfiles/1200/goalgradient.pdf",
+      "supports": "2006 cafe reward research on goal proximity and purchase acceleration; not a UAE profit estimate.",
+      "accessed": "2026-10-27"
+    },
+    {
+      "id": "R03",
+      "publisher": "Journal of Consumer Research",
+      "title": "The Endowed Progress Effect",
+      "url": "https://academic.oup.com/jcr/article-abstract/32/4/504/1787425",
+      "supports": "Artificial initial progress with unchanged remaining requirements can affect persistence; moderators and context matter.",
+      "accessed": "2026-10-27"
+    },
+    {
+      "id": "R04",
+      "publisher": "Marketing Science",
+      "title": "The Design and Targeting of Compliance Promotions",
+      "url": "https://pubsonline.informs.org/doi/10.1287/mksc.2022.1420",
+      "supports": "Participation selection, randomized promotion evaluation and incremental margin after reward costs.",
+      "accessed": "2026-10-27"
+    },
+    {
+      "id": "R05",
+      "publisher": "OWASP",
+      "title": "API Broken Object Level Authorization",
+      "url": "https://wstg.owasp.org/latest/4-Web_Application_Security_Testing/12-API_Testing/02-API_Broken_Object_Level_Authorization/",
+      "supports": "Object authorization across APIs; opaque identifiers do not replace access controls.",
+      "accessed": "2026-10-27"
+    },
+    {
+      "id": "R06",
+      "publisher": "W3C",
+      "title": "Web Content Accessibility Guidelines 2.2",
+      "url": "https://www.w3.org/TR/WCAG22/",
+      "supports": "Accessibility acceptance reference; testing target is proposed, not certification.",
+      "accessed": "2026-10-27"
+    },
+    {
+      "id": "R07",
+      "publisher": "Stripe",
+      "title": "UAE Pricing and Fees",
+      "url": "https://stripe.com/ae/pricing",
+      "supports": "Domestic payment processing 2.9 percent plus AED1 and recurring Billing 0.7 percent; one-off invoices excluded from Billing volume.",
+      "accessed": "2026-10-27"
+    },
+    {
+      "id": "R08",
+      "publisher": "Supabase",
+      "title": "Pricing and Fees",
+      "url": "https://supabase.com/pricing",
+      "supports": "Pro starting price, included project/compute credit and separately priced PITR; not a capacity guarantee.",
+      "accessed": "2026-10-27"
+    },
+    {
+      "id": "R09",
+      "publisher": "Render",
+      "title": "Production Rails Hosting Architecture and Scaling Guide",
+      "url": "https://render.com/articles/production-rails-hosting-guide",
+      "supports": "September 2026 published example with US$7 web and US$7 worker processes; reference price only.",
+      "accessed": "2026-10-27"
+    },
+    {
+      "id": "R10",
+      "publisher": "Loopy Loyalty",
+      "title": "Use Loopy Loyalty as a Managed Service",
+      "url": "https://docs.loopyloyalty.com/en/articles/1466693-use-loopy-loyalty-as-a-managed-service-for-your-local-businesses",
+      "supports": "Managed-service setup and recurring charging permitted; not an automatic full white-label entitlement.",
+      "accessed": "2026-10-27"
+    },
+    {
+      "id": "R11",
+      "publisher": "PassKit",
+      "title": "Introduction to PassKit Partnerships",
+      "url": "https://help.passkit.com/en/articles/11830285-introduction-to-passkit-partnerships",
+      "supports": "Integration/referral paths distinguished from resale; vendor says no reseller program.",
+      "accessed": "2026-10-27"
+    },
+    {
+      "id": "R12",
+      "publisher": "Google for Developers",
+      "title": "Trigger Push Notifications for Loyalty Cards",
+      "url": "https://developers.google.com/wallet/retail/loyalty-cards/use-cases/trigger-push-notifications",
+      "supports": "Loyalty-specific notification flags, limits, permissions and nearby behavior.",
+      "accessed": "2026-10-27"
+    },
+    {
+      "id": "R13",
+      "publisher": "MIT OpenCourseWare",
+      "title": "Introduction to Manufacturing Systems Queues",
+      "url": "https://ocw.mit.edu/courses/2-854-introduction-to-manufacturing-systems-fall-2016/5d3e9532c2ff6e156d48e41f9bd9576f_MIT2_854F16_Queueing.pdf",
+      "supports": "Steady-state Little law and capacity constraints; visibility alone does not add preparation capacity.",
+      "accessed": "2026-10-27"
+    },
+    {
+      "id": "R14",
+      "publisher": "Stripe Support",
+      "title": "What Types of Businesses Can Open a UAE Account",
+      "url": "https://support.stripe.com/questions/what-types-of-businesses-can-open-a-uae-account",
+      "supports": "UAE business licence/permit and eligible business structures; no assumed account approval.",
+      "accessed": "2026-10-27"
+    },
+    {
+      "id": "R15",
+      "publisher": "Loopy Loyalty Help Center",
+      "title": "What Are Your Pricing Plans",
+      "url": "https://docs.loopyloyalty.com/en/articles/803301-what-are-your-pricing-plans",
+      "supports": "Staff limits, higher-tier data export and unique enrollment; costs and fair-use constraints.",
+      "accessed": "2026-10-27"
+    }
+  ]
+}

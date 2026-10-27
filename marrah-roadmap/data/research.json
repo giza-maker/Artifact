@@ -1,0 +1,1064 @@
+{
+  "asOf": "2026-10-27",
+  "countries": [
+    {
+      "id": "sa",
+      "name": {
+        "en": "Saudi Arabia",
+        "ar": "المملكة العربية السعودية"
+      },
+      "currency": "SAR",
+      "decimals": 2,
+      "timezone": "Asia/Riyadh",
+      "priority": {
+        "en": "[Judgment] Strong discovery candidate for specialty-retail collection; QSR and express services remain eligible. Not a selected exclusive market.",
+        "ar": "[حكم مقترح] مرشح قوي للاستكشاف في استلام طلبات التجزئة المتخصصة، مع بقاء المطاعم السريعة والخدمات السريعة مؤهلة. ليست سوقاً حصرية مختارة."
+      },
+      "requirements": [
+        {
+          "text": {
+            "en": "Map PDPL controller/processor roles and every transfer outside Saudi Arabia.",
+            "ar": "تحديد أدوار المتحكم والمعالج بموجب نظام حماية البيانات الشخصية وكل نقل خارج المملكة."
+          },
+          "sources": [
+            "C01",
+            "C02"
+          ]
+        },
+        {
+          "text": {
+            "en": "Keep tracking QR separate from ZATCA fiscal QR; confirm CST sender/provider permissions.",
+            "ar": "فصل رمز تتبع الطلب عن رمز الفاتورة الضريبي لهيئة الزكاة والضريبة والجمارك، وتأكيد تصاريح المرسل والمزود لدى هيئة الاتصالات."
+          },
+          "sources": [
+            "C03",
+            "C04"
+          ]
+        }
+      ],
+      "gate": {
+        "en": "[Proposal] Named merchant willing to pay, supported connector, Arabic operations, transfer and tax-QR decisions, permitted channel and verified price.",
+        "ar": "[مقترح] تاجر محدد مستعد للدفع، وموصل مدعوم، وتشغيل باللغة العربية، وقرارات واضحة لنقل البيانات ورمز الفاتورة الضريبي، وقناة مسموحة، وسعر مؤكد."
+      }
+    },
+    {
+      "id": "ae",
+      "name": {
+        "en": "United Arab Emirates",
+        "ar": "الإمارات العربية المتحدة"
+      },
+      "currency": "AED",
+      "decimals": 2,
+      "timezone": "Asia/Dubai",
+      "priority": {
+        "en": "[Judgment] Researched QSR pickup reference and owner-led pilot candidate. Not a predetermined or exclusive launch market.",
+        "ar": "[حكم مقترح] حالة مرجعية مدروسة لاستلام المطاعم السريعة ومرشح لتجربة يقودها المالك. ليست سوق إطلاق محددة مسبقاً أو حصرية."
+      },
+      "requirements": [
+        {
+          "text": {
+            "en": "Select federal, DIFC or ADGM privacy regime from actual entity and data flow; document foreign access.",
+            "ar": "اختيار نظام الخصوصية الاتحادي أو مركز دبي المالي أو سوق أبوظبي العالمي بحسب الكيان وتدفق البيانات الفعلي، وتوثيق الوصول الخارجي."
+          },
+          "sources": [
+            "P19",
+            "P20",
+            "P21"
+          ]
+        },
+        {
+          "text": {
+            "en": "Validate sender registration, Wallet issuer/certificate ownership and commercial-account eligibility.",
+            "ar": "التحقق من تسجيل المرسل وملكية جهة إصدار وشهادة المحفظة وأهلية الحساب التجاري."
+          },
+          "sources": [
+            "P11",
+            "A01",
+            "A02",
+            "C09"
+          ]
+        }
+      ],
+      "gate": {
+        "en": "[Proposal] One operating cell with a paying merchant, anonymous-order and receipt coverage, documented sender and issuer ownership, and measured support burden.",
+        "ar": "[مقترح] حالة تشغيل واحدة مع تاجر مستعد للدفع، وتغطية للطلبات المجهولة والإيصالات، وتوثيق ملكية هوية المرسل والجهة المصدرة، وقياس عبء الدعم."
+      }
+    },
+    {
+      "id": "qa",
+      "name": {
+        "en": "Qatar",
+        "ar": "قطر"
+      },
+      "currency": "QAR",
+      "decimals": 2,
+      "timezone": "Asia/Qatar",
+      "priority": {
+        "en": "[Judgment] Partner-led retail or service discovery via SME digital channels; programme activity is not product-demand proof.",
+        "ar": "[حكم مقترح] استكشاف للتجزئة أو الخدمات عبر شريك وقنوات رقمنة المنشآت؛ نشاط البرنامج ليس دليلاً على طلب المنتج."
+      },
+      "requirements": [
+        {
+          "text": {
+            "en": "Map Law 13/2016 duties for notices, rights, marketing, processors, incidents and transfers.",
+            "ar": "تحديد التزامات القانون 13 لسنة 2016 بشأن الإشعارات والحقوق والتسويق والمعالجين والحوادث والنقل."
+          },
+          "sources": [
+            "C07"
+          ]
+        },
+        {
+          "text": {
+            "en": "Verify programme/partner eligibility, merchant stack and local contracting economics.",
+            "ar": "التحقق من أهلية البرنامج أو الشريك، ومنظومة التاجر، واقتصاديات التعاقد المحلي."
+          },
+          "sources": [
+            "G05"
+          ]
+        }
+      ],
+      "gate": {
+        "en": "[Proposal] Eligible partner, accessible merchant willing to pay, verified stack and viable local contract.",
+        "ar": "[مقترح] شريك مؤهل، وتاجر يمكن الوصول إليه ومستعد للدفع، ومنظومة تقنية مؤكدة، وعقد محلي مجدٍ."
+      }
+    },
+    {
+      "id": "om",
+      "name": {
+        "en": "Oman",
+        "ar": "عُمان"
+      },
+      "currency": "OMR",
+      "decimals": 3,
+      "timezone": "Asia/Muscat",
+      "priority": {
+        "en": "[Judgment] Retail or express-service discovery through a local digital-commerce integrator.",
+        "ar": "[حكم مقترح] استكشاف للتجزئة أو الخدمات السريعة عبر متكامل تجارة رقمية محلي."
+      },
+      "requirements": [
+        {
+          "text": {
+            "en": "Assess processing permits, marketing, overseas processors and actual data classes under RD 6/2022 and Regulation 34/2024.",
+            "ar": "تقييم تصاريح المعالجة والتسويق والمعالجين الخارجيين وفئات البيانات الفعلية بموجب المرسوم 6/2022 واللائحة 34/2024."
+          },
+          "sources": [
+            "C05"
+          ]
+        },
+        {
+          "text": {
+            "en": "Use OMR three-decimal precision; verify messaging availability and local workflow.",
+            "ar": "استخدام دقة ثلاثة منازل عشرية للريال العُماني، والتحقق من توفر الرسائل وسير العمل المحلي."
+          },
+          "sources": [
+            "C14",
+            "C15",
+            "G06"
+          ]
+        }
+      ],
+      "gate": {
+        "en": "[Proposal] Local workflow proof, permitted messaging, correct OMR billing and approved data-processing assessment.",
+        "ar": "[مقترح] إثبات سير العمل المحلي، وقناة رسائل مسموحة، وفوترة صحيحة بالريال العُماني، وتقييم معتمد لمعالجة البيانات."
+      }
+    },
+    {
+      "id": "bh",
+      "name": {
+        "en": "Bahrain",
+        "ar": "البحرين"
+      },
+      "currency": "BHD",
+      "decimals": 3,
+      "timezone": "Asia/Bahrain",
+      "priority": {
+        "en": "[Judgment] Compact partner-led discovery across retail, QSR or repeat services.",
+        "ar": "[حكم مقترح] استكشاف محدود يقوده شريك في التجزئة أو المطاعم السريعة أو الخدمات المتكررة."
+      },
+      "requirements": [
+        {
+          "text": {
+            "en": "Verify transfer-destination adequacy or required safeguards/authorization for hosting and support.",
+            "ar": "التحقق من كفاية وجهة النقل أو الضمانات أو التصريح المطلوبين للاستضافة والدعم."
+          },
+          "sources": [
+            "C06"
+          ]
+        },
+        {
+          "text": {
+            "en": "Use BHD three-decimal precision; revalidate Meta's Rest-of-Middle-East mapping before billing.",
+            "ar": "استخدام دقة ثلاثة منازل عشرية للدينار البحريني، وإعادة التحقق من تصنيف ميتا «بقية الشرق الأوسط» قبل الفوترة."
+          },
+          "sources": [
+            "C14",
+            "C15"
+          ]
+        }
+      ],
+      "gate": {
+        "en": "[Proposal] Segment and location baseline, incumbent-feature audit, verified local price and named support owner.",
+        "ar": "[مقترح] خط أساس لحجم القطاع وعدد المواقع، وتدقيق وظائف النظام القائم، وسعر محلي مؤكد، ومسؤول دعم محدد."
+      }
+    },
+    {
+      "id": "kw",
+      "name": {
+        "en": "Kuwait",
+        "ar": "الكويت"
+      },
+      "currency": "KWD",
+      "decimals": 3,
+      "timezone": "Asia/Kuwait",
+      "priority": {
+        "en": "[Judgment] Buyer and channel discovery before connector commitment; a missing market baseline creates uncertainty, not evidence for rejection.",
+        "ar": "[حكم مقترح] استكشاف المشتري والقناة قبل الالتزام بموصل؛ غياب خط أساس لحجم السوق يخلق حالة من عدم اليقين، ولا يثبت رفض السوق."
+      },
+      "requirements": [
+        {
+          "text": {
+            "en": "Assess CITRA Decision 26/2024 scope plus applicable sector and consumer rules; do not label it a blanket omnibus PDPL.",
+            "ar": "تقييم نطاق قرار هيئة الاتصالات 26/2024 والقواعد القطاعية والاستهلاكية المنطبقة؛ وعدم وصفه بقانون شامل عام لحماية البيانات."
+          },
+          "sources": [
+            "C08"
+          ]
+        },
+        {
+          "text": {
+            "en": "Use KWD three-decimal precision and recipient-market messaging cost; Meta utility base is AED0.1615 before provider costs.",
+            "ar": "استخدام دقة ثلاثة منازل عشرية للدينار الكويتي وتكلفة الرسائل حسب سوق المستلم؛ أساس ميتا لرسالة الخدمة 0.1615 درهم قبل تكلفة المزود."
+          },
+          "sources": [
+            "C14",
+            "C15",
+            "A04"
+          ]
+        }
+      ],
+      "gate": {
+        "en": "[Proposal] Merchant interviews, local POS/commerce map, permitted sender, privacy scope and workable collection terms.",
+        "ar": "[مقترح] مقابلات تجار، خريطة أنظمة البيع والتجارة المحلية، مرسل مسموح، نطاق الخصوصية وشروط تحصيل قابلة للعمل."
+      }
+    }
+  ],
+  "sectors": [
+    {
+      "id": "qsr",
+      "name": {
+        "en": "Cafe & QSR pickup",
+        "ar": "استلام المقاهي والمطاعم السريعة"
+      },
+      "fit": {
+        "en": "[Judgment] 8/10 candidate",
+        "ar": "[حكم مقترح] مرشح 8/10"
+      },
+      "workflow": {
+        "en": "Received → preparing → ready → collected; optional alert and verified reward.",
+        "ar": "مستلم ← قيد التجهيز ← جاهز ← تم الاستلام؛ تنبيه اختياري ومكافأة متحققة."
+      },
+      "boundary": {
+        "en": "POS/KDS remains authoritative; no menu ordering, kitchen routing or delivery dispatch.",
+        "ar": "يبقى نظام البيع أو شاشة المطبخ مرجعاً؛ لا طلب قوائم أو توجيه مطبخ أو توصيل."
+      },
+      "pilot": {
+        "en": "[Proposal] Paid rush-period pilot with truthful guest status and manual fallback.",
+        "ar": "[مقترح] تجربة مدفوعة في وقت الذروة بحالة صادقة للضيف وبديل يدوي."
+      },
+      "sources": [
+        "G13",
+        "M06",
+        "M07"
+      ]
+    },
+    {
+      "id": "retail",
+      "name": {
+        "en": "Specialty retail click & collect",
+        "ar": "الاستلام من متاجر التجزئة المتخصصة"
+      },
+      "fit": {
+        "en": "[Judgment] 8/10 candidate",
+        "ar": "[حكم مقترح] مرشح 8/10"
+      },
+      "workflow": {
+        "en": "Existing order → ready → customer arrival → verified collection.",
+        "ar": "طلب قائم ← جاهز ← وصول العميل ← استلام مؤكد."
+      },
+      "boundary": {
+        "en": "Inventory, reservation, payment and refunds remain in commerce/POS system.",
+        "ar": "يبقى المخزون والحجز والدفع والاسترداد في نظام التجارة أو البيع."
+      },
+      "pilot": {
+        "en": "[Proposal] Prove one Salla or Zid handoff adapter with representative data from a merchant willing to pay.",
+        "ar": "[مقترح] إثبات موصل تسليم واحد لسلة أو زد باستخدام بيانات ممثلة من تاجر مستعد للدفع."
+      },
+      "sources": [
+        "G08",
+        "G09"
+      ]
+    },
+    {
+      "id": "carwash",
+      "name": {
+        "en": "Express car wash",
+        "ar": "غسيل السيارات السريع"
+      },
+      "fit": {
+        "en": "[Judgment] 7/10 candidate",
+        "ar": "[حكم مقترح] مرشح 7/10"
+      },
+      "workflow": {
+        "en": "Waiting → called → in service → done; optional repeat-visit reward.",
+        "ar": "انتظار ← تمت المناداة ← قيد الخدمة ← مكتمل؛ مكافأة زيارة متكررة اختيارية."
+      },
+      "boundary": {
+        "en": "Not workshop management; plates are personal-data considerations.",
+        "ar": "ليس نظام إدارة ورشة؛ لوحات المركبات قد تعد بيانات شخصية."
+      },
+      "pilot": {
+        "en": "[Proposal] Observe five express sites before a bounded queue prototype.",
+        "ar": "[مقترح] مراقبة خمسة مواقع سريعة قبل نموذج أولي محدود للطابور."
+      },
+      "sources": [
+        "G03",
+        "G11",
+        "G12"
+      ]
+    },
+    {
+      "id": "beauty",
+      "name": {
+        "en": "Beauty, barber & salon",
+        "ar": "التجميل والحلاقة والصالونات"
+      },
+      "fit": {
+        "en": "[Judgment] 6/10 for loyalty; 5/10 for new scheduling",
+        "ar": "[حكم مقترح] 6/10 للولاء؛ 5/10 لجدولة جديدة"
+      },
+      "workflow": {
+        "en": "External appointment → arrival/check-in → waiting visibility → service completion.",
+        "ar": "موعد خارجي ← وصول وتسجيل ← إظهار الانتظار ← اكتمال الخدمة."
+      },
+      "boundary": {
+        "en": "Calendar, staff availability, deposits, commissions and rescheduling stay external.",
+        "ar": "تبقى المواعيد وتوفر الموظفين والعربون والعمولات وإعادة الجدولة خارجية."
+      },
+      "pilot": {
+        "en": "[Proposal] Appointment-arrival adapter only where partner exposes required facts.",
+        "ar": "[مقترح] موصل وصول للموعد فقط عندما يوفر الشريك الحقائق المطلوبة."
+      },
+      "sources": [
+        "G10"
+      ]
+    },
+    {
+      "id": "fitness",
+      "name": {
+        "en": "Boutique fitness",
+        "ar": "اللياقة البدنية المتخصصة"
+      },
+      "fit": {
+        "en": "[Judgment] 5/10 pending integration",
+        "ar": "[حكم مقترح] 5/10 بانتظار التكامل"
+      },
+      "workflow": {
+        "en": "Verify entitlement externally; record attendance separately; optionally reward visits.",
+        "ar": "التحقق من الاستحقاق خارجياً، وتسجيل الحضور بشكل منفصل، مع إمكانية مكافأة الزيارات."
+      },
+      "boundary": {
+        "en": "Attendance never proves payment, membership validity, renewal or class capacity.",
+        "ar": "الحضور لا يثبت الدفع أو صلاحية العضوية أو التجديد أو سعة الحصة."
+      },
+      "pilot": {
+        "en": "[Proposal] Connector test separating contract entitlement from visit rewards.",
+        "ar": "[مقترح] اختبار موصل يفصل استحقاق العقد عن مكافآت الزيارة."
+      },
+      "sources": [
+        "G10"
+      ]
+    },
+    {
+      "id": "clinics",
+      "name": {
+        "en": "Clinics & health services",
+        "ar": "العيادات والخدمات الصحية"
+      },
+      "fit": {
+        "en": "[Judgment] 3/10 default; held",
+        "ar": "[حكم مقترح] 3/10 افتراضياً؛ معلّق"
+      },
+      "workflow": {
+        "en": "No general-release workflow until separate clinical and privacy review.",
+        "ar": "لا سير عمل في الإصدار العام قبل مراجعة سريرية وخصوصية مستقلة."
+      },
+      "boundary": {
+        "en": "Patient identity, urgency and health data cannot use generic merchant assumptions.",
+        "ar": "لا يجوز إخضاع هوية المريض والأولوية والبيانات الصحية لافتراضات التجار العامة."
+      },
+      "pilot": {
+        "en": "[Proposal] Block enablement; collect no patient pilot data before country-specific approval.",
+        "ar": "[مقترح] حظر التفعيل وعدم جمع بيانات مرضى تجريبية قبل اعتماد خاص بالدولة."
+      },
+      "sources": [
+        "C16",
+        "G11"
+      ]
+    }
+  ],
+  "competitors": [
+    {
+      "name": "Foodics",
+      "category": {
+        "en": "Restaurant POS and integration candidate",
+        "ar": "نظام بيع للمطاعم ومرشح تكامل"
+      },
+      "price": {
+        "en": "Vendor claim: UAE AED199/375/556 monthly, billed annually; API fees and entitlements require quote.",
+        "ar": "ادعاء المزود: 199/375/556 درهماً شهرياً في الإمارات بفوترة سنوية؛ رسوم وميزات API تحتاج عرضاً."
+      },
+      "strength": {
+        "en": "Documented OAuth and customer-order webhook receipt path.",
+        "ar": "مسار موثق لـ OAuth وإيصال طلب العميل عبر webhook."
+      },
+      "gap": {
+        "en": "No proof of all anonymous orders, native receipt QR or kitchen-ready events.",
+        "ar": "لا إثبات لتغطية كل الطلبات المجهولة أو رمز الإيصال الأصلي أو أحداث جاهزية المطبخ."
+      },
+      "sources": [
+        "M06",
+        "M07",
+        "G13"
+      ]
+    },
+    {
+      "name": "Salla",
+      "category": {
+        "en": "Saudi unified commerce",
+        "ar": "تجارة موحدة سعودية"
+      },
+      "price": {
+        "en": "Vendor plans are public; current entitlement and partner/API rights require confirmation.",
+        "ar": "خطط المزود معلنة؛ الميزات الحالية وحقوق الشريك وواجهة API تحتاج تأكيداً."
+      },
+      "strength": {
+        "en": "Orders, payments and online/physical retail proposition.",
+        "ar": "طلبات ومدفوعات وربط للتجزئة الإلكترونية والفعلية."
+      },
+      "gap": {
+        "en": "Neutral handoff interoperability and merchant outcomes are unproven.",
+        "ar": "حياد تكامل التسليم ونتائج التجار غير مثبتين."
+      },
+      "sources": [
+        "G08"
+      ]
+    },
+    {
+      "name": "Zid",
+      "category": {
+        "en": "Saudi commerce and POS",
+        "ar": "تجارة ونقاط بيع سعودية"
+      },
+      "price": {
+        "en": "Vendor pricing is public; promotions, entitlements and integration rights can change.",
+        "ar": "تسعير المزود معلن؛ العروض والميزات وحقوق التكامل قابلة للتغير."
+      },
+      "strength": {
+        "en": "Advertised e-commerce, POS, WhatsApp, inventory, branch and API features.",
+        "ar": "ميزات معلنة للتجارة ونقاط البيع وواتساب والمخزون والفروع وواجهة API."
+      },
+      "gap": {
+        "en": "Incremental handoff value must be proven against enabled merchant tier.",
+        "ar": "يجب إثبات قيمة التسليم الإضافية مقارنة بباقة التاجر المفعلة."
+      },
+      "sources": [
+        "G09"
+      ]
+    },
+    {
+      "name": "Fresha",
+      "category": {
+        "en": "Beauty and wellness operations",
+        "ar": "تشغيل التجميل والعافية"
+      },
+      "price": {
+        "en": "Vendor global page; no verified GCC-local contract or price.",
+        "ar": "صفحة عالمية للمزود؛ لا عقد أو سعر خليجي محلي متحقق."
+      },
+      "strength": {
+        "en": "Bookings, reminders, payments, client records and team calendars.",
+        "ar": "حجوزات وتذكيرات ومدفوعات وسجلات عملاء وتقويمات فرق."
+      },
+      "gap": {
+        "en": "Country availability, integration rights and local economics need proof.",
+        "ar": "التوفر المحلي وحقوق التكامل والاقتصاديات المحلية تحتاج إثباتاً."
+      },
+      "sources": [
+        "G10"
+      ]
+    },
+    {
+      "name": "Qminder",
+      "category": {
+        "en": "Queue and service intelligence",
+        "ar": "إدارة الطوابير وذكاء الخدمة"
+      },
+      "price": {
+        "en": "Public USD annual vendor prices; hardware, setup and messaging may add cost.",
+        "ar": "أسعار سنوية معلنة بالدولار من المزود؛ قد تضاف الأجهزة والإعداد والرسائل."
+      },
+      "strength": {
+        "en": "Check-in, messaging, appointments, analytics and API/webhooks.",
+        "ar": "تسجيل وصول ورسائل ومواعيد وتحليلات وواجهات API وwebhooks."
+      },
+      "gap": {
+        "en": "Not a verified GCC local-currency offer.",
+        "ar": "ليس عرضاً خليجياً متحققاً بالعملة المحلية."
+      },
+      "sources": [
+        "G11"
+      ]
+    },
+    {
+      "name": "Queberry",
+      "category": {
+        "en": "Regional queue management",
+        "ar": "إدارة طوابير إقليمية"
+      },
+      "price": {
+        "en": "No official public price verified.",
+        "ar": "لا سعر رسمي معلن متحقق."
+      },
+      "strength": {
+        "en": "Vendor advertises UAE/regional queues, WhatsApp, signage and analytics.",
+        "ar": "يعلن المزود عن طوابير إقليمية وإماراتية وواتساب وشاشات وتحليلات."
+      },
+      "gap": {
+        "en": "No independently verified outcomes.",
+        "ar": "لا نتائج متحققة بشكل مستقل."
+      },
+      "sources": [
+        "G12",
+        "M12"
+      ]
+    },
+    {
+      "name": "Loopy Loyalty",
+      "category": {
+        "en": "Managed Wallet loyalty",
+        "ar": "ولاء مُدار عبر المحفظة"
+      },
+      "price": {
+        "en": "Vendor claim: US$25/69/95 monthly; limits vary by plan.",
+        "ar": "ادعاء المزود: 25/69/95 دولاراً شهرياً؛ الحدود تختلف حسب الباقة."
+      },
+      "strength": {
+        "en": "Low-code route to test loyalty before custom build.",
+        "ar": "مسار قليل البرمجة لاختبار الولاء قبل البناء المخصص."
+      },
+      "gap": {
+        "en": "Does not solve POS truth, pickup workflow or issuer-contract questions.",
+        "ar": "لا يحل حقيقة نظام البيع أو سير الاستلام أو أسئلة عقد الجهة المصدرة."
+      },
+      "sources": [
+        "M14",
+        "R10"
+      ]
+    }
+  ],
+  "phases": [
+    {
+      "id": "G0",
+      "title": {
+        "en": "Market and connector proof",
+        "ar": "إثبات السوق والموصل"
+      },
+      "eng": [
+        48,
+        84
+      ],
+      "nonEng": [
+        120,
+        210
+      ],
+      "deliverable": {
+        "en": "Evidence from a paid design partner, a viable QR and order path, and written access terms.",
+        "ar": "دليل من شريك تصميم مستعد للدفع، ومسار عملي للطلبات ورمز QR، وشروط وصول مكتوبة."
+      },
+      "gate": {
+        "en": "[Proposal] Select or reject one country-sector-connector combination.",
+        "ar": "[مقترح] اختيار أو استبعاد تركيبة واحدة تجمع الدولة والقطاع والموصل."
+      },
+      "dependency": {
+        "en": "No implementation commitment before evidence; UAE and Saudi are discovery candidates only.",
+        "ar": "لا التزام بالتنفيذ قبل توفر الدليل؛ الإمارات والسعودية مرشحتان للاستكشاف فقط."
+      }
+    },
+    {
+      "id": "G1",
+      "title": {
+        "en": "Instrumented custom pilot",
+        "ar": "تجربة مخصصة قابلة للقياس"
+      },
+      "eng": [
+        248,
+        392
+      ],
+      "nonEng": [
+        76,
+        124
+      ],
+      "deliverable": {
+        "en": "Scoped guest access, authenticated staff, accurate states, fallback and restore evidence.",
+        "ar": "وصول ضيف محدود، موظفون موثقون، حالات دقيقة، بديل ودليل استعادة."
+      },
+      "gate": {
+        "en": "[Proposal] Paid field result with safe operation and usable evidence.",
+        "ar": "[مقترح] نتيجة ميدانية مدفوعة بتشغيل آمن ودليل قابل للاستخدام."
+      },
+      "dependency": {
+        "en": "Depends on G0 cell, access terms and privacy decision.",
+        "ar": "يعتمد على خلية G0 وشروط الوصول وقرار الخصوصية."
+      }
+    },
+    {
+      "id": "G2",
+      "title": {
+        "en": "One-connector paid pickup MVP",
+        "ar": "منتج أولي مدفوع للاستلام بموصل واحد"
+      },
+      "eng": [
+        364,
+        592
+      ],
+      "nonEng": [
+        0,
+        0
+      ],
+      "deliverable": {
+        "en": "Durable intake, reconciliation, supported QR path, merchant-account controls and measured acceptance.",
+        "ar": "استقبال موثوق للبيانات، وتسوية، ومسار مدعوم لرمز QR، وضوابط على مستوى حساب التاجر، وقياس لمعدل القبول."
+      },
+      "gate": {
+        "en": "[Proposal] Reliable paid pickup on one supported connector.",
+        "ar": "[مقترح] استلام مدفوع موثوق عبر موصل واحد مدعوم."
+      },
+      "dependency": {
+        "en": "Depends on passing G1 and representative provider fixtures.",
+        "ar": "يعتمد على اجتياز G1 وبيانات اختبار ممثلة من المزود."
+      }
+    },
+    {
+      "id": "G3",
+      "title": {
+        "en": "Wallet loyalty",
+        "ar": "الولاء عبر المحفظة"
+      },
+      "eng": [
+        276,
+        432
+      ],
+      "nonEng": [
+        28,
+        52
+      ],
+      "deliverable": {
+        "en": "Verified earn, redeem and refund ledger plus evidence from Apple and Google devices.",
+        "ar": "سجل مؤكد لكسب المكافآت واستبدالها واستردادها، مع أدلة اختبار على أجهزة Apple وGoogle."
+      },
+      "gate": {
+        "en": "[Proposal] Approved issuer model and atomic redemption that remains consistent through refunds.",
+        "ar": "[مقترح] نموذج معتمد للجهة المصدرة، وتنفيذ الاستبدال كمعاملة واحدة غير قابلة للتجزئة، مع الحفاظ على الاتساق عند رد المبالغ."
+      },
+      "dependency": {
+        "en": "Apple merchant/brand issuer, Pass Type ID and certificate ownership must be contracted; may run parallel with G4.",
+        "ar": "يجب حسم تعاقدياً ملكية جهة الإصدار لدى Apple للتاجر أو العلامة، ومعرف نوع البطاقة، والشهادة؛ ويمكن تنفيذ ذلك بالتوازي مع G4."
+      }
+    },
+    {
+      "id": "G4",
+      "title": {
+        "en": "Operations hardening and paid beta",
+        "ar": "تعزيز جاهزية التشغيل ونسخة تجريبية مدفوعة"
+      },
+      "eng": [
+        224,
+        368
+      ],
+      "nonEng": [
+        92,
+        164
+      ],
+      "deliverable": {
+        "en": "Permitted channel, spend controls, recovery drill, RTL, device and security evidence.",
+        "ar": "قناة مسموحة، وضوابط إنفاق، وتمرين استعادة، وأدلة على دعم اتجاه RTL والأجهزة والأمن."
+      },
+      "gate": {
+        "en": "[Proposal] Beta with paying merchants; a pickup-only release may pass without Wallet.",
+        "ar": "[مقترح] نسخة تجريبية مع تجار مستعدين للدفع؛ ويمكن اعتماد إصدار للاستلام فقط من دون المحفظة."
+      },
+      "dependency": {
+        "en": "Requires provider onboarding, sender permissions and versioned rate cards; may run parallel with G3.",
+        "ar": "يتطلب تهيئة المزود وتصاريح المرسل وبطاقات أسعار مؤرخة؛ ويمكن تنفيذه بالتوازي مع G3."
+      }
+    },
+    {
+      "id": "G5",
+      "title": {
+        "en": "Multi-location and second connector",
+        "ar": "تعدد المواقع والموصل الثاني"
+      },
+      "eng": [
+        176,
+        288
+      ],
+      "nonEng": [
+        20,
+        36
+      ],
+      "deliverable": {
+        "en": "Repeated activation economics, branch permissions and justified second connector.",
+        "ar": "اقتصاديات تفعيل متكررة وصلاحيات فروع وموصل ثانٍ مبرر."
+      },
+      "gate": {
+        "en": "[Proposal] Expand only after repeatable paid activation and support economics.",
+        "ar": "[مقترح] التوسع فقط بعد تفعيل مدفوع قابل للتكرار واقتصاديات دعم مثبتة."
+      },
+      "dependency": {
+        "en": "Depends on paying beta evidence, not calendar ambition.",
+        "ar": "يعتمد على دليل النسخة التجريبية الدافعة لا الطموح الزمني."
+      }
+    },
+    {
+      "id": "later",
+      "title": {
+        "en": "Later experiments",
+        "ar": "تجارب لاحقة"
+      },
+      "eng": [
+        120,
+        208
+      ],
+      "nonEng": [
+        124,
+        200
+      ],
+      "deliverable": {
+        "en": "Only experiments whose triggers, owners and stop rules are explicit.",
+        "ar": "تجارب فقط بمحفزات ومسؤولين وقواعد توقف صريحة."
+      },
+      "gate": {
+        "en": "[Proposal] Fund one evidence-backed option at a time.",
+        "ar": "[مقترح] تمويل خيار واحد مدعوم بالدليل كل مرة."
+      },
+      "dependency": {
+        "en": "Requires stable core metrics and named business case.",
+        "ar": "يتطلب مقاييس أساسية مستقرة وحالة عمل محددة."
+      }
+    }
+  ],
+  "innovations": [
+    {
+      "title": {
+        "en": "Calibrated ready-time ranges",
+        "ar": "نطاقات زمن جاهزية معايرة"
+      },
+      "hypothesis": {
+        "en": "Untested: honest time ranges may reduce status questions better than a fixed countdown.",
+        "ar": "غير مختبر: قد تقلل النطاقات الزمنية الصادقة استفسارات الحالة أكثر من العد التنازلي الثابت."
+      },
+      "test": {
+        "en": "After G1 produces reliable timestamps, compare range coverage and status questions against status-only tracking.",
+        "ar": "بعد أن توفر G1 طوابع زمنية موثوقة، تُقارن تغطية النطاقات واستفسارات الحالة بتتبع الحالة فقط."
+      },
+      "guardrail": {
+        "en": "Publish calibration by branch; stop if errors increase staff work, remakes or refunds.",
+        "ar": "تُنشر دقة المعايرة لكل فرع، وتُوقف التجربة إذا زادت أخطاء التقدير أو عبء الموظفين أو إعادة الطلبات أو المبالغ المستردة."
+      },
+      "stage": {
+        "en": "[Proposal] Later, after G1 timestamp quality",
+        "ar": "[مقترح] لاحقاً، بعد إثبات جودة الطوابع الزمنية في G1"
+      }
+    },
+    {
+      "title": {
+        "en": "Pickup zone or shelf guidance",
+        "ar": "إرشادات منطقة أو رف الاستلام"
+      },
+      "hypothesis": {
+        "en": "Untested: clear collection guidance may shorten handoff time and reduce wrong pickups.",
+        "ar": "غير مختبر: قد تقلل إرشادات الاستلام الواضحة زمن التسليم وعمليات الاستلام الخاطئة."
+      },
+      "test": {
+        "en": "At G1, trial signs and page copy, then compare median handoff time and pickup mistakes with the current flow.",
+        "ar": "في G1، تُختبر اللافتات ونص الصفحة، ثم يُقارن وسيط زمن التسليم وأخطاء الاستلام بالمسار الحالي."
+      },
+      "guardrail": {
+        "en": "Use no new hardware until signs prove value; expose no customer or order details on shared shelves.",
+        "ar": "لا تُضاف أجهزة قبل إثبات قيمة اللافتات، ولا تُعرض بيانات العميل أو الطلب على الرفوف المشتركة."
+      },
+      "stage": {
+        "en": "[Proposal] G1",
+        "ar": "[مقترح] G1"
+      }
+    },
+    {
+      "title": {
+        "en": "Off-peak reward eligibility",
+        "ar": "أهلية المكافآت خارج أوقات الذروة"
+      },
+      "hypothesis": {
+        "en": "Untested: rewards limited to spare-capacity periods may lift contribution without displacing full-margin demand.",
+        "ar": "غير مختبر: قد ترفع المكافآت المقصورة على فترات الطاقة الفائضة هامش المساهمة من دون إزاحة الطلب كامل الهامش."
+      },
+      "test": {
+        "en": "After G3 verifies paid eligibility, compare contribution margin and order substitution with a matched no-reward holdout.",
+        "ar": "بعد أن تتحقق G3 من أهلية الشراء المدفوع، يُقارن هامش المساهمة وإحلال الطلبات بمجموعة ضابطة مماثلة بلا مكافآت."
+      },
+      "guardrail": {
+        "en": "Set a reward-cost cap; use purchase and capacity facts only, with no hidden customer profiling.",
+        "ar": "يوضع سقف لتكلفة المكافآت، وتُستخدم حقائق الشراء والطاقة فقط من دون تنميط خفي للعملاء."
+      },
+      "stage": {
+        "en": "[Proposal] G3 experiment",
+        "ar": "[مقترح] تجربة في G3"
+      }
+    },
+    {
+      "title": {
+        "en": "Honest welcome progress",
+        "ar": "تقدم ترحيبي صادق"
+      },
+      "hypothesis": {
+        "en": "Untested: a clearly labelled welcome bonus may improve reward completion with the same paid requirements.",
+        "ar": "غير مختبر: قد تحسن مكافأة ترحيبية واضحة إكمال المكافأة مع بقاء متطلبات الشراء المدفوع نفسها."
+      },
+      "test": {
+        "en": "After G3 ledger checks pass, compare completion and incremental contribution with plain progress at equal reward cost.",
+        "ar": "بعد اجتياز فحوص سجل G3، يُقارن الإكمال وهامش المساهمة الإضافي بعرض تقدم عادي عند تكلفة مكافأة متساوية."
+      },
+      "guardrail": {
+        "en": "Record bonus progress separately; never invent a purchase or raise reward liability beyond the test cap.",
+        "ar": "يُسجل التقدم الإضافي منفصلاً، ولا تُختلق عملية شراء أو تتجاوز التزامات المكافآت سقف التجربة."
+      },
+      "stage": {
+        "en": "[Proposal] G3 experiment",
+        "ar": "[مقترح] تجربة في G3"
+      }
+    },
+    {
+      "title": {
+        "en": "Adaptive one-channel notifications",
+        "ar": "إشعارات متكيفة عبر قناة واحدة"
+      },
+      "hypothesis": {
+        "en": "Untested: one explicit channel choice by market may improve successful pickup at a lower landed message cost.",
+        "ar": "غير مختبر: قد يحسن اختيار قناة واحدة صريحة حسب السوق نجاح الاستلام بتكلفة فعلية أقل للرسائل."
+      },
+      "test": {
+        "en": "At G4, compare successful pickup and landed cost by chosen channel against screen or manual-call fallback.",
+        "ar": "في G4، يُقارن نجاح الاستلام والتكلفة الفعلية حسب القناة المختارة بالعرض على الشاشة أو الاتصال اليدوي البديل."
+      },
+      "guardrail": {
+        "en": "Require explicit preference, show purpose and price exposure, cap spend and keep promotion consent separate.",
+        "ar": "يلزم اختيار صريح مع بيان الغرض والتكلفة، وسقف للإنفاق، وفصل موافقة التسويق."
+      },
+      "stage": {
+        "en": "[Proposal] G4",
+        "ar": "[مقترح] G4"
+      }
+    },
+    {
+      "title": {
+        "en": "Merchant experiment dashboard",
+        "ar": "لوحة تجارب التاجر"
+      },
+      "hypothesis": {
+        "en": "Untested: a holdout view may help owners separate member sales from incremental contribution.",
+        "ar": "غير مختبر: قد تساعد رؤية المجموعة الضابطة المالك على فصل مبيعات الأعضاء عن هامش المساهمة الإضافي."
+      },
+      "test": {
+        "en": "After sufficient paid volume, compare pricing and reward decisions with and without holdout, cost and uncertainty views.",
+        "ar": "بعد توفر حجم مدفوع كافٍ، تُقارن قرارات التسعير والمكافآت مع عرض وبدون عرض المجموعة الضابطة والتكلفة وعدم اليقين."
+      },
+      "guardrail": {
+        "en": "Require sufficient samples, allocate all reward and message costs, and suppress customer-level reporting.",
+        "ar": "يلزم حجم عينة كافٍ، وتُحمّل جميع تكاليف المكافآت والرسائل، وتُحجب التقارير على مستوى العميل."
+      },
+      "stage": {
+        "en": "[Proposal] Later, after sufficient sample",
+        "ar": "[مقترح] لاحقاً، بعد توفر عينة كافية"
+      }
+    }
+  ],
+  "risks": [
+    {
+      "title": {
+        "en": "Demand remains unproven",
+        "ar": "الطلب لم يُثبت بعد"
+      },
+      "detail": {
+        "en": "No interviews, traction, TAM or endorsements have been fabricated: neither UAE QSR nor Saudi retail has supplied paid proof.",
+        "ar": "لا توجد ادعاءات مختلقة عن مقابلات أو استخدام فعلي أو حجم السوق الكلي أو تزكيات؛ فلم يقدم قطاع المطاعم السريعة في الإمارات ولا قطاع التجزئة في السعودية دليلاً مدفوعاً بعد."
+      },
+      "proof": {
+        "en": "[Proposal] Release spend only after naming a merchant willing to pay and documenting connector terms.",
+        "ar": "[مقترح] عدم صرف الميزانية قبل تحديد تاجر مستعد للدفع وتوثيق شروط الموصل."
+      },
+      "sources": [
+        "G02",
+        "G03",
+        "G14"
+      ]
+    },
+    {
+      "title": {
+        "en": "Connector truth gap",
+        "ar": "فجوة حقيقة الموصل"
+      },
+      "detail": {
+        "en": "Vendor docs do not prove anonymous-order coverage, native receipt changes, readiness events or production rights.",
+        "ar": "وثائق المزود لا تثبت تغطية الطلبات المجهولة أو تعديل الإيصال الأصلي أو أحداث الجاهزية أو حقوق الإنتاج."
+      },
+      "proof": {
+        "en": "[Proposal] Sandbox traces, representative exceptions and signed commercial access.",
+        "ar": "[مقترح] آثار بيئة اختبار واستثناءات ممثلة ووصول تجاري موقع."
+      },
+      "sources": [
+        "M07",
+        "M16",
+        "G13"
+      ]
+    },
+    {
+      "title": {
+        "en": "Messaging cost and permission drift",
+        "ar": "تغير تكلفة الرسائل وتصاريحها"
+      },
+      "detail": {
+        "en": "Meta pricing changed 2026-10-01: utility templates are not universally free inside 24h; provider fees, taxes, tiers and recipient market also matter.",
+        "ar": "تغير تسعير ميتا في 2026-10-01: قوالب الخدمة ليست مجانية دائماً داخل 24 ساعة؛ وتهم رسوم المزود والضرائب والشرائح وسوق المستلم."
+      },
+      "proof": {
+        "en": "[Proposal] Version rate cards, cap spend and suppress paid sends when configuration expires.",
+        "ar": "[مقترح] تأريخ بطاقات الأسعار ووضع سقف إنفاق ومنع الإرسال المدفوع عند انتهاء الإعداد."
+      },
+      "sources": [
+        "A03",
+        "A04",
+        "A05",
+        "C15"
+      ]
+    },
+    {
+      "title": {
+        "en": "Wallet issuer ownership",
+        "ar": "ملكية جهة إصدار المحفظة"
+      },
+      "detail": {
+        "en": "Apple restricts Pass Type ID use and third-party signing; vendor certificate tooling does not establish contract compliance.",
+        "ar": "تقيد Apple استخدام معرف البطاقة وتوقيع بطاقات الغير؛ أدوات شهادات المزود لا تثبت الامتثال التعاقدي."
+      },
+      "proof": {
+        "en": "[Proposal] Merchant/brand-owned issuer contract before COGS, migration or scale promises.",
+        "ar": "[مقترح] عقد جهة إصدار مملوكة للتاجر أو العلامة قبل وعود التكلفة أو الهجرة أو التوسع."
+      },
+      "sources": [
+        "A01",
+        "A02",
+        "M17"
+      ]
+    },
+    {
+      "title": {
+        "en": "Country compliance overgeneralization",
+        "ar": "تعميم الامتثال بين الدول"
+      },
+      "detail": {
+        "en": "GCC membership does not create one privacy, transfer, tax, messaging or payments jurisdiction.",
+        "ar": "عضوية مجلس التعاون لا تنشئ نظاماً واحداً للخصوصية أو النقل أو الضرائب أو الرسائل أو المدفوعات."
+      },
+      "proof": {
+        "en": "[Proposal] Country/entity/data-flow cards reviewed locally before release.",
+        "ar": "[مقترح] بطاقات للدولة والكيان وتدفق البيانات تراجع محلياً قبل الإطلاق."
+      },
+      "sources": [
+        "G01",
+        "C01",
+        "C05",
+        "C06",
+        "C07",
+        "C08",
+        "P19",
+        "P20",
+        "P21"
+      ]
+    },
+    {
+      "title": {
+        "en": "Scope and safety expansion",
+        "ar": "توسع النطاق ومخاطر السلامة"
+      },
+      "detail": {
+        "en": "Generic queues can misrepresent health urgency; payments, inventory, calendars and entitlements also carry distinct truth boundaries.",
+        "ar": "قد تحرف الطوابير العامة أولوية الحالات الصحية؛ كما للدفع والمخزون والمواعيد والاستحقاقات حدود حقيقة مستقلة."
+      },
+      "proof": {
+        "en": "[Proposal] Hold clinics; use fixed sector packs and external systems of record.",
+        "ar": "[مقترح] تعليق العيادات واستخدام حزم قطاعية ثابتة وأنظمة مصدر خارجية."
+      },
+      "sources": [
+        "C16",
+        "G10",
+        "G11"
+      ]
+    }
+  ],
+  "briefs": [
+    {
+      "id": "investor",
+      "title": {
+        "en": "Invest in a paid market pilot",
+        "ar": "استثمر في تجربة سوق مدفوعة"
+      },
+      "ask": {
+        "en": "[Proposal] Fund G0 and one paid market cell; release later capital only after connector, activation and renewal gates pass.",
+        "ar": "[مقترح] تمويل G0 وحالة سوق مدفوعة واحدة، ثم الإفراج عن رأس المال اللاحق فقط بعد اجتياز بوابات الموصل والتفعيل والتجديد."
+      },
+      "evidence": {
+        "en": "Options across six countries, bounded sector packs and explicit hour ranges; no claimed traction, TAM or exclusive launch market.",
+        "ar": "خيارات موزعة على ست دول، وحزم محددة للقطاعات، ونطاقات ساعات واضحة؛ من دون ادعاء استخدام فعلي أو حجم سوق كلي أو سوق إطلاق حصرية."
+      }
+    },
+    {
+      "id": "partner",
+      "title": {
+        "en": "Connector and distribution partnership",
+        "ar": "شراكة للتكامل والتوزيع"
+      },
+      "ask": {
+        "en": "[Proposal] Provide a sandbox, representative fixtures, production and access terms, sender and issuer ownership, and a path to one merchant willing to pay.",
+        "ar": "[مقترح] توفير بيئة اختبار وبيانات اختبار ممثلة، وشروط الإنتاج والوصول، وتحديد ملكية هوية المرسل والجهة المصدرة، ومسار للوصول إلى تاجر واحد مستعد للدفع."
+      },
+      "evidence": {
+        "en": "Marrah adds guest handoff visibility, bounded queues and verified rewards while incumbent systems remain authoritative.",
+        "ar": "تضيف مرة رؤية واضحة لتسليم الطلب للضيف، وطوابير محددة النطاق، ومكافآت مؤكدة، مع بقاء الأنظمة الحالية مرجعاً أساسياً."
+      }
+    },
+    {
+      "id": "builder",
+      "title": {
+        "en": "Build the first proven workflow",
+        "ar": "ابنِ أول مسار عمل مُثبت"
+      },
+      "ask": {
+        "en": "[Proposal] Build in gate order; instrument source-of-truth accuracy, authorization, replay, fallback and cost before expanding features.",
+        "ar": "[مقترح] البناء بحسب ترتيب البوابات، وقياس دقة مصدر الحقيقة والصلاحيات وإعادة المعالجة والمسار البديل والتكلفة قبل توسيع الميزات."
+      },
+      "evidence": {
+        "en": "The 99 backlog items are options, not requirements; core phases G0–G5 and later experiments show effort and dependencies.",
+        "ar": "بنود قائمة العمل البالغ عددها 99 خيار وليست متطلبات إلزامية؛ وتوضح المراحل الأساسية G0–G5 والتجارب اللاحقة الجهد والتبعيات."
+      }
+    }
+  ]
+}

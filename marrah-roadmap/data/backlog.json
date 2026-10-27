@@ -1,0 +1,2386 @@
+[
+  {
+    "id": "G0-001",
+    "phase": "gate0-market-pos-proof",
+    "priority": "P0",
+    "epic": "market",
+    "title": "Define launch ICP and exclusions",
+    "actor": "founder",
+    "user_outcome": "Team qualifies comparable cafes",
+    "acceptance_criteria": "Given a prospect record when reviewed then district site count service model POS and exclusion reason are recorded",
+    "dependencies": [],
+    "owner_role": "product",
+    "effort_hours_low": 4,
+    "effort_hours_high": 8,
+    "evidence_source_ids": [
+      "M01",
+      "M02"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G0-002",
+    "phase": "gate0-market-pos-proof",
+    "priority": "P0",
+    "epic": "market",
+    "title": "Run merchant workflow interviews",
+    "actor": "cafe manager",
+    "user_outcome": "Pickup pain and current workaround are evidenced",
+    "acceptance_criteria": "Given 20 qualified cafes when interviews close then notes include peak volume interruption proxy current pickup method POS and willingness-to-pay response",
+    "dependencies": [
+      "G0-001"
+    ],
+    "owner_role": "field_research",
+    "effort_hours_low": 32,
+    "effort_hours_high": 50,
+    "evidence_source_ids": [
+      "M01",
+      "M02",
+      "M16"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G0-003",
+    "phase": "gate0-market-pos-proof",
+    "priority": "P0",
+    "epic": "market",
+    "title": "Observe peak shifts",
+    "actor": "barista",
+    "user_outcome": "Pilot design reflects real counter work",
+    "acceptance_criteria": "Given 10 observed peak shifts when coded then paid-to-ready handoff exceptions and staff interruptions use one shared rubric",
+    "dependencies": [
+      "G0-001"
+    ],
+    "owner_role": "field_research",
+    "effort_hours_low": 30,
+    "effort_hours_high": 50,
+    "evidence_source_ids": [
+      "M01",
+      "M02"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G0-004",
+    "phase": "gate0-market-pos-proof",
+    "priority": "P0",
+    "epic": "pos-proof",
+    "title": "Obtain one POS commercial contract pack",
+    "actor": "founder",
+    "user_outcome": "Team knows access rights and recurring costs",
+    "acceptance_criteria": "Given candidate POS when gate review occurs then API licence approval path rate limits support fees and termination/export terms exist in writing",
+    "dependencies": [
+      "G0-001"
+    ],
+    "owner_role": "partnerships",
+    "effort_hours_low": 12,
+    "effort_hours_high": 24,
+    "evidence_source_ids": [
+      "M07",
+      "M08",
+      "M16"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G0-005",
+    "phase": "gate0-market-pos-proof",
+    "priority": "P0",
+    "epic": "pos-proof",
+    "title": "Secure sandbox and representative fixtures",
+    "actor": "integration engineer",
+    "user_outcome": "Connector can be tested before merchant data",
+    "acceptance_criteria": "Given approved developer access when sandbox is exercised then sale payment refund cancellation and reprint fixtures can be created or provider gaps are documented",
+    "dependencies": [
+      "G0-004"
+    ],
+    "owner_role": "backend_engineering",
+    "effort_hours_low": 12,
+    "effort_hours_high": 24,
+    "evidence_source_ids": [
+      "M07",
+      "E01"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G0-006",
+    "phase": "gate0-market-pos-proof",
+    "priority": "P0",
+    "epic": "qr-proof",
+    "title": "Test dynamic receipt QR capability",
+    "actor": "customer",
+    "user_outcome": "Receipt scan opens correct private status",
+    "acceptance_criteria": "Given 200 representative 58mm and 80mm prints when scanned across target phones then proposed first-scan success is at least 99% with no token truncation and reprints resolve same order",
+    "dependencies": [
+      "G0-005"
+    ],
+    "owner_role": "integration_engineering",
+    "effort_hours_low": 24,
+    "effort_hours_high": 40,
+    "evidence_source_ids": [
+      "E01",
+      "M07"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G0-007",
+    "phase": "gate0-market-pos-proof",
+    "priority": "P0",
+    "epic": "qr-proof",
+    "title": "Validate non-native QR fallback",
+    "actor": "customer",
+    "user_outcome": "Tracking works without receipt-template changes",
+    "acceptance_criteria": "Given provider cannot inject a unique receipt QR when pilot starts then counter QR plus pickup code opens only matching minimal order projection and failed attempts are rate-limited",
+    "dependencies": [
+      "G0-003"
+    ],
+    "owner_role": "product_design",
+    "effort_hours_low": 12,
+    "effort_hours_high": 20,
+    "evidence_source_ids": [
+      "E01",
+      "M07"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G0-008",
+    "phase": "gate0-market-pos-proof",
+    "priority": "P0",
+    "epic": "architecture",
+    "title": "Choose hosting region against constraints",
+    "actor": "operator",
+    "user_outcome": "Deployment choice has measured tradeoffs",
+    "acceptance_criteria": "Given candidate regions when decision is signed then Gulf latency data residency service availability recovery cost and contractual SLA gaps are recorded",
+    "dependencies": [
+      "G0-004"
+    ],
+    "owner_role": "platform_engineering",
+    "effort_hours_low": 12,
+    "effort_hours_high": 20,
+    "evidence_source_ids": [
+      "E01",
+      "E02",
+      "E03",
+      "E08",
+      "E09",
+      "E10",
+      "P19",
+      "P20",
+      "P21"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G0-009",
+    "phase": "gate0-market-pos-proof",
+    "priority": "P0",
+    "epic": "legal",
+    "title": "Confirm payments and privacy perimeter",
+    "actor": "merchant owner",
+    "user_outcome": "Pilot avoids unlicensed fund handling",
+    "acceptance_criteria": "Given proposed data and payment flows when counsel reviews then processor roles transfer mechanisms retention duties and prohibited custody or aggregation are written",
+    "dependencies": [
+      "G0-008"
+    ],
+    "owner_role": "legal_privacy",
+    "effort_hours_low": 16,
+    "effort_hours_high": 32,
+    "evidence_source_ids": [
+      "P16",
+      "P17",
+      "P18",
+      "P19",
+      "P20",
+      "P21"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G0-010",
+    "phase": "gate0-market-pos-proof",
+    "priority": "P0",
+    "epic": "commercial",
+    "title": "Set paid validation offer",
+    "actor": "merchant owner",
+    "user_outcome": "Pilot price tests willingness to pay",
+    "acceptance_criteria": "Given interview evidence when offer is approved then fee duration success measures credit-on-conversion and excluded messaging costs are explicit",
+    "dependencies": [
+      "G0-002",
+      "G0-003"
+    ],
+    "owner_role": "sales",
+    "effort_hours_low": 8,
+    "effort_hours_high": 16,
+    "evidence_source_ids": [
+      "M01",
+      "M02"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G0-011",
+    "phase": "gate0-market-pos-proof",
+    "priority": "P1",
+    "epic": "gate",
+    "title": "Gate 0 decision",
+    "actor": "product lead",
+    "user_outcome": "Build starts only with feasible wedge",
+    "acceptance_criteria": "Given gate evidence when reviewed then one POS path one QR path three candidate merchants legal constraints and stop reasons are recorded as go conditional-go or no-go",
+    "dependencies": [
+      "G0-005",
+      "G0-006",
+      "G0-007",
+      "G0-009",
+      "G0-010"
+    ],
+    "owner_role": "product",
+    "effort_hours_low": 6,
+    "effort_hours_high": 10,
+    "evidence_source_ids": [
+      "M07",
+      "E01",
+      "P16"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G1-001",
+    "phase": "gate1-instrumented-manual-pilot",
+    "priority": "P0",
+    "epic": "tenancy",
+    "title": "Create authenticated tenant location and role boundary",
+    "actor": "tenant admin",
+    "user_outcome": "Only assigned cafe staff reach pilot data",
+    "acceptance_criteria": "Given authenticated staff manager and observer users in two tenants when each reads or changes pilot orders then session expiry role and location scope are enforced cross-tenant access returns non-enumerating denial and denied attempts are audited",
+    "dependencies": [
+      "G0-011"
+    ],
+    "owner_role": "backend_engineering",
+    "effort_hours_low": 32,
+    "effort_hours_high": 48,
+    "evidence_source_ids": [
+      "E04"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G1-002",
+    "phase": "gate1-instrumented-manual-pilot",
+    "priority": "P0",
+    "epic": "tenancy",
+    "title": "Enforce tenant-scoped relational integrity",
+    "actor": "operator",
+    "user_outcome": "Mis-scoped records cannot be persisted",
+    "acceptance_criteria": "Given tenant-owned schemas when invalid cross-tenant location or order references are written then RLS plus composite foreign keys reject them",
+    "dependencies": [
+      "G1-001"
+    ],
+    "owner_role": "backend_engineering",
+    "effort_hours_low": 24,
+    "effort_hours_high": 40,
+    "evidence_source_ids": [
+      "E04"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G1-003",
+    "phase": "gate1-instrumented-manual-pilot",
+    "priority": "P0",
+    "epic": "orders",
+    "title": "Create manual order intake",
+    "actor": "staff",
+    "user_outcome": "Pilot orders enter board without POS integration",
+    "acceptance_criteria": "Given authorized staff when order alias and pickup code are submitted then one tenant-scoped order appears with received timestamp and no payment assumption",
+    "dependencies": [
+      "G1-002"
+    ],
+    "owner_role": "fullstack_engineering",
+    "effort_hours_low": 24,
+    "effort_hours_high": 40,
+    "evidence_source_ids": [
+      "E01",
+      "M07"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G1-004",
+    "phase": "gate1-instrumented-manual-pilot",
+    "priority": "P0",
+    "epic": "fulfillment",
+    "title": "Build staff state transitions",
+    "actor": "barista",
+    "user_outcome": "Team marks preparing ready and collected",
+    "acceptance_criteria": "Given current version when staff advances a valid state then board and audit history show actor occurred-at recorded-at and new version; stale writes return conflict",
+    "dependencies": [
+      "G1-003"
+    ],
+    "owner_role": "fullstack_engineering",
+    "effort_hours_low": 40,
+    "effort_hours_high": 64,
+    "evidence_source_ids": [
+      "E01"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G1-005",
+    "phase": "gate1-instrumented-manual-pilot",
+    "priority": "P0",
+    "epic": "customer-status",
+    "title": "Build capability-protected guest status page",
+    "actor": "customer",
+    "user_outcome": "Guest tracks one order without account",
+    "acceptance_criteria": "Given a random opaque receipt capability when opened then only alias item readiness ready time and collected time render; signup is not required plaintext capability is not retained in storage expiry is enforced and invalid tokens reveal nothing",
+    "dependencies": [
+      "G1-003"
+    ],
+    "owner_role": "frontend_engineering",
+    "effort_hours_low": 32,
+    "effort_hours_high": 48,
+    "evidence_source_ids": [
+      "E01"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G1-006",
+    "phase": "gate1-instrumented-manual-pilot",
+    "priority": "P0",
+    "epic": "realtime",
+    "title": "Add reconnect-safe live updates",
+    "actor": "customer",
+    "user_outcome": "Status recovers after network loss",
+    "acceptance_criteria": "Given client disconnects for 90 seconds when it reconnects then it fetches current version before applying newer events and never displays a regressed state",
+    "dependencies": [
+      "G1-004",
+      "G1-005"
+    ],
+    "owner_role": "fullstack_engineering",
+    "effort_hours_low": 32,
+    "effort_hours_high": 48,
+    "evidence_source_ids": [
+      "E01"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G1-007",
+    "phase": "gate1-instrumented-manual-pilot",
+    "priority": "P0",
+    "epic": "fallback",
+    "title": "Create customer display and manual call fallback",
+    "actor": "staff",
+    "user_outcome": "Pickup continues without customer phone",
+    "acceptance_criteria": "Given notification or customer-device failure when order becomes ready then display shows alias and staff can record manual call without changing payment or consent state",
+    "dependencies": [
+      "G1-004"
+    ],
+    "owner_role": "frontend_engineering",
+    "effort_hours_low": 24,
+    "effort_hours_high": 40,
+    "evidence_source_ids": [
+      "M01",
+      "P07",
+      "P10"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G1-008",
+    "phase": "gate1-instrumented-manual-pilot",
+    "priority": "P0",
+    "epic": "instrumentation",
+    "title": "Capture pilot timestamps and compliance",
+    "actor": "manager",
+    "user_outcome": "Pilot outcome can be measured",
+    "acceptance_criteria": "Given each order when states change then paid or received ready and collected timestamps remain separate and report exposes missing-transition and staff-compliance rates",
+    "dependencies": [
+      "G1-004"
+    ],
+    "owner_role": "data_engineering",
+    "effort_hours_low": 24,
+    "effort_hours_high": 40,
+    "evidence_source_ids": [
+      "M01",
+      "M02"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G1-009",
+    "phase": "gate1-instrumented-manual-pilot",
+    "priority": "P0",
+    "epic": "accessibility",
+    "title": "Test bilingual mobile and staff flows",
+    "actor": "customer",
+    "user_outcome": "Arabic and English users complete core flow",
+    "acceptance_criteria": "Given core screens at 320px and 200% zoom in LTR and RTL when keyboard and screen-reader checks run then focus order labels contrast and touch targets meet agreed WCAG 2.2 AA checklist",
+    "dependencies": [
+      "G1-005",
+      "G1-007"
+    ],
+    "owner_role": "ux_accessibility",
+    "effort_hours_low": 24,
+    "effort_hours_high": 40,
+    "evidence_source_ids": [
+      "P19"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G1-012",
+    "phase": "gate1-instrumented-manual-pilot",
+    "priority": "P0",
+    "epic": "data-safety",
+    "title": "Prove minimal pilot backup restore and retention",
+    "actor": "operator",
+    "user_outcome": "Live pilot data has a tested recovery and expiry baseline",
+    "acceptance_criteria": "Given pilot database snapshot and approved minimal retention schedule when isolated restore and expiry dry-run complete then order counts and audit history reconcile retention exceptions are listed and recovery steps and actual elapsed time are recorded without an uptime promise",
+    "dependencies": [
+      "G1-003"
+    ],
+    "owner_role": "platform_engineering",
+    "effort_hours_low": 16,
+    "effort_hours_high": 24,
+    "evidence_source_ids": [
+      "E01",
+      "P19"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G1-010",
+    "phase": "gate1-instrumented-manual-pilot",
+    "priority": "P0",
+    "epic": "operations",
+    "title": "Run paid one-branch manual pilot",
+    "actor": "merchant owner",
+    "user_outcome": "Merchant sees measured workflow result",
+    "acceptance_criteria": "Given authenticated staff opaque guest capabilities an approved minimal retention schedule and a successful backup restore proof when signed paid pilot completes then baseline and pilot median and P90 ready-to-collected time interruptions compliance QR opens and exceptions are reported with sample sizes",
+    "dependencies": [
+      "G1-001",
+      "G1-005",
+      "G1-006",
+      "G1-007",
+      "G1-008",
+      "G1-009",
+      "G1-012"
+    ],
+    "owner_role": "field_operations",
+    "effort_hours_low": 40,
+    "effort_hours_high": 64,
+    "evidence_source_ids": [
+      "M01",
+      "M02",
+      "P19"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G1-011",
+    "phase": "gate1-instrumented-manual-pilot",
+    "priority": "P0",
+    "epic": "gate",
+    "title": "Gate 1 merchant validation",
+    "actor": "product lead",
+    "user_outcome": "POS build follows observed adoption",
+    "acceptance_criteria": "Given 3 to 5 pilots when reviewed then proposed gate checks at least 80% staff compliance repeat usage and at least two merchants accepting tested price; misses trigger revise or stop",
+    "dependencies": [
+      "G1-010"
+    ],
+    "owner_role": "product",
+    "effort_hours_low": 12,
+    "effort_hours_high": 20,
+    "evidence_source_ids": [
+      "M01",
+      "M02"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G2-001",
+    "phase": "gate2-one-pos-paid-pickup-mvp",
+    "priority": "P0",
+    "epic": "integration",
+    "title": "Implement signed webhook inbox",
+    "actor": "integration engineer",
+    "user_outcome": "POS events are durably accepted once",
+    "acceptance_criteria": "Given valid event when received then signature is verified and inbox commit precedes 2xx; duplicate same ID and hash returns 2xx and conflicting hash is quarantined",
+    "dependencies": [
+      "G1-011",
+      "G0-005"
+    ],
+    "owner_role": "backend_engineering",
+    "effort_hours_low": 40,
+    "effort_hours_high": 64,
+    "evidence_source_ids": [
+      "E01"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G2-002",
+    "phase": "gate2-one-pos-paid-pickup-mvp",
+    "priority": "P0",
+    "epic": "integration",
+    "title": "Normalize order and payment separately",
+    "actor": "operator",
+    "user_outcome": "Fulfillment never fabricates payment state",
+    "acceptance_criteria": "Given sale payment and fulfillment facts arrive when projected then each axis keeps independent state timestamps source and provider version",
+    "dependencies": [
+      "G2-001"
+    ],
+    "owner_role": "backend_engineering",
+    "effort_hours_low": 32,
+    "effort_hours_high": 56,
+    "evidence_source_ids": [
+      "E01"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G2-003",
+    "phase": "gate2-one-pos-paid-pickup-mvp",
+    "priority": "P0",
+    "epic": "integration",
+    "title": "Handle duplicate and out-of-order events",
+    "actor": "operator",
+    "user_outcome": "Late delivery cannot regress truth",
+    "acceptance_criteria": "Given shuffled duplicate refund payment and order events when replayed then final projections match ordered replay and terminal facts do not regress",
+    "dependencies": [
+      "G2-002"
+    ],
+    "owner_role": "backend_engineering",
+    "effort_hours_low": 32,
+    "effort_hours_high": 56,
+    "evidence_source_ids": [
+      "E01"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G2-004",
+    "phase": "gate2-one-pos-paid-pickup-mvp",
+    "priority": "P0",
+    "epic": "integration",
+    "title": "Add overlap reconciliation",
+    "actor": "manager",
+    "user_outcome": "Webhook gaps become visible and repairable",
+    "acceptance_criteria": "Given simulated outage when reconciliation runs from high-water mark with overlap then missing events import once and UI shows freshness and degraded state until current",
+    "dependencies": [
+      "G2-003"
+    ],
+    "owner_role": "backend_engineering",
+    "effort_hours_low": 32,
+    "effort_hours_high": 48,
+    "evidence_source_ids": [
+      "E01"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G2-005",
+    "phase": "gate2-one-pos-paid-pickup-mvp",
+    "priority": "P0",
+    "epic": "qr",
+    "title": "Harden receipt capability lifecycle",
+    "actor": "customer",
+    "user_outcome": "Pilot-safe access scales to POS orders",
+    "acceptance_criteria": "Given an eligible POS order when existing capability service issues rotates revokes or rate-limits a token then only keyed hash persists reprints retain canonical mapping old tokens return non-enumerating 404 and abusive attempts do not expose order existence",
+    "dependencies": [
+      "G1-005",
+      "G2-002"
+    ],
+    "owner_role": "security_engineering",
+    "effort_hours_low": 24,
+    "effort_hours_high": 40,
+    "evidence_source_ids": [
+      "E01"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G2-006",
+    "phase": "gate2-one-pos-paid-pickup-mvp",
+    "priority": "P0",
+    "epic": "qr",
+    "title": "Connect proven QR route to POS order",
+    "actor": "customer",
+    "user_outcome": "Scan reliably opens matching live order",
+    "acceptance_criteria": "Given chosen Gate 0 print path when sale is completed or staff fallback used then scan maps to one canonical order and reprint does not create another capability",
+    "dependencies": [
+      "G0-006",
+      "G0-007",
+      "G2-005"
+    ],
+    "owner_role": "integration_engineering",
+    "effort_hours_low": 32,
+    "effort_hours_high": 56,
+    "evidence_source_ids": [
+      "E01",
+      "M07"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G2-007",
+    "phase": "gate2-one-pos-paid-pickup-mvp",
+    "priority": "P0",
+    "epic": "security",
+    "title": "Harden staff authentication and scoped permissions",
+    "actor": "tenant admin",
+    "user_outcome": "Pilot access controls cover POS and service roles",
+    "acceptance_criteria": "Given existing pilot authentication plus staff manager analyst and integration-service roles when POS-backed commands and support access run then capability location session and service scopes are enforced and denied attempts are audited",
+    "dependencies": [
+      "G1-001",
+      "G1-002"
+    ],
+    "owner_role": "security_engineering",
+    "effort_hours_low": 32,
+    "effort_hours_high": 48,
+    "evidence_source_ids": [
+      "E04"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G2-008",
+    "phase": "gate2-one-pos-paid-pickup-mvp",
+    "priority": "P0",
+    "epic": "reliability",
+    "title": "Add idempotent command and outbox processing",
+    "actor": "operator",
+    "user_outcome": "Retries do not duplicate state or messages",
+    "acceptance_criteria": "Given same idempotency key and request hash when retried then original result returns; different body conflicts and committed events publish at least once with deduplicated consumers",
+    "dependencies": [
+      "G2-003",
+      "G2-007"
+    ],
+    "owner_role": "backend_engineering",
+    "effort_hours_low": 32,
+    "effort_hours_high": 56,
+    "evidence_source_ids": [
+      "E01"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G2-009",
+    "phase": "gate2-one-pos-paid-pickup-mvp",
+    "priority": "P1",
+    "epic": "observability",
+    "title": "Create integration health and poison-event queue",
+    "actor": "support",
+    "user_outcome": "Failures are detectable and bounded",
+    "acceptance_criteria": "Given invalid or repeatedly failing payload when retry budget exhausts then it enters review queue with tenant-safe diagnostics age and replay action",
+    "dependencies": [
+      "G2-004",
+      "G2-008"
+    ],
+    "owner_role": "platform_engineering",
+    "effort_hours_low": 24,
+    "effort_hours_high": 40,
+    "evidence_source_ids": [
+      "E01"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G2-010",
+    "phase": "gate2-one-pos-paid-pickup-mvp",
+    "priority": "P0",
+    "epic": "billing",
+    "title": "Decouple subscription outage from orders",
+    "actor": "merchant owner",
+    "user_outcome": "Ready orders continue during billing failure",
+    "acceptance_criteria": "Given billing provider is unavailable or tenant enters grace period when staff updates an existing order then ready and collected transitions still succeed and billing warning is recorded separately",
+    "dependencies": [
+      "G2-008"
+    ],
+    "owner_role": "backend_engineering",
+    "effort_hours_low": 20,
+    "effort_hours_high": 32,
+    "evidence_source_ids": [
+      "E01"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G2-011",
+    "phase": "gate2-one-pos-paid-pickup-mvp",
+    "priority": "P0",
+    "epic": "qa",
+    "title": "Run paid pickup MVP acceptance",
+    "actor": "merchant owner",
+    "user_outcome": "One connector is proven under peak conditions",
+    "acceptance_criteria": "Given representative peak 30-minute webhook delay baseline tenant-security checks and restored pilot backup when acceptance runs then no duplicate orders occur current status recovers and fallback handles dependency loss without any provider SLA assumption",
+    "dependencies": [
+      "G2-006",
+      "G2-007",
+      "G2-009",
+      "G2-010"
+    ],
+    "owner_role": "quality_engineering",
+    "effort_hours_low": 32,
+    "effort_hours_high": 48,
+    "evidence_source_ids": [
+      "E01",
+      "M07"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G3-001",
+    "phase": "gate3-wallet-loyalty",
+    "priority": "P0",
+    "epic": "loyalty",
+    "title": "Define earn refund and redemption policy",
+    "actor": "merchant owner",
+    "user_outcome": "Program economics and exceptions are explicit",
+    "acceptance_criteria": "Given program proposal when approved then paid eligibility expiry refund reversal negative-balance and redemption rules are versioned with worked examples",
+    "dependencies": [
+      "G2-011"
+    ],
+    "owner_role": "product",
+    "effort_hours_low": 12,
+    "effort_hours_high": 20,
+    "evidence_source_ids": [
+      "M17",
+      "M18",
+      "P07",
+      "P10"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G3-002",
+    "phase": "gate3-wallet-loyalty",
+    "priority": "P0",
+    "epic": "loyalty",
+    "title": "Build append-only reward ledger",
+    "actor": "customer",
+    "user_outcome": "Balance is explainable and rebuildable",
+    "acceptance_criteria": "Given earn redeem expire adjust reverse entries when projection rebuilds then balance matches ledger and original entries remain immutable",
+    "dependencies": [
+      "G3-001",
+      "G2-008"
+    ],
+    "owner_role": "backend_engineering",
+    "effort_hours_low": 40,
+    "effort_hours_high": 64,
+    "evidence_source_ids": [
+      "E01"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G3-003",
+    "phase": "gate3-wallet-loyalty",
+    "priority": "P0",
+    "epic": "loyalty",
+    "title": "Enforce claim-once paid eligibility",
+    "actor": "customer",
+    "user_outcome": "One paid order earns once",
+    "acceptance_criteria": "Given concurrent claims for same eligible paid order when submitted then exactly one ledger earn commits and others receive deterministic already-claimed response; unpaid or refunded orders earn none",
+    "dependencies": [
+      "G3-002",
+      "G2-003"
+    ],
+    "owner_role": "backend_engineering",
+    "effort_hours_low": 32,
+    "effort_hours_high": 48,
+    "evidence_source_ids": [
+      "E01"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G3-004",
+    "phase": "gate3-wallet-loyalty",
+    "priority": "P0",
+    "epic": "loyalty",
+    "title": "Apply refund reversals idempotently",
+    "actor": "merchant owner",
+    "user_outcome": "Refunds correct rewards without erasing history",
+    "acceptance_criteria": "Given full or partial refund arrives before or after claim when processed twice then one policy-correct reversal links original earn and resulting balance follows documented negative policy",
+    "dependencies": [
+      "G3-003"
+    ],
+    "owner_role": "backend_engineering",
+    "effort_hours_low": 32,
+    "effort_hours_high": 48,
+    "evidence_source_ids": [
+      "E01"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G3-005",
+    "phase": "gate3-wallet-loyalty",
+    "priority": "P0",
+    "epic": "loyalty",
+    "title": "Make redemption atomic",
+    "actor": "customer",
+    "user_outcome": "Reward cannot be double-spent",
+    "acceptance_criteria": "Given two concurrent redemption requests when balance permits only one then one succeeds and order benefit plus ledger debit commit together or neither commits",
+    "dependencies": [
+      "G3-002"
+    ],
+    "owner_role": "backend_engineering",
+    "effort_hours_low": 32,
+    "effort_hours_high": 48,
+    "evidence_source_ids": [
+      "E01"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G3-006",
+    "phase": "gate2-one-pos-paid-pickup-mvp",
+    "priority": "P0",
+    "epic": "consent",
+    "title": "Create separate consent ledger",
+    "actor": "customer",
+    "user_outcome": "Channel and purpose choices stay independent before messaging",
+    "acceptance_criteria": "Given customer choices when saved then operational WhatsApp promotional WhatsApp SMS and Wallet permissions have separate merchant purpose notice version source timestamp and opt-out state; QR access alone creates no consent",
+    "dependencies": [
+      "G2-005"
+    ],
+    "owner_role": "backend_engineering",
+    "effort_hours_low": 32,
+    "effort_hours_high": 48,
+    "evidence_source_ids": [
+      "P01",
+      "P03",
+      "P04",
+      "P11",
+      "P12",
+      "P19"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G3-007",
+    "phase": "gate3-wallet-loyalty",
+    "priority": "P0",
+    "epic": "wallet",
+    "title": "Meet merchant-owned Apple issuer precondition",
+    "actor": "merchant owner",
+    "user_outcome": "Merchant controls issuer identity while platform acts as service provider",
+    "acceptance_criteria": "Given Apple build starts when gate reviewed then merchant-owned active Developer Program membership Pass Type ID and certificate plus contracted service-provider authority custody migration and revocation terms are evidenced; a platform-owned co-branded program proceeds only after explicit counsel and Apple-contract clearance",
+    "dependencies": [
+      "G3-001"
+    ],
+    "owner_role": "legal_platform",
+    "effort_hours_low": 16,
+    "effort_hours_high": 32,
+    "evidence_source_ids": [
+      "M17",
+      "P07",
+      "P08",
+      "P09"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G3-008",
+    "phase": "gate3-wallet-loyalty",
+    "priority": "P0",
+    "epic": "wallet",
+    "title": "Issue and update Apple loyalty pass",
+    "actor": "iPhone customer",
+    "user_outcome": "Customer carries current loyalty balance",
+    "acceptance_criteria": "Given approved certificate when eligible customer adds pass then signed pass installs and balance update is fetched after APNs hint; unavailable notifications do not alter ledger truth",
+    "dependencies": [
+      "G3-002",
+      "G3-007"
+    ],
+    "owner_role": "wallet_engineering",
+    "effort_hours_low": 48,
+    "effort_hours_high": 80,
+    "evidence_source_ids": [
+      "P07",
+      "P08",
+      "P09"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G3-009",
+    "phase": "gate3-wallet-loyalty",
+    "priority": "P0",
+    "epic": "wallet",
+    "title": "Publish Google Wallet loyalty pass",
+    "actor": "Android customer",
+    "user_outcome": "Customer carries current loyalty balance",
+    "acceptance_criteria": "Given approved issuer and class when eligible customer saves pass then object installs barcode scans and balance updates; Demo Mode and notification cap never block core ledger",
+    "dependencies": [
+      "G3-002"
+    ],
+    "owner_role": "wallet_engineering",
+    "effort_hours_low": 40,
+    "effort_hours_high": 64,
+    "evidence_source_ids": [
+      "M18",
+      "P10",
+      "P15"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G3-010",
+    "phase": "gate3-wallet-loyalty",
+    "priority": "P1",
+    "epic": "wallet",
+    "title": "Monitor certificate and pass health",
+    "actor": "operator",
+    "user_outcome": "Expiry is caught before issuance stops",
+    "acceptance_criteria": "Given certificate metadata when 60 30 and 14 days remain then alerts reach owners; rehearsed rollover issues and updates test passes without ledger changes",
+    "dependencies": [
+      "G3-008"
+    ],
+    "owner_role": "platform_engineering",
+    "effort_hours_low": 20,
+    "effort_hours_high": 32,
+    "evidence_source_ids": [
+      "P07",
+      "P08",
+      "P09"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G3-011",
+    "phase": "gate3-wallet-loyalty",
+    "priority": "P0",
+    "epic": "qa",
+    "title": "Run loyalty concurrency and device acceptance",
+    "actor": "customer",
+    "user_outcome": "Rewards and passes survive realistic races",
+    "acceptance_criteria": "Given duplicate scans refunds concurrent redemption device restore and pass update throttling when tested then ledger invariants hold and both platforms show reconcilable balances",
+    "dependencies": [
+      "G3-004",
+      "G3-005",
+      "G3-008",
+      "G3-009",
+      "G3-010"
+    ],
+    "owner_role": "quality_engineering",
+    "effort_hours_low": 32,
+    "effort_hours_high": 48,
+    "evidence_source_ids": [
+      "E01",
+      "P07",
+      "P10"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G4-001",
+    "phase": "gate4-operations-hardening-paid-beta",
+    "priority": "P0",
+    "epic": "messaging",
+    "title": "Onboard merchant-owned WhatsApp assets",
+    "actor": "merchant owner",
+    "user_outcome": "Cafe controls recognizable sender and billing",
+    "acceptance_criteria": "Given pickup MVP consent ledger and eligible merchant when Embedded Signup v4 completes then merchant-owned business phone payment method IDs token scope display name and approved utility template are recorded without waiting for Wallet loyalty",
+    "dependencies": [
+      "G2-008",
+      "G3-006"
+    ],
+    "owner_role": "integration_engineering",
+    "effort_hours_low": 40,
+    "effort_hours_high": 64,
+    "evidence_source_ids": [
+      "P05",
+      "P06"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G4-002",
+    "phase": "gate4-operations-hardening-paid-beta",
+    "priority": "P0",
+    "epic": "messaging",
+    "title": "Budget with current WhatsApp rate card",
+    "actor": "finance owner",
+    "user_outcome": "Variable cost uses current rules",
+    "acceptance_criteria": "Given beta pricing review when approved then rate-card effective date market category free-tier ownership taxes and per-merchant cost owner are stored; no unlimited claim appears",
+    "dependencies": [
+      "G4-001"
+    ],
+    "owner_role": "finance_operations",
+    "effort_hours_low": 8,
+    "effort_hours_high": 16,
+    "evidence_source_ids": [
+      "P01",
+      "P02"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G4-003",
+    "phase": "gate4-operations-hardening-paid-beta",
+    "priority": "P0",
+    "epic": "messaging",
+    "title": "Send idempotent consent-bound utility updates",
+    "actor": "customer",
+    "user_outcome": "Opted-in customer receives relevant status",
+    "acceptance_criteria": "Given valid operational consent and approved merchant template when ready occurs then one message intent is sent with merchant purpose and dedupe key; provider acceptance is recorded as accepted not delivered and absent consent is suppressed",
+    "dependencies": [
+      "G4-001",
+      "G4-002"
+    ],
+    "owner_role": "backend_engineering",
+    "effort_hours_low": 32,
+    "effort_hours_high": 56,
+    "evidence_source_ids": [
+      "P01",
+      "P03",
+      "P04"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G4-004",
+    "phase": "gate4-operations-hardening-paid-beta",
+    "priority": "P0",
+    "epic": "messaging",
+    "title": "Handle callbacks and ambiguous provider timeout safely",
+    "actor": "operator",
+    "user_outcome": "Delivery analytics distinguish evidence from uncertainty",
+    "acceptance_criteria": "Given accepted send delivery callback failure callback or timeout without provider receipt when processed then states remain accepted delivered failed or unknown from exact provider evidence; unknown attempts enter review without blind resend and analytics never relabel acceptance as delivery",
+    "dependencies": [
+      "G4-003"
+    ],
+    "owner_role": "backend_engineering",
+    "effort_hours_low": 24,
+    "effort_hours_high": 40,
+    "evidence_source_ids": [
+      "P01"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G4-005",
+    "phase": "gate4-operations-hardening-paid-beta",
+    "priority": "P1",
+    "epic": "messaging",
+    "title": "Decide UAE SMS channel support",
+    "actor": "merchant owner",
+    "user_outcome": "Beta ships with an honest supported fallback set",
+    "acceptance_criteria": "Given provider assessment when beta launches then sender registration status exact e& and du template tests segment costs and URL constraints are evidenced; unavailable or uneconomic SMS is documented and disabled while web display and manual-call fallback remain valid",
+    "dependencies": [
+      "G3-006",
+      "G1-007"
+    ],
+    "owner_role": "partnerships",
+    "effort_hours_low": 16,
+    "effort_hours_high": 32,
+    "evidence_source_ids": [
+      "P11",
+      "P12",
+      "P13",
+      "P14"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G4-006",
+    "phase": "gate4-operations-hardening-paid-beta",
+    "priority": "P0",
+    "epic": "resilience",
+    "title": "Configure production PITR and recovery drill",
+    "actor": "operator",
+    "user_outcome": "Public production has a measured recovery path",
+    "acceptance_criteria": "Given database loss scenario when restore drill runs then proposed public-release targets of RPO at most 5 minutes and RTO at most 60 minutes are met and monthly backup storage restore compute and egress costs are reported; a miss blocks this gate until remediation or a newly approved target and gate decision",
+    "dependencies": [
+      "G1-012",
+      "G2-011",
+      "G0-008"
+    ],
+    "owner_role": "platform_engineering",
+    "effort_hours_low": 32,
+    "effort_hours_high": 48,
+    "evidence_source_ids": [
+      "E01",
+      "E02",
+      "E03"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G4-007",
+    "phase": "gate4-operations-hardening-paid-beta",
+    "priority": "P0",
+    "epic": "privacy",
+    "title": "Implement retention and deletion jobs",
+    "actor": "privacy owner",
+    "user_outcome": "Expired personal data is removed predictably",
+    "acceptance_criteria": "Given approved schedule when jobs run then receipt tokens raw webhooks contact data and logs expire or anonymize with counts while required ledger and audit records follow documented exception",
+    "dependencies": [
+      "G0-009",
+      "G3-006"
+    ],
+    "owner_role": "backend_engineering",
+    "effort_hours_low": 32,
+    "effort_hours_high": 48,
+    "evidence_source_ids": [
+      "P19",
+      "P20",
+      "P21"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G4-008",
+    "phase": "gate4-operations-hardening-paid-beta",
+    "priority": "P0",
+    "epic": "devices",
+    "title": "Harden cafe devices and RTL operation",
+    "actor": "barista",
+    "user_outcome": "Shared devices remain usable through peak shift",
+    "acceptance_criteria": "Given supported tablet and display matrix when eight-hour soak network loss RTL keyboard zoom and screen-reader checks run then session recovery no clipped critical controls and fallback path pass",
+    "dependencies": [
+      "G1-009",
+      "G2-011"
+    ],
+    "owner_role": "quality_engineering",
+    "effort_hours_low": 32,
+    "effort_hours_high": 56,
+    "evidence_source_ids": [
+      "M01",
+      "P19"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G4-009",
+    "phase": "gate4-operations-hardening-paid-beta",
+    "priority": "P0",
+    "epic": "security",
+    "title": "Run tenant and abuse review",
+    "actor": "merchant owner",
+    "user_outcome": "Pickup-only beta has bounded data risk before loyalty completes",
+    "acceptance_criteria": "Given two-tenant fixtures and pickup abuse cases when reviewed then cross-tenant reads writes ID enumeration capability guessing and support grants are denied or audited; reward abuse cases join combined-release review after Gate 3",
+    "dependencies": [
+      "G2-011",
+      "G4-007"
+    ],
+    "owner_role": "security_engineering",
+    "effort_hours_low": 32,
+    "effort_hours_high": 56,
+    "evidence_source_ids": [
+      "E04",
+      "P19"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G4-010",
+    "phase": "gate4-operations-hardening-paid-beta",
+    "priority": "P0",
+    "epic": "support",
+    "title": "Create incident and degraded-mode playbooks",
+    "actor": "support",
+    "user_outcome": "Cafe can continue and escalate",
+    "acceptance_criteria": "Given POS messaging Wallet billing and database scenarios when tabletop runs then owner detection customer impact fallback communications and recovery verification are timed and recorded",
+    "dependencies": [
+      "G4-004",
+      "G4-006",
+      "G4-008"
+    ],
+    "owner_role": "service_operations",
+    "effort_hours_low": 24,
+    "effort_hours_high": 40,
+    "evidence_source_ids": [
+      "E01",
+      "P07",
+      "P10"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G4-011",
+    "phase": "gate4-operations-hardening-paid-beta",
+    "priority": "P0",
+    "epic": "commercial",
+    "title": "Validate paid beta conversion",
+    "actor": "merchant owner",
+    "user_outcome": "Pricing and support burden are evidenced",
+    "acceptance_criteria": "Given paid beta cohort when review closes then accepted branch price churn intent support hours and gross-margin assumptions use actual cohort values and sample sizes; variable message cost is included only for enabled channels",
+    "dependencies": [
+      "G4-010"
+    ],
+    "owner_role": "sales",
+    "effort_hours_low": 24,
+    "effort_hours_high": 40,
+    "evidence_source_ids": [
+      "M01",
+      "M02"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G4-013",
+    "phase": "gate4-operations-hardening-paid-beta",
+    "priority": "P0",
+    "epic": "gate",
+    "title": "Gate pickup-only public release",
+    "actor": "product lead",
+    "user_outcome": "Pickup product can release without Wallet dependency",
+    "acceptance_criteria": "Given pickup security consent production recovery device RTL accessibility fallback and paid-merchant evidence when release is reviewed then enabled messaging channels have passed consent delivery-state and cost checks disabled channels are documented and unresolved severity-one risks block release",
+    "dependencies": [
+      "G3-006",
+      "G4-005",
+      "G4-006",
+      "G4-008",
+      "G4-009",
+      "G4-011"
+    ],
+    "owner_role": "product",
+    "effort_hours_low": 8,
+    "effort_hours_high": 16,
+    "evidence_source_ids": [
+      "M01",
+      "P01",
+      "P19"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G4-012",
+    "phase": "gate4-operations-hardening-paid-beta",
+    "priority": "P0",
+    "epic": "gate",
+    "title": "Gate combined Wallet and operations release",
+    "actor": "product lead",
+    "user_outcome": "Combined release joins independently completed workstreams",
+    "acceptance_criteria": "Given Gates 3 and 4 ran in parallel when combined release is reviewed then pickup-only public gate and Wallet-loyalty acceptance have both passed and unresolved combined severity-one risks block release",
+    "dependencies": [
+      "G3-011",
+      "G4-013"
+    ],
+    "owner_role": "product",
+    "effort_hours_low": 12,
+    "effort_hours_high": 20,
+    "evidence_source_ids": [
+      "M01",
+      "P01",
+      "P19"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G5-001",
+    "phase": "gate5-multilocation-second-connector",
+    "priority": "P0",
+    "epic": "multilocation",
+    "title": "Add organization and branch administration",
+    "actor": "tenant admin",
+    "user_outcome": "One operator manages multiple locations safely",
+    "acceptance_criteria": "Given multi-site tenant when admin assigns roles and configuration then branch scope defaults deny and consolidated view labels location and freshness",
+    "dependencies": [
+      "G4-012"
+    ],
+    "owner_role": "fullstack_engineering",
+    "effort_hours_low": 40,
+    "effort_hours_high": 64,
+    "evidence_source_ids": [
+      "E04"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G5-002",
+    "phase": "gate5-multilocation-second-connector",
+    "priority": "P0",
+    "epic": "multilocation",
+    "title": "Add cross-location reporting controls",
+    "actor": "analyst",
+    "user_outcome": "Group metrics remain comparable and scoped",
+    "acceptance_criteria": "Given branches in different time zones or operating hours when report runs then metric definitions location filters currency and missing-data indicators are explicit and export respects authorization",
+    "dependencies": [
+      "G5-001"
+    ],
+    "owner_role": "data_engineering",
+    "effort_hours_low": 24,
+    "effort_hours_high": 40,
+    "evidence_source_ids": [
+      "P19"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G5-003",
+    "phase": "gate5-multilocation-second-connector",
+    "priority": "P0",
+    "epic": "integration",
+    "title": "Select second connector by paid demand",
+    "actor": "product lead",
+    "user_outcome": "Connector investment follows pipeline evidence",
+    "acceptance_criteria": "Given candidate POS systems when scored then contracted locations API coverage sandbox quality receipt path commercial terms and support burden determine recorded selection",
+    "dependencies": [
+      "G4-011"
+    ],
+    "owner_role": "product",
+    "effort_hours_low": 12,
+    "effort_hours_high": 20,
+    "evidence_source_ids": [
+      "M07",
+      "M08",
+      "M09",
+      "M10",
+      "M11"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G5-004",
+    "phase": "gate5-multilocation-second-connector",
+    "priority": "P0",
+    "epic": "integration",
+    "title": "Implement second POS adapter",
+    "actor": "integration engineer",
+    "user_outcome": "Second paid segment uses same domain contract",
+    "acceptance_criteria": "Given selected provider fixtures when sale payment refund cancel duplicate and out-of-order events run then normalized outcomes match first-connector contract and provider-specific gaps stay explicit",
+    "dependencies": [
+      "G5-003",
+      "G2-008"
+    ],
+    "owner_role": "integration_engineering",
+    "effort_hours_low": 56,
+    "effort_hours_high": 96,
+    "evidence_source_ids": [
+      "E01",
+      "M08",
+      "M09",
+      "M10",
+      "M11"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G5-005",
+    "phase": "gate5-multilocation-second-connector",
+    "priority": "P0",
+    "epic": "integration",
+    "title": "Prove second connector recovery",
+    "actor": "support",
+    "user_outcome": "Outage recovery is repeatable",
+    "acceptance_criteria": "Given webhook pause reordering and credential rotation when drill runs then reconciliation reaches current state once and degraded indicators clear only after verification",
+    "dependencies": [
+      "G5-004",
+      "G4-010"
+    ],
+    "owner_role": "quality_engineering",
+    "effort_hours_low": 24,
+    "effort_hours_high": 40,
+    "evidence_source_ids": [
+      "E01"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G5-006",
+    "phase": "gate5-multilocation-second-connector",
+    "priority": "P1",
+    "epic": "capacity",
+    "title": "Run measured capacity test",
+    "actor": "operator",
+    "user_outcome": "Scale limits are known before sales commitment",
+    "acceptance_criteria": "Given observed beta traffic shape when load increases to proposed two-times next-quarter forecast then P95 status read and transition targets error rate queue lag and database saturation are reported",
+    "dependencies": [
+      "G5-001",
+      "G5-004"
+    ],
+    "owner_role": "performance_engineering",
+    "effort_hours_low": 32,
+    "effort_hours_high": 48,
+    "evidence_source_ids": [
+      "E01"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "G5-007",
+    "phase": "gate5-multilocation-second-connector",
+    "priority": "P0",
+    "epic": "gate",
+    "title": "Gate 5 expansion decision",
+    "actor": "product lead",
+    "user_outcome": "Multi-site expansion has evidence",
+    "acceptance_criteria": "Given production data when reviewed then second-connector paid demand branch controls recovery capacity and support economics produce go conditional-go or stop record",
+    "dependencies": [
+      "G5-002",
+      "G5-005",
+      "G5-006"
+    ],
+    "owner_role": "product",
+    "effort_hours_low": 8,
+    "effort_hours_high": 16,
+    "evidence_source_ids": [
+      "M01",
+      "M02"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "LX-001",
+    "phase": "later-experiments",
+    "priority": "P2",
+    "epic": "experiment",
+    "title": "Evaluate optional preprinted QR journey",
+    "actor": "customer",
+    "user_outcome": "Lower-cost fallback has measured friction",
+    "acceptance_criteria": "Given native print remains unavailable and scan demand exists when 100 journeys compare counter QR plus code against staff-created link then completion time abandonment and exposure incidents determine keep or reject",
+    "dependencies": [
+      "G4-012"
+    ],
+    "owner_role": "product_research",
+    "effort_hours_low": 16,
+    "effort_hours_high": 24,
+    "evidence_source_ids": [
+      "E01",
+      "M07"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "LX-002",
+    "phase": "later-experiments",
+    "priority": "P2",
+    "epic": "experiment",
+    "title": "Evaluate managed Wallet provider",
+    "actor": "operator",
+    "user_outcome": "Buy-versus-build uses migration evidence",
+    "acceptance_criteria": "Given pass operations exceed agreed support threshold when two-week spike runs then branding custody per-pass cost export incident support and reissue path are scored before any switch",
+    "dependencies": [
+      "G3-011"
+    ],
+    "owner_role": "platform_engineering",
+    "effort_hours_low": 24,
+    "effort_hours_high": 40,
+    "evidence_source_ids": [
+      "E01",
+      "P08",
+      "P10"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "LX-003",
+    "phase": "later-experiments",
+    "priority": "P2",
+    "epic": "experiment",
+    "title": "Evaluate SMS as merchant add-on",
+    "actor": "merchant owner",
+    "user_outcome": "Channel is offered only if deliverable and economic",
+    "acceptance_criteria": "Given sender registration reopens and three merchants request SMS when 200 consented sends run then carrier delivery segment cost opt-out and support load decide availability",
+    "dependencies": [
+      "G4-005",
+      "G4-011"
+    ],
+    "owner_role": "product_research",
+    "effort_hours_low": 12,
+    "effort_hours_high": 20,
+    "evidence_source_ids": [
+      "P11",
+      "P12",
+      "P13",
+      "P14"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "LX-004",
+    "phase": "later-experiments",
+    "priority": "P2",
+    "epic": "experiment",
+    "title": "Evaluate partial-order readiness",
+    "actor": "customer",
+    "user_outcome": "Complex kitchens show useful batch progress",
+    "acceptance_criteria": "Given at least three paid merchants report split fulfillment when shadow model tracks 200 orders then mismatch rate staff burden and customer comprehension determine build decision",
+    "dependencies": [
+      "G5-007"
+    ],
+    "owner_role": "product_research",
+    "effort_hours_low": 16,
+    "effort_hours_high": 28,
+    "evidence_source_ids": [
+      "E01"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "LX-005",
+    "phase": "later-experiments",
+    "priority": "P2",
+    "epic": "experiment",
+    "title": "Evaluate pickup-tail prediction",
+    "actor": "manager",
+    "user_outcome": "Intervention targets are tested without fake certainty",
+    "acceptance_criteria": "Given at least 500 timestamp-complete orders when blinded baseline model scores tail risk then calibration false-alert rate and actionable lead time beat simple location baseline before UI exposure",
+    "dependencies": [
+      "G5-007"
+    ],
+    "owner_role": "data_science",
+    "effort_hours_low": 32,
+    "effort_hours_high": 56,
+    "evidence_source_ids": [
+      "M01",
+      "M02"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "LX-006",
+    "phase": "later-experiments",
+    "priority": "P2",
+    "epic": "experiment",
+    "title": "Evaluate loyalty offer economics",
+    "actor": "merchant owner",
+    "user_outcome": "Discount does not outrun margin",
+    "acceptance_criteria": "Given three merchants provide item-margin bounds when randomized eligible cohorts run under approved terms then incremental repeat rate reward cost and confidence interval decide continuation",
+    "dependencies": [
+      "G4-012"
+    ],
+    "owner_role": "product_research",
+    "effort_hours_low": 24,
+    "effort_hours_high": 40,
+    "evidence_source_ids": [
+      "M01",
+      "M02"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "LX-007",
+    "phase": "later-experiments",
+    "priority": "P2",
+    "epic": "experiment",
+    "title": "Evaluate geofence pass prompts",
+    "actor": "customer",
+    "user_outcome": "Location prompt remains optional and useful",
+    "acceptance_criteria": "Given explicit location permission and supported Wallet accounts when capped pilot runs then opt-in prompt rate visits and complaints are measured; core journey works without it",
+    "dependencies": [
+      "G3-011"
+    ],
+    "owner_role": "product_research",
+    "effort_hours_low": 16,
+    "effort_hours_high": 24,
+    "evidence_source_ids": [
+      "P10"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "LX-008",
+    "phase": "later-experiments",
+    "priority": "P2",
+    "epic": "experiment",
+    "title": "Evaluate local printer bridge",
+    "actor": "barista",
+    "user_outcome": "Operational burden is known before deployment",
+    "acceptance_criteria": "Given contracted demand and official vendor permission when one-store four-week appliance trial runs then duplicate prints offline recovery remote support minutes and certificate rotation decide reject or productize",
+    "dependencies": [
+      "G5-007"
+    ],
+    "owner_role": "integration_engineering",
+    "effort_hours_low": 40,
+    "effort_hours_high": 72,
+    "evidence_source_ids": [
+      "E01",
+      "M07"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "LX-009",
+    "phase": "later-experiments",
+    "priority": "P2",
+    "epic": "experiment",
+    "title": "Evaluate privacy-preserving benchmark report",
+    "actor": "merchant owner",
+    "user_outcome": "Operator compares performance without peer leakage",
+    "acceptance_criteria": "Given at least 20 consenting locations and disclosure review when benchmark is generated then cohorts meet minimum size and re-identification tests pass before merchant display",
+    "dependencies": [
+      "G5-007"
+    ],
+    "owner_role": "data_engineering",
+    "effort_hours_low": 24,
+    "effort_hours_high": 40,
+    "evidence_source_ids": [
+      "P19",
+      "P20",
+      "P21"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "LX-010",
+    "phase": "later-experiments",
+    "priority": "P2",
+    "epic": "experiment",
+    "title": "Evaluate Egypt market separately",
+    "actor": "founder",
+    "user_outcome": "Expansion decision avoids inflated UAE TAM",
+    "acceptance_criteria": "Given UAE repeatability and local research budget when Egypt study runs then licence denominator POS mix payment route price sensitivity and 15 merchant interviews are reported independently",
+    "dependencies": [
+      "G5-007"
+    ],
+    "owner_role": "market_research",
+    "effort_hours_low": 40,
+    "effort_hours_high": 64,
+    "evidence_source_ids": [
+      "M19"
+    ],
+    "status": "not_started",
+    "scope": "core"
+  },
+  {
+    "id": "X001",
+    "phase": "gcc-gate0-cell-selection",
+    "priority": "P0",
+    "epic": "governance",
+    "title": "Select first country-sector-POS cell",
+    "actor": "product lead",
+    "user_outcome": "Team funds one bounded proof rather than a GCC-wide launch",
+    "acceptance_criteria": "Given country sector workflow and connector scorecards when Gate 0 meets then one first cell and one reserve cell are named with buyer pain paid-pilot route system-of-record boundary stop conditions and evidence gaps; selection is not obligated to UAE cafes",
+    "dependencies": [],
+    "external_dependencies": [
+      "G0-001",
+      "G0-004",
+      "G0-009"
+    ],
+    "owner_role": "product",
+    "effort_hours_low": 12,
+    "effort_hours_high": 20,
+    "evidence_source_ids": [
+      "G01",
+      "G02",
+      "G03",
+      "G13",
+      "G14"
+    ],
+    "status": "not_started",
+    "scope": "extension"
+  },
+  {
+    "id": "X002",
+    "phase": "gcc-gate0-cell-selection",
+    "priority": "P0",
+    "epic": "governance",
+    "title": "Define six-country evidence register",
+    "actor": "market lead",
+    "user_outcome": "Unknown country facts stay visible",
+    "acceptance_criteria": "Given Bahrain Kuwait Oman Qatar Saudi Arabia and UAE when register is reviewed then each has dated sources for target activity commercial access connector route and unknowns; incompatible enterprise and branch counts are not summed",
+    "dependencies": [
+      "X001"
+    ],
+    "external_dependencies": [],
+    "owner_role": "market_research",
+    "effort_hours_low": 20,
+    "effort_hours_high": 36,
+    "evidence_source_ids": [
+      "G01",
+      "G02",
+      "G05",
+      "G06",
+      "G07",
+      "G15"
+    ],
+    "status": "not_started",
+    "scope": "extension"
+  },
+  {
+    "id": "X003",
+    "phase": "gcc-gate0-cell-selection",
+    "priority": "P0",
+    "epic": "legal",
+    "title": "Commission country regulatory decision cards",
+    "actor": "legal owner",
+    "user_outcome": "Launch claims follow country-specific review",
+    "acceptance_criteria": "Given a proposed country cell when local counsel reviews then entity licensing privacy data transfer consumer messaging invoice payments employment and sector-specific blockers are recorded with authority citations and review date; absent review blocks launch",
+    "dependencies": [
+      "X001"
+    ],
+    "external_dependencies": [],
+    "owner_role": "legal_privacy",
+    "effort_hours_low": 36,
+    "effort_hours_high": 72,
+    "evidence_source_ids": [
+      "EXTERNAL_COUNTRY_COUNSEL",
+      "C01",
+      "C02",
+      "C03",
+      "C04",
+      "C05",
+      "C06",
+      "C07",
+      "C08",
+      "P19",
+      "P20",
+      "P21"
+    ],
+    "status": "not_started",
+    "scope": "extension"
+  },
+  {
+    "id": "X004",
+    "phase": "gcc-gate0-cell-selection",
+    "priority": "P0",
+    "epic": "commercial",
+    "title": "Secure paid transfer-pilot offer",
+    "actor": "sales lead",
+    "user_outcome": "Merchant willingness to pay is tested in selected cell",
+    "acceptance_criteria": "Given selected cell when offer is signed then paid fee branch scope workflow baseline success measures integration exclusions support hours and renewal test are explicit; no free pilot or GCC-wide promise appears",
+    "dependencies": [
+      "X001",
+      "X003"
+    ],
+    "external_dependencies": [],
+    "owner_role": "sales",
+    "effort_hours_low": 16,
+    "effort_hours_high": 28,
+    "evidence_source_ids": [
+      "G02",
+      "G13"
+    ],
+    "status": "not_started",
+    "scope": "extension"
+  },
+  {
+    "id": "X005",
+    "phase": "gcc-gate1-shared-kernel-extension",
+    "priority": "P0",
+    "epic": "merchant-model",
+    "title": "Add merchant group legal entity brand branch hierarchy",
+    "actor": "group admin",
+    "user_outcome": "Multi-country organization is represented without conflation",
+    "acceptance_criteria": "Given one group with multiple legal entities brands and branches when administered then each branch resolves exactly one operating legal entity country currency timezone locale and provider configuration while group reporting preserves boundaries",
+    "dependencies": [
+      "X001"
+    ],
+    "external_dependencies": [
+      "G1-001",
+      "G1-002",
+      "G5-001"
+    ],
+    "owner_role": "backend_engineering",
+    "effort_hours_low": 40,
+    "effort_hours_high": 64,
+    "evidence_source_ids": [
+      "G01"
+    ],
+    "status": "not_started",
+    "scope": "extension"
+  },
+  {
+    "id": "X006",
+    "phase": "gcc-gate1-shared-kernel-extension",
+    "priority": "P0",
+    "epic": "entitlements",
+    "title": "Add country sector and module entitlements",
+    "actor": "group admin",
+    "user_outcome": "Branches activate only contracted supported workflows",
+    "acceptance_criteria": "Given plan and branch configuration when a user opens or calls a disabled module then UI and API deny it without hiding existing records; entitlement changes are audited and do not alter source facts",
+    "dependencies": [
+      "X005"
+    ],
+    "external_dependencies": [
+      "G2-007",
+      "G2-010"
+    ],
+    "owner_role": "fullstack_engineering",
+    "effort_hours_low": 28,
+    "effort_hours_high": 44,
+    "evidence_source_ids": [
+      "G08",
+      "G09",
+      "G10",
+      "G11"
+    ],
+    "status": "not_started",
+    "scope": "extension"
+  },
+  {
+    "id": "X007",
+    "phase": "gcc-gate1-shared-kernel-extension",
+    "priority": "P0",
+    "epic": "money",
+    "title": "Implement ISO currency minor-unit handling",
+    "actor": "finance owner",
+    "user_outcome": "Amounts round and display correctly across GCC currencies",
+    "acceptance_criteria": "Given AED SAR QAR BHD KWD and OMR fixtures when amounts import calculate export and render then configured ISO exponents are respected including three decimal minor units for BHD KWD and OMR with no float arithmetic or silent currency conversion",
+    "dependencies": [
+      "X005"
+    ],
+    "external_dependencies": [
+      "G2-002"
+    ],
+    "owner_role": "backend_engineering",
+    "effort_hours_low": 24,
+    "effort_hours_high": 40,
+    "evidence_source_ids": [
+      "C14"
+    ],
+    "status": "not_started",
+    "scope": "extension"
+  },
+  {
+    "id": "X008",
+    "phase": "gcc-gate1-shared-kernel-extension",
+    "priority": "P0",
+    "epic": "localization",
+    "title": "Add branch locale timezone and phone configuration",
+    "actor": "customer",
+    "user_outcome": "Country experiences format data correctly",
+    "acceptance_criteria": "Given Arabic and English branches across six GCC countries when status timestamps phone inputs and notifications render then RTL remains usable IANA branch timezone drives local display and country-aware E.164 validation accepts valid fixtures without assuming one GCC format",
+    "dependencies": [
+      "X005"
+    ],
+    "external_dependencies": [
+      "G1-009",
+      "G4-008"
+    ],
+    "owner_role": "fullstack_engineering",
+    "effort_hours_low": 28,
+    "effort_hours_high": 48,
+    "evidence_source_ids": [
+      "G01",
+      "EXTERNAL_NUMBERING_PLANS"
+    ],
+    "status": "not_started",
+    "scope": "extension"
+  },
+  {
+    "id": "X009",
+    "phase": "gcc-gate1-shared-kernel-extension",
+    "priority": "P0",
+    "epic": "country-config",
+    "title": "Configure invoice PSP and sender ownership per country",
+    "actor": "merchant owner",
+    "user_outcome": "Provider responsibilities are explicit per legal entity",
+    "acceptance_criteria": "Given branch country and legal entity when invoice payment or message action starts then country-versioned configuration identifies system of record licensed PSP invoice issuer sender asset owner billing owner and disabled channels; no universal GCC account is assumed",
+    "dependencies": [
+      "X003",
+      "X005"
+    ],
+    "external_dependencies": [
+      "G3-006",
+      "G4-001",
+      "G4-005"
+    ],
+    "owner_role": "backend_engineering",
+    "effort_hours_low": 32,
+    "effort_hours_high": 52,
+    "evidence_source_ids": [
+      "G13",
+      "EXTERNAL_COUNTRY_COUNSEL",
+      "C04",
+      "A06",
+      "A07",
+      "P11",
+      "C15"
+    ],
+    "status": "not_started",
+    "scope": "extension"
+  },
+  {
+    "id": "X010",
+    "phase": "gcc-gate1-shared-kernel-extension",
+    "priority": "P0",
+    "epic": "ratecards",
+    "title": "Version message policies and country rate cards",
+    "actor": "finance owner",
+    "user_outcome": "Channel cost and permission use dated country evidence",
+    "acceptance_criteria": "Given provider country category and effective date when message intent is priced then immutable rate-card version consent purpose sender owner and estimated unit cost are attached; missing or expired config suppresses paid send and preserves web fallback",
+    "dependencies": [
+      "X009"
+    ],
+    "external_dependencies": [
+      "G4-002",
+      "G4-003",
+      "G4-004"
+    ],
+    "owner_role": "backend_engineering",
+    "effort_hours_low": 28,
+    "effort_hours_high": 44,
+    "evidence_source_ids": [
+      "EXTERNAL_COUNTRY_COUNSEL",
+      "A03",
+      "A04",
+      "A05",
+      "C15"
+    ],
+    "status": "not_started",
+    "scope": "extension"
+  },
+  {
+    "id": "X011",
+    "phase": "gcc-gate1-shared-kernel-extension",
+    "priority": "P0",
+    "epic": "data-governance",
+    "title": "Enforce regional data-scope and transfer gates",
+    "actor": "privacy owner",
+    "user_outcome": "Country data moves only under approved scope",
+    "acceptance_criteria": "Given branch country data class processor region and destination when storage support export or cross-group reporting is requested then a versioned country decision permits redacts localizes or blocks action and audit records legal basis; six-country release needs six reviewed cards",
+    "dependencies": [
+      "X003",
+      "X005"
+    ],
+    "external_dependencies": [
+      "G0-008",
+      "G4-007",
+      "G4-009"
+    ],
+    "owner_role": "security_engineering",
+    "effort_hours_low": 36,
+    "effort_hours_high": 60,
+    "evidence_source_ids": [
+      "EXTERNAL_COUNTRY_COUNSEL",
+      "C01",
+      "C02",
+      "C05",
+      "C06",
+      "C07",
+      "C08",
+      "P19",
+      "P20",
+      "P21"
+    ],
+    "status": "not_started",
+    "scope": "extension"
+  },
+  {
+    "id": "X012",
+    "phase": "gcc-gate1-shared-kernel-extension",
+    "priority": "P0",
+    "epic": "source-boundary",
+    "title": "Generalize verified purchase-fact adapter",
+    "actor": "integration engineer",
+    "user_outcome": "Loyalty consumes paid commerce or service facts without cafe assumptions",
+    "acceptance_criteria": "Given connector emits a verified paid order or completed paid service when normalized then purchase fact records source type legal entity branch currency gross amount payment state completion evidence refunds and external identity; loyalty consumes this contract and never infers payment from workflow completion",
+    "dependencies": [
+      "X005",
+      "X007"
+    ],
+    "external_dependencies": [
+      "G2-002",
+      "G2-003",
+      "G3-003",
+      "G3-004"
+    ],
+    "owner_role": "backend_engineering",
+    "effort_hours_low": 40,
+    "effort_hours_high": 64,
+    "evidence_source_ids": [
+      "G13"
+    ],
+    "status": "not_started",
+    "scope": "extension"
+  },
+  {
+    "id": "X013",
+    "phase": "gcc-gate1-shared-kernel-extension",
+    "priority": "P0",
+    "epic": "workflow",
+    "title": "Add bounded service-queue module",
+    "actor": "staff",
+    "user_outcome": "Non-order visits use truthful queue states",
+    "acceptance_criteria": "Given entitled service branch when staff handles a visit then only queued called serving completed or left transitions are allowed with actor and timestamps; order fulfillment state remains separate and module can be disabled",
+    "dependencies": [
+      "X006"
+    ],
+    "external_dependencies": [
+      "G1-004",
+      "G1-006",
+      "G1-007"
+    ],
+    "owner_role": "fullstack_engineering",
+    "effort_hours_low": 36,
+    "effort_hours_high": 56,
+    "evidence_source_ids": [
+      "G11",
+      "G12"
+    ],
+    "status": "not_started",
+    "scope": "extension"
+  },
+  {
+    "id": "X014",
+    "phase": "gcc-gate2-sector-packs",
+    "priority": "P0",
+    "epic": "retail-bopis",
+    "title": "Prove Salla or Zid retail handoff adapter",
+    "actor": "retail manager",
+    "user_outcome": "BOPIS handoff uses existing commerce identity",
+    "acceptance_criteria": "Given selected Saudi merchant sandbox when paid or approved order cancellation refund ready and collection fixtures run then adapter preserves canonical order and store identity and exposes only verified provider states; absent pickup-ready API becomes staff-owned state and is not assumed",
+    "dependencies": [
+      "X012"
+    ],
+    "external_dependencies": [
+      "G2-001",
+      "G2-008"
+    ],
+    "owner_role": "integration_engineering",
+    "effort_hours_low": 48,
+    "effort_hours_high": 80,
+    "evidence_source_ids": [
+      "G08",
+      "G09"
+    ],
+    "status": "not_started",
+    "scope": "extension"
+  },
+  {
+    "id": "X015",
+    "phase": "gcc-gate2-sector-packs",
+    "priority": "P0",
+    "epic": "retail-bopis",
+    "title": "Add arrival and collection-proof option",
+    "actor": "retail customer",
+    "user_outcome": "Store distinguishes arrival from verified handoff",
+    "acceptance_criteria": "Given entitled BOPIS branch when customer checks in and staff completes collection then arrival and collection evidence are timestamped separately with authorized correction and fallback; neither action changes payment or inventory truth",
+    "dependencies": [
+      "X013",
+      "X014"
+    ],
+    "external_dependencies": [
+      "G2-007"
+    ],
+    "owner_role": "fullstack_engineering",
+    "effort_hours_low": 28,
+    "effort_hours_high": 44,
+    "evidence_source_ids": [
+      "G08",
+      "G09"
+    ],
+    "status": "not_started",
+    "scope": "extension"
+  },
+  {
+    "id": "X016",
+    "phase": "gcc-gate2-sector-packs",
+    "priority": "P1",
+    "epic": "car-wash",
+    "title": "Prototype express car-wash job workflow",
+    "actor": "site manager",
+    "user_outcome": "Customer tracks bounded service without workshop software",
+    "acceptance_criteria": "Given five observed express sites confirm off-site waiting pain when optional pack is trialed then vehicle reference and queued called serving completed left states work with manual fallback; inspection parts invoicing bay optimization and repair work orders remain excluded",
+    "dependencies": [
+      "X013"
+    ],
+    "external_dependencies": [],
+    "owner_role": "product_engineering",
+    "effort_hours_low": 32,
+    "effort_hours_high": 52,
+    "evidence_source_ids": [
+      "G03"
+    ],
+    "status": "not_started",
+    "scope": "extension"
+  },
+  {
+    "id": "X017",
+    "phase": "gcc-gate2-sector-packs",
+    "priority": "P1",
+    "epic": "salon",
+    "title": "Integrate appointment arrival without booking engine",
+    "actor": "salon manager",
+    "user_outcome": "Existing appointments gain check-in and waiting visibility",
+    "acceptance_criteria": "Given partner exposes appointment identity staff service time cancellation and consent when adapter runs then check-in and queue updates attach to source appointment; availability booking reschedule deposits commissions and calendars remain external",
+    "dependencies": [
+      "X013"
+    ],
+    "external_dependencies": [],
+    "owner_role": "integration_engineering",
+    "effort_hours_low": 28,
+    "effort_hours_high": 48,
+    "evidence_source_ids": [
+      "G10"
+    ],
+    "status": "not_started",
+    "scope": "extension"
+  },
+  {
+    "id": "X018",
+    "phase": "gcc-gate2-sector-packs",
+    "priority": "P1",
+    "epic": "fitness",
+    "title": "Separate contract entitlement from visit rewards",
+    "actor": "fitness manager",
+    "user_outcome": "Membership validity and visit stamps cannot be confused",
+    "acceptance_criteria": "Given membership connector facts and visit scans when processed then active frozen expired and renewal states remain source-owned while visit attendance and optional reward ledger stay separate; visits never renew contracts or infer payment",
+    "dependencies": [
+      "X012",
+      "X013"
+    ],
+    "external_dependencies": [],
+    "owner_role": "backend_engineering",
+    "effort_hours_low": 28,
+    "effort_hours_high": 44,
+    "evidence_source_ids": [
+      "G10"
+    ],
+    "status": "not_started",
+    "scope": "extension"
+  },
+  {
+    "id": "X019",
+    "phase": "gcc-gate2-sector-packs",
+    "priority": "P0",
+    "epic": "healthcare-exclusion",
+    "title": "Block clinic enablement pending health review",
+    "actor": "privacy owner",
+    "user_outcome": "Healthcare cannot activate as generic merchant queue",
+    "acceptance_criteria": "Given clinic or healthcare classification when entitlement is requested then activation is blocked until separate country-specific health privacy patient-safety clinical-priority accessibility security incident and integration review is approved; no patient pilot data is collected beforehand",
+    "dependencies": [
+      "X003",
+      "X006",
+      "X011"
+    ],
+    "external_dependencies": [],
+    "owner_role": "security_engineering",
+    "effort_hours_low": 12,
+    "effort_hours_high": 20,
+    "evidence_source_ids": [
+      "G05",
+      "G11",
+      "EXTERNAL_HEALTH_COUNSEL",
+      "C16"
+    ],
+    "status": "not_started",
+    "scope": "extension"
+  },
+  {
+    "id": "X020",
+    "phase": "gcc-gate3-transfer-pilot",
+    "priority": "P0",
+    "epic": "pilot",
+    "title": "Run paid second country-sector transfer pilot",
+    "actor": "merchant owner",
+    "user_outcome": "Kernel transfer is evidenced beyond first reference implementation",
+    "acceptance_criteria": "Given selected second country and different sector when paid pilot completes then baseline staff compliance customer use exception rate support hours integration time and renewal price are reported against that branch only with provider and legal gaps visible",
+    "dependencies": [
+      "X004",
+      "X008",
+      "X009",
+      "X011",
+      "X012"
+    ],
+    "external_dependencies": [
+      "G1-010",
+      "G2-011"
+    ],
+    "owner_role": "field_operations",
+    "effort_hours_low": 48,
+    "effort_hours_high": 80,
+    "evidence_source_ids": [
+      "G02",
+      "G08",
+      "G09"
+    ],
+    "status": "not_started",
+    "scope": "extension"
+  },
+  {
+    "id": "X021",
+    "phase": "gcc-gate3-transfer-pilot",
+    "priority": "P0",
+    "epic": "reconciliation",
+    "title": "Reconcile sector exceptions and refunds",
+    "actor": "finance owner",
+    "user_outcome": "Purchase and handoff histories remain explainable",
+    "acceptance_criteria": "Given cancellation partial refund no-show left queue and post-completion correction fixtures when replayed out of order then source purchase facts workflow history and loyalty reversal reconcile without cross-module state mutation",
+    "dependencies": [
+      "X012",
+      "X020"
+    ],
+    "external_dependencies": [
+      "G2-003",
+      "G3-004"
+    ],
+    "owner_role": "quality_engineering",
+    "effort_hours_low": 24,
+    "effort_hours_high": 40,
+    "evidence_source_ids": [
+      "G08",
+      "G09"
+    ],
+    "status": "not_started",
+    "scope": "extension"
+  },
+  {
+    "id": "X022",
+    "phase": "gcc-gate3-transfer-pilot",
+    "priority": "P0",
+    "epic": "gate",
+    "title": "Decide second cell productionization",
+    "actor": "product lead",
+    "user_outcome": "Expansion follows paid transferable evidence",
+    "acceptance_criteria": "Given transfer pilot and exception report when gate meets then legal clearance merchant renewal intent support economics connector reliability localization and fallback produce go conditional-go or stop for that country-sector cell only",
+    "dependencies": [
+      "X020",
+      "X021"
+    ],
+    "external_dependencies": [],
+    "owner_role": "product",
+    "effort_hours_low": 12,
+    "effort_hours_high": 20,
+    "evidence_source_ids": [
+      "G02",
+      "G08",
+      "G09"
+    ],
+    "status": "not_started",
+    "scope": "extension"
+  },
+  {
+    "id": "X023",
+    "phase": "gcc-gate4-country-rollout",
+    "priority": "P1",
+    "epic": "rollout",
+    "title": "Create country launch checklist from approved cell",
+    "actor": "country operator",
+    "user_outcome": "Each additional country repeats explicit gates",
+    "acceptance_criteria": "Given a country-sector cell has passed when launch checklist is signed then legal card provider ownership rate cards data scope language support incident route paid merchant and rollback owner are current; checklist grants no other sector or country",
+    "dependencies": [
+      "X002",
+      "X003",
+      "X010",
+      "X011",
+      "X022"
+    ],
+    "external_dependencies": [
+      "G4-013"
+    ],
+    "owner_role": "service_operations",
+    "effort_hours_low": 20,
+    "effort_hours_high": 32,
+    "evidence_source_ids": [
+      "G01",
+      "EXTERNAL_COUNTRY_COUNSEL",
+      "C01",
+      "C02",
+      "C03",
+      "C04",
+      "C05",
+      "C06",
+      "C07",
+      "C08",
+      "C14",
+      "C15"
+    ],
+    "status": "not_started",
+    "scope": "extension"
+  },
+  {
+    "id": "X024",
+    "phase": "gcc-gate4-country-rollout",
+    "priority": "P1",
+    "epic": "portfolio",
+    "title": "Review module and country portfolio quarterly",
+    "actor": "executive owner",
+    "user_outcome": "Unsupported breadth is retired before it becomes platform debt",
+    "acceptance_criteria": "Given live and discovery cells when quarterly review occurs then paid branches usage support margin legal changes connector health and renewal evidence decide invest hold or retire per module and country; no roadmap item implies all six countries or sectors ship",
+    "dependencies": [
+      "X022",
+      "X023"
+    ],
+    "external_dependencies": [],
+    "owner_role": "product",
+    "effort_hours_low": 12,
+    "effort_hours_high": 20,
+    "evidence_source_ids": [
+      "G01",
+      "G02",
+      "G05",
+      "G06",
+      "G07"
+    ],
+    "status": "not_started",
+    "scope": "extension"
+  }
+]
