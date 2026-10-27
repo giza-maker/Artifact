@@ -1,4 +1,7 @@
 import {scenarios, calculate} from './model.js';
+import {mountNavigation} from './navigation.js';
+import {mountPresentation, enhanceFinance} from './presentation.js';
+import {mountStory} from './story.js';
 
 const app = document.querySelector('#app');
 const params = new URLSearchParams(location.search);
@@ -7,7 +10,9 @@ let audience = ['investor','partner','builder'].includes(params.get('view')) ? p
 let country = params.get('country') || 'ae';
 let sector = params.get('sector') || 'qsr';
 let scenario = params.get('case') === 'downside' ? 'downside' : 'base';
+let layout = params.get('layout') === 'document' ? 'document' : 'chapters';
 let inputs = {...scenarios[scenario]};
+let cleanupNavigation=()=>{},cleanupPresentation=()=>{},cleanupStory=()=>{};
 let journeyStep = 0, sourceLimit = 8, backlogLimit = 8;
 let sourceQuery = '', backlogQuery = '', backlogScope = 'all', backlogPriority = 'all';
 let research, evidence, backlog;
@@ -37,10 +42,22 @@ function updateURL() {
   const url = new URL(location.href);
   url.search = '';
   for (const [key,value] of Object.entries({lang,view:audience,country,sector,case:scenario})) url.searchParams.set(key,value);
+  if(layout==='document')url.searchParams.set('layout','document');
   for (const [key] of modelFields) if (inputs[key] !== scenarios[scenario][key]) url.searchParams.set(`m_${key}`,inputs[key]);
   history.replaceState(null,'',url);
 }
 function announce(text) { document.querySelector('#announcer').textContent = text; }
+
+function restoreURLState(){
+  const p=new URLSearchParams(location.search);
+  const next={lang:p.get('lang')==='ar'?'ar':'en',audience:['investor','partner','builder'].includes(p.get('view'))?p.get('view'):'investor',country:research.countries.some(c=>c.id===p.get('country'))?p.get('country'):'ae',sector:research.sectors.some(s=>s.id===p.get('sector'))?p.get('sector'):'qsr',scenario:p.get('case')==='downside'?'downside':'base',layout:p.get('layout')==='document'?'document':'chapters'};
+  const nextInputs={...scenarios[next.scenario]};
+  for(const[key,,,min,max]of modelFields){const raw=p.get(`m_${key}`);if(raw!==null&&raw.trim()!==''&&Number.isFinite(+raw)&&+raw>=min&&+raw<=max)nextInputs[key]=+raw;}
+  const old=JSON.stringify({lang,audience,country,sector,scenario,layout,inputs});
+  const fresh=JSON.stringify({...next,inputs:nextInputs});
+  if(old===fresh)return false;
+  ({lang,audience,country,sector,scenario,layout}=next);inputs=nextInputs;render();return true;
+}
 
 const copy = {
   investor:{title:{en:'For investors',ar:'للمستثمرين'},text:{en:'Start with merchant value, test the cash model, then inspect the evidence gates that control capital.',ar:'ابدأ بقيمة المنتج للتاجر، اختبر التدفقات النقدية، ثم افحص الأدلة المطلوبة قبل صرف رأس المال.'},link:'economics',cta:{en:'Inspect the economics ↗',ar:'افحص الاقتصاديات ↗'}},
@@ -49,6 +66,7 @@ const copy = {
 };
 
 function render() {
+  cleanupNavigation();cleanupPresentation();cleanupStory();
   document.documentElement.lang=lang;
   document.documentElement.dir=lang==='ar'?'rtl':'ltr';
   document.title=l('Marrah | Gulf merchant platform: investment & production roadmap','مرّة | خارطة الاستثمار والإنتاج لمنصة التجار الخليجية');
@@ -150,7 +168,11 @@ function render() {
   </main><footer class="site-footer wrap"><div><a href="#" class="brand">marrah</a><p style="margin-top:10px">${l('A research-backed proposal published on Giza Maker. Working brand, illustrative financial model and concept photography.','مقترح مستند إلى بحث، منشور على Giza Maker. هوية مؤقتة ونموذج مالي افتراضي وصور تصورية.')}</p></div><div class="actions"><button id="share" type="button" class="button secondary compact">${l('Copy this view','انسخ هذا العرض')} ↗</button><button id="print" type="button" class="button text compact">${l('Print brief','اطبع الملف')}</button></div></footer>`;
   document.querySelector('#close-dialog').textContent=l('Close','إغلاق');
   document.querySelector('#source-dialog-title').textContent=l('Inspect the evidence','افحص الأدلة');
-  bind();renderJourney();renderCountry();renderSector();renderModel();renderBacklog();renderSources();updateURL();
+  bind();renderJourney();renderCountry();renderSector();renderModel();renderBacklog();renderSources();
+  cleanupPresentation=mountPresentation({lang,research});
+  cleanupStory=mountStory({lang,research});
+  cleanupNavigation=mountNavigation({lang,audience,layout,onModeChange:mode=>{layout=mode;updateURL();},onRestore:restoreURLState});
+  updateURL();
 }
 
 function renderJourney() {
@@ -191,6 +213,7 @@ function renderModel() {
   const points=rows.map((r,i)=>`${x(i).toFixed(2)},${y(r.cash).toFixed(2)}`).join(' ');
   const description=l(`24-month illustrative cash balance. Lowest balance AED ${money(Math.min(...values))}; funding gap AED ${money(r.fundingGap)} above AED250,000 opening cash.`,`رصيد نقد افتراضي لـ٢٤ شهرًا. أدنى رصيد ${money(Math.min(...values))} درهم؛ فجوة ${money(r.fundingGap)} فوق النقد الافتتاحي ٢٥٠٬٠٠٠ درهم.`);
   document.querySelector('#cash-chart-panel').innerHTML=`<div class="chart-header"><div><h3>${l('The cash ramp, including the uncomfortable part.','التدفق النقدي، بما فيه الجزء الصعب.')}</h3><p>${l('24 months · AED250k opening cash · case-specific build and commercial start','٢٤ شهرًا · نقد افتتاحي ٢٥٠ ألف درهم · بناء وبدء تجاري حسب السيناريو')}</p></div><div><span class="small muted">${l('Additional funding gap','فجوة تمويل إضافية')}</span><strong>${money(r.fundingGap)} ${l('AED','درهم')}</strong></div></div><svg class="cash-chart" viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="chart-title chart-description" dir="ltr"><title id="chart-title">${l('Illustrative closing cash, months 1 to 24','رصيد نقد افتراضي من الشهر ١ إلى ٢٤')}</title><desc id="chart-description">${description}</desc>${ticks.map(t=>`<line class="chart-grid" x1="${pad.left}" x2="${width-pad.right}" y1="${y(t)}" y2="${y(t)}"/><text class="chart-axis" x="${pad.left-10}" y="${y(t)+4}" text-anchor="end">${Math.round(t/1000)}k</text>`).join('')}<line class="chart-zero" x1="${pad.left}" x2="${width-pad.right}" y1="${y(0)}" y2="${y(0)}"/><polyline class="chart-line" points="${points}"/>${[0,5,11,17,23].map(i=>`<text class="chart-axis" x="${x(i)}" y="${height-6}" text-anchor="middle">M${i+1}</text>`).join('')}</svg><div class="chart-foot"><span>${l('Below zero means unfunded cash need, not available borrowing.','تحت الصفر يعني احتياجًا نقديًا غير ممول، وليس اقتراضًا متاحًا.')}</span><span>${l('Before safety buffer and excluded costs.','قبل هامش الأمان والتكاليف المستبعدة.')}</span></div><details style="margin-top:18px"><summary class="small">${l('Cash values in a readable table','قيم النقد في جدول قابل للقراءة')}</summary><div class="table-scroll"><table><thead><tr><th>${l('Month','الشهر')}</th><th>${l('Active locations','المواقع النشطة')}</th><th>${l('Closing cash (AED)','الرصيد الختامي بالدرهم')}</th><th>${l('Operating cash before build','التدفق التشغيلي قبل البناء')}</th></tr></thead><tbody>${rows.map(row=>`<tr><td>${row.month}</td><td>${money(row.active,1)}</td><td>${money(row.cash)}</td><td>${money(row.operating)}</td></tr>`).join('')}</tbody></table></div></details>`;
+  enhanceFinance({lang,result:r});
 }
 
 function sourceEntry(s,full=false) {

@@ -2,7 +2,7 @@
 
 Public showcase: https://giza-maker.github.io/Artifact/marrah-roadmap/
 
-Standalone bilingual investment and production brief. Research cut-off: 27 October 2026. This folder publishes the roadmap, not the existing MVP. No backend, credentials, accounts, messaging sends, analytics trackers or third-party runtime scripts are required.
+Standalone bilingual investment and production brief. Research cut-off: 27 October 2026. Default reading mode shows one chapter at a time, with ten chapters, a persistent index, keyboard search and previous/next navigation. Full document mode remains available. This folder publishes the roadmap, not the existing MVP. No backend, credentials, accounts, messaging sends, analytics trackers or third-party runtime scripts are required.
 
 ## Read and share
 
@@ -11,6 +11,8 @@ Standalone bilingual investment and production brief. Research cut-off: 27 Octob
 - Technical collaborator: `?lang=en&view=builder#blueprint`
 
 The Copy this view action preserves locale, perspective, country, sector, scenario and edited model assumptions in the URL. It copies locally; it sends nothing to another person. Downloadable role briefs define discussion outputs without inventing contact details.
+
+Existing chapter hashes such as `#roadmap` remain valid. `?layout=document` opens every chapter. Use Find chapter or Ctrl/Command+K to search the index; Arrow keys, Enter and Escape work in the native dialog. Mobile uses a compact chapter selector. A user-started receipt-to-reward simulation and clickable G0–G5 diagram explain the proposal without creating orders or rewards. G3 and G4 remain parallel options; a selected gate is not a completed gate.
 
 The core brief covers six GCC countries, six sectors, seven competitor comparisons, financial scenarios, technology alternatives, delivery gates, ten open first-release decisions and an innovation portfolio. The source catalogue contains 104 evidence entries from 94 distinct URLs. The candidate backlog has 75 core and 24 expansion items; these are not all launch scope.
 

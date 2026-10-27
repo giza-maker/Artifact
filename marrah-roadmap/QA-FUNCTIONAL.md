@@ -2,24 +2,26 @@
 
 Run: `node marrah-roadmap/tests/showcase-smoke.cjs`
 
-Result: 20/20 checks passed on 2026-10-27 against `http://127.0.0.1:5180/marrah-roadmap/` using system Chrome and Playwright. No unexpected console errors or uncaught page errors. No screenshot binaries retained in this published folder.
+Result: 20/20 browser checks passed on 2026-10-27 against `http://127.0.0.1:5180/marrah-roadmap/` using Playwright and system Chrome. Runtime: 20.8 seconds. No unexpected console errors or uncaught page errors. No screenshots retained.
 
 Coverage:
 
-- English/LTR and Arabic/RTL; investor, partner, collaborator views.
-- Six countries (`sa`, `ae`, `qa`, `om`, `bh`, `kw`) and six sectors.
-- Four journey steps and pressed-state updates.
-- Exact Base and Downside model outputs, including pickup-only diagnostic.
-- Seven model controls: zero, maximum, above-maximum, `Infinity`-producing exponent, and empty input. Invalid values retain last valid results; output never exposes `Infinity` or `NaN`.
-- Share URL and fresh-page round trip for language, audience, country, sector, scenario, and changed model input. Clipboard and manual-copy fallback both supported by test.
-- Evidence modal open/Escape/focus restoration; evidence search, pagination, and empty state.
-- Heterogeneous source claim fields remain searchable; archived rate cards are linked with provenance and return HTTP 200.
-- Backlog scope, priority, search, pagination, and empty state.
-- PDF/XLSX/ZIP HTTP 200 with non-empty bodies; investor/partner/builder text downloads.
-- Print control invokes browser print action.
-- No document-level horizontal overflow at 1440px or 375px, measured with `document.documentElement.clientWidth`.
-- Data HTTP 404 and aborted fetch both reach fallback containing roadmap PDF and production-package links.
+- Default chapter mode exposes one active chapter. Desktop rail contains all 10 chapters; every visible route updates hash, active view, and `aria-current`.
+- Previous/next boundaries, legacy `#roadmap`, browser Back/Forward, and chapter focus behavior.
+- Full-document toggle persists `layout=document`, exposes all 10 chapters, survives reload, and returns to one-chapter mode.
+- Ctrl+K chapter dialog: 10 results, filtering, empty state, arrow-key movement, Escape, and trigger focus restoration.
+- Locale, audience, and scenario rerenders preserve query plus chapter hash. Shared URL survives fresh-page round trip.
+- English/LTR and Arabic/RTL; no focused control remains inside hidden chapter after rerender.
+- Investor, partner, builder views; six countries; six sectors.
+- Interactive journey manual steps. User-started playback advances once, then stops without advancing after chapter becomes hidden.
+- Six delivery gates; G3/G4 parallel semantics; selected gate updates panel without implying completion.
+- Exact Base and Downside model outputs, four operating/funding thresholds, and pickup-only diagnostic.
+- Seven model controls inside collapsed tuning detail: zero, above maximum, hostile exponent, invalid state, result stability, and no `Infinity`/`NaN` output.
+- Evidence dialog Escape/focus restoration; collapsed source catalog search, empty state, heterogeneous claim, archived rate-card provenance, and HTTP 200.
+- Collapsed competitor comparison and roadmap phase/backlog controls remain usable.
+- PDF/XLSX/ZIP HTTP 200 with non-empty bodies; investor/partner/builder brief downloads.
+- Print lifecycle exposes all 10 chapters and all details, then restores active one-chapter view.
+- Desktop 1440px: rail visible, no document overflow. Mobile 375px: rail hidden, chapter select and document toggle visible, RTL, reduced-motion preference, no overflow.
+- Research-data HTTP 404 and aborted request reach no-JS download fallback.
 
-Exploratory/off-happy-path coverage: repeated full rerenders across audience/language/scenario changes; invalid numeric transitions; manual share fallback; modal keyboard dismissal; combined backlog filters; isolated network failures.
-
-Functional defects found in final build: none.
+Functional defects found in tested build: none.
