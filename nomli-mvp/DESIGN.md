@@ -5,8 +5,8 @@
 Nomli is a lean mobile kitchen companion. Four primary destinations have equal weight:
 
 - **Kitchen** — current inventory, quantities, freshness and corrections.
-- **Scan** — upcoming M2 recognition; native capture previews only in M1.
-- **Cook** — recipe discovery, readiness and guided cooking.
+- **Scan** — protected image/PDF recognition, editable review and optional explicit cooking links.
+- **Cook** — 20 recipes, linked-stock readiness, preparation, guided cooking and reviewed deduction with undo.
 - **Zara** — contextual kitchen assistance with clear prototype limitations.
 
 Do not add school, XP, quests, community, investor-tour or social-product language to this MVP surface.
@@ -26,7 +26,7 @@ Do not add school, XP, quests, community, investor-tour or social-product langua
 - Phone or embedded browser: edge-to-edge `100dvh` shell with safe-area padding.
 - Status bar and header frame one independently scrolling main region. Bottom navigation stays visible in a four-column grid.
 - Default route and Nomli brand link are `#kitchen`.
-- A short, visible `M1 · local inventory` disclosure remains in app chrome. Scan and Zara disclose their unavailable/demo status.
+- A short, visible `M3 · cook with stock` disclosure remains in app chrome. Zara remains explicitly scripted until M4; scanning uses its protected connection.
 - Panels and dialog bodies scroll within viewport bounds. Camera simulation may fill device; other dialogs present as bottom sheets.
 
 ## Interaction and accessibility
@@ -37,7 +37,9 @@ Do not add school, XP, quests, community, investor-tour or social-product langua
 - Announce async state through `#announcer`; use `#toast` only for supplementary status.
 - Forms need persistent labels, associated errors, `aria-invalid` when invalid and explicit confirmation before inventory deletion or backup replacement. Restore shows a validated preview and requires typed `REPLACE`.
 - Honor `prefers-reduced-motion`. Animate only transform and opacity; avoid continuous scroll- or layout-driven motion.
+- Cooking identity requires explicit catalog selection. Count-to-mass conversion requires a measured or printed grams-per-unit value. Preparation and serving changes never silently deduct ingredients.
+- Freeze servings and allocated stock when preparation starts. Save actual use atomically after review; retain a session ID to prevent repeat deduction. Undo preserves later stock changes and blocks changed or missing ingredient records.
 
 ## Required document hooks
 
-Runtime may rely on `#main`, `#view`, `#bottom-nav`, `#modal`, `#modal-content`, `#toast` and `#announcer`. Keep these IDs stable. `main.js` is the only HTML script entry and imports CSS plus application logic.
+Runtime may rely on `#main`, `#view`, `#bottom-nav`, `#modal`, `#modal-content`, `#toast` and `#announcer`. Keep these IDs stable. `main.js` is the only HTML script entry. Styles load through the HTML stylesheet link; JavaScript imports native bridges, local data and application modules.

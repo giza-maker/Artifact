@@ -26,6 +26,7 @@ const ROUTES = new Set([
   "assistant",
   "recipe",
   "cooking",
+  "prep",
   "review",
   "shopping",
   "expenses",
@@ -92,6 +93,34 @@ function safeId(value, label) {
   )
     fail(`${label} is invalid.`);
 }
+const COUNT_UNITS = new Set(["count", "pieces", "bunches", "cloves", "slices"]);
+function conversion(value, unit, label) {
+  if (value === null) return;
+  if (
+    !COUNT_UNITS.has(unit) ||
+    !Number.isFinite(value) ||
+    value <= 0 ||
+    value > MAX_QTY
+  )
+    fail(`${label} conversion is invalid.`);
+}
+function ingredient(value, label) {
+  if (value !== null) safeId(value, `${label} ingredient id`);
+}
+function usage(value, label, positive = false) {
+  plain(value, label);
+  safeId(value.id, `${label} stock id`);
+  safeId(value.ingredientId, `${label} ingredient id`);
+  shortString(value.name, `${label} name`, 200);
+  nonNegative(value.qty, `${label} quantity`);
+  if (positive && value.qty === 0) fail(`${label} quantity must be positive.`);
+  if (!UNITS.has(value.unit)) fail(`${label} unit is invalid.`);
+  conversion(value.gramsPerUnit, value.unit, label);
+}
+function uniqueIds(values, label) {
+  if (new Set(values.map((value) => value.id)).size !== values.length)
+    fail(`${label} contains duplicate stock ids.`);
+}
 function validateItem(item, id) {
   plain(item, `Item ${id}`);
   if (
@@ -102,6 +131,10 @@ function validateItem(item, id) {
     fail(`Item ${id} has an invalid name.`);
   nonNegative(item.qty, `Item ${id} quantity`);
   if (!UNITS.has(item.unit)) fail(`Item ${id} has an unsupported unit.`);
+  if (item.ingredientId !== undefined)
+    ingredient(item.ingredientId, `Item ${id}`);
+  if (item.gramsPerUnit !== undefined)
+    conversion(item.gramsPerUnit, item.unit, `Item ${id}`);
   if (typeof item.storage !== "string" || !ITEM_AREAS.has(item.storage))
     fail(`Item ${id} has an invalid storage location.`);
   for (const field of ["expiry", "printedExpiry"])
@@ -231,8 +264,13 @@ export function validateState(value) {
       )
         fail("Receipt date is invalid.");
     for (const field of ["totalMinor", "taxMinor", "discountMinor"])
-      if (receipt[field] !== undefined && receipt[field] !== null &&
-        (!Number.isSafeInteger(receipt[field]) || receipt[field] < 0 || receipt[field] > 1e12))
+      if (
+        receipt[field] !== undefined &&
+        receipt[field] !== null &&
+        (!Number.isSafeInteger(receipt[field]) ||
+          receipt[field] < 0 ||
+          receipt[field] > 1e12)
+      )
         fail(`Receipt ${field} total is invalid.`);
     if (
       receipt.financeExcluded !== undefined &&
@@ -265,22 +303,126 @@ export function validateState(value) {
     shortString(entry.q, "Chat question", 1000);
     shortString(entry.a, "Chat answer", 5000);
   }
+  const mealIds = new Set();
+  const mealSessionIds = new Set();
   for (const meal of state.meals) {
     plain(meal, "Meal");
     safeId(meal.id, "Meal id");
+    if (mealIds.has(meal.id)) fail("Meal history contains duplicate meal ids.");
+    mealIds.add(meal.id);
     safeId(meal.rid, "Meal recipe id");
     if (!validDate(meal.date)) fail("Meal date is invalid.");
     if (!Array.isArray(meal.used) || meal.used.length > 500)
       fail("Meal usage is invalid.");
+    const modern = ["cookingSessionId", "status"].some((key) =>
+      Object.hasOwn(meal, key),
+    );
+    if (modern) {
+      safeId(meal.cookingSessionId, "Meal cooking session id");
+      if (mealSessionIds.has(meal.cookingSessionId))
+        fail("Meal history contains duplicate cooking session ids.");
+      mealSessionIds.add(meal.cookingSessionId);
+      if (meal.id !== meal.cookingSessionId)
+        fail("Meal and cooking session ids must match.");
+      if (!["completed", "undone"].includes(meal.status))
+        fail("Meal status is invalid.");
+    }
+    uniqueIds(meal.used, "Meal usage");
     for (const used of meal.used) {
       plain(used, "Meal usage");
       safeId(used.id, "Used item id");
       nonNegative(used.qty, "Used quantity");
+      if (
+        modern ||
+        ["unit", "ingredientId", "name", "gramsPerUnit"].some((key) =>
+          Object.hasOwn(used, key),
+        )
+      )
+        usage(used, "Meal usage");
     }
   }
   if (state.cooking !== null) {
     const cooking = plain(state.cooking, "Cooking session");
     safeId(cooking.rid, "Cooking recipe id");
+    const modern = [
+      "id",
+      "phase",
+      "recipeName",
+      "servings",
+      "prepared",
+      "toolsConfirmed",
+      "startedAt",
+      "requirements",
+      "allocations",
+    ].some((key) => Object.hasOwn(cooking, key));
+    if (modern) {
+      safeId(cooking.id, "Cooking session id");
+      if (mealIds.has(cooking.id) || mealSessionIds.has(cooking.id))
+        fail("Active cooking session already exists in meal history.");
+      shortString(cooking.recipeName, "Cooking recipe name", 200);
+      if (
+        !Number.isInteger(cooking.servings) ||
+        cooking.servings < 1 ||
+        cooking.servings > 12
+      )
+        fail("Cooking servings are invalid.");
+      if (!["prep", "cooking", "review"].includes(cooking.phase))
+        fail("Cooking phase is invalid.");
+      if (!Array.isArray(cooking.prepared))
+        fail("Prepared ingredients are invalid.");
+      cooking.prepared.forEach((id) => safeId(id, "Prepared ingredient id"));
+      if (new Set(cooking.prepared).size !== cooking.prepared.length)
+        fail("Prepared ingredients contain duplicates.");
+      if (typeof cooking.toolsConfirmed !== "boolean")
+        fail("Cooking tools confirmation is invalid.");
+      if (
+        typeof cooking.startedAt !== "string" ||
+        !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?Z$/.test(
+          cooking.startedAt,
+        ) ||
+        !Number.isFinite(Date.parse(cooking.startedAt)) ||
+        !validDate(cooking.startedAt.slice(0, 10))
+      )
+        fail("Cooking start timestamp is invalid.");
+      if (
+        new Date(cooking.startedAt).toISOString().slice(0, 19) !==
+        cooking.startedAt.slice(0, 19)
+      )
+        fail("Cooking start timestamp is invalid.");
+      if (cooking.deadline === undefined) fail("Cooking deadline is required.");
+      if (cooking.phase !== "cooking" && cooking.running)
+        fail("Only cooking phase can run a timer.");
+      if (
+        !Array.isArray(cooking.requirements) ||
+        !Array.isArray(cooking.allocations)
+      )
+        fail("Cooking requirements or allocations are invalid.");
+      for (const requirement of cooking.requirements) {
+        plain(requirement, "Cooking requirement");
+        safeId(requirement.ingredientId, "Requirement ingredient id");
+        nonNegative(requirement.qty, "Requirement quantity");
+        if (requirement.qty === 0 || !UNITS.has(requirement.unit))
+          fail("Cooking requirement is invalid.");
+      }
+      const requiredIngredients = new Set(
+        cooking.requirements.map((entry) => entry.ingredientId),
+      );
+      const preparedIngredients = new Set(cooking.prepared);
+      if (cooking.prepared.some((id) => !requiredIngredients.has(id)))
+        fail("Prepared ingredient is not required by the cooking session.");
+      if (
+        cooking.phase !== "prep" &&
+        (!cooking.toolsConfirmed ||
+          [...requiredIngredients].some((id) => !preparedIngredients.has(id)))
+      )
+        fail(
+          "Cooking and review phases require confirmed tools and all ingredients prepared.",
+        );
+      cooking.allocations.forEach((value) =>
+        usage(value, "Cooking allocation", true),
+      );
+      uniqueIds(cooking.allocations, "Cooking allocations");
+    }
     if (
       !Number.isInteger(cooking.step) ||
       cooking.step < 0 ||

@@ -3388,3 +3388,113 @@ dialog[data-screen="scan-review"] #modal-content {
     animation: none;
   }
 }
+
+/* Cooking uses the existing mobile shell and its single scrolling main area. */
+.cook-filters {
+  display: grid;
+  gap: 12px;
+  margin-block: 16px;
+}
+.cook-filters .field {
+  margin: 0;
+}
+.cook-link-notice {
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.cook-link-notice p {
+  margin-block: 8px 12px;
+}
+.cook-link-fields {
+  display: grid;
+  gap: 12px;
+  padding: 14px;
+  margin-block: 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface-2);
+}
+.cook-link-fields .field {
+  margin: 0;
+}
+.cook-link-fields .details {
+  display: block;
+  line-height: 1.5;
+}
+.recipe-card.recipe-no-photo {
+  display: grid;
+  grid-template-columns: 66px minmax(0, 1fr);
+  align-items: stretch;
+}
+.recipe-art {
+  display: grid;
+  place-items: center;
+  color: var(--accent);
+  background: var(--surface-2);
+}
+.recipe-art .ui-icon {
+  width: 28px;
+  height: 28px;
+}
+.recipe-card.recipe-no-photo > div {
+  min-width: 0;
+  padding: 16px 12px;
+}
+.step-dots {
+  display: flex;
+  gap: 6px;
+}
+.step-dots > span {
+  height: 4px;
+  flex: 1;
+  border-radius: 2px;
+  background: var(--border-strong);
+}
+.step-dots > .is-done {
+  background: var(--accent);
+}
+.prep-item {
+  align-items: flex-start;
+  padding-block: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.prep-item > span {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+.prep-item small,
+.cook-use-row > small {
+  color: var(--muted);
+}
+.cook-primary-action {
+  display: grid;
+  gap: 10px;
+  padding-bottom: 10px;
+}
+.cook-use-row {
+  padding-block: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.cook-use-row .field {
+  margin-bottom: 6px;
+}
+.meal-history {
+  margin-top: 20px;
+}
+.meal-history .item-row > div {
+  min-width: 0;
+}
+.meal-history .btn {
+  flex-shrink: 0;
+}
+.timer-card form .field-grid {
+  align-items: end;
+}
+.timer-card form .btn {
+  margin-bottom: 12px;
+}
+.cook-link-label {
+  overflow-wrap: anywhere;
+}
