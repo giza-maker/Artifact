@@ -91,8 +91,12 @@ function assertProviderShape(raw, imageRegions = false) {
   for (const line of raw.lines) if (!line || typeof line !== "object" || Array.isArray(line) || Object.keys(line).some(key => !lineKeys.includes(key) && !(imageRegions && key === "photoRegion")) || lineKeys.some((k) => !Object.hasOwn(line, k))) throw new HttpError(502, "provider_schema_error", "Scan provider output failed validation.");
 }
 
+const validModelName = (value) => typeof value === "string" && value.length <= 100 && /^[A-Za-z0-9._-]+$/.test(value);
+
 function geminiRequest(input, env, modelOverride = null) {
-  const model = modelOverride || env.GEMINI_MODEL || "gemini-3.1-flash-lite";
+  const defaultModel = env.GEMINI_MODEL || "gemini-3.1-flash-lite";
+  const receiptModel = input.kind === "receipt" && validModelName(env.GEMINI_RECEIPT_MODEL) ? env.GEMINI_RECEIPT_MODEL : null;
+  const model = modelOverride || receiptModel || defaultModel;
   return { url: `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, model, headers: { "x-goog-api-key": env.GEMINI_API_KEY }, body: { contents: [{ role: "user", parts: [{ inline_data: { mime_type: input.mimeType, data: input.data } }, { text: prompt(input.kind, input.imageRegions) }] }], generationConfig: { responseFormat: { text: { mimeType: "APPLICATION_JSON", schema: scanProviderSchema(input.imageRegions, true) } }, maxOutputTokens: 8000 } }, parse: (x) => JSON.parse(x?.candidates?.[0]?.content?.parts?.filter((p) => !p.thought).map((p) => p.text || "").join("") || ""), metrics: (x) => ({ finishReason: GEMINI_FINISH_REASONS.has(x?.candidates?.[0]?.finishReason) ? x.candidates[0].finishReason : null, promptTokens: metricInteger(x?.usageMetadata?.promptTokenCount), candidateTokens: metricInteger(x?.usageMetadata?.candidatesTokenCount), thoughtTokens: metricInteger(x?.usageMetadata?.thoughtsTokenCount) }) };
 }
 function openaiRequest(input, env) {
@@ -117,7 +121,7 @@ async function sha256(kind, bytes) { const prefix = encoder.encode(`${kind}:`), 
 
 function geminiFallbackModel(env, primaryModel) {
   const candidate = env.GEMINI_SCAN_FALLBACK_MODEL;
-  return typeof candidate === "string" && candidate.length <= 100 && /^[A-Za-z0-9._-]+$/.test(candidate) && candidate !== primaryModel ? candidate : null;
+  return validModelName(candidate) && candidate !== primaryModel ? candidate : null;
 }
 
 async function scan(input, env, fetchImpl, requestSignal) {

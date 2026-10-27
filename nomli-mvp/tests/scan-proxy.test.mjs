@@ -92,6 +92,25 @@ test("retries transient provider busy response once on configured Gemini fallbac
   assert.match(urls[0], /models\/gemini-primary:generateContent$/); assert.match(urls[1], /models\/gemini-fallback:generateContent$/);
 });
 
+test("uses receipt-specific Gemini model without changing grocery or expiry models", async () => {
+  const urls = [];
+  const handler = createScanHandler({ fetchImpl: async (url) => { urls.push(url); return upstream()(); } });
+  const models = { ...env, GEMINI_MODEL: "gemini-3.5-flash-lite", GEMINI_RECEIPT_MODEL: "gemini-3.1-flash-lite" };
+  for (const kind of ["receipt", "groceries", "expiry"]) {
+    const response = await handler(req({ ...valid, kind }), models); assert.equal(response.status, 200);
+  }
+  assert.match(urls[0], /models\/gemini-3\.1-flash-lite:generateContent$/);
+  assert.match(urls[1], /models\/gemini-3\.5-flash-lite:generateContent$/);
+  assert.match(urls[2], /models\/gemini-3\.5-flash-lite:generateContent$/);
+});
+
+test("ignores malformed receipt-specific Gemini model", async () => {
+  let called;
+  const handler = createScanHandler({ fetchImpl: async (url) => { called = url; return upstream()(); } });
+  const response = await handler(req(valid), { ...env, GEMINI_MODEL: "gemini-3.5-flash-lite", GEMINI_RECEIPT_MODEL: "bad/model?key=leak" });
+  assert.equal(response.status, 200); assert.match(called, /models\/gemini-3\.5-flash-lite:generateContent$/); assert.doesNotMatch(called, /bad|leak/);
+});
+
 test("uses configured Gemini fallback after first-attempt timeout", async () => {
   const urls = [];
   const handler = createScanHandler({ fetchImpl: async (url, init) => { urls.push(url); if (urls.length === 2) return upstream()(); return await new Promise((_resolve, reject) => init.signal.addEventListener("abort", () => reject(Object.assign(new Error("aborted"), { name: "AbortError" })), { once: true })); } });
