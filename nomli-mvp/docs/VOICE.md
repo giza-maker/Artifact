@@ -1,6 +1,6 @@
 # M5 Android voice
 
-M5 adds optional speech-to-text for Zara questions. Inventory, scan, cooking, Gemini 3.5 Flash-Lite and M4 reviewed proposals remain unchanged. Version: `0.6.0-m5` / code `6`; validation package: `com.nomli.mvp.validation`, using the retained validation signing certificate. M5 APK build/package verification is pending. [Planned APK](https://github.com/giza-maker/Artifact/releases/download/nomli-m5-v0.6.0/Nomli-M5.apk).
+M5 adds optional speech-to-text for Zara questions. Inventory, scan, cooking, Gemini 3.5 Flash-Lite and M4 reviewed proposals remain unchanged. Version: `0.6.0-m5` / code `6`; validation package: `com.nomli.mvp.validation`, using the retained validation signing certificate. M5 APK compilation, signing and package verification pass; published checksum matches. [Download APK](https://github.com/giza-maker/Artifact/releases/download/nomli-m5-v0.6.0/Nomli-M5.apk).
 
 ## Flow and privacy
 
@@ -16,9 +16,9 @@ Native deadline is 35 seconds including permission. Capture stops after 20 secon
 
 Errors cover denied permission, unavailable service or language, no match, network failure, busy microphone, timeout and excessive transcript length. Typing remains available. Static microphone state, accessible status text, 44px voice controls and automatic Arabic/text direction preserve the orange visual system. Keyboard scrolling and focus require physical-device verification.
 
-## Verification checkpoint
+## Verification
 
-161 JavaScript tests pass, including 13 controller and six native-bridge tests. Coverage includes mocked lifecycle cancellation, late callbacks, listener cleanup, malformed results, errors and maximum length. No actual Android audio or physical-phone QA has been completed. APK compilation cannot establish microphone behavior, recognition quality or privacy of the device's chosen speech service.
+All 161 JavaScript tests pass, including 13 controller and six native-bridge tests. Coverage includes mocked lifecycle cancellation, late callbacks, listener cleanup, malformed results, errors and maximum length. Android CI compilation and package/signature checks pass. Browser simulation verified reviewed Arabic text reaching live Zara only after Send. No actual Android audio or physical-phone QA has been completed. See the [verification record](VERIFICATION.md) for evidence and limits. APK compilation cannot establish microphone behavior, recognition quality or privacy of the device's chosen speech service.
 
 ## Pending phone checklist
 

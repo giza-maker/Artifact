@@ -48,7 +48,7 @@ See [Zara phone checks](ASSISTANT.md).
 
 ## M5 voice boundary
 
-The M4 backend, Gemini 3.5 Flash-Lite configuration, inventory, scan, cooking and reviewed Zara proposals remain unchanged. No account work is added. M5 targets version `0.6.0-m5` / code `6`, validation package `com.nomli.mvp.validation` and the retained validation signing certificate. M5 build/package verification remains pending; historical M4 evidence above stays unchanged.
+The M4 backend, Gemini 3.5 Flash-Lite configuration, inventory, scan, cooking and reviewed Zara proposals remain unchanged. No account work is added. M5 uses version `0.6.0-m5` / code `6`, validation package `com.nomli.mvp.validation` and the retained validation signing certificate. M5 compilation, signing and package verification pass; published checksum matches. Historical M4 evidence above stays unchanged.
 
 Android's default `SpeechRecognizer` service supplies text through a native Capacitor bridge. The manifest declares `RECORD_AUDIO` and speech-service visibility; runtime permission follows explicit Speak. Native Android classes provide recognition, with no extra speech SDK, provider key or audio media files. `en-US`, `ar-SA` and `ar-EG` are requested locales, subject to the installed provider and language packs. The provider may stream audio online; neither offline operation nor provider non-retention is promised.
 
@@ -56,7 +56,7 @@ Nomli keeps capture/review transcript only in memory. Finish requests a final re
 
 Native deadline is 35 seconds including permission, capture stops after 20 seconds and final-result wait is bounded to 8 seconds. JavaScript watchdog is 40 seconds. Request IDs isolate turns and late callbacks. Navigation, dialog opening and background cancellation clear pending UI state; native pause during capture, stop and destroy release recognition. The permission dialog's own pause is handled separately. Cleanup invalidates a session before cancelling/destroying its recognizer.
 
-Current checkpoint: 161 JavaScript tests pass, including 13 controller and six bridge tests covering cancellation, late callbacks, cleanup, errors and length limits. These are mocked/pure JavaScript checks, not actual Android audio or device QA. Native permission flows, provider availability, noisy Arabic recognition, Bluetooth/call interruption, background microphone release, camera/picker, notifications and update-on-phone checks remain pending. See [voice checklist](VOICE.md).
+All 161 JavaScript tests pass, including 13 controller and six bridge tests covering cancellation, late callbacks, cleanup, errors and length limits. These are mocked/pure JavaScript checks, not actual Android audio or device QA. Native permission flows, provider availability, noisy Arabic recognition, Bluetooth/call interruption, background microphone release, camera/picker, notifications and update-on-phone checks remain pending. See [voice checklist](VOICE.md).
 
 ## Capability status
 

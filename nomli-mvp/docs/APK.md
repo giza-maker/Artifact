@@ -1,4 +1,22 @@
-# Nomli milestone 4 APK
+# Nomli milestone 5 APK
+
+[Download Nomli-M5.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m5-v0.6.0/Nomli-M5.apk). Install over existing **Nomli Test** using the retained validation update channel. Package `com.nomli.mvp.validation`, version **0.6.0-m5**, versionCode **6**, minimum API **26**, target API **36**. Package metadata and signing certificate match were verified; actual update installation remains a phone check.
+
+M5 adds optional Android voice input for Zara. Choose English (US), Arabic (Saudi Arabia) or Arabic (Egypt), then **Speak → Finish → edit transcript → Use transcript → Send question**. Use appends to the existing draft; a separate Replace action replaces it. Transcript review blocks Send. Voice results never execute commands, send automatically or change stock.
+
+Android's default speech service may process audio online. Requested locale support and installed language packs vary; offline recognition is not guaranteed. Nomli stores no audio and keeps capture/review text in memory only. Once sent, question text follows the existing local conversation/backup behavior. No extra Nomli speech API key is required. Scanning and live Zara reuse the existing private Scan connection and unchanged M4 protected Gemini service.
+
+Built from `aae7375b35563ba5dbc5945dca84e599333f1b36` in successful [CI run 40542738894](https://github.com/giza-maker/Artifact/actions/runs/40542738894); Android job took 4m 08s. All **161 JavaScript tests**, content checks, production build, Capacitor sync and Android compilation pass. APK: **42,091,800 bytes**. SHA-256:
+
+```text
+03a453d141a837c868b4cde1567a984cb166f8bbeb341901e24acc53f1926716
+```
+
+APK Signature Schemes v2/v3, 16 KB alignment and ZIP CRC checks pass. Certificate SHA-256: `8c02c3045c97327f5415451feb9ccb0db326322b90d460dde9f28a7c0b559ef0`. All 72 packaged production web assets match byte-for-byte; two generated Cordova placeholders are empty. Configured provider key and device code are absent. GitHub's uploaded asset size and SHA-256 match the local APK. Merged manifest includes runtime microphone permission, optional microphone hardware and speech-service visibility.
+
+Browser QA used synthetic microphone results, then a real Zara request after explicit Send. Arabic editing, append/replace, blank/overflow guards, denied/unavailable errors, cancellation and unchanged inventory passed. This does not establish actual microphone recognition. No physical-phone QA has run. Follow the [M5 voice acceptance checklist](VOICE.md), including permission handling, language availability, noisy-kitchen recognition, interruption/background cleanup, keyboard and update installation. Existing camera/QR/SAF, notification and persistence device checks remain pending.
+
+## Historical M4 release
 
 [Download Nomli-M4.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m4-v0.5.0/Nomli-M4.apk). Install over M1/M2/M3 **Nomli Test** using the retained validation update channel. Package `com.nomli.mvp.validation`, version **0.5.0-m4**, versionCode **5**, minimum API **26**, target API **36**. Package metadata and certificate match were verified; actual update installation remains a phone check.
 

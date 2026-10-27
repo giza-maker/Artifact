@@ -6,7 +6,7 @@ Validation package: `com.nomli.mvp.validation`, app label **Nomli Test**, versio
 
 Inventory works offline. Receipt recognition and live Zara need internet access. Current recognition service is `https://nomli-scan-proxy.ahmed-aljazayeerly.workers.dev`, with Gemini 3.5 Flash-Lite for scanning and Zara. Provider credentials are encrypted server-side and never bundled in the app.
 
-M5 APK build and package/signing verification pending: [Nomli-M5.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m5-v0.6.0/Nomli-M5.apk) (planned release link). Same validation package and retained signing certificate required; install/update and physical-phone QA remain pending. See [voice checks](docs/VOICE.md).
+Verified M5 APK: [Nomli-M5.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m5-v0.6.0/Nomli-M5.apk). Same validation package and retained signing certificate verified; install/update and physical-phone QA remain pending. See [voice checks](docs/VOICE.md).
 
 Historical verified M4 APK: [Nomli-M4.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m4-v0.5.0/Nomli-M4.apk). See the [Zara phone checklist](docs/ASSISTANT.md), [APK checklist](docs/APK.md) and [verification record](docs/VERIFICATION.md).
 
@@ -88,7 +88,7 @@ Synthetic PNG and PDF receipts completed live calls in about five and four secon
 
 ## Not implemented or verified
 
-- Historical M4 APK compilation and package verification pass. M5 build/package verification remains pending. Install/update verification and physical-phone QA remain pending. Native picker, camera permissions, Preferences behavior across force-stop and keyboard behavior still need device testing.
+- M5 APK compilation, signatures and package verification pass; published checksum matches. Install/update verification and physical-phone QA remain pending. Native picker, camera permissions, Preferences behavior across force-stop and keyboard behavior still need device testing.
 - Android voice is implemented but unverified on a physical phone. Barcode product lookup is not connected. Recipes remain curated; Zara does not rewrite recipes or generate a new catalog.
 - Accounts, cloud inventory sync, multi-user authorization and database transactions remain future work.
 - Receipt recognition can be wrong. Review is mandatory before local data changes.
