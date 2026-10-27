@@ -72,7 +72,7 @@ M7 updates the mobile interface while retaining the paired scan and Zara service
 
 Ingredient thumbnails are local media, stored in Android internal app files or browser IndexedDB. Item editing supports explicit add, change and remove actions. Grocery review offers individual suggested product crops, with Adjust/Remove/Choose crop actions; receipt images and PDFs never supply ingredient icons. Inventory JSON backups retain photo references without embedding image bytes, so restoring a backup on another device does not restore photos. No photo upload service is added.
 
-All 20 curated recipes have local artwork; 17 new generated WebP images have provenance in web/public/images/recipes/ASSETS.md. M7 APK compilation, signing, package verification and physical-device checks remain pending; M6 build and test evidence above remains historical evidence for M6.
+All 20 curated recipes have local artwork; 17 new generated WebP images have provenance in web/public/images/recipes/ASSETS.md. M7 APK compilation, retained-key signing, package/CRC/alignment, 90 bundled-assets matches and uploaded digest checks pass. Physical-device checks remain pending; M6 evidence above remains historical.
 
 ## Capability status
 
@@ -110,4 +110,4 @@ Future remote writes need authenticated owner derivation, database transactions 
 
 ## M7 image-region capability
 
-New grocery image requests opt in with imageRegions:true. Provider may return each line’s optional normalized photoRegion {x,y,width,height}; invalid or uncertain regions become null and are never guessed. Receipt/expiry requests use their existing shape. Legacy clients keep the original response schema; new clients retry once without capability only for old-worker422 invalid_request, never provider/network errors. Photo regions are excluded from import signatures, stock and spending. The same scan call locates products; all cropping/downscaling stays local.
+New grocery image requests opt in with imageRegions:true. Provider may return each line’s optional normalized photoRegion {x,y,width,height}; invalid or uncertain regions become null and are never guessed. Receipt/expiry requests use their existing shape. Legacy clients keep the original response schema; new clients retry once without capability only for old-worker 422 invalid_request, never provider/network errors. Photo regions are excluded from import signatures, stock and spending. The same scan call locates products; all cropping/downscaling stays local.

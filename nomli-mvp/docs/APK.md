@@ -1,4 +1,20 @@
-# Nomli milestone 6 APK
+# Nomli milestone 7 APK
+
+[Download Nomli-M7.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m7-v0.8.0/Nomli-M7.apk). Install over existing **Nomli Test**. Package `com.nomli.mvp.validation`, version **0.8.0-m7**, versionCode **8**, minimum API **26**, target API **36**. Same retained signing certificate; actual update installation remains a phone check.
+
+M7 adds persistent individually cropped ingredient photos, complete recipe artwork, chronological Zara chat with bottom composer and voice drawer, searchable mobile selectors and compact cooking/inventory layouts. Scanning and live Zara reuse existing private connection. Old discarded captures cannot be recovered. Receipt/PDF/expiry scans never become ingredient photos. JSON backups contain photo reference IDs, not media bytes.
+
+Built from `5e3fc5751c8d7e886d3c326956e62c38225df382` in successful [CI run 40591130479](https://github.com/giza-maker/Artifact/actions/runs/40591130479); Android job took 1m 42s. All **200 JavaScript tests**, content validation, production build, Capacitor sync and Android compilation pass. APK: **43,891,693 bytes**. SHA-256:
+
+```text
+67f155a30b769e17747ae4c170b1fb97f627969a68d7dbae9705c3e637e606bb
+```
+
+APK Signature Schemes v2/v3, 16 KB alignment and ZIP CRC pass. Certificate SHA-256: `8c02c3045c97327f5415451feb9ccb0db326322b90d460dde9f28a7c0b559ef0`, matching prior validation releases. All 90 production web assets match byte-for-byte; two empty Cordova placeholders are expected. Configured provider key/device code, private files and QA harness are absent. GitHub asset size/digest match local APK.
+
+Browser checked photo save/reload, grocery review, nested selectors, focus, live search, all 20 recipe mappings and detail art, live Zara reply and synthetic speech review at 390×844 and 320×640. Voice permission handoff and error reporting were hardened after an installed-APK silent Speak report. No physical phone/emulator QA ran; that phone’s root cause remains unconfirmed. Actual capture/storage, microphone/provider/language support, keyboard/accessibility, background notifications and update installation remain pending in [TESTING.md](TESTING.md).
+
+## Historical M6 release
 
 [Download Nomli-M6.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m6-v0.7.0/Nomli-M6.apk). Install over existing **Nomli Test**. Package `com.nomli.mvp.validation`, version **0.7.0-m6**, versionCode **7**, minimum API **26**, target API **36**. Retained signing certificate matches M1–M5. Actual update installation remains a phone check.
 

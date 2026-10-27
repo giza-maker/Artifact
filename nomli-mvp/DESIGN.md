@@ -44,7 +44,7 @@ Do not add school, XP, quests, community, investor-tour or social-product langua
 
 - Ingredient thumbnails stay on the device: Android internal app files, or IndexedDB in the browser. Keep photo bytes separate from inventory JSON backups; restored references may have no local image.
 - Item editing offers explicit add, change and remove photo actions. Use an ingredient fallback when a local photo is unavailable.
-- Grocery image review shows a separate suggested crop per product. Crop locally from full source resolution, downscale to a square up to256px/32KiB, then confirm import; allow Adjust, Remove or Choose crop per line. Unknown regions remain blank. Receipt images and PDFs never become ingredient icons.
+- Grocery image review shows a separate suggested crop per product. Crop locally from full source resolution, downscale to a square up to 256px/32KiB, then confirm import; allow Adjust, Remove or Choose crop per line. Unknown regions remain blank. Receipt images and PDFs never become ingredient icons.
 - Photo storage does not add an upload destination. Scanning still sends its selected source through the existing recognition flow.
 
 ## Zara interaction contract
