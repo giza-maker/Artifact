@@ -3,11 +3,12 @@
   "name": "nomli-scan-proxy",
   "main": "server/scan-proxy.mjs",
   "compatibility_date": "2026-10-26",
-  "compatibility_flags": ["nodejs_compat"],
+  "compatibility_flags": ["nodejs_compat", "enable_request_signal"],
   "observability": { "enabled": true, "head_sampling_rate": 0.1 },
   "vars": {
     "SCAN_PROVIDER": "gemini",
-    "GEMINI_MODEL": "gemini-3.5-flash-lite",
+    "GEMINI_MODEL": "gemini-3.1-flash-lite",
+    "GEMINI_SCAN_FALLBACK_MODEL": "gemini-3.5-flash-lite",
     "GEMINI_ASSISTANT_MODEL": "gemini-3.5-flash-lite",
     "ALLOWED_ORIGINS": "https://localhost",
     "LOCAL_DEV": "false"

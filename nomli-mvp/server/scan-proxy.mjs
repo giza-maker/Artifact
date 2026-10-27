@@ -13,7 +13,7 @@ const encoder = new TextEncoder();
 const GEMINI_FINISH_REASONS = new Set(["STOP", "MAX_TOKENS", "SAFETY", "RECITATION", "LANGUAGE", "OTHER", "BLOCKLIST", "PROHIBITED_CONTENT", "SPII", "MALFORMED_FUNCTION_CALL", "IMAGE_SAFETY", "IMAGE_PROHIBITED_CONTENT", "NO_IMAGE", "IMAGE_OTHER"]);
 const metricInteger = (value) => Number.isSafeInteger(value) && value >= 0 ? value : null;
 
-class HttpError extends Error { constructor(status, code, message) { super(message); this.status = status; this.code = code; } }
+class HttpError extends Error { constructor(status, code, message, rawStatus = null) { super(message); this.status = status; this.code = code; this.rawStatus = rawStatus; } }
 const json = (value, status = 200, headers = {}) => new Response(JSON.stringify(value), { status, headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store", ...headers } });
 const errorResponse = (e, headers) => json({ error: { code: e?.code || "internal_error", message: e instanceof HttpError || e instanceof AssistantHttpError ? e.message : "Request failed." } }, e?.status || 500, headers);
 
@@ -91,8 +91,8 @@ function assertProviderShape(raw, imageRegions = false) {
   for (const line of raw.lines) if (!line || typeof line !== "object" || Array.isArray(line) || Object.keys(line).some(key => !lineKeys.includes(key) && !(imageRegions && key === "photoRegion")) || lineKeys.some((k) => !Object.hasOwn(line, k))) throw new HttpError(502, "provider_schema_error", "Scan provider output failed validation.");
 }
 
-function geminiRequest(input, env) {
-  const model = env.GEMINI_MODEL || "gemini-3.1-flash-lite";
+function geminiRequest(input, env, modelOverride = null) {
+  const model = modelOverride || env.GEMINI_MODEL || "gemini-3.1-flash-lite";
   return { url: `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`, model, headers: { "x-goog-api-key": env.GEMINI_API_KEY }, body: { contents: [{ role: "user", parts: [{ inline_data: { mime_type: input.mimeType, data: input.data } }, { text: prompt(input.kind, input.imageRegions) }] }], generationConfig: { responseFormat: { text: { mimeType: "APPLICATION_JSON", schema: scanProviderSchema(input.imageRegions, true) } }, maxOutputTokens: 8000 } }, parse: (x) => JSON.parse(x?.candidates?.[0]?.content?.parts?.filter((p) => !p.thought).map((p) => p.text || "").join("") || ""), metrics: (x) => ({ finishReason: GEMINI_FINISH_REASONS.has(x?.candidates?.[0]?.finishReason) ? x.candidates[0].finishReason : null, promptTokens: metricInteger(x?.usageMetadata?.promptTokenCount), candidateTokens: metricInteger(x?.usageMetadata?.candidatesTokenCount), thoughtTokens: metricInteger(x?.usageMetadata?.thoughtsTokenCount) }) };
 }
 function openaiRequest(input, env) {
@@ -105,7 +105,8 @@ function openaiRequest(input, env) {
 async function boundedResponse(response) {
   if (!response.ok) {
     await response.body?.cancel().catch(() => {});
-    throw new HttpError(502, "provider_error", "Scan provider rejected request.");
+    if ([502, 503, 504].includes(response.status)) throw new HttpError(503, "provider_busy", "Scan provider is temporarily unavailable.", response.status);
+    throw new HttpError(502, "provider_error", "Scan provider rejected request.", response.status);
   }
   const reader = response.body?.getReader(); if (!reader) throw new HttpError(502, "provider_error", "Scan provider returned no response.");
   let size = 0; const chunks = []; while (true) { const { done, value } = await reader.read(); if (done) break; size += value.byteLength; if (size > UPSTREAM_LIMIT) { await reader.cancel(); throw new HttpError(502, "provider_error", "Scan provider response was too large."); } chunks.push(value); }
@@ -114,13 +115,20 @@ async function boundedResponse(response) {
 
 async function sha256(kind, bytes) { const prefix = encoder.encode(`${kind}:`), all = new Uint8Array(prefix.length + bytes.length); all.set(prefix); all.set(bytes, prefix.length); return [...new Uint8Array(await crypto.subtle.digest("SHA-256", all))].map((b) => b.toString(16).padStart(2,"0")).join(""); }
 
+function geminiFallbackModel(env, primaryModel) {
+  const candidate = env.GEMINI_SCAN_FALLBACK_MODEL;
+  return typeof candidate === "string" && candidate.length <= 100 && /^[A-Za-z0-9._-]+$/.test(candidate) && candidate !== primaryModel ? candidate : null;
+}
+
 async function scan(input, env, fetchImpl, requestSignal) {
   const provider = (env.SCAN_PROVIDER || "gemini").toLowerCase();
-  const spec = provider === "openai" ? openaiRequest(input, env) : provider === "gemini" ? geminiRequest(input, env) : null;
+  const primarySpec = provider === "openai" ? openaiRequest(input, env) : provider === "gemini" ? geminiRequest(input, env) : null;
   const key = provider === "openai" ? env.OPENAI_API_KEY : env.GEMINI_API_KEY;
-  if (!spec || typeof key !== "string" || !key) throw new HttpError(503, "not_configured", "Scan provider is not configured.");
+  if (!primarySpec || typeof key !== "string" || !key) throw new HttpError(503, "not_configured", "Scan provider is not configured.");
+  const fallbackModel = provider === "gemini" ? geminiFallbackModel(env, primarySpec.model) : null;
   const deadline = Date.now() + TIMEOUT_MS; let raw;
   for (let attempt = 1; attempt <= 2; attempt++) {
+    const spec = attempt === 2 && fallbackModel ? geminiRequest(input, env, fallbackModel) : primarySpec;
     if (requestSignal?.aborted) throw new HttpError(499, "request_cancelled", "Request was cancelled.");
     const remaining = deadline - Date.now();
     if (remaining <= 0) throw new HttpError(504, "provider_timeout", "Scan provider timed out.");
@@ -141,9 +149,12 @@ async function scan(input, env, fetchImpl, requestSignal) {
     } catch (e) {
       const cancelled = requestSignal?.aborted;
       const code = cancelled ? "request_cancelled" : attemptTimedOut ? "provider_attempt_timeout" : e?.code || "provider_error";
-      console.warn(JSON.stringify({ event: "scan_provider_failed", provider, model: spec.model, attempt, code, headersMs: headersAt === null ? null : headersAt - startedAt, bodyMs: headersAt === null ? null : Date.now() - headersAt, elapsedMs: Date.now() - startedAt }));
-      if (e instanceof HttpError) throw e;
+      console.warn(JSON.stringify({ event: "scan_provider_failed", provider, model: spec.model, attempt, code, upstreamStatus: Number.isInteger(e?.rawStatus) ? e.rawStatus : null, headersMs: headersAt === null ? null : headersAt - startedAt, bodyMs: headersAt === null ? null : Date.now() - headersAt, elapsedMs: Date.now() - startedAt }));
       if (cancelled) throw new HttpError(499, "request_cancelled", "Request was cancelled.");
+      if (e instanceof HttpError) {
+        if (attempt === 1 && e.code === "provider_busy" && fallbackModel) continue;
+        throw e;
+      }
       if ((e?.name === "AbortError" || controller.signal.aborted) && attemptTimedOut) {
         if (attempt === 1) continue;
         throw new HttpError(504, "provider_timeout", "Scan provider timed out.");

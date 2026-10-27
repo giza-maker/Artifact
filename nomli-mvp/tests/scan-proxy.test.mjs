@@ -84,6 +84,47 @@ test("sanitizes provider HTTP and schema errors", async () => {
   assert.equal((await extra(req(valid), env)).status, 502);
 });
 
+test("retries transient provider busy response once on configured Gemini fallback", async () => {
+  const urls = [];
+  const handler = createScanHandler({ fetchImpl: async (url) => { urls.push(url); return urls.length === 1 ? new Response("busy private detail", { status: 503 }) : upstream()(); } });
+  const response = await handler(req(valid), { ...env, GEMINI_MODEL: "gemini-primary", GEMINI_SCAN_FALLBACK_MODEL: "gemini-fallback" });
+  assert.equal(response.status, 200); assert.equal(urls.length, 2);
+  assert.match(urls[0], /models\/gemini-primary:generateContent$/); assert.match(urls[1], /models\/gemini-fallback:generateContent$/);
+});
+
+test("uses configured Gemini fallback after first-attempt timeout", async () => {
+  const urls = [];
+  const handler = createScanHandler({ fetchImpl: async (url, init) => { urls.push(url); if (urls.length === 2) return upstream()(); return await new Promise((_resolve, reject) => init.signal.addEventListener("abort", () => reject(Object.assign(new Error("aborted"), { name: "AbortError" })), { once: true })); } });
+  const original = globalThis.setTimeout; globalThis.setTimeout = (fn) => original(fn, 1);
+  try {
+    const response = await handler(req(valid), { ...env, GEMINI_MODEL: "gemini-primary", GEMINI_SCAN_FALLBACK_MODEL: "gemini-fallback" });
+    assert.equal(response.status, 200); assert.match(urls[1], /models\/gemini-fallback:generateContent$/);
+  } finally { globalThis.setTimeout = original; }
+});
+
+test("does not retry provider quota or authentication rejection", async () => {
+  let calls = 0;
+  const handler = createScanHandler({ fetchImpl: async () => { calls++; return new Response("private quota detail", { status: 429 }); } });
+  const response = await handler(req(valid), { ...env, GEMINI_SCAN_FALLBACK_MODEL: "gemini-fallback" });
+  assert.equal(response.status, 502); assert.equal((await response.json()).error.code, "provider_error"); assert.equal(calls, 1);
+});
+
+test("stops after fallback also reports provider busy", async () => {
+  let calls = 0;
+  const handler = createScanHandler({ fetchImpl: async () => { calls++; return new Response("still busy", { status: 503 }); } });
+  const response = await handler(req(valid), { ...env, GEMINI_MODEL: "gemini-primary", GEMINI_SCAN_FALLBACK_MODEL: "gemini-fallback" });
+  assert.equal(response.status, 503); assert.equal((await response.json()).error.code, "provider_busy"); assert.equal(calls, 2);
+});
+
+test("ignores invalid or same Gemini fallback model without URL injection", async () => {
+  for (const fallback of ["other/model?key=leak", "gemini-primary", "x".repeat(101)]) {
+    const urls = [];
+    const handler = createScanHandler({ fetchImpl: async (url) => { urls.push(url); return new Response("busy", { status: 503 }); } });
+    const response = await handler(req(valid), { ...env, GEMINI_MODEL: "gemini-primary", GEMINI_SCAN_FALLBACK_MODEL: fallback });
+    assert.equal(response.status, 503); assert.equal(urls.length, 1); assert.match(urls[0], /models\/gemini-primary:generateContent$/); assert.doesNotMatch(urls[0], /leak|other/);
+  }
+});
+
 test("retries one timed-out provider attempt within the original deadline", async () => {
   let calls = 0;
   const handler = createScanHandler({ fetchImpl: async (_url, init) => { calls++; return await new Promise((_resolve, reject) => init.signal.addEventListener("abort", () => reject(Object.assign(new Error("aborted"), { name: "AbortError" })))); } });
