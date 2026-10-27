@@ -1,0 +1,171 @@
+/* Source keeps native form ownership and constraint validation. */
+.mobile-select-native {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip-path: inset(50%) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+.mobile-select-trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 1px solid var(--border-strong, #51483e);
+  border-radius: 14px;
+  background: var(--surface-2, #25211c);
+  color: var(--text, #faf6ef);
+  text-align: start;
+  font: inherit;
+  cursor: pointer;
+}
+.mobile-select-icon {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  fill: currentColor;
+}
+.mobile-select-caret {
+  color: var(--accent, #ff7a18);
+  transform: rotate(90deg);
+}
+.mobile-select-trigger:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.mobile-select-trigger[aria-invalid="true"] {
+  border-color: var(--danger, #ff8d83);
+}
+.mobile-select-error {
+  display: block;
+  margin-top: 6px;
+  color: var(--danger, #ff8d83);
+  font-size: 12px;
+}
+.mobile-select-sheet {
+  position: fixed;
+  inset: auto 0 0;
+  width: min(100%, 430px);
+  max-width: 430px;
+  max-height: min(80dvh, 720px);
+  margin: 0 auto;
+  padding: 20px 16px max(20px, env(safe-area-inset-bottom));
+  overflow: auto;
+  overscroll-behavior: contain;
+  border: 1px solid var(--border-strong, #51483e);
+  border-bottom: 0;
+  border-radius: 24px 24px 0 0;
+  background: var(--surface, #1c1a17);
+  color: var(--text, #faf6ef);
+  box-shadow: 0 -12px 60px #0006;
+}
+.mobile-select-sheet::backdrop {
+  background: #000a;
+}
+.mobile-select-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.mobile-select-header h2 {
+  margin: 0;
+  font-size: 20px;
+  text-wrap: balance;
+}
+.mobile-select-close {
+  min-height: 44px;
+  min-width: 60px;
+  padding: 8px 12px;
+  border: 1px solid var(--border-strong, #51483e);
+  border-radius: 12px;
+  background: var(--surface-2, #25211c);
+  color: var(--accent-text, #ff9c55);
+  font: inherit;
+}
+.mobile-select-search {
+  width: 100%;
+  min-height: 48px;
+  margin-bottom: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--border-strong, #51483e);
+  border-radius: 14px;
+  background: var(--bg, #100f0e);
+  color: inherit;
+  font: inherit;
+}
+.mobile-select-options {
+  display: grid;
+  gap: 6px;
+}
+.mobile-select-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 48px;
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  text-align: start;
+  background: var(--surface-2, #25211c);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.mobile-select-option[aria-pressed="true"] {
+  border-color: var(--accent, #ff7a18);
+}
+.mobile-select-option[aria-pressed="true"] > :last-child {
+  color: var(--accent, #ff7a18);
+}
+.mobile-select-option:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.mobile-select-group {
+  margin: 12px 4px 2px;
+  color: var(--muted, #a89f94);
+  font-size: 12px;
+  font-weight: 700;
+}
+.mobile-select-empty {
+  margin: 16px 4px;
+  color: var(--muted, #a89f94);
+}
+.mobile-select-trigger:focus-visible,
+.mobile-select-sheet button:focus-visible,
+.mobile-select-search:focus-visible {
+  outline: 2px solid var(--accent, #ff7a18);
+  outline-offset: 3px;
+}
+
+.mobile-select-error[hidden],
+.mobile-select-empty[hidden] {
+  display: none;
+}
+.mobile-select-sheet[open] {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.mobile-select-sheet .mobile-select-header,
+.mobile-select-sheet .mobile-select-search,
+.mobile-select-sheet .mobile-select-empty {
+  flex: 0 0 auto;
+}
+.mobile-select-sheet .mobile-select-options {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}

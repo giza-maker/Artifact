@@ -38,6 +38,18 @@ window.NomliNative = Object.freeze({
   stopVoice,
   cancelVoice,
   voiceStatus,
+  async saveItemPhoto(options) {
+    return (await getScanPlugin()).saveItemPhoto(options);
+  },
+  async getItemPhoto(options) {
+    return (await getScanPlugin()).getItemPhoto(options);
+  },
+  async removeItemPhoto(options) {
+    return (await getScanPlugin()).removeItemPhoto(options);
+  },
+  async clearItemPhotos() {
+    return (await getScanPlugin()).clearItemPhotos();
+  },
   async camera() {
     const { Camera, CameraResultType, CameraSource } = await import(
       "@capacitor/camera"

@@ -1,3 +1,18 @@
+# M7 mobile UI and media acceptance
+
+Browser checks use synthetic camera/speech bridges; actual Android capture, storage, keyboard and update installation remain pending. 183 JavaScript tests and content checks pass.
+
+1. Install M7 over Nomli Test. Confirm inventory, private connection and conversation remain.
+2. Capture grocery photo → review → keep thumbnail → choose location → save. Force-stop/reopen; photo remains. Change/remove photo from ingredient editor; cancel must preserve saved record.
+3. Scan paper/digital receipts and expiry labels; these must never become ingredient thumbnails. Uncheck Keep photo on a grocery scan and verify no thumbnail is attached.
+4. Search inventory while typing; focus stays in field. Open storage/unit/ingredient sheets, search long lists, select and dismiss with Android Back. Parent editor remains usable; lower controls scroll.
+5. Cook → Any duration: all20 recipes have card and detail artwork. Check stock toggle, servings and preparation/deduction/undo.
+6. Zara: saved turns chronological, new question once, typing/cancel/retry, live reply appended once. Mic drawer → Speak/Finish → edit → Use/Replace → separate Send. Check Arabic, small screen and open keyboard.
+7. Export/restore JSON backup: inventory remains valid; media bytes are not included. Missing local photos fall back gracefully.
+8. Clear local data after exporting disposable test data. Confirm thumbnails are removed; controls stay locked until cleanup finishes.
+
+## Historical M6 checklist
+
 # M6 phone acceptance
 
 M6 version: `0.7.0-m6`, versionCode `7`, package `com.nomli.mvp.validation`, with the retained validation signing certificate. Scope: single-user, local-first MVP. Use [APK evidence](APK.md), [integration contracts](INTEGRATION.md) and [voice behavior](VOICE.md) alongside this checklist.

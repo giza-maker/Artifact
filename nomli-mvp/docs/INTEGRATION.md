@@ -1,10 +1,10 @@
 # Integration boundary
 
-M6 is a single-user, local-first validation build. Inventory and confirmed receipt data remain on the device. Receipt recognition and explicit Zara sends use the paired service.
+M7 continues the single-user, local-first validation build. Inventory and confirmed receipt data remain on the device. Receipt recognition and explicit Zara sends use the paired service.
 
 The deployed scan endpoint is `https://nomli-scan-proxy.ahmed-aljazayeerly.workers.dev`. Scanning uses `GEMINI_MODEL=gemini-3.5-flash-lite`; Zara uses `GEMINI_ASSISTANT_MODEL=gemini-3.5-flash-lite`. Both reuse the existing Gemini API key stored as an encrypted Cloudflare secret. The app stores the endpoint and device access code entered by the user, never the provider key. A private setup QR can fill those fields; the user must still test and save the connection.
 
-Selected receipt files pass through the Cloudflare Worker to Google for recognition. The app does not retain uploaded file bytes after processing. Confirmed structured inventory and receipt data are stored locally. Inventory backup/restore excludes scan connection configuration.
+Selected receipt files pass through the Cloudflare Worker to Google for recognition. Receipt images and PDFs are not retained as ingredient photos. Grocery images may produce a separate local thumbnail when the user keeps that option enabled during review; the upload payload is not retained as a receipt attachment. Confirmed structured inventory and receipt data are stored locally. Inventory backup/restore excludes scan connection configuration.
 
 ## Current scan contract (retained M2 service)
 
@@ -66,12 +66,20 @@ Scan imports now require own dictionary entries for merge targets, including IDs
 
 All 171 JavaScript tests and content checks pass. Live synthetic PNG/PDF scans returned the expected quantities and total, and a deployed Zara correction proposal passed validation. No physical device or emulator is connected. See the [M6 phone checklist](TESTING.md); current build evidence belongs in the [verification record](VERIFICATION.md).
 
+## M7 mobile interface and local photos
+
+M7 updates the mobile interface while retaining the paired scan and Zara service contracts. Zara uses chronological question/reply bubbles, a bottom composer and a voice drawer. Milestone labels are removed from app chrome. Single-choice selectors use native dialog sheets with search for more than eight options; original selects retain form values and required validation. A picker can sit above an open form dialog, and closing it restores focus to the current control after a rerender.
+
+Ingredient thumbnails are local media, stored in Android internal app files or browser IndexedDB. Item editing supports explicit add, change and remove actions. Grocery image review offers an optional thumbnail attachment with an opt-out; receipt images and PDFs never supply ingredient icons. Inventory JSON backups retain photo references without embedding image bytes, so restoring a backup on another device does not restore photos. No photo upload service is added.
+
+All 20 curated recipes have local artwork; 17 new generated WebP images have provenance in web/public/images/recipes/ASSETS.md. M7 APK compilation, signing, package verification and physical-device checks remain pending; M6 build and test evidence above remains historical evidence for M6.
+
 ## Capability status
 
-| Capability | M6 status | Remaining work |
+| Capability | Current status | Remaining work |
 | --- | --- | --- |
 | Receipt image/PDF recognition | Deployed Cloudflare proxy, Gemini adapter, bounded upload validation and editable review | Broader accuracy evaluation and physical-device QA |
-| Local inventory | Native Preferences with localStorage fallback, atomic saves, identical-file dedupe and validated backups | Physical-device persistence and recovery QA |
+| Local inventory | Native Preferences with localStorage fallback, atomic saves, identical-file dedupe and validated backups; local ingredient thumbnails | Physical-device persistence, photo storage and recovery QA |
 | Camera / document selection | Capacitor camera bridge and Android SAF picker | Device permissions and camera/picker QA |
 | Barcode products | Native barcode capture and synthetic fixtures | Product lookup adapter, cache and regional fallback |
 | Cooking | Static catalog, linked-stock allocation, prep/tool confirmation, resumable timer, reviewed deduction and undo | Physical-device QA |

@@ -6,6 +6,11 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.provider.OpenableColumns;
 import android.util.Base64;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
 import androidx.activity.result.ActivityResult;
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
@@ -24,6 +29,90 @@ public class NomliScanPlugin extends Plugin {
     private static final int MAX_IMAGE_BYTES = 4 * 1024 * 1024;
     private static final int MAX_PDF_BYTES = 2 * 1024 * 1024;
     private final AtomicBoolean pickerActive = new AtomicBoolean(false);
+
+    private File photoFile(PluginCall call) throws IOException {
+        String id = call.getString("photoId");
+        if (id == null || !id.matches("p_[a-f0-9]{32}")) throw new IOException("Invalid photo ID");
+        File directory = new File(getContext().getFilesDir(), "item-photos");
+        if (!directory.isDirectory() && !directory.mkdirs()) throw new IOException("Photo directory unavailable");
+        return new File(directory, id + ".jpg");
+    }
+
+    private boolean validThumbnail(byte[] bytes) {
+        if (bytes.length < 3 || bytes.length > 32768 || (bytes[0] & 255) != 255 || (bytes[1] & 255) != 216 || (bytes[2] & 255) != 255) return false;
+        BitmapFactory.Options bounds = new BitmapFactory.Options();
+        bounds.inJustDecodeBounds = true;
+        BitmapFactory.decodeByteArray(bytes, 0, bytes.length, bounds);
+        if (bounds.outWidth < 1 || bounds.outHeight < 1 || bounds.outWidth > 256 || bounds.outHeight > 256 || !"image/jpeg".equals(bounds.outMimeType)) return false;
+        Bitmap image = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+        if (image == null) return false;
+        image.recycle();
+        return true;
+    }
+
+    @PluginMethod
+    public void saveItemPhoto(PluginCall call) {
+        File temp = null;
+        try {
+            File file = photoFile(call);
+            if (file.exists()) throw new IOException("Photo ID already exists");
+            String data = call.getString("data");
+            if (data == null || data.length() > 43692 || !data.matches("[A-Za-z0-9+/]*={0,2}")) throw new IOException("Invalid photo data");
+            byte[] bytes = Base64.decode(data, Base64.NO_WRAP);
+            if (!validThumbnail(bytes)) throw new IOException("Invalid thumbnail");
+            temp = File.createTempFile("thumbnail-", ".tmp", file.getParentFile());
+            try (FileOutputStream output = new FileOutputStream(temp)) { output.write(bytes); output.getFD().sync(); }
+            if (!temp.renameTo(file)) throw new IOException("Could not save photo");
+            call.resolve();
+        } catch (IOException | IllegalArgumentException | SecurityException e) {
+            call.reject("Could not save ingredient photo.");
+        } finally { if (temp != null && temp.exists()) temp.delete(); }
+    }
+
+    @PluginMethod
+    public void getItemPhoto(PluginCall call) {
+        try {
+            File file = photoFile(call);
+            JSObject result = new JSObject();
+            if (file.exists()) {
+                byte[] bytes;
+                try (InputStream input = new FileInputStream(file)) { bytes = readBounded(input, 32768); }
+                if (!validThumbnail(bytes)) throw new IOException("Invalid thumbnail");
+                result.put("data", Base64.encodeToString(bytes, Base64.NO_WRAP));
+                result.put("mimeType", "image/jpeg");
+            }
+            call.resolve(result);
+        } catch (IOException | SecurityException e) { call.reject("Could not read ingredient photo."); }
+    }
+
+    @PluginMethod
+    public void removeItemPhoto(PluginCall call) {
+        try {
+            File file = photoFile(call);
+            if (file.exists() && !file.delete()) throw new IOException("Could not remove photo");
+            call.resolve();
+        } catch (IOException | SecurityException e) { call.reject("Could not remove ingredient photo."); }
+    }
+
+    @PluginMethod
+    public void clearItemPhotos(PluginCall call) {
+        try {
+            File directory = new File(getContext().getFilesDir(), "item-photos");
+            if (!directory.exists()) { call.resolve(); return; }
+            File[] files = directory.listFiles();
+            if (files == null) throw new IOException("Could not list ingredient photos");
+            boolean failed = false;
+            for (File file : files) {
+                String name = file.getName();
+                if (!name.matches("p_[a-f0-9]{32}\\.jpg|thumbnail-[A-Za-z0-9_-]+\\.tmp")) continue;
+                // Never follow a symlink or touch anything outside this private directory.
+                if (!file.getCanonicalFile().getParentFile().equals(directory.getCanonicalFile()) || !file.isFile()) { failed = true; continue; }
+                if (!file.delete()) failed = true;
+            }
+            if (failed) throw new IOException("Could not clear all ingredient photos");
+            call.resolve();
+        } catch (IOException | SecurityException e) { call.reject("Could not clear ingredient photos."); }
+    }
 
     @PluginMethod
     public void pickScanFile(PluginCall call) {

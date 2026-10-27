@@ -43,6 +43,29 @@ const item = (overrides = {}) => ({
   ...overrides,
 });
 
+test("photo metadata survives backup without embedding local image bytes", async () => {
+  const photoId = "p_" + "ab".repeat(16);
+  const store = createStateStore({ data, storage: memory() });
+  const original = state({ rice: item({ photoId }) });
+  const backup = store.exportBackup(original);
+  assert.ok(JSON.stringify(backup).includes(photoId));
+  assert.ok(!JSON.stringify(backup).includes("data:image"));
+  await store.save(original);
+  assert.equal((await store.load()).state.items.rice.photoId, photoId);
+  for (const invalid of [
+    "../rice.jpg",
+    "https://example.com",
+    "data:image/jpeg;base64,a",
+    "p_1",
+    null,
+  ]) {
+    await assert.rejects(
+      store.save(state({ rice: item({ photoId: invalid }) })),
+      /photo ID/,
+    );
+  }
+});
+
 test("fresh install is empty, without fake activity", async () => {
   const { state: loaded } = await createStateStore({
     data,
@@ -58,7 +81,10 @@ test("M4 maximum assistant exchanges survive persistence and backup without conn
   const storage = memory();
   const store = createStateStore({ data, storage });
   const saved = state({ rice: item() });
-  saved.chat = Array.from({ length: 20 }, () => ({ q: "Q".repeat(2000), a: "A".repeat(6000) }));
+  saved.chat = Array.from({ length: 20 }, () => ({
+    q: "Q".repeat(2000),
+    a: "A".repeat(6000),
+  }));
   await store.save(saved);
   assert.deepEqual((await store.load()).state.chat, saved.chat);
   const backup = store.exportBackup(saved);

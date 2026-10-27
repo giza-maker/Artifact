@@ -1,12 +1,14 @@
-# Nomli kitchen MVP, milestone 6
+# Nomli kitchen MVP, milestone 7
 
-Single-user local kitchen inventory with reviewed receipt recognition, curated cooking and live Zara assistance. M5 adds optional Android speech-to-text for reviewed Zara questions. Zara sends explicitly requested kitchen context through the paired Cloudflare service to Gemini. Proposed quantity or recipe changes require separate review and confirmation. M3 cooking and the protected M2 receipt workflow remain available.
+Single-user local kitchen inventory with reviewed receipt recognition, curated cooking and live Zara assistance. M7 adds local ingredient thumbnails, artwork for every recipe, chronological Zara chat, mobile selector sheets and cleaner cooking screens. Optional Android speech-to-text feeds reviewed Zara questions. Zara sends explicitly requested kitchen context through the paired Cloudflare service to Gemini. Proposed quantity or recipe changes require separate review and confirmation. M3 cooking and the protected M2 receipt workflow remain available.
 
-Validation package: `com.nomli.mvp.validation`, app label **Nomli Test**, version **0.7.0-m6** (`versionCode` 7). It uses the M1/M2 validation update channel and remains separate from the earlier demo package. Published milestone APKs use the retained local validation signing key; GitHub Actions does not receive that key.
+Validation package: `com.nomli.mvp.validation`, app label **Nomli Test**, version **0.8.0-m7** (`versionCode` 8). It uses the M1/M2 validation update channel and remains separate from the earlier demo package. Published milestone APKs use the retained local validation signing key; GitHub Actions does not receive that key.
 
 Inventory works offline. Receipt recognition and live Zara need internet access. Current recognition service is `https://nomli-scan-proxy.ahmed-aljazayeerly.workers.dev`, with Gemini 3.5 Flash-Lite for scanning and Zara. Provider credentials are encrypted server-side and never bundled in the app.
 
-Verified M6 APK: [Nomli-M6.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m6-v0.7.0/Nomli-M6.apk). See the [phone acceptance checklist](docs/TESTING.md).
+M7 APK build/verification in progress; use existing private Scan connection.
+
+Historical verified M6 APK: [Nomli-M6.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m6-v0.7.0/Nomli-M6.apk). See the [phone acceptance checklist](docs/TESTING.md).
 
 Historical verified M5 APK: [Nomli-M5.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m5-v0.6.0/Nomli-M5.apk). Same validation package and retained signing certificate verified; install/update and physical-phone QA remain pending. See [voice checks](docs/VOICE.md).
 
@@ -61,7 +63,7 @@ Each Send shares inventory, profile, tool preferences, selected/current recipe a
 
 ## Optional Android voice
 
-1. Open Zara, select English (US), Arabic (Saudi Arabia), or Arabic (Egypt), then tap **Speak**. Grant microphone access when Android asks.
+1. Open Zara → Voice message, select English (US), Arabic (Saudi Arabia), or Arabic (Egypt), then tap **Speak**. Grant microphone access when Android asks.
 2. Tap **Finish** after speaking, or **Cancel voice** to discard capture. Review and edit the transcript (1–2,000 characters).
 3. Tap **Use transcript** to append it to the question, or explicitly **Replace question with transcript**. Review the resulting question, then tap **Send question**.
 
@@ -69,6 +71,7 @@ Voice uses Android's default system speech service without an extra Nomli API ke
 
 ## Included
 
+- Local ingredient thumbnails from grocery scans or manual photo selection; complete recipe artwork; bottom-sheet selectors; chronological Zara bubbles and bottom composer.
 - Fresh local inventory with add, edit and delete; fractional quantities; canonical units; storage locations; optional expiry provenance; sorting and search.
 - Native Preferences persistence with browser localStorage fallback. Validated JSON backup export/restore uses Android document pickers and requires preview plus typed `REPLACE`. M1/M2 state-version-1 backups remain compatible; new cooking fields are strictly validated.
 - Reviewed image/PDF receipt flow with atomic local save and duplicate-file protection.
@@ -82,7 +85,7 @@ Voice uses Android's default system speech service without an extra Nomli API ke
 
 ## Privacy and limits
 
-Selected receipt files are sent through the Cloudflare proxy to Google for recognition. The app does not retain uploaded file bytes after processing. Confirmed structured results remain in local app storage.
+Selected scan files are sent through the Cloudflare proxy to Google for recognition. Confirmed structured results stay locally. Grocery scans optionally retain a compressed local thumbnail; receipt/PDF/expiry scans never become ingredient photos. Add, replace or remove photos in each ingredient editor. Thumbnails stay in Android app-private files or browser IndexedDB; JSON backups contain reference IDs, not photo bytes. Older captures discarded by previous releases cannot be restored by this update.
 
 Gemini quota depends on the Google account and billing configuration behind the server key. A Gemini app subscription, including an Ultra subscription, does not by itself determine API free-tier or paid quota.
 
@@ -90,7 +93,7 @@ Synthetic PNG and PDF receipts completed live calls in about five and four secon
 
 ## Not implemented or verified
 
-- M6 compilation, signing, package and uploaded-checksum checks pass. Install/update verification and physical-phone QA remain pending. Native picker, camera permissions, Preferences behavior across force-stop and keyboard behavior still need device testing.
+- M7 APK compilation, signing and upload checks are pending. M6 compilation, signing, package and uploaded-checksum checks pass. Install/update verification and physical-phone QA remain pending. Native picker, camera permissions, Preferences behavior across force-stop and keyboard behavior still need device testing.
 - Android voice is implemented but unverified on a physical phone. Barcode product lookup is not connected. Recipes remain curated; Zara does not rewrite recipes or generate a new catalog.
 - Accounts, cloud inventory sync, multi-user authorization and database transactions remain future work.
 - Receipt recognition can be wrong. Review is mandatory before local data changes.

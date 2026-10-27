@@ -50,6 +50,15 @@ test("context preserves unlinked expired stock without mutating state", () => {
   c.profile.allergies.push("milk");
   assert.deepEqual(s, before);
 });
+test("local ingredient photo references stay outside assistant requests", () => {
+  const s = state();
+  s.items.lot.photoId = "p_" + "a".repeat(32);
+  s.items.lot.photo = "private-camera-thumbnail.jpg";
+  const serialized = JSON.stringify(buildAssistantContext(s));
+  assert.equal(serialized.includes(s.items.lot.photoId), false);
+  assert.equal(serialized.includes(s.items.lot.photo), false);
+  assert.equal(s.items.lot.photoId, "p_" + "a".repeat(32));
+});
 test("strict bounded schemas reject extra fields, bad dates, links, quantities and history", () => {
   const c = buildAssistantContext(state());
   for (const mutate of [
@@ -298,7 +307,10 @@ test("recipe changes reject stale replay while an already selected recipe can re
   assert.equal(reopened.route, "recipe");
   assert.equal(reopened.servings[recipe.id], 4);
   assert.equal(reopened.items, next.items);
-  assert.deepEqual(applyAssistantProposal(reopened, second, { confirmed: true }), reopened);
+  assert.deepEqual(
+    applyAssistantProposal(reopened, second, { confirmed: true }),
+    reopened,
+  );
 });
 
 test("active cooking context retains frozen plan despite changed or deleted live lots", () => {

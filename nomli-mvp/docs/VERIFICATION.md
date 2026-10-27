@@ -1,3 +1,13 @@
+# M7 verification — APK pending
+
+183 JavaScript tests pass; content validation passes for88 ingredients,20 recipes,3 receipt fixtures. Added photo ID/source/storage-boundary and grocery-only attachment tests; assistant context excludes local photo references.
+
+Browser evidence at390×844 and320×640: manual photo save/reload; grocery review/save/reload with persistent JPEG thumbnail; live inventory search preserving focus; nested searchable selector and focus return; all20 recipe cards mapped; new detail art loaded; chronological chat, pending/retry and live Zara reply (800ml milk for four servings); synthetic speech review and separate Use/Send; short-screen voice drawer scrolling with composer/navigation visible.
+
+Local Node network requests timed out; Windows PowerShell network relay reached unchanged production Worker successfully. Synthetic camera/speech bridges do not verify actual Android hardware. Build, signing, upload and packaged-assets checks pending.
+
+## Historical verification
+
 # Verification record
 
 ## Milestone 6, 27 October 2026

@@ -1,4 +1,5 @@
 "use strict";
+import { isPhotoId } from "./item-photos.js";
 
 const CURRENT_KEY = "nomli-kitchen-state-v1";
 const LEGACY_KEY = "nomli-kitchen-mvp-v1";
@@ -123,6 +124,8 @@ function uniqueIds(values, label) {
 }
 function validateItem(item, id) {
   plain(item, `Item ${id}`);
+  if (item.photoId !== undefined && !isPhotoId(item.photoId))
+    fail(`Item ${id} has invalid photo ID.`);
   if (
     typeof item.name !== "string" ||
     !item.name.trim() ||

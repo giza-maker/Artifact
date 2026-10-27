@@ -40,7 +40,7 @@ export function renderIngredientLinkFields({
       ? gramsPerUnit
       : "";
   return `<label class="field">Cooking ingredient
-    <select name="${esc(prefix)}ingredientId">
+    <select name="${esc(prefix)}ingredientId" data-picker-label="Cooking ingredient">
       <option value=""${selected === null ? " selected" : ""}>Not linked for cooking</option>
       ${suggestions.length ? `<optgroup label="Suggestions">${suggestions.map(option).join("")}</optgroup>` : ""}
       <optgroup label="All ingredients">${COOK_INGREDIENTS.filter(

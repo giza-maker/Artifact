@@ -27,7 +27,7 @@ await writeFile(
     {
       schemaVersion: 1,
       provenance:
-        "Brand media reused from kitchenaut-landing/ASSETS.md; Phosphor MIT and fonts OFL licenses included. Content and fixtures authored synthetically for Nomli. See content/LICENSE.md.",
+        "Brand media reused from kitchenaut-landing/ASSETS.md; Phosphor MIT and fonts OFL licenses included. Content and fixtures authored synthetically for Nomli. See content/LICENSE.md and web/public/images/recipes/ASSETS.md for generated recipe imagery.",
       assets: entries,
     },
     null,

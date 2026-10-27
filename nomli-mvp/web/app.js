@@ -8,6 +8,9 @@ import {
 } from "./assistant-domain.js";
 import { createTimerNotifications } from "./timer-notifications.js";
 import { retireReplacedTimer } from "./timer-transition.js";
+import { initMobileSelects } from "./mobile-select.js";
+import { itemPhotos } from "./item-photos.js";
+import { attachScanPhoto } from "./scan-item-photos.js";
 import { createStateStore } from "./state-store.js";
 import {
   getScanConfig,
@@ -117,6 +120,11 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     assistantContext = null,
     assistantReview = null;
   const liveChats = new WeakSet();
+  const photoSources = new Map();
+  let itemPhotoDraft = null,
+    scanPhotoDraft = null,
+    voiceExpanded = false,
+    assistantSentQuestion = "";
   let voiceLanguage = "en-US";
   let voiceUseError = "";
   function clearVoiceUseError() {
@@ -137,6 +145,8 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
       )
         return;
       const focused = document.activeElement;
+      const thread = $(".zara-thread");
+      const scroll = thread ? thread.scrollTop : null;
       const hadViewFocus = view.contains(focused);
       const focusId = focused?.id;
       const focusAction = focused?.dataset?.action;
@@ -145,6 +155,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
           ? [focused.selectionStart, focused.selectionEnd]
           : null;
       view.innerHTML = viewMarkup();
+      mountView({ chatScroll: scroll });
       const target =
         (focusId
           ? document.getElementById(focusId)
@@ -289,7 +300,18 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     return `<header class="page-heading"><div><p class="eyebrow">${esc(kicker)}</p><h1 data-title tabindex="-1">${esc(title)}</h1>${text ? `<p class="muted">${esc(text)}</p>` : ""}</div><div class="actions">${actions}</div></header>`;
   }
   function button(label, action, id = "", cls = "btn-secondary") {
-    return `<button type="button" class="btn ${cls}" data-action="${action}" data-id="${esc(id)}">${icon(action === "go" ? nav.find((x) => x[0] === id)?.[1] || "caret-right" : { "scan-mode": "camera", "item-edit": "pencil", "shopping-add": "plus", "cook-start": "play", "cook-next": "arrow-right", "modal-close": "x" }[action] || "caret-right")}<span>${esc(label)}</span></button>`;
+    const glyph =
+      action === "go"
+        ? nav.find((x) => x[0] === id)?.[1]
+        : {
+            "scan-mode": "camera",
+            "item-edit": "pencil",
+            "shopping-add": "plus",
+            "cook-start": "play",
+            "cook-next": "arrow-right",
+            "modal-close": "x",
+          }[action];
+    return `<button type="button" class="btn ${cls}" data-action="${action}" data-id="${esc(id)}">${glyph ? icon(glyph) : ""}<span>${esc(label)}</span></button>`;
   }
   function field(label, name, value, type = "text", extra = "") {
     if (type === "date") extra += ' min="2020-01-01" max="2100-12-31"';
@@ -330,6 +352,10 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     scanTimers = [];
   }
   function openModal(title, body, screen = "") {
+    if (modal.dataset.screen === "item-edit" && screen !== "item-edit")
+      releaseItemPhoto();
+    if (modal.dataset.screen === "scan-review" && screen !== "scan-review")
+      releaseScanPhoto();
     cancelScan();
     cancelAssistant(false);
     lastFocus = document.activeElement;
@@ -337,6 +363,8 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     $("#modal-content").innerHTML =
       `<header class="modal-heading"><h2 id="modal-title">${esc(title)}</h2><button class="icononly" data-action="modal-close" aria-label="Close">${icon("x")}</button></header><div class="modal-body">${body}</div>`;
     if (!modal.open) modal.showModal();
+    initMobileSelects(modal);
+    hydratePhotos(modal);
     $("[data-action='modal-close']", modal)?.focus();
   }
   function closeModal() {
@@ -344,9 +372,42 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     if (modal.open) modal.close();
     lastFocus?.focus?.();
   }
+  function releaseItemPhoto() {
+    if (itemPhotoDraft?.previewUrl)
+      URL.revokeObjectURL(itemPhotoDraft.previewUrl);
+    itemPhotoDraft = null;
+  }
+  function releaseScanPhoto() {
+    if (scanPhotoDraft?.previewUrl)
+      URL.revokeObjectURL(scanPhotoDraft.previewUrl);
+    const id = scanPhotoDraft?.photoId;
+    scanPhotoDraft = null;
+    if (id && !Object.values(S.items).some((item) => item.photoId === id))
+      void itemPhotos.remove(id).catch(() => {});
+  }
+  function hydratePhotos(root) {
+    root.querySelectorAll("img[data-photo-id]").forEach((img) => {
+      const id = img.dataset.photoId;
+      if (!photoSources.has(id)) photoSources.set(id, itemPhotos.getSource(id));
+      photoSources.get(id).then((source) => {
+        if (!source || !img.isConnected || img.dataset.photoId !== id) return;
+        img.src = source;
+        img.hidden = false;
+        img.parentElement.classList.add("has-photo");
+      });
+    });
+  }
+  function mountView({ chatScroll = null } = {}) {
+    initMobileSelects(view);
+    hydratePhotos(view);
+    document.body.classList.toggle("zara-route", S.route === "assistant");
+    const thread = $(".zara-thread", view);
+    if (thread) thread.scrollTop = chatScroll ?? thread.scrollHeight;
+  }
   function navigate(route) {
     if (!routes.includes(route)) return;
     cancelAssistant();
+    voiceExpanded = false;
     S.route = route;
     backgroundSave();
     history.pushState(null, "", "#" + route);
@@ -366,14 +427,34 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
       )
       .join("");
   }
-  function photo(id) {
-    return (
+  function photo(id, item = S.items[id] || {}) {
+    const path =
+      item.photo ||
       D.items[id]?.photo ||
       {
         tomatoes: "tomato-128.webp",
         basil: "basil-128.webp",
         eggs: "eggs-128.webp",
-      }[id]
+        tomato: "tomato-128.webp",
+        basil_leaf: "basil-128.webp",
+        egg: "eggs-128.webp",
+      }[item.ingredientId || id];
+    return typeof path === "string" &&
+      /^(?:\/?images\/)?[\w/-]+\.(?:webp|png|jpe?g)$/.test(path) &&
+      !path.includes("..")
+      ? path.startsWith("images/") || path.startsWith("/images/")
+        ? path
+        : `images/${path}`
+      : null;
+  }
+  function itemThumbnail(id, item) {
+    const fallback = photo(id, item);
+    return `<span class="ingredient-thumb${fallback ? " has-photo" : ""}">${fallback ? `<img src="${esc(fallback)}" alt="" loading="lazy" decoding="async">` : icon("fork-knife")}${item.photoId ? `<img data-photo-id="${esc(item.photoId)}" alt="" hidden decoding="async">` : ""}</span>`;
+  }
+  function recipeAction(r) {
+    return button("View recipe", "recipe", r.id, "btn-quiet").replace(
+      "<button ",
+      `<button aria-label="Open ${esc(r.name)}" `,
     );
   }
   function itemRow(id, item) {
@@ -382,9 +463,9 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     const freshness = !item.expiry
       ? "No expiry recorded"
       : `${left < 0 ? `${Math.abs(left)} days past date` : `${left} days left`} · ${item.expiryProvenance || (item.estimated ? "estimated" : "user")}`;
-    return `<div class="inventory-row">${photo(id) ? `<img class="inventory-photo" src="images/${photo(id)}" alt="">` : `<span class="inventory-icon">${icon(item.storage === "Freezer" ? "refrigerator" : "fork-knife")}</span>`}<div class="inventory-copy"><b>${esc(item.name)}</b><span>${num(item.qty)} ${esc(item.unit)} <small>${esc(item.storage)}</small></span><small class="${urgent ? "use-soon" : "muted"}">${esc(freshness)}</small><small class="cook-link-label">${getIngredient(item.ingredientId) ? `Cooking: ${esc(ingredientLabel(item.ingredientId))}` : "Not linked for cooking"}</small></div><button class="icononly" data-action="item-edit" data-id="${id}" aria-label="Edit ${esc(item.name)}">${icon("pencil")}</button></div>`;
+    return `<div class="inventory-row">${itemThumbnail(id, item)}<div class="inventory-copy"><b dir="auto">${esc(item.name)}</b><span>${num(item.qty)} ${esc(item.unit)} <small>${esc(item.storage)}</small></span><small class="${urgent ? "use-soon" : "muted"}">${esc(freshness)}</small>${getIngredient(item.ingredientId) ? `<small class="cook-link-label">${icon("check-circle")} Cooking link saved</small>` : '<small class="cook-link-label">Choose a cooking ingredient</small>'}</div><button class="icononly" data-action="item-edit" data-id="${esc(id)}" aria-label="Edit ${esc(item.name)}">${icon("pencil")}</button></div>`;
   }
-  function kitchenView() {
+  function inventoryRowsMarkup() {
     let rows = Object.entries(S.items).filter(
       ([, x]) =>
         (S.storage === "All" || x.storage === S.storage) &&
@@ -397,19 +478,22 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
           ? a[1].qty - b[1].qty
           : (daysLeft(a[1]) ?? Infinity) - (daysLeft(b[1]) ?? Infinity),
     );
+    return rows.length
+      ? rows.map(([id, x]) => itemRow(id, x)).join("")
+      : `<div class="inventory-empty">${icon("refrigerator")}<h3>${Object.keys(S.items).length ? "No ingredients match" : "Your inventory is empty"}</h3><p>${Object.keys(S.items).length ? "Clear search or filters." : "Add first ingredient. Expiry stays optional and never gets invented."}</p>${Object.keys(S.items).length ? "" : button("Add first ingredient", "item-edit", "new", "btn-primary")}</div>`;
+  }
+  function kitchenView() {
     const soon = Object.values(S.items).filter(
       (x) => x.qty > 0 && daysLeft(x) !== null && daysLeft(x) <= 2,
     ).length;
     const markup =
       heading(
-        "YOUR KITCHEN",
-        Object.keys(S.items).length
-          ? "Your real inventory"
-          : "Start your inventory",
-        `${Object.values(S.items).filter((x) => x.qty > 0).length} ingredients on hand${soon ? ` · ${soon} use soon` : ""}`,
-        button("Add ingredient", "item-edit", "new", "btn-primary"),
+        "INVENTORY",
+        "Your kitchen",
+        `${Object.values(S.items).filter((x) => x.qty > 0).length} ingredients${soon ? ` · ${soon} to use soon` : ""}`,
+        `<button class="icononly kitchen-add" data-action="item-edit" data-id="new" aria-label="Add ingredient">${icon("plus")}</button>`,
       ) +
-      `<p class="milestone-banner">Milestone 6 · Reviewed scans, cooking and Zara</p><button class="scan-banner" data-action="go" data-id="scan"><img src="images/fridge-vf-480.webp" alt=""><span>${icon("scan")}<b>Scan groceries or receipts</b><small>Protected connection · review before save</small></span>${icon("arrow-right")}</button><section class="card inventory-card"><div class="card-header"><h2>Inventory</h2><button class="icononly" data-action="item-edit" data-id="new" aria-label="Add ingredient">${icon("plus")}</button></div><div class="inventory-tools"><label class="field">Search<input type="search" data-change="search" value="${esc(S.search || "")}" placeholder="Search ingredients"></label><div class="inventory-sort"><label>Storage <select data-change="storage">${options(["All", "Fridge", "Freezer", "Pantry", "Spices"], S.storage)}</select></label><label>Sort <select data-change="sort">${options(["expiry", "name", "quantity"], S.sort)}</select></label></div></div>${rows.length ? rows.map(([id, x]) => itemRow(id, x)).join("") : `<div class="inventory-empty">${icon("refrigerator")}<h3>${Object.keys(S.items).length ? "No ingredients match" : "Your inventory is empty"}</h3><p>${Object.keys(S.items).length ? "Clear search or filters." : "Add first ingredient. Expiry stays optional and never gets invented."}</p>${Object.keys(S.items).length ? "" : button("Add first ingredient", "item-edit", "new", "btn-primary")}</div>`}</section><div class="quick-grid">${[
+      `<button class="scan-banner" data-action="go" data-id="scan"><img src="images/fridge-vf-480.webp" alt=""><span>${icon("scan")}<b>Scan groceries or receipts</b><small>Protected connection · review before save</small></span>${icon("arrow-right")}</button><section class="card inventory-card"><div class="card-header"><h2>Inventory</h2><button class="icononly" data-action="item-edit" data-id="new" aria-label="Add ingredient">${icon("plus")}</button></div><div class="inventory-tools"><label class="field"><span class="sr-only">Search</span><input type="search" data-change="search" value="${esc(S.search || "")}" placeholder="Search ingredients"></label><div class="inventory-sort"><label>Storage <select data-change="storage">${options(["All", "Fridge", "Freezer", "Pantry", "Spices"], S.storage)}</select></label><label>Sort <select data-change="sort">${options(["expiry", "name", "quantity"], S.sort)}</select></label></div></div><div data-inventory-list>${inventoryRowsMarkup()}</div></section><div class="quick-grid">${[
         ["shopping", "shopping-cart", "Shopping", "Restock list"],
         ["expenses", "wallet", "Spending", "Receipts & budget"],
         ["profile", "gear", "Preferences", "Diet, time & tools"],
@@ -425,7 +509,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     const connected = Boolean(scanConfig.apiUrl && scanConfig.deviceToken);
     return (
       heading(
-        "MILESTONE 2",
+        "SCAN",
         "Scan into your kitchen",
         connected
           ? "Choose a source. Every extracted line stays editable until you confirm."
@@ -487,14 +571,14 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
       heading(
         "USE WHAT YOU HAVE",
         "What can I cook?",
-        "Real stock, reviewed units. Prepare first; deduct only after your final confirmation.",
-        button("Preferences", "go", "profile"),
+        "Find your next meal.",
+        `<button class="icononly" data-action="go" data-id="profile" aria-label="Cooking preferences">${icon("gear")}</button>`,
       ) +
       (S.cooking
         ? `<section class="card resume-card"><p class="eyebrow">${S.cooking.phase === "prep" ? "PREPARATION SAVED" : S.cooking.phase === "review" ? "READY TO REVIEW" : "COOKING IN PROGRESS"}</p><h2>${esc(S.cooking.recipeName || recipe(S.cooking.rid).name)}</h2><p>${servingText(S.cooking.servings)} · stock unchanged</p>${button("Resume cooking", "cook-resume", "", "btn-primary")}</section>`
         : "") +
       (unlinked.length
-        ? `<section class="notice cook-link-notice"><b>${unlinked.length} item${unlinked.length === 1 ? " needs" : "s need"} a cooking link</b><p>Choose what each product is. Names alone never authorize a stock deduction.</p>${button("Link ingredients", "cook-link-next", unlinked[0][0])}</section>`
+        ? `<section class="notice cook-link-notice"><b>${unlinked.length} item${unlinked.length === 1 ? " needs" : "s need"} a cooking link</b>${button("Link", "cook-link-next", unlinked[0][0], "btn-quiet")}</section>`
         : "") +
       `<div class="cook-filters"><label class="field">Recipe time<select data-change="cook-time">${[
         ...new Set([15, 20, 30, 45, 60, 120, 1440, S.profile.time]),
@@ -506,7 +590,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         )
         .join(
           "",
-        )}</select></label><label class="checkbox-field"><input type="checkbox" data-change="match"${S.matchOnly ? " checked" : ""}>Ingredients I have</label></div><p class="details">${shown.length} of ${D.recipes.length} recipes · ${esc(S.profile.cuisine)} cuisine. Exclusions hide matching allergens; always check product labels.</p><div class="recipe-grid">${shown.map(({ r, a }) => `<article class="recipe-card${r.image ? "" : " recipe-no-photo"}">${r.image ? `<img src="${r.cardImage || r.image}" alt="${esc(r.name)}" loading="lazy" decoding="async" width="560" height="420">` : `<span class="recipe-art" aria-hidden="true">${icon("fork-knife")}</span>`}<div><span class="badge ${a.stockReady ? "badge-demo" : "badge-planned"}">${a.stockReady ? "INGREDIENTS READY" : "MISSING " + a.missing.length}</span><h2>${esc(r.name)}</h2><p>${r.time} min · ${esc(r.cuisine)} · ${servingText(servingsFor(r))}</p>${button("View recipe", "recipe", r.id, "btn-primary")}</div></article>`).join("") || '<p class="empty">No match for these filters. Turn off ingredients-only, choose a longer time, or adjust preferences.</p>'}</div>` +
+        )}</select></label><label class="checkbox-field cook-stock-toggle"><input type="checkbox" data-change="match"${S.matchOnly ? " checked" : ""}><span class="switch-track" aria-hidden="true"></span><span>Ingredients I have</span></label></div><p class="details">${shown.length} of ${D.recipes.length} recipes · ${esc(S.profile.cuisine)} cuisine. Check product labels for allergens.</p><div class="recipe-grid">${shown.map(({ r, a }) => `<article class="recipe-card${r.image ? "" : " recipe-no-photo"}">${r.image ? `<img src="${r.cardImage || r.image}" alt="${esc(r.name)}" loading="lazy" decoding="async" width="560" height="420">` : `<span class="recipe-art" aria-hidden="true">${icon("fork-knife")}</span>`}<div><span class="badge ${a.stockReady ? "badge-demo" : "badge-planned"}">${a.stockReady ? "INGREDIENTS READY" : "MISSING " + a.missing.length}</span><h2>${esc(r.name)}</h2><p>${r.time} min · ${esc(r.cuisine)} · ${servingText(servingsFor(r))}</p>${recipeAction(r)}</div></article>`).join("") || '<p class="empty">No match for these filters. Turn off ingredients-only, choose a longer time, or adjust preferences.</p>'}</div>` +
       mealHistory()
     );
   }
@@ -519,7 +603,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         "RECIPE",
         r.name,
         `${r.time} min · ${esc(r.cuisine)} · ${r.difficulty}`,
-        button("Back to recipes", "go", "cook"),
+        `<button class="icononly" data-action="go" data-id="cook" aria-label="Back to recipes">${icon("arrow-left")}</button>`,
       ) +
       (r.image
         ? `<article class="featured-meal"><img src="${r.image}" alt="${esc(r.name)}"></article>`
@@ -671,49 +755,63 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     return `<section class="voice-panel" aria-labelledby="voice-title"><h3 id="voice-title">Speak to Zara</h3><p id="voice-disclosure" class="details">Your phone’s speech service may process audio online and may need internet or language packs. Nomli receives text. Nothing goes to Zara until you tap Send question.</p><label for="voice-language">Speech language</label><select id="voice-language" aria-describedby="voice-disclosure">${VOICE_LANGUAGES.map((language) => `<option value="${esc(language.id)}"${voiceLanguage === language.id ? " selected" : ""}>${esc(language.id === "en-US" ? "English (US)" : language.label)}</option>`).join("")}</select><p id="voice-status" class="voice-status" role="status" aria-live="polite"><span class="voice-indicator ${busy ? "is-active" : ""}" aria-hidden="true"></span>${esc(status)}</p>${state.error ? `<p id="voice-error" class="notice notice-warning" role="alert">${esc(state.error)} Type your question or try Speak again.</p>` : ""}<div class="actions">${!busy && state.phase !== "review" ? `<button type="button" class="btn btn-secondary" data-action="voice-start" aria-describedby="voice-disclosure voice-status${state.error ? " voice-error" : ""}"${assistantAbort ? " disabled" : ""}>Speak</button>` : ""}${state.phase === "listening" ? button("Finish", "voice-finish", "", "btn-primary") : ""}${busy ? button("Cancel voice", "voice-cancel", "", "btn-quiet") : ""}</div>${state.phase === "review" ? `<label for="voice-transcript">Transcript · edit before using</label><textarea id="voice-transcript" rows="4" dir="auto" maxlength="2000" aria-invalid="${!state.transcript.trim()}" aria-describedby="voice-status voice-edit-status voice-use-error">${esc(state.transcript)}</textarea><p id="voice-use-error" class="notice notice-warning" role="alert"${voiceUseError ? "" : " hidden"}>${esc(voiceUseError)}</p><p id="voice-edit-status" class="details">${state.transcript.trim() ? `${state.transcript.length}/2000 characters` : "Enter 1–2000 characters before using transcript."}</p><div class="actions"><button type="button" class="btn btn-secondary" data-action="voice-use"${state.transcript.trim() ? "" : " disabled"}>Use transcript${assistantDraft.trim() ? " · append to question" : ""}</button>${assistantDraft.trim() ? button("Replace question with transcript", "voice-replace", "", "btn-quiet").replace("<button ", `<button${state.transcript.trim() ? "" : " disabled"} `) : ""}${button("Discard transcript", "voice-cancel", "", "btn-quiet")}</div>` : ""}</section>`;
   }
   function assistantView() {
-    const inventory = Object.values(S.items),
-      connected = Boolean(scanConfig.apiUrl && scanConfig.deviceToken);
-    const back = S.cooking
-      ? S.cooking.phase === "review"
-        ? "review"
-        : S.cooking.phase === "prep"
-          ? "recipe"
-          : "cooking"
+    const connected = Boolean(scanConfig.apiUrl && scanConfig.deviceToken);
+    const newest = S.chat.at(-1);
+    const savedReply =
+      assistantReply &&
+      newest?.q === assistantSentQuestion &&
+      newest?.a === assistantReply.answer;
+    const proposalCards = () =>
+      assistantReply
+        ? assistantReply.warnings
+            .map((text) => `<p class="chat-warning">${esc(text)}</p>`)
+            .join("") +
+          assistantReply.proposals
+            .map(
+              (proposal, i) =>
+                `<article class="zara-proposal"><span>${icon(proposal.type === "set_quantity" ? "refrigerator" : "chef-hat")}</span><div><b>${esc(proposal.type === "set_quantity" ? S.items[proposal.itemId]?.name : recipe(proposal.recipeId).name)}</b><p>${esc(proposal.reason)}</p>${button("Review change", "assistant-review", String(i), "btn-secondary")}</div></article>`,
+            )
+            .join("")
+        : "";
+    const pair = (q, a, actions = "", unsaved = false) =>
+      `<article class="message message-user"><span class="sr-only">You</span><p dir="auto">${esc(q)}</p></article><article class="message message-zara"><img class="message-avatar" src="images/zara-96.webp" alt="" width="28" height="28"><div class="message-content"><span class="message-name">Zara${unsaved ? " · not saved" : ""}</span><p dir="auto">${esc(a)}</p>${actions}</div></article>`;
+    const history = S.chat
+      .slice(-20)
+      .map((entry, i, rows) =>
+        pair(
+          entry.q,
+          entry.a,
+          savedReply && i === rows.length - 1 ? proposalCards() : "",
+        ),
+      )
+      .join("");
+    const live =
+      assistantReply && !savedReply
+        ? pair(
+            assistantSentQuestion,
+            assistantReply.answer,
+            proposalCards(),
+            true,
+          )
+        : "";
+    const pending = assistantAbort
+      ? `<article class="message message-user"><span class="sr-only">You</span><p dir="auto">${esc(assistantSentQuestion)}</p></article><div class="message message-zara" role="status"><img class="message-avatar" src="images/zara-96.webp" alt="" width="28" height="28"><div class="zara-typing"><span></span><span></span><span></span><b class="sr-only">Zara is thinking</b></div></div>`
       : "";
-    return (
-      heading(
-        "LIVE ASSISTANT",
-        "Zara",
-        "Kitchen advice powered by Gemini. Review advice before acting.",
-      ) +
-      (back
-        ? `<section class="card"><b>${esc(recipe(S.cooking.rid).name)} · ${esc(S.cooking.phase)}</b><p>Advice only during an active session. For substitutions, cancel and replan preparation.</p>${button("Back to current session", "cook-resume")}</section>`
-        : "") +
-      `<section class="card"><h2>Connection</h2><p>${connected ? "Connection saved · Gemini" : "Connection needed"}</p>${button("Scan connection", "scan-settings")}<p class="details">On Send, inventory, current recipe, preferences, tools and the latest six exchanges go to Gemini through your paired server. Conversation stays on this device; backups include saved conversation. Voice capture is optional; review its disclosure before speaking.</p><p>${inventory.filter((x) => x.qty > 0).length} stocked items · ${inventory.filter((x) => !x.ingredientId).length} unlinked items${S.cooking ? ` · step ${S.cooking.step + 1}` : " · no active cooking session"}</p></section>
-      <section class="card"><h2>Ask Zara</h2><div class="actions">${["What can I cook?", "Help with the current step", "What can I substitute?", "What should I use soon?"].map((q, i) => button(q, "assistant-suggestion", String(i), "btn-quiet").replace("<button ", `<button aria-describedby="assistant-status"${assistantAbort || voicePending() ? " disabled" : ""} `)).join("")}</div>${voiceView()}<form data-form="assistant" aria-busy="${Boolean(assistantAbort)}"><label for="assistant-question">Question</label><textarea id="assistant-question" dir="auto" name="question" maxlength="2000" rows="3" required aria-describedby="assistant-status"${assistantAbort ? " readonly" : ""}>${esc(assistantDraft)}</textarea><p id="assistant-status" role="status" aria-live="polite">${esc(assistantAbort ? "Sending kitchen context… Suggestions unavailable until request finishes." : voicePending() ? "Suggestions and Send unavailable: use or discard transcript; during capture, Finish or Cancel voice first." : assistantError || "Send only when ready to share context.")}</p><div class="actions"><button class="btn btn-primary"${assistantAbort || voicePending() || !connected ? " disabled" : ""}>${assistantError ? "Retry question" : "Send question"}</button>${assistantAbort ? button("Cancel request", "assistant-cancel") : ""}</div></form>
-      ${assistantReply ? `<section class="assistant-live"><h3>Live Gemini reply</h3><p class="assistant-answer" dir="auto">${esc(assistantReply.answer)}</p>${assistantReply.warnings.map((x) => `<p class="notice notice-warning">${esc(x)}</p>`).join("")}${assistantReply.proposals.map((x, i) => `<article class="card assistant-proposal"><h3>${esc(x.type === "set_quantity" ? S.items[x.itemId]?.name : recipe(x.recipeId).name)}</h3><p>${esc(x.reason)}</p>${button("Review proposed change", "assistant-review", String(i))}</article>`).join("")}</section>` : ""}
-      ${S.chat
-        .filter(
-          (x) =>
-            !assistantReply ||
-            x.a !== assistantReply.answer ||
-            x !== S.chat.at(-1),
-        )
-        .slice(-20)
-        .reverse()
-        .map(
-          (x) =>
-            `<article class="chat-bubble"><small>${liveChats.has(x) ? "Live Gemini exchange" : "Saved conversation"}</small><h3 dir="auto">${esc(x.q)}</h3><p class="assistant-answer" dir="auto">${esc(x.a)}</p></article>`,
-        )
-        .join(
-          "",
-        )}${S.chat.length ? button("Clear conversation", "assistant-clear", "", "btn-quiet") : ""}</section>`
-    );
+    const context = S.cooking
+      ? `<button class="zara-context-link" data-action="cook-resume">${icon("chef-hat")}<span>${esc(recipe(S.cooking.rid).name)} · ${S.cooking.phase === "prep" ? "preparation" : `Step ${S.cooking.step + 1}`}</span>${icon("caret-right")}</button>`
+      : `<p class="zara-context-summary">${icon("refrigerator")} ${Object.values(S.items).filter((item) => item.qty > 0).length} ingredients in your kitchen</p>`;
+    const empty =
+      !S.chat.length && !assistantReply && !assistantAbort
+        ? `<section class="zara-welcome"><img src="images/zara-192.webp" alt="" width="76" height="76"><h2>What’s cooking?</h2><p>Let’s make something with what’s in your kitchen.</p><div class="zara-suggestions">${["What can I cook?", "Help with the current step", "What can I substitute?", "What should I use soon?"].map((q, i) => button(q, "assistant-suggestion", String(i), "btn-quiet")).join("")}</div></section>`
+        : "";
+    return `<section class="zara-shell"><header class="zara-header"><img src="images/zara-96.webp" alt="" width="44" height="44"><div><h1 data-title tabindex="-1">Zara</h1><p>Your kitchen companion</p></div><button class="icononly" data-action="assistant-info" aria-label="Chat settings and privacy">${icon("dots-three")}</button></header>${context}<div class="zara-thread" role="log" aria-label="Conversation with Zara" aria-live="polite" aria-relevant="additions">${empty}${history}${live}${pending}</div><section class="zara-compose-area">${!connected ? `<div class="zara-connect"><p>Connect your kitchen to chat with Zara.</p>${button("Connect Zara", "scan-settings", "", "btn-secondary")}</div>` : ""}${voiceExpanded || voicePending() ? `<div class="zara-voice-drawer"><button class="icononly voice-drawer-close" data-action="voice-panel-close" aria-label="Close voice controls">${icon("x")}</button>${voiceView()}</div>` : ""}${assistantError ? `<p class="chat-error" role="alert">${esc(assistantError)}</p>` : ""}<form data-form="assistant" class="zara-composer" aria-busy="${Boolean(assistantAbort)}"><label class="sr-only" for="assistant-question">Question</label><textarea id="assistant-question" name="question" placeholder="Ask about your kitchen…" rows="1" maxlength="2000" dir="auto" required aria-describedby="assistant-status"${assistantAbort || voicePending() ? " readonly" : ""}>${esc(assistantDraft)}</textarea>${window.NomliNative?.isNative ? `<button type="button" class="composer-mic" data-action="voice-toggle" aria-label="Voice message" aria-expanded="${voiceExpanded || voicePending()}"${assistantAbort ? " disabled" : ""}>${icon("microphone")}</button>` : ""}<button class="composer-send" aria-label="${assistantError ? "Retry question" : "Send question"}"${assistantAbort || voicePending() || !connected ? " disabled" : ""}>${icon("arrow-right")}</button></form><p id="assistant-status" class="zara-send-note" role="status">${assistantAbort ? `Zara is thinking. ${button("Cancel", "assistant-cancel", "", "btn-quiet")}` : voicePending() ? "Use or discard your transcript before sending." : "Uses your kitchen context · review advice before acting"}</p></section></section>`;
   }
   async function sendAssistant(question) {
     if (assistantAbort || voicePending()) return;
     assistantDraft = question.trim();
     const sentQuestion = assistantDraft;
+    assistantSentQuestion = sentQuestion;
+    voiceExpanded = false;
     assistantError = "";
     assistantReply = null;
     assistantReview = null;
@@ -755,6 +853,12 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         assistantDraft = "";
         assistantReply = reply;
         assistantContext = context;
+      } else {
+        assistantDraft = sentQuestion;
+        assistantReply = reply;
+        assistantContext = context;
+        assistantError =
+          "Reply received, but could not be saved on this device.";
       }
     } catch (error) {
       if (epoch === assistantEpoch) {
@@ -784,16 +888,42 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     return `${storageError ? `<section class="notice notice-warning recovery-notice" role="alert"><b>Storage error</b><p>${esc(storageError)}</p></section>` : ""}${recoveryRequired ? `<section class="notice notice-warning recovery-notice" role="alert"><b>Stored data needs recovery.</b><p>${esc(loadResult.notice || "Import a valid backup or explicitly clear local data. Current data will not be overwritten automatically.")}</p></section>` : ""}${(screens[S.route] || kitchenView)()}`;
   }
   function render() {
+    const editingQuestion = document.activeElement?.id === "assistant-question";
     clearInterval(timerHandle);
     timerHandle = null;
     view.dataset.screen = S.route;
     view.innerHTML = viewMarkup();
+    mountView();
     view.setAttribute("aria-busy", "false");
     renderNav();
-    $("[data-title]", view)?.focus({ preventScroll: true });
+    if (S.route === "assistant" && editingQuestion)
+      $("#assistant-question")?.focus({ preventScroll: true });
+    else $("[data-title]", view)?.focus({ preventScroll: true });
     if (S.cooking?.running) startTimer();
   }
+  function photoEditor(id, item) {
+    const draft = itemPhotoDraft;
+    const hasPhoto = !draft?.remove && Boolean(draft?.blob || item.photoId);
+    return `<section class="photo-editor" aria-label="Ingredient photo"><span class="photo-editor-preview">${draft?.previewUrl ? `<img src="${esc(draft.previewUrl)}" alt="New ingredient photo">` : draft?.remove ? icon("camera") : itemThumbnail(id, item)}</span><div><b>${hasPhoto ? "Your ingredient photo" : "Make it yours"}</b><p>Photo stays on this device.</p><div class="actions">${button(hasPhoto ? "Change photo" : "Add photo", "item-photo", id, "btn-secondary")}${hasPhoto ? button("Remove", "item-photo-remove", id, "btn-quiet") : ""}</div></div></section>`;
+  }
+  async function chooseIngredientPhoto() {
+    if (window.NomliNative?.isNative) return window.NomliNative.camera();
+    return new Promise((resolve) => {
+      const input = document.createElement("input");
+      input.type = "file";
+      input.accept = "image/jpeg,image/png,image/webp";
+      input.addEventListener(
+        "change",
+        () => resolve(input.files?.[0] || null),
+        { once: true },
+      );
+      input.addEventListener("cancel", () => resolve(null), { once: true });
+      input.click();
+    });
+  }
   function itemForm(id) {
+    releaseItemPhoto();
+    itemPhotoDraft = { id, blob: null, previewUrl: null, remove: false };
     const item =
       id === "new"
         ? {
@@ -807,7 +937,8 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         : S.items[id];
     openModal(
       id === "new" ? "Add ingredient" : "Edit ingredient",
-      `<form data-form="item" data-id="${id}">${errors()}${field("Ingredient name", "name", item.name, "text", 'maxlength="200" required')}${field("Quantity on hand", "qty", item.qty, "number", 'min="0" max="1000000000" step="any" inputmode="decimal" required')}<label class="field">Unit<select name="unit">${options(["g", "kg", "ml", "l", "count", "pieces", "bunches", "slices", "cloves"], item.unit)}</select></label><div class="cook-link-fields">${renderIngredientLinkFields({ name: item.name, ingredientId: item.ingredientId, unit: item.unit, gramsPerUnit: item.gramsPerUnit })}</div><label class="field">Location<select name="storage">${options(["Fridge", "Freezer", "Pantry", "Spices"], item.storage)}</select></label>${field("Expiry (optional)", "expiry", item.expiry || "", "date")}<label class="field">Expiry source<select name="expiryProvenance">${options(["user", "printed", "estimated"], item.expiryProvenance || (item.estimated ? "estimated" : "user"))}</select><small>Used only when expiry is entered.</small></label><div class="modal-actions">${id === "new" ? "" : button("Delete ingredient", "item-delete", id, "btn-quiet")}<button class="btn btn-primary">Save ingredient</button></div></form>`,
+      `<form data-form="item" data-id="${id}">${errors()}${photoEditor(id, item)}${field("Ingredient name", "name", item.name, "text", 'maxlength="200" required')}${field("Quantity on hand", "qty", item.qty, "number", 'min="0" max="1000000000" step="any" inputmode="decimal" required')}<label class="field">Unit<select name="unit">${options(["g", "kg", "ml", "l", "count", "pieces", "bunches", "slices", "cloves"], item.unit)}</select></label><div class="cook-link-fields">${renderIngredientLinkFields({ name: item.name, ingredientId: item.ingredientId, unit: item.unit, gramsPerUnit: item.gramsPerUnit })}</div><label class="field">Location<select name="storage">${options(["Fridge", "Freezer", "Pantry", "Spices"], item.storage)}</select></label>${field("Expiry (optional)", "expiry", item.expiry || "", "date")}<label class="field">Expiry source<select name="expiryProvenance">${options(["user", "printed", "estimated"], item.expiryProvenance || (item.estimated ? "estimated" : "user"))}</select><small>Used only when expiry is entered.</small></label><div class="modal-actions">${id === "new" ? "" : button("Delete ingredient", "item-delete", id, "btn-quiet")}<button class="btn btn-primary">Save ingredient</button></div></form>`,
+      "item-edit",
     );
   }
   async function exportBackup() {
@@ -830,7 +961,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         link.click();
         setTimeout(() => URL.revokeObjectURL(url), 0);
       }
-      announce("Backup exported.");
+      announce("Backup exported. Ingredient photos stay on this device.");
     } catch (error) {
       announce(`Export failed: ${error?.message || "unknown error"}`);
     }
@@ -887,7 +1018,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
       importCandidate = candidate;
       openModal(
         "Preview backup",
-        `<form data-form="backup"><p>This will replace current local data with <b>${Object.keys(candidate.items).length} ingredients</b>, ${candidate.shopping.length} shopping entries and ${candidate.receipts.length} receipts.</p>${errors()}${field("Type REPLACE to confirm", "confirmation", "", "text", 'autocomplete="off" required pattern="REPLACE"')}<button class="btn btn-primary">Replace local data</button></form><p class="details">Nothing changes until explicit confirmation.</p>`,
+        `<form data-form="backup"><p>This will replace current local data with <b>${Object.keys(candidate.items).length} ingredients</b>, ${candidate.shopping.length} shopping entries and ${candidate.receipts.length} receipts.</p>${errors()}${field("Type REPLACE to confirm", "confirmation", "", "text", 'autocomplete="off" required pattern="REPLACE"')}<button class="btn btn-primary">Replace local data</button></form><p class="details">Nothing changes until explicit confirmation. Ingredient photos are stored separately on this device and are not included in this backup.</p>`,
       );
     } catch (error) {
       announce(`Import rejected: ${error?.message || "invalid backup"}`);
@@ -956,14 +1087,35 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
           ? "receipt"
           : "groceries";
     scanAbort?.abort();
+    releaseScanPhoto();
     openModal(
       "Reading scan",
       `<section class="scan-live" aria-busy="true"><span class="scan-spinner" aria-hidden="true">${icon("circle-notch")}</span><h3>Securely reading ${kind === "receipt" ? "receipt" : kind === "expiry" ? "label" : "groceries"}</h3><p class="muted">Uploading to your configured scanner. You can cancel safely.</p><button class="btn btn-secondary" data-action="scan-cancel">Cancel</button></section>`,
+      "scan-reading",
     );
     const controller = new AbortController();
     const ownerEpoch = ++scanEpoch;
     scanAbort = controller;
     try {
+      if (kind === "groceries") {
+        try {
+          const blob = await itemPhotos.prepare(
+            payload.file || payload.nativePhoto,
+          );
+          if (controller.signal.aborted || scanEpoch !== ownerEpoch) return;
+          scanPhotoDraft = {
+            blob,
+            previewUrl: URL.createObjectURL(blob),
+            photoId: null,
+          };
+        } catch {
+          if (controller.signal.aborted || scanEpoch !== ownerEpoch) return;
+          scanPhotoDraft = {
+            error:
+              "Photo preview unavailable. You can add a photo from Edit ingredient after saving.",
+          };
+        }
+      }
       const raw = await scanFile({
         ...payload,
         kind,
@@ -995,6 +1147,12 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     } finally {
       if (scanAbort === controller) scanAbort = null;
     }
+  }
+  function scanPhotoReview() {
+    if (scanPhotoDraft?.error)
+      return `<p class="details">${esc(scanPhotoDraft.error)}</p>`;
+    if (!scanPhotoDraft?.blob) return "";
+    return `<section class="scan-photo-preview"><img src="${esc(scanPhotoDraft.previewUrl)}" alt="Your grocery scan"><label class="checkbox-field"><input type="checkbox" name="useScanPhoto" checked><span>Keep this grocery photo as the item thumbnail<small>Saved on this device. You can change each photo later.</small></span></label></section>`;
   }
   function showScanReview() {
     const draft = scanDraft;
@@ -1055,7 +1213,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
       .join("");
     openModal(
       "Review scan",
-      `<form data-form="scan-import" data-money-currency="${esc(draft.currency || "")}">${errors()}<div class="scan-result-meta"><span><b>${draft.lines.length}</b> extracted lines</span><span><b>${esc(currency)}</b> currency</span>${draft.merchant ? `<span><b>${esc(draft.merchant)}</b> merchant</span>` : ""}</div>${draft.kind === "receipt" ? `<fieldset class="scan-receipt-meta"><legend>Receipt details</legend><div class="field-grid">${field("Merchant / source", "scanMerchant", draft.merchant || "", "text", 'maxlength="200"')}${field("Receipt date (optional)", "scanReceiptDate", draft.receiptDate || "", "date")}</div><div class="field-grid"><label class="field">Currency<select name="scanCurrency">${moneyCurrencies.map((code) => `<option value="${code}"${code === (draft.currency || "") ? " selected" : ""}>${code || "Choose currency"}</option>`).join("")}</select></label>${field(`Receipt total (${draft.currency || "choose currency"})`, "scanTotal", draft.totalMinor == null || moneyDigits === null ? "" : formatMinorInput(draft.totalMinor, draft.currency), "number", `min="0" step="${amountStep}" inputmode="decimal" data-scan-money`)}</div><div class="field-grid">${field(`Additional tax (${draft.currency || "choose currency"})`, "scanTax", draft.taxMinor == null || moneyDigits === null ? "" : formatMinorInput(draft.taxMinor, draft.currency), "number", `min="0" step="${amountStep}" inputmode="decimal" data-scan-money`)}${field(`Receipt-level discount (${draft.currency || "choose currency"})`, "scanDiscount", draft.discountMinor == null || moneyDigits === null ? "" : formatMinorInput(draft.discountMinor, draft.currency), "number", `min="0" step="${amountStep}" inputmode="decimal" data-scan-money`)}</div><p class="details">Enter only tax added after line prices. Leave tax at zero when VAT is already included. Discount is subtracted from the line subtotal.</p>${moneyDigits === null && draft.currency ? '<p class="scan-line-warning">Unsupported currency. Choose a supported currency and re-enter all monetary amounts.</p>' : ""}<p class="scan-money-warning" data-money-warning role="status"></p><label class="checkbox-field"><input type="checkbox" name="excludeFinance"><span>Save inventory only; exclude this receipt from spending</span></label><p class="details">Choose this when excluding receipt lines or when currency and totals are incomplete or do not match.</p></fieldset>` : ""}${draft.warnings?.length ? `<section class="notice notice-warning"><b>Review needed</b><p>${esc(draft.warnings.join(" "))}</p></section>` : ""}<div class="scan-lines">${lines || '<p class="empty">Scanner returned no food lines.</p>'}</div><label class="checkbox-field scan-confirm"><input type="checkbox" name="confirmed" required><span>I checked every included line and chose create or merge.</span></label><button class="btn btn-primary" ${draft.lines.length ? "" : "disabled"}>Add reviewed items</button><p class="details">One confirmed save updates inventory${draft.kind === "receipt" ? " and receipt spending unless you explicitly exclude finance" : ""}. Cancel leaves both unchanged.</p></form>`,
+      `<form data-form="scan-import" data-money-currency="${esc(draft.currency || "")}">${errors()}${scanPhotoReview()}<div class="scan-result-meta"><span><b>${draft.lines.length}</b> extracted lines</span><span><b>${esc(currency)}</b> currency</span>${draft.merchant ? `<span><b>${esc(draft.merchant)}</b> merchant</span>` : ""}</div>${draft.kind === "receipt" ? `<fieldset class="scan-receipt-meta"><legend>Receipt details</legend><div class="field-grid">${field("Merchant / source", "scanMerchant", draft.merchant || "", "text", 'maxlength="200"')}${field("Receipt date (optional)", "scanReceiptDate", draft.receiptDate || "", "date")}</div><div class="field-grid"><label class="field">Currency<select name="scanCurrency">${moneyCurrencies.map((code) => `<option value="${code}"${code === (draft.currency || "") ? " selected" : ""}>${code || "Choose currency"}</option>`).join("")}</select></label>${field(`Receipt total (${draft.currency || "choose currency"})`, "scanTotal", draft.totalMinor == null || moneyDigits === null ? "" : formatMinorInput(draft.totalMinor, draft.currency), "number", `min="0" step="${amountStep}" inputmode="decimal" data-scan-money`)}</div><div class="field-grid">${field(`Additional tax (${draft.currency || "choose currency"})`, "scanTax", draft.taxMinor == null || moneyDigits === null ? "" : formatMinorInput(draft.taxMinor, draft.currency), "number", `min="0" step="${amountStep}" inputmode="decimal" data-scan-money`)}${field(`Receipt-level discount (${draft.currency || "choose currency"})`, "scanDiscount", draft.discountMinor == null || moneyDigits === null ? "" : formatMinorInput(draft.discountMinor, draft.currency), "number", `min="0" step="${amountStep}" inputmode="decimal" data-scan-money`)}</div><p class="details">Enter only tax added after line prices. Leave tax at zero when VAT is already included. Discount is subtracted from the line subtotal.</p>${moneyDigits === null && draft.currency ? '<p class="scan-line-warning">Unsupported currency. Choose a supported currency and re-enter all monetary amounts.</p>' : ""}<p class="scan-money-warning" data-money-warning role="status"></p><label class="checkbox-field"><input type="checkbox" name="excludeFinance"><span>Save inventory only; exclude this receipt from spending</span></label><p class="details">Choose this when excluding receipt lines or when currency and totals are incomplete or do not match.</p></fieldset>` : ""}${draft.warnings?.length ? `<section class="notice notice-warning"><b>Review needed</b><p>${esc(draft.warnings.join(" "))}</p></section>` : ""}<div class="scan-lines">${lines || '<p class="empty">Scanner returned no food lines.</p>'}</div><label class="checkbox-field scan-confirm"><input type="checkbox" name="confirmed" required><span>I checked every included line and chose create or merge.</span></label><button class="btn btn-primary" ${draft.lines.length ? "" : "disabled"}>Add reviewed items</button><p class="details">One confirmed save updates inventory${draft.kind === "receipt" ? " and receipt spending unless you explicitly exclude finance" : ""}. Cancel leaves both unchanged.</p></form>`,
       "scan-review",
     );
   }
@@ -1128,6 +1286,15 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
   );
 
   document.addEventListener("input", (event) => {
+    if (event.target.matches('[data-change="search"]')) {
+      S.search = event.target.value.trim();
+      const list = $("[data-inventory-list]", view);
+      if (list) {
+        list.innerHTML = inventoryRowsMarkup();
+        hydratePhotos(list);
+      }
+      backgroundSave();
+    }
     if (event.target.id === "voice-transcript") {
       const text = event.target.value;
       if (text.trim() && text.length <= 2000) clearVoiceUseError();
@@ -1152,6 +1319,9 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     if (event.target.id === "assistant-question") {
       assistantDraft = event.target.value;
       clearVoiceUseError();
+      event.target.style.height = "auto";
+      event.target.style.height =
+        Math.min(112, event.target.scrollHeight) + "px";
     }
   });
   document.addEventListener(
@@ -1335,6 +1505,73 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     if (el.dataset.route) return navigate(el.dataset.route);
     const a = el.dataset.action,
       id = el.dataset.id || "";
+    if (a === "assistant-info") {
+      if (assistantAbort) return;
+      return openModal(
+        "Zara & your kitchen",
+        `<section class="zara-about"><img src="images/zara-192.webp" alt="" width="64" height="64"><h3>Help for your everyday cooking</h3><p>On Send, your question, kitchen inventory, preferences, tools, current recipe and latest six exchanges go to Gemini through your protected connection.</p><p>Up to 20 exchanges stay on this device and appear in backups. Always review cooking advice before acting. Stock changes need a separate confirmation.</p><div class="stack">${button("Scan connection", "scan-settings", "", "btn-secondary")}${S.chat.length ? button("Clear conversation", "assistant-clear", "", "btn-quiet") : ""}</div></section>`,
+        "assistant-info",
+      );
+    }
+    if (a === "voice-toggle") {
+      if (assistantAbort) return;
+      voiceExpanded = !voiceExpanded;
+      if (!voiceExpanded) cancelVoice();
+      render();
+      return;
+    }
+    if (a === "voice-panel-close") {
+      cancelVoice();
+      voiceExpanded = false;
+      render();
+      return;
+    }
+    if (a === "item-photo") {
+      const owner = itemPhotoDraft;
+      const form = el.closest('form[data-form="item"]');
+      if (!owner || owner.id !== id || !form) return;
+      setBusy(true, modal);
+      try {
+        const source = await chooseIngredientPhoto();
+        if (
+          !source ||
+          source.cancelled ||
+          owner !== itemPhotoDraft ||
+          !form.isConnected
+        )
+          return;
+        const blob = await itemPhotos.prepare(source);
+        if (owner !== itemPhotoDraft || !form.isConnected) return;
+        if (owner.previewUrl) URL.revokeObjectURL(owner.previewUrl);
+        Object.assign(owner, {
+          blob,
+          previewUrl: URL.createObjectURL(blob),
+          remove: false,
+        });
+        $(".photo-editor", form).outerHTML = photoEditor(id, S.items[id] || {});
+      } catch {
+        if (form.isConnected)
+          formError(
+            form,
+            "Photo could not be prepared. Choose a JPEG, PNG or WebP under 4 MiB.",
+          );
+      } finally {
+        setBusy(false, modal);
+      }
+      return;
+    }
+    if (a === "item-photo-remove") {
+      if (itemPhotoDraft?.id !== id) return;
+      if (itemPhotoDraft.previewUrl)
+        URL.revokeObjectURL(itemPhotoDraft.previewUrl);
+      Object.assign(itemPhotoDraft, {
+        blob: null,
+        previewUrl: null,
+        remove: true,
+      });
+      $(".photo-editor", modal).outerHTML = photoEditor(id, S.items[id] || {});
+      return;
+    }
     if (a === "voice-start") {
       clearVoiceUseError();
       if (!assistantAbort && !voicePending()) void voice.start(voiceLanguage);
@@ -1358,7 +1595,9 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         assistantDraft = voice.useTranscript(assistantDraft, {
           mode: a === "voice-replace" ? "replace" : "append",
         });
+        voiceExpanded = false;
         view.innerHTML = viewMarkup();
+        mountView();
         $("#assistant-question")?.focus();
       } catch (error) {
         voiceUseError = error.message;
@@ -1398,6 +1637,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         }, "Conversation cleared.")
       ) {
         assistantDraft = "";
+        closeModal();
         render();
       }
       return;
@@ -1462,6 +1702,17 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
           true,
         )
       ) {
+        setBusy(true, document);
+        try {
+          await itemPhotos.clear();
+          photoSources.clear();
+        } catch {
+          announce(
+            "Inventory cleared. Photo cleanup failed; use Clear local data again to retry.",
+          );
+        } finally {
+          setBusy(false, document);
+        }
         closeModal();
         return navigate("kitchen");
       }
@@ -1474,12 +1725,20 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         `<p>Delete <b>${esc(S.items[id]?.name || "this ingredient")}</b>? Recipes will treat it as missing.</p>${button("Delete", "item-delete-confirm", id, "btn-primary")}`,
       );
     if (a === "item-delete-confirm") {
+      const removedPhoto = S.items[id]?.photoId;
       if (
         await commit(() => {
           delete S.items[id];
           S.shopping = S.shopping.filter((x) => x.id !== id);
         }, "Ingredient deleted.")
       ) {
+        if (
+          removedPhoto &&
+          !Object.values(S.items).some((item) => item.photoId === removedPhoto)
+        ) {
+          photoSources.delete(removedPhoto);
+          void itemPhotos.remove(removedPhoto).catch(() => {});
+        }
         closeModal();
         render();
       }
@@ -2034,6 +2293,27 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
           error?.message || "Review could not be committed.",
         );
       }
+      if (
+        fd.has("useScanPhoto") &&
+        scanPhotoDraft?.blob &&
+        !result.replayed &&
+        !scanPhotoDraft.photoId
+      ) {
+        setBusy(true, form);
+        try {
+          scanPhotoDraft.photoId = await itemPhotos.save(scanPhotoDraft.blob);
+        } catch {
+          return formError(
+            form,
+            "Photo could not be saved. Retry, or uncheck Keep this grocery photo to save ingredients only.",
+          );
+        } finally {
+          setBusy(false, form);
+        }
+      }
+      const chosenPhotoId = fd.has("useScanPhoto")
+        ? scanPhotoDraft?.photoId
+        : null;
       const saved = await commit(() => {
         result = commitScanDraft(S, editedDraft, {
           confirmed: fd.has("confirmed"),
@@ -2046,6 +2326,10 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
           draft: editedDraft,
           excludedLineIds,
           links: reviewedLinks,
+        });
+        result = attachScanPhoto(result, {
+          kind: editedDraft.kind,
+          photoId: chosenPhotoId,
         });
         S = result.state;
       }, "");
@@ -2128,7 +2412,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
       const prior = S.items[id] || {};
       const expiry = fd.get("expiry") || null;
       const provenance = expiry ? fd.get("expiryProvenance") : null;
-      S.items[id] = {
+      const updated = {
         ...prior,
         ...cookingLink,
         name: String(fd.get("name")).trim(),
@@ -2141,8 +2425,41 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         category: "Other",
         estimated: provenance === "estimated",
       };
-      if (provenance === "printed") S.items[id].printedExpiry = expiry;
-      else if (prior.printedExpiry !== expiry) delete S.items[id].printedExpiry;
+      if (provenance === "printed") updated.printedExpiry = expiry;
+      else if (prior.printedExpiry !== expiry) delete updated.printedExpiry;
+      let addedPhoto = null;
+      const photoDraft = itemPhotoDraft;
+      if (photoDraft?.blob) {
+        setBusy(true, modal);
+        try {
+          addedPhoto = await itemPhotos.save(photoDraft.blob);
+          updated.photoId = addedPhoto;
+        } catch {
+          return formError(
+            form,
+            "Photo could not be saved on this device. Try again or remove the new photo.",
+          );
+        } finally {
+          setBusy(false, modal);
+        }
+      } else if (photoDraft?.remove) delete updated.photoId;
+      if (
+        await commit(() => {
+          S.items[id] = updated;
+        }, "Ingredient saved.")
+      ) {
+        if (
+          prior.photoId &&
+          prior.photoId !== updated.photoId &&
+          !Object.values(S.items).some((item) => item.photoId === prior.photoId)
+        ) {
+          photoSources.delete(prior.photoId);
+          void itemPhotos.remove(prior.photoId).catch(() => {});
+        }
+        closeModal();
+        render();
+      } else if (addedPhoto) void itemPhotos.remove(addedPhoto).catch(() => {});
+      return;
     }
     if (kind === "profile") {
       S.profile.cuisine = fd.get("cuisine");
@@ -2186,15 +2503,27 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
       render();
     }
   }
-  modal.addEventListener("cancel", cancelScan);
+  modal.addEventListener("cancel", (event) => {
+    if (operationBusy) return event.preventDefault();
+    cancelScan();
+  });
   modal.addEventListener("close", () => {
     cancelScan();
+    if (modal.dataset.screen === "item-edit") releaseItemPhoto();
+    if (["scan-review", "scan-reading"].includes(modal.dataset.screen))
+      releaseScanPhoto();
     if (lastFocus?.isConnected) lastFocus.focus();
   });
   document.addEventListener("change", (event) => {
     if (event.target.id !== "voice-language") return;
     voiceLanguage = event.target.value;
     cancelVoice();
+  });
+  document.addEventListener("nomli:picker-open", (event) => {
+    if (event.target.id !== "voice-language" || !voicePending()) return;
+    event.preventDefault();
+    cancelVoice();
+    queueMicrotask(() => $("#voice-language")?.nextElementSibling?.click());
   });
   document.addEventListener("visibilitychange", () => {
     if (document.hidden) cancelVoice();

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "provenance": "Brand media reused from kitchenaut-landing/ASSETS.md; Phosphor MIT and fonts OFL licenses included. Content and fixtures authored synthetically for Nomli. See content/LICENSE.md.",
+  "provenance": "Brand media reused from kitchenaut-landing/ASSETS.md; Phosphor MIT and fonts OFL licenses included. Content and fixtures authored synthetically for Nomli. See content/LICENSE.md and web/public/images/recipes/ASSETS.md for generated recipe imagery.",
   "assets": [
     {
       "path": "content/ingredients.json",
@@ -19,8 +19,8 @@
     },
     {
       "path": "content/recipes.json",
-      "bytes": 20304,
-      "sha256": "0e7816bdc21b3cee4512165c6617a23fc3c0fa964794bb8f622fe4220dd5efc8"
+      "bytes": 21849,
+      "sha256": "c76df6cf0ee6f0fb0692bff00c8f7a2dbc8df5a4500208d9bae4d730cc83d770"
     },
     {
       "path": "content/voice-commands.json",
@@ -306,6 +306,96 @@
       "path": "web/public/images/recipe-skillet.webp",
       "bytes": 388074,
       "sha256": "74e3eb0a15d345d46350260a7886e9960dd04287c6915ce5a7799f24eabb7a6e"
+    },
+    {
+      "path": "web/public/images/recipes/ASSETS.md",
+      "bytes": 5650,
+      "sha256": "54669148116f19c38be7258aeb5cdaf37638995a2e440f31c772e4a1b3eb5396"
+    },
+    {
+      "path": "web/public/images/recipes/beef_kofta_pan.webp",
+      "bytes": 127326,
+      "sha256": "a05344bbd9fad5dd2c58b6aeeaf16c5e1c9420479292748ad4e0c68fcb339817"
+    },
+    {
+      "path": "web/public/images/recipes/bulgur_chickpea_pilaf.webp",
+      "bytes": 97732,
+      "sha256": "8028483e02eb8c4c1e8fce69288425d54f318ff45f34e82c06af4812c9667d9b"
+    },
+    {
+      "path": "web/public/images/recipes/chicken_rice_one_pot.webp",
+      "bytes": 109108,
+      "sha256": "348b452a3d7a809d6ca7a4602e7809fe2ea4726b8b551123571485cff6d76a28"
+    },
+    {
+      "path": "web/public/images/recipes/couscous_roast_veg.webp",
+      "bytes": 116092,
+      "sha256": "4afd0831e3fff77a567412622791b9fb5f5a6ab1e62bacb8fcfcd6bd1b396a66"
+    },
+    {
+      "path": "web/public/images/recipes/date_oat_breakfast.webp",
+      "bytes": 92544,
+      "sha256": "3fe3d14e1256ff85a0a7818e69c8f74d2c26e5a3abf75ecf8779d9743804b977"
+    },
+    {
+      "path": "web/public/images/recipes/fatteh_chickpea.webp",
+      "bytes": 92618,
+      "sha256": "0c5c99e044298ba9ca652c45b4b54c5be474d8c56fd1c7badef83994b9c20ea8"
+    },
+    {
+      "path": "web/public/images/recipes/fish_tahini_tray.webp",
+      "bytes": 88544,
+      "sha256": "b98cbe3229f55883532fbb5cd56f9d62fa65782fda284da7cb448221802396b0"
+    },
+    {
+      "path": "web/public/images/recipes/hummus_bowl.webp",
+      "bytes": 95708,
+      "sha256": "47475635ace578bb930084090c626214a8e55c7b79f9f102ee1c54eb4a502f18"
+    },
+    {
+      "path": "web/public/images/recipes/mujaddara_quick.webp",
+      "bytes": 123008,
+      "sha256": "5dc0f278f6345485b1c894d0c8a6371ae34eb34fe7fc12eca647e1678847605b"
+    },
+    {
+      "path": "web/public/images/recipes/mushroom_spinach_wrap.webp",
+      "bytes": 86788,
+      "sha256": "68eacdf4dcd3acba9569df48eb9c0874d19ce2f74a5da9a9e8e21853515d100e"
+    },
+    {
+      "path": "web/public/images/recipes/pea_spinach_rice.webp",
+      "bytes": 99284,
+      "sha256": "2998933a79a62173ca9c01dccfd8571e5cd7fdbfa97570cafa43c9d6f716c2c6"
+    },
+    {
+      "path": "web/public/images/recipes/red_lentil_soup.webp",
+      "bytes": 79242,
+      "sha256": "eb2139836186d84b60ad84afed6a91ece85b43c608973e355a384f2ef49e7a7b"
+    },
+    {
+      "path": "web/public/images/recipes/sheet_pan_chicken_veg.webp",
+      "bytes": 112074,
+      "sha256": "bd5713a277306d81e8bf2c4332cf0f62cf6947dc16075a62fae67a035015aa2c"
+    },
+    {
+      "path": "web/public/images/recipes/sweet_potato_chickpea_tray.webp",
+      "bytes": 122548,
+      "sha256": "f1e8fe4eae627766b390e404823c257a7c81a77a99a689e30fd91fd501295b0f"
+    },
+    {
+      "path": "web/public/images/recipes/tomato_basil_pasta.webp",
+      "bytes": 103856,
+      "sha256": "2acfdaa2ecb19baf18b92e54b134c9628907fcc8330082ec6aaa4373616568ed"
+    },
+    {
+      "path": "web/public/images/recipes/tuna_white_bean_salad.webp",
+      "bytes": 98400,
+      "sha256": "71091a00645c4cb4552206c0b6bacb7e786219fc40e2bb1dbdcbf2fe11997940"
+    },
+    {
+      "path": "web/public/images/recipes/zaatar_labneh_toast.webp",
+      "bytes": 133416,
+      "sha256": "95d76dd8d2b3f139b2a7f431161ca8c73476d30ece179f43f867ad891828775f"
     },
     {
       "path": "web/public/images/school-preview.png",
