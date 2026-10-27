@@ -26,7 +26,7 @@ Do not add school, XP, quests, community, investor-tour or social-product langua
 - Phone or embedded browser: edge-to-edge `100dvh` shell with safe-area padding.
 - Status bar and header frame one independently scrolling main region. Bottom navigation stays visible in a four-column grid.
 - Default route and Nomli brand link are `#kitchen`.
-- A short, visible M4 disclosure remains in app chrome. Zara and scanning reuse the protected connection. Saved exchanges must remain distinct from the current live reply.
+- A short, visible M5 disclosure remains in app chrome. Zara and scanning reuse the protected connection. Saved exchanges must remain distinct from the current live reply.
 - Panels and dialog bodies scroll within viewport bounds. Camera simulation may fill device; other dialogs present as bottom sheets.
 
 ## Interaction and accessibility
@@ -46,7 +46,11 @@ Do not add school, XP, quests, community, investor-tour or social-product langua
 - Disclose inventory, profile, tool preferences, recipe/cooking context and recent history before sending. Show saved local conversation separately.
 - Render provider text as text. Allow only validated quantity or curated-recipe/servings proposals. Show before/after details in a separate dialog with an explicit confirmation checkbox and Apply action.
 - Reject stale proposals and proposals during an active cooking session. Substitution advice cannot change frozen allocations; require cancel/replan when deductions would differ.
-- Live voice remains planned. Do not expose a simulated recording flow as working capture or transcription.
+- Optional Android voice starts only on Speak and runtime microphone permission. Show static microphone state, status text, Finish and Cancel voice; use no pulsing recording animation. Voice controls have at least 44px touch targets.
+- Explain system speech-provider network/language-pack requirements before capture. Offer English (US), Arabic (Saudi Arabia) and Arabic (Egypt) as requested locales without promising provider support.
+- Review transcript in an editable `dir="auto"` field capped at 2,000 characters. Use transcript appends to the question; replacing an existing question requires its separate action. Disable Send while capture or transcript review owns the flow. Only explicit Send shares reviewed text with M4 context.
+- Render questions, transcripts and answers with automatic text direction. Cancel capture and discard pending transcripts on navigation, dialog opening or backgrounding. Reject late callbacks by request ID. Voice never applies inventory changes.
+- Preserve scroll access and focus while keyboard is open. Actual Android keyboard, Arabic layout and assistive-technology behavior remain pending device verification.
 
 ## Required document hooks
 

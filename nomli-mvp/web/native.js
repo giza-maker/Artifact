@@ -1,3 +1,16 @@
+import { createNativeVoiceBridge } from "./native-voice.js";
+let voicePlugin;
+const { startVoice, stopVoice, cancelVoice, voiceStatus } =
+  createNativeVoiceBridge({
+    isNative: () => window.Capacitor?.isNativePlatform?.() ?? false,
+    loadPlugin: () => {
+      voicePlugin ??= import("@capacitor/core").then(({ registerPlugin }) =>
+        registerPlugin("NomliVoice"),
+      );
+      return voicePlugin;
+    },
+  });
+
 let backupPlugin;
 let scanPlugin;
 
@@ -21,6 +34,10 @@ async function getScanPlugin() {
 // These methods never change inventory or claim that OCR/AI is connected.
 window.NomliNative = Object.freeze({
   isNative: window.Capacitor?.isNativePlatform?.() ?? false,
+  startVoice,
+  stopVoice,
+  cancelVoice,
+  voiceStatus,
   async camera() {
     const { Camera, CameraResultType, CameraSource } = await import(
       "@capacitor/camera"

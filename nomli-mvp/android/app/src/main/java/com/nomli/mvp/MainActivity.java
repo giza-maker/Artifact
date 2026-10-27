@@ -8,6 +8,8 @@ public class MainActivity extends BridgeActivity {
     protected void onCreate(Bundle savedInstanceState) {
         registerPlugin(NomliBackupPlugin.class);
         registerPlugin(NomliScanPlugin.class);
+        registerPlugin(NomliVoicePlugin.class);
         super.onCreate(savedInstanceState);
     }
 }
+

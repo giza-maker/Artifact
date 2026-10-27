@@ -1,6 +1,6 @@
 # Integration boundary
 
-M4 is a single-user, local-first validation build. Inventory and confirmed receipt data remain on the device. Receipt recognition and explicit Zara sends use the paired service.
+M5 is a single-user, local-first validation build. Inventory and confirmed receipt data remain on the device. Receipt recognition and explicit Zara sends use the paired service.
 
 The deployed scan endpoint is `https://nomli-scan-proxy.ahmed-aljazayeerly.workers.dev`. Scanning uses `GEMINI_MODEL=gemini-3.5-flash-lite`; Zara uses `GEMINI_ASSISTANT_MODEL=gemini-3.5-flash-lite`. Both reuse the existing Gemini API key stored as an encrypted Cloudflare secret. The app stores the endpoint and device access code entered by the user, never the provider key. A private setup QR can fill those fields; the user must still test and save the connection.
 
@@ -46,9 +46,21 @@ Current Gemini 3.5 synthetic PNG/PDF checks returned 1,600 g, 500 g and 1 L, wit
 
 See [Zara phone checks](ASSISTANT.md).
 
+## M5 voice boundary
+
+The M4 backend, Gemini 3.5 Flash-Lite configuration, inventory, scan, cooking and reviewed Zara proposals remain unchanged. No account work is added. M5 targets version `0.6.0-m5` / code `6`, validation package `com.nomli.mvp.validation` and the retained validation signing certificate. M5 build/package verification remains pending; historical M4 evidence above stays unchanged.
+
+Android's default `SpeechRecognizer` service supplies text through a native Capacitor bridge. The manifest declares `RECORD_AUDIO` and speech-service visibility; runtime permission follows explicit Speak. Native Android classes provide recognition, with no extra speech SDK, provider key or audio media files. `en-US`, `ar-SA` and `ar-EG` are requested locales, subject to the installed provider and language packs. The provider may stream audio online; neither offline operation nor provider non-retention is promised.
+
+Nomli keeps capture/review transcript only in memory. Finish requests a final result; Cancel discards it. Review accepts 1–2,000 characters. Use transcript explicitly appends to the existing draft; a separate Replace action replaces it. Combined text must stay within 2,000 characters. Send then uses the unchanged M4 assistant request/context. Inserted and sent questions enter normal local conversation/backups. Voice cannot execute commands or write inventory.
+
+Native deadline is 35 seconds including permission, capture stops after 20 seconds and final-result wait is bounded to 8 seconds. JavaScript watchdog is 40 seconds. Request IDs isolate turns and late callbacks. Navigation, dialog opening and background cancellation clear pending UI state; native pause during capture, stop and destroy release recognition. The permission dialog's own pause is handled separately. Cleanup invalidates a session before cancelling/destroying its recognizer.
+
+Current checkpoint: 161 JavaScript tests pass, including 13 controller and six bridge tests covering cancellation, late callbacks, cleanup, errors and length limits. These are mocked/pure JavaScript checks, not actual Android audio or device QA. Native permission flows, provider availability, noisy Arabic recognition, Bluetooth/call interruption, background microphone release, camera/picker, notifications and update-on-phone checks remain pending. See [voice checklist](VOICE.md).
+
 ## Capability status
 
-| Capability | M4 status | Remaining work |
+| Capability | M5 status | Remaining work |
 | --- | --- | --- |
 | Receipt image/PDF recognition | Deployed Cloudflare proxy, Gemini adapter, bounded upload validation and editable review | Broader accuracy evaluation and physical-device QA |
 | Local inventory | Native Preferences with localStorage fallback, atomic saves, identical-file dedupe and validated backups | Physical-device persistence and recovery QA |
@@ -56,7 +68,7 @@ See [Zara phone checks](ASSISTANT.md).
 | Barcode products | Native barcode capture and synthetic fixtures | Product lookup adapter, cache and regional fallback |
 | Cooking | Static catalog, linked-stock allocation, prep/tool confirmation, resumable timer, reviewed deduction and undo | Physical-device QA |
 | Zara | Live Gemini replies and validated, separately confirmed proposals | Physical-device QA and broader answer evaluation |
-| Voice | Command fixtures only | Push-to-talk capture, transcription, review and noisy-kitchen testing |
+| Voice | Optional Android system recognition, editable transcript, explicit append/replace and Send | Physical-phone permission/provider/Arabic/noisy-kitchen checks; offline behavior |
 | Accounts / cloud storage | Supabase client dependency and future contract notes | Project, schema, RLS, migrations, sync, transactions and authorization tests |
 
 ## Future multi-user contract

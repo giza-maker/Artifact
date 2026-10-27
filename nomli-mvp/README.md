@@ -1,12 +1,14 @@
-# Nomli kitchen MVP, milestone 4
+# Nomli kitchen MVP, milestone 5
 
-Single-user local kitchen inventory with reviewed receipt recognition, curated cooking and live Zara assistance. M4 sends explicitly requested kitchen context through the paired Cloudflare service to Gemini. Proposed quantity or recipe changes require separate review and confirmation. M3 cooking and the protected M2 receipt workflow remain available.
+Single-user local kitchen inventory with reviewed receipt recognition, curated cooking and live Zara assistance. M5 adds optional Android speech-to-text for reviewed Zara questions. Zara sends explicitly requested kitchen context through the paired Cloudflare service to Gemini. Proposed quantity or recipe changes require separate review and confirmation. M3 cooking and the protected M2 receipt workflow remain available.
 
-Validation package: `com.nomli.mvp.validation`, app label **Nomli Test**, version **0.5.0-m4** (`versionCode` 5). It uses the M1/M2 validation update channel and remains separate from the earlier demo package. Published milestone APKs use the retained local validation signing key; GitHub Actions does not receive that key.
+Validation package: `com.nomli.mvp.validation`, app label **Nomli Test**, version **0.6.0-m5** (`versionCode` 6). It uses the M1/M2 validation update channel and remains separate from the earlier demo package. Published milestone APKs use the retained local validation signing key; GitHub Actions does not receive that key.
 
 Inventory works offline. Receipt recognition and live Zara need internet access. Current recognition service is `https://nomli-scan-proxy.ahmed-aljazayeerly.workers.dev`, with Gemini 3.5 Flash-Lite for scanning and Zara. Provider credentials are encrypted server-side and never bundled in the app.
 
-Verified M4 APK: [Nomli-M4.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m4-v0.5.0/Nomli-M4.apk). See the [Zara phone checklist](docs/ASSISTANT.md), [APK checklist](docs/APK.md) and [verification record](docs/VERIFICATION.md).
+M5 APK build and package/signing verification pending: [Nomli-M5.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m5-v0.6.0/Nomli-M5.apk) (planned release link). Same validation package and retained signing certificate required; install/update and physical-phone QA remain pending. See [voice checks](docs/VOICE.md).
+
+Historical verified M4 APK: [Nomli-M4.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m4-v0.5.0/Nomli-M4.apk). See the [Zara phone checklist](docs/ASSISTANT.md), [APK checklist](docs/APK.md) and [verification record](docs/VERIFICATION.md).
 
 ## Start
 
@@ -55,6 +57,14 @@ Compatible conversions cover g/kg and ml/l. Count-to-mass conversions require an
 
 Each Send shares inventory, profile, tool preferences, selected/current recipe and frozen cooking allocation plan, plus the last six exchanges, with Cloudflare and Google. Up to 20 question/answer exchanges stay locally and appear in inventory backups. Connection credentials remain excluded. Worker stores no chat history; provider retention is governed separately. See [assistant contract and phone checks](docs/ASSISTANT.md).
 
+## Optional Android voice
+
+1. Open Zara, select English (US), Arabic (Saudi Arabia), or Arabic (Egypt), then tap **Speak**. Grant microphone access when Android asks.
+2. Tap **Finish** after speaking, or **Cancel voice** to discard capture. Review and edit the transcript (1–2,000 characters).
+3. Tap **Use transcript** to append it to the question, or explicitly **Replace question with transcript**. Review the resulting question, then tap **Send question**.
+
+Voice uses Android's default system speech service without an extra Nomli API key or speech SDK. Requested locales are `en-US`, `ar-SA` and `ar-EG`; provider and device language-pack availability varies. The service may stream audio online and require network access. Offline recognition is not guaranteed. Nomli does not persist audio or raw review transcripts. Once inserted and sent, question text follows normal M4 local chat and backup storage. Speech-provider retention is governed separately. Voice cannot execute commands or write stock automatically. See [voice behavior and pending phone checks](docs/VOICE.md).
+
 ## Included
 
 - Fresh local inventory with add, edit and delete; fractional quantities; canonical units; storage locations; optional expiry provenance; sorting and search.
@@ -63,7 +73,7 @@ Each Send shares inventory, profile, tool preferences, selected/current recipe a
 - Image uploads up to 4 MiB. PDFs up to 2 MiB and three pages. JPEG, PNG, WebP and PDF content is checked against its declared type.
 - Approximate Cloudflare rate limit of 10 combined scan and Zara requests per 60 seconds per Cloudflare location. This is abuse protection, not a hard billing cap.
 - Static cooking catalog with 20 curated recipes and 88 bilingual ingredients; stock assessment, preparation checklist, tool confirmation, deadline timer resume, reviewed consumption and undo.
-- Live Zara grounded in current inventory, profile, tools and the curated catalog; quantity and recipe proposals require review. Live voice remains planned; command fixtures are retained.
+- Live Zara grounded in current inventory, profile, tools and the curated catalog; quantity and recipe proposals require review. Optional Android system speech recognition feeds an editable transcript into the question draft; command fixtures remain reference data.
 - Starter content: 88 bilingual ingredients, 20 structured recipes, 24 Arabic/English voice cases, three receipt fixtures, six synthetic barcode records and a synthetic digital receipt PDF/image.
 - Capacitor Android shell with camera, barcode, notifications and preferences plugins plus native backup and scan bridges.
 - Tested scan client, validation schema, integer-money logic, persistence, deduplication and bounded server proxy.
@@ -78,8 +88,8 @@ Synthetic PNG and PDF receipts completed live calls in about five and four secon
 
 ## Not implemented or verified
 
-- M4 APK compilation and package verification pass. Install/update verification and physical-phone QA remain pending. Native picker, camera permissions, Preferences behavior across force-stop and keyboard behavior still need device testing.
-- Voice recognition and barcode product lookup are not connected. Recipes remain curated; Zara does not rewrite recipes or generate a new catalog.
+- Historical M4 APK compilation and package verification pass. M5 build/package verification remains pending. Install/update verification and physical-phone QA remain pending. Native picker, camera permissions, Preferences behavior across force-stop and keyboard behavior still need device testing.
+- Android voice is implemented but unverified on a physical phone. Barcode product lookup is not connected. Recipes remain curated; Zara does not rewrite recipes or generate a new catalog.
 - Accounts, cloud inventory sync, multi-user authorization and database transactions remain future work.
 - Receipt recognition can be wrong. Review is mandatory before local data changes.
 

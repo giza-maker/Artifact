@@ -1,5 +1,6 @@
 "use strict";
 import { requestAssistantReply } from "./assistant-client.js";
+import { VOICE_LANGUAGES, createVoiceController } from "./voice-controller.js";
 import {
   buildAssistantContext,
   reviewAssistantProposal,
@@ -115,7 +116,60 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     assistantContext = null,
     assistantReview = null;
   const liveChats = new WeakSet();
+  let voiceLanguage = "en-US";
+  let voiceUseError = "";
+  function clearVoiceUseError() {
+    voiceUseError = "";
+    const error = $("#voice-use-error");
+    if (error) {
+      error.hidden = true;
+      error.textContent = "";
+    }
+  }
+  const voice = createVoiceController({
+    getNative: () => window.NomliNative,
+    onChange(state) {
+      if (typeof S === "undefined" || S.route !== "assistant") return;
+      if (
+        state.phase === "review" &&
+        document.activeElement?.id === "voice-transcript"
+      )
+        return;
+      const focused = document.activeElement;
+      const hadViewFocus = view.contains(focused);
+      const focusId = focused?.id;
+      const focusAction = focused?.dataset?.action;
+      const selection =
+        focusId === "assistant-question"
+          ? [focused.selectionStart, focused.selectionEnd]
+          : null;
+      view.innerHTML = viewMarkup();
+      const target =
+        (focusId
+          ? document.getElementById(focusId)
+          : focusAction
+            ? $(`[data-action="${focusAction}"]`, view)
+            : null) ||
+        (hadViewFocus
+          ? $(
+              '#voice-transcript,[data-action="voice-finish"],[data-action="voice-cancel"],[data-action="voice-start"]',
+              view,
+            )
+          : null);
+      target?.focus({ preventScroll: true });
+      if (selection && target) target.setSelectionRange(...selection);
+    },
+  });
+  const voicePending = () =>
+    ["starting", "listening", "processing", "review"].includes(
+      voice.snapshot().phase,
+    );
+  function cancelVoice() {
+    clearVoiceUseError();
+    if (voice.snapshot().phase !== "idle") void voice.cancel();
+  }
   function cancelAssistant(clear = true) {
+    cancelVoice();
     assistantEpoch++;
     assistantAbort?.abort();
     assistantAbort = null;
@@ -365,7 +419,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         `${Object.values(S.items).filter((x) => x.qty > 0).length} ingredients on hand${soon ? ` · ${soon} use soon` : ""}`,
         button("Add ingredient", "item-edit", "new", "btn-primary"),
       ) +
-      `<p class="milestone-banner">Milestone 4 · Scan, cook and ask Zara</p><button class="scan-banner" data-action="go" data-id="scan"><img src="images/fridge-vf-480.webp" alt=""><span>${icon("scan")}<b>Scan groceries or receipts</b><small>Protected connection · review before save</small></span>${icon("arrow-right")}</button><section class="card inventory-card"><div class="card-header"><h2>Inventory</h2><button class="icononly" data-action="item-edit" data-id="new" aria-label="Add ingredient">${icon("plus")}</button></div><div class="inventory-tools"><label class="field">Search<input type="search" data-change="search" value="${esc(S.search || "")}" placeholder="Search ingredients"></label><div class="inventory-sort"><label>Storage <select data-change="storage">${options(["All", "Fridge", "Freezer", "Pantry", "Spices"], S.storage)}</select></label><label>Sort <select data-change="sort">${options(["expiry", "name", "quantity"], S.sort)}</select></label></div></div>${rows.length ? rows.map(([id, x]) => itemRow(id, x)).join("") : `<div class="inventory-empty">${icon("refrigerator")}<h3>${Object.keys(S.items).length ? "No ingredients match" : "Your inventory is empty"}</h3><p>${Object.keys(S.items).length ? "Clear search or filters." : "Add first ingredient. Expiry stays optional and never gets invented."}</p>${Object.keys(S.items).length ? "" : button("Add first ingredient", "item-edit", "new", "btn-primary")}</div>`}</section><div class="quick-grid">${[
+      `<p class="milestone-banner">Milestone 5 · Scan, cook and speak to Zara</p><button class="scan-banner" data-action="go" data-id="scan"><img src="images/fridge-vf-480.webp" alt=""><span>${icon("scan")}<b>Scan groceries or receipts</b><small>Protected connection · review before save</small></span>${icon("arrow-right")}</button><section class="card inventory-card"><div class="card-header"><h2>Inventory</h2><button class="icononly" data-action="item-edit" data-id="new" aria-label="Add ingredient">${icon("plus")}</button></div><div class="inventory-tools"><label class="field">Search<input type="search" data-change="search" value="${esc(S.search || "")}" placeholder="Search ingredients"></label><div class="inventory-sort"><label>Storage <select data-change="storage">${options(["All", "Fridge", "Freezer", "Pantry", "Spices"], S.storage)}</select></label><label>Sort <select data-change="sort">${options(["expiry", "name", "quantity"], S.sort)}</select></label></div></div>${rows.length ? rows.map(([id, x]) => itemRow(id, x)).join("") : `<div class="inventory-empty">${icon("refrigerator")}<h3>${Object.keys(S.items).length ? "No ingredients match" : "Your inventory is empty"}</h3><p>${Object.keys(S.items).length ? "Clear search or filters." : "Add first ingredient. Expiry stays optional and never gets invented."}</p>${Object.keys(S.items).length ? "" : button("Add first ingredient", "item-edit", "new", "btn-primary")}</div>`}</section><div class="quick-grid">${[
         ["shopping", "shopping-cart", "Shopping", "Restock list"],
         ["expenses", "wallet", "Spending", "Receipts & budget"],
         ["profile", "gear", "Preferences", "Diet, time & tools"],
@@ -610,6 +664,22 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         )}<p class="details">Filters use catalog ingredients, not verified product labels. Review packaged ingredients and preparation conditions yourself.</p></fieldset><fieldset><legend>Available tools</legend>${D.tools.map((x) => `<label class="checkbox-field"><input type="checkbox" name="tool" value="${x.id}"${S.tools[x.id] ? " checked" : ""}>${esc(x.name)}</label>`).join("")}</fieldset><button class="btn btn-primary">Save preferences</button></form>`
     );
   }
+  function voiceView() {
+    const state = voice.snapshot(),
+      native = window.NomliNative;
+    if (!native?.isNative)
+      return `<section class="voice-panel"><h3>Speak to Zara</h3><p class="details">Voice capture is available in the Android app on supported phones. Type your question below instead.</p></section>`;
+    const busy = ["starting", "listening", "processing"].includes(state.phase);
+    const status = {
+      idle: "Tap Speak, then Finish.",
+      starting: "Starting microphone · allow phone permission if asked.",
+      listening: "Listening · tap Finish when done.",
+      processing: "Processing speech · please wait.",
+      review: "Review transcript. Use or discard it before sending a question.",
+      error: "Voice capture failed. Your typed question is kept.",
+    }[state.phase];
+    return `<section class="voice-panel" aria-labelledby="voice-title"><h3 id="voice-title">Speak to Zara</h3><p id="voice-disclosure" class="details">Your phone’s speech service may process audio online and may need internet or language packs. Nomli receives text. Nothing goes to Zara until you tap Send question.</p><label for="voice-language">Speech language</label><select id="voice-language" aria-describedby="voice-disclosure">${VOICE_LANGUAGES.map((language) => `<option value="${esc(language.id)}"${voiceLanguage === language.id ? " selected" : ""}>${esc(language.id === "en-US" ? "English (US)" : language.label)}</option>`).join("")}</select><p id="voice-status" class="voice-status" role="status" aria-live="polite"><span class="voice-indicator ${busy ? "is-active" : ""}" aria-hidden="true"></span>${esc(status)}</p>${state.error ? `<p id="voice-error" class="notice notice-warning" role="alert">${esc(state.error)} Type your question or try Speak again.</p>` : ""}<div class="actions">${!busy && state.phase !== "review" ? `<button type="button" class="btn btn-secondary" data-action="voice-start" aria-describedby="voice-disclosure voice-status${state.error ? " voice-error" : ""}"${assistantAbort ? " disabled" : ""}>Speak</button>` : ""}${state.phase === "listening" ? button("Finish", "voice-finish", "", "btn-primary") : ""}${busy ? button("Cancel voice", "voice-cancel", "", "btn-quiet") : ""}</div>${state.phase === "review" ? `<label for="voice-transcript">Transcript · edit before using</label><textarea id="voice-transcript" rows="4" dir="auto" maxlength="2000" aria-invalid="${!state.transcript.trim()}" aria-describedby="voice-status voice-edit-status voice-use-error">${esc(state.transcript)}</textarea><p id="voice-use-error" class="notice notice-warning" role="alert"${voiceUseError ? "" : " hidden"}>${esc(voiceUseError)}</p><p id="voice-edit-status" class="details">${state.transcript.trim() ? `${state.transcript.length}/2000 characters` : "Enter 1–2000 characters before using transcript."}</p><div class="actions"><button type="button" class="btn btn-secondary" data-action="voice-use"${state.transcript.trim() ? "" : " disabled"}>Use transcript${assistantDraft.trim() ? " · append to question" : ""}</button>${assistantDraft.trim() ? button("Replace question with transcript", "voice-replace", "", "btn-quiet").replace("<button ", `<button${state.transcript.trim() ? "" : " disabled"} `) : ""}${button("Discard transcript", "voice-cancel", "", "btn-quiet")}</div>` : ""}</section>`;
+  }
   function assistantView() {
     const inventory = Object.values(S.items),
       connected = Boolean(scanConfig.apiUrl && scanConfig.deviceToken);
@@ -629,9 +699,9 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
       (back
         ? `<section class="card"><b>${esc(recipe(S.cooking.rid).name)} · ${esc(S.cooking.phase)}</b><p>Advice only during an active session. For substitutions, cancel and replan preparation.</p>${button("Back to current session", "cook-resume")}</section>`
         : "") +
-      `<section class="card"><h2>Connection</h2><p>${connected ? "Connection saved · Gemini" : "Connection needed"}</p>${button("Scan connection", "scan-settings")}<p class="details">On Send, inventory, current recipe, preferences, tools and the latest six exchanges go to Gemini through your paired server. Conversation stays on this device; backups include saved conversation. No microphone is used.</p><p>${inventory.filter((x) => x.qty > 0).length} stocked items · ${inventory.filter((x) => !x.ingredientId).length} unlinked items${S.cooking ? ` · step ${S.cooking.step + 1}` : " · no active cooking session"}</p></section>
-      <section class="card"><h2>Ask Zara</h2><div class="actions">${["What can I cook?", "Help with the current step", "What can I substitute?", "What should I use soon?"].map((q, i) => button(q, "assistant-suggestion", String(i), "btn-quiet")).join("")}</div><form data-form="assistant" aria-busy="${Boolean(assistantAbort)}"><label for="assistant-question">Question</label><textarea id="assistant-question" name="question" maxlength="2000" rows="3" required aria-describedby="assistant-status"${assistantAbort ? " readonly" : ""}>${esc(assistantDraft)}</textarea><p id="assistant-status" role="status" aria-live="polite">${esc(assistantAbort ? "Sending kitchen context…" : assistantError || "Send only when ready to share context.")}</p><div class="actions"><button class="btn btn-primary"${assistantAbort || !connected ? " disabled" : ""}>${assistantError ? "Retry question" : "Send question"}</button>${assistantAbort ? button("Cancel request", "assistant-cancel") : ""}</div></form>
-      ${assistantReply ? `<section class="assistant-live"><h3>Live Gemini reply</h3><p class="assistant-answer">${esc(assistantReply.answer)}</p>${assistantReply.warnings.map((x) => `<p class="notice notice-warning">${esc(x)}</p>`).join("")}${assistantReply.proposals.map((x, i) => `<article class="card assistant-proposal"><h3>${esc(x.type === "set_quantity" ? S.items[x.itemId]?.name : recipe(x.recipeId).name)}</h3><p>${esc(x.reason)}</p>${button("Review proposed change", "assistant-review", String(i))}</article>`).join("")}</section>` : ""}
+      `<section class="card"><h2>Connection</h2><p>${connected ? "Connection saved · Gemini" : "Connection needed"}</p>${button("Scan connection", "scan-settings")}<p class="details">On Send, inventory, current recipe, preferences, tools and the latest six exchanges go to Gemini through your paired server. Conversation stays on this device; backups include saved conversation. Voice capture is optional; review its disclosure before speaking.</p><p>${inventory.filter((x) => x.qty > 0).length} stocked items · ${inventory.filter((x) => !x.ingredientId).length} unlinked items${S.cooking ? ` · step ${S.cooking.step + 1}` : " · no active cooking session"}</p></section>
+      <section class="card"><h2>Ask Zara</h2><div class="actions">${["What can I cook?", "Help with the current step", "What can I substitute?", "What should I use soon?"].map((q, i) => button(q, "assistant-suggestion", String(i), "btn-quiet").replace("<button ", `<button aria-describedby="assistant-status"${assistantAbort || voicePending() ? " disabled" : ""} `)).join("")}</div>${voiceView()}<form data-form="assistant" aria-busy="${Boolean(assistantAbort)}"><label for="assistant-question">Question</label><textarea id="assistant-question" dir="auto" name="question" maxlength="2000" rows="3" required aria-describedby="assistant-status"${assistantAbort ? " readonly" : ""}>${esc(assistantDraft)}</textarea><p id="assistant-status" role="status" aria-live="polite">${esc(assistantAbort ? "Sending kitchen context… Suggestions unavailable until request finishes." : voicePending() ? "Suggestions and Send unavailable: use or discard transcript; during capture, Finish or Cancel voice first." : assistantError || "Send only when ready to share context.")}</p><div class="actions"><button class="btn btn-primary"${assistantAbort || voicePending() || !connected ? " disabled" : ""}>${assistantError ? "Retry question" : "Send question"}</button>${assistantAbort ? button("Cancel request", "assistant-cancel") : ""}</div></form>
+      ${assistantReply ? `<section class="assistant-live"><h3>Live Gemini reply</h3><p class="assistant-answer" dir="auto">${esc(assistantReply.answer)}</p>${assistantReply.warnings.map((x) => `<p class="notice notice-warning">${esc(x)}</p>`).join("")}${assistantReply.proposals.map((x, i) => `<article class="card assistant-proposal"><h3>${esc(x.type === "set_quantity" ? S.items[x.itemId]?.name : recipe(x.recipeId).name)}</h3><p>${esc(x.reason)}</p>${button("Review proposed change", "assistant-review", String(i))}</article>`).join("")}</section>` : ""}
       ${S.chat
         .filter(
           (x) =>
@@ -643,7 +713,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         .reverse()
         .map(
           (x) =>
-            `<article class="chat-bubble"><small>${liveChats.has(x) ? "Live Gemini exchange" : "Saved conversation"}</small><h3>${esc(x.q)}</h3><p class="assistant-answer">${esc(x.a)}</p></article>`,
+            `<article class="chat-bubble"><small>${liveChats.has(x) ? "Live Gemini exchange" : "Saved conversation"}</small><h3 dir="auto">${esc(x.q)}</h3><p class="assistant-answer" dir="auto">${esc(x.a)}</p></article>`,
         )
         .join(
           "",
@@ -651,7 +721,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     );
   }
   async function sendAssistant(question) {
-    if (assistantAbort) return;
+    if (assistantAbort || voicePending()) return;
     assistantDraft = question.trim();
     const sentQuestion = assistantDraft;
     assistantError = "";
@@ -720,11 +790,14 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     expenses: expensesView,
     profile: profileView,
   };
+  function viewMarkup() {
+    return `${storageError ? `<section class="notice notice-warning recovery-notice" role="alert"><b>Storage error</b><p>${esc(storageError)}</p></section>` : ""}${recoveryRequired ? `<section class="notice notice-warning recovery-notice" role="alert"><b>Stored data needs recovery.</b><p>${esc(loadResult.notice || "Import a valid backup or explicitly clear local data. Current data will not be overwritten automatically.")}</p></section>` : ""}${(screens[S.route] || kitchenView)()}`;
+  }
   function render() {
     clearInterval(timerHandle);
     timerHandle = null;
     view.dataset.screen = S.route;
-    view.innerHTML = `${storageError ? `<section class="notice notice-warning recovery-notice" role="alert"><b>Storage error</b><p>${esc(storageError)}</p></section>` : ""}${recoveryRequired ? `<section class="notice notice-warning recovery-notice" role="alert"><b>Stored data needs recovery.</b><p>${esc(loadResult.notice || "Import a valid backup or explicitly clear local data. Current data will not be overwritten automatically.")}</p></section>` : ""}${(screens[S.route] || kitchenView)()}`;
+    view.innerHTML = viewMarkup();
     view.setAttribute("aria-busy", "false");
     renderNav();
     $("[data-title]", view)?.focus({ preventScroll: true });
@@ -748,6 +821,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     );
   }
   async function exportBackup() {
+    cancelVoice();
     try {
       await saveQueue;
       const text = store.exportBackup(S),
@@ -815,6 +889,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     });
   }
   async function importBackup() {
+    cancelVoice();
     try {
       const text = await chooseBackupText();
       if (text == null) return;
@@ -1064,8 +1139,31 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
   );
 
   document.addEventListener("input", (event) => {
-    if (event.target.id === "assistant-question")
+    if (event.target.id === "voice-transcript") {
+      const text = event.target.value;
+      if (text.trim() && text.length <= 2000) clearVoiceUseError();
+      try {
+        voice.editTranscript(text);
+      } catch {
+        /* Empty drafts stay editable until valid. */
+      }
+      const valid = Boolean(text.trim()) && text.length <= 2000;
+      event.target.setAttribute("aria-invalid", String(!valid));
+      $("#voice-edit-status").textContent = valid
+        ? `${text.length}/2000 characters`
+        : "Enter 1–2000 characters before using transcript.";
+      document
+        .querySelectorAll(
+          '[data-action="voice-use"],[data-action="voice-replace"]',
+        )
+        .forEach((control) => {
+          control.disabled = !valid;
+        });
+    }
+    if (event.target.id === "assistant-question") {
       assistantDraft = event.target.value;
+      clearVoiceUseError();
+    }
   });
   document.addEventListener(
     "submit",
@@ -1250,13 +1348,48 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     if (el.dataset.route) return navigate(el.dataset.route);
     const a = el.dataset.action,
       id = el.dataset.id || "";
+    if (a === "voice-start") {
+      clearVoiceUseError();
+      if (!assistantAbort && !voicePending()) void voice.start(voiceLanguage);
+      return;
+    }
+    if (a === "voice-finish") return void voice.stop();
+    if (a === "voice-cancel") return cancelVoice();
+    if (a === "voice-use" || a === "voice-replace") {
+      try {
+        const transcript = $("#voice-transcript").value;
+        if (
+          a === "voice-use" &&
+          (assistantDraft ? `${assistantDraft}\n${transcript}` : transcript)
+            .length > 2000
+        )
+          throw new Error(
+            "Question plus transcript exceeds 2000 characters. Shorten one, or choose Replace.",
+          );
+        clearVoiceUseError();
+        voice.editTranscript(transcript);
+        assistantDraft = voice.useTranscript(assistantDraft, {
+          mode: a === "voice-replace" ? "replace" : "append",
+        });
+        view.innerHTML = viewMarkup();
+        $("#assistant-question")?.focus();
+      } catch (error) {
+        voiceUseError = error.message;
+        const box = $("#voice-use-error");
+        if (box) {
+          box.textContent = voiceUseError;
+          box.hidden = false;
+        }
+      }
+      return;
+    }
     if (a === "assistant-cancel") {
       cancelAssistant();
       assistantError = "Request cancelled. Your question is kept.";
       return render();
     }
     if (a === "assistant-suggestion" || a === "assistant-prompt") {
-      if (assistantAbort) return;
+      if (assistantAbort || voicePending()) return;
       const suggestions = [
         "What can I cook?",
         "Help with the current step",
@@ -2077,6 +2210,15 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     cancelScan();
     if (lastFocus?.isConnected) lastFocus.focus();
   });
+  document.addEventListener("change", (event) => {
+    if (event.target.id !== "voice-language") return;
+    voiceLanguage = event.target.value;
+    cancelVoice();
+  });
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) cancelVoice();
+  });
+  window.addEventListener("pagehide", cancelVoice);
   window.addEventListener("popstate", syncHash);
   window.addEventListener("hashchange", syncHash);
   render();

@@ -3537,3 +3537,64 @@ dialog[data-screen="scan-review"] #modal-content {
   border-inline-start: 3px solid var(--accent, #fa984c);
   padding-inline-start: 12px;
 }
+
+/* Voice remains inside Zara's scrolling surface, including with phone keyboard. */
+.voice-panel {
+  min-width: 0;
+  margin-block: 20px;
+  padding-block: 18px;
+  border-block: 1px solid var(--border, #555);
+}
+.voice-panel h3 {
+  margin-top: 0;
+}
+.voice-panel select {
+  width: 100%;
+  min-height: 44px;
+  margin-top: 8px;
+}
+.voice-panel .actions {
+  flex-wrap: wrap;
+  margin-block: 12px;
+}
+.voice-panel .btn {
+  min-height: 44px;
+  max-width: 100%;
+  white-space: normal;
+}
+.voice-status {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  line-height: 1.5;
+}
+.voice-indicator {
+  width: 9px;
+  height: 9px;
+  flex: 0 0 9px;
+  border-radius: 50%;
+  background: var(--faint, #aaa);
+}
+.voice-indicator.is-active {
+  background: var(--accent, #fa984c);
+}
+[data-screen="assistant"] textarea {
+  scroll-margin-block: 24px;
+  max-height: 40dvh;
+}
+[data-screen="assistant"] select:focus-visible {
+  outline: 3px solid #ffb26c;
+  outline-offset: 3px;
+}
+.app-scroll {
+  scroll-padding-bottom: max(24px, env(safe-area-inset-bottom));
+}
+@media (max-height: 550px) {
+  [data-screen="assistant"] textarea {
+    min-height: 5rem;
+  }
+  .voice-panel {
+    margin-block: 12px;
+    padding-block: 12px;
+  }
+}
