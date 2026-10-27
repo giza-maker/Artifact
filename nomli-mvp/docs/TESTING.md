@@ -1,6 +1,6 @@
 # M7 mobile UI and media acceptance
 
-Browser checks use synthetic camera/speech bridges; actual Android capture, storage, keyboard and update installation remain pending. 199 JavaScript tests and content checks pass.
+Browser checks use synthetic camera/speech bridges; actual Android capture, storage, keyboard and update installation remain pending. 200 JavaScript tests and content checks pass.
 
 1. Install M7 over Nomli Test. Confirm inventory, private connection and conversation remain.
 2. Capture grocery photo → review each suggested product crop → optionally adjust/remove → choose location → save. Force-stop/reopen; photo remains. Change/remove photo from ingredient editor; cancel must preserve saved record.

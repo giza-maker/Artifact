@@ -1,10 +1,10 @@
 # M7 verification — APK pending
 
-199 JavaScript tests pass; content validation passes for88 ingredients,20 recipes,3 receipt fixtures. Added photo ID/source/storage-boundary and grocery-only attachment tests; assistant context excludes local photo references.
+200 JavaScript tests pass; content validation passes for88 ingredients,20 recipes,3 receipt fixtures. Added photo ID/source/storage-boundary and grocery-only attachment tests; assistant context excludes local photo references.
 
 Browser evidence at390×844 and320×640: manual photo save/reload; grocery review/save/reload with persistent JPEG thumbnail; live inventory search preserving focus; nested searchable selector and focus return; all20 recipe cards mapped; new detail art loaded; chronological chat, pending/retry and live Zara reply (800ml milk for four servings); synthetic speech review and separate Use/Send; short-screen voice drawer scrolling with composer/navigation visible.
 
-Additional crop evidence: real protected grocery recognition returned separate normalized regions for Tomatoes and Basil in a synthetic two-food composition. Browser adjusted and reopened a crop, retained reviewed fields/focus, saved two distinct256×256 JPEGs, and reloaded both under different local photo IDs. Crop geometry, ownership, compatibility and voice lifecycle tests bring total to199. Worker image-region update deployed as b7c29c48-2561-470c-a00a-1228d932b61c; legacy request schema remains unchanged.
+Additional crop evidence: real protected grocery recognition returned separate normalized regions for Tomatoes and Basil in a synthetic two-food composition. Browser adjusted and reopened a crop, retained reviewed fields/focus, saved two distinct256×256 JPEGs, and reloaded both under different local photo IDs. Crop geometry, ownership, compatibility and voice lifecycle tests bring total to200. Worker image-region update deployed as b7c29c48-2561-470c-a00a-1228d932b61c; legacy request schema remains unchanged.
 
 Voice hardening removes JavaScript cancellation during native permission UI and exempts permission-pending sessions from native stop cancellation. Native capture still cancels on actual pause/stop; reviewed text clears when hidden. Bridge failure and missing speech-service errors are distinguished. Installed-APK silent Speak report remains unconfirmed on hardware.
 

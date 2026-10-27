@@ -403,3 +403,17 @@ test("bridge availability failures show actionable sanitized diagnostics", async
     false,
   );
 });
+
+test("late native transcript after backgrounding is discarded before review", async () => {
+  const f = fixture();
+  const done = f.controller.start("ar-EG");
+  await tick();
+  f.request().onState({ requestId: "id-1", state: "listening" });
+  f.controller.handleVisibility(true);
+  f.complete("private result that arrived after pause");
+  await done;
+  assert.equal(f.controller.snapshot().phase, "idle");
+  assert.equal(f.controller.snapshot().transcript, "");
+  f.controller.handleVisibility(false);
+  assert.equal(f.controller.snapshot().transcript, "");
+});

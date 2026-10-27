@@ -57,6 +57,7 @@ export function createVoiceController({
     requestId: null,
   };
   let active = null;
+  let hidden = false;
   const snapshot = () => ({ ...state });
   function update(values) {
     state = { ...state, ...values };
@@ -152,7 +153,7 @@ export function createVoiceController({
           throw new VoiceValidationError(
             "Invalid voice capture result. Try again, or type your question.",
           );
-        if (result.cancelled)
+        if (result.cancelled || hidden)
           finish(attempt, { phase: "idle", transcript: "", error: null });
         else
           finish(attempt, {
@@ -173,7 +174,8 @@ export function createVoiceController({
       update({ phase: "idle", transcript: "", error: null, requestId: null });
     return Promise.resolve(snapshot());
   }
-  function handleVisibility(hidden) {
+  function handleVisibility(documentHidden) {
+    hidden = Boolean(documentHidden);
     // Android owns capture cancellation on actual pause/stop. A permission dialog
     // can hide WebView while native permission ownership must remain intact.
     if (hidden && state.phase === "review") void cancel();
