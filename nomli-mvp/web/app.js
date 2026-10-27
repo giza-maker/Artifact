@@ -379,6 +379,9 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
       ),
     );
   }
+  function servingText(count) {
+    return `${count} ${count === 1 ? "serving" : "servings"}`;
+  }
   function assessment(r, servings = servingsFor(r)) {
     return assessRecipe(S, r, { servings, ingredients: COOK_INGREDIENTS });
   }
@@ -415,12 +418,22 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         button("Preferences", "go", "profile"),
       ) +
       (S.cooking
-        ? `<section class="card resume-card"><p class="eyebrow">${S.cooking.phase === "prep" ? "PREPARATION SAVED" : S.cooking.phase === "review" ? "READY TO REVIEW" : "COOKING IN PROGRESS"}</p><h2>${esc(S.cooking.recipeName || recipe(S.cooking.rid).name)}</h2><p>${S.cooking.servings} servings · stock unchanged</p>${button("Resume cooking", "cook-resume", "", "btn-primary")}</section>`
+        ? `<section class="card resume-card"><p class="eyebrow">${S.cooking.phase === "prep" ? "PREPARATION SAVED" : S.cooking.phase === "review" ? "READY TO REVIEW" : "COOKING IN PROGRESS"}</p><h2>${esc(S.cooking.recipeName || recipe(S.cooking.rid).name)}</h2><p>${servingText(S.cooking.servings)} · stock unchanged</p>${button("Resume cooking", "cook-resume", "", "btn-primary")}</section>`
         : "") +
       (unlinked.length
         ? `<section class="notice cook-link-notice"><b>${unlinked.length} item${unlinked.length === 1 ? " needs" : "s need"} a cooking link</b><p>Choose what each product is. Names alone never authorize a stock deduction.</p>${button("Link ingredients", "cook-link-next", unlinked[0][0])}</section>`
         : "") +
-      `<div class="cook-filters"><label class="field">Recipe time<select data-change="cook-time">${[15, 20, 30, 45, 60, 120, 1440].map((n) => `<option value="${n}"${n === S.profile.time ? " selected" : ""}>${n === 1440 ? "Any duration" : `Up to ${n} minutes`}</option>`).join("")}</select></label><label class="checkbox-field"><input type="checkbox" data-change="match"${S.matchOnly ? " checked" : ""}>Ingredients I have</label></div><p class="details">${shown.length} of ${D.recipes.length} recipes · ${esc(S.profile.cuisine)} cuisine. Exclusions hide matching allergens; always check product labels.</p><div class="recipe-grid">${shown.map(({ r, a }) => `<article class="recipe-card${r.image ? "" : " recipe-no-photo"}">${r.image ? `<img src="${r.cardImage || r.image}" alt="${esc(r.name)}" loading="lazy" decoding="async" width="560" height="420">` : `<span class="recipe-art" aria-hidden="true">${icon("fork-knife")}</span>`}<div><span class="badge ${a.stockReady ? "badge-demo" : "badge-planned"}">${a.stockReady ? "INGREDIENTS READY" : "MISSING " + a.missing.length}</span><h2>${esc(r.name)}</h2><p>${r.time} min · ${esc(r.cuisine)} · ${servingsFor(r)} servings</p>${button("View recipe", "recipe", r.id, "btn-primary")}</div></article>`).join("") || '<p class="empty">No match for these filters. Turn off ingredients-only, choose a longer time, or adjust preferences.</p>'}</div>` +
+      `<div class="cook-filters"><label class="field">Recipe time<select data-change="cook-time">${[
+        ...new Set([15, 20, 30, 45, 60, 120, 1440, S.profile.time]),
+      ]
+        .sort((a, b) => a - b)
+        .map(
+          (n) =>
+            `<option value="${n}"${n === S.profile.time ? " selected" : ""}>${n === 1440 ? "Any duration" : `Up to ${n} minutes`}</option>`,
+        )
+        .join(
+          "",
+        )}</select></label><label class="checkbox-field"><input type="checkbox" data-change="match"${S.matchOnly ? " checked" : ""}>Ingredients I have</label></div><p class="details">${shown.length} of ${D.recipes.length} recipes · ${esc(S.profile.cuisine)} cuisine. Exclusions hide matching allergens; always check product labels.</p><div class="recipe-grid">${shown.map(({ r, a }) => `<article class="recipe-card${r.image ? "" : " recipe-no-photo"}">${r.image ? `<img src="${r.cardImage || r.image}" alt="${esc(r.name)}" loading="lazy" decoding="async" width="560" height="420">` : `<span class="recipe-art" aria-hidden="true">${icon("fork-knife")}</span>`}<div><span class="badge ${a.stockReady ? "badge-demo" : "badge-planned"}">${a.stockReady ? "INGREDIENTS READY" : "MISSING " + a.missing.length}</span><h2>${esc(r.name)}</h2><p>${r.time} min · ${esc(r.cuisine)} · ${servingText(servingsFor(r))}</p>${button("View recipe", "recipe", r.id, "btn-primary")}</div></article>`).join("") || '<p class="empty">No match for these filters. Turn off ingredients-only, choose a longer time, or adjust preferences.</p>'}</div>` +
       mealHistory()
     );
   }
@@ -441,7 +454,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
       `<section class="card"><div class="card-header"><h2>Ingredients</h2><label>Servings <select data-change="servings" data-id="${r.id}">${options(
         Array.from({ length: 12 }, (_, i) => i + 1),
         serv,
-      )}</select></label></div>${a.requirements.map((x) => `<div class="item-row"><div><b>${esc(x.name)}</b><small>${num(x.qty)} ${esc(x.unit)} needed · ${x.missing ? `${num(x.missing)} missing` : "Covered by linked stock"}</small></div>${icon(x.missing ? "shopping-cart" : "check-circle")}</div>`).join("")}${a.blockedItems.length ? '<p class="notice">Items past their recorded date were excluded from this plan.</p>' : ""}${a.incompatibleItems.length ? `<section class="notice"><b>Some units need review</b><p>Mass, volume and count are different. Enter a measured grams-per-unit value or correct stock units in Kitchen.</p>${a.incompatibleItems.map((x) => button(`Review ${x.name}`, "item-edit", x.id, "btn-quiet")).join("")}</section>` : ""}${a.excluded.length ? `<p class="notice notice-warning">Matches your exclusions: ${esc(a.excluded.join(", "))}. Choose another recipe.</p>` : ""}${S.cooking ? `<p class="notice">Finish or cancel your current session before starting another.</p>${button("Resume current session", "cook-resume")}` : a.stockReady && !a.excluded.length ? button("Prepare ingredients", "cook-start", r.id, "btn-primary") : `${button("Add missing to shopping", "shopping-missing", r.id)}${button("Review inventory links", "go", "kitchen")}`}</section><section class="card"><h2>Before you start</h2><p>${r.prepMinutes} min preparation · ${r.cookMinutes} min cooking</p><p class="details">Tools: ${esc(r.requiredTools.map(toolLabel).join(", "))}. Confirm these during preparation.</p><p class="details">Listed allergens: ${esc(r.allergens.join(", ") || "none listed")}. Check actual product labels and preparation conditions.</p></section>`
+      )}</select></label></div>${a.requirements.map((x) => `<div class="item-row"><div><b>${esc(x.name)}</b><small>${num(x.qty)} ${esc(x.unit)} needed · ${x.missing ? `${num(x.missing)} missing` : "Covered by linked stock"}</small></div>${icon(x.missing ? "shopping-cart" : "check-circle")}</div>`).join("")}${a.blockedItems.length ? '<p class="notice">Items past their recorded date were excluded from this plan.</p>' : ""}${a.incompatibleItems.length ? `<section class="notice"><b>Some units need review</b><p>Mass, volume and count are different. Enter a measured grams-per-unit value or correct stock units in Kitchen.</p>${a.incompatibleItems.map((x) => button(`Review ${x.name}`, "item-edit", x.id, "btn-quiet")).join("")}</section>` : ""}${a.excluded.length ? `<p class="notice notice-warning">Matches your exclusions: ${esc(a.excluded.map(toolLabel).join(", "))}. Choose another recipe.</p>` : ""}${S.cooking ? `<p class="notice">Finish or cancel your current session before starting another.</p>${button("Resume current session", "cook-resume")}` : a.stockReady && !a.excluded.length ? button("Prepare ingredients", "cook-start", r.id, "btn-primary") : `${button("Add missing to shopping", "shopping-missing", r.id)}${button("Review inventory links", "go", "kitchen")}`}</section><section class="card"><h2>Before you start</h2><p>${r.prepMinutes} min preparation · ${r.cookMinutes} min cooking</p><p class="details">Tools: ${esc(r.requiredTools.map(toolLabel).join(", "))}. Confirm these during preparation.</p><p class="details">Listed allergens: ${esc(r.allergens.map(toolLabel).join(", ") || "none listed")}. Check actual product labels and preparation conditions.</p></section>`
     );
   }
   function timerSeconds() {
@@ -465,7 +478,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         step.text,
         button("Recipes", "go", "cook"),
       ) +
-      `<section class="card cooking-progress"><div class="step-dots" aria-label="Step ${c.step + 1} of ${r.steps.length}">${r.steps.map((_, i) => `<span class="${i <= c.step ? "is-done" : ""}"></span>`).join("")}</div><p>${c.servings} servings · planned amounts frozen at preparation</p></section><section class="card timer-card"><p class="eyebrow">YOUR COOKING TIMER</p><h2 data-timer role="timer" aria-label="Cooking timer">${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}</h2><form data-form="cook-timer"><div class="field-grid">${field("Timer minutes", "minutes", Math.max(1, Math.ceil(seconds / 60)), "number", 'min="1" max="180" step="1" required')}<button class="btn btn-secondary">Set timer</button></div></form><div class="actions">${button(c.running ? "Pause timer" : "Start timer", "timer-wall")}${c.step ? button("Previous step", "cook-prev") : ""}</div><p class="details">Timer resumes from its saved deadline. Check food doneness yourself; this timer does not verify safety.</p></section><div class="cook-primary-action">${button(c.step === r.steps.length - 1 ? "Review ingredients used" : "Next step", "cook-next", r.id, "btn-primary")}${button("Cancel session", "cook-cancel-ask", "", "btn-quiet")}</div>`
+      `<section class="card cooking-progress"><div class="step-dots" aria-label="Step ${c.step + 1} of ${r.steps.length}">${r.steps.map((_, i) => `<span class="${i <= c.step ? "is-done" : ""}"></span>`).join("")}</div><p>${servingText(c.servings)} · planned amounts frozen at preparation</p></section><section class="card timer-card"><p class="eyebrow">YOUR COOKING TIMER</p><h2 data-timer role="timer" aria-label="Cooking timer">${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}</h2><form data-form="cook-timer"><div class="field-grid">${field("Timer minutes", "minutes", Math.max(1, Math.ceil(seconds / 60)), "number", 'min="1" max="180" step="1" required')}<button class="btn btn-secondary">Set timer</button></div></form><div class="actions">${button(c.running ? "Pause timer" : "Start timer", "timer-wall")}${c.step ? button("Previous step", "cook-prev") : ""}</div><p class="details">Timer resumes from its saved deadline. Check food doneness yourself; this timer does not verify safety.</p></section><div class="cook-primary-action">${button(c.step === r.steps.length - 1 ? "Review ingredients used" : "Next step", "cook-next", r.id, "btn-primary")}${button("Cancel session", "cook-cancel-ask", "", "btn-quiet")}</div>`
     );
   }
   function preparationView() {
@@ -476,7 +489,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
       heading(
         "GET EVERYTHING READY",
         r.name,
-        `${c.servings} servings · stock stays unchanged until final review`,
+        `${servingText(c.servings)} · stock stays unchanged until final review`,
         button("Recipes", "go", "cook"),
       ) +
       `<form data-form="cook-prep" class="card">${errors()}<h2>Gather and measure</h2><p class="muted">Check each ingredient after measuring. Stock is allocated from the earliest recorded dates first.</p>${c.requirements.map((x) => `<label class="checkbox-field prep-item"><input type="checkbox" name="prepared" value="${esc(x.ingredientId)}"${c.prepared.includes(x.ingredientId) ? " checked" : ""} required><span><b>${esc(ingredientLabel(x.ingredientId))}</b><small>${num(x.qty)} ${esc(x.unit)}</small></span></label>`).join("")}<h2>Tools ready?</h2><p>${esc(r.requiredTools.map(toolLabel).join(", "))}</p><label class="checkbox-field"><input type="checkbox" name="toolsConfirmed"${c.toolsConfirmed ? " checked" : ""} required><span>I have these tools ready.</span></label><p class="details">Confirming records these tools as available. Ingredient links and measured conversions determine this plan; no weights are guessed.</p><button class="btn btn-primary">Start cooking</button>${button("Cancel preparation", "cook-cancel-ask", "", "btn-quiet")}</form>`
@@ -491,7 +504,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
       heading(
         "CONFIRM USE",
         "Update your kitchen",
-        `${r.name} · ${c.servings} servings. Change the planned quantities to what you actually used.`,
+        `${r.name} · ${servingText(c.servings)}. Change the planned quantities to what you actually used.`,
       ) +
       `<form data-form="meal" class="card">${errors()}<p class="notice">Nothing deducted yet. Enter zero for an item you did not use.</p>${c.allocations.map((x) => `<div class="cook-use-row">${field(`${x.name} used (${x.unit})`, `used-${x.id}`, x.qty, "number", `min="0" max="${S.items[x.id]?.qty ?? 0}" step="any" inputmode="decimal" required`)}<small>${num(S.items[x.id]?.qty ?? 0)} ${esc(x.unit)} currently on hand${S.items[x.id] ? "" : " · item was removed"}</small></div>`).join("")}<label class="checkbox-field"><input type="checkbox" name="confirmed" required><span>I checked actual use against current stock.</span></label><button class="btn btn-primary">Save meal and deduct once</button>${button("Back to last step", "cook-back")}${button("Cancel without deduction", "cook-cancel-ask", "", "btn-quiet")}<p class="details">A successful save updates every ingredient together. Undo is available in Recent meals.</p></form>`
     );
@@ -561,7 +574,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         .sort()
         .map(
           (x) =>
-            `<label class="checkbox-field"><input type="checkbox" name="allergy" value="${x}"${S.profile.allergies.includes(x) ? " checked" : ""}>${esc(x)}</label>`,
+            `<label class="checkbox-field"><input type="checkbox" name="allergy" value="${x}"${S.profile.allergies.includes(x) ? " checked" : ""}>${esc(toolLabel(x))}</label>`,
         )
         .join(
           "",
