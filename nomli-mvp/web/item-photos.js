@@ -59,6 +59,7 @@ async function sourceBlob(source) {
   }
   throw new TypeError("Unsupported ingredient photo source.");
 }
+export const loadItemPhotoSource = sourceBlob;
 function dataUrl(blob) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();

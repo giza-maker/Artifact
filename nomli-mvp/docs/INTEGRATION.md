@@ -4,7 +4,7 @@ M7 continues the single-user, local-first validation build. Inventory and confir
 
 The deployed scan endpoint is `https://nomli-scan-proxy.ahmed-aljazayeerly.workers.dev`. Scanning uses `GEMINI_MODEL=gemini-3.5-flash-lite`; Zara uses `GEMINI_ASSISTANT_MODEL=gemini-3.5-flash-lite`. Both reuse the existing Gemini API key stored as an encrypted Cloudflare secret. The app stores the endpoint and device access code entered by the user, never the provider key. A private setup QR can fill those fields; the user must still test and save the connection.
 
-Selected receipt files pass through the Cloudflare Worker to Google for recognition. Receipt images and PDFs are not retained as ingredient photos. Grocery images may produce a separate local thumbnail when the user keeps that option enabled during review; the upload payload is not retained as a receipt attachment. Confirmed structured inventory and receipt data are stored locally. Inventory backup/restore excludes scan connection configuration.
+Selected receipt files pass through the Cloudflare Worker to Google for recognition. Receipt images and PDFs are not retained as ingredient photos. Grocery images may produce individual local thumbnails after crop review; the upload payload is not retained as a receipt attachment. Confirmed structured inventory and receipt data are stored locally. Inventory backup/restore excludes scan connection configuration.
 
 ## Current scan contract (retained M2 service)
 
@@ -70,7 +70,7 @@ All 171 JavaScript tests and content checks pass. Live synthetic PNG/PDF scans r
 
 M7 updates the mobile interface while retaining the paired scan and Zara service contracts. Zara uses chronological question/reply bubbles, a bottom composer and a voice drawer. Milestone labels are removed from app chrome. Single-choice selectors use native dialog sheets with search for more than eight options; original selects retain form values and required validation. A picker can sit above an open form dialog, and closing it restores focus to the current control after a rerender.
 
-Ingredient thumbnails are local media, stored in Android internal app files or browser IndexedDB. Item editing supports explicit add, change and remove actions. Grocery image review offers an optional thumbnail attachment with an opt-out; receipt images and PDFs never supply ingredient icons. Inventory JSON backups retain photo references without embedding image bytes, so restoring a backup on another device does not restore photos. No photo upload service is added.
+Ingredient thumbnails are local media, stored in Android internal app files or browser IndexedDB. Item editing supports explicit add, change and remove actions. Grocery review offers individual suggested product crops, with Adjust/Remove/Choose crop actions; receipt images and PDFs never supply ingredient icons. Inventory JSON backups retain photo references without embedding image bytes, so restoring a backup on another device does not restore photos. No photo upload service is added.
 
 All 20 curated recipes have local artwork; 17 new generated WebP images have provenance in web/public/images/recipes/ASSETS.md. M7 APK compilation, signing, package verification and physical-device checks remain pending; M6 build and test evidence above remains historical evidence for M6.
 
@@ -107,3 +107,7 @@ Future remote writes need authenticated owner derivation, database transactions 
 - [Gemini API documentation](https://ai.google.dev/gemini-api/docs)
 - [Supabase row-level security](https://supabase.com/docs/guides/database/postgres/row-level-security)
 - [Open Food Facts API](https://openfoodfacts.github.io/openfoodfacts-server/api/)
+
+## M7 image-region capability
+
+New grocery image requests opt in with imageRegions:true. Provider may return each line’s optional normalized photoRegion {x,y,width,height}; invalid or uncertain regions become null and are never guessed. Receipt/expiry requests use their existing shape. Legacy clients keep the original response schema; new clients retry once without capability only for old-worker422 invalid_request, never provider/network errors. Photo regions are excluded from import signatures, stock and spending. The same scan call locates products; all cropping/downscaling stays local.

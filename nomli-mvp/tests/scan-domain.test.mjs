@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import {
   ScanDomainError,
+  normalizePhotoRegion,
   commitScanDraft,
   reviewScanDraft,
   validateScanDraft,
@@ -304,4 +305,27 @@ test("normalizing reviewed unknowns does not duplicate review warnings", () => {
   const first = draft({ currency: null, totalMinor: null, taxMinor: null, discountMinor: null, warnings: ["Blurred receipt."], lines: [rawLine({ quantity: null, unit: null, storage: null, warnings: ["Blurred label."] })] });
   const second = reviewScanDraft(reviewScanDraft(first, { catalog: ["milk"] }), { catalog: ["milk"] });
   assert.deepEqual(second, first);
+});
+
+
+test("photo regions require finite numeric in-image boxes and never coerce provider data", () => {
+  assert.deepEqual(normalizePhotoRegion({ x: 0, y: 0, width: 1, height: 1 }), { x: 0, y: 0, width: 1, height: 1 });
+  for (const region of [undefined, null, [], {}, { x: 0, y: 0, width: 0, height: 1 }, { x: -.1, y: 0, width: 1, height: 1 }, { x: 0, y: 0, width: 1, height: Infinity }, { x: NaN, y: 0, width: 1, height: 1 }, { x: "0", y: 0, width: 1, height: 1 }, { x: 0, y: .6, width: 1, height: .5 }]) {
+    assert.equal(normalizePhotoRegion(region), null);
+  }
+});
+
+
+test("region metadata changes replay the same grocery fingerprint without stock mutation", () => {
+  const original = draft({ kind: "groceries" });
+  const withRegion = draft({ kind: "groceries", lines: [rawLine({ photoRegion: { x: .1, y: .2, width: .3, height: .4 } })] });
+  const first = commitScanDraft(baseState(), original, { confirmed: true });
+  const replay = commitScanDraft(first.state, withRegion, { confirmed: true });
+  assert.equal(replay.replayed, true);
+  assert.equal(replay.state, first.state);
+  assert.deepEqual(replay.importedItemIds, []);
+  const regionFirst = commitScanDraft(baseState(), withRegion, { confirmed: true });
+  assert.equal(commitScanDraft(regionFirst.state, original, { confirmed: true }).replayed, true);
+  const changedQuantity = draft({ kind: "groceries", lines: [rawLine({ quantity: 2, photoRegion: withRegion.lines[0].photoRegion })] });
+  assert.throws(() => commitScanDraft(first.state, changedQuantity, { confirmed: true }), error => error.code === "IDEMPOTENCY_CONFLICT");
 });

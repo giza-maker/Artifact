@@ -85,7 +85,7 @@ Voice uses Android's default system speech service without an extra Nomli API ke
 
 ## Privacy and limits
 
-Selected scan files are sent through the Cloudflare proxy to Google for recognition. Confirmed structured results stay locally. Grocery scans optionally retain a compressed local thumbnail; receipt/PDF/expiry scans never become ingredient photos. Add, replace or remove photos in each ingredient editor. Thumbnails stay in Android app-private files or browser IndexedDB; JSON backups contain reference IDs, not photo bytes. Older captures discarded by previous releases cannot be restored by this update.
+Selected scan files are sent through the Cloudflare proxy to Google for recognition. Confirmed structured results stay locally. Grocery scans optionally retain separate cropped, compressed thumbnails for each product; receipt/PDF/expiry scans never become ingredient photos. Add, replace or remove photos in each ingredient editor. Thumbnails stay in Android app-private files or browser IndexedDB; JSON backups contain reference IDs, not photo bytes. Older captures discarded by previous releases cannot be restored by this update.
 
 Gemini quota depends on the Google account and billing configuration behind the server key. A Gemini app subscription, including an Ultra subscription, does not by itself determine API free-tier or paid quota.
 

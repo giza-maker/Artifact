@@ -54,3 +54,18 @@ function geminiSchema(value) {
 }
 export const GEMINI_SCAN_SCHEMA = Object.freeze(geminiSchema(SCAN_PROVIDER_SCHEMA));
 
+
+// Opt-in keeps legacy clients and non-grocery scans on the original schema.
+export function scanProviderSchema(imageRegions = false, gemini = false) {
+  if (!imageRegions) return gemini ? GEMINI_SCAN_SCHEMA : SCAN_PROVIDER_SCHEMA;
+  const schema = structuredClone(SCAN_PROVIDER_SCHEMA);
+  const region = {
+    type: "object", additionalProperties: false,
+    properties: Object.fromEntries(["x", "y", "width", "height"].map(key => [key, { type: "number", minimum: 0, maximum: 1 }])),
+    required: ["x", "y", "width", "height"],
+  };
+  schema.properties.lines.items.properties.photoRegion = nullable(region);
+  // Strict provider schemas require all keys; null represents uncertainty.
+  schema.properties.lines.items.required.push("photoRegion");
+  return gemini ? geminiSchema(schema) : schema;
+}

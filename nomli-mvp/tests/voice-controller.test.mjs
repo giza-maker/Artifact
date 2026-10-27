@@ -337,3 +337,69 @@ test("review permits delete-all then retyping; blank cannot be used with existin
     "existing draft\nعندي ٣ بيضات",
   );
 });
+
+test("permission-time WebView hide leaves native capture ownership intact", async () => {
+  const f = fixture();
+  const done = f.controller.start("en-US");
+  await tick();
+  assert.equal(f.controller.snapshot().phase, "starting");
+  f.controller.handleVisibility(true);
+  assert.equal(f.controller.snapshot().phase, "starting");
+  assert.deepEqual(f.calls, [["start", "id-1"]]);
+  f.controller.handleVisibility(false);
+  f.complete("permission granted, speech captured");
+  await done;
+  assert.equal(f.controller.snapshot().phase, "review");
+  assert.equal(
+    f.controller.snapshot().transcript,
+    "permission granted, speech captured",
+  );
+});
+
+test("native lifecycle cancellation still settles hidden capture to idle", async () => {
+  const f = fixture();
+  const done = f.controller.start("ar-EG");
+  await tick();
+  f.request().onState({ requestId: "id-1", state: "listening" });
+  f.controller.handleVisibility(true);
+  assert.equal(f.controller.snapshot().phase, "listening");
+  f.complete("", { cancelled: true });
+  await done;
+  assert.equal(f.controller.snapshot().phase, "idle");
+  assert.equal(f.controller.snapshot().transcript, "");
+});
+
+test("hidden reviewed transcript is discarded without another native capture", async () => {
+  const f = fixture();
+  const done = f.controller.start("en-US");
+  await tick();
+  f.complete("private review");
+  await done;
+  f.controller.handleVisibility(false);
+  assert.equal(f.controller.snapshot().phase, "review");
+  f.controller.handleVisibility(true);
+  assert.equal(f.controller.snapshot().phase, "idle");
+  assert.equal(f.controller.snapshot().transcript, "");
+  assert.deepEqual(f.calls, [["start", "id-1"]]);
+});
+
+test("bridge availability failures show actionable sanitized diagnostics", async () => {
+  const f = fixture({
+    voiceStatus: async () => {
+      throw Object.assign(Error("PRIVATE bridge details"), {
+        code: "bridge_unavailable",
+      });
+    },
+  });
+  await f.controller.start("en-US");
+  assert.equal(f.controller.snapshot().phase, "error");
+  assert.match(
+    f.controller.snapshot().error,
+    /Voice could not start.*Reopen Nomli/,
+  );
+  assert.doesNotMatch(f.controller.snapshot().error, /PRIVATE|details/);
+  assert.equal(
+    f.calls.some(([action]) => action === "start"),
+    false,
+  );
+});

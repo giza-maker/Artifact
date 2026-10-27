@@ -131,3 +131,31 @@ test("cancel lazy load prevents old microphone start", async () => {
   assert.equal((await old).cancelled, true);
   assert.deepEqual(p.starts, []);
 });
+
+test("status preserves bridge failures separately from unavailable speech service", async () => {
+  for (const loadPlugin of [
+    async () => {
+      throw Error("PRIVATE registration");
+    },
+    async () =>
+      service({
+        status: async () => {
+          throw Error("PRIVATE native status");
+        },
+      }),
+    async () => service({ status: async () => ({}) }),
+  ]) {
+    const bridge = createNativeVoiceBridge({ loadPlugin });
+    await assert.rejects(
+      bridge.voiceStatus(),
+      (error) =>
+        error.code === "bridge_unavailable" &&
+        !error.message.includes("PRIVATE"),
+    );
+  }
+  const unavailable = createNativeVoiceBridge({
+    loadPlugin: async () =>
+      service({ status: async () => ({ available: false }) }),
+  });
+  assert.deepEqual(await unavailable.voiceStatus(), { available: false });
+});

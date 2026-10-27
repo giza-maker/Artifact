@@ -86,9 +86,13 @@ export function createNativeVoiceBridge({ loadPlugin, isNative = () => true }) {
   async function voiceStatus() {
     if (!isNative()) return { available: false };
     try {
-      return await (await loadPlugin()).status();
+      const status = await (await loadPlugin()).status();
+      if (typeof status?.available !== "boolean")
+        throw voiceError("bridge_unavailable");
+      return status;
     } catch {
-      return { available: false };
+      // Do not expose native/provider details or confuse bridge failure with no service.
+      throw voiceError("bridge_unavailable");
     }
   }
   return { startVoice, stopVoice, cancelVoice, voiceStatus };

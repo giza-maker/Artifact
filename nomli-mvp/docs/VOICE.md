@@ -1,6 +1,10 @@
-# M5 Android voice
+# Android voice
 
-M5 adds optional speech-to-text for Zara questions. Inventory, scan, cooking, Gemini 3.5 Flash-Lite and M4 reviewed proposals remain unchanged. Version: `0.6.0-m5` / code `6`; validation package: `com.nomli.mvp.validation`, using the retained validation signing certificate. M5 APK compilation, signing and package verification pass; published checksum matches. [Download APK](https://github.com/giza-maker/Artifact/releases/download/nomli-m5-v0.6.0/Nomli-M5.apk).
+Voice was introduced in M5. It adds optional speech-to-text for Zara questions. Inventory, scan, cooking, Gemini 3.5 Flash-Lite and M4 reviewed proposals remain unchanged. Historical M5 version: `0.6.0-m5` / code `6`; validation package: `com.nomli.mvp.validation`, using the retained validation signing certificate. M5 APK compilation, signing and package verification pass; published checksum matches. [Download APK](https://github.com/giza-maker/Artifact/releases/download/nomli-m5-v0.6.0/Nomli-M5.apk).
+
+## Current M7 entry
+
+Open Zara → Voice message to reveal speech controls. Drawer scrolls separately; composer stays above navigation. WebView visibility changes during permission UI no longer cancel a pending native voice turn. Native pause/stop still cancels actual capture; permission-pending sessions remain bounded and cannot start until permission is granted and Activity resumes. Bridge failures now show a distinct sanitized error. User reported a silent Speak tap in the installed APK; no connected Android device was available for runtime diagnosis, so this hardening is not confirmation of that phone’s root cause. Voice review still requires Use or Replace, then separate Send. M5 verification below describes the original voice release; current M7 release evidence appears in VERIFICATION.md.
 
 ## Flow and privacy
 

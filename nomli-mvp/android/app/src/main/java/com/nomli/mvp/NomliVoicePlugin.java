@@ -207,7 +207,9 @@ public class NomliVoicePlugin extends Plugin {
         if (active != null && !active.permissionPending) begin(active);
     }
     @Override protected void handleOnStop() {
-        if (active != null) finish(active, "", true);
+        // Permission UI can stop Activity. No microphone exists until permission
+        // returns and onResume makes begin() eligible; the 35s deadline remains.
+        if (active != null && !active.permissionPending) finish(active, "", true);
     }
     @Override protected void handleOnDestroy() {
         resumed = false;

@@ -124,3 +124,34 @@ test("local dev server aborts Worker request after client disconnect", async () 
   await Promise.race([aborted, new Promise((_, reject) => setTimeout(() => reject(new Error("disconnect was not propagated")), 1000))]);
   await new Promise((resolve) => server.close(resolve));
 });
+
+
+test("opt-in grocery regions use bounded nullable metadata without changing legacy shapes", async () => {
+  const box = { x: .1, y: .2, width: .3, height: .4 };
+  let providerBody;
+  const fetchImpl = async (_url, init) => {
+    providerBody = JSON.parse(init.body);
+    return upstream({ ...raw, lines: [{ ...raw.lines[0], photoRegion: box }] })();
+  };
+  let response = await createScanHandler({ fetchImpl })(req({ ...valid, kind: "groceries", imageRegions: true }), env);
+  assert.equal(response.status, 200);
+  assert.deepEqual((await response.json()).draft.lines[0].photoRegion, box);
+  assert.ok(providerBody.generationConfig.responseFormat.text.schema.properties.lines.items.properties.photoRegion);
+  assert.match(providerBody.contents[0].parts[1].text, /tight bounding box.*actual visible product/);
+  for (const region of [null, { ...box, width: 0 }, { ...box, x: .9 }, { ...box, x: "0.1" }, { ...box, extra: 1 }]) {
+    response = await createScanHandler({ fetchImpl: upstream({ ...raw, lines: [{ ...raw.lines[0], photoRegion: region }] }) })(req({ ...valid, kind: "groceries", imageRegions: true }), env);
+    assert.equal(response.status, 200);
+    assert.equal((await response.json()).draft.lines[0].photoRegion, null);
+  }
+  response = await createScanHandler({ fetchImpl: upstream() })(req({ ...valid, kind: "groceries", imageRegions: true }), env);
+  assert.equal(response.status, 200);
+  assert.equal(Object.hasOwn((await response.json()).draft.lines[0], "photoRegion"), false);
+  response = await createScanHandler({ fetchImpl: upstream() })(req({ ...valid, kind: "groceries" }), env);
+  assert.equal(Object.hasOwn((await response.json()).draft.lines[0], "photoRegion"), false);
+  for (const kind of ["receipt", "expiry"]) {
+    response = await createScanHandler({ fetchImpl: upstream() })(req({ ...valid, kind, imageRegions: true }), env);
+    assert.equal(response.status, 422);
+    response = await createScanHandler({ fetchImpl: upstream() })(req({ ...valid, kind }), env);
+    assert.equal(Object.hasOwn((await response.json()).draft.lines[0], "photoRegion"), false);
+  }
+});

@@ -77,3 +77,31 @@ test("cancelled scan never returns a late completed response", async () => {
     return response;
   } }), { name: "AbortError" });
 });
+
+
+test("grocery regions opt in, accept older output and retry only old field rejection once", async () => {
+  const payloads = [];
+  const draft = await scanFile({ file: file(), kind: "groceries", config, fetchImpl: async (_url, options) => {
+    payloads.push(JSON.parse(options.body));
+    if (payloads.length === 1) return Response.json({ error: { code: "invalid_request" } }, { status: 422 });
+    return Response.json({ draft: { ...raw, fingerprint: await hash() } });
+  } });
+  assert.equal(payloads[0].imageRegions, true);
+  assert.equal(Object.hasOwn(payloads[1], "imageRegions"), false);
+  assert.equal(Object.hasOwn(draft.lines[0], "photoRegion"), false);
+  assert.equal(payloads.length, 2);
+  for (const status of [429, 500, 502]) {
+    let calls = 0;
+    await assert.rejects(scanFile({ file: file(), kind: "groceries", config, fetchImpl: async () => {
+      calls++; return Response.json({ error: { code: "invalid_request" } }, { status });
+    } }));
+    assert.equal(calls, 1);
+  }
+});
+
+test("grocery region metadata survives client review without accepting malformed boxes", async () => {
+  for (const [region, expected] of [[{ x: .1, y: .2, width: .3, height: .4 }, { x: .1, y: .2, width: .3, height: .4 }], [{ x: .9, y: 0, width: .3, height: .4 }, null]]) {
+    const draft = await scanFile({ file: file(), kind: "groceries", config, fetchImpl: async () => Response.json({ draft: { ...raw, fingerprint: await hash(), lines: [{ ...raw.lines[0], photoRegion: region }] } }) });
+    assert.deepEqual(draft.lines[0].photoRegion, expected);
+  }
+});

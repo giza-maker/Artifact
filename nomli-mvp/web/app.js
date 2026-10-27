@@ -10,7 +10,13 @@ import { createTimerNotifications } from "./timer-notifications.js";
 import { retireReplacedTimer } from "./timer-transition.js";
 import { initMobileSelects } from "./mobile-select.js";
 import { itemPhotos } from "./item-photos.js";
-import { attachScanPhoto } from "./scan-item-photos.js";
+import { attachScanPhotos } from "./scan-item-photos.js";
+import {
+  cropItemPhoto,
+  preparePhotoRegion,
+  photoCropRegion,
+} from "./item-photo-crop.js";
+import "./item-photo-crop.css";
 import { createStateStore } from "./state-store.js";
 import {
   getScanConfig,
@@ -380,10 +386,15 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
   function releaseScanPhoto() {
     if (scanPhotoDraft?.previewUrl)
       URL.revokeObjectURL(scanPhotoDraft.previewUrl);
-    const id = scanPhotoDraft?.photoId;
+    for (const crop of scanPhotoDraft?.crops?.values() || []) {
+      if (crop.previewUrl) URL.revokeObjectURL(crop.previewUrl);
+      if (
+        crop.photoId &&
+        !Object.values(S.items).some((item) => item.photoId === crop.photoId)
+      )
+        void itemPhotos.remove(crop.photoId).catch(() => {});
+    }
     scanPhotoDraft = null;
-    if (id && !Object.values(S.items).some((item) => item.photoId === id))
-      void itemPhotos.remove(id).catch(() => {});
   }
   function hydratePhotos(root) {
     root.querySelectorAll("img[data-photo-id]").forEach((img) => {
@@ -1104,9 +1115,9 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
           );
           if (controller.signal.aborted || scanEpoch !== ownerEpoch) return;
           scanPhotoDraft = {
-            blob,
+            source: payload.file || payload.nativePhoto,
             previewUrl: URL.createObjectURL(blob),
-            photoId: null,
+            crops: new Map(),
           };
         } catch {
           if (controller.signal.aborted || scanEpoch !== ownerEpoch) return;
@@ -1131,6 +1142,44 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
       scanDraft = reviewScanDraft(raw, {
         catalog: Object.entries(S.items).map(([id, item]) => ({ id, ...item })),
       });
+      if (kind === "groceries" && scanPhotoDraft?.source) {
+        const owner = scanPhotoDraft;
+        for (const line of scanDraft.lines) {
+          if (
+            controller.signal.aborted ||
+            scanEpoch !== ownerEpoch ||
+            scanPhotoDraft !== owner
+          )
+            return;
+          if (!line.photoRegion) continue;
+          try {
+            const blob = await preparePhotoRegion({
+              source: owner.source,
+              region: line.photoRegion,
+            });
+            if (
+              controller.signal.aborted ||
+              scanEpoch !== ownerEpoch ||
+              scanPhotoDraft !== owner
+            )
+              return;
+            owner.crops.set(line.lineId, {
+              blob,
+              previewUrl: URL.createObjectURL(blob),
+              photoId: null,
+              region: photoCropRegion(blob),
+            });
+          } catch {
+            /* A failed suggestion never attaches the full scene to an ingredient. */
+          }
+        }
+      }
+      if (
+        controller.signal.aborted ||
+        scanAbort !== controller ||
+        scanEpoch !== ownerEpoch
+      )
+        return;
       showScanReview();
     } catch (error) {
       if (
@@ -1151,8 +1200,13 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
   function scanPhotoReview() {
     if (scanPhotoDraft?.error)
       return `<p class="details">${esc(scanPhotoDraft.error)}</p>`;
-    if (!scanPhotoDraft?.blob) return "";
-    return `<section class="scan-photo-preview"><img src="${esc(scanPhotoDraft.previewUrl)}" alt="Your grocery scan"><label class="checkbox-field"><input type="checkbox" name="useScanPhoto" checked><span>Keep this grocery photo as the item thumbnail<small>Saved on this device. You can change each photo later.</small></span></label></section>`;
+    if (!scanPhotoDraft?.source) return "";
+    return `<section class="scan-photo-preview"><img src="${esc(scanPhotoDraft.previewUrl)}" alt="Your grocery scan"><div><b>Individual ingredient photos</b><small>Check each crop below. Saved only on this device. Existing photos stay when merging.</small></div></section>`;
+  }
+  function scanLinePhoto(line) {
+    if (!scanPhotoDraft?.source) return "";
+    const crop = scanPhotoDraft.crops.get(line.lineId);
+    return `<div class="scan-line-photo" data-photo-line="${esc(line.lineId)}"><span>${crop?.previewUrl ? `<img src="${esc(crop.previewUrl)}" alt="Crop for ${esc(line.name || "ingredient")}">` : icon("camera")}</span><div><b>${crop ? "Ingredient crop" : "No photo crop"}</b><small>${crop ? "Review this ingredient’s thumbnail." : "Choose just this ingredient from your photo."}</small><div class="actions">${button(crop ? "Adjust crop" : "Choose crop", "scan-photo-crop", line.lineId, "btn-quiet")}${crop ? button("Remove", "scan-photo-remove", line.lineId, "btn-quiet") : ""}</div></div></div>`;
   }
   function showScanReview() {
     const draft = scanDraft;
@@ -1195,7 +1249,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
             .join(
               "",
             )}</select></label>${line.warnings?.length ? `<p class="scan-line-warning">${esc(line.warnings.join(" "))}</p>` : ""}</fieldset>`;
-        return `<fieldset class="scan-line" data-line-id="${esc(line.lineId)}"><legend>Line ${index + 1}</legend><label class="checkbox-field scan-include"><input type="checkbox" name="include-${esc(line.lineId)}" checked><span>Include food item</span></label>${field("Name", `name-${line.lineId}`, line.name || "", "text", 'maxlength="200" required')}
+        return `<fieldset class="scan-line" data-line-id="${esc(line.lineId)}"><legend>Line ${index + 1}</legend>${scanLinePhoto(line)}<label class="checkbox-field scan-include"><input type="checkbox" name="include-${esc(line.lineId)}" checked><span>Include food item</span></label>${field("Name", `name-${line.lineId}`, line.name || "", "text", 'maxlength="200" required')}
       <div class="field-grid">${field("Quantity", `quantity-${line.lineId}`, line.quantity ?? "", "number", 'min="0" max="1000000000" step="any" inputmode="decimal" required')}<label class="field">Unit<select name="unit-${esc(line.lineId)}" required><option value="">Choose unit</option>${["g", "kg", "ml", "l", "count", "pieces", "bunches", "cloves", "slices"].map((unit) => `<option value="${unit}"${unit === line.unit ? " selected" : ""}>${unit}</option>`).join("")}</select></label></div>
       <div class="cook-link-fields">${renderIngredientLinkFields({ prefix: `cook-${line.lineId}-`, name: line.name, unit: line.unit })}</div>
         <div class="field-grid"><label class="field">Location<select name="storage-${esc(line.lineId)}" required><option value="">Choose location</option>${options(["Fridge", "Freezer", "Pantry", "Spices"], line.storage || "")}</select></label>${field("Expiry (optional)", `expiry-${line.lineId}`, line.expiry || "", "date")}</div>
@@ -1526,6 +1580,71 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
       render();
       return;
     }
+    if (a === "scan-photo-crop" || a === "scan-photo-remove") {
+      const owner = scanPhotoDraft;
+      const line = scanDraft?.lines.find((line) => line.lineId === id);
+      const form = el.closest('form[data-form="scan-import"]');
+      if (
+        !owner?.source ||
+        !line ||
+        !form ||
+        !new FormData(form).has(`include-${id}`)
+      )
+        return;
+      const prior = owner.crops.get(id);
+      if (a === "scan-photo-remove") {
+        if (prior?.previewUrl) URL.revokeObjectURL(prior.previewUrl);
+        if (
+          prior?.photoId &&
+          !Object.values(S.items).some((item) => item.photoId === prior.photoId)
+        )
+          void itemPhotos.remove(prior.photoId).catch(() => {});
+        owner.crops.delete(id);
+      } else {
+        setBusy(true, modal);
+        try {
+          const blob = await cropItemPhoto({
+            source: owner.source,
+            title: `Crop ${line.name || "ingredient"}`,
+            region: prior?.region || line.photoRegion || null,
+          });
+          if (!blob || owner !== scanPhotoDraft || !form.isConnected) return;
+          if (prior?.previewUrl) URL.revokeObjectURL(prior.previewUrl);
+          if (
+            prior?.photoId &&
+            !Object.values(S.items).some(
+              (item) => item.photoId === prior.photoId,
+            )
+          )
+            void itemPhotos.remove(prior.photoId).catch(() => {});
+          owner.crops.set(id, {
+            blob,
+            previewUrl: URL.createObjectURL(blob),
+            photoId: null,
+            region: photoCropRegion(blob),
+          });
+        } catch {
+          formError(
+            form,
+            "Photo could not be cropped. Retry or save without this photo.",
+          );
+        } finally {
+          setBusy(false, modal);
+          if (el.isConnected) el.focus({ preventScroll: true });
+        }
+      }
+      const tile = [...form.querySelectorAll("[data-photo-line]")].find(
+        (tile) => tile.dataset.photoLine === id,
+      );
+      if (tile) {
+        tile.outerHTML = scanLinePhoto(line);
+        [...form.querySelectorAll("[data-photo-line]")]
+          .find((tile) => tile.dataset.photoLine === id)
+          ?.querySelector("button")
+          ?.focus({ preventScroll: true });
+      }
+      return;
+    }
     if (a === "item-photo") {
       const owner = itemPhotoDraft;
       const form = el.closest('form[data-form="item"]');
@@ -1540,8 +1659,11 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
           !form.isConnected
         )
           return;
-        const blob = await itemPhotos.prepare(source);
-        if (owner !== itemPhotoDraft || !form.isConnected) return;
+        const blob = await cropItemPhoto({
+          source,
+          title: "Crop ingredient photo",
+        });
+        if (!blob || owner !== itemPhotoDraft || !form.isConnected) return;
         if (owner.previewUrl) URL.revokeObjectURL(owner.previewUrl);
         Object.assign(owner, {
           blob,
@@ -1557,6 +1679,8 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
           );
       } finally {
         setBusy(false, modal);
+        if (form.isConnected)
+          $('[data-action="item-photo"]', form)?.focus({ preventScroll: true });
       }
       return;
     }
@@ -2095,7 +2219,9 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     if (include) {
       include
         .closest("fieldset")
-        .querySelectorAll("input:not([name^='include-']), select")
+        .querySelectorAll(
+          "input:not([name^='include-']), select, [data-action^='scan-photo-']",
+        )
         .forEach((control) => {
           const rowUnit = include
             .closest("fieldset")
@@ -2293,27 +2419,26 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
           error?.message || "Review could not be committed.",
         );
       }
-      if (
-        fd.has("useScanPhoto") &&
-        scanPhotoDraft?.blob &&
-        !result.replayed &&
-        !scanPhotoDraft.photoId
-      ) {
+      const linePhotoIds = new Map();
+      if (scanPhotoDraft?.source && !result.replayed) {
         setBusy(true, form);
         try {
-          scanPhotoDraft.photoId = await itemPhotos.save(scanPhotoDraft.blob);
+          for (const line of editedDraft.lines) {
+            if (excludedLineIds.includes(line.lineId)) continue;
+            const crop = scanPhotoDraft.crops.get(line.lineId);
+            if (!crop?.blob) continue;
+            crop.photoId ||= await itemPhotos.save(crop.blob);
+            linePhotoIds.set(line.lineId, crop.photoId);
+          }
         } catch {
           return formError(
             form,
-            "Photo could not be saved. Retry, or uncheck Keep this grocery photo to save ingredients only.",
+            "A thumbnail could not be saved. Retry, or remove its crop to save ingredients only.",
           );
         } finally {
           setBusy(false, form);
         }
       }
-      const chosenPhotoId = fd.has("useScanPhoto")
-        ? scanPhotoDraft?.photoId
-        : null;
       const saved = await commit(() => {
         result = commitScanDraft(S, editedDraft, {
           confirmed: fd.has("confirmed"),
@@ -2327,9 +2452,11 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
           excludedLineIds,
           links: reviewedLinks,
         });
-        result = attachScanPhoto(result, {
+        result = attachScanPhotos(result, {
           kind: editedDraft.kind,
-          photoId: chosenPhotoId,
+          lines: editedDraft.lines,
+          excludedLineIds,
+          photoIds: linePhotoIds,
         });
         S = result.state;
       }, "");
@@ -2526,7 +2653,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     queueMicrotask(() => $("#voice-language")?.nextElementSibling?.click());
   });
   document.addEventListener("visibilitychange", () => {
-    if (document.hidden) cancelVoice();
+    void voice.handleVisibility(document.hidden);
   });
   window.addEventListener("pagehide", cancelVoice);
   window.addEventListener("popstate", syncHash);

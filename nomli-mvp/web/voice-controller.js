@@ -9,6 +9,8 @@ class VoiceValidationError extends Error {}
 const nativeErrors = Object.freeze({
   permission_denied:
     "Microphone permission denied. Enable microphone access in device settings, or type your question.",
+  bridge_unavailable:
+    "Voice could not start. Reopen Nomli or install the latest APK, then retry. You can still type your question.",
   unavailable:
     "Voice capture unavailable on this device. Type your question instead.",
   no_match: "No speech recognized. Try again, or type your question.",
@@ -171,6 +173,12 @@ export function createVoiceController({
       update({ phase: "idle", transcript: "", error: null, requestId: null });
     return Promise.resolve(snapshot());
   }
+  function handleVisibility(hidden) {
+    // Android owns capture cancellation on actual pause/stop. A permission dialog
+    // can hide WebView while native permission ownership must remain intact.
+    if (hidden && state.phase === "review") void cancel();
+    return snapshot();
+  }
   function stop() {
     const attempt = active;
     if (!attempt) return Promise.resolve(snapshot());
@@ -217,5 +225,13 @@ export function createVoiceController({
     update({ phase: "idle", transcript: "", error: null });
     return result;
   }
-  return { snapshot, start, stop, cancel, editTranscript, useTranscript };
+  return {
+    snapshot,
+    start,
+    stop,
+    cancel,
+    handleVisibility,
+    editTranscript,
+    useTranscript,
+  };
 }

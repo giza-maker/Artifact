@@ -137,7 +137,9 @@ async function request(config, path, { signal, fetchImpl = globalThis.fetch, tim
     if (!response.ok) {
       const code = body?.error?.code || `http_${response.status}`;
       const messages = { unauthorized: "Scanner access code was rejected. Check Scan connection.", not_configured: "Scanner's provider key is not configured yet.", rate_limit_exceeded: "Scan limit reached. Wait a minute and try again.", provider_timeout: "Recognition took too long. Try a clearer or smaller image.", provider_error: "Recognition provider could not process this file. Check its key, quota and model.", origin_not_allowed: "This app's origin is not allowed by the scanner connection." };
-      throw new ScanClientError(code, messages[code] || String(body?.error?.message || "Scan request failed.").slice(0, 300));
+      const error = new ScanClientError(code, messages[code] || String(body?.error?.message || "Scan request failed.").slice(0, 300));
+      error.httpStatus = response.status;
+      throw error;
     }
     return body;
   } catch (error) {
@@ -161,7 +163,15 @@ export async function scanFile({ file, nativePhoto, kind, config, signal, fetchI
   if (!KINDS.has(kind)) fail("invalid_kind", "Choose groceries, a receipt or an expiry label.");
   const prepared = await prepareScanFile({ file, nativePhoto, signal, fetchImpl });
   const { bytes, ...payload } = prepared;
-  const result = await request(config, "/api/v1/scan-drafts", { signal, fetchImpl, timeoutMs, payload: { kind, ...payload } });
+  const regionRequest = kind === "groceries" && payload.mimeType.startsWith("image/");
+  let result;
+  try {
+    result = await request(config, "/api/v1/scan-drafts", { signal, fetchImpl, timeoutMs, payload: { kind, ...payload, ...(regionRequest ? { imageRegions: true } : {}) } });
+  } catch (error) {
+    // Older paired Workers reject unknown request fields before provider work.
+    if (!regionRequest || error.httpStatus !== 422 || error.code !== "invalid_request") throw error;
+    result = await request(config, "/api/v1/scan-drafts", { signal, fetchImpl, timeoutMs, payload: { kind, ...payload } });
+  }
   const expectedFingerprint = await fingerprint(kind, bytes);
   if (signal?.aborted) throw aborted();
   if (result?.draft?.kind !== kind || result?.draft?.fingerprint !== expectedFingerprint) fail("invalid_response", "Scanner result does not match the selected file. Nothing was saved.");

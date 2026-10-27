@@ -9,6 +9,16 @@ const UNIT_DIMENSION = { g: "mass", kg: "mass", ml: "volume", l: "volume" };
 const UNIT_FACTOR = { g: 1, kg: 1000, ml: 1, l: 1000 };
 const MONEY_LIMIT = 1e12;
 
+// Optional image metadata never changes stock or finance review requirements.
+export function normalizePhotoRegion(region) {
+  if (!region || typeof region !== "object" || Array.isArray(region)) return null;
+  const keys = ["x", "y", "width", "height"];
+  if (Object.keys(region).length !== keys.length || keys.some(key => !Object.hasOwn(region, key) || typeof region[key] !== "number" || !Number.isFinite(region[key]))) return null;
+  const { x, y, width, height } = region;
+  if (x < 0 || y < 0 || width <= 0 || height <= 0 || x > 1 || y > 1 || width > 1 || height > 1 || x + width > 1 || y + height > 1) return null;
+  return { x, y, width, height };
+}
+
 export class ScanDomainError extends TypeError {
   constructor(code, message) {
     super(message);
@@ -115,6 +125,7 @@ export function reviewScanDraft(raw, { catalog = [] } = {}) {
         expiryProvenance: printedExpiry ? "printed" : null,
         storage,
         warnings: reviewWarnings(candidate.warnings, warnings),
+        ...(raw.kind === "groceries" && Object.hasOwn(candidate, "photoRegion") ? { photoRegion: normalizePhotoRegion(candidate.photoRegion) } : {}),
       };
     }),
     warnings: [],
@@ -176,7 +187,9 @@ export function commitScanDraft(state, draft, { confirmed = false, edits = {}, m
   const excluded = new Set(excludedLineIds);
   const imports = Array.isArray(state.scanImports) ? state.scanImports : [];
   const prior = imports.find((x) => (typeof x === "string" ? x : x?.fingerprint) === reviewed.fingerprint);
-  const signature = signatureDigest(JSON.stringify({ draft: reviewed, excluded: [...excluded].sort(), mergeTargets: Object.entries(mergeTargets).sort(([a], [b]) => a.localeCompare(b)), excludeFinance }));
+  // Regions affect local presentation only; old imports must replay unchanged.
+  const signatureDraft = { ...reviewed, lines: reviewed.lines.map(({ photoRegion, ...line }) => line) };
+  const signature = signatureDigest(JSON.stringify({ draft: signatureDraft, excluded: [...excluded].sort(), mergeTargets: Object.entries(mergeTargets).sort(([a], [b]) => a.localeCompare(b)), excludeFinance }));
   if (prior) {
     if (plain(prior) && prior.signature && prior.signature !== signature) fail("IDEMPOTENCY_CONFLICT", "Fingerprint was already committed with different reviewed content.");
     return { state, replayed: true, importedItemIds: [], financeExcluded: prior.financeExcluded ?? true };
