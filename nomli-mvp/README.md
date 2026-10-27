@@ -6,9 +6,9 @@ Validation package: `com.nomli.mvp.validation`, app label **Nomli Test**, versio
 
 Inventory works offline. Receipt recognition and live Zara need internet access. Current recognition service is `https://nomli-scan-proxy.ahmed-aljazayeerly.workers.dev`, with Gemini 3.5 Flash-Lite for scanning and Zara. Provider credentials are encrypted server-side and never bundled in the app.
 
-M7.1 APK build/verification in progress. Fixes Capacitor plugin loading that blocked photo saving, voice and backups.
+Verified M7.1 hotfix: [Nomli-M7.1.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m7.1-v0.8.1/Nomli-M7.1.apk). Fixes photo-save, voice, file-picker and backup deadlocks. Install over existing Nomli Test; no reset or new configuration required.
 
-Historical M7 APK (plugin-loading hang; use M7.1 when available): [Nomli-M7.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m7-v0.8.0/Nomli-M7.apk). Install over existing Nomli Test; retained private connection stays available. See [phone checks](docs/TESTING.md).
+Historical M7 APK has the plugin-loading defect. Use M7.1 above; archived evidence remains in docs/APK.md.
 
 Historical verified M6 APK: [Nomli-M6.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m6-v0.7.0/Nomli-M6.apk). See the [phone acceptance checklist](docs/TESTING.md).
 
@@ -95,7 +95,7 @@ Synthetic PNG and PDF receipts completed live calls in about five and four secon
 
 ## Not implemented or verified
 
-- M7.1 build/sign/upload verification pending; M7 evidence remains historical. Install/update verification and physical-phone QA remain pending. Native picker, camera permissions, Preferences behavior across force-stop and keyboard behavior still need device testing.
+- M7.1 build, signing, package/assets, alignment/CRC and published checksum checks pass. Install/update verification and physical-phone QA remain pending. Native picker, camera permissions, Preferences behavior across force-stop and keyboard behavior still need device testing.
 - Android voice is implemented but unverified on a physical phone. Barcode product lookup is not connected. Recipes remain curated; Zara does not rewrite recipes or generate a new catalog.
 - Accounts, cloud inventory sync, multi-user authorization and database transactions remain future work.
 - Receipt recognition can be wrong. Review is mandatory before local data changes.

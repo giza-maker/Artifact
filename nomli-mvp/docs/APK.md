@@ -1,4 +1,14 @@
-# Nomli milestone 7 APK
+# Nomli M7.1 hotfix APK
+
+[Download Nomli-M7.1.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m7.1-v0.8.1/Nomli-M7.1.apk). Install over existing Nomli Test. Package com.nomli.mvp.validation, version 0.8.1-m7.1, code 9, minimum API 26, target API 36. Same signing key and inventory schema; no reset or new account/API key needed.
+
+Fixes the loader deadlock blocking photo saves, voice startup, file picking and backups. Loaders resolve plain handles instead of Capacitor proxies.
+
+Source 7c7e3fd27a79525b29815877f0deb49dc815018d; successful CI 40597589060 (4m 19s). 204 JavaScript tests, content validation, build, Capacitor sync and Android compilation pass. APK 43,891,693 bytes; SHA-256 ae8a476b2c2c82061d65e2153851c0fa84a4a13dc2c7b1eb0c3e5c276fcb3d10. Retained signing certificate, v2/v3 signatures, 16 KB alignment and ZIP CRC pass. All 90 production web assets match; two empty Cordova placeholders expected. Configured secrets and QA harness absent. Published size/digest match local APK.
+
+Real SDK browser regression used synthetic Android transport. Camera/crop/photo save/reload, voice callbacks and backup callbacks completed. Physical microphone, camera, filesystem, permissions and update installation remain phone checks.
+
+## Historical M7 release — known loader defect, use M7.1
 
 [Download Nomli-M7.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m7-v0.8.0/Nomli-M7.apk). Install over existing **Nomli Test**. Package `com.nomli.mvp.validation`, version **0.8.0-m7**, versionCode **8**, minimum API **26**, target API **36**. Same retained signing certificate; actual update installation remains a phone check.
 

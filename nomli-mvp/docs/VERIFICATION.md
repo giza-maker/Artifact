@@ -1,10 +1,12 @@
-# M7.1 plugin-loading hang — APK pending
+# M7.1 plugin-loading hang — fixed and packaged
 
 Reproduced production native.js against the actual installed Capacitor dependency, with only native transport simulated. Preferences roundtrip passed; photo save, voice status and backup export never settled. No native method was dispatched. Capacitor generated UNIMPLEMENTED errors for NomliScan.then, NomliVoice.then and NomliBackup.then.
 
 Cause: async loaders resolved Capacitor proxies directly. Their dynamic then method triggered Promise assimilation without settling the outer promise. Loaders now resolve plain {plugin} handles and unwrap proxies synchronously. Shared caching prevents duplicate registration.
 
-New regression fails before fix and passes after, exercising actual production loaders, photo save/get/remove/clear, picker, voice status and backup export/import. Voice proxy tests reject malformed handles and assert no then reads. All204 JavaScript tests and content checks pass. Physical Android hardware remains untested.
+New regression fails before fix and passes after, exercising actual production loaders, photo save/get/remove/clear, picker, voice status and backup export/import. Voice proxy tests reject malformed handles and assert no then reads. All 204 JavaScript tests and content checks pass. Real-bridge browser QA passed plain/photo add, crop, save/reload with native getItemPhoto, voice start/finish/review and backup callbacks. No pending operations or console errors. Device camera/speech/storage were simulated.
+
+Source 7c7e3fd27a79525b29815877f0deb49dc815018d; successful CI 40597589060 (4m 19s). 204 JavaScript tests, content validation, build, Capacitor sync and Android compilation pass. APK 43,891,693 bytes; SHA-256 ae8a476b2c2c82061d65e2153851c0fa84a4a13dc2c7b1eb0c3e5c276fcb3d10. Retained signing certificate, v2/v3 signatures, 16 KB alignment and ZIP CRC pass. All 90 production web assets match; two empty Cordova placeholders expected. Configured secrets and QA harness absent. Published size/digest match local APK.
 
 ## Historical M7 evidence
 
