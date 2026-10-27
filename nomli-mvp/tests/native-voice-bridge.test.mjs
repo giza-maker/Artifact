@@ -33,7 +33,9 @@ test("stalled listener removal cannot stall result or next turn", async () => {
   const p = service({
     addListener: async () => ({ remove: () => new Promise(() => {}) }),
   });
-  const b = createNativeVoiceBridge({ loadPlugin: async () => p });
+  const b = createNativeVoiceBridge({
+    loadPlugin: async () => ({ plugin: p }),
+  });
   assert.equal((await b.startVoice(options("one"))).transcript, "٢ كيلو أرز");
   assert.equal((await b.startVoice(options("two"))).cancelled, false);
 });
@@ -47,7 +49,9 @@ test("cancel delayed registration; new capture survives late old registration", 
         ? oldRegistration.promise
         : { remove: async () => removals++ },
   });
-  const b = createNativeVoiceBridge({ loadPlugin: async () => p });
+  const b = createNativeVoiceBridge({
+    loadPlugin: async () => ({ plugin: p }),
+  });
   const old = b.startVoice(options("old"));
   await tick();
   await b.cancelVoice(options("old"));
@@ -64,7 +68,9 @@ test("late old cancel cannot cancel new turn; native pending turn frees JS owner
     start: (o) =>
       o.requestId === "old" ? oldNative.promise : newNative.promise,
   });
-  const b = createNativeVoiceBridge({ loadPlugin: async () => p });
+  const b = createNativeVoiceBridge({
+    loadPlugin: async () => ({ plugin: p }),
+  });
   const old = b.startVoice(options("old"));
   await tick();
   await b.cancelVoice(options("old"));
@@ -100,7 +106,9 @@ test("service rejection frees ownership even when listener removal rejects", asy
       return { ...o, transcript: "ok", cancelled: false };
     },
   });
-  const b = createNativeVoiceBridge({ loadPlugin: async () => p });
+  const b = createNativeVoiceBridge({
+    loadPlugin: async () => ({ plugin: p }),
+  });
   await assert.rejects(
     b.startVoice(options("one")),
     (e) => e.code === "network",
@@ -127,7 +135,7 @@ test("cancel lazy load prevents old microphone start", async () => {
   const b = createNativeVoiceBridge({ loadPlugin: () => loading.promise });
   const old = b.startVoice(options("old"));
   await b.cancelVoice(options("old"));
-  loading.resolve(p);
+  loading.resolve({ plugin: p });
   assert.equal((await old).cancelled, true);
   assert.deepEqual(p.starts, []);
 });
@@ -137,13 +145,14 @@ test("status preserves bridge failures separately from unavailable speech servic
     async () => {
       throw Error("PRIVATE registration");
     },
-    async () =>
-      service({
+    async () => ({
+      plugin: service({
         status: async () => {
           throw Error("PRIVATE native status");
         },
       }),
-    async () => service({ status: async () => ({}) }),
+    }),
+    async () => ({ plugin: service({ status: async () => ({}) }) }),
   ]) {
     const bridge = createNativeVoiceBridge({ loadPlugin });
     await assert.rejects(
@@ -154,8 +163,57 @@ test("status preserves bridge failures separately from unavailable speech servic
     );
   }
   const unavailable = createNativeVoiceBridge({
-    loadPlugin: async () =>
-      service({ status: async () => ({ available: false }) }),
+    loadPlugin: async () => ({
+      plugin: service({ status: async () => ({ available: false }) }),
+    }),
   });
   assert.deepEqual(await unavailable.voiceStatus(), { available: false });
+});
+
+test("wrapped proxy never exposes its then property to promise resolution", async () => {
+  let thenReads = 0;
+  const plugin = new Proxy(service(), {
+    get(target, key, receiver) {
+      if (key === "then") {
+        thenReads++;
+        throw Error("Plugin proxy must never be awaited");
+      }
+      return Reflect.get(target, key, receiver);
+    },
+  });
+  const bridge = createNativeVoiceBridge({
+    loadPlugin: async () => ({ plugin }),
+  });
+  assert.equal((await bridge.voiceStatus()).available, true);
+  assert.equal(
+    (await bridge.startVoice(options("wrapped"))).transcript,
+    "٢ كيلو أرز",
+  );
+  assert.equal(thenReads, 0);
+});
+
+test("invalid plugin handles reject with bridge diagnostics and release capture ownership", async () => {
+  for (const handle of [
+    null,
+    undefined,
+    [],
+    {},
+    { plugin: null },
+    { plugin: {} },
+    { plugin: "invalid" },
+  ]) {
+    const bridge = createNativeVoiceBridge({ loadPlugin: async () => handle });
+    await assert.rejects(
+      bridge.startVoice(options("bad")),
+      (error) => error.code === "bridge_unavailable",
+    );
+    await assert.rejects(
+      bridge.startVoice(options("next")),
+      (error) => error.code === "bridge_unavailable",
+    );
+    await assert.rejects(
+      bridge.voiceStatus(),
+      (error) => error.code === "bridge_unavailable",
+    );
+  }
 });

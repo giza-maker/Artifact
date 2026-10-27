@@ -1,3 +1,13 @@
+# M7.1 plugin-loading hang — APK pending
+
+Reproduced production native.js against the actual installed Capacitor dependency, with only native transport simulated. Preferences roundtrip passed; photo save, voice status and backup export never settled. No native method was dispatched. Capacitor generated UNIMPLEMENTED errors for NomliScan.then, NomliVoice.then and NomliBackup.then.
+
+Cause: async loaders resolved Capacitor proxies directly. Their dynamic then method triggered Promise assimilation without settling the outer promise. Loaders now resolve plain {plugin} handles and unwrap proxies synchronously. Shared caching prevents duplicate registration.
+
+New regression fails before fix and passes after, exercising actual production loaders, photo save/get/remove/clear, picker, voice status and backup export/import. Voice proxy tests reject malformed handles and assert no then reads. All204 JavaScript tests and content checks pass. Physical Android hardware remains untested.
+
+## Historical M7 evidence
+
 # M7 verification — 28 October 2026
 
 200 JavaScript tests pass; content validation passes for 88 ingredients, 20 recipes, 3 receipt fixtures. Added photo ID/source/storage-boundary and grocery-only attachment tests; assistant context excludes local photo references.

@@ -1,34 +1,24 @@
 import { createNativeVoiceBridge } from "./native-voice.js";
-let voicePlugin;
+const pluginHandles = new Map();
+function loadNativePlugin(name) {
+  if (!pluginHandles.has(name)) {
+    // Capacitor proxies expose arbitrary method names, including `then`.
+    // Resolve a plain handle; resolving the proxy itself deadlocks assimilation.
+    const pending = import("@capacitor/core").then(({ registerPlugin }) => ({
+      plugin: registerPlugin(name),
+    }));
+    pluginHandles.set(name, pending);
+    pending.catch(() => {
+      if (pluginHandles.get(name) === pending) pluginHandles.delete(name);
+    });
+  }
+  return pluginHandles.get(name);
+}
 const { startVoice, stopVoice, cancelVoice, voiceStatus } =
   createNativeVoiceBridge({
     isNative: () => window.Capacitor?.isNativePlatform?.() ?? false,
-    loadPlugin: () => {
-      voicePlugin ??= import("@capacitor/core").then(({ registerPlugin }) =>
-        registerPlugin("NomliVoice"),
-      );
-      return voicePlugin;
-    },
+    loadPlugin: () => loadNativePlugin("NomliVoice"),
   });
-
-let backupPlugin;
-let scanPlugin;
-
-async function getBackupPlugin() {
-  if (!backupPlugin) {
-    const { registerPlugin } = await import("@capacitor/core");
-    backupPlugin = registerPlugin("NomliBackup");
-  }
-  return backupPlugin;
-}
-
-async function getScanPlugin() {
-  if (!scanPlugin) {
-    const { registerPlugin } = await import("@capacitor/core");
-    scanPlugin = registerPlugin("NomliScan");
-  }
-  return scanPlugin;
-}
 
 // Capture only. Recognition/lookup must run server-side and return an editable draft.
 // These methods never change inventory or claim that OCR/AI is connected.
@@ -39,16 +29,18 @@ window.NomliNative = Object.freeze({
   cancelVoice,
   voiceStatus,
   async saveItemPhoto(options) {
-    return (await getScanPlugin()).saveItemPhoto(options);
+    return (await loadNativePlugin("NomliScan")).plugin.saveItemPhoto(options);
   },
   async getItemPhoto(options) {
-    return (await getScanPlugin()).getItemPhoto(options);
+    return (await loadNativePlugin("NomliScan")).plugin.getItemPhoto(options);
   },
   async removeItemPhoto(options) {
-    return (await getScanPlugin()).removeItemPhoto(options);
+    return (await loadNativePlugin("NomliScan")).plugin.removeItemPhoto(
+      options,
+    );
   },
   async clearItemPhotos() {
-    return (await getScanPlugin()).clearItemPhotos();
+    return (await loadNativePlugin("NomliScan")).plugin.clearItemPhotos();
   },
   async camera() {
     const { Camera, CameraResultType, CameraSource } = await import(
@@ -65,7 +57,7 @@ window.NomliNative = Object.freeze({
     });
   },
   async pickScanFile({ allowPdf = false } = {}) {
-    const plugin = await getScanPlugin();
+    const { plugin } = await loadNativePlugin("NomliScan");
     return plugin.pickScanFile({ allowPdf: allowPdf === true });
   },
   async barcode({ instructions = "Center a grocery barcode" } = {}) {
@@ -122,11 +114,11 @@ window.NomliNative = Object.freeze({
     return result.value ? JSON.parse(result.value) : null;
   },
   async exportBackup(text, fileName) {
-    const plugin = await getBackupPlugin();
+    const { plugin } = await loadNativePlugin("NomliBackup");
     return plugin.exportBackup({ text, fileName });
   },
   async importBackup() {
-    const plugin = await getBackupPlugin();
+    const { plugin } = await loadNativePlugin("NomliBackup");
     return plugin.importBackup();
   },
 });

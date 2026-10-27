@@ -1,3 +1,16 @@
+# M7.1 hang regression
+
+1. Install M7.1 over Nomli Test; preserve existing inventory and private connection.
+2. Add an ingredient without a photo; save and reopen.
+3. Add an ingredient with a captured/cropped photo; save, reopen and verify thumbnail. Repeat edit/change photo and cancel.
+4. Review grocery scan with two crops, save once and reopen. Verify independent thumbnails and quantities.
+5. Zara → Voice message → Speak. Confirm permission/listening or a visible service error, then Finish, review and discard/use without automatic Send.
+6. Export backup; choose a backup file and cancel restore. Keep photo bytes outside JSON backup.
+
+Actual Capacitor proxy integration now has a regression test; prior direct mocks missed the deadlock. Phone capture, speech recognition, file provider and update installation remain device checks.
+
+## Historical checks
+
 # M7 mobile UI and media acceptance
 
 Browser checks use synthetic camera/speech bridges; actual Android capture, storage, keyboard and update installation remain pending. 200 JavaScript tests and content checks pass.

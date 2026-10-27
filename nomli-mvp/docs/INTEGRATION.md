@@ -111,3 +111,7 @@ Future remote writes need authenticated owner derivation, database transactions 
 ## M7 image-region capability
 
 New grocery image requests opt in with imageRegions:true. Provider may return each line’s optional normalized photoRegion {x,y,width,height}; invalid or uncertain regions become null and are never guessed. Receipt/expiry requests use their existing shape. Legacy clients keep the original response schema; new clients retry once without capability only for old-worker 422 invalid_request, never provider/network errors. Photo regions are excluded from import signatures, stock and spending. The same scan call locates products; all cropping/downscaling stays local.
+
+## M7.1 plugin loader contract
+
+Capacitor plugin proxies must never be returned directly from async functions or resolved promises. They synthesize a then method. Native loaders resolve plain {plugin} handles; consumers unwrap the proxy synchronously, then call its method. This fixes photo persistence, scanner file picking, voice bootstrap and backup picker/export deadlocks without changing inventory schema or cloud services.

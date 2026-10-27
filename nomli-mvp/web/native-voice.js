@@ -4,6 +4,29 @@ function voiceError(code) {
   });
 }
 
+// Capacitor plugin proxies synthesize a callable `then`; never await a proxy.
+// Loaders must resolve an ordinary handle, then unwrap it synchronously.
+function unwrapPlugin(handle) {
+  if (
+    !handle ||
+    typeof handle !== "object" ||
+    Array.isArray(handle) ||
+    ![Object.prototype, null].includes(Object.getPrototypeOf(handle)) ||
+    !Object.hasOwn(handle, "plugin") ||
+    !handle.plugin ||
+    !["object", "function"].includes(typeof handle.plugin)
+  )
+    throw voiceError("bridge_unavailable");
+  const plugin = handle.plugin;
+  if (
+    !["status", "start", "addListener"].every(
+      (method) => typeof plugin[method] === "function",
+    )
+  )
+    throw voiceError("bridge_unavailable");
+  return plugin;
+}
+
 export function createNativeVoiceBridge({ loadPlugin, isNative = () => true }) {
   let active;
   const inFlight = new Set();
@@ -42,7 +65,8 @@ export function createNativeVoiceBridge({ loadPlugin, isNative = () => true }) {
     if (recentIds.length > 128) recentIds.shift();
     let listener;
     try {
-      const plugin = await loadPlugin();
+      const handle = await loadPlugin();
+      const plugin = unwrapPlugin(handle);
       turn.plugin = plugin;
       if (turn.cancelled) return cancelledResult(turn);
       listener = await plugin.addListener("speechState", (event) => {
@@ -86,7 +110,9 @@ export function createNativeVoiceBridge({ loadPlugin, isNative = () => true }) {
   async function voiceStatus() {
     if (!isNative()) return { available: false };
     try {
-      const status = await (await loadPlugin()).status();
+      const handle = await loadPlugin();
+      const plugin = unwrapPlugin(handle);
+      const status = await plugin.status();
       if (typeof status?.available !== "boolean")
         throw voiceError("bridge_unavailable");
       return status;

@@ -1,12 +1,14 @@
-# Nomli kitchen MVP, milestone 7
+# Nomli kitchen MVP, M7.1 hotfix
 
 Single-user local kitchen inventory with reviewed receipt recognition, curated cooking and live Zara assistance. M7 adds local ingredient thumbnails, artwork for every recipe, chronological Zara chat, mobile selector sheets and cleaner cooking screens. Optional Android speech-to-text feeds reviewed Zara questions. Zara sends explicitly requested kitchen context through the paired Cloudflare service to Gemini. Proposed quantity or recipe changes require separate review and confirmation. M3 cooking and the protected M2 receipt workflow remain available.
 
-Validation package: `com.nomli.mvp.validation`, app label **Nomli Test**, version **0.8.0-m7** (`versionCode` 8). It uses the M1/M2 validation update channel and remains separate from the earlier demo package. Published milestone APKs use the retained local validation signing key; GitHub Actions does not receive that key.
+Validation package: `com.nomli.mvp.validation`, app label **Nomli Test**, version **0.8.1-m7.1** (`versionCode` 9). It uses the M1/M2 validation update channel and remains separate from the earlier demo package. Published milestone APKs use the retained local validation signing key; GitHub Actions does not receive that key.
 
 Inventory works offline. Receipt recognition and live Zara need internet access. Current recognition service is `https://nomli-scan-proxy.ahmed-aljazayeerly.workers.dev`, with Gemini 3.5 Flash-Lite for scanning and Zara. Provider credentials are encrypted server-side and never bundled in the app.
 
-Verified M7 APK: [Nomli-M7.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m7-v0.8.0/Nomli-M7.apk). Install over existing Nomli Test; retained private connection stays available. See [phone checks](docs/TESTING.md).
+M7.1 APK build/verification in progress. Fixes Capacitor plugin loading that blocked photo saving, voice and backups.
+
+Historical M7 APK (plugin-loading hang; use M7.1 when available): [Nomli-M7.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m7-v0.8.0/Nomli-M7.apk). Install over existing Nomli Test; retained private connection stays available. See [phone checks](docs/TESTING.md).
 
 Historical verified M6 APK: [Nomli-M6.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m6-v0.7.0/Nomli-M6.apk). See the [phone acceptance checklist](docs/TESTING.md).
 
@@ -93,7 +95,7 @@ Synthetic PNG and PDF receipts completed live calls in about five and four secon
 
 ## Not implemented or verified
 
-- M7 compilation, signing, package, bundled-assets and uploaded-checksum checks pass. Install/update verification and physical-phone QA remain pending. Native picker, camera permissions, Preferences behavior across force-stop and keyboard behavior still need device testing.
+- M7.1 build/sign/upload verification pending; M7 evidence remains historical. Install/update verification and physical-phone QA remain pending. Native picker, camera permissions, Preferences behavior across force-stop and keyboard behavior still need device testing.
 - Android voice is implemented but unverified on a physical phone. Barcode product lookup is not connected. Recipes remain curated; Zara does not rewrite recipes or generate a new catalog.
 - Accounts, cloud inventory sync, multi-user authorization and database transactions remain future work.
 - Receipt recognition can be wrong. Review is mandatory before local data changes.
