@@ -7,7 +7,7 @@ Nomli is a lean mobile kitchen companion. Four primary destinations have equal w
 - **Kitchen** — current inventory, quantities, freshness and corrections.
 - **Scan** — protected image/PDF recognition, editable review and optional explicit cooking links.
 - **Cook** — 20 recipes, linked-stock readiness, preparation, guided cooking and reviewed deduction with undo.
-- **Zara** — contextual kitchen assistance with clear prototype limitations.
+- **Zara** — live kitchen assistance with explicit Send, visible data disclosure and reviewed proposals.
 
 Do not add school, XP, quests, community, investor-tour or social-product language to this MVP surface.
 
@@ -26,7 +26,7 @@ Do not add school, XP, quests, community, investor-tour or social-product langua
 - Phone or embedded browser: edge-to-edge `100dvh` shell with safe-area padding.
 - Status bar and header frame one independently scrolling main region. Bottom navigation stays visible in a four-column grid.
 - Default route and Nomli brand link are `#kitchen`.
-- A short, visible `M3 · cook with stock` disclosure remains in app chrome. Zara remains explicitly scripted until M4; scanning uses its protected connection.
+- A short, visible M4 disclosure remains in app chrome. Zara and scanning reuse the protected connection. Saved exchanges must remain distinct from the current live reply.
 - Panels and dialog bodies scroll within viewport bounds. Camera simulation may fill device; other dialogs present as bottom sheets.
 
 ## Interaction and accessibility
@@ -39,6 +39,14 @@ Do not add school, XP, quests, community, investor-tour or social-product langua
 - Honor `prefers-reduced-motion`. Animate only transform and opacity; avoid continuous scroll- or layout-driven motion.
 - Cooking identity requires explicit catalog selection. Count-to-mass conversion requires a measured or printed grams-per-unit value. Preparation and serving changes never silently deduct ingredients.
 - Freeze servings and allocated stock when preparation starts. Save actual use atomically after review; retain a session ID to prevent repeat deduction. Undo preserves later stock changes and blocks changed or missing ingredient records.
+
+## Zara interaction contract
+
+- Suggestions populate the editable question; only explicit Send starts a request. Show pending state, cancellation, errors and retry. Keep cancelled questions available.
+- Disclose inventory, profile, tool preferences, recipe/cooking context and recent history before sending. Show saved local conversation separately.
+- Render provider text as text. Allow only validated quantity or curated-recipe/servings proposals. Show before/after details in a separate dialog with an explicit confirmation checkbox and Apply action.
+- Reject stale proposals and proposals during an active cooking session. Substitution advice cannot change frozen allocations; require cancel/replan when deductions would differ.
+- Keep voice identified as a demo until capture and transcription exist.
 
 ## Required document hooks
 

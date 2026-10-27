@@ -3498,3 +3498,42 @@ dialog[data-screen="scan-review"] #modal-content {
 .cook-link-label {
   overflow-wrap: anywhere;
 }
+
+/* Live Zara uses existing warm dark surfaces and orange actions. */
+[data-screen="assistant"] textarea {
+  display: block;
+  width: 100%;
+  min-height: 7rem;
+  resize: vertical;
+  padding: 14px;
+  border: 1px solid var(--line, #555);
+  border-radius: 12px;
+  background: var(--surface, #202020);
+  color: var(--text, #fff);
+  font: inherit;
+  margin-top: 8px;
+}
+.assistant-answer {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.6;
+}
+.chat-bubble h3,
+.assistant-proposal h3 {
+  overflow-wrap: anywhere;
+}
+.assistant-live {
+  margin-block: 24px;
+}
+.assistant-proposal {
+  margin-top: 16px;
+}
+[data-screen="assistant"] button:focus-visible,
+[data-screen="assistant"] textarea:focus-visible {
+  outline: 3px solid #ffb26c;
+  outline-offset: 3px;
+}
+[data-screen="assistant"] [aria-busy="true"] {
+  border-inline-start: 3px solid var(--accent, #fa984c);
+  padding-inline-start: 12px;
+}

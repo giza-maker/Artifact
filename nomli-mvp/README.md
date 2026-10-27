@@ -1,12 +1,12 @@
-# Nomli kitchen MVP, milestone 3
+# Nomli kitchen MVP, milestone 4
 
-Single-user local kitchen inventory with reviewed receipt recognition and curated cooking. M3 connects explicitly linked stock to 20 curated recipes, guides preparation and cooking, then deducts reviewed actual use atomically. Receipt images and PDFs still use the protected M2 Cloudflare recognition service and editable review before local save.
+Single-user local kitchen inventory with reviewed receipt recognition, curated cooking and live Zara assistance. M4 sends explicitly requested kitchen context through the paired Cloudflare service to Gemini. Proposed quantity or recipe changes require separate review and confirmation. M3 cooking and the protected M2 receipt workflow remain available.
 
-Validation package: `com.nomli.mvp.validation`, app label **Nomli Test**, version **0.4.0-m3** (`versionCode` 4). It uses the M1/M2 validation update channel and remains separate from the earlier demo package. Published milestone APKs use the retained local validation signing key; GitHub Actions does not receive that key.
+Validation package: `com.nomli.mvp.validation`, app label **Nomli Test**, version **0.5.0-m4** (`versionCode` 5). It uses the M1/M2 validation update channel and remains separate from the earlier demo package. Published milestone APKs use the retained local validation signing key; GitHub Actions does not receive that key.
 
-Inventory works offline. Receipt recognition needs internet access. Current recognition service is `https://nomli-scan-proxy.ahmed-aljazayeerly.workers.dev`, backed by Gemini 3.1 Flash-Lite. Provider credentials are encrypted server-side and never bundled in the app.
+Inventory works offline. Receipt recognition and live Zara need internet access. Current recognition service is `https://nomli-scan-proxy.ahmed-aljazayeerly.workers.dev`, with Gemini 3.1 Flash-Lite for scanning and Gemini 3.5 Flash-Lite for Zara. Provider credentials are encrypted server-side and never bundled in the app.
 
-[Download M3 APK](https://github.com/giza-maker/Artifact/releases/download/nomli-m3-v0.4.0/Nomli-M3.apk). See the [phone checklist](docs/APK.md) and [verification record](docs/VERIFICATION.md).
+M4 APK build verification pending. Planned download: [Nomli-M4.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m4-v0.5.0/Nomli-M4.apk). See the [Zara phone checklist](docs/ASSISTANT.md), [APK checklist](docs/APK.md) and [verification record](docs/VERIFICATION.md).
 
 ## Start
 
@@ -46,15 +46,24 @@ Scan connection configuration is stored separately from inventory and is not inc
 
 Compatible conversions cover g/kg and ml/l. Count-to-mass conversions require an explicit measured `gramsPerUnit`; volume-to-mass and guessed item weights are unsupported.
 
+## Zara flow
+
+1. Reuse the saved **Scan connection** endpoint and device code. No new provider key is needed on the phone.
+2. Open **Zara**, enter a question and press **Send question**. Suggestions only fill the question field.
+3. Review the answer. For a proposed change, open **Review proposed change**, check the before/after details, tick confirmation and apply. Cancel leaves data unchanged.
+4. During cooking, ask about the current step. The frozen allocation plan stays authoritative; cancel and replan the cooking session if actual substitutions would change deductions.
+
+Each Send shares inventory, profile, tool preferences, selected/current recipe and frozen cooking allocation plan, plus the last six exchanges, with Cloudflare and Google. Up to 20 question/answer exchanges stay locally and appear in inventory backups. Connection credentials remain excluded. Worker stores no chat history; provider retention is governed separately. See [assistant contract and phone checks](docs/ASSISTANT.md).
+
 ## Included
 
 - Fresh local inventory with add, edit and delete; fractional quantities; canonical units; storage locations; optional expiry provenance; sorting and search.
 - Native Preferences persistence with browser localStorage fallback. Validated JSON backup export/restore uses Android document pickers and requires preview plus typed `REPLACE`. M1/M2 state-version-1 backups remain compatible; new cooking fields are strictly validated.
 - Reviewed image/PDF receipt flow with atomic local save and duplicate-file protection.
 - Image uploads up to 4 MiB. PDFs up to 2 MiB and three pages. JPEG, PNG, WebP and PDF content is checked against its declared type.
-- Approximate Cloudflare rate limit of 10 recognition requests per 60 seconds per Cloudflare location. This is abuse protection, not a hard billing cap.
+- Approximate Cloudflare rate limit of 10 combined scan and Zara requests per 60 seconds per Cloudflare location. This is abuse protection, not a hard billing cap.
 - Static cooking catalog with 20 curated recipes and 88 bilingual ingredients; stock assessment, preparation checklist, tool confirmation, deadline timer resume, reviewed consumption and undo.
-- Scripted Zara help and an editable sample voice transcript remain demos; live Zara and voice integration are M4 work.
+- Live Zara grounded in current inventory, profile, tools and the curated catalog; quantity and recipe proposals require review. Voice remains an editable transcript demo.
 - Starter content: 88 bilingual ingredients, 20 structured recipes, 24 Arabic/English voice cases, three receipt fixtures, six synthetic barcode records and a synthetic digital receipt PDF/image.
 - Capacitor Android shell with camera, barcode, notifications and preferences plugins plus native backup and scan bridges.
 - Tested scan client, validation schema, integer-money logic, persistence, deduplication and bounded server proxy.
@@ -69,8 +78,8 @@ Synthetic PNG and PDF receipts completed live calls in about five and four secon
 
 ## Not implemented or verified
 
-- M3 APK compilation, signing, alignment and packaged-asset verification pass. Install/update verification and physical-phone QA remain pending. Native picker, camera permissions, Preferences behavior across force-stop and keyboard behavior still need device testing.
-- Live Zara, voice recognition and barcode product lookup are not connected. Cooking uses the local curated catalog; live assistant work remains M4.
+- M4 APK build verification, install/update verification and physical-phone QA remain pending. Native picker, camera permissions, Preferences behavior across force-stop and keyboard behavior still need device testing.
+- Voice recognition and barcode product lookup are not connected. Recipes remain curated; Zara does not rewrite recipes or generate a new catalog.
 - Accounts, cloud inventory sync, multi-user authorization and database transactions remain future work.
 - Receipt recognition can be wrong. Review is mandatory before local data changes.
 

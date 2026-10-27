@@ -1,8 +1,8 @@
 # Integration boundary
 
-M3 is a single-user, local-first validation build. Inventory and confirmed receipt data remain on the device. Recognition is the only current network-dependent product path.
+M4 is a single-user, local-first validation build. Inventory and confirmed receipt data remain on the device. Receipt recognition and explicit Zara sends use the paired service.
 
-The deployed scan endpoint is `https://nomli-scan-proxy.ahmed-aljazayeerly.workers.dev`. It uses Gemini 3.1 Flash-Lite with a Gemini API key stored as an encrypted Cloudflare secret. The app stores the endpoint and device access code entered by the user, never the provider key. A private setup QR can fill those fields; the user must still test and save the connection.
+The deployed scan endpoint is `https://nomli-scan-proxy.ahmed-aljazayeerly.workers.dev`. Scanning uses Gemini 3.1 Flash-Lite. Zara uses `GEMINI_ASSISTANT_MODEL=gemini-3.5-flash-lite`. Both reuse the existing Gemini API key stored as an encrypted Cloudflare secret. The app stores the endpoint and device access code entered by the user, never the provider key. A private setup QR can fill those fields; the user must still test and save the connection.
 
 Selected receipt files pass through the Cloudflare Worker to Google for recognition. The app does not retain uploaded file bytes after processing. Confirmed structured inventory and receipt data are stored locally. Inventory backup/restore excludes scan connection configuration.
 
@@ -11,7 +11,7 @@ Selected receipt files pass through the Cloudflare Worker to Google for recognit
 - `GET /api/v1/health` checks whether the configured provider, key and rate limiter are ready. Requests require the device access code and an allowed origin.
 - `POST /api/v1/scan-drafts` accepts one base64-encoded JPEG, PNG, WebP or PDF plus its file name and scan kind. It returns an editable draft; it does not write inventory.
 - Images are limited to 4 MiB. PDFs are limited to 2 MiB and three pages. Client and Worker validate file signatures against the declared MIME type.
-- Cloudflare rate limiting is approximately 10 recognition requests per 60 seconds per Cloudflare location. It is abuse protection, not a hard account or billing cap.
+- Cloudflare rate limiting is approximately 10 combined scan and Zara requests per 60 seconds per Cloudflare location. It is abuse protection, not a hard account or billing cap.
 - The client deduplicates identical file bytes combined with scan kind. A confirmed draft updates receipt and inventory state atomically in local persistence.
 - Users can review and edit quantity, unit, storage, date, merchant, currency, tax and discount before saving. M3 optionally applies reviewed cooking links to new stock or compatible same-identity merges in the same atomic local import. Replay does not relink stock.
 
@@ -29,18 +29,32 @@ Gemini free-tier and paid quotas depend on the API account and its billing setup
 - Undo adds recorded use back to current quantities, preserving later top-ups. Deleted stock or changed ingredient identity, normalized unit or grams-per-unit conversion blocks undo.
 - M1/M2 state-version-1 backups remain compatible. New links, conversions, sessions and meal records have strict validation. Scan connection credentials remain outside inventory backups.
 
-These are single-device persistence guarantees. M3 adds no backend routes, accounts, provider keys or cloud inventory transactions. The protected Gemini Worker and private setup QR remain unchanged. APK compilation, signing and package verification pass. Physical-phone validation remains pending.
+These remain single-device persistence guarantees. M4 adds the assistant reply route to the existing Worker, reusing its device authentication, origin checks, rate limiter and encrypted provider key. No accounts or cloud inventory transactions are added. M4 APK build verification and physical-phone validation remain pending.
+
+## M4 assistant contract
+
+- `POST /api/v1/assistant-replies` requires the paired device code and allowed origin. Request includes a question (up to 2,000 characters), last six question/answer exchanges and validated context. Request body limit is 192 KiB; reply limit is 64 KiB. Worker timeout is 45 seconds; client timeout is 50 seconds.
+- Context includes inventory quantities, units, cooking links, measured conversions, expiry and storage; profile exclusions/preferences; selected tools; requested servings; selected recipe; active phase/current step and frozen planned allocations. Worker adds the curated catalog and deterministic stock/tool assessments.
+- Reply contains answer, warnings and at most three proposals. Supported proposals are `set_quantity` for an existing inventory ID, or `open_recipe` for a known recipe and 1–12 servings. Validators enforce bounds, known IDs and recipe allergen exclusions. This does not establish allergen-free food or cross-contact safety.
+- Advice and substitutions remain text. Proposals require explicit intent in the current question and separate before/after review plus confirmation. Application rechecks the full context; stale proposals and any proposal during active cooking fail. No model writes inventory directly.
+- Explicit Send transmits context through Cloudflare to Google. Worker is stateless and stores no chats. Up to 20 exchanges persist locally; backups include questions and answers, excluding private connection configuration. This makes no claim about provider retention.
+- Cancellation keeps the draft question. Network, authentication, rate-limit, timeout and invalid-response failures leave inventory unchanged. Retry requires another Send.
+
+Gemini 3.1 returned repeated 503 responses during assistant checks, so Zara was configured separately to use 3.5. Four synthetic live checks passed: exact inventory/readiness for four servings; an explicit oats quantity proposal from 500 g to 350 g with confirmed pure-domain application; a recipe proposal for four servings; and an Arabic current-step answer with zero proposals during cooking. Observed calls took about 2.8, 5.5, 20.1 and 5.1 seconds respectively. These checks are not a performance or accuracy benchmark. Automated suite had 140 passing tests at this documentation checkpoint; final release evidence belongs in the verification record. Native phone QA remains pending.
+
+See [Zara phone checks](ASSISTANT.md).
 
 ## Capability status
 
-| Capability | M3 status | Remaining work |
+| Capability | M4 status | Remaining work |
 | --- | --- | --- |
 | Receipt image/PDF recognition | Deployed Cloudflare proxy, Gemini adapter, bounded upload validation and editable review | Broader accuracy evaluation and physical-device QA |
 | Local inventory | Native Preferences with localStorage fallback, atomic saves, identical-file dedupe and validated backups | Physical-device persistence and recovery QA |
 | Camera / document selection | Capacitor camera bridge and Android SAF picker | Device permissions and camera/picker QA |
 | Barcode products | Native barcode capture and synthetic fixtures | Product lookup adapter, cache and regional fallback |
-| Cooking | Static catalog, linked-stock allocation, prep/tool confirmation, resumable timer, reviewed deduction and undo | Physical-device QA; live grounded Zara remains M4 |
-| Voice | Command fixtures and editable transcript demo | M4: push-to-talk capture, transcription, review and noisy-kitchen testing |
+| Cooking | Static catalog, linked-stock allocation, prep/tool confirmation, resumable timer, reviewed deduction and undo | Physical-device QA |
+| Zara | Live Gemini replies and validated, separately confirmed proposals | Physical-device QA and broader answer evaluation |
+| Voice | Command fixtures and editable transcript demo | Push-to-talk capture, transcription, review and noisy-kitchen testing |
 | Accounts / cloud storage | Supabase client dependency and future contract notes | Project, schema, RLS, migrations, sync, transactions and authorization tests |
 
 ## Future multi-user contract

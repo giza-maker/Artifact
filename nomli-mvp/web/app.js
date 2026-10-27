@@ -1,4 +1,10 @@
 "use strict";
+import { requestAssistantReply } from "./assistant-client.js";
+import {
+  buildAssistantContext,
+  reviewAssistantProposal,
+  applyAssistantProposal,
+} from "./assistant-domain.js";
 import { createTimerNotifications } from "./timer-notifications.js";
 import { createStateStore } from "./state-store.js";
 import {
@@ -101,6 +107,24 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     scanEpoch = 0;
   let scanTimers = [];
   let scanConfig = { apiUrl: "", deviceToken: "" };
+  let assistantDraft = "",
+    assistantError = "",
+    assistantAbort = null,
+    assistantEpoch = 0;
+  let assistantReply = null,
+    assistantContext = null,
+    assistantReview = null;
+  const liveChats = new WeakSet();
+  function cancelAssistant(clear = true) {
+    assistantEpoch++;
+    assistantAbort?.abort();
+    assistantAbort = null;
+    if (clear) {
+      assistantReply = null;
+      assistantContext = null;
+      assistantReview = null;
+    }
+  }
   let scanDraft = null;
   let scanAbort = null;
 
@@ -173,15 +197,18 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
   }
   function setBusy(busy, scope = document) {
     operationBusy = busy;
-    scope.querySelectorAll("button, input, select").forEach((control) => {
-      if (busy) control.dataset.wasDisabled = control.disabled ? "1" : "0";
-      if (!busy && control.dataset.wasDisabled === undefined) return;
-      control.disabled = busy || control.dataset.wasDisabled === "1";
-      if (!busy) delete control.dataset.wasDisabled;
-    });
+    scope
+      .querySelectorAll("button, input, select, textarea")
+      .forEach((control) => {
+        if (busy) control.dataset.wasDisabled = control.disabled ? "1" : "0";
+        if (!busy && control.dataset.wasDisabled === undefined) return;
+        control.disabled = busy || control.dataset.wasDisabled === "1";
+        if (!busy) delete control.dataset.wasDisabled;
+      });
   }
   async function commit(mutator, success, replace = false) {
     if (operationBusy) return false;
+    cancelAssistant();
     setBusy(true, modal.open ? modal : document);
     await saveQueue.catch(() => {});
     const before = structuredClone(S);
@@ -260,6 +287,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
   }
   function openModal(title, body, screen = "") {
     cancelScan();
+    cancelAssistant(false);
     lastFocus = document.activeElement;
     modal.dataset.screen = screen;
     $("#modal-content").innerHTML =
@@ -274,6 +302,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
   }
   function navigate(route) {
     if (!routes.includes(route)) return;
+    cancelAssistant();
     S.route = route;
     backgroundSave();
     history.pushState(null, "", "#" + route);
@@ -336,7 +365,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         `${Object.values(S.items).filter((x) => x.qty > 0).length} ingredients on hand${soon ? ` · ${soon} use soon` : ""}`,
         button("Add ingredient", "item-edit", "new", "btn-primary"),
       ) +
-      `<p class="milestone-banner">Milestone 3 · Scan, prepare, cook and review</p><button class="scan-banner" data-action="go" data-id="scan"><img src="images/fridge-vf-480.webp" alt=""><span>${icon("scan")}<b>Scan groceries or receipts</b><small>Protected connection · review before save</small></span>${icon("arrow-right")}</button><section class="card inventory-card"><div class="card-header"><h2>Inventory</h2><button class="icononly" data-action="item-edit" data-id="new" aria-label="Add ingredient">${icon("plus")}</button></div><div class="inventory-tools"><label class="field">Search<input type="search" data-change="search" value="${esc(S.search || "")}" placeholder="Search ingredients"></label><div class="inventory-sort"><label>Storage <select data-change="storage">${options(["All", "Fridge", "Freezer", "Pantry", "Spices"], S.storage)}</select></label><label>Sort <select data-change="sort">${options(["expiry", "name", "quantity"], S.sort)}</select></label></div></div>${rows.length ? rows.map(([id, x]) => itemRow(id, x)).join("") : `<div class="inventory-empty">${icon("refrigerator")}<h3>${Object.keys(S.items).length ? "No ingredients match" : "Your inventory is empty"}</h3><p>${Object.keys(S.items).length ? "Clear search or filters." : "Add first ingredient. Expiry stays optional and never gets invented."}</p>${Object.keys(S.items).length ? "" : button("Add first ingredient", "item-edit", "new", "btn-primary")}</div>`}</section><div class="quick-grid">${[
+      `<p class="milestone-banner">Milestone 4 · Scan, cook and ask Zara</p><button class="scan-banner" data-action="go" data-id="scan"><img src="images/fridge-vf-480.webp" alt=""><span>${icon("scan")}<b>Scan groceries or receipts</b><small>Protected connection · review before save</small></span>${icon("arrow-right")}</button><section class="card inventory-card"><div class="card-header"><h2>Inventory</h2><button class="icononly" data-action="item-edit" data-id="new" aria-label="Add ingredient">${icon("plus")}</button></div><div class="inventory-tools"><label class="field">Search<input type="search" data-change="search" value="${esc(S.search || "")}" placeholder="Search ingredients"></label><div class="inventory-sort"><label>Storage <select data-change="storage">${options(["All", "Fridge", "Freezer", "Pantry", "Spices"], S.storage)}</select></label><label>Sort <select data-change="sort">${options(["expiry", "name", "quantity"], S.sort)}</select></label></div></div>${rows.length ? rows.map(([id, x]) => itemRow(id, x)).join("") : `<div class="inventory-empty">${icon("refrigerator")}<h3>${Object.keys(S.items).length ? "No ingredients match" : "Your inventory is empty"}</h3><p>${Object.keys(S.items).length ? "Clear search or filters." : "Add first ingredient. Expiry stays optional and never gets invented."}</p>${Object.keys(S.items).length ? "" : button("Add first ingredient", "item-edit", "new", "btn-primary")}</div>`}</section><div class="quick-grid">${[
         ["shopping", "shopping-cart", "Shopping", "Restock list"],
         ["expenses", "wallet", "Spending", "Receipts & budget"],
         ["profile", "gear", "Preferences", "Diet, time & tools"],
@@ -478,7 +507,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         step.text,
         button("Recipes", "go", "cook"),
       ) +
-      `<section class="card cooking-progress"><div class="step-dots" aria-label="Step ${c.step + 1} of ${r.steps.length}">${r.steps.map((_, i) => `<span class="${i <= c.step ? "is-done" : ""}"></span>`).join("")}</div><p>${servingText(c.servings)} · planned amounts frozen at preparation</p></section><section class="card timer-card"><p class="eyebrow">YOUR COOKING TIMER</p><h2 data-timer role="timer" aria-label="Cooking timer">${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}</h2><form data-form="cook-timer"><div class="field-grid">${field("Timer minutes", "minutes", Math.max(1, Math.ceil(seconds / 60)), "number", 'min="1" max="180" step="1" required')}<button class="btn btn-secondary">Set timer</button></div></form><div class="actions">${button(c.running ? "Pause timer" : "Start timer", "timer-wall")}${c.step ? button("Previous step", "cook-prev") : ""}</div><p class="details">Timer resumes from its saved deadline. Check food doneness yourself; this timer does not verify safety.</p></section><div class="cook-primary-action">${button(c.step === r.steps.length - 1 ? "Review ingredients used" : "Next step", "cook-next", r.id, "btn-primary")}${button("Cancel session", "cook-cancel-ask", "", "btn-quiet")}</div>`
+      `<section class="card cooking-progress"><div class="step-dots" aria-label="Step ${c.step + 1} of ${r.steps.length}">${r.steps.map((_, i) => `<span class="${i <= c.step ? "is-done" : ""}"></span>`).join("")}</div><p>${servingText(c.servings)} · planned amounts frozen at preparation</p></section><section class="card timer-card"><p class="eyebrow">YOUR COOKING TIMER</p><h2 data-timer role="timer" aria-label="Cooking timer">${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}</h2><form data-form="cook-timer"><div class="field-grid">${field("Timer minutes", "minutes", Math.max(1, Math.ceil(seconds / 60)), "number", 'min="1" max="180" step="1" required')}<button class="btn btn-secondary">Set timer</button></div></form><div class="actions">${button(c.running ? "Pause timer" : "Start timer", "timer-wall")}${c.step ? button("Previous step", "cook-prev") : ""}</div><p class="details">Timer resumes from its saved deadline. Check food doneness yourself; this timer does not verify safety.</p></section><div class="cook-primary-action">${button(c.step === r.steps.length - 1 ? "Review ingredients used" : "Next step", "cook-next", r.id, "btn-primary")}${button("Ask Zara about this step", "go", "assistant")}${button("Cancel session", "cook-cancel-ask", "", "btn-quiet")}</div>`
     );
   }
   function preparationView() {
@@ -581,68 +610,103 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         )}<p class="details">Filters use catalog ingredients, not verified product labels. Review packaged ingredients and preparation conditions yourself.</p></fieldset><fieldset><legend>Available tools</legend>${D.tools.map((x) => `<label class="checkbox-field"><input type="checkbox" name="tool" value="${x.id}"${S.tools[x.id] ? " checked" : ""}>${esc(x.name)}</label>`).join("")}</fieldset><button class="btn btn-primary">Save preferences</button></form>`
     );
   }
-  function assistantAnswer(q) {
-    if (S.cooking && /step|next|help|how|heat|cooking/i.test(q)) {
-      const r = recipe(S.cooking.rid),
-        step = r.steps[S.cooking.step];
-      return `${r.name}, step ${S.cooking.step + 1}: ${step.title}. ${step.text} Return to cooking to continue.`;
-    }
-    const text = q.toLowerCase(),
-      ready = D.recipes.filter((r) => assessment(r).ready),
-      expiring = Object.values(S.items).filter(
-        (x) => x.qty > 0 && daysLeft(x) !== null && daysLeft(x) <= 2,
-      );
-    if (/expir|soon|fresh/.test(text))
-      return expiring.length
-        ? `Use ${expiring.map((x) => x.name).join(" and ")} soon.`
-        : "Nothing reviewed expires within two days.";
-    if (/buy|shop|missing/.test(text))
-      return S.shopping.length
-        ? `Shopping list: ${S.shopping.map((x) => S.items[x.id]?.name).join(", ")}.`
-        : "Shopping list is clear.";
-    if (/cook|recipe|dinner|meal/.test(text))
-      return ready.length
-        ? `You can make ${ready.map((x) => x.name).join(", ")}. Open Cook to review servings and swaps.`
-        : "No complete match yet. Open Cook to see missing stock or tools.";
-    return "I can help with recipes, use-soon ingredients, or your shopping list. This response is a fixed local script.";
-  }
   function assistantView() {
-    const expiring = Object.entries(S.items)
-        .filter(
-          ([, x]) => x.qty > 0 && daysLeft(x) !== null && daysLeft(x) <= 2,
-        )
-        .map(([, x]) => x.name),
-      ready = D.recipes.filter((r) => assessment(r).ready);
-    const tips = [
-      expiring.length
-        ? `Use ${expiring.join(" and ")} soon.`
-        : "No reviewed ingredient expires within two days.",
-      ready.length
-        ? `${ready[0].name} is ready from current stock.`
-        : "No recipe fully matches current stock and tools.",
-      S.shopping.length
-        ? `${S.shopping.length} item${S.shopping.length === 1 ? "" : "s"} waiting on shopping list.`
-        : "Shopping list is clear.",
-    ];
+    const inventory = Object.values(S.items),
+      connected = Boolean(scanConfig.apiUrl && scanConfig.deviceToken);
+    const back = S.cooking
+      ? S.cooking.phase === "review"
+        ? "review"
+        : S.cooking.phase === "prep"
+          ? "recipe"
+          : "cooking"
+      : "";
     return (
       heading(
-        "SCRIPTED ASSISTANT",
+        "LIVE ASSISTANT",
         "Zara",
-        "Zara uses a local script. Live AI and voice assistance arrive in a later milestone.",
+        "Kitchen advice powered by Gemini. Review advice before acting.",
       ) +
-      (S.cooking
-        ? `<section class="card"><p class="eyebrow">CURRENT RECIPE</p><h2>${esc(recipe(S.cooking.rid).name)}</h2>${button("Back to cooking", "go", "cooking", "btn-primary")}</section>`
+      (back
+        ? `<section class="card"><b>${esc(recipe(S.cooking.rid).name)} · ${esc(S.cooking.phase)}</b><p>Advice only during an active session. For substitutions, cancel and replan preparation.</p>${button("Back to current session", "cook-resume")}</section>`
         : "") +
-      `<article class="chef-card card"><img class="avatar" src="images/zara-96.webp" alt="Zara"><div><b>Kitchen check-in</b><p>${esc(tips[0])}</p></div></article><section class="card"><h2>Useful now</h2><ul class="feature-list">${tips.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>${ready.length ? button(`Open ${ready[0].name}`, "recipe", ready[0].id, "btn-primary") : button("Browse cookbook", "go", "cook")}</section><section class="card"><h2>Ask Zara</h2><form data-form="assistant">${errors()}${field("Question", "question", "", "text", 'maxlength="140" placeholder="What can I cook tonight?" required')}<div class="actions"><button class="btn btn-primary">Send question</button>${button("Use sample voice transcript", "assistant-voice")}</div></form>${S.chat
-        .slice(-3)
+      `<section class="card"><h2>Connection</h2><p>${connected ? "Connection saved · Gemini" : "Connection needed"}</p>${button("Scan connection", "scan-settings")}<p class="details">On Send, inventory, current recipe, preferences, tools and the latest six exchanges go to Gemini through your paired server. Conversation stays on this device; backups include saved conversation. No microphone is used.</p><p>${inventory.filter((x) => x.qty > 0).length} stocked items · ${inventory.filter((x) => !x.ingredientId).length} unlinked items${S.cooking ? ` · step ${S.cooking.step + 1}` : " · no active cooking session"}</p></section>
+      <section class="card"><h2>Ask Zara</h2><div class="actions">${["What can I cook?", "Help with the current step", "What can I substitute?", "What should I use soon?"].map((q, i) => button(q, "assistant-suggestion", String(i), "btn-quiet")).join("")}</div><form data-form="assistant" aria-busy="${Boolean(assistantAbort)}"><label for="assistant-question">Question</label><textarea id="assistant-question" name="question" maxlength="2000" rows="3" required aria-describedby="assistant-status"${assistantAbort ? " readonly" : ""}>${esc(assistantDraft)}</textarea><p id="assistant-status" role="status" aria-live="polite">${esc(assistantAbort ? "Sending kitchen context…" : assistantError || "Send only when ready to share context.")}</p><div class="actions"><button class="btn btn-primary"${assistantAbort || !connected ? " disabled" : ""}>${assistantError ? "Retry question" : "Send question"}</button>${assistantAbort ? button("Cancel request", "assistant-cancel") : ""}</div></form>
+      ${assistantReply ? `<section class="assistant-live"><h3>Live Gemini reply</h3><p class="assistant-answer">${esc(assistantReply.answer)}</p>${assistantReply.warnings.map((x) => `<p class="notice notice-warning">${esc(x)}</p>`).join("")}${assistantReply.proposals.map((x, i) => `<article class="card assistant-proposal"><h3>${esc(x.type === "set_quantity" ? S.items[x.itemId]?.name : recipe(x.recipeId).name)}</h3><p>${esc(x.reason)}</p>${button("Review proposed change", "assistant-review", String(i))}</article>`).join("")}</section>` : ""}
+      ${S.chat
+        .filter(
+          (x) =>
+            !assistantReply ||
+            x.a !== assistantReply.answer ||
+            x !== S.chat.at(-1),
+        )
+        .slice(-20)
+        .reverse()
         .map(
           (x) =>
-            `<div class="chat-bubble"><b>${esc(x.q)}</b><p>${esc(x.a)}</p></div>`,
+            `<article class="chat-bubble"><small>${liveChats.has(x) ? "Live Gemini exchange" : "Saved conversation"}</small><h3>${esc(x.q)}</h3><p class="assistant-answer">${esc(x.a)}</p></article>`,
         )
         .join(
           "",
-        )}<p class="details">Voice control inserts a fixed sample transcript for review. Microphone is not accessed. Answers are scripted, not generated.</p></section>`
+        )}${S.chat.length ? button("Clear conversation", "assistant-clear", "", "btn-quiet") : ""}</section>`
     );
+  }
+  async function sendAssistant(question) {
+    if (assistantAbort) return;
+    assistantDraft = question.trim();
+    const sentQuestion = assistantDraft;
+    assistantError = "";
+    assistantReply = null;
+    assistantReview = null;
+    try {
+      assistantContext = buildAssistantContext(S);
+    } catch {
+      assistantError =
+        "Kitchen context could not be prepared. Review saved inventory and preferences.";
+      render();
+      return;
+    }
+    const context = assistantContext,
+      epoch = ++assistantEpoch,
+      controller = new AbortController();
+    assistantAbort = controller;
+    render();
+    try {
+      const reply = await requestAssistantReply({
+        config: scanConfig,
+        question: sentQuestion,
+        history: S.chat,
+        context,
+        signal: controller.signal,
+      });
+      if (
+        epoch !== assistantEpoch ||
+        JSON.stringify(buildAssistantContext(S)) !== JSON.stringify(context)
+      )
+        return;
+      assistantAbort = null;
+      assistantReply = reply;
+      const entry = { q: sentQuestion, a: reply.answer };
+      if (
+        await commit(() => {
+          S.chat = [...S.chat, entry].slice(-20);
+        }, "Zara replied.")
+      ) {
+        liveChats.add(entry);
+        assistantDraft = "";
+        assistantReply = reply;
+        assistantContext = context;
+      }
+    } catch (error) {
+      if (epoch === assistantEpoch) {
+        assistantAbort = null;
+        assistantError = error.message;
+      }
+    } finally {
+      if (epoch === assistantEpoch || !assistantAbort) {
+        assistantAbort = null;
+        render();
+      }
+    }
   }
   const screens = {
     kitchen: kitchenView,
@@ -952,44 +1016,13 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
 
   document.addEventListener(
     "click",
-    (event) => {
-      const el = event.target.closest('[data-action="assistant-voice"]');
-      if (!el) return;
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      const input = $("[name='question']", el.closest("form"));
-      if (input) {
-        input.value = "What can I cook with what I have?";
-        input.focus();
-      }
-      announce(
-        "Sample transcript ready for review. Microphone was not accessed.",
-      );
-    },
-    true,
-  );
-
-  document.addEventListener(
-    "click",
     async (event) => {
       const el = event.target.closest("[data-action]");
       if (!el) return;
       const action = el.dataset.action;
-      if (!["timer-wall", "assistant-voice"].includes(action)) return;
+      if (action !== "timer-wall") return;
       event.preventDefault();
       event.stopImmediatePropagation();
-      if (action === "assistant-voice") {
-        const q = "What can I cook with what I have?";
-        S.chat.push({
-          q: `Sample voice transcript: ${q}`,
-          a: assistantAnswer(q),
-        });
-        backgroundSave();
-        render();
-        return announce(
-          "Sample transcript added. Microphone was not accessed.",
-        );
-      }
       if (operationBusy || !S.cooking || S.cooking.phase !== "cooking") return;
       const oldSession = S.cooking;
       const wasRunning = oldSession.running;
@@ -1030,6 +1063,37 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     true,
   );
 
+  document.addEventListener("input", (event) => {
+    if (event.target.id === "assistant-question")
+      assistantDraft = event.target.value;
+  });
+  document.addEventListener(
+    "submit",
+    async (event) => {
+      const form = event.target.closest('form[data-form="assistant-apply"]');
+      if (!form) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      if (!form.checkValidity()) return form.reportValidity();
+      const review = assistantReview;
+      if (
+        await commit(() => {
+          S = applyAssistantProposal(S, review, { confirmed: true });
+        }, "Proposed change saved.")
+      ) {
+        closeModal();
+        render();
+      } else {
+        assistantReview = review;
+        assistantContext = review?.context ?? null;
+        formError(
+          form,
+          "Change was not saved. Retry if current stock is unchanged, or cancel and send again.",
+        );
+      }
+    },
+    true,
+  );
   document.addEventListener(
     "submit",
     async (event) => {
@@ -1128,12 +1192,8 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         }
         return;
       }
-      if (kind === "assistant") {
-        const q = String(fd.get("question")).trim();
-        S.chat.push({ q, a: assistantAnswer(q) });
-        backgroundSave();
-        return render();
-      }
+      if (kind === "assistant")
+        return sendAssistant(String(fd.get("question") || ""));
       if (kind === "budget") {
         const raw = String(fd.get("budget"));
         if (!/^\d+(?:\.\d{1,2})?$/.test(raw))
@@ -1190,6 +1250,61 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     if (el.dataset.route) return navigate(el.dataset.route);
     const a = el.dataset.action,
       id = el.dataset.id || "";
+    if (a === "assistant-cancel") {
+      cancelAssistant();
+      assistantError = "Request cancelled. Your question is kept.";
+      return render();
+    }
+    if (a === "assistant-suggestion" || a === "assistant-prompt") {
+      if (assistantAbort) return;
+      const suggestions = [
+        "What can I cook?",
+        "Help with the current step",
+        "What can I substitute?",
+        "What should I use soon?",
+      ];
+      assistantDraft = suggestions[Number(id)] || el.textContent.trim();
+      const input = $("#assistant-question");
+      if (input && !assistantAbort) {
+        input.value = assistantDraft;
+        input.focus();
+      }
+      return;
+    }
+    if (a === "assistant-clear") {
+      if (
+        await commit(() => {
+          S.chat = [];
+        }, "Conversation cleared.")
+      ) {
+        assistantDraft = "";
+        render();
+      }
+      return;
+    }
+    if (a === "assistant-review") {
+      try {
+        const proposal = assistantReply?.proposals[Number(id)];
+        const review = reviewAssistantProposal(S, proposal, {
+          context: assistantContext,
+        });
+        const beforeAfter =
+          proposal.type === "set_quantity"
+            ? `${S.items[proposal.itemId].name}: ${num(S.items[proposal.itemId].qty)} → ${num(proposal.quantity)} ${S.items[proposal.itemId].unit}`
+            : `${recipe(proposal.recipeId).name}: open recipe for ${proposal.servings} servings. Stock and tools still need review before preparation.`;
+        openModal(
+          "Review Zara proposal",
+          `<form data-form="assistant-apply">${errors()}<p>${esc(beforeAfter)}</p><p>${esc(proposal.reason)}</p><label class="checkbox-field"><input type="checkbox" name="confirmed" required><span>I checked this proposed change and confirm it.</span></label><div class="actions"><button class="btn btn-primary">Apply change</button>${button("Cancel", "modal-close")}</div></form>`,
+        );
+        assistantReview = review;
+      } catch {
+        assistantReply = null;
+        assistantError =
+          "Proposal expired or cannot be applied. Send a fresh question.";
+        render();
+      }
+      return;
+    }
     if (a === "go") {
       closeModal();
       return navigate(id);
@@ -1501,28 +1616,6 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
       }
       return;
     }
-    if (a === "assistant-prompt") {
-      const answers = {
-        cook:
-          D.recipes
-            .filter((r) => assessment(r).ready)
-            .map((r) => r.name)
-            .join(", ") || "No complete match yet.",
-        expiry:
-          Object.values(S.items)
-            .filter(
-              (x) => x.qty > 0 && daysLeft(x) !== null && daysLeft(x) <= 2,
-            )
-            .map((x) => x.name)
-            .join(", ") || "Nothing within two days.",
-        shopping:
-          S.shopping.map((x) => S.items[x.id]?.name).join(", ") ||
-          "Shopping list is clear.",
-      };
-      S.chat.push({ q: el.textContent.trim(), a: answers[id] });
-      backgroundSave();
-      return render();
-    }
     if (a === "native-camera" || a === "native-barcode") {
       try {
         const result =
@@ -1692,6 +1785,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
       setBusy(true, form);
       try {
         await saveScanConfig(candidate);
+        cancelAssistant();
         scanConfig = candidate;
       } catch (error) {
         setBusy(false, form);
@@ -1972,6 +2066,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
       return;
     }
     if (routes.includes(r)) {
+      cancelAssistant();
       S.route = r;
       backgroundSave();
       render();

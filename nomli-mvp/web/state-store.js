@@ -300,8 +300,8 @@ export function validateState(value) {
   }
   for (const entry of state.chat) {
     plain(entry, "Chat entry");
-    shortString(entry.q, "Chat question", 1000);
-    shortString(entry.a, "Chat answer", 5000);
+    shortString(entry.q, "Chat question", 2000);
+    shortString(entry.a, "Chat answer", 6000);
   }
   const mealIds = new Set();
   const mealSessionIds = new Set();

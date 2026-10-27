@@ -54,6 +54,20 @@ test("fresh install is empty, without fake activity", async () => {
   assert.deepEqual(loaded.tools, { knife: true });
 });
 
+test("M4 maximum assistant exchanges survive persistence and backup without connection secrets", async () => {
+  const storage = memory();
+  const store = createStateStore({ data, storage });
+  const saved = state({ rice: item() });
+  saved.chat = Array.from({ length: 20 }, () => ({ q: "Q".repeat(2000), a: "A".repeat(6000) }));
+  await store.save(saved);
+  assert.deepEqual((await store.load()).state.chat, saved.chat);
+  const backup = store.exportBackup(saved);
+  assert.deepEqual(store.parseBackup(backup).chat, saved.chat);
+  assert.doesNotMatch(backup, /deviceToken|apiKey|scanConfig/);
+  saved.chat[0].a += "A";
+  await assert.rejects(store.save(saved), /Chat answer/);
+});
+
 test("legacy migration retains custom items and preferences", async () => {
   const legacy = state({
     "custom-rice": item({ printedExpiry: "2027-01-02" }),

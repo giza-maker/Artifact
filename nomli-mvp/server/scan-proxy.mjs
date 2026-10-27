@@ -1,3 +1,4 @@
+import { assistantReply, AssistantHttpError, ASSISTANT_BODY_LIMIT } from "./assistant-service.mjs";
 import { reviewScanDraft } from "../web/scan-domain.js";
 import { SCAN_KINDS, SCAN_MIME_TYPES, SCAN_PROVIDER_SCHEMA, GEMINI_SCAN_SCHEMA } from "./scan-schema.mjs";
 import { PDFDocument } from "pdf-lib";
@@ -11,7 +12,7 @@ const encoder = new TextEncoder();
 
 class HttpError extends Error { constructor(status, code, message) { super(message); this.status = status; this.code = code; } }
 const json = (value, status = 200, headers = {}) => new Response(JSON.stringify(value), { status, headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store", ...headers } });
-const errorResponse = (e, headers) => json({ error: { code: e?.code || "internal_error", message: e instanceof HttpError ? e.message : "Request failed." } }, e?.status || 500, headers);
+const errorResponse = (e, headers) => json({ error: { code: e?.code || "internal_error", message: e instanceof HttpError || e instanceof AssistantHttpError ? e.message : "Request failed." } }, e?.status || 500, headers);
 
 function corsHeaders(request, env) {
   const origin = request.headers.get("origin");
@@ -48,12 +49,12 @@ async function rateLimit(request, env) {
   if (!result?.success) throw new HttpError(429, "rate_limit_exceeded", "Too many scan requests.");
 }
 
-async function readBoundedJson(request) {
+async function readBoundedJson(request, limit = BODY_LIMIT) {
   const declared = Number(request.headers.get("content-length"));
-  if (Number.isFinite(declared) && declared > BODY_LIMIT) throw new HttpError(413, "body_too_large", "Request body is too large.");
+  if (Number.isFinite(declared) && declared > limit) throw new HttpError(413, "body_too_large", "Request body is too large.");
   if (!request.body) throw new HttpError(400, "invalid_json", "JSON body required.");
   const reader = request.body.getReader(); let size = 0; const chunks = [];
-  while (true) { const { done, value } = await reader.read(); if (done) break; size += value.byteLength; if (size > BODY_LIMIT) { await reader.cancel(); throw new HttpError(413, "body_too_large", "Request body is too large."); } chunks.push(value); }
+  while (true) { const { done, value } = await reader.read(); if (done) break; size += value.byteLength; if (size > limit) { await reader.cancel(); throw new HttpError(413, "body_too_large", "Request body is too large."); } chunks.push(value); }
   const bytes = new Uint8Array(size); let offset = 0; for (const chunk of chunks) { bytes.set(chunk, offset); offset += chunk.length; }
   try { return JSON.parse(new TextDecoder("utf-8", { fatal: true }).decode(bytes)); } catch { throw new HttpError(400, "invalid_json", "Malformed JSON body."); }
 }
@@ -135,17 +136,15 @@ export function createScanHandler({ fetchImpl = globalThis.fetch } = {}) {
     let cors = {}; try {
       cors = corsHeaders(request, env);
       if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: cors });
-      const url = new URL(request.url); if (!["/api/v1/health", "/api/v1/scan-drafts"].includes(url.pathname)) throw new HttpError(404, "not_found", "Not found.");
+      const url = new URL(request.url); if (!["/api/v1/health", "/api/v1/scan-drafts", "/api/v1/assistant-replies"].includes(url.pathname)) throw new HttpError(404, "not_found", "Not found.");
       await authenticate(request, env);
-      if (url.pathname === "/api/v1/health") { if (request.method !== "GET") throw new HttpError(405, "method_not_allowed", "Method not allowed."); const provider = (env.SCAN_PROVIDER || "gemini").toLowerCase(); const supported = provider === "gemini" || provider === "openai"; const model = provider === "openai" ? env.OPENAI_MODEL || "gpt-6-luna" : provider === "gemini" ? env.GEMINI_MODEL || "gemini-3.1-flash-lite" : ""; const hasKey = provider === "openai" ? Boolean(env.OPENAI_API_KEY) : provider === "gemini" ? Boolean(env.GEMINI_API_KEY) : false; const ready = supported && hasKey && (Boolean(env.SCAN_RATE_LIMITER) || String(env.LOCAL_DEV).toLowerCase() === "true"); return json({ ready, provider, model }, 200, cors); }
+      if (url.pathname === "/api/v1/health") { if (request.method !== "GET") throw new HttpError(405, "method_not_allowed", "Method not allowed."); const provider = (env.SCAN_PROVIDER || "gemini").toLowerCase(); const supported = provider === "gemini" || provider === "openai"; const model = provider === "openai" ? env.OPENAI_MODEL || "gpt-6-luna" : provider === "gemini" ? env.GEMINI_MODEL || "gemini-3.1-flash-lite" : ""; const hasKey = provider === "openai" ? Boolean(env.OPENAI_API_KEY) : provider === "gemini" ? Boolean(env.GEMINI_API_KEY) : false; const ready = supported && hasKey && (Boolean(env.SCAN_RATE_LIMITER) || String(env.LOCAL_DEV).toLowerCase() === "true"); const assistantReady = Boolean(env.GEMINI_API_KEY) && (Boolean(env.SCAN_RATE_LIMITER) || String(env.LOCAL_DEV).toLowerCase() === "true"); return json({ ready, provider, model, assistantReady }, 200, cors); }
       if (request.method !== "POST") throw new HttpError(405, "method_not_allowed", "Method not allowed.");
       const mediaType = (request.headers.get("content-type") || "").split(";", 1)[0].trim().toLowerCase(); if (mediaType !== "application/json") throw new HttpError(415, "unsupported_media_type", "Content-Type must be application/json.");
-      await rateLimit(request, env); const input = await decodeRequest(await readBoundedJson(request)); return json({ draft: await scan(input, env, fetchImpl, request.signal) }, 200, cors);
+      await rateLimit(request, env); if (url.pathname === "/api/v1/assistant-replies") return json(await assistantReply(await readBoundedJson(request, ASSISTANT_BODY_LIMIT), env, fetchImpl, request.signal), 200, cors); const input = await decodeRequest(await readBoundedJson(request)); return json({ draft: await scan(input, env, fetchImpl, request.signal) }, 200, cors);
     } catch (e) { return errorResponse(e, cors); }
   };
 }
 
 export const fetch = createScanHandler();
 export default { fetch };
-
-
