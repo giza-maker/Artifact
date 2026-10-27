@@ -152,9 +152,17 @@ export function mountNavigation({lang='en',audience='investor',layout='chapters'
     const id=href.slice(1)||'overview';if(!ids.has(id))return;
     e.preventDefault();route(id,{push:true,focus:true});
   });
-  const restore=()=>{if(!onRestore())route(ids.has(location.hash.slice(1))?location.hash.slice(1):'overview',{scroll:true});};
+  const skipToChapter=()=>{const url=new URL(location.href);url.hash=active;history.replaceState({chapter:active},'',url);route(active,{scroll:true,focus:true});};
+  listen(document,'click',e=>{if(e.target.closest('a.skip[href="#main"]')){e.preventDefault();skipToChapter();}});
+  const restore=()=>{if(location.hash==='#main'){skipToChapter();return;}if(!onRestore())route(ids.has(location.hash.slice(1))?location.hash.slice(1):'overview',{scroll:true});};
   listen(window,'popstate',restore);
-  listen(window,'hashchange',()=>route(location.hash.slice(1),{scroll:true}));
+  listen(window,'hashchange',()=>{
+    const id=location.hash.slice(1);
+    if(id==='main'){
+      skipToChapter();return;
+    }
+    if(ids.has(id)||id==='')route(id||'overview',{scroll:true});
+  });
   let printing=false;
   listen(window,'beforeprint',()=>{printing=true;views.forEach(v=>v.hidden=false);});
   listen(window,'afterprint',()=>{if(mode==='chapters')views.forEach(v=>v.hidden=v.id!==active);printing=false;});

@@ -62,8 +62,9 @@ async function hasText(l,s){assert.ok((await l.innerText()).includes(s));}
    await page.locator('#share').click();const fallback=await page.locator('#share-link').isVisible().catch(()=>false);const shared=fallback?await page.locator('#share-link').inputValue():await page.evaluate(()=>navigator.clipboard.readText());assert.equal(shared,page.url());if(fallback)await page.keyboard.press('Escape');
    const p=await context.newPage();await loaded(p,shared);assert.equal(new URL(p.url()).hash,'#economics');assert.equal(await p.locator('html').getAttribute('dir'),'rtl');assert.equal(await p.locator('#audience').inputValue(),'partner');await p.close();await page.locator('#language').click();
   });
-  await check('RTL rerender never hides focused control',async()=>{
+  await check('RTL rerender and skip link preserve context',async()=>{
    await chapter(page,'markets');await page.locator('#language').focus();await page.locator('#language').click();assert.equal(await page.locator('html').getAttribute('dir'),'rtl');assert.equal(await page.locator('.chapter-view.is-active').getAttribute('id'),'markets');assert.equal(await page.evaluate(()=>Boolean(document.activeElement?.closest?.('.chapter-view[hidden]'))),false);await page.locator('#language').click();
+   await page.locator('.skip').focus();await page.locator('.skip').press('Enter');await page.waitForFunction(()=>location.hash==='#markets'&&document.activeElement===document.querySelector('#markets h2'));assert.equal(await page.locator('.chapter-view:visible').getAttribute('id'),'markets');
   });
   await check('audience, country, and sector selectors',async()=>{
    assert.deepEqual(await options(page.locator('#audience')),['investor','partner','builder']);for(const v of ['investor','partner','builder'])await page.locator('#audience').selectOption(v);

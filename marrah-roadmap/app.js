@@ -1,5 +1,5 @@
 import {scenarios, calculate} from './model.js';
-import {mountNavigation} from './navigation.js';
+import {mountNavigation} from './navigation.js?v=20261027-chapters-2';
 import {mountPresentation, enhanceFinance} from './presentation.js';
 import {mountStory} from './story.js';
 
