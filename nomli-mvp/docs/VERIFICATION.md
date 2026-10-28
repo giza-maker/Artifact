@@ -1,4 +1,18 @@
-# M8.3 recipe stock review — verified
+# M8.4 exact bilingual receipt — verified
+
+The supplied Carrefour receipt exposed the actual M8.3 failure: English and Arabic halves were normalized into one unknown phrase. Retail word orders and Bunch labels also lacked exact forms. All six saved names failed automatic linking despite valid quantities. Herb bunches additionally have no known gram weight; that is a distinct conversion requirement.
+
+Every explicit bilingual clause must resolve to the same cooking ingredient. Curated retail word orders, bunch packaging, localized digits and full compact forms now match; conflicting descriptions, unknown brands and preparation/formulation ambiguity do not auto-link. Existing clear unlinked stock repairs on startup or confirmed restore without rescanning. Quantities, receipt finance, explicit opt-outs, valid manual identities and frozen allocations remain protected.
+
+Recipe rows show herb bunches as present with weight needed instead of falsely describing them as absent. A compact Enter weight dialog accepts measured grams per unit using Arabic or English digits, revalidates the item snapshot and saves only gramsPerUnit. Active allocations cannot be changed. Measurement-only shortages stay out of shopping; duplicate review panels are removed. Salt can use canonical salt artwork despite an old condiment shelf category, without rewriting that category.
+
+Source dfb250b0086eb2b694a79648ff1909a21ce386de; successful CI 40744969784 (2m 57s). All 321 JavaScript tests, content/art validation, Vite build, Capacitor sync and Android compilation pass. APK 70,390,704 bytes; SHA-256 d6b1fd4da3a6803fc0e03a7a634ee207676283470dfba1400b7f62df248d892d. Retained certificate SHA-256 8c02c3045c97327f5415451feb9ccb0db326322b90d460dde9f28a7c0b559ef0; v2/v3 signatures, 16 KB alignment and ZIP CRC verified. All 111 production web assets match local dist; two empty Cordova placeholders expected. Configured secrets and QA harness absent. Published size/digest match local APK.
+
+390 × 844 browser QA used production Capacitor wrappers and the actual Android bridge with synthetic native transport. The exact six bilingual receipt lines imported without manual identity selection; confirmed spending remained EGP 243.62. Eggs, salt, ground pepper and oil immediately covered the omelette. Parsley and mint each showed one bunch in Kitchen with weight needed. Synthetic measured test values 30 g/bunch and 20 g/bunch, entered using Arabic and English digits, enabled preparation. Final review deducted 4 eggs, 0.5 parsley bunch, 0.25 mint bunch, 2 g salt, 1 g pepper and 10 ml oil; undo restored all original quantities. Unlinked saved inventory and confirmed backup restoration repaired all six names. Salt artwork was corrected. Utilities showed v0.9.4. No console errors or horizontal overflow; lower panels remained scrollable. Camera, storage and backup selection were simulated. Physical update/hardware acceptance remains a phone check.
+
+Scanner/assistant Worker d3b10002-0f5c-45f7-ae0f-afe19040bd65 remains unchanged.
+
+## Historical M8.3 recipe stock review — verified
 
 M8.2 display-category gating could reject an exact food identity (Eggs under Dairy/Other), Arabic packaging normalization differed from display normalization, backup restore skipped repair, and all active cooking previously blocked synchronization. These code counterexamples were reproduced; the latest reported physical-phone case remains unverified without its installed version and exact item/recipe data.
 
