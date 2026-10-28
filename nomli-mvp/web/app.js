@@ -1774,6 +1774,19 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
       const tile = [...form.querySelectorAll("[data-photo-line]")].find(
         (tile) => tile.dataset.photoLine === id,
       );
+      const card = tile?.closest("[data-scan-card]");
+      if (card) {
+        const visual = $("[data-scan-card-visual]", card);
+        const crop = owner.crops.get(id);
+        const category =
+          getFoodCategory(form.elements.namedItem(`category-${id}`)?.value) ||
+          inferFoodCategory(line).category;
+        if (visual)
+          visual.innerHTML = crop?.previewUrl
+            ? `<img src="${esc(crop.previewUrl)}" alt="Your ingredient crop">`
+            : categoryArtwork(category);
+        form.elements.confirmed.checked = false;
+      }
       if (tile) {
         tile.outerHTML = scanLinePhoto(line);
         [...form.querySelectorAll("[data-photo-line]")]
