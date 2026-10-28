@@ -1,3 +1,4 @@
+import { FOOD_CATEGORY_IDS, scanProviderSchema } from "../server/scan-schema.mjs";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createScanHandler } from "../server/scan-proxy.mjs";
@@ -289,7 +290,10 @@ test("opt-in food categories add only nullable whitelisted review metadata", asy
   assert.equal(draft.lines[0].ingredientId, null);
   assert.equal(draft.lines[0].storage, null);
   const category = providerBody.generationConfig.responseFormat.text.schema.properties.lines.items.properties.categoryId;
-  assert.deepEqual(category.anyOf[0].enum, ["rice_grains", "pasta", "oil", "dairy", "eggs", "meat", "poultry", "fish", "vegetables", "fruit", "legumes", "spices", "bakery", "drinks", "condiments", "other"]);
+  assert.equal(category.anyOf[0].type, "string");
+  assert.equal(Object.hasOwn(category.anyOf[0], "enum"), false);
+  for (const id of FOOD_CATEGORY_IDS) assert.ok(providerBody.contents[0].parts[1].text.includes(id));
+  assert.deepEqual(scanProviderSchema(false, false, true).properties.lines.items.properties.categoryId.anyOf[0].enum, FOOD_CATEGORY_IDS);
   assert.ok(providerBody.generationConfig.responseFormat.text.schema.properties.lines.items.required.includes("categoryId"));
   assert.match(providerBody.contents[0].parts[1].text, /editable broad food category/);
   assert.match(providerBody.contents[0].parts[1].text, /human confirmation/);

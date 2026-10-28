@@ -14,6 +14,11 @@ import {
   getFoodCategory,
   inferFoodCategory,
 } from "./food-categories.js";
+import {
+  foodArtworkStyle,
+  getCategoryArtwork,
+  getFoodArtwork,
+} from "./food-art.js";
 import { renderScanReview } from "./scan-review-view.js";
 import { initScanReviewWizard } from "./scan-review-wizard.js";
 import "./scan-review.css";
@@ -497,11 +502,22 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
   }
   function itemThumbnail(id, item) {
     const fallback = photo(id, item);
-    return `<span class="ingredient-thumb${fallback ? " has-photo" : ""}">${fallback ? `<img src="${esc(fallback)}" alt="" loading="lazy" decoding="async">` : categoryArtwork(inferFoodCategory(item).category)}${item.photoId ? `<img data-photo-id="${esc(item.photoId)}" alt="" hidden decoding="async">` : ""}</span>`;
+    return `<span class="ingredient-thumb${fallback ? " has-photo" : ""}">${fallback ? `<img src="${esc(fallback)}" alt="" loading="lazy" decoding="async">` : categoryArtwork(inferFoodCategory(item).category, item)}${item.photoId ? `<img data-photo-id="${esc(item.photoId)}" alt="" hidden decoding="async">` : ""}</span>`;
   }
-  function categoryArtwork(category) {
-    const index = category.atlasIndex;
-    return `<span class="food-category-art" data-food-art="${category.id}" style="--food-x:${((index % 4) * 100) / 3}%;--food-y:${(Math.floor(index / 4) * 100) / 3}%" aria-hidden="true"></span>`;
+  function categoryArtwork(category, item) {
+    const art = item
+      ? getFoodArtwork({ ...item, categoryId: category?.id })
+      : getCategoryArtwork(category);
+    return `<span class="food-category-art" data-food-art="${esc(art.categoryId)}" data-food-art-id="${esc(art.id)}" style="${esc(foodArtworkStyle(art))}" aria-hidden="true"></span>`;
+  }
+  function editedArtworkItem(item, name) {
+    const editedName = String(name ?? "");
+    return {
+      ...item,
+      name: editedName,
+      ingredientId:
+        editedName === String(item?.name ?? "") ? item?.ingredientId : null,
+    };
   }
   function categoryField(item, name = "categoryId") {
     const category = inferFoodCategory(item).category;
@@ -1286,7 +1302,10 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         const category =
           getFoodCategory(fd.get(`category-${line.lineId}`)) ||
           getFoodCategory("other");
-        return `<button type="button" class="scan-summary-item${keep ? "" : " is-skipped"}" data-scan-jump="${index}" value="${index}">${categoryArtwork(category)}<span><b dir="auto">${esc(fd.get(`name-${line.lineId}`) || line.name || "Unnamed item")}</b><small>${keep ? `<bdi dir="ltr">${esc(fd.get(`quantity-${line.lineId}`))} ${esc(fd.get(`unit-${line.lineId}`))}</bdi> · ${esc(fd.get(`storage-${line.lineId}`))}` : "Skipped"}</small></span><span class="scan-summary-edit">Edit</span></button>`;
+        const name = String(
+          fd.get(`name-${line.lineId}`) || line.name || "Unnamed item",
+        );
+        return `<button type="button" class="scan-summary-item${keep ? "" : " is-skipped"}" data-scan-jump="${index}" value="${index}">${categoryArtwork(category, editedArtworkItem(line, name))}<span><b dir="auto">${esc(name)}</b><small>${keep ? `<bdi dir="ltr">${esc(fd.get(`quantity-${line.lineId}`))} ${esc(fd.get(`unit-${line.lineId}`))}</bdi> · ${esc(fd.get(`storage-${line.lineId}`))}` : "Skipped"}</small></span><span class="scan-summary-edit">Edit</span></button>`;
       })
       .join("");
     const saveButton = $("[data-scan-save]", form);
@@ -1784,7 +1803,13 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         if (visual)
           visual.innerHTML = crop?.previewUrl
             ? `<img src="${esc(crop.previewUrl)}" alt="Your ingredient crop">`
-            : categoryArtwork(category);
+            : categoryArtwork(
+                category,
+                editedArtworkItem(
+                  line,
+                  form.elements.namedItem(`name-${id}`)?.value || line.name,
+                ),
+              );
         form.elements.confirmed.checked = false;
       }
       if (tile) {
@@ -2308,8 +2333,15 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         const category = getFoodCategory(e.target.value);
         if (!category) return;
         const visual = $("[data-scan-card-visual]", card);
-        if (visual && !visual.querySelector("img"))
-          visual.innerHTML = categoryArtwork(category);
+        if (visual && !visual.querySelector("img")) {
+          const line = scanDraft?.lines?.find(
+            (line) => String(line.lineId) === String(card.dataset.lineId),
+          );
+          visual.innerHTML = categoryArtwork(
+            category,
+            editedArtworkItem(line, $('input[name^="name-"]', card)?.value),
+          );
+        }
         const storage = $('select[name^="storage-"]', card);
         if (storage && !storage.dataset.userTouched)
           storage.value = inferFoodCategory({
@@ -2317,6 +2349,19 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
             categoryId: category.id,
           }).suggestedStorage;
         initMobileSelects(card);
+      }
+      const itemForm = e.target.closest('form[data-form="item"]');
+      if (itemForm) {
+        const preview = $(".photo-editor-preview .ingredient-thumb", itemForm);
+        const category = getFoodCategory(e.target.value);
+        if (preview && category && !preview.querySelector("img"))
+          preview.innerHTML = categoryArtwork(
+            category,
+            editedArtworkItem(
+              S.items[itemForm.dataset.id],
+              itemForm.elements.name?.value,
+            ),
+          );
       }
       return;
     }
@@ -2459,6 +2504,21 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
       if (select && !select.dataset.userTouched) {
         select.value = inferFoodCategory({ name: e.target.value }).category.id;
         initMobileSelects(itemFormElement);
+      }
+      const preview = $(
+        ".photo-editor-preview .ingredient-thumb",
+        itemFormElement,
+      );
+      if (preview && !preview.querySelector("img")) {
+        const category =
+          getFoodCategory(select?.value) || getFoodCategory("other");
+        preview.innerHTML = categoryArtwork(
+          category,
+          editedArtworkItem(
+            S.items[itemFormElement.dataset.id],
+            e.target.value,
+          ),
+        );
       }
     }
     if (e.target.matches('[data-form="scan-import"] input')) {

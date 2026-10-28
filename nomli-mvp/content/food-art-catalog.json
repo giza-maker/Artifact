@@ -1,0 +1,3373 @@
+{
+  "version": 1,
+  "atlases": [
+    {
+      "id": "vegetables",
+      "src": "images/food/atlases/vegetables.webp",
+      "columns": 4,
+      "rows": 4
+    },
+    {
+      "id": "greens",
+      "src": "images/food/atlases/greens.webp",
+      "columns": 4,
+      "rows": 4
+    },
+    {
+      "id": "fruit",
+      "src": "images/food/atlases/fruit.webp",
+      "columns": 4,
+      "rows": 4
+    },
+    {
+      "id": "fruit_dates",
+      "src": "images/food/atlases/fruit_dates.webp",
+      "columns": 4,
+      "rows": 4
+    },
+    {
+      "id": "grains_pasta",
+      "src": "images/food/atlases/grains_pasta.webp",
+      "columns": 4,
+      "rows": 4
+    },
+    {
+      "id": "pulses_nuts",
+      "src": "images/food/atlases/pulses_nuts.webp",
+      "columns": 4,
+      "rows": 4
+    },
+    {
+      "id": "dairy_eggs",
+      "src": "images/food/atlases/dairy_eggs.webp",
+      "columns": 4,
+      "rows": 4
+    },
+    {
+      "id": "meat_poultry",
+      "src": "images/food/atlases/meat_poultry.webp",
+      "columns": 4,
+      "rows": 4
+    },
+    {
+      "id": "seafood",
+      "src": "images/food/atlases/seafood.webp",
+      "columns": 4,
+      "rows": 4
+    },
+    {
+      "id": "bakery_breakfast",
+      "src": "images/food/atlases/bakery_breakfast.webp",
+      "columns": 4,
+      "rows": 4
+    },
+    {
+      "id": "pantry_canned",
+      "src": "images/food/atlases/pantry_canned.webp",
+      "columns": 4,
+      "rows": 4
+    },
+    {
+      "id": "spices_baking",
+      "src": "images/food/atlases/spices_baking.webp",
+      "columns": 4,
+      "rows": 4
+    },
+    {
+      "id": "drinks",
+      "src": "images/food/atlases/drinks.webp",
+      "columns": 4,
+      "rows": 4
+    },
+    {
+      "id": "frozen_ready",
+      "src": "images/food/atlases/frozen_ready.webp",
+      "columns": 4,
+      "rows": 4
+    },
+    {
+      "id": "snacks_sweets",
+      "src": "images/food/atlases/snacks_sweets.webp",
+      "columns": 4,
+      "rows": 4
+    },
+    {
+      "id": "mena_pantry",
+      "src": "images/food/atlases/mena_pantry.webp",
+      "columns": 4,
+      "rows": 4
+    },
+    {
+      "id": "baking_spice_extras",
+      "src": "images/food/atlases/baking_spice_extras.webp",
+      "columns": 4,
+      "rows": 4
+    }
+  ],
+  "items": [
+    {
+      "id": "tomato",
+      "en": "Tomato",
+      "ar": "طماطم",
+      "categoryIds": ["vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "vegetables",
+      "cellIndex": 0
+    },
+    {
+      "id": "cucumber",
+      "en": "Cucumber",
+      "ar": "خيار",
+      "categoryIds": ["vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "vegetables",
+      "cellIndex": 1
+    },
+    {
+      "id": "yellow_onion",
+      "en": "Yellow Onion",
+      "ar": "بصل أصفر",
+      "categoryIds": ["vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "vegetables",
+      "cellIndex": 2
+    },
+    {
+      "id": "red_onion",
+      "en": "Red Onion",
+      "ar": "بصل أحمر",
+      "categoryIds": ["vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "vegetables",
+      "cellIndex": 3
+    },
+    {
+      "id": "garlic",
+      "en": "Garlic",
+      "ar": "ثوم",
+      "categoryIds": ["vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "vegetables",
+      "cellIndex": 4
+    },
+    {
+      "id": "carrot",
+      "en": "Carrot",
+      "ar": "جزر",
+      "categoryIds": ["vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "vegetables",
+      "cellIndex": 5
+    },
+    {
+      "id": "potato",
+      "en": "Potato",
+      "ar": "بطاطس",
+      "categoryIds": ["vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "vegetables",
+      "cellIndex": 6
+    },
+    {
+      "id": "sweet_potato",
+      "en": "Sweet Potato",
+      "ar": "بطاطا حلوة",
+      "categoryIds": ["vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "vegetables",
+      "cellIndex": 7
+    },
+    {
+      "id": "bell_pepper",
+      "en": "Bell Pepper",
+      "ar": "فلفل رومي",
+      "categoryIds": ["vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "vegetables",
+      "cellIndex": 8
+    },
+    {
+      "id": "green_chili",
+      "en": "Green Chili",
+      "ar": "فلفل أخضر حار",
+      "categoryIds": ["vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "vegetables",
+      "cellIndex": 9
+    },
+    {
+      "id": "eggplant",
+      "en": "Eggplant",
+      "ar": "باذنجان",
+      "categoryIds": ["vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "vegetables",
+      "cellIndex": 10
+    },
+    {
+      "id": "zucchini",
+      "en": "Zucchini",
+      "ar": "كوسة",
+      "categoryIds": ["vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "vegetables",
+      "cellIndex": 11
+    },
+    {
+      "id": "broccoli",
+      "en": "Broccoli",
+      "ar": "بروكلي",
+      "categoryIds": ["vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "vegetables",
+      "cellIndex": 12
+    },
+    {
+      "id": "cauliflower",
+      "en": "Cauliflower",
+      "ar": "قرنبيط",
+      "categoryIds": ["vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "vegetables",
+      "cellIndex": 13
+    },
+    {
+      "id": "cabbage",
+      "en": "Cabbage",
+      "ar": "كرنب",
+      "categoryIds": ["vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "vegetables",
+      "cellIndex": 14
+    },
+    {
+      "id": "mushroom",
+      "en": "Mushroom",
+      "ar": "مشروم",
+      "categoryIds": ["vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "vegetables",
+      "cellIndex": 15
+    },
+    {
+      "id": "lettuce",
+      "en": "Lettuce",
+      "ar": "خس",
+      "categoryIds": ["vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "greens",
+      "cellIndex": 0
+    },
+    {
+      "id": "spinach",
+      "en": "Spinach",
+      "ar": "سبانخ",
+      "categoryIds": ["vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "greens",
+      "cellIndex": 1
+    },
+    {
+      "id": "arugula",
+      "en": "Arugula",
+      "ar": "جرجير",
+      "categoryIds": ["vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "greens",
+      "cellIndex": 2
+    },
+    {
+      "id": "kale",
+      "en": "Kale",
+      "ar": "كرنب أجعد",
+      "categoryIds": ["vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "greens",
+      "cellIndex": 3
+    },
+    {
+      "id": "parsley",
+      "en": "Parsley",
+      "ar": "بقدونس",
+      "categoryIds": ["vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "greens",
+      "cellIndex": 4
+    },
+    {
+      "id": "cilantro",
+      "en": "Cilantro",
+      "ar": "كزبرة خضراء",
+      "categoryIds": ["vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "greens",
+      "cellIndex": 5
+    },
+    {
+      "id": "mint",
+      "en": "Mint",
+      "ar": "نعناع",
+      "categoryIds": ["vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "greens",
+      "cellIndex": 6
+    },
+    {
+      "id": "basil",
+      "en": "Basil",
+      "ar": "ريحان",
+      "categoryIds": ["vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "greens",
+      "cellIndex": 7
+    },
+    {
+      "id": "dill",
+      "en": "Dill",
+      "ar": "شبت",
+      "categoryIds": ["vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "greens",
+      "cellIndex": 8
+    },
+    {
+      "id": "green_onion",
+      "en": "Green Onion",
+      "ar": "بصل أخضر",
+      "categoryIds": ["vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "greens",
+      "cellIndex": 9
+    },
+    {
+      "id": "leek",
+      "en": "Leek",
+      "ar": "كراث",
+      "categoryIds": ["vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "greens",
+      "cellIndex": 10
+    },
+    {
+      "id": "celery",
+      "en": "Celery",
+      "ar": "كرفس",
+      "categoryIds": ["vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "greens",
+      "cellIndex": 11
+    },
+    {
+      "id": "okra",
+      "en": "Okra",
+      "ar": "بامية",
+      "categoryIds": ["vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "greens",
+      "cellIndex": 12
+    },
+    {
+      "id": "green_beans",
+      "en": "Green Beans",
+      "ar": "فاصوليا خضراء",
+      "categoryIds": ["vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "greens",
+      "cellIndex": 13
+    },
+    {
+      "id": "peas",
+      "en": "Peas",
+      "ar": "بسلة",
+      "categoryIds": ["vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "greens",
+      "cellIndex": 14
+    },
+    {
+      "id": "corn",
+      "en": "Corn",
+      "ar": "ذرة",
+      "categoryIds": ["vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "greens",
+      "cellIndex": 15
+    },
+    {
+      "id": "apple",
+      "en": "Apple",
+      "ar": "تفاح",
+      "categoryIds": ["fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "fruit",
+      "cellIndex": 0
+    },
+    {
+      "id": "banana",
+      "en": "Banana",
+      "ar": "موز",
+      "categoryIds": ["fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "fruit",
+      "cellIndex": 1
+    },
+    {
+      "id": "orange",
+      "en": "Orange",
+      "ar": "برتقال",
+      "categoryIds": ["fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "fruit",
+      "cellIndex": 2
+    },
+    {
+      "id": "mandarin",
+      "en": "Mandarin",
+      "ar": "يوسفي",
+      "categoryIds": ["fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "fruit",
+      "cellIndex": 3
+    },
+    {
+      "id": "lemon",
+      "en": "Lemon",
+      "ar": "ليمون أصفر",
+      "categoryIds": ["fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "fruit",
+      "cellIndex": 4
+    },
+    {
+      "id": "lime",
+      "en": "Lime",
+      "ar": "ليمون أخضر",
+      "categoryIds": ["fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "fruit",
+      "cellIndex": 5
+    },
+    {
+      "id": "grapes",
+      "en": "Grapes",
+      "ar": "عنب",
+      "categoryIds": ["fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "fruit",
+      "cellIndex": 6
+    },
+    {
+      "id": "strawberry",
+      "en": "Strawberry",
+      "ar": "فراولة",
+      "categoryIds": ["fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "fruit",
+      "cellIndex": 7
+    },
+    {
+      "id": "blueberry",
+      "en": "Blueberry",
+      "ar": "توت أزرق",
+      "categoryIds": ["fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "fruit",
+      "cellIndex": 8
+    },
+    {
+      "id": "raspberry",
+      "en": "Raspberry",
+      "ar": "توت أحمر",
+      "categoryIds": ["fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "fruit",
+      "cellIndex": 9
+    },
+    {
+      "id": "blackberry",
+      "en": "Blackberry",
+      "ar": "توت أسود",
+      "categoryIds": ["fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "fruit",
+      "cellIndex": 10
+    },
+    {
+      "id": "watermelon",
+      "en": "Watermelon",
+      "ar": "بطيخ",
+      "categoryIds": ["fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "fruit",
+      "cellIndex": 11
+    },
+    {
+      "id": "melon",
+      "en": "Melon",
+      "ar": "شمام",
+      "categoryIds": ["fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "fruit",
+      "cellIndex": 12
+    },
+    {
+      "id": "pineapple",
+      "en": "Pineapple",
+      "ar": "أناناس",
+      "categoryIds": ["fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "fruit",
+      "cellIndex": 13
+    },
+    {
+      "id": "mango",
+      "en": "Mango",
+      "ar": "مانجو",
+      "categoryIds": ["fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "fruit",
+      "cellIndex": 14
+    },
+    {
+      "id": "kiwi",
+      "en": "Kiwi",
+      "ar": "كيوي",
+      "categoryIds": ["fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "fruit",
+      "cellIndex": 15
+    },
+    {
+      "id": "dates",
+      "en": "Dates",
+      "ar": "تمر",
+      "categoryIds": ["fruit", "dried_fruit"],
+      "aliases": {
+        "en": ["dates", "date fruit"],
+        "ar": ["تمر", "تمور", "بلح"]
+      },
+      "atlasId": "fruit_dates",
+      "cellIndex": 0
+    },
+    {
+      "id": "fig",
+      "en": "Fig",
+      "ar": "تين",
+      "categoryIds": ["fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "fruit_dates",
+      "cellIndex": 1
+    },
+    {
+      "id": "pomegranate",
+      "en": "Pomegranate",
+      "ar": "رمان",
+      "categoryIds": ["fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "fruit_dates",
+      "cellIndex": 2
+    },
+    {
+      "id": "peach",
+      "en": "Peach",
+      "ar": "خوخ",
+      "categoryIds": ["fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "fruit_dates",
+      "cellIndex": 3
+    },
+    {
+      "id": "nectarine",
+      "en": "Nectarine",
+      "ar": "نكتارين",
+      "categoryIds": ["fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "fruit_dates",
+      "cellIndex": 4
+    },
+    {
+      "id": "apricot",
+      "en": "Apricot",
+      "ar": "مشمش",
+      "categoryIds": ["fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "fruit_dates",
+      "cellIndex": 5
+    },
+    {
+      "id": "plum",
+      "en": "Plum",
+      "ar": "برقوق",
+      "categoryIds": ["fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "fruit_dates",
+      "cellIndex": 6
+    },
+    {
+      "id": "pear",
+      "en": "Pear",
+      "ar": "كمثرى",
+      "categoryIds": ["fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "fruit_dates",
+      "cellIndex": 7
+    },
+    {
+      "id": "guava",
+      "en": "Guava",
+      "ar": "جوافة",
+      "categoryIds": ["fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "fruit_dates",
+      "cellIndex": 8
+    },
+    {
+      "id": "papaya",
+      "en": "Papaya",
+      "ar": "بابايا",
+      "categoryIds": ["fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "fruit_dates",
+      "cellIndex": 9
+    },
+    {
+      "id": "avocado",
+      "en": "Avocado",
+      "ar": "أفوكادو",
+      "categoryIds": ["fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "fruit_dates",
+      "cellIndex": 10
+    },
+    {
+      "id": "coconut",
+      "en": "Coconut",
+      "ar": "جوز هند",
+      "categoryIds": ["fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "fruit_dates",
+      "cellIndex": 11
+    },
+    {
+      "id": "passion_fruit",
+      "en": "Passion Fruit",
+      "ar": "باشن فروت",
+      "categoryIds": ["fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "fruit_dates",
+      "cellIndex": 12
+    },
+    {
+      "id": "cherry",
+      "en": "Cherry",
+      "ar": "كرز",
+      "categoryIds": ["fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "fruit_dates",
+      "cellIndex": 13
+    },
+    {
+      "id": "persimmon",
+      "en": "Persimmon",
+      "ar": "كاكا",
+      "categoryIds": ["fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "fruit_dates",
+      "cellIndex": 14
+    },
+    {
+      "id": "dried_fruit_mix",
+      "en": "Dried Fruit Mix",
+      "ar": "فواكه مجففة مشكلة",
+      "categoryIds": ["fruit", "dried_fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "fruit_dates",
+      "cellIndex": 15
+    },
+    {
+      "id": "basmati_rice",
+      "en": "Basmati Rice",
+      "ar": "أرز بسمتي",
+      "categoryIds": ["rice_grains"],
+      "aliases": {
+        "en": ["basmati", "rice"],
+        "ar": ["أرز بسمتي", "رز بسمتي", "أرز الساعة", "رز الساعة"]
+      },
+      "atlasId": "grains_pasta",
+      "cellIndex": 0
+    },
+    {
+      "id": "brown_rice",
+      "en": "Brown Rice",
+      "ar": "أرز بني",
+      "categoryIds": ["rice_grains"],
+      "aliases": {
+        "en": ["brown rice"],
+        "ar": ["أرز بني", "رز بني"]
+      },
+      "atlasId": "grains_pasta",
+      "cellIndex": 1
+    },
+    {
+      "id": "oats",
+      "en": "Oats",
+      "ar": "شوفان",
+      "categoryIds": ["rice_grains"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "grains_pasta",
+      "cellIndex": 2
+    },
+    {
+      "id": "bulgur",
+      "en": "Bulgur",
+      "ar": "برغل",
+      "categoryIds": ["rice_grains"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "grains_pasta",
+      "cellIndex": 3
+    },
+    {
+      "id": "couscous",
+      "en": "Couscous",
+      "ar": "كسكسي",
+      "categoryIds": ["rice_grains"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "grains_pasta",
+      "cellIndex": 4
+    },
+    {
+      "id": "quinoa",
+      "en": "Quinoa",
+      "ar": "كينوا",
+      "categoryIds": ["rice_grains"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "grains_pasta",
+      "cellIndex": 5
+    },
+    {
+      "id": "semolina",
+      "en": "Semolina",
+      "ar": "سميد",
+      "categoryIds": ["rice_grains"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "grains_pasta",
+      "cellIndex": 6
+    },
+    {
+      "id": "white_flour",
+      "en": "White Flour",
+      "ar": "دقيق أبيض",
+      "categoryIds": ["rice_grains", "baking"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "grains_pasta",
+      "cellIndex": 7
+    },
+    {
+      "id": "whole_wheat_flour",
+      "en": "Whole Wheat Flour",
+      "ar": "دقيق قمح كامل",
+      "categoryIds": ["rice_grains", "baking"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "grains_pasta",
+      "cellIndex": 8
+    },
+    {
+      "id": "cornmeal",
+      "en": "Cornmeal",
+      "ar": "دقيق ذرة",
+      "categoryIds": ["rice_grains", "baking"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "grains_pasta",
+      "cellIndex": 9
+    },
+    {
+      "id": "spaghetti",
+      "en": "Spaghetti",
+      "ar": "سباغيتي",
+      "categoryIds": ["pasta"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "grains_pasta",
+      "cellIndex": 10
+    },
+    {
+      "id": "penne",
+      "en": "Penne",
+      "ar": "بيني",
+      "categoryIds": ["pasta"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "grains_pasta",
+      "cellIndex": 11
+    },
+    {
+      "id": "macaroni",
+      "en": "Macaroni",
+      "ar": "مكرونة",
+      "categoryIds": ["pasta"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "grains_pasta",
+      "cellIndex": 12
+    },
+    {
+      "id": "vermicelli",
+      "en": "Vermicelli",
+      "ar": "شعرية",
+      "categoryIds": ["pasta"],
+      "aliases": {
+        "en": ["vermicelli"],
+        "ar": ["شعرية", "شعيرية"]
+      },
+      "atlasId": "grains_pasta",
+      "cellIndex": 13
+    },
+    {
+      "id": "orzo",
+      "en": "Orzo",
+      "ar": "لسان عصفور",
+      "categoryIds": ["pasta"],
+      "aliases": {
+        "en": ["orzo", "risoni"],
+        "ar": ["لسان عصفور"]
+      },
+      "atlasId": "grains_pasta",
+      "cellIndex": 14
+    },
+    {
+      "id": "instant_noodles",
+      "en": "Instant Noodles",
+      "ar": "نودلز سريعة التحضير",
+      "categoryIds": ["pasta", "ready_meals"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "grains_pasta",
+      "cellIndex": 15
+    },
+    {
+      "id": "red_lentils",
+      "en": "Red Lentils",
+      "ar": "عدس أحمر",
+      "categoryIds": ["legumes"],
+      "aliases": {
+        "en": ["red lentils", "split red lentils"],
+        "ar": ["عدس أحمر", "عدس اصفر"]
+      },
+      "atlasId": "pulses_nuts",
+      "cellIndex": 0
+    },
+    {
+      "id": "brown_lentils",
+      "en": "Brown Lentils",
+      "ar": "عدس بني",
+      "categoryIds": ["legumes"],
+      "aliases": {
+        "en": ["brown lentils"],
+        "ar": ["عدس بني", "عدس بجبة"]
+      },
+      "atlasId": "pulses_nuts",
+      "cellIndex": 1
+    },
+    {
+      "id": "chickpeas",
+      "en": "Chickpeas",
+      "ar": "حمص حب",
+      "categoryIds": ["legumes"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "pulses_nuts",
+      "cellIndex": 2
+    },
+    {
+      "id": "white_beans",
+      "en": "White Beans",
+      "ar": "فاصوليا بيضاء",
+      "categoryIds": ["legumes"],
+      "aliases": {
+        "en": ["butter beans"],
+        "ar": ["فاصوليا زبدية"]
+      },
+      "atlasId": "pulses_nuts",
+      "cellIndex": 3
+    },
+    {
+      "id": "kidney_beans",
+      "en": "Kidney Beans",
+      "ar": "فاصوليا حمراء",
+      "categoryIds": ["legumes"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "pulses_nuts",
+      "cellIndex": 4
+    },
+    {
+      "id": "black_beans",
+      "en": "Black Beans",
+      "ar": "فاصوليا سوداء",
+      "categoryIds": ["legumes"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "pulses_nuts",
+      "cellIndex": 5
+    },
+    {
+      "id": "fava_beans",
+      "en": "Fava Beans",
+      "ar": "فول",
+      "categoryIds": ["legumes"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "pulses_nuts",
+      "cellIndex": 6
+    },
+    {
+      "id": "pumpkin_seeds",
+      "en": "Pumpkin Seeds",
+      "ar": "بذور قرع",
+      "categoryIds": ["nuts_seeds"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "pulses_nuts",
+      "cellIndex": 7
+    },
+    {
+      "id": "almonds",
+      "en": "Almonds",
+      "ar": "لوز",
+      "categoryIds": ["nuts_seeds"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "pulses_nuts",
+      "cellIndex": 8
+    },
+    {
+      "id": "walnuts",
+      "en": "Walnuts",
+      "ar": "عين جمل",
+      "categoryIds": ["nuts_seeds"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "pulses_nuts",
+      "cellIndex": 9
+    },
+    {
+      "id": "cashews",
+      "en": "Cashews",
+      "ar": "كاجو",
+      "categoryIds": ["nuts_seeds"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "pulses_nuts",
+      "cellIndex": 10
+    },
+    {
+      "id": "pistachios",
+      "en": "Pistachios",
+      "ar": "فستق",
+      "categoryIds": ["nuts_seeds"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "pulses_nuts",
+      "cellIndex": 11
+    },
+    {
+      "id": "peanuts",
+      "en": "Peanuts",
+      "ar": "فول سوداني",
+      "categoryIds": ["nuts_seeds"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "pulses_nuts",
+      "cellIndex": 12
+    },
+    {
+      "id": "hazelnuts",
+      "en": "Hazelnuts",
+      "ar": "بندق",
+      "categoryIds": ["nuts_seeds"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "pulses_nuts",
+      "cellIndex": 13
+    },
+    {
+      "id": "sesame",
+      "en": "Sesame",
+      "ar": "سمسم",
+      "categoryIds": ["nuts_seeds"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "pulses_nuts",
+      "cellIndex": 14
+    },
+    {
+      "id": "sunflower_seeds",
+      "en": "Sunflower Seeds",
+      "ar": "بذور دوار الشمس",
+      "categoryIds": ["nuts_seeds"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "pulses_nuts",
+      "cellIndex": 15
+    },
+    {
+      "id": "milk",
+      "en": "Milk",
+      "ar": "حليب",
+      "categoryIds": ["dairy"],
+      "aliases": {
+        "en": ["fresh milk", "whole milk", "low fat milk"],
+        "ar": ["حليب", "لبن طازج", "لبن كامل الدسم"]
+      },
+      "atlasId": "dairy_eggs",
+      "cellIndex": 0
+    },
+    {
+      "id": "yogurt",
+      "en": "Yogurt",
+      "ar": "زبادي",
+      "categoryIds": ["dairy"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "dairy_eggs",
+      "cellIndex": 1
+    },
+    {
+      "id": "greek_yogurt",
+      "en": "Greek Yogurt",
+      "ar": "زبادي يوناني",
+      "categoryIds": ["dairy"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "dairy_eggs",
+      "cellIndex": 2
+    },
+    {
+      "id": "labneh",
+      "en": "Labneh",
+      "ar": "لبنة",
+      "categoryIds": ["dairy"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "dairy_eggs",
+      "cellIndex": 3
+    },
+    {
+      "id": "feta",
+      "en": "Feta",
+      "ar": "جبنة فيتا",
+      "categoryIds": ["dairy"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "dairy_eggs",
+      "cellIndex": 4
+    },
+    {
+      "id": "cheddar",
+      "en": "Cheddar",
+      "ar": "جبنة شيدر",
+      "categoryIds": ["dairy"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "dairy_eggs",
+      "cellIndex": 5
+    },
+    {
+      "id": "mozzarella",
+      "en": "Mozzarella",
+      "ar": "جبنة موزاريلا",
+      "categoryIds": ["dairy"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "dairy_eggs",
+      "cellIndex": 6
+    },
+    {
+      "id": "cream_cheese",
+      "en": "Cream Cheese",
+      "ar": "جبنة كريمية",
+      "categoryIds": ["dairy", "spreads"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "dairy_eggs",
+      "cellIndex": 7
+    },
+    {
+      "id": "processed_cheese",
+      "en": "Processed Cheese",
+      "ar": "جبنة مثلثات",
+      "categoryIds": ["dairy"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "dairy_eggs",
+      "cellIndex": 8
+    },
+    {
+      "id": "cream",
+      "en": "Cream",
+      "ar": "كريمة",
+      "categoryIds": ["dairy"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "dairy_eggs",
+      "cellIndex": 9
+    },
+    {
+      "id": "butter",
+      "en": "Butter",
+      "ar": "زبدة",
+      "categoryIds": ["dairy"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "dairy_eggs",
+      "cellIndex": 10
+    },
+    {
+      "id": "ghee",
+      "en": "Ghee",
+      "ar": "سمنة",
+      "categoryIds": ["dairy"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "dairy_eggs",
+      "cellIndex": 11
+    },
+    {
+      "id": "eggs",
+      "en": "Eggs",
+      "ar": "بيض",
+      "categoryIds": ["eggs"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "dairy_eggs",
+      "cellIndex": 12
+    },
+    {
+      "id": "egg_whites",
+      "en": "Egg Whites",
+      "ar": "بياض بيض",
+      "categoryIds": ["eggs"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "dairy_eggs",
+      "cellIndex": 13
+    },
+    {
+      "id": "powdered_milk",
+      "en": "Powdered Milk",
+      "ar": "حليب بودرة",
+      "categoryIds": ["dairy"],
+      "aliases": {
+        "en": ["powdered milk", "milk powder", "dry milk"],
+        "ar": ["حليب بودرة", "لبن بودرة", "حليب مجفف"]
+      },
+      "atlasId": "dairy_eggs",
+      "cellIndex": 14
+    },
+    {
+      "id": "plant_milk",
+      "en": "Plant Milk",
+      "ar": "حليب نباتي",
+      "categoryIds": ["plant_based", "dairy", "drinks"],
+      "aliases": {
+        "en": ["coconut milk", "almond milk", "oat milk", "soy milk"],
+        "ar": ["حليب جوز الهند", "حليب لوز", "حليب شوفان", "حليب صويا"]
+      },
+      "atlasId": "dairy_eggs",
+      "cellIndex": 15
+    },
+    {
+      "id": "beef_steak",
+      "en": "Beef Steak",
+      "ar": "ستيك بقري",
+      "categoryIds": ["meat"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "meat_poultry",
+      "cellIndex": 0
+    },
+    {
+      "id": "minced_beef",
+      "en": "Minced Beef",
+      "ar": "لحم بقري مفروم",
+      "categoryIds": ["meat"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "meat_poultry",
+      "cellIndex": 1
+    },
+    {
+      "id": "beef_cubes",
+      "en": "Beef Cubes",
+      "ar": "مكعبات لحم بقري",
+      "categoryIds": ["meat"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "meat_poultry",
+      "cellIndex": 2
+    },
+    {
+      "id": "lamb_chops",
+      "en": "Lamb Chops",
+      "ar": "ريش ضاني",
+      "categoryIds": ["meat"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "meat_poultry",
+      "cellIndex": 3
+    },
+    {
+      "id": "lamb_leg",
+      "en": "Lamb Leg",
+      "ar": "فخذ ضاني",
+      "categoryIds": ["meat"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "meat_poultry",
+      "cellIndex": 4
+    },
+    {
+      "id": "minced_lamb",
+      "en": "Minced Lamb",
+      "ar": "لحم ضاني مفروم",
+      "categoryIds": ["meat"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "meat_poultry",
+      "cellIndex": 5
+    },
+    {
+      "id": "beef_liver",
+      "en": "Beef Liver",
+      "ar": "كبدة بقري",
+      "categoryIds": ["meat"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "meat_poultry",
+      "cellIndex": 6
+    },
+    {
+      "id": "whole_chicken",
+      "en": "Whole Chicken",
+      "ar": "دجاجة كاملة",
+      "categoryIds": ["poultry"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "meat_poultry",
+      "cellIndex": 7
+    },
+    {
+      "id": "chicken_breast",
+      "en": "Chicken Breast",
+      "ar": "صدور دجاج",
+      "categoryIds": ["poultry"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "meat_poultry",
+      "cellIndex": 8
+    },
+    {
+      "id": "chicken_thigh",
+      "en": "Chicken Thigh",
+      "ar": "أفخاذ دجاج",
+      "categoryIds": ["poultry"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "meat_poultry",
+      "cellIndex": 9
+    },
+    {
+      "id": "chicken_wings",
+      "en": "Chicken Wings",
+      "ar": "أجنحة دجاج",
+      "categoryIds": ["poultry"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "meat_poultry",
+      "cellIndex": 10
+    },
+    {
+      "id": "chicken_drumstick",
+      "en": "Chicken Drumstick",
+      "ar": "دبابيس دجاج",
+      "categoryIds": ["poultry"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "meat_poultry",
+      "cellIndex": 11
+    },
+    {
+      "id": "turkey_slices",
+      "en": "Turkey Slices",
+      "ar": "شرائح ديك رومي",
+      "categoryIds": ["poultry", "deli"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "meat_poultry",
+      "cellIndex": 12
+    },
+    {
+      "id": "whole_duck",
+      "en": "Whole Duck",
+      "ar": "بطة كاملة",
+      "categoryIds": ["poultry"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "meat_poultry",
+      "cellIndex": 13
+    },
+    {
+      "id": "meatballs",
+      "en": "Meatballs",
+      "ar": "كرات لحم",
+      "categoryIds": ["meat"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "meat_poultry",
+      "cellIndex": 14
+    },
+    {
+      "id": "beef_sausages",
+      "en": "Beef Sausages",
+      "ar": "سجق بقري",
+      "categoryIds": ["meat"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "meat_poultry",
+      "cellIndex": 15
+    },
+    {
+      "id": "whole_fish",
+      "en": "Whole Fish",
+      "ar": "سمكة كاملة",
+      "categoryIds": ["fish", "seafood"],
+      "aliases": {
+        "en": ["whole fish", "fresh whole fish"],
+        "ar": ["سمكة كاملة", "سمك كامل"]
+      },
+      "atlasId": "seafood",
+      "cellIndex": 0
+    },
+    {
+      "id": "fish_fillet",
+      "en": "Fish Fillet",
+      "ar": "فيليه سمك",
+      "categoryIds": ["fish", "seafood"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "seafood",
+      "cellIndex": 1
+    },
+    {
+      "id": "salmon",
+      "en": "Salmon",
+      "ar": "سلمون",
+      "categoryIds": ["fish", "seafood"],
+      "aliases": {
+        "en": ["salmon", "salmon fillet"],
+        "ar": ["سلمون", "فيليه سلمون"]
+      },
+      "atlasId": "seafood",
+      "cellIndex": 2
+    },
+    {
+      "id": "tuna_steak",
+      "en": "Tuna Steak",
+      "ar": "ستيك تونة",
+      "categoryIds": ["fish", "seafood"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "seafood",
+      "cellIndex": 3
+    },
+    {
+      "id": "shrimp",
+      "en": "Shrimp",
+      "ar": "جمبري",
+      "categoryIds": ["fish", "seafood"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "seafood",
+      "cellIndex": 4
+    },
+    {
+      "id": "crab",
+      "en": "Crab",
+      "ar": "سلطعون",
+      "categoryIds": ["fish", "seafood"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "seafood",
+      "cellIndex": 5
+    },
+    {
+      "id": "lobster",
+      "en": "Lobster",
+      "ar": "كركند",
+      "categoryIds": ["fish", "seafood"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "seafood",
+      "cellIndex": 6
+    },
+    {
+      "id": "mussels",
+      "en": "Mussels",
+      "ar": "بلح البحر",
+      "categoryIds": ["fish", "seafood"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "seafood",
+      "cellIndex": 7
+    },
+    {
+      "id": "clams",
+      "en": "Clams",
+      "ar": "محار",
+      "categoryIds": ["fish", "seafood"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "seafood",
+      "cellIndex": 8
+    },
+    {
+      "id": "scallops",
+      "en": "Scallops",
+      "ar": "إسكالوب بحري",
+      "categoryIds": ["fish", "seafood"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "seafood",
+      "cellIndex": 9
+    },
+    {
+      "id": "squid",
+      "en": "Squid",
+      "ar": "كاليماري",
+      "categoryIds": ["fish", "seafood"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "seafood",
+      "cellIndex": 10
+    },
+    {
+      "id": "octopus",
+      "en": "Octopus",
+      "ar": "أخطبوط",
+      "categoryIds": ["fish", "seafood"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "seafood",
+      "cellIndex": 11
+    },
+    {
+      "id": "sardines",
+      "en": "Sardines",
+      "ar": "سردين",
+      "categoryIds": ["fish", "seafood"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "seafood",
+      "cellIndex": 12
+    },
+    {
+      "id": "fish_fingers",
+      "en": "Fish Fingers",
+      "ar": "أصابع سمك",
+      "categoryIds": ["fish", "seafood", "frozen"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "seafood",
+      "cellIndex": 13
+    },
+    {
+      "id": "breaded_shrimp",
+      "en": "Breaded Shrimp",
+      "ar": "جمبري بانيه",
+      "categoryIds": ["fish", "seafood", "frozen"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "seafood",
+      "cellIndex": 14
+    },
+    {
+      "id": "tuna_can",
+      "en": "Tuna Can",
+      "ar": "تونة معلبة",
+      "categoryIds": ["fish", "seafood", "canned"],
+      "aliases": {
+        "en": ["canned tuna", "tuna can", "tuna tin"],
+        "ar": ["تونة معلبة", "علبة تونة"]
+      },
+      "atlasId": "seafood",
+      "cellIndex": 15
+    },
+    {
+      "id": "sliced_bread",
+      "en": "Sliced Bread",
+      "ar": "خبز شرائح",
+      "categoryIds": ["bakery", "breakfast"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "bakery_breakfast",
+      "cellIndex": 0
+    },
+    {
+      "id": "pita",
+      "en": "Pita",
+      "ar": "خبز عربي",
+      "categoryIds": ["bakery", "breakfast"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "bakery_breakfast",
+      "cellIndex": 1
+    },
+    {
+      "id": "saj_bread",
+      "en": "Saj Bread",
+      "ar": "خبز صاج",
+      "categoryIds": ["bakery", "breakfast"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "bakery_breakfast",
+      "cellIndex": 2
+    },
+    {
+      "id": "tortilla",
+      "en": "Tortilla",
+      "ar": "تورتيلا",
+      "categoryIds": ["bakery", "breakfast"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "bakery_breakfast",
+      "cellIndex": 3
+    },
+    {
+      "id": "baguette",
+      "en": "Baguette",
+      "ar": "باغيت",
+      "categoryIds": ["bakery", "breakfast"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "bakery_breakfast",
+      "cellIndex": 4
+    },
+    {
+      "id": "toast_rusk",
+      "en": "Toast Rusk",
+      "ar": "بقسماط",
+      "categoryIds": ["bakery", "breakfast"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "bakery_breakfast",
+      "cellIndex": 5
+    },
+    {
+      "id": "croissant",
+      "en": "Croissant",
+      "ar": "كرواسون",
+      "categoryIds": ["bakery", "breakfast"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "bakery_breakfast",
+      "cellIndex": 6
+    },
+    {
+      "id": "bagel",
+      "en": "Bagel",
+      "ar": "بيغل",
+      "categoryIds": ["bakery", "breakfast"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "bakery_breakfast",
+      "cellIndex": 7
+    },
+    {
+      "id": "brioche",
+      "en": "Brioche",
+      "ar": "بريوش",
+      "categoryIds": ["bakery", "breakfast"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "bakery_breakfast",
+      "cellIndex": 8
+    },
+    {
+      "id": "bread_bun",
+      "en": "Bread Bun",
+      "ar": "خبز برغر",
+      "categoryIds": ["bakery", "breakfast"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "bakery_breakfast",
+      "cellIndex": 9
+    },
+    {
+      "id": "pancakes",
+      "en": "Pancakes",
+      "ar": "بان كيك",
+      "categoryIds": ["bakery", "breakfast"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "bakery_breakfast",
+      "cellIndex": 10
+    },
+    {
+      "id": "waffles",
+      "en": "Waffles",
+      "ar": "وافل",
+      "categoryIds": ["bakery", "breakfast"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "bakery_breakfast",
+      "cellIndex": 11
+    },
+    {
+      "id": "cornflakes",
+      "en": "Cornflakes",
+      "ar": "كورن فليكس",
+      "categoryIds": ["bakery", "breakfast"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "bakery_breakfast",
+      "cellIndex": 12
+    },
+    {
+      "id": "granola",
+      "en": "Granola",
+      "ar": "جرانولا",
+      "categoryIds": ["bakery", "breakfast"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "bakery_breakfast",
+      "cellIndex": 13
+    },
+    {
+      "id": "muesli",
+      "en": "Muesli",
+      "ar": "ميوسلي",
+      "categoryIds": ["bakery", "breakfast"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "bakery_breakfast",
+      "cellIndex": 14
+    },
+    {
+      "id": "rice_cakes",
+      "en": "Rice Cakes",
+      "ar": "كعك الأرز",
+      "categoryIds": ["bakery", "breakfast"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "bakery_breakfast",
+      "cellIndex": 15
+    },
+    {
+      "id": "olive_oil",
+      "en": "Olive Oil",
+      "ar": "زيت زيتون",
+      "categoryIds": ["oil"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "pantry_canned",
+      "cellIndex": 0
+    },
+    {
+      "id": "vegetable_oil",
+      "en": "Vegetable Oil",
+      "ar": "زيت نباتي",
+      "categoryIds": ["oil"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "pantry_canned",
+      "cellIndex": 1
+    },
+    {
+      "id": "sunflower_oil",
+      "en": "Sunflower Oil",
+      "ar": "زيت دوار الشمس",
+      "categoryIds": ["oil"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "pantry_canned",
+      "cellIndex": 2
+    },
+    {
+      "id": "coconut_oil",
+      "en": "Coconut Oil",
+      "ar": "زيت جوز الهند",
+      "categoryIds": ["oil"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "pantry_canned",
+      "cellIndex": 3
+    },
+    {
+      "id": "tomato_paste",
+      "en": "Tomato Paste",
+      "ar": "معجون طماطم",
+      "categoryIds": ["condiments"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "pantry_canned",
+      "cellIndex": 4
+    },
+    {
+      "id": "ketchup",
+      "en": "Ketchup",
+      "ar": "كاتشب",
+      "categoryIds": ["condiments"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "pantry_canned",
+      "cellIndex": 5
+    },
+    {
+      "id": "mayonnaise",
+      "en": "Mayonnaise",
+      "ar": "مايونيز",
+      "categoryIds": ["condiments"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "pantry_canned",
+      "cellIndex": 6
+    },
+    {
+      "id": "mustard",
+      "en": "Mustard",
+      "ar": "مستردة",
+      "categoryIds": ["condiments"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "pantry_canned",
+      "cellIndex": 7
+    },
+    {
+      "id": "vinegar",
+      "en": "Vinegar",
+      "ar": "خل",
+      "categoryIds": ["condiments"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "pantry_canned",
+      "cellIndex": 8
+    },
+    {
+      "id": "tahini",
+      "en": "Tahini",
+      "ar": "طحينة",
+      "categoryIds": ["condiments", "spreads"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "pantry_canned",
+      "cellIndex": 9
+    },
+    {
+      "id": "honey",
+      "en": "Honey",
+      "ar": "عسل",
+      "categoryIds": ["sweeteners", "spreads"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "pantry_canned",
+      "cellIndex": 10
+    },
+    {
+      "id": "jam",
+      "en": "Jam",
+      "ar": "مربى",
+      "categoryIds": ["spreads"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "pantry_canned",
+      "cellIndex": 11
+    },
+    {
+      "id": "peanut_butter",
+      "en": "Peanut Butter",
+      "ar": "زبدة فول سوداني",
+      "categoryIds": ["nuts_seeds", "spreads"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "pantry_canned",
+      "cellIndex": 12
+    },
+    {
+      "id": "olives",
+      "en": "Olives",
+      "ar": "زيتون",
+      "categoryIds": ["condiments"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "pantry_canned",
+      "cellIndex": 13
+    },
+    {
+      "id": "pickles",
+      "en": "Pickles",
+      "ar": "مخلل",
+      "categoryIds": ["condiments"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "pantry_canned",
+      "cellIndex": 14
+    },
+    {
+      "id": "canned_corn",
+      "en": "Canned Corn",
+      "ar": "ذرة معلبة",
+      "categoryIds": ["vegetables", "canned"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "pantry_canned",
+      "cellIndex": 15
+    },
+    {
+      "id": "salt",
+      "en": "Salt",
+      "ar": "ملح",
+      "categoryIds": ["spices"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "spices_baking",
+      "cellIndex": 0
+    },
+    {
+      "id": "black_pepper",
+      "en": "Black Pepper",
+      "ar": "فلفل أسود",
+      "categoryIds": ["spices"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "spices_baking",
+      "cellIndex": 1
+    },
+    {
+      "id": "cumin",
+      "en": "Cumin",
+      "ar": "كمون",
+      "categoryIds": ["spices"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "spices_baking",
+      "cellIndex": 2
+    },
+    {
+      "id": "turmeric",
+      "en": "Turmeric",
+      "ar": "كركم",
+      "categoryIds": ["spices"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "spices_baking",
+      "cellIndex": 3
+    },
+    {
+      "id": "paprika",
+      "en": "Paprika",
+      "ar": "بابريكا",
+      "categoryIds": ["spices"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "spices_baking",
+      "cellIndex": 4
+    },
+    {
+      "id": "cinnamon",
+      "en": "Cinnamon",
+      "ar": "قرفة",
+      "categoryIds": ["spices"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "spices_baking",
+      "cellIndex": 5
+    },
+    {
+      "id": "cardamom",
+      "en": "Cardamom",
+      "ar": "هيل",
+      "categoryIds": ["spices"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "spices_baking",
+      "cellIndex": 6
+    },
+    {
+      "id": "cloves",
+      "en": "Cloves",
+      "ar": "قرنفل",
+      "categoryIds": ["spices"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "spices_baking",
+      "cellIndex": 7
+    },
+    {
+      "id": "coriander_seed",
+      "en": "Coriander Seed",
+      "ar": "بذور كزبرة",
+      "categoryIds": ["spices"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "spices_baking",
+      "cellIndex": 8
+    },
+    {
+      "id": "sumac",
+      "en": "Sumac",
+      "ar": "سماق",
+      "categoryIds": ["spices"],
+      "aliases": {
+        "en": ["sumac"],
+        "ar": ["سماق"]
+      },
+      "atlasId": "spices_baking",
+      "cellIndex": 9
+    },
+    {
+      "id": "zaatar",
+      "en": "Zaatar",
+      "ar": "زعتر",
+      "categoryIds": ["spices"],
+      "aliases": {
+        "en": ["zaatar", "za'atar"],
+        "ar": ["زعتر", "زعتر بلدي"]
+      },
+      "atlasId": "spices_baking",
+      "cellIndex": 10
+    },
+    {
+      "id": "baking_powder",
+      "en": "Baking Powder",
+      "ar": "بيكنج باودر",
+      "categoryIds": ["baking"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "spices_baking",
+      "cellIndex": 11
+    },
+    {
+      "id": "yeast",
+      "en": "Yeast",
+      "ar": "خميرة",
+      "categoryIds": ["baking"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "spices_baking",
+      "cellIndex": 12
+    },
+    {
+      "id": "white_sugar",
+      "en": "White Sugar",
+      "ar": "سكر أبيض",
+      "categoryIds": ["sweeteners", "baking"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "spices_baking",
+      "cellIndex": 13
+    },
+    {
+      "id": "brown_sugar",
+      "en": "Brown Sugar",
+      "ar": "سكر بني",
+      "categoryIds": ["sweeteners", "baking"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "spices_baking",
+      "cellIndex": 14
+    },
+    {
+      "id": "cocoa",
+      "en": "Cocoa",
+      "ar": "كاكاو",
+      "categoryIds": ["baking"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "spices_baking",
+      "cellIndex": 15
+    },
+    {
+      "id": "water",
+      "en": "Water",
+      "ar": "مياه",
+      "categoryIds": ["drinks"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "drinks",
+      "cellIndex": 0
+    },
+    {
+      "id": "sparkling_water",
+      "en": "Sparkling Water",
+      "ar": "مياه غازية",
+      "categoryIds": ["drinks"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "drinks",
+      "cellIndex": 1
+    },
+    {
+      "id": "cola",
+      "en": "Cola",
+      "ar": "كولا",
+      "categoryIds": ["drinks"],
+      "aliases": {
+        "en": ["cola", "coke", "coca cola", "pepsi"],
+        "ar": ["كولا", "كوكاكولا", "كوكا كولا", "بيبسي"]
+      },
+      "atlasId": "drinks",
+      "cellIndex": 2
+    },
+    {
+      "id": "lemon_lime_soda",
+      "en": "Lemon Lime Soda",
+      "ar": "مشروب ليمون غازي",
+      "categoryIds": ["drinks"],
+      "aliases": {
+        "en": ["lemon lime soda", "sprite", "7up", "seven up"],
+        "ar": ["سفن", "سفن اب", "سبرايت"]
+      },
+      "atlasId": "drinks",
+      "cellIndex": 3
+    },
+    {
+      "id": "orange_soda",
+      "en": "Orange Soda",
+      "ar": "مشروب برتقال غازي",
+      "categoryIds": ["drinks"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "drinks",
+      "cellIndex": 4
+    },
+    {
+      "id": "orange_juice",
+      "en": "Orange Juice",
+      "ar": "عصير برتقال",
+      "categoryIds": ["drinks"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "drinks",
+      "cellIndex": 5
+    },
+    {
+      "id": "apple_juice",
+      "en": "Apple Juice",
+      "ar": "عصير تفاح",
+      "categoryIds": ["drinks"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "drinks",
+      "cellIndex": 6
+    },
+    {
+      "id": "mango_juice",
+      "en": "Mango Juice",
+      "ar": "عصير مانجو",
+      "categoryIds": ["drinks"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "drinks",
+      "cellIndex": 7
+    },
+    {
+      "id": "lemonade",
+      "en": "Lemonade",
+      "ar": "ليمونادة",
+      "categoryIds": ["drinks"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "drinks",
+      "cellIndex": 8
+    },
+    {
+      "id": "black_tea",
+      "en": "Black Tea",
+      "ar": "شاي أسود",
+      "categoryIds": ["tea_coffee", "drinks"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "drinks",
+      "cellIndex": 9
+    },
+    {
+      "id": "green_tea",
+      "en": "Green Tea",
+      "ar": "شاي أخضر",
+      "categoryIds": ["tea_coffee", "drinks"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "drinks",
+      "cellIndex": 10
+    },
+    {
+      "id": "arabic_coffee",
+      "en": "Arabic Coffee",
+      "ar": "قهوة عربية",
+      "categoryIds": ["tea_coffee", "drinks"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "drinks",
+      "cellIndex": 11
+    },
+    {
+      "id": "instant_coffee",
+      "en": "Instant Coffee",
+      "ar": "قهوة سريعة التحضير",
+      "categoryIds": ["tea_coffee", "drinks"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "drinks",
+      "cellIndex": 12
+    },
+    {
+      "id": "coffee_beans",
+      "en": "Coffee Beans",
+      "ar": "حبوب قهوة",
+      "categoryIds": ["tea_coffee", "drinks"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "drinks",
+      "cellIndex": 13
+    },
+    {
+      "id": "energy_drink",
+      "en": "Energy Drink",
+      "ar": "مشروب طاقة",
+      "categoryIds": ["drinks"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "drinks",
+      "cellIndex": 14
+    },
+    {
+      "id": "hot_chocolate",
+      "en": "Hot Chocolate",
+      "ar": "شوكولاتة ساخنة",
+      "categoryIds": ["drinks", "tea_coffee"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "drinks",
+      "cellIndex": 15
+    },
+    {
+      "id": "frozen_peas",
+      "en": "Frozen Peas",
+      "ar": "بسلة مجمدة",
+      "categoryIds": ["frozen", "vegetables"],
+      "aliases": {
+        "en": ["frozen peas"],
+        "ar": ["بسلة مجمدة", "بازلاء مجمدة"]
+      },
+      "atlasId": "frozen_ready",
+      "cellIndex": 0
+    },
+    {
+      "id": "frozen_mixed_veg",
+      "en": "Frozen Mixed Veg",
+      "ar": "خضار مشكل مجمد",
+      "categoryIds": ["frozen", "vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "frozen_ready",
+      "cellIndex": 1
+    },
+    {
+      "id": "frozen_spinach",
+      "en": "Frozen Spinach",
+      "ar": "سبانخ مجمدة",
+      "categoryIds": ["frozen", "vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "frozen_ready",
+      "cellIndex": 2
+    },
+    {
+      "id": "frozen_molokhia",
+      "en": "Frozen Molokhia",
+      "ar": "ملوخية مجمدة",
+      "categoryIds": ["frozen", "vegetables"],
+      "aliases": {
+        "en": ["frozen molokhia", "frozen jute mallow"],
+        "ar": ["ملوخية مجمدة", "ملوخيه مجمده"]
+      },
+      "atlasId": "frozen_ready",
+      "cellIndex": 3
+    },
+    {
+      "id": "frozen_broccoli",
+      "en": "Frozen Broccoli",
+      "ar": "بروكلي مجمد",
+      "categoryIds": ["frozen", "vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "frozen_ready",
+      "cellIndex": 4
+    },
+    {
+      "id": "frozen_berries",
+      "en": "Frozen Berries",
+      "ar": "توت مجمد",
+      "categoryIds": ["frozen", "fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "frozen_ready",
+      "cellIndex": 5
+    },
+    {
+      "id": "frozen_french_fries",
+      "en": "Frozen French Fries",
+      "ar": "بطاطس مقلية مجمدة",
+      "categoryIds": ["frozen", "vegetables"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "frozen_ready",
+      "cellIndex": 6
+    },
+    {
+      "id": "chicken_nuggets",
+      "en": "Chicken Nuggets",
+      "ar": "ناجتس دجاج",
+      "categoryIds": ["frozen", "poultry", "ready_meals"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "frozen_ready",
+      "cellIndex": 7
+    },
+    {
+      "id": "frozen_fish_fillet",
+      "en": "Frozen Fish Fillet",
+      "ar": "فيليه سمك مجمد",
+      "categoryIds": ["frozen", "fish", "seafood"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "frozen_ready",
+      "cellIndex": 8
+    },
+    {
+      "id": "frozen_shrimp",
+      "en": "Frozen Shrimp",
+      "ar": "جمبري مجمد",
+      "categoryIds": ["frozen", "fish", "seafood"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "frozen_ready",
+      "cellIndex": 9
+    },
+    {
+      "id": "frozen_pizza",
+      "en": "Frozen Pizza",
+      "ar": "بيتزا مجمدة",
+      "categoryIds": ["frozen", "ready_meals"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "frozen_ready",
+      "cellIndex": 10
+    },
+    {
+      "id": "ice_cream",
+      "en": "Ice Cream",
+      "ar": "آيس كريم",
+      "categoryIds": ["frozen", "sweets"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "frozen_ready",
+      "cellIndex": 11
+    },
+    {
+      "id": "vegetable_burger",
+      "en": "Vegetable Burger",
+      "ar": "برغر خضار",
+      "categoryIds": ["plant_based", "frozen", "ready_meals"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "frozen_ready",
+      "cellIndex": 12
+    },
+    {
+      "id": "tofu",
+      "en": "Tofu",
+      "ar": "توفو",
+      "categoryIds": ["plant_based"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "frozen_ready",
+      "cellIndex": 13
+    },
+    {
+      "id": "hummus",
+      "en": "Hummus",
+      "ar": "حمص بالطحينة",
+      "categoryIds": ["legumes", "spreads", "ready_meals"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "frozen_ready",
+      "cellIndex": 14
+    },
+    {
+      "id": "ready_soup",
+      "en": "Ready Soup",
+      "ar": "شوربة جاهزة",
+      "categoryIds": ["ready_meals"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "frozen_ready",
+      "cellIndex": 15
+    },
+    {
+      "id": "potato_chips",
+      "en": "Potato Chips",
+      "ar": "شيبسي",
+      "categoryIds": ["snacks"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "snacks_sweets",
+      "cellIndex": 0
+    },
+    {
+      "id": "tortilla_chips",
+      "en": "Tortilla Chips",
+      "ar": "رقائق تورتيلا",
+      "categoryIds": ["snacks"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "snacks_sweets",
+      "cellIndex": 1
+    },
+    {
+      "id": "popcorn",
+      "en": "Popcorn",
+      "ar": "فشار",
+      "categoryIds": ["snacks"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "snacks_sweets",
+      "cellIndex": 2
+    },
+    {
+      "id": "crackers",
+      "en": "Crackers",
+      "ar": "مقرمشات",
+      "categoryIds": ["snacks"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "snacks_sweets",
+      "cellIndex": 3
+    },
+    {
+      "id": "pretzels",
+      "en": "Pretzels",
+      "ar": "بريتزل",
+      "categoryIds": ["snacks"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "snacks_sweets",
+      "cellIndex": 4
+    },
+    {
+      "id": "plain_biscuits",
+      "en": "Plain Biscuits",
+      "ar": "بسكويت سادة",
+      "categoryIds": ["snacks", "sweets", "bakery"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "snacks_sweets",
+      "cellIndex": 5
+    },
+    {
+      "id": "chocolate_bar",
+      "en": "Chocolate Bar",
+      "ar": "لوح شوكولاتة",
+      "categoryIds": ["sweets", "snacks"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "snacks_sweets",
+      "cellIndex": 6
+    },
+    {
+      "id": "wafer",
+      "en": "Wafer",
+      "ar": "ويفر",
+      "categoryIds": ["sweets", "snacks"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "snacks_sweets",
+      "cellIndex": 7
+    },
+    {
+      "id": "cake_slice",
+      "en": "Cake Slice",
+      "ar": "قطعة كيك",
+      "categoryIds": ["sweets", "snacks"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "snacks_sweets",
+      "cellIndex": 8
+    },
+    {
+      "id": "muffin",
+      "en": "Muffin",
+      "ar": "مافن",
+      "categoryIds": ["sweets", "bakery"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "snacks_sweets",
+      "cellIndex": 9
+    },
+    {
+      "id": "candy",
+      "en": "Candy",
+      "ar": "حلوى",
+      "categoryIds": ["sweets"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "snacks_sweets",
+      "cellIndex": 10
+    },
+    {
+      "id": "gummy_candy",
+      "en": "Gummy Candy",
+      "ar": "حلوى جيلاتينية",
+      "categoryIds": ["sweets"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "snacks_sweets",
+      "cellIndex": 11
+    },
+    {
+      "id": "maamoul",
+      "en": "Maamoul",
+      "ar": "معمول",
+      "categoryIds": ["sweets", "bakery"],
+      "aliases": {
+        "en": ["maamoul", "date cookies"],
+        "ar": ["معمول", "كعك بالتمر"]
+      },
+      "atlasId": "snacks_sweets",
+      "cellIndex": 12
+    },
+    {
+      "id": "baklava",
+      "en": "Baklava",
+      "ar": "بقلاوة",
+      "categoryIds": ["sweets"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "snacks_sweets",
+      "cellIndex": 13
+    },
+    {
+      "id": "turkish_delight",
+      "en": "Turkish Delight",
+      "ar": "راحة الحلقوم",
+      "categoryIds": ["sweets"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "snacks_sweets",
+      "cellIndex": 14
+    },
+    {
+      "id": "halva",
+      "en": "Halva",
+      "ar": "حلاوة طحينية",
+      "categoryIds": ["sweets", "spreads"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "snacks_sweets",
+      "cellIndex": 15
+    },
+    {
+      "id": "fava_bean_can",
+      "en": "Fava Bean Can",
+      "ar": "فول معلب",
+      "categoryIds": ["legumes", "canned"],
+      "aliases": {
+        "en": ["canned fava beans", "foul can"],
+        "ar": ["فول معلب", "علبة فول"]
+      },
+      "atlasId": "mena_pantry",
+      "cellIndex": 0
+    },
+    {
+      "id": "canned_chickpeas",
+      "en": "Canned Chickpeas",
+      "ar": "حمص معلب",
+      "categoryIds": ["legumes", "canned"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "mena_pantry",
+      "cellIndex": 1
+    },
+    {
+      "id": "canned_beans",
+      "en": "Canned Beans",
+      "ar": "فاصوليا معلبة",
+      "categoryIds": ["legumes", "canned"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "mena_pantry",
+      "cellIndex": 2
+    },
+    {
+      "id": "canned_tomatoes",
+      "en": "Canned Tomatoes",
+      "ar": "طماطم معلبة",
+      "categoryIds": ["vegetables", "canned"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "mena_pantry",
+      "cellIndex": 3
+    },
+    {
+      "id": "pasta_sauce",
+      "en": "Pasta Sauce",
+      "ar": "صلصة مكرونة",
+      "categoryIds": ["condiments", "canned"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "mena_pantry",
+      "cellIndex": 4
+    },
+    {
+      "id": "chili_sauce",
+      "en": "Chili Sauce",
+      "ar": "صلصة حارة",
+      "categoryIds": ["canned", "condiments"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "mena_pantry",
+      "cellIndex": 5
+    },
+    {
+      "id": "soy_sauce",
+      "en": "Soy Sauce",
+      "ar": "صويا صوص",
+      "categoryIds": ["canned", "condiments"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "mena_pantry",
+      "cellIndex": 6
+    },
+    {
+      "id": "pomegranate_molasses",
+      "en": "Pomegranate Molasses",
+      "ar": "دبس رمان",
+      "categoryIds": ["canned", "condiments"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "mena_pantry",
+      "cellIndex": 7
+    },
+    {
+      "id": "rose_water",
+      "en": "Rose Water",
+      "ar": "ماء ورد",
+      "categoryIds": ["canned", "baking"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "mena_pantry",
+      "cellIndex": 8
+    },
+    {
+      "id": "orange_blossom_water",
+      "en": "Orange Blossom Water",
+      "ar": "ماء زهر",
+      "categoryIds": ["canned", "baking"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "mena_pantry",
+      "cellIndex": 9
+    },
+    {
+      "id": "raisins",
+      "en": "Raisins",
+      "ar": "زبيب",
+      "categoryIds": ["fruit", "dried_fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "mena_pantry",
+      "cellIndex": 10
+    },
+    {
+      "id": "dried_apricots",
+      "en": "Dried Apricots",
+      "ar": "مشمش مجفف",
+      "categoryIds": ["fruit", "dried_fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "mena_pantry",
+      "cellIndex": 11
+    },
+    {
+      "id": "dried_figs",
+      "en": "Dried Figs",
+      "ar": "تين مجفف",
+      "categoryIds": ["fruit", "dried_fruit"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "mena_pantry",
+      "cellIndex": 12
+    },
+    {
+      "id": "chia_seeds",
+      "en": "Chia Seeds",
+      "ar": "بذور شيا",
+      "categoryIds": ["nuts_seeds"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "mena_pantry",
+      "cellIndex": 13
+    },
+    {
+      "id": "flaxseeds",
+      "en": "Flaxseeds",
+      "ar": "بذور كتان",
+      "categoryIds": ["nuts_seeds"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "mena_pantry",
+      "cellIndex": 14
+    },
+    {
+      "id": "baby_food_jar",
+      "en": "Baby Food Jar",
+      "ar": "برطمان طعام أطفال",
+      "categoryIds": ["baby_food", "canned"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "mena_pantry",
+      "cellIndex": 15
+    },
+    {
+      "id": "corn_starch",
+      "en": "Corn Starch",
+      "ar": "نشا ذرة",
+      "categoryIds": ["baking", "spices"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "baking_spice_extras",
+      "cellIndex": 0
+    },
+    {
+      "id": "baking_soda",
+      "en": "Baking Soda",
+      "ar": "بيكربونات الصوديوم",
+      "categoryIds": ["baking", "spices"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "baking_spice_extras",
+      "cellIndex": 1
+    },
+    {
+      "id": "vanilla",
+      "en": "Vanilla",
+      "ar": "فانيليا",
+      "categoryIds": ["baking", "spices"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "baking_spice_extras",
+      "cellIndex": 2
+    },
+    {
+      "id": "coconut_flakes",
+      "en": "Coconut Flakes",
+      "ar": "جوز هند مبشور",
+      "categoryIds": ["baking", "spices"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "baking_spice_extras",
+      "cellIndex": 3
+    },
+    {
+      "id": "chocolate_chips",
+      "en": "Chocolate Chips",
+      "ar": "رقائق شوكولاتة",
+      "categoryIds": ["baking", "spices", "sweets"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "baking_spice_extras",
+      "cellIndex": 4
+    },
+    {
+      "id": "gelatin",
+      "en": "Gelatin",
+      "ar": "جيلاتين",
+      "categoryIds": ["baking", "spices"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "baking_spice_extras",
+      "cellIndex": 5
+    },
+    {
+      "id": "saffron",
+      "en": "Saffron",
+      "ar": "زعفران",
+      "categoryIds": ["baking", "spices"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "baking_spice_extras",
+      "cellIndex": 6
+    },
+    {
+      "id": "nutmeg",
+      "en": "Nutmeg",
+      "ar": "جوزة الطيب",
+      "categoryIds": ["baking", "spices"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "baking_spice_extras",
+      "cellIndex": 7
+    },
+    {
+      "id": "chili_flakes",
+      "en": "Chili Flakes",
+      "ar": "شطة مجروشة",
+      "categoryIds": ["baking", "spices"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "baking_spice_extras",
+      "cellIndex": 8
+    },
+    {
+      "id": "curry_powder",
+      "en": "Curry Powder",
+      "ar": "كاري",
+      "categoryIds": ["baking", "spices"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "baking_spice_extras",
+      "cellIndex": 9
+    },
+    {
+      "id": "bay_leaves",
+      "en": "Bay Leaves",
+      "ar": "ورق لورا",
+      "categoryIds": ["baking", "spices"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "baking_spice_extras",
+      "cellIndex": 10
+    },
+    {
+      "id": "rosemary",
+      "en": "Rosemary",
+      "ar": "روزماري",
+      "categoryIds": ["baking", "spices"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "baking_spice_extras",
+      "cellIndex": 11
+    },
+    {
+      "id": "ground_ginger",
+      "en": "Ground Ginger",
+      "ar": "زنجبيل مطحون",
+      "categoryIds": ["baking", "spices"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "baking_spice_extras",
+      "cellIndex": 12
+    },
+    {
+      "id": "fennel_seed",
+      "en": "Fennel Seed",
+      "ar": "بذور شمر",
+      "categoryIds": ["baking", "spices"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "baking_spice_extras",
+      "cellIndex": 13
+    },
+    {
+      "id": "anise_seed",
+      "en": "Anise Seed",
+      "ar": "يانسون",
+      "categoryIds": ["baking", "spices"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "baking_spice_extras",
+      "cellIndex": 14
+    },
+    {
+      "id": "caraway_seed",
+      "en": "Caraway Seed",
+      "ar": "كراوية",
+      "categoryIds": ["baking", "spices"],
+      "aliases": {
+        "en": [],
+        "ar": []
+      },
+      "atlasId": "baking_spice_extras",
+      "cellIndex": 15
+    }
+  ]
+}

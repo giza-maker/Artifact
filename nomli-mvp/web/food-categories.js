@@ -1,4 +1,5 @@
 import { COOK_INGREDIENTS, getIngredient } from "./cook-catalog.js";
+import foodArtCatalog from "../content/food-art-catalog.json" with { type: "json" };
 
 export const FOOD_CATEGORIES = Object.freeze(
   [
@@ -7,6 +8,7 @@ export const FOOD_CATEGORIES = Object.freeze(
       en: "Rice & grains",
       ar: "الأرز والحبوب",
       atlasIndex: 0,
+      representativeArtId: "basmati_rice",
       defaultStorage: "Pantry",
     },
     {
@@ -14,6 +16,7 @@ export const FOOD_CATEGORIES = Object.freeze(
       en: "Pasta",
       ar: "المكرونة",
       atlasIndex: 1,
+      representativeArtId: "vermicelli",
       defaultStorage: "Pantry",
     },
     {
@@ -21,6 +24,7 @@ export const FOOD_CATEGORIES = Object.freeze(
       en: "Oil",
       ar: "الزيوت",
       atlasIndex: 2,
+      representativeArtId: "olive_oil",
       defaultStorage: "Pantry",
     },
     {
@@ -28,6 +32,7 @@ export const FOOD_CATEGORIES = Object.freeze(
       en: "Dairy",
       ar: "منتجات الألبان",
       atlasIndex: 3,
+      representativeArtId: "milk",
       defaultStorage: "Fridge",
     },
     {
@@ -35,6 +40,7 @@ export const FOOD_CATEGORIES = Object.freeze(
       en: "Eggs",
       ar: "البيض",
       atlasIndex: 4,
+      representativeArtId: "eggs",
       defaultStorage: "Fridge",
     },
     {
@@ -42,6 +48,7 @@ export const FOOD_CATEGORIES = Object.freeze(
       en: "Meat",
       ar: "اللحوم",
       atlasIndex: 5,
+      representativeArtId: "beef_steak",
       defaultStorage: "Fridge",
     },
     {
@@ -49,6 +56,7 @@ export const FOOD_CATEGORIES = Object.freeze(
       en: "Poultry",
       ar: "الدواجن",
       atlasIndex: 6,
+      representativeArtId: "chicken_breast",
       defaultStorage: "Fridge",
     },
     {
@@ -56,6 +64,7 @@ export const FOOD_CATEGORIES = Object.freeze(
       en: "Fish & seafood",
       ar: "الأسماك والمأكولات البحرية",
       atlasIndex: 7,
+      representativeArtId: "fish_fillet",
       defaultStorage: "Fridge",
     },
     {
@@ -63,6 +72,7 @@ export const FOOD_CATEGORIES = Object.freeze(
       en: "Vegetables",
       ar: "الخضروات",
       atlasIndex: 8,
+      representativeArtId: "tomato",
       defaultStorage: "Fridge",
     },
     {
@@ -70,6 +80,7 @@ export const FOOD_CATEGORIES = Object.freeze(
       en: "Fruit",
       ar: "الفاكهة",
       atlasIndex: 9,
+      representativeArtId: "apple",
       defaultStorage: "Fridge",
     },
     {
@@ -77,6 +88,7 @@ export const FOOD_CATEGORIES = Object.freeze(
       en: "Legumes",
       ar: "البقوليات",
       atlasIndex: 10,
+      representativeArtId: "chickpeas",
       defaultStorage: "Pantry",
     },
     {
@@ -84,6 +96,7 @@ export const FOOD_CATEGORIES = Object.freeze(
       en: "Spices",
       ar: "التوابل",
       atlasIndex: 11,
+      representativeArtId: "cumin",
       defaultStorage: "Spices",
     },
     {
@@ -91,6 +104,7 @@ export const FOOD_CATEGORIES = Object.freeze(
       en: "Bakery",
       ar: "المخبوزات",
       atlasIndex: 12,
+      representativeArtId: "sliced_bread",
       defaultStorage: "Pantry",
     },
     {
@@ -98,6 +112,7 @@ export const FOOD_CATEGORIES = Object.freeze(
       en: "Drinks",
       ar: "المشروبات",
       atlasIndex: 13,
+      representativeArtId: "cola",
       defaultStorage: "Pantry",
     },
     {
@@ -105,6 +120,7 @@ export const FOOD_CATEGORIES = Object.freeze(
       en: "Sauces & condiments",
       ar: "الصلصات والتوابل السائلة",
       atlasIndex: 14,
+      representativeArtId: "tahini",
       defaultStorage: "Pantry",
     },
     {
@@ -113,6 +129,134 @@ export const FOOD_CATEGORIES = Object.freeze(
       ar: "أطعمة أخرى",
       atlasIndex: 15,
       defaultStorage: "Pantry",
+    },
+    {
+      id: "nuts_seeds",
+      en: "Nuts & seeds",
+      ar: "المكسرات والبذور",
+      atlasIndex: 15,
+      representativeArtId: "almonds",
+      defaultStorage: "Pantry",
+    },
+    {
+      id: "dried_fruit",
+      en: "Dried fruit",
+      ar: "الفواكه المجففة",
+      atlasIndex: 15,
+      representativeArtId: "dried_fruit_mix",
+      defaultStorage: "Pantry",
+    },
+    {
+      id: "snacks",
+      en: "Snacks",
+      ar: "الوجبات الخفيفة",
+      atlasIndex: 15,
+      representativeArtId: "potato_chips",
+      defaultStorage: "Pantry",
+    },
+    {
+      id: "sweets",
+      en: "Sweets",
+      ar: "الحلويات",
+      atlasIndex: 15,
+      representativeArtId: "chocolate_bar",
+      defaultStorage: "Pantry",
+    },
+    {
+      id: "baking",
+      en: "Baking",
+      ar: "مستلزمات الخبز",
+      atlasIndex: 15,
+      representativeArtId: "white_flour",
+      defaultStorage: "Pantry",
+    },
+    {
+      id: "sweeteners",
+      en: "Sweeteners",
+      ar: "المحليات",
+      atlasIndex: 15,
+      representativeArtId: "honey",
+      defaultStorage: "Pantry",
+    },
+    {
+      id: "breakfast",
+      en: "Breakfast",
+      ar: "الإفطار",
+      atlasIndex: 15,
+      representativeArtId: "cornflakes",
+      defaultStorage: "Pantry",
+    },
+    {
+      id: "tea_coffee",
+      en: "Tea & coffee",
+      ar: "الشاي والقهوة",
+      atlasIndex: 15,
+      representativeArtId: "arabic_coffee",
+      defaultStorage: "Pantry",
+    },
+    {
+      id: "frozen",
+      en: "Frozen food",
+      ar: "الأطعمة المجمدة",
+      atlasIndex: 15,
+      representativeArtId: "frozen_mixed_veg",
+      defaultStorage: "Freezer",
+    },
+    {
+      id: "canned",
+      en: "Canned food",
+      ar: "الأطعمة المعلبة",
+      atlasIndex: 15,
+      representativeArtId: "canned_beans",
+      defaultStorage: "Pantry",
+    },
+    {
+      id: "deli",
+      en: "Deli",
+      ar: "اللحوم الباردة",
+      atlasIndex: 15,
+      representativeArtId: "turkey_slices",
+      defaultStorage: "Fridge",
+    },
+    {
+      id: "ready_meals",
+      en: "Ready meals",
+      ar: "الوجبات الجاهزة",
+      atlasIndex: 15,
+      representativeArtId: "ready_soup",
+      defaultStorage: "Fridge",
+    },
+    {
+      id: "plant_based",
+      en: "Plant-based",
+      ar: "بدائل نباتية",
+      atlasIndex: 15,
+      representativeArtId: "tofu",
+      defaultStorage: "Fridge",
+    },
+    {
+      id: "baby_food",
+      en: "Baby food",
+      ar: "أغذية الأطفال",
+      atlasIndex: 15,
+      representativeArtId: "baby_food_jar",
+      defaultStorage: "Pantry",
+    },
+    {
+      id: "spreads",
+      en: "Spreads",
+      ar: "الأطعمة القابلة للدهن",
+      atlasIndex: 15,
+      representativeArtId: "peanut_butter",
+      defaultStorage: "Pantry",
+    },
+    {
+      id: "seafood",
+      en: "Seafood",
+      ar: "المأكولات البحرية",
+      atlasIndex: 15,
+      representativeArtId: "shrimp",
+      defaultStorage: "Fridge",
     },
   ].map(Object.freeze),
 );
@@ -141,6 +285,216 @@ function normalize(value) {
 }
 
 const aliases = {
+  nuts_seeds: [
+    "nuts",
+    "nut",
+    "almonds",
+    "almond",
+    "walnuts",
+    "walnut",
+    "cashews",
+    "cashew",
+    "pistachios",
+    "pistachio",
+    "seeds",
+    "مكسرات",
+    "لوز",
+    "جوز",
+    "كاجو",
+    "فستق",
+    "بذور",
+  ],
+  dried_fruit: [
+    "dried fruit",
+    "dried apricot",
+    "dried figs",
+    "raisins",
+    "prunes",
+    "فواكه مجففه",
+    "مشمش مجفف",
+    "تين مجفف",
+    "زبيب",
+    "قراصيا",
+  ],
+  snacks: [
+    "potato chips",
+    "tortilla chips",
+    "popcorn",
+    "pretzels",
+    "crackers",
+    "crisps",
+    "chips",
+    "شيبسي",
+    "فشار",
+    "مقرمشات",
+    "بسكويت مالح",
+  ],
+  sweets: [
+    "chocolate",
+    "candy",
+    "toffee",
+    "gummy",
+    "marshmallow",
+    "حلوى",
+    "حلوي",
+    "شوكولاته",
+    "توفي",
+    "ملبن",
+  ],
+  baking: [
+    "baking powder",
+    "baking soda",
+    "cake mix",
+    "corn starch",
+    "cornstarch",
+    "flour",
+    "yeast",
+    "cocoa powder",
+    "بيكنج بودر",
+    "دقيق",
+    "خميره",
+    "نشا",
+    "كاكاو خام",
+  ],
+  sweeteners: [
+    "brown sugar",
+    "powdered sugar",
+    "icing sugar",
+    "maple syrup",
+    "artificial sweetener",
+    "sugar",
+    "honey",
+    "سكر",
+    "سكر بودره",
+    "عسل",
+    "محلي",
+  ],
+  breakfast: [
+    "breakfast cereal",
+    "corn flakes",
+    "cornflakes",
+    "granola",
+    "muesli",
+    "cereal",
+    "حبوب افطار",
+    "كورن فليكس",
+    "جرانولا",
+    "موسلي",
+  ],
+  tea_coffee: [
+    "coffee beans",
+    "ground coffee",
+    "instant coffee",
+    "tea bags",
+    "green tea",
+    "black tea",
+    "coffee",
+    "tea",
+    "قهوه",
+    "بن",
+    "نسكافيه",
+    "شاي",
+  ],
+  frozen: [
+    "frozen food",
+    "frozen meal",
+    "frozen vegetables",
+    "frozen fruit",
+    "مجمدات",
+    "طعام مجمد",
+    "وجبه مجمده",
+    "خضار مجمد",
+  ],
+  canned: [
+    "canned tomato",
+    "canned tuna",
+    "canned beans",
+    "canned food",
+    "tinned tomato",
+    "tinned tuna",
+    "tomato can",
+    "طماطم معلبه",
+    "تونه معلبه",
+    "فول معلب",
+    "معلبات",
+    "معلب",
+  ],
+  deli: [
+    "cold cuts",
+    "deli meat",
+    "luncheon meat",
+    "smoked turkey",
+    "roast beef slices",
+    "salami",
+    "mortadella",
+    "بسطرمه",
+    "لانشون",
+    "تركي مدخن",
+    "سلامي",
+    "مرتديلا",
+  ],
+  ready_meals: [
+    "ready meal",
+    "prepared meal",
+    "microwave meal",
+    "meal kit",
+    "وجبه جاهزه",
+    "اكل جاهز",
+    "وجبه سريعه التحضير",
+  ],
+  plant_based: [
+    "plant based",
+    "vegan burger",
+    "vegan sausage",
+    "meat substitute",
+    "tofu",
+    "tempeh",
+    "بديل اللحوم",
+    "برجر نباتي",
+    "سجق نباتي",
+    "توفو",
+  ],
+  baby_food: [
+    "baby food",
+    "infant formula",
+    "baby formula",
+    "baby cereal",
+    "طعام اطفال",
+    "حليب اطفال",
+    "لبن اطفال",
+    "سيريلاك",
+  ],
+  spreads: [
+    "peanut butter",
+    "hazelnut spread",
+    "chocolate spread",
+    "fruit spread",
+    "jam",
+    "marmalade",
+    "زبد فول سوداني",
+    "زبدة فول سوداني",
+    "مربي",
+    "سبريد",
+    "نوتيلا",
+  ],
+  seafood: [
+    "seafood",
+    "shrimp",
+    "prawn",
+    "crab",
+    "lobster",
+    "squid",
+    "calamari",
+    "mussels",
+    "جمبري",
+    "روبيان",
+    "كابوريا",
+    "سلطعون",
+    "استاكوزا",
+    "سبيط",
+    "كاليماري",
+    "بلح البحر",
+  ],
   pasta: [
     "pasta",
     "macaroni",
@@ -174,6 +528,7 @@ const aliases = {
   oil: ["oil", "زيت"],
   eggs: ["egg", "eggs", "بيض", "بيضه"],
   dairy: [
+    "powdered milk",
     "milk",
     "yogurt",
     "yoghurt",
@@ -189,6 +544,8 @@ const aliases = {
     "زبد",
     "قشطه",
     "لبنه",
+    "لبن بودره",
+    "حليب بودره",
   ],
   poultry: [
     "chicken",
@@ -200,19 +557,7 @@ const aliases = {
     "ديك رومي",
     "بط",
   ],
-  fish: [
-    "fish",
-    "tuna",
-    "salmon",
-    "shrimp",
-    "prawn",
-    "seafood",
-    "سمك",
-    "تونه",
-    "سلمون",
-    "جمبري",
-    "روبيان",
-  ],
+  fish: ["fish", "tuna", "salmon", "سمك", "تونه", "سلمون"],
   meat: [
     "beef",
     "meat",
@@ -347,7 +692,27 @@ const aliases = {
 };
 
 const aliasEntries = Object.entries(aliases).flatMap(([categoryId, values]) =>
-  values.map((value) => ({ categoryId, value: normalize(value) })),
+  values.map((value) => ({
+    categoryId,
+    value: normalize(value),
+    catalog: false,
+  })),
+);
+
+const foodArtNameEntries = foodArtCatalog.items.flatMap((item) =>
+  [item.en, item.ar, ...(item.aliases?.en ?? []), ...(item.aliases?.ar ?? [])]
+    .map(normalize)
+    .filter(Boolean)
+    .map((value) => ({
+      categoryId: item.categoryIds[0],
+      value,
+      catalog: true,
+    })),
+);
+
+const nameEntries = [...foodArtNameEntries, ...aliasEntries].sort(
+  (a, b) =>
+    b.value.length - a.value.length || Number(b.catalog) - Number(a.catalog),
 );
 
 function containsAlias(name, alias) {
@@ -365,20 +730,20 @@ function catalogCategory(ingredient) {
       produce: "vegetables",
       herb: "vegetables",
       fruit: "fruit",
-      frozen: "vegetables",
+      frozen: "frozen",
       pulse: "legumes",
       grain: "rice_grains",
-      baking: "rice_grains",
+      baking: "baking",
       bakery: "bakery",
       dairy_eggs: "dairy",
       meat: "meat",
-      seafood: "fish",
+      seafood: "seafood",
       oil: "oil",
       spice: "spices",
       condiment: "condiments",
-      canned: "condiments",
-      sweetener: "condiments",
-      seed_nut: "other",
+      canned: "canned",
+      sweetener: "sweeteners",
+      seed_nut: "nuts_seeds",
       pantry: "other",
       basic: "drinks",
     }[ingredient.category] ?? "other"
@@ -406,10 +771,7 @@ function result(categoryId, source, normalizedName) {
   return {
     category,
     source,
-    suggestedStorage:
-      frozen && ["meat", "poultry", "fish"].includes(category.id)
-        ? "Freezer"
-        : category.defaultStorage,
+    suggestedStorage: frozen ? "Freezer" : category.defaultStorage,
   };
 }
 
@@ -421,6 +783,11 @@ export function inferFoodCategory({ name, ingredientId, categoryId } = {}) {
   const ingredient = getIngredient(ingredientId);
   if (ingredient)
     return result(catalogCategory(ingredient), "ingredient", normalizedName);
+
+  const nameMatch =
+    normalizedName &&
+    nameEntries.find(({ value }) => containsAlias(normalizedName, value));
+  if (nameMatch) return result(nameMatch.categoryId, "name", normalizedName);
 
   const catalogMatch =
     normalizedName &&
@@ -434,12 +801,5 @@ export function inferFoodCategory({ name, ingredientId, categoryId } = {}) {
       normalizedName,
     );
 
-  const aliasMatch =
-    normalizedName &&
-    aliasEntries.find(({ value }) => containsAlias(normalizedName, value));
-  return result(
-    aliasMatch?.categoryId ?? "other",
-    aliasMatch ? "name" : "fallback",
-    normalizedName,
-  );
+  return result("other", "fallback", normalizedName);
 }

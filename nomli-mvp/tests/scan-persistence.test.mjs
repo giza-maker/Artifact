@@ -72,16 +72,16 @@ test("reviewed category survives save, reload, and backup", async () => {
   const storage = memory();
   const store = createStateStore({ data, storage });
   const reviewed = draft();
-  reviewed.lines[0].categoryId = "other";
+  reviewed.lines[0].categoryId = "seafood";
   const committed = commitScanDraft(baseState(), reviewed, { confirmed: true }).state;
   await store.save(committed);
   const loaded = (await store.load()).state;
   const itemId = Object.keys(loaded.items)[0];
-  assert.equal(loaded.items[itemId].categoryId, "other");
-  assert.equal(loaded.receipts[0].lines[0].categoryId, "other");
+  assert.equal(loaded.items[itemId].categoryId, "seafood");
+  assert.equal(loaded.receipts[0].lines[0].categoryId, "seafood");
   const restored = store.parseBackup(store.exportBackup(loaded));
-  assert.equal(restored.items[itemId].categoryId, "other");
-  assert.equal(restored.receipts[0].lines[0].categoryId, "other");
+  assert.equal(restored.items[itemId].categoryId, "seafood");
+  assert.equal(restored.receipts[0].lines[0].categoryId, "seafood");
 });
 
 test("501st scan can merge existing stock, persist, and replay once", async () => {

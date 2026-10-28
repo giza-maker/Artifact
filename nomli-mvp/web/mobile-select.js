@@ -1,4 +1,5 @@
 import { getFoodCategory } from "./food-categories.js";
+import { foodArtworkStyle, getCategoryArtwork } from "./food-art.js";
 
 const pickers = new WeakMap();
 let sequence = 0;
@@ -47,16 +48,11 @@ function foodCategoryArt(value) {
   const category = getFoodCategory(value);
   if (!category) return null;
   const art = document.createElement("span");
+  const artwork = getCategoryArtwork(category);
   art.className = "food-category-art picker-food-art";
-  art.dataset.foodArt = category.id;
-  art.style.setProperty(
-    "--food-x",
-    `${((category.atlasIndex % 4) * 100) / 3}%`,
-  );
-  art.style.setProperty(
-    "--food-y",
-    `${(Math.floor(category.atlasIndex / 4) * 100) / 3}%`,
-  );
+  art.dataset.foodArt = artwork.categoryId;
+  art.dataset.foodArtId = artwork.id;
+  art.style.cssText = foodArtworkStyle(artwork);
   art.setAttribute("aria-hidden", "true");
   return art;
 }

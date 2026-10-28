@@ -5,6 +5,7 @@ import {
 } from "./food-categories.js";
 import { currencyDigits, formatMinorInput } from "./scan-money.js";
 import { renderIngredientLinkFields } from "./cook-linking.js";
+import { foodArtworkStyle, getFoodArtwork } from "./food-art.js";
 
 const esc = (value) =>
   String(value ?? "").replace(
@@ -74,11 +75,9 @@ function inventoryOptions(items, selected) {
     .join("");
 }
 
-function artwork(category) {
-  const index = category.atlasIndex;
-  const x = ((index % 4) * 100) / 3;
-  const y = (Math.floor(index / 4) * 100) / 3;
-  return `<span class="food-category-art" data-food-art="${esc(category.id)}" style="--food-x:${x}%;--food-y:${y}%" role="img" aria-label="${esc(category.en)}"></span>`;
+function artwork(line, category) {
+  const art = getFoodArtwork({ ...line, categoryId: category.id });
+  return `<span class="food-category-art" data-food-art="${esc(art.categoryId)}" data-food-art-id="${esc(art.id)}" style="${esc(foodArtworkStyle(art))}" role="img" aria-label="${esc(category.en)}"></span>`;
 }
 
 function categoryOptions(selected) {
@@ -108,7 +107,7 @@ function renderCard(line, index, draft, items, scanLinePhoto, lineArtwork) {
     : [];
   return `<section class="scan-review-card" data-scan-card data-line-id="${esc(id)}"${index ? " hidden" : ""}>
     <header class="scan-card-head">
-      <div data-scan-card-visual>${lineArtwork?.(line) || artwork(category)}</div>
+      <div data-scan-card-visual>${lineArtwork?.(line) || artwork(line, category)}</div>
       <div><p class="scan-card-kicker">Item ${index + 1}</p><h3 data-scan-card-title tabindex="-1" dir="auto">${esc(line.name || "Unnamed item")}</h3></div>
       <label class="scan-keep"><input type="checkbox" name="include-${esc(id)}" checked><span>Keep item</span></label>
     </header>

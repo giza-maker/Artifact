@@ -114,7 +114,7 @@
   display: block;
   width: 100%;
   height: 100%;
-  background-image: url("/images/food/nomli-food-atlas.png");
+  background-image: var(--food-atlas, url("/images/food/nomli-food-atlas.png"));
   background-repeat: no-repeat;
   background-size: 400% 400%;
   background-position: var(--food-x) var(--food-y);

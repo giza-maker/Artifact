@@ -69,4 +69,13 @@ Do not add school, XP, quests, community, investor-tour or social-product langua
 
 ## Required document hooks
 
+## Supermarket artwork
+
+- Bundle 272 bilingual food types in 17 transparent 4 × 4 lossless WebP atlases. Keep all 32 supermarket sections editable; specific food-type artwork precedes section representatives, with a basket for unknown food.
+- Match longest whole English/Arabic aliases; preserve product distinctions such as fresh/frozen/canned, rice varieties, pasta shapes and drink types. Explicit category gates artwork; an edited name cannot retain stale linked-ingredient art.
+- Uploaded local photos take priority. Generic illustrations never establish identity, brand, allergens, weight or expiry. Artwork does not assign cooking links or change inventory quantities.
+- Keep sprite positions in trusted local CSS variables. Category sheet stays searchable and independently scrollable on narrow phones. Prompts, cell mapping and hashes live in web/public/images/food/atlases/MANIFEST.json.
+
+## Required document hooks
+
 Runtime may rely on `#main`, `#view`, `#bottom-nav`, `#modal`, `#modal-content`, `#toast` and `#announcer`. Keep these IDs stable. `main.js` is the only HTML script entry. Styles load through the HTML stylesheet link; JavaScript imports native bridges, local data and application modules.

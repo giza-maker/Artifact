@@ -3,6 +3,11 @@
   "provenance": "Brand media reused from kitchenaut-landing/ASSETS.md; Phosphor MIT and fonts OFL licenses included. Content and fixtures authored synthetically for Nomli. See content/LICENSE.md and web/public/images/recipes/ASSETS.md for generated recipe imagery.",
   "assets": [
     {
+      "path": "content/food-art-catalog.json",
+      "bytes": 71560,
+      "sha256": "1f88bdc95f5b21af31df725d7a5aa6d16217f60259412fa3922dccba634651de"
+    },
+    {
       "path": "content/ingredients.json",
       "bytes": 26703,
       "sha256": "055c09b362115b16c065e7b932649c83bfd2d39f006946c80350ad1ca7723e22"
@@ -149,8 +154,103 @@
     },
     {
       "path": "web/public/images/food/ASSETS.md",
-      "bytes": 1006,
-      "sha256": "d2f61e1f60edd50717949b35c1e4690de677d52654bb60e2a3e6c3aa15dd3004"
+      "bytes": 1143,
+      "sha256": "4099083d315faf698e5f78d4d69ab10d01addfcbd3108137855f56a6caa4de6a"
+    },
+    {
+      "path": "web/public/images/food/atlases/ASSETS.md",
+      "bytes": 4423,
+      "sha256": "83e2e1532f8b982644943c8dafbbfb49a43e96b53b549f2d5f3d151936d41676"
+    },
+    {
+      "path": "web/public/images/food/atlases/bakery_breakfast.webp",
+      "bytes": 1517208,
+      "sha256": "5583aca807daf3190999a0d714f60f5e8f1b56470a7352f274ac6855a89e8f7e"
+    },
+    {
+      "path": "web/public/images/food/atlases/baking_spice_extras.webp",
+      "bytes": 1514742,
+      "sha256": "cda2ae6c4aba595cc99ebd76bcee5d98cc7d1fd74d683158e6bbf0bb5cc4e089"
+    },
+    {
+      "path": "web/public/images/food/atlases/dairy_eggs.webp",
+      "bytes": 1089278,
+      "sha256": "135b7b7d3b3c7c77793eaba1f6be468e9ff2a64323d3e88de784cd68184467d3"
+    },
+    {
+      "path": "web/public/images/food/atlases/drinks.webp",
+      "bytes": 1233296,
+      "sha256": "1dae541f42a5f2d1c349bbd3edacf98a34444b3846bb191d1fe13256ab58ef65"
+    },
+    {
+      "path": "web/public/images/food/atlases/frozen_ready.webp",
+      "bytes": 1779826,
+      "sha256": "41e4b552813fba81f35f57d046bf5e7d9d31ab3ef2db2e38fd275f1ad764c3de"
+    },
+    {
+      "path": "web/public/images/food/atlases/fruit_dates.webp",
+      "bytes": 1409686,
+      "sha256": "1b1ca4fec6a141631660649f3516eba7872b0142f10facb7ee6a5d05fc19e0f5"
+    },
+    {
+      "path": "web/public/images/food/atlases/fruit.webp",
+      "bytes": 1497206,
+      "sha256": "49ec292a87144edfed3002a627c5089a56caa51646d0c80dcd6f9e84f2b246f5"
+    },
+    {
+      "path": "web/public/images/food/atlases/grains_pasta.webp",
+      "bytes": 1506570,
+      "sha256": "ecead5abe0898ecfcfcee679588b6121c96954de6baecde5bb8d1a9362b10f25"
+    },
+    {
+      "path": "web/public/images/food/atlases/greens.webp",
+      "bytes": 1666494,
+      "sha256": "b391e4a62f97126855bab9ab00d523e9856e10408221c25b38dcbb270a1d5ee1"
+    },
+    {
+      "path": "web/public/images/food/atlases/MANIFEST.json",
+      "bytes": 46044,
+      "sha256": "36a4ba5f3d3553fd4467746c3beeb78b7fea82bf94be822124d793a55a861855"
+    },
+    {
+      "path": "web/public/images/food/atlases/meat_poultry.webp",
+      "bytes": 1411876,
+      "sha256": "6703ea1ad6386ef8c4457ba6ac6ec29c9f0f316497582d96411e188bc310799f"
+    },
+    {
+      "path": "web/public/images/food/atlases/mena_pantry.webp",
+      "bytes": 1342730,
+      "sha256": "cc52d7bad7b79b198af2f961f2c796af7ab271484ba09fa2f4d806e96ed332df"
+    },
+    {
+      "path": "web/public/images/food/atlases/pantry_canned.webp",
+      "bytes": 1237234,
+      "sha256": "22b229ea617f139bac8647d8bcc876b879d10586552b54debed82df81ee40500"
+    },
+    {
+      "path": "web/public/images/food/atlases/pulses_nuts.webp",
+      "bytes": 1536784,
+      "sha256": "142eaff226529d1a7890532fdc449aba4f24f37257e75fcb6d9cd0b3178c204f"
+    },
+    {
+      "path": "web/public/images/food/atlases/seafood.webp",
+      "bytes": 1456710,
+      "sha256": "21301b3c6f968d8585ceb30eda44e46666fbb983da1dda4667012c981ae1191a"
+    },
+    {
+      "path": "web/public/images/food/atlases/snacks_sweets.webp",
+      "bytes": 1548634,
+      "sha256": "4373dab72065829056376a90849d2ffc90160aeace35f63e190936b2bc87a999"
+    },
+    {
+      "path": "web/public/images/food/atlases/spices_baking.webp",
+      "bytes": 1307644,
+      "sha256": "fba8bb7c544f8bdfc96319fff5e84f5d3586058d38af3451a8805ceea13920ee"
+    },
+    {
+      "path": "web/public/images/food/atlases/vegetables.webp",
+      "bytes": 1276530,
+      "sha256": "201b566f4eb6fdc67d99b43967b67c3cf34da0ccd1533bdd1ca4ca491b2a31bc"
     },
     {
       "path": "web/public/images/food/nomli-food-atlas.png",
