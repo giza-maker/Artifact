@@ -181,3 +181,8 @@
   overflow-y: auto;
   overscroll-behavior: contain;
 }
+.picker-food-option-copy > .food-category-art.picker-food-art {
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+}
