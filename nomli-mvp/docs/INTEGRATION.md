@@ -119,3 +119,9 @@ New grocery image requests opt in with imageRegions:true. Provider may return ea
 ## M7.1 plugin loader contract
 
 Capacitor plugin proxies must never be returned directly from async functions or resolved promises. They synthesize a then method. Native loaders resolve plain {plugin} handles; consumers unwrap the proxy synchronously, then call its method. This fixes photo persistence, scanner file picking, voice bootstrap and backup picker/export deadlocks without changing inventory schema or cloud services.
+
+## M8.1 supermarket artwork
+
+Shared food-categories.js exposes 32 category IDs, keeping the original 16 stable. The provider prompt lists the full allowlist; returned IDs still pass runtime normalization and invalid IDs become null. Only Gemini omits the expanded enum from its nested provider schema after live HTTP 400 repro; OpenAI strict schemas retain it. Legacy clients without foodCategories keep their old response shape.
+
+content/food-art-catalog.json owns 272 bilingual food types and safe local atlas references. food-art.js provides pure matching/descriptor helpers; it writes no inventory identity. Explicit categories gate compatible illustrations, name matches precede linked-ingredient fallback, and edited-name previews discard stale ingredient hints. Existing photos remain preferred.

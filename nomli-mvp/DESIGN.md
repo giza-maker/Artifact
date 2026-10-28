@@ -46,7 +46,7 @@ Do not add school, XP, quests, community, investor-tour or social-product langua
 - Keep name, quantity/unit, broad category and storage visible. Expiry, cooking links, measured weights, line cost, crop tools and merge controls live under More details. Unknown quantities/units need correction; do not invent one piece.
 - Broad AI categories and local Arabic/English name matching prefill editable category/storage suggestions. Categories do not establish a cooking identity, allergen status or measured weight. Every included card is reviewed before the final confirmation.
 - Final save stays in the footer; confirmation is visible near the summary heading. Missing receipt finance defaults visibly to inventory-only, with an editable choice. Unknown excluded amounts stay null, not zero. Saving remains one atomic stock/receipt operation.
-- Use the generated transparent 4 × 4 food atlas at `images/food/nomli-food-atlas.png` for category cards, picker options and inventory fallbacks. Existing legacy names receive inferred artwork without a migration. Uploaded local photos take priority. Provenance/prompt are in `web/public/images/food/ASSETS.md`.
+- Use the expanded offline supermarket artwork catalog for receipt cards, picker options and inventory fallbacks. Retain `images/food/nomli-food-atlas.png` as the unknown-food fallback. Existing legacy names receive inferred artwork without a migration. Uploaded local photos take priority. Full prompts and mapping: `web/public/images/food/atlases/MANIFEST.json`.
 
 ## Local photo handling
 

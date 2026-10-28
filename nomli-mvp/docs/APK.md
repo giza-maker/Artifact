@@ -1,4 +1,16 @@
-# Nomli M8 card review APK
+# Nomli M8.1 supermarket artwork APK
+
+[Download Nomli-M8.1.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m8.1-v0.9.1/Nomli-M8.1.apk). Install over existing Nomli Test. Package com.nomli.mvp.validation; version 0.9.1-m8.1, code 12; minimum API 26, target API 36. Same signing key; inventory, photos and connection remain. No new account, key or reset required.
+
+272 specific food illustrations in 17 lossless transparent atlases cover common supermarket types, including fresh produce, meat, dairy, grains, bakery, canned/frozen foods, snacks, drinks, baking supplies and MENA staples. Thirty-two editable categories use matching representative artwork. Arabic/English whole-phrase aliases distinguish rice varieties, pasta shapes, prepared food and common drink brands. Unmatched brands use food-type/category artwork; this is not an exhaustive SKU database. Local photos take priority.
+
+Source ed456aefcbb4588292d37ecde0b442b7fec8a504; successful CI 40628893894 (3m 45s). All 268 JavaScript tests, content and food-art validation, Vite build, Capacitor sync and Android compilation pass. APK 70,382,512 bytes; SHA-256 eae8f012157cbbfc71d2de6fd975ce774ae591702e10e5ec2db98c0752d6799b. Retained validation certificate, v2/v3 signatures, 16 KB alignment and ZIP CRC pass. All 111 production web assets match local dist; two empty Cordova placeholders expected. Configured secrets and QA harness absent. Published asset size/digest match local APK.
+
+390 × 844 browser QA used production Capacitor/native wrapper with actual Android native-bridge.js and synthetic Android transport. Five Arabic receipt cards resolved distinct rice, vermicelli, orzo, cola and lemon-lime soda art. Review saved five items and exact EGP 109.00; artwork persisted after reload. A confirmed local photo took priority after reload; removing it restored food artwork. All 32 category icons rendered in a searchable sheet with independent scrolling (514 px viewport, 1722 px content). No horizontal overflow or console errors. Camera, storage and file selection were simulated; physical Android acceptance remains pending.
+
+Live OCR regression fixtures passed: Arabic receipt SAR 23.00, English PDF AED 39.62 with AED 1.89 additional tax, and a two-product grocery photo with separate crop regions. Observed times 3.15 s, 3.64 s, 23.89 s; final deployed-service Arabic receipt replay 28.35 s. These observations are not latency or accuracy guarantees. Worker d3b10002-0f5c-45f7-ae0f-afe19040bd65 keeps receipt/grocery model separation, bounded fallback and the 32-category server allowlist. Gemini rejected the expanded nested enum with HTTP 400; its provider schema now accepts nullable text while the prompt lists choices and runtime validation converts unknown IDs to null. OpenAI strict schema retains the enum.
+
+## Historical M8 card review APK
 
 [Download Nomli-M8.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m8-v0.9.0/Nomli-M8.apk). Install over existing Nomli Test. Package com.nomli.mvp.validation; version 0.9.0-m8, code 11; minimum API 26, target API 36. Same signing key; existing inventory, photos and connection remain. No new account, key or reset required.
 

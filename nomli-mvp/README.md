@@ -1,14 +1,14 @@
-# Nomli kitchen MVP, M8 card review
+# Nomli kitchen MVP, M8.1 supermarket artwork
 
 Single-user local kitchen inventory with reviewed receipt recognition, curated cooking and live Zara assistance. M7 adds local ingredient thumbnails, artwork for every recipe, chronological Zara chat, mobile selector sheets and cleaner cooking screens. Optional Android speech-to-text feeds reviewed Zara questions. Zara sends explicitly requested kitchen context through the paired Cloudflare service to Gemini. Proposed quantity or recipe changes require separate review and confirmation. M3 cooking and the protected M2 receipt workflow remain available.
 
-Validation package: `com.nomli.mvp.validation`, app label **Nomli Test**, version **0.9.0-m8** (`versionCode` 11). It uses the M1/M2 validation update channel and remains separate from the earlier demo package. Published milestone APKs use the retained local validation signing key; GitHub Actions does not receive that key.
+Validation package: `com.nomli.mvp.validation`, app label **Nomli Test**, version **0.9.1-m8.1** (`versionCode` 12). It uses the M1/M2 validation update channel and remains separate from the earlier demo package. Published milestone APKs use the retained local validation signing key; GitHub Actions does not receive that key.
 
 Inventory works offline. Receipt recognition and live Zara need internet access. Current recognition service is `https://nomli-scan-proxy.ahmed-aljazayeerly.workers.dev`, with Gemini 3.1 Flash-Lite for receipts and Gemini 3.5 Flash-Lite for grocery/expiry scans, receipt fallback and Zara. Provider credentials are encrypted server-side and never bundled in the app.
 
-Verified M8: [Nomli-M8.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m8-v0.9.0/Nomli-M8.apk). Receipt review shows one item at a time, Back/Next and direct item navigation, suggested categories/storage, realistic food icons and optional advanced details. Uploaded photos take priority. Update existing Nomli Test; inventory and connection remain.
+Verified M8.1: [Nomli-M8.1.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m8.1-v0.9.1/Nomli-M8.1.apk). Includes 272 food illustrations across 32 supermarket sections, Arabic/English aliases, specific product-type artwork in receipt cards and inventory, and a scrolling category picker. All artwork works offline; uploaded photos take priority. Update existing Nomli Test; inventory and connection remain.
 
-Historical M7 APK has the plugin-loading defect. Use M8 above; archived evidence remains in docs/APK.md.
+Historical M7 APK has the plugin-loading defect. Use M8.1 above; archived evidence remains in docs/APK.md.
 
 Historical verified M6 APK: [Nomli-M6.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m6-v0.7.0/Nomli-M6.apk). See the [phone acceptance checklist](docs/TESTING.md).
 
