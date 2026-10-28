@@ -26,7 +26,7 @@ const item = (extra = {}) => ({
   name: "Unknown Brand Eggs 12 pack",
   qty: 12,
   unit: "pieces",
-  expiry: "2026-11-01",
+  expiry: null,
   ...extra,
 });
 

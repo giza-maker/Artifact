@@ -1,4 +1,18 @@
-# M8.2 Kitchen/Cook synchronization — verified
+# M8.3 recipe stock review — verified
+
+M8.2 display-category gating could reject an exact food identity (Eggs under Dairy/Other), Arabic packaging normalization differed from display normalization, backup restore skipped repair, and all active cooking previously blocked synchronization. These code counterexamples were reproduced; the latest reported physical-phone case remains unverified without its installed version and exact item/recipe data.
+
+Unique strict food names now establish cooking identity independently of shelf category. Arabic ة/ه and hamza variants normalize consistently in names and packaging words. Backup replacement repairs clear links inside the confirmed transaction. Active cooking freezes only allocated stock; other lots can repair, with deferred repair after completion/cancellation.
+
+Missing recipe requirements now show matching Kitchen candidates and the specific unlinked, opt-out, unit, recorded-date or conflicting-identity reason. Compatible candidates offer explicit Use as confirmation, with live-state revalidation and no quantity change. Unsupported processing/formulation, expired lots, incompatible units, frozen allocations and existing conflicting identities go to item review. No weights, expiry or dietary facts are inferred.
+
+Source f24a86941ce5ec872736722dfd883070343079d3; successful CI 40731042743 (5m 30s). All 310 JavaScript tests, content/art validation, Vite build, Capacitor sync and Android compilation pass. APK 70,390,704 bytes; SHA-256 4496b07d76b854214e122d34d6b7460b5564652fc122cbe973b63324449f79eb. Retained validation certificate, v2/v3 signatures, 16 KB alignment and ZIP CRC verified. All 111 production web assets match local dist; two empty Cordova placeholders expected. Configured secrets and QA harness absent. Published size/digest match local APK.
+
+390 × 844 browser QA used production Capacitor wrappers and actual Android native-bridge.js with synthetic native transport. Eggs Medium 30pcs counted under Dairy. Unknown Brand Eggs 30pcs showed a recipe match; Cancel left it missing, confirmation supplied 4 recipe eggs without changing the saved 30 pieces, and reload retained the link. Synthetic backup restoration produced a linked بيض متوسط ٣٠قطعه item under Other before any restart. A linked parsley bunch showed Quantity units need review; entering a synthetic measured 30 grams per bunch covered the 15-gram requirement. Utilities showed v0.9.3. No console errors or horizontal/modal overflow. Camera, storage and backup selection were simulated. No Android device was connected for hardware verification.
+
+Scanner/assistant Worker d3b10002-0f5c-45f7-ae0f-afe19040bd65 remains unchanged.
+
+## Historical M8.2 Kitchen/Cook synchronization — verified
 
 Display categoryId was saved while canonical ingredientId stayed empty. Cook allocates exact ingredient IDs, so 30 Eggs Medium 30pcs were invisible to the four-egg recipe. Retail descriptors/plurals also prevented suggestions. Strict shared identity matching now supplies editable clear matches and repairs existing clear stock after successful persistence.
 
