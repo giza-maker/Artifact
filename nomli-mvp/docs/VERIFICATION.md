@@ -1,4 +1,18 @@
-# M8.1 supermarket artwork — verified
+# M8.2 Kitchen/Cook synchronization — verified
+
+Display categoryId was saved while canonical ingredientId stayed empty. Cook allocates exact ingredient IDs, so 30 Eggs Medium 30pcs were invisible to the four-egg recipe. Retail descriptors/plurals also prevented suggestions. Strict shared identity matching now supplies editable clear matches and repairs existing clear stock after successful persistence.
+
+Clear product names such as Eggs Medium 30pcs, Bell Peppers, Carrots Tray, zucchini/courgette and Arabic equivalents now prefill editable cooking links. All 272 food types declare a nullable canonical mapping; 63 have direct compatible mappings, and all 88 primary canonical English/Arabic names resolve under shared display categories. Artwork aliases alone never establish identity. Ambiguous formulations, preparation states, species and unknown brands stay for review; no grams, expiry or dietary facts are inferred.
+
+Startup repair skips active cooking, preserves valid manual links and opt-outs, and swaps displayed state only after successful persistence. Unit conversion, expired-stock exclusion, atomic deduction, replay and undo keep their existing checks. Native write timeouts quarantine further writes until reopen because the late write outcome may be unknown.
+
+Source 1116c9e9c16674df3b6d92ff93cdd822f708cdaa; successful CI 40633270436 (4m 28s). All 294 JavaScript tests, content/food-art validation, Vite build, Capacitor sync and Android compilation pass. APK 70,386,608 bytes; SHA-256 78a8f11be7aa9338cd0a0766af71e2116bb016dbbaf768e115336d05988af80e. Retained validation certificate, v2/v3 signatures, 16 KB alignment and ZIP CRC verified. All 111 production web assets match local dist; two empty Cordova placeholders expected. Configured secrets and synthetic QA harness absent. GitHub asset size/digest match local APK.
+
+390 × 844 browser QA used production native wrappers, actual Capacitor Android native-bridge.js and synthetic native transport. Startup repaired nine clear unlinked items; herb omelette requirements showed exact Kitchen coverage. Full preparation/cooking/review deducted eggs 30→26 pieces and Undo restored 30; reload retained links and amounts. New receipt cards prefilled Egg, Bell pepper and Carrot; changing the name to Chocolate milk cleared stale Egg identity. Explicit Carrot unlink remained unlinked after saving/reload. The same new scan supplied the recipe eggs without a manual ingredient selection. A stalled Preferences.set exited loading after eight seconds with an original-inventory/reopen message. No console errors. Native camera/storage were simulated; physical Android install, permissions and hardware remain phone checks.
+
+Scanner/assistant service remains the verified Worker d3b10002-0f5c-45f7-ae0f-afe19040bd65; API contracts and credentials are unchanged.
+
+## Historical M8.1 supermarket artwork
 
 Source ed456aefcbb4588292d37ecde0b442b7fec8a504; successful CI 40628893894 (3m 45s). All 268 JavaScript tests, content and food-art validation, Vite build, Capacitor sync and Android compilation pass. APK 70,382,512 bytes; SHA-256 eae8f012157cbbfc71d2de6fd975ce774ae591702e10e5ec2db98c0752d6799b. Retained validation certificate, v2/v3 signatures, 16 KB alignment and ZIP CRC pass. All 111 production web assets match local dist; two empty Cordova placeholders expected. Configured secrets and QA harness absent. Published asset size/digest match local APK.
 

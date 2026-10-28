@@ -1,4 +1,18 @@
-# Nomli M8.1 supermarket artwork APK
+# Nomli M8.2 Kitchen/Cook sync APK
+
+[Download Nomli-M8.2.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m8.2-v0.9.2/Nomli-M8.2.apk). Install over Nomli Test; existing inventory, photos and connection remain. Package com.nomli.mvp.validation; version 0.9.2-m8.2, code 13; minimum API 26, target API 36. No reset, rescan or new key required.
+
+Clear product names such as Eggs Medium 30pcs, Bell Peppers, Carrots Tray, zucchini/courgette and Arabic equivalents now prefill editable cooking links. All 272 food types declare a nullable canonical mapping; 63 have direct compatible mappings, and all 88 primary canonical English/Arabic names resolve under shared display categories. Artwork aliases alone never establish identity. Ambiguous formulations, preparation states, species and unknown brands stay for review; no grams, expiry or dietary facts are inferred.
+
+Startup repair skips active cooking, preserves valid manual links and opt-outs, and swaps displayed state only after successful persistence. Unit conversion, expired-stock exclusion, atomic deduction, replay and undo keep their existing checks. Native write timeouts quarantine further writes until reopen because the late write outcome may be unknown.
+
+Source 1116c9e9c16674df3b6d92ff93cdd822f708cdaa; successful CI 40633270436 (4m 28s). All 294 JavaScript tests, content/food-art validation, Vite build, Capacitor sync and Android compilation pass. APK 70,386,608 bytes; SHA-256 78a8f11be7aa9338cd0a0766af71e2116bb016dbbaf768e115336d05988af80e. Retained validation certificate, v2/v3 signatures, 16 KB alignment and ZIP CRC verified. All 111 production web assets match local dist; two empty Cordova placeholders expected. Configured secrets and synthetic QA harness absent. GitHub asset size/digest match local APK.
+
+390 × 844 browser QA used production native wrappers, actual Capacitor Android native-bridge.js and synthetic native transport. Startup repaired nine clear unlinked items; herb omelette requirements showed exact Kitchen coverage. Full preparation/cooking/review deducted eggs 30→26 pieces and Undo restored 30; reload retained links and amounts. New receipt cards prefilled Egg, Bell pepper and Carrot; changing the name to Chocolate milk cleared stale Egg identity. Explicit Carrot unlink remained unlinked after saving/reload. The same new scan supplied the recipe eggs without a manual ingredient selection. A stalled Preferences.set exited loading after eight seconds with an original-inventory/reopen message. No console errors. Native camera/storage were simulated; physical Android install, permissions and hardware remain phone checks.
+
+Scanner/assistant service remains the verified Worker d3b10002-0f5c-45f7-ae0f-afe19040bd65; API contracts and credentials are unchanged.
+
+## Historical M8.1 supermarket artwork APK
 
 [Download Nomli-M8.1.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m8.1-v0.9.1/Nomli-M8.1.apk). Install over existing Nomli Test. Package com.nomli.mvp.validation; version 0.9.1-m8.1, code 12; minimum API 26, target API 36. Same signing key; inventory, photos and connection remain. No new account, key or reset required.
 
