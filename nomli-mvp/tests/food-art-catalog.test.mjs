@@ -10,7 +10,7 @@ const catalog = JSON.parse(
 );
 const plan = JSON.parse(
   fs.readFileSync(
-    new URL("../.tools/qa/market-atlas-plan.json", import.meta.url),
+    new URL("../web/public/images/food/atlases/MANIFEST.json", import.meta.url),
     "utf8",
   ),
 );
@@ -54,7 +54,7 @@ test("food art catalog preserves exact 17 by 16 atlas plan", () => {
   assert.equal(catalog.atlases.length, 17);
   assert.equal(catalog.items.length, 272);
 
-  for (const [atlasIndex, planned] of plan.sheets.entries()) {
+  for (const [atlasIndex, planned] of plan.atlases.entries()) {
     assert.deepEqual(catalog.atlases[atlasIndex], {
       id: planned.id,
       src: `images/food/atlases/${planned.id}.webp`,
