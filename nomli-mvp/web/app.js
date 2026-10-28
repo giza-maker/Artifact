@@ -72,6 +72,8 @@ import {
 import { applyScanCookingLinks } from "./scan-cooking-links.js";
 import { resolveCookingIdentity } from "./food-identity.js";
 import { syncCookingInventory } from "./cooking-inventory-sync.js";
+import { getRecipeStockHints, linkRecipeStock } from "./recipe-stock-hints.js";
+import packageInfo from "../package.json" with { type: "json" };
 (async function leanNomli() {
   const D = { ...window.NOMLI_DATA, recipes: COOK_RECIPES, tools: COOK_TOOLS };
   const store = createStateStore({
@@ -233,6 +235,7 @@ import { syncCookingInventory } from "./cooking-inventory-sync.js";
   let S = loadResult.state;
   let recoveryRequired = Boolean(loadResult.recoveryRequired);
   let importCandidate = null;
+  let recipeStockLinkReview = null;
   let saveQueue = Promise.resolve();
   let operationBusy = false;
   let storageError = "";
@@ -722,6 +725,17 @@ import { syncCookingInventory } from "./cooking-inventory-sync.js";
     const r = recipe(S.recipe),
       serv = servingsFor(r),
       a = assessment(r);
+    const stockHints = getRecipeStockHints(S, a);
+    const reasons = {
+      unlinked: "Not connected to this recipe ingredient",
+      "opted-out": "Cooking use was turned off",
+      expired: "Past its recorded date",
+      units: "Quantity units need review",
+      identity: "Linked to a different cooking ingredient",
+    };
+    const stockHelp = stockHints.length
+      ? `<section class="notice" aria-label="Kitchen items to review"><h3>Already in your Kitchen?</h3><p>These items need a match or quantity review before this recipe can use them.</p>${stockHints.map((h) => `<div class="item-row"><div><b dir="auto">${esc(h.name)}</b><small>${num(h.qty)} ${esc(h.unit)} · ${esc(reasons[h.reason])}</small></div>${h.canLink ? `<button type="button" class="btn btn-quiet" data-action="recipe-stock-link" data-id="${esc(h.itemId)}" data-ingredient="${esc(h.ingredientId)}" aria-label="Use ${esc(h.name)} as ${esc(ingredientLabel(h.ingredientId))}">Use as ${esc(ingredientLabel(h.ingredientId))}</button>` : button("Review item", "item-edit", h.itemId, "btn-quiet")}</div>`).join("")}</section>`
+      : "";
     return (
       heading(
         "RECIPE",
@@ -735,7 +749,7 @@ import { syncCookingInventory } from "./cooking-inventory-sync.js";
       `<section class="card"><div class="card-header"><h2>Ingredients</h2><label>Servings <select data-change="servings" data-id="${r.id}">${options(
         Array.from({ length: 12 }, (_, i) => i + 1),
         serv,
-      )}</select></label></div>${a.requirements.map((x) => `<div class="item-row"><div><b>${esc(x.name)}</b><small>${num(x.qty)} ${esc(x.unit)} needed · ${num(x.have)} from Kitchen${x.missing ? ` · ${num(x.missing)} missing` : " · ready"}</small>${x.allocations.length ? `<small>From: ${esc([...new Set(x.allocations.map((lot) => lot.name))].slice(0, 3).join(", "))}</small>` : ""}</div>${icon(x.missing ? "shopping-cart" : "check-circle")}</div>`).join("")}${a.blockedItems.length ? '<p class="notice">Items past their recorded date were excluded from this plan.</p>' : ""}${a.incompatibleItems.length ? `<section class="notice"><b>Some units need review</b><p>Mass, volume and count are different. Enter a measured grams-per-unit value or correct stock units in Kitchen.</p>${a.incompatibleItems.map((x) => button(`Review ${x.name}`, "item-edit", x.id, "btn-quiet")).join("")}</section>` : ""}${a.excluded.length ? `<p class="notice notice-warning">Matches your exclusions: ${esc(a.excluded.map(toolLabel).join(", "))}. Choose another recipe.</p>` : ""}${S.cooking ? `<p class="notice">Finish or cancel your current session before starting another.</p>${button("Resume current session", "cook-resume")}` : a.stockReady && !a.excluded.length ? button("Prepare ingredients", "cook-start", r.id, "btn-primary") : `${button("Add missing to shopping", "shopping-missing", r.id)}${button("Review inventory links", "go", "kitchen")}`}</section><section class="card"><h2>Before you start</h2><p>${r.prepMinutes} min preparation · ${r.cookMinutes} min cooking</p><p class="details">Tools: ${esc(r.requiredTools.map(toolLabel).join(", "))}. Confirm these during preparation.</p><p class="details">Listed allergens: ${esc(r.allergens.map(toolLabel).join(", ") || "none listed")}. Check actual product labels and preparation conditions.</p></section>`
+      )}</select></label></div>${a.requirements.map((x) => `<div class="item-row"><div><b>${esc(x.name)}</b><small>${num(x.qty)} ${esc(x.unit)} needed · ${num(x.have)} from Kitchen${x.missing ? ` · ${num(x.missing)} missing` : " · ready"}</small>${x.allocations.length ? `<small>From: ${esc([...new Set(x.allocations.map((lot) => lot.name))].slice(0, 3).join(", "))}</small>` : ""}</div>${icon(x.missing ? "shopping-cart" : "check-circle")}</div>`).join("")}${stockHelp}${a.blockedItems.length ? '<p class="notice">Items past their recorded date were excluded from this plan.</p>' : ""}${a.incompatibleItems.length ? `<section class="notice"><b>Some units need review</b><p>Mass, volume and count are different. Enter a measured grams-per-unit value or correct stock units in Kitchen.</p>${a.incompatibleItems.map((x) => button(`Review ${x.name}`, "item-edit", x.id, "btn-quiet")).join("")}</section>` : ""}${a.excluded.length ? `<p class="notice notice-warning">Matches your exclusions: ${esc(a.excluded.map(toolLabel).join(", "))}. Choose another recipe.</p>` : ""}${S.cooking ? `<p class="notice">Finish or cancel your current session before starting another.</p>${button("Resume current session", "cook-resume")}` : a.stockReady && !a.excluded.length ? button("Prepare ingredients", "cook-start", r.id, "btn-primary") : `${button("Add missing to shopping", "shopping-missing", r.id)}${button("Review inventory links", "go", "kitchen")}`}</section><section class="card"><h2>Before you start</h2><p>${r.prepMinutes} min preparation · ${r.cookMinutes} min cooking</p><p class="details">Tools: ${esc(r.requiredTools.map(toolLabel).join(", "))}. Confirm these during preparation.</p><p class="details">Listed allergens: ${esc(r.allergens.map(toolLabel).join(", ") || "none listed")}. Check actual product labels and preparation conditions.</p></section>`
     );
   }
   function timerSeconds() {
@@ -1751,7 +1765,7 @@ import { syncCookingInventory } from "./cooking-inventory-sync.js";
       }
       const saved = await commit(() => {
         result = commitCookedMeal(S, input);
-        S = result.state;
+        S = syncCookingInventory(result.state).state;
       }, "Meal saved. Inventory updated.");
       if (saved) {
         navigate("cook");
@@ -2020,6 +2034,49 @@ import { syncCookingInventory } from "./cooking-inventory-sync.js";
       closeModal();
       return navigate(id);
     }
+    if (a === "recipe-stock-link") {
+      const ingredientId = el.dataset.ingredient;
+      const r = recipe(S.recipe);
+      const hint = getRecipeStockHints(S, assessment(r)).find(
+        (entry) => entry.itemId === id && entry.ingredientId === ingredientId,
+      );
+      if (!hint?.canLink)
+        return announce("This Kitchen match changed. Review the item again.");
+      const snapshot = JSON.stringify(S.items[id]);
+      openModal(
+        `Use as ${ingredientLabel(ingredientId)}?`,
+        `${errors()}<p dir="auto"><b>${esc(hint.name)}</b></p><p>${num(hint.qty)} ${esc(hint.unit)} in Kitchen.</p><p>Connect this item to <b>${esc(ingredientLabel(ingredientId))}</b> for recipes. Stock quantities stay unchanged. Cooking still requires a separate deduction review.</p>${button("Use ingredient", "recipe-stock-link-confirm", "", "btn-primary")}${button("Cancel", "modal-close", "", "btn-quiet")}`,
+      );
+      recipeStockLinkReview = {
+        itemId: id,
+        ingredientId,
+        snapshot,
+        recipeId: r.id,
+      };
+      return;
+    }
+    if (a === "recipe-stock-link-confirm") {
+      const review = recipeStockLinkReview;
+      if (!review) return;
+      if (
+        await commit(() => {
+          const r = recipe(S.recipe);
+          if (
+            r.id !== review.recipeId ||
+            JSON.stringify(S.items[review.itemId]) !== review.snapshot
+          )
+            throw new Error(
+              "Kitchen item changed. Close this review and check the match again.",
+            );
+          S = linkRecipeStock(S, assessment(r), { ...review, confirmed: true });
+        }, "Kitchen item connected. Recipe availability updated.")
+      ) {
+        recipeStockLinkReview = null;
+        closeModal();
+        render();
+      }
+      return;
+    }
     if (a === "modal-close") return closeModal();
     if (a === "menu")
       return openModal(
@@ -2029,7 +2086,8 @@ import { syncCookingInventory } from "./cooking-inventory-sync.js";
           button("Preferences & tools", "go", "profile") +
           button("Export backup", "backup-export") +
           button("Import backup", "backup-import") +
-          button("Reset local inventory", "reset-ask"),
+          button("Reset local inventory", "reset-ask") +
+          `<p class="details">Nomli Test · v${esc(packageInfo.version)}</p>`,
       );
     if (a === "backup-export") return exportBackup();
     if (a === "backup-import") return importBackup();
@@ -2048,6 +2106,7 @@ import { syncCookingInventory } from "./cooking-inventory-sync.js";
             S.receipts = [];
             S.chat = [];
             S.cooking = null;
+            S = syncCookingInventory(S).state;
           },
           "Local data cleared.",
           true,
@@ -2285,6 +2344,7 @@ import { syncCookingInventory } from "./cooking-inventory-sync.js";
       if (
         await commit(() => {
           S.cooking = null;
+          S = syncCookingInventory(S).state;
         }, "Session cancelled. Inventory unchanged.")
       ) {
         closeModal();
@@ -2881,7 +2941,7 @@ import { syncCookingInventory } from "./cooking-inventory-sync.js";
       if (
         await commit(
           () => {
-            S = structuredClone(candidate);
+            S = syncCookingInventory(structuredClone(candidate)).state;
             if (S.cooking) {
               S.cooking.notificationId = null;
               S.cooking.notificationGeneration =

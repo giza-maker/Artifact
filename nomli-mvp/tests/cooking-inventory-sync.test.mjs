@@ -88,13 +88,76 @@ test("unknown stale cooking link is repaired only on a unique match", () => {
   assert.deepEqual(result.linkedItemIds, ["stock"]);
 });
 
-test("active cooking freezes every synchronization result", () => {
-  const original = { ...base(), cooking: { id: "cook-active" } };
+test("active cooking freezes allocated stock but still reports it pending", () => {
+  const original = {
+    ...base(),
+    cooking: {
+      id: "cook-active",
+      allocations: [
+        {
+          id: "stock",
+          ingredientId: "egg",
+          name: "Eggs Medium 30 pieces",
+          qty: 4,
+          unit: "pieces",
+          gramsPerUnit: null,
+        },
+      ],
+    },
+  };
+  const snapshot = structuredClone(original);
   const result = syncCookingInventory(original);
   assert.equal(result.state, original);
+  assert.equal(result.state.items.stock, original.items.stock);
+  assert.deepEqual(
+    result.state.cooking.allocations,
+    snapshot.cooking.allocations,
+  );
+  assert.equal(result.state.items.stock.qty, 30);
   assert.deepEqual(result.linkedItemIds, []);
   assert.deepEqual(result.categorizedItemIds, []);
-  assert.deepEqual(result.pendingItemIds, []);
+  assert.deepEqual(result.pendingItemIds, ["stock"]);
+  assert.deepEqual(original, snapshot);
+});
+
+test("active cooking repairs non-allocated stock without changing allocations or quantities", () => {
+  const allocated = eggs({ name: "Unlinked allocated eggs", qty: 12 });
+  const original = {
+    ...base(allocated),
+    items: {
+      stock: allocated,
+      available: eggs({ qty: 18 }),
+    },
+    cooking: {
+      id: "cook-active",
+      allocations: [
+        {
+          id: "stock",
+          ingredientId: "egg",
+          name: "Unlinked allocated eggs",
+          qty: 4,
+          unit: "pieces",
+          gramsPerUnit: null,
+        },
+      ],
+    },
+  };
+  const allocations = original.cooking.allocations;
+  const snapshot = structuredClone(original);
+  const result = syncCookingInventory(original);
+
+  assert.notEqual(result.state, original);
+  assert.equal(result.state.items.stock, original.items.stock);
+  assert.equal(result.state.cooking, original.cooking);
+  assert.equal(result.state.cooking.allocations, allocations);
+  assert.equal(result.state.items.available.ingredientId, "egg");
+  assert.equal(result.state.items.available.categoryId, "eggs");
+  assert.equal(result.state.items.stock.qty, 12);
+  assert.equal(result.state.items.available.qty, 18);
+  assert.deepEqual(result.linkedItemIds, ["available"]);
+  assert.deepEqual(result.categorizedItemIds, ["available"]);
+  assert.deepEqual(result.pendingItemIds, ["stock"]);
+  assert.deepEqual(original, snapshot);
 });
 
 test("unsupported plant milk remains pending and never becomes coconut milk", () => {

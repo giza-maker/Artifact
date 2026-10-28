@@ -7,7 +7,7 @@ import {
 
 const fields = (values) => ({ get: (key) => values[key] ?? null });
 
-test("review mode prefills clear retail identities and honors category or explicit opt-out", () => {
+test("review mode prefills clear retail identities independently of section and honors opt-out", () => {
   const matched = renderIngredientLinkFields({
     name: "Eggs Medium 30pcs",
     categoryId: "eggs",
@@ -17,7 +17,6 @@ test("review mode prefills clear retail identities and honors category or explic
   assert.match(matched, /Matched to Egg/);
   for (const values of [
     { name: "Plant milk", categoryId: "plant_based" },
-    { name: "Eggs Medium 30pcs", categoryId: "vegetables" },
     {
       name: "Eggs Medium 30pcs",
       categoryId: "eggs",

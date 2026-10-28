@@ -75,9 +75,16 @@ Do not add school, XP, quests, community, investor-tour or social-product langua
 - Match longest whole English/Arabic aliases; preserve product distinctions such as fresh/frozen/canned, rice varieties, pasta shapes and drink types. Explicit category gates artwork; an edited name cannot retain stale linked-ingredient art.
 - Uploaded local photos take priority. Generic illustrations never establish identity, brand, allergens, weight or expiry. Artwork does not assign cooking links or change inventory quantities.
 - All 272 food types declare a nullable cooking mapping; 63 have a compatible type mapping. Strict cooking matching uses safe primary names and canonical aliases, preserving meaningful preparation qualifiers. One shared category mapping covers all 88 cooking ingredients; all 32 supermarket categories remain available.
-- Recipe requirements show amounts covered by Kitchen and source lot names. Startup repair skips active cooking and preserves quantities, weights, photos, expiry and finance. A stalled native write fails after eight seconds and blocks further writes until reopen, avoiding races with an unknown write outcome.
+- Recipe requirements show amounts covered by Kitchen and source lot names. Startup repair protects allocated stock and repairs other items during active cooking and preserves quantities, weights, photos, expiry and finance. A stalled native write fails after eight seconds and blocks further writes until reopen, avoiding races with an unknown write outcome.
 - Keep sprite positions in trusted local CSS variables. Category sheet stays searchable and independently scrollable on narrow phones. Prompts, cell mapping and hashes live in web/public/images/food/atlases/MANIFEST.json.
 
 ## Required document hooks
 
 Runtime may rely on `#main`, `#view`, `#bottom-nav`, `#modal`, `#modal-content`, `#toast` and `#announcer`. Keep these IDs stable. `main.js` is the only HTML script entry. Styles load through the HTML stylesheet link; JavaScript imports native bridges, local data and application modules.
+
+## M8.3 recipe stock review
+
+- A strict unique food name establishes its cooking identity independently of editable shelf categories. Categories cannot create an identity for an unknown product. Arabic identity matching and packaging vocabulary normalize ة/ه and common hamza variants consistently.
+- Backup restoration repairs clear links inside the same confirmed replacement. Only allocation-backed stock is frozen during cooking; other items remain linkable, and post-session repair runs without a restart.
+- Missing recipe requirements show relevant Kitchen items, their saved quantity/unit and the specific link, unit or recorded-date issue. Compatible candidate matches offer explicit Use as confirmation; incompatible units, processing qualifiers or existing conflicting identities require item review. Confirmation rechecks current state and preserves quantities.
+- Show installed version in Kitchen utilities. Phone reports remain unverified until the installed version and exact item data are known.

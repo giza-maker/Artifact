@@ -42,7 +42,7 @@ test("matches exact canonical and safe illustrated food types", () => {
   }
 });
 
-test("category gates a name match but never creates identity alone", () => {
+test("display category cannot veto an exact name or create identity alone", () => {
   assert.equal(
     resolveCookingIdentity({ name: "Eggs", categoryId: "eggs" }).status,
     "matched",
@@ -51,8 +51,8 @@ test("category gates a name match but never creates identity alone", () => {
     name: "Eggs",
     categoryId: "vegetables",
   });
-  assert.equal(conflict.status, "review");
-  assert.equal(conflict.ingredientId, null);
+  assert.equal(conflict.status, "matched");
+  assert.equal(conflict.ingredientId, "egg");
   assert.deepEqual(conflict.candidates, ["egg"]);
   assert.equal(
     resolveCookingIdentity({ categoryId: "eggs" }).status,

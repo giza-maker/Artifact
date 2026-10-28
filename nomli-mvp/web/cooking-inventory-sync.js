@@ -6,22 +6,25 @@ const positive = (value) =>
   typeof value === "number" && Number.isFinite(value) && value > 0;
 
 export function syncCookingInventory(state) {
-  if (state?.cooking) {
-    return {
-      state,
-      linkedItemIds: [],
-      categorizedItemIds: [],
-      pendingItemIds: [],
-    };
-  }
-
   const linkedItemIds = [];
   const categorizedItemIds = [];
   const pendingItemIds = [];
+  const frozenItemIds = new Set(
+    (Array.isArray(state?.cooking?.allocations)
+      ? state.cooking.allocations
+      : []
+    )
+      .map((allocation) => allocation?.id)
+      .filter((id) => typeof id === "string"),
+  );
   let nextItems = null;
 
   for (const [id, item] of Object.entries(state?.items ?? {})) {
     const validIngredient = getIngredient(item?.ingredientId);
+    if (frozenItemIds.has(id)) {
+      if (positive(item?.qty) && !validIngredient) pendingItemIds.push(id);
+      continue;
+    }
     const validCategory = getFoodCategory(item?.categoryId);
     const inferred = validCategory
       ? null

@@ -96,7 +96,10 @@ function baseNormalize(value) {
     .replace(/[٠-٩۰-۹]/g, (digit) => digitMap.get(digit))
     .replace(/[\u064b-\u065f\u0670\u0640]/g, "")
     .replace(/[أإآٱ]/g, "ا")
+    .replace(/ؤ/g, "و")
+    .replace(/ئ/g, "ي")
     .replace(/ى/g, "ي")
+    .replace(/ة/g, "ه")
     .replace(/[٫,](?=\d)/g, ".")
     .replace(/([\p{L}])(\p{N})/gu, "$1 $2")
     .replace(/(\p{N})([\p{L}])/gu, "$1 $2")
@@ -105,6 +108,16 @@ function baseNormalize(value) {
     .trim()
     .replace(/\s+/g, " ");
 }
+
+// OCR commonly alternates ة/ه. Normalize the packaging vocabulary as well as
+// names so a spelling variant cannot leave a count attached to the food name.
+for (const lexicon of [
+  SIZE_WORDS,
+  PACK_WORDS,
+  QUANTITY_UNITS,
+  UNSAFE_CANONICAL_ALIASES,
+])
+  for (const value of [...lexicon]) lexicon.add(baseNormalize(value));
 
 export function normalizeRetailFoodName(value) {
   const normalized = baseNormalize(value);
@@ -192,14 +205,6 @@ for (const item of artItems) {
     addNameVariants(exactArtItems, name, item);
 }
 
-const categoriesByIngredient = new Map();
-for (const item of artItems) {
-  if (!ingredientById.has(item.cookingIngredientId)) continue;
-  const categories =
-    categoriesByIngredient.get(item.cookingIngredientId) ?? new Set();
-  for (const categoryId of item.categoryIds ?? []) categories.add(categoryId);
-  categoriesByIngredient.set(item.cookingIngredientId, categories);
-}
 const DISPLAY_CATEGORY = {
   produce: "vegetables",
   herb: "vegetables",
@@ -230,24 +235,6 @@ export function getCookingCategoryId(ingredientId) {
     return "poultry";
   return DISPLAY_CATEGORY[ingredient.category] ?? "other";
 }
-for (const ingredient of ingredients) {
-  const categories = categoriesByIngredient.get(ingredient.id) ?? new Set();
-  categories.add(getCookingCategoryId(ingredient.id));
-  if (ingredient.id === "egg") categories.add("eggs");
-  if (ingredient.id === "pasta_dry") categories.add("pasta");
-  if (ingredient.id.startsWith("chicken_") || /turkey|duck/.test(ingredient.id))
-    categories.add("poultry");
-  if (ingredient.id === "coconut_milk") categories.add("plant_based");
-  categoriesByIngredient.set(ingredient.id, categories);
-}
-
-function compatibleCategory(ingredientId, categoryId) {
-  return (
-    !categoryId ||
-    categoriesByIngredient.get(ingredientId)?.has(categoryId) === true
-  );
-}
-
 function containedCandidates(name) {
   if (!name) return [];
   const padded = ` ${name} `;
@@ -294,7 +281,9 @@ export function resolveCookingIdentity({
 
   if (exactCandidates.length === 1) {
     const ingredientId = exactCandidates[0];
-    if (compatibleCategory(ingredientId, categoryId)) {
+    // Categories are editable shelf groupings. A unique strict product name
+    // supplies identity; a stale/AI-assigned section must not hide real stock.
+    {
       const linkedType =
         foodType?.cookingIngredientId === ingredientId
           ? foodType
@@ -308,12 +297,6 @@ export function resolveCookingIdentity({
         candidates: [ingredientId],
       };
     }
-    return {
-      ingredientId: null,
-      foodTypeId: foodType?.id ?? null,
-      status: "review",
-      candidates: [ingredientId],
-    };
   }
 
   const candidates = exactCandidates.length
