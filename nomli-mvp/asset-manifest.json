@@ -4,8 +4,8 @@
   "assets": [
     {
       "path": "content/food-art-catalog.json",
-      "bytes": 71560,
-      "sha256": "1f88bdc95f5b21af31df725d7a5aa6d16217f60259412fa3922dccba634651de"
+      "bytes": 81486,
+      "sha256": "c22b94405c855b237cc497b63abdf75664d7830fd1178dce465974b518aca107"
     },
     {
       "path": "content/ingredients.json",

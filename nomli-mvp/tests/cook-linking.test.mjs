@@ -7,6 +7,29 @@ import {
 
 const fields = (values) => ({ get: (key) => values[key] ?? null });
 
+test("review mode prefills clear retail identities and honors category or explicit opt-out", () => {
+  const matched = renderIngredientLinkFields({
+    name: "Eggs Medium 30pcs",
+    categoryId: "eggs",
+    autoMatch: true,
+  });
+  assert.match(matched, /value="egg" selected/);
+  assert.match(matched, /Matched to Egg/);
+  for (const values of [
+    { name: "Plant milk", categoryId: "plant_based" },
+    { name: "Eggs Medium 30pcs", categoryId: "vegetables" },
+    {
+      name: "Eggs Medium 30pcs",
+      categoryId: "eggs",
+      cookingLinkDisabled: true,
+    },
+  ]) {
+    const html = renderIngredientLinkFields({ ...values, autoMatch: true });
+    assert.match(html, /value="" selected/);
+    assert.doesNotMatch(html, /value="egg" selected/);
+  }
+});
+
 test("suggestions never select an ingredient, including ambiguous product names", () => {
   for (const name of ["Tomato", "Chicken", "cooked chicken breast"]) {
     const html = renderIngredientLinkFields({ name });
@@ -44,7 +67,7 @@ test("field prefixes escape markup; labels wrap native controls", () => {
   assert.doesNotMatch(html, /<img|<script|name="">/);
   assert.match(html, /name="&quot;&gt;&lt;img/);
   assert.equal((html.match(/<label class="field">/g) ?? []).length, 2);
-  assert.equal((html.match(/<span class="details">/g) ?? []).length, 2);
+  assert.equal((html.match(/<span class="details"[^>]*>/g) ?? []).length, 2);
   assert.match(
     html,
     /<input type="text"[^>]*inputmode="decimal"[^>]*dir="ltr"[^>]*maxlength="128"/,

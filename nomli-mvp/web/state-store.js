@@ -125,6 +125,11 @@ function uniqueIds(values, label) {
 }
 function validateItem(item, id) {
   plain(item, `Item ${id}`);
+  if (
+    item.cookingLinkDisabled !== undefined &&
+    typeof item.cookingLinkDisabled !== "boolean"
+  )
+    fail(`Item ${id} has invalid cooking-link preference.`);
   if (item.photoId !== undefined && !isPhotoId(item.photoId))
     fail(`Item ${id} has invalid photo ID.`);
   if (item.categoryId !== undefined && !getFoodCategory(item.categoryId))
@@ -531,12 +536,41 @@ export function createStateStore({
   native = null,
   storage = null,
   now = () => new Date(),
+  writeTimeoutMs = 8000,
 } = {}) {
   let writeTail = Promise.resolve();
   let recoveryRequired = false;
   const nativeMode = Boolean(
     native?.isNative && native?.loadDraft && native?.saveDraft,
   );
+  let nativeWriteUncertain = false;
+  const writeDeadline = Number.isFinite(writeTimeoutMs)
+    ? Math.max(1, Math.min(30000, writeTimeoutMs))
+    : 8000;
+  async function writeNative(snapshot) {
+    if (nativeWriteUncertain)
+      fail(
+        "Storage write outcome is unknown. Reopen Nomli before saving more changes.",
+      );
+    let timer;
+    try {
+      await Promise.race([
+        Promise.resolve().then(() => native.saveDraft(NATIVE_KEY, snapshot)),
+        new Promise((_, reject) => {
+          timer = setTimeout(() => {
+            nativeWriteUncertain = true;
+            reject(
+              new Error(
+                "Storage write timed out. Reopen Nomli before saving more changes.",
+              ),
+            );
+          }, writeDeadline);
+        }),
+      ]);
+    } finally {
+      clearTimeout(timer);
+    }
+  }
   function persist(state, explicitRecovery = false) {
     let snapshot;
     try {
@@ -553,7 +587,7 @@ export function createStateStore({
       return Promise.reject(error);
     }
     const write = async () => {
-      if (nativeMode) await native.saveDraft(NATIVE_KEY, snapshot);
+      if (nativeMode) await writeNative(snapshot);
       else {
         if (!storage?.setItem)
           throw new Error("Persistent storage is unavailable.");

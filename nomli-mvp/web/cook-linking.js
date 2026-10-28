@@ -4,6 +4,7 @@ import {
   suggestIngredientLinks,
 } from "./cook-catalog.js";
 import { parseLocalizedDecimal } from "./localized-number.js";
+import { resolveCookingIdentity } from "./food-identity.js";
 
 const countUnits = new Set(["count", "pieces", "bunches", "cloves", "slices"]);
 const esc = (value) =>
@@ -25,8 +26,16 @@ export function renderIngredientLinkFields({
   ingredientId = null,
   unit = "count",
   gramsPerUnit = null,
+  autoMatch = false,
+  categoryId = null,
+  cookingLinkDisabled = false,
 } = {}) {
-  const selected = getIngredient(ingredientId)?.id ?? null;
+  const original = getIngredient(ingredientId)?.id ?? null;
+  const matched =
+    autoMatch && !original
+      ? resolveCookingIdentity({ name, categoryId, cookingLinkDisabled })
+      : null;
+  const selected = original ?? matched?.ingredientId ?? null;
   const suggestions = suggestIngredientLinks(name);
   const suggestedIds = new Set(suggestions.map((entry) => entry.id));
   const option = (entry) =>
@@ -41,7 +50,7 @@ export function renderIngredientLinkFields({
       ? gramsPerUnit
       : "";
   return `<label class="field">Cooking ingredient
-    <select name="${esc(prefix)}ingredientId" data-picker-label="Cooking ingredient">
+    <select name="${esc(prefix)}ingredientId" data-picker-label="Cooking ingredient" data-cook-auto="${autoMatch && !original ? "1" : "0"}"${cookingLinkDisabled ? ' data-user-touched="1" data-cook-optout="1"' : ""}>
       <option value=""${selected === null ? " selected" : ""}>Not linked for cooking</option>
       ${suggestions.length ? `<optgroup label="Suggestions">${suggestions.map(option).join("")}</optgroup>` : ""}
       <optgroup label="All ingredients">${COOK_INGREDIENTS.filter(
@@ -50,7 +59,7 @@ export function renderIngredientLinkFields({
         .map(option)
         .join("")}</optgroup>
     </select>
-    <span class="details">Choose the product type explicitly. Suggestions do not save a link.</span>
+    <span class="details" data-cook-link-help>${matched?.ingredientId ? `Matched to ${esc(getIngredient(selected).name.en)}. Review or change before saving.` : "Choose the product type explicitly. Suggestions do not save a link."}</span>
   </label>
   <label class="field">Grams per current unit (optional)
     <input type="text" inputmode="decimal" dir="ltr" maxlength="128" data-scan-weight name="${esc(prefix)}gramsPerUnit" value="${esc(weight)}"${canWeigh ? "" : " disabled"}>

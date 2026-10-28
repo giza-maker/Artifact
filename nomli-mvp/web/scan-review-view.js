@@ -5,6 +5,8 @@ import {
 } from "./food-categories.js";
 import { currencyDigits, formatMinorInput } from "./scan-money.js";
 import { renderIngredientLinkFields } from "./cook-linking.js";
+import { getIngredient } from "./cook-catalog.js";
+import { resolveCookingIdentity } from "./food-identity.js";
 import { foodArtworkStyle, getFoodArtwork } from "./food-art.js";
 
 const esc = (value) =>
@@ -95,6 +97,10 @@ function renderCard(line, index, draft, items, scanLinePhoto, lineArtwork) {
     categoryId: line.categoryId,
   });
   const category = getFoodCategory(line.categoryId) ?? inferred.category;
+  const cookingId =
+    getIngredient(line.ingredientId)?.id ??
+    resolveCookingIdentity({ name: line.name, categoryId: category.id })
+      .ingredientId;
   const storage = STORAGE.includes(line.storage)
     ? line.storage
     : inferred.suggestedStorage;
@@ -124,11 +130,12 @@ function renderCard(line, index, draft, items, scanLinePhoto, lineArtwork) {
       </div>
     </div>
     <p class="scan-card-hint">Category and storage are suggested. Change anytime.</p>
+    <p class="scan-card-hint" data-cook-link-status role="status">${cookingId ? `Cook uses ${esc(getIngredient(cookingId).name.en)} · linked after save` : "Kitchen item · cooking match optional in More details"}</p>
     <details class="scan-card-more"><summary>More details</summary>
       <div class="scan-card-advanced">
         ${photo}
         <label class="field">Expiry (optional)<input name="expiry-${esc(id)}" value="${esc(line.expiry)}" type="date"></label>
-        <div class="cook-link-fields">${renderIngredientLinkFields({ prefix: `cook-${id}-`, name: line.name, ingredientId: line.ingredientId, unit: line.unit, gramsPerUnit: line.gramsPerUnit })}</div>
+        <div class="cook-link-fields">${renderIngredientLinkFields({ prefix: `cook-${id}-`, name: line.name, ingredientId: line.ingredientId, unit: line.unit, gramsPerUnit: line.gramsPerUnit, autoMatch: true, categoryId: category.id })}</div>
         <label class="field">Line cost (${esc(draft.currency || "choose currency")}, optional)<input name="cost-${esc(id)}" value="${esc(moneyValue(line.lineTotalMinor, draft.currency))}" type="text" maxlength="128" inputmode="decimal" dir="ltr" data-scan-money></label>
         <label class="field">Inventory action<select name="target-${esc(id)}"><option value="">Create new item</option>${inventoryOptions(items, match)}</select></label>
         ${warnings.length ? `<p class="scan-review-warning" role="note">${esc(warnings.join(" "))}</p>` : ""}

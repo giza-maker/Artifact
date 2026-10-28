@@ -110,6 +110,7 @@
       "en": "Tomato",
       "ar": "طماطم",
       "categoryIds": ["vegetables"],
+      "cookingIngredientId": "tomato",
       "aliases": {
         "en": [],
         "ar": []
@@ -122,6 +123,7 @@
       "en": "Cucumber",
       "ar": "خيار",
       "categoryIds": ["vegetables"],
+      "cookingIngredientId": "cucumber",
       "aliases": {
         "en": [],
         "ar": []
@@ -134,6 +136,7 @@
       "en": "Yellow Onion",
       "ar": "بصل أصفر",
       "categoryIds": ["vegetables"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -146,6 +149,7 @@
       "en": "Red Onion",
       "ar": "بصل أحمر",
       "categoryIds": ["vegetables"],
+      "cookingIngredientId": "red_onion",
       "aliases": {
         "en": [],
         "ar": []
@@ -158,6 +162,7 @@
       "en": "Garlic",
       "ar": "ثوم",
       "categoryIds": ["vegetables"],
+      "cookingIngredientId": "garlic",
       "aliases": {
         "en": [],
         "ar": []
@@ -170,6 +175,7 @@
       "en": "Carrot",
       "ar": "جزر",
       "categoryIds": ["vegetables"],
+      "cookingIngredientId": "carrot",
       "aliases": {
         "en": [],
         "ar": []
@@ -182,6 +188,7 @@
       "en": "Potato",
       "ar": "بطاطس",
       "categoryIds": ["vegetables"],
+      "cookingIngredientId": "potato",
       "aliases": {
         "en": [],
         "ar": []
@@ -194,6 +201,7 @@
       "en": "Sweet Potato",
       "ar": "بطاطا حلوة",
       "categoryIds": ["vegetables"],
+      "cookingIngredientId": "sweet_potato",
       "aliases": {
         "en": [],
         "ar": []
@@ -206,6 +214,7 @@
       "en": "Bell Pepper",
       "ar": "فلفل رومي",
       "categoryIds": ["vegetables"],
+      "cookingIngredientId": "bell_pepper",
       "aliases": {
         "en": [],
         "ar": []
@@ -218,6 +227,7 @@
       "en": "Green Chili",
       "ar": "فلفل أخضر حار",
       "categoryIds": ["vegetables"],
+      "cookingIngredientId": "chilli",
       "aliases": {
         "en": [],
         "ar": []
@@ -230,6 +240,7 @@
       "en": "Eggplant",
       "ar": "باذنجان",
       "categoryIds": ["vegetables"],
+      "cookingIngredientId": "aubergine",
       "aliases": {
         "en": [],
         "ar": []
@@ -242,6 +253,7 @@
       "en": "Zucchini",
       "ar": "كوسة",
       "categoryIds": ["vegetables"],
+      "cookingIngredientId": "courgette",
       "aliases": {
         "en": [],
         "ar": []
@@ -254,6 +266,7 @@
       "en": "Broccoli",
       "ar": "بروكلي",
       "categoryIds": ["vegetables"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -266,6 +279,7 @@
       "en": "Cauliflower",
       "ar": "قرنبيط",
       "categoryIds": ["vegetables"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -278,6 +292,7 @@
       "en": "Cabbage",
       "ar": "كرنب",
       "categoryIds": ["vegetables"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -290,6 +305,7 @@
       "en": "Mushroom",
       "ar": "مشروم",
       "categoryIds": ["vegetables"],
+      "cookingIngredientId": "mushroom",
       "aliases": {
         "en": [],
         "ar": []
@@ -302,6 +318,7 @@
       "en": "Lettuce",
       "ar": "خس",
       "categoryIds": ["vegetables"],
+      "cookingIngredientId": "lettuce",
       "aliases": {
         "en": [],
         "ar": []
@@ -314,6 +331,7 @@
       "en": "Spinach",
       "ar": "سبانخ",
       "categoryIds": ["vegetables"],
+      "cookingIngredientId": "spinach",
       "aliases": {
         "en": [],
         "ar": []
@@ -326,6 +344,7 @@
       "en": "Arugula",
       "ar": "جرجير",
       "categoryIds": ["vegetables"],
+      "cookingIngredientId": "rocket",
       "aliases": {
         "en": [],
         "ar": []
@@ -338,6 +357,7 @@
       "en": "Kale",
       "ar": "كرنب أجعد",
       "categoryIds": ["vegetables"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -350,6 +370,7 @@
       "en": "Parsley",
       "ar": "بقدونس",
       "categoryIds": ["vegetables"],
+      "cookingIngredientId": "parsley",
       "aliases": {
         "en": [],
         "ar": []
@@ -362,6 +383,7 @@
       "en": "Cilantro",
       "ar": "كزبرة خضراء",
       "categoryIds": ["vegetables"],
+      "cookingIngredientId": "coriander_leaf",
       "aliases": {
         "en": [],
         "ar": []
@@ -374,6 +396,7 @@
       "en": "Mint",
       "ar": "نعناع",
       "categoryIds": ["vegetables"],
+      "cookingIngredientId": "mint",
       "aliases": {
         "en": [],
         "ar": []
@@ -386,6 +409,7 @@
       "en": "Basil",
       "ar": "ريحان",
       "categoryIds": ["vegetables"],
+      "cookingIngredientId": "basil",
       "aliases": {
         "en": [],
         "ar": []
@@ -398,6 +422,7 @@
       "en": "Dill",
       "ar": "شبت",
       "categoryIds": ["vegetables"],
+      "cookingIngredientId": "dill",
       "aliases": {
         "en": [],
         "ar": []
@@ -410,6 +435,7 @@
       "en": "Green Onion",
       "ar": "بصل أخضر",
       "categoryIds": ["vegetables"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -422,6 +448,7 @@
       "en": "Leek",
       "ar": "كراث",
       "categoryIds": ["vegetables"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -434,6 +461,7 @@
       "en": "Celery",
       "ar": "كرفس",
       "categoryIds": ["vegetables"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -446,6 +474,7 @@
       "en": "Okra",
       "ar": "بامية",
       "categoryIds": ["vegetables"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -458,6 +487,7 @@
       "en": "Green Beans",
       "ar": "فاصوليا خضراء",
       "categoryIds": ["vegetables"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -470,6 +500,7 @@
       "en": "Peas",
       "ar": "بسلة",
       "categoryIds": ["vegetables"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -482,6 +513,7 @@
       "en": "Corn",
       "ar": "ذرة",
       "categoryIds": ["vegetables"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -494,6 +526,7 @@
       "en": "Apple",
       "ar": "تفاح",
       "categoryIds": ["fruit"],
+      "cookingIngredientId": "apple",
       "aliases": {
         "en": [],
         "ar": []
@@ -506,6 +539,7 @@
       "en": "Banana",
       "ar": "موز",
       "categoryIds": ["fruit"],
+      "cookingIngredientId": "banana",
       "aliases": {
         "en": [],
         "ar": []
@@ -518,6 +552,7 @@
       "en": "Orange",
       "ar": "برتقال",
       "categoryIds": ["fruit"],
+      "cookingIngredientId": "orange",
       "aliases": {
         "en": [],
         "ar": []
@@ -530,6 +565,7 @@
       "en": "Mandarin",
       "ar": "يوسفي",
       "categoryIds": ["fruit"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -542,6 +578,7 @@
       "en": "Lemon",
       "ar": "ليمون أصفر",
       "categoryIds": ["fruit"],
+      "cookingIngredientId": "lemon",
       "aliases": {
         "en": [],
         "ar": []
@@ -554,6 +591,7 @@
       "en": "Lime",
       "ar": "ليمون أخضر",
       "categoryIds": ["fruit"],
+      "cookingIngredientId": "lime",
       "aliases": {
         "en": [],
         "ar": []
@@ -566,6 +604,7 @@
       "en": "Grapes",
       "ar": "عنب",
       "categoryIds": ["fruit"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -578,6 +617,7 @@
       "en": "Strawberry",
       "ar": "فراولة",
       "categoryIds": ["fruit"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -590,6 +630,7 @@
       "en": "Blueberry",
       "ar": "توت أزرق",
       "categoryIds": ["fruit"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -602,6 +643,7 @@
       "en": "Raspberry",
       "ar": "توت أحمر",
       "categoryIds": ["fruit"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -614,6 +656,7 @@
       "en": "Blackberry",
       "ar": "توت أسود",
       "categoryIds": ["fruit"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -626,6 +669,7 @@
       "en": "Watermelon",
       "ar": "بطيخ",
       "categoryIds": ["fruit"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -638,6 +682,7 @@
       "en": "Melon",
       "ar": "شمام",
       "categoryIds": ["fruit"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -650,6 +695,7 @@
       "en": "Pineapple",
       "ar": "أناناس",
       "categoryIds": ["fruit"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -662,6 +708,7 @@
       "en": "Mango",
       "ar": "مانجو",
       "categoryIds": ["fruit"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -674,6 +721,7 @@
       "en": "Kiwi",
       "ar": "كيوي",
       "categoryIds": ["fruit"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -686,6 +734,7 @@
       "en": "Dates",
       "ar": "تمر",
       "categoryIds": ["fruit", "dried_fruit"],
+      "cookingIngredientId": "date_fruit",
       "aliases": {
         "en": ["dates", "date fruit"],
         "ar": ["تمر", "تمور", "بلح"]
@@ -698,6 +747,7 @@
       "en": "Fig",
       "ar": "تين",
       "categoryIds": ["fruit"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -710,6 +760,7 @@
       "en": "Pomegranate",
       "ar": "رمان",
       "categoryIds": ["fruit"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -722,6 +773,7 @@
       "en": "Peach",
       "ar": "خوخ",
       "categoryIds": ["fruit"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -734,6 +786,7 @@
       "en": "Nectarine",
       "ar": "نكتارين",
       "categoryIds": ["fruit"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -746,6 +799,7 @@
       "en": "Apricot",
       "ar": "مشمش",
       "categoryIds": ["fruit"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -758,6 +812,7 @@
       "en": "Plum",
       "ar": "برقوق",
       "categoryIds": ["fruit"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -770,6 +825,7 @@
       "en": "Pear",
       "ar": "كمثرى",
       "categoryIds": ["fruit"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -782,6 +838,7 @@
       "en": "Guava",
       "ar": "جوافة",
       "categoryIds": ["fruit"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -794,6 +851,7 @@
       "en": "Papaya",
       "ar": "بابايا",
       "categoryIds": ["fruit"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -806,6 +864,7 @@
       "en": "Avocado",
       "ar": "أفوكادو",
       "categoryIds": ["fruit"],
+      "cookingIngredientId": "avocado",
       "aliases": {
         "en": [],
         "ar": []
@@ -818,6 +877,7 @@
       "en": "Coconut",
       "ar": "جوز هند",
       "categoryIds": ["fruit"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -830,6 +890,7 @@
       "en": "Passion Fruit",
       "ar": "باشن فروت",
       "categoryIds": ["fruit"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -842,6 +903,7 @@
       "en": "Cherry",
       "ar": "كرز",
       "categoryIds": ["fruit"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -854,6 +916,7 @@
       "en": "Persimmon",
       "ar": "كاكا",
       "categoryIds": ["fruit"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -866,6 +929,7 @@
       "en": "Dried Fruit Mix",
       "ar": "فواكه مجففة مشكلة",
       "categoryIds": ["fruit", "dried_fruit"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -878,6 +942,7 @@
       "en": "Basmati Rice",
       "ar": "أرز بسمتي",
       "categoryIds": ["rice_grains"],
+      "cookingIngredientId": "rice_basmati_dry",
       "aliases": {
         "en": ["basmati", "rice"],
         "ar": ["أرز بسمتي", "رز بسمتي", "أرز الساعة", "رز الساعة"]
@@ -890,6 +955,7 @@
       "en": "Brown Rice",
       "ar": "أرز بني",
       "categoryIds": ["rice_grains"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": ["brown rice"],
         "ar": ["أرز بني", "رز بني"]
@@ -902,6 +968,7 @@
       "en": "Oats",
       "ar": "شوفان",
       "categoryIds": ["rice_grains"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -914,6 +981,7 @@
       "en": "Bulgur",
       "ar": "برغل",
       "categoryIds": ["rice_grains"],
+      "cookingIngredientId": "bulgur_dry",
       "aliases": {
         "en": [],
         "ar": []
@@ -926,6 +994,7 @@
       "en": "Couscous",
       "ar": "كسكسي",
       "categoryIds": ["rice_grains"],
+      "cookingIngredientId": "couscous_dry",
       "aliases": {
         "en": [],
         "ar": []
@@ -938,6 +1007,7 @@
       "en": "Quinoa",
       "ar": "كينوا",
       "categoryIds": ["rice_grains"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -950,6 +1020,7 @@
       "en": "Semolina",
       "ar": "سميد",
       "categoryIds": ["rice_grains"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -962,6 +1033,7 @@
       "en": "White Flour",
       "ar": "دقيق أبيض",
       "categoryIds": ["rice_grains", "baking"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -974,6 +1046,7 @@
       "en": "Whole Wheat Flour",
       "ar": "دقيق قمح كامل",
       "categoryIds": ["rice_grains", "baking"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -986,6 +1059,7 @@
       "en": "Cornmeal",
       "ar": "دقيق ذرة",
       "categoryIds": ["rice_grains", "baking"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -998,6 +1072,7 @@
       "en": "Spaghetti",
       "ar": "سباغيتي",
       "categoryIds": ["pasta"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1010,6 +1085,7 @@
       "en": "Penne",
       "ar": "بيني",
       "categoryIds": ["pasta"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1022,6 +1098,7 @@
       "en": "Macaroni",
       "ar": "مكرونة",
       "categoryIds": ["pasta"],
+      "cookingIngredientId": "pasta_dry",
       "aliases": {
         "en": [],
         "ar": []
@@ -1034,6 +1111,7 @@
       "en": "Vermicelli",
       "ar": "شعرية",
       "categoryIds": ["pasta"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": ["vermicelli"],
         "ar": ["شعرية", "شعيرية"]
@@ -1046,6 +1124,7 @@
       "en": "Orzo",
       "ar": "لسان عصفور",
       "categoryIds": ["pasta"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": ["orzo", "risoni"],
         "ar": ["لسان عصفور"]
@@ -1058,6 +1137,7 @@
       "en": "Instant Noodles",
       "ar": "نودلز سريعة التحضير",
       "categoryIds": ["pasta", "ready_meals"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1070,6 +1150,7 @@
       "en": "Red Lentils",
       "ar": "عدس أحمر",
       "categoryIds": ["legumes"],
+      "cookingIngredientId": "red_lentil_dry",
       "aliases": {
         "en": ["red lentils", "split red lentils"],
         "ar": ["عدس أحمر", "عدس اصفر"]
@@ -1082,6 +1163,7 @@
       "en": "Brown Lentils",
       "ar": "عدس بني",
       "categoryIds": ["legumes"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": ["brown lentils"],
         "ar": ["عدس بني", "عدس بجبة"]
@@ -1094,6 +1176,7 @@
       "en": "Chickpeas",
       "ar": "حمص حب",
       "categoryIds": ["legumes"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1106,6 +1189,7 @@
       "en": "White Beans",
       "ar": "فاصوليا بيضاء",
       "categoryIds": ["legumes"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": ["butter beans"],
         "ar": ["فاصوليا زبدية"]
@@ -1118,6 +1202,7 @@
       "en": "Kidney Beans",
       "ar": "فاصوليا حمراء",
       "categoryIds": ["legumes"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1130,6 +1215,7 @@
       "en": "Black Beans",
       "ar": "فاصوليا سوداء",
       "categoryIds": ["legumes"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1142,6 +1228,7 @@
       "en": "Fava Beans",
       "ar": "فول",
       "categoryIds": ["legumes"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1154,6 +1241,7 @@
       "en": "Pumpkin Seeds",
       "ar": "بذور قرع",
       "categoryIds": ["nuts_seeds"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1166,6 +1254,7 @@
       "en": "Almonds",
       "ar": "لوز",
       "categoryIds": ["nuts_seeds"],
+      "cookingIngredientId": "almond",
       "aliases": {
         "en": [],
         "ar": []
@@ -1178,6 +1267,7 @@
       "en": "Walnuts",
       "ar": "عين جمل",
       "categoryIds": ["nuts_seeds"],
+      "cookingIngredientId": "walnut",
       "aliases": {
         "en": [],
         "ar": []
@@ -1190,6 +1280,7 @@
       "en": "Cashews",
       "ar": "كاجو",
       "categoryIds": ["nuts_seeds"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1202,6 +1293,7 @@
       "en": "Pistachios",
       "ar": "فستق",
       "categoryIds": ["nuts_seeds"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1214,6 +1306,7 @@
       "en": "Peanuts",
       "ar": "فول سوداني",
       "categoryIds": ["nuts_seeds"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1226,6 +1319,7 @@
       "en": "Hazelnuts",
       "ar": "بندق",
       "categoryIds": ["nuts_seeds"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1238,6 +1332,7 @@
       "en": "Sesame",
       "ar": "سمسم",
       "categoryIds": ["nuts_seeds"],
+      "cookingIngredientId": "sesame_seed",
       "aliases": {
         "en": [],
         "ar": []
@@ -1250,6 +1345,7 @@
       "en": "Sunflower Seeds",
       "ar": "بذور دوار الشمس",
       "categoryIds": ["nuts_seeds"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1262,6 +1358,7 @@
       "en": "Milk",
       "ar": "حليب",
       "categoryIds": ["dairy"],
+      "cookingIngredientId": "milk",
       "aliases": {
         "en": ["fresh milk", "whole milk", "low fat milk"],
         "ar": ["حليب", "لبن طازج", "لبن كامل الدسم"]
@@ -1274,6 +1371,7 @@
       "en": "Yogurt",
       "ar": "زبادي",
       "categoryIds": ["dairy"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1286,6 +1384,7 @@
       "en": "Greek Yogurt",
       "ar": "زبادي يوناني",
       "categoryIds": ["dairy"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1298,6 +1397,7 @@
       "en": "Labneh",
       "ar": "لبنة",
       "categoryIds": ["dairy"],
+      "cookingIngredientId": "labneh",
       "aliases": {
         "en": [],
         "ar": []
@@ -1310,6 +1410,7 @@
       "en": "Feta",
       "ar": "جبنة فيتا",
       "categoryIds": ["dairy"],
+      "cookingIngredientId": "feta",
       "aliases": {
         "en": [],
         "ar": []
@@ -1322,6 +1423,7 @@
       "en": "Cheddar",
       "ar": "جبنة شيدر",
       "categoryIds": ["dairy"],
+      "cookingIngredientId": "cheddar",
       "aliases": {
         "en": [],
         "ar": []
@@ -1334,6 +1436,7 @@
       "en": "Mozzarella",
       "ar": "جبنة موزاريلا",
       "categoryIds": ["dairy"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1346,6 +1449,7 @@
       "en": "Cream Cheese",
       "ar": "جبنة كريمية",
       "categoryIds": ["dairy", "spreads"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1358,6 +1462,7 @@
       "en": "Processed Cheese",
       "ar": "جبنة مثلثات",
       "categoryIds": ["dairy"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1370,6 +1475,7 @@
       "en": "Cream",
       "ar": "كريمة",
       "categoryIds": ["dairy"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1382,6 +1488,7 @@
       "en": "Butter",
       "ar": "زبدة",
       "categoryIds": ["dairy"],
+      "cookingIngredientId": "butter",
       "aliases": {
         "en": [],
         "ar": []
@@ -1394,6 +1501,7 @@
       "en": "Ghee",
       "ar": "سمنة",
       "categoryIds": ["dairy"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1406,6 +1514,7 @@
       "en": "Eggs",
       "ar": "بيض",
       "categoryIds": ["eggs"],
+      "cookingIngredientId": "egg",
       "aliases": {
         "en": [],
         "ar": []
@@ -1418,6 +1527,7 @@
       "en": "Egg Whites",
       "ar": "بياض بيض",
       "categoryIds": ["eggs"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1430,6 +1540,7 @@
       "en": "Powdered Milk",
       "ar": "حليب بودرة",
       "categoryIds": ["dairy"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": ["powdered milk", "milk powder", "dry milk"],
         "ar": ["حليب بودرة", "لبن بودرة", "حليب مجفف"]
@@ -1442,6 +1553,7 @@
       "en": "Plant Milk",
       "ar": "حليب نباتي",
       "categoryIds": ["plant_based", "dairy", "drinks"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": ["coconut milk", "almond milk", "oat milk", "soy milk"],
         "ar": ["حليب جوز الهند", "حليب لوز", "حليب شوفان", "حليب صويا"]
@@ -1454,6 +1566,7 @@
       "en": "Beef Steak",
       "ar": "ستيك بقري",
       "categoryIds": ["meat"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1466,6 +1579,7 @@
       "en": "Minced Beef",
       "ar": "لحم بقري مفروم",
       "categoryIds": ["meat"],
+      "cookingIngredientId": "beef_mince",
       "aliases": {
         "en": [],
         "ar": []
@@ -1478,6 +1592,7 @@
       "en": "Beef Cubes",
       "ar": "مكعبات لحم بقري",
       "categoryIds": ["meat"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1490,6 +1605,7 @@
       "en": "Lamb Chops",
       "ar": "ريش ضاني",
       "categoryIds": ["meat"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1502,6 +1618,7 @@
       "en": "Lamb Leg",
       "ar": "فخذ ضاني",
       "categoryIds": ["meat"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1514,6 +1631,7 @@
       "en": "Minced Lamb",
       "ar": "لحم ضاني مفروم",
       "categoryIds": ["meat"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1526,6 +1644,7 @@
       "en": "Beef Liver",
       "ar": "كبدة بقري",
       "categoryIds": ["meat"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1538,6 +1657,7 @@
       "en": "Whole Chicken",
       "ar": "دجاجة كاملة",
       "categoryIds": ["poultry"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1550,6 +1670,7 @@
       "en": "Chicken Breast",
       "ar": "صدور دجاج",
       "categoryIds": ["poultry"],
+      "cookingIngredientId": "chicken_breast",
       "aliases": {
         "en": [],
         "ar": []
@@ -1562,6 +1683,7 @@
       "en": "Chicken Thigh",
       "ar": "أفخاذ دجاج",
       "categoryIds": ["poultry"],
+      "cookingIngredientId": "chicken_thigh",
       "aliases": {
         "en": [],
         "ar": []
@@ -1574,6 +1696,7 @@
       "en": "Chicken Wings",
       "ar": "أجنحة دجاج",
       "categoryIds": ["poultry"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1586,6 +1709,7 @@
       "en": "Chicken Drumstick",
       "ar": "دبابيس دجاج",
       "categoryIds": ["poultry"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1598,6 +1722,7 @@
       "en": "Turkey Slices",
       "ar": "شرائح ديك رومي",
       "categoryIds": ["poultry", "deli"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1610,6 +1735,7 @@
       "en": "Whole Duck",
       "ar": "بطة كاملة",
       "categoryIds": ["poultry"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1622,6 +1748,7 @@
       "en": "Meatballs",
       "ar": "كرات لحم",
       "categoryIds": ["meat"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1634,6 +1761,7 @@
       "en": "Beef Sausages",
       "ar": "سجق بقري",
       "categoryIds": ["meat"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1646,6 +1774,7 @@
       "en": "Whole Fish",
       "ar": "سمكة كاملة",
       "categoryIds": ["fish", "seafood"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": ["whole fish", "fresh whole fish"],
         "ar": ["سمكة كاملة", "سمك كامل"]
@@ -1658,6 +1787,7 @@
       "en": "Fish Fillet",
       "ar": "فيليه سمك",
       "categoryIds": ["fish", "seafood"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1670,6 +1800,7 @@
       "en": "Salmon",
       "ar": "سلمون",
       "categoryIds": ["fish", "seafood"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": ["salmon", "salmon fillet"],
         "ar": ["سلمون", "فيليه سلمون"]
@@ -1682,6 +1813,7 @@
       "en": "Tuna Steak",
       "ar": "ستيك تونة",
       "categoryIds": ["fish", "seafood"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1694,6 +1826,7 @@
       "en": "Shrimp",
       "ar": "جمبري",
       "categoryIds": ["fish", "seafood"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1706,6 +1839,7 @@
       "en": "Crab",
       "ar": "سلطعون",
       "categoryIds": ["fish", "seafood"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1718,6 +1852,7 @@
       "en": "Lobster",
       "ar": "كركند",
       "categoryIds": ["fish", "seafood"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1730,6 +1865,7 @@
       "en": "Mussels",
       "ar": "بلح البحر",
       "categoryIds": ["fish", "seafood"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1742,6 +1878,7 @@
       "en": "Clams",
       "ar": "محار",
       "categoryIds": ["fish", "seafood"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1754,6 +1891,7 @@
       "en": "Scallops",
       "ar": "إسكالوب بحري",
       "categoryIds": ["fish", "seafood"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1766,6 +1904,7 @@
       "en": "Squid",
       "ar": "كاليماري",
       "categoryIds": ["fish", "seafood"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1778,6 +1917,7 @@
       "en": "Octopus",
       "ar": "أخطبوط",
       "categoryIds": ["fish", "seafood"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1790,6 +1930,7 @@
       "en": "Sardines",
       "ar": "سردين",
       "categoryIds": ["fish", "seafood"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1802,6 +1943,7 @@
       "en": "Fish Fingers",
       "ar": "أصابع سمك",
       "categoryIds": ["fish", "seafood", "frozen"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1814,6 +1956,7 @@
       "en": "Breaded Shrimp",
       "ar": "جمبري بانيه",
       "categoryIds": ["fish", "seafood", "frozen"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1826,6 +1969,7 @@
       "en": "Tuna Can",
       "ar": "تونة معلبة",
       "categoryIds": ["fish", "seafood", "canned"],
+      "cookingIngredientId": "tuna_canned",
       "aliases": {
         "en": ["canned tuna", "tuna can", "tuna tin"],
         "ar": ["تونة معلبة", "علبة تونة"]
@@ -1838,6 +1982,7 @@
       "en": "Sliced Bread",
       "ar": "خبز شرائح",
       "categoryIds": ["bakery", "breakfast"],
+      "cookingIngredientId": "bread_sliced",
       "aliases": {
         "en": [],
         "ar": []
@@ -1850,6 +1995,7 @@
       "en": "Pita",
       "ar": "خبز عربي",
       "categoryIds": ["bakery", "breakfast"],
+      "cookingIngredientId": "bread_pita",
       "aliases": {
         "en": [],
         "ar": []
@@ -1862,6 +2008,7 @@
       "en": "Saj Bread",
       "ar": "خبز صاج",
       "categoryIds": ["bakery", "breakfast"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1874,6 +2021,7 @@
       "en": "Tortilla",
       "ar": "تورتيلا",
       "categoryIds": ["bakery", "breakfast"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1886,6 +2034,7 @@
       "en": "Baguette",
       "ar": "باغيت",
       "categoryIds": ["bakery", "breakfast"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1898,6 +2047,7 @@
       "en": "Toast Rusk",
       "ar": "بقسماط",
       "categoryIds": ["bakery", "breakfast"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1910,6 +2060,7 @@
       "en": "Croissant",
       "ar": "كرواسون",
       "categoryIds": ["bakery", "breakfast"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1922,6 +2073,7 @@
       "en": "Bagel",
       "ar": "بيغل",
       "categoryIds": ["bakery", "breakfast"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1934,6 +2086,7 @@
       "en": "Brioche",
       "ar": "بريوش",
       "categoryIds": ["bakery", "breakfast"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1946,6 +2099,7 @@
       "en": "Bread Bun",
       "ar": "خبز برغر",
       "categoryIds": ["bakery", "breakfast"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1958,6 +2112,7 @@
       "en": "Pancakes",
       "ar": "بان كيك",
       "categoryIds": ["bakery", "breakfast"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1970,6 +2125,7 @@
       "en": "Waffles",
       "ar": "وافل",
       "categoryIds": ["bakery", "breakfast"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1982,6 +2138,7 @@
       "en": "Cornflakes",
       "ar": "كورن فليكس",
       "categoryIds": ["bakery", "breakfast"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -1994,6 +2151,7 @@
       "en": "Granola",
       "ar": "جرانولا",
       "categoryIds": ["bakery", "breakfast"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2006,6 +2164,7 @@
       "en": "Muesli",
       "ar": "ميوسلي",
       "categoryIds": ["bakery", "breakfast"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2018,6 +2177,7 @@
       "en": "Rice Cakes",
       "ar": "كعك الأرز",
       "categoryIds": ["bakery", "breakfast"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2030,6 +2190,7 @@
       "en": "Olive Oil",
       "ar": "زيت زيتون",
       "categoryIds": ["oil"],
+      "cookingIngredientId": "olive_oil",
       "aliases": {
         "en": [],
         "ar": []
@@ -2042,6 +2203,7 @@
       "en": "Vegetable Oil",
       "ar": "زيت نباتي",
       "categoryIds": ["oil"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2054,6 +2216,7 @@
       "en": "Sunflower Oil",
       "ar": "زيت دوار الشمس",
       "categoryIds": ["oil"],
+      "cookingIngredientId": "sunflower_oil",
       "aliases": {
         "en": [],
         "ar": []
@@ -2066,6 +2229,7 @@
       "en": "Coconut Oil",
       "ar": "زيت جوز الهند",
       "categoryIds": ["oil"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2078,6 +2242,7 @@
       "en": "Tomato Paste",
       "ar": "معجون طماطم",
       "categoryIds": ["condiments"],
+      "cookingIngredientId": "tomato_paste",
       "aliases": {
         "en": [],
         "ar": []
@@ -2090,6 +2255,7 @@
       "en": "Ketchup",
       "ar": "كاتشب",
       "categoryIds": ["condiments"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2102,6 +2268,7 @@
       "en": "Mayonnaise",
       "ar": "مايونيز",
       "categoryIds": ["condiments"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2114,6 +2281,7 @@
       "en": "Mustard",
       "ar": "مستردة",
       "categoryIds": ["condiments"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2126,6 +2294,7 @@
       "en": "Vinegar",
       "ar": "خل",
       "categoryIds": ["condiments"],
+      "cookingIngredientId": "vinegar",
       "aliases": {
         "en": [],
         "ar": []
@@ -2138,6 +2307,7 @@
       "en": "Tahini",
       "ar": "طحينة",
       "categoryIds": ["condiments", "spreads"],
+      "cookingIngredientId": "tahini",
       "aliases": {
         "en": [],
         "ar": []
@@ -2150,6 +2320,7 @@
       "en": "Honey",
       "ar": "عسل",
       "categoryIds": ["sweeteners", "spreads"],
+      "cookingIngredientId": "honey",
       "aliases": {
         "en": [],
         "ar": []
@@ -2162,6 +2333,7 @@
       "en": "Jam",
       "ar": "مربى",
       "categoryIds": ["spreads"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2174,6 +2346,7 @@
       "en": "Peanut Butter",
       "ar": "زبدة فول سوداني",
       "categoryIds": ["nuts_seeds", "spreads"],
+      "cookingIngredientId": "peanut_butter",
       "aliases": {
         "en": [],
         "ar": []
@@ -2186,6 +2359,7 @@
       "en": "Olives",
       "ar": "زيتون",
       "categoryIds": ["condiments"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2198,6 +2372,7 @@
       "en": "Pickles",
       "ar": "مخلل",
       "categoryIds": ["condiments"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2210,6 +2385,7 @@
       "en": "Canned Corn",
       "ar": "ذرة معلبة",
       "categoryIds": ["vegetables", "canned"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2222,6 +2398,7 @@
       "en": "Salt",
       "ar": "ملح",
       "categoryIds": ["spices"],
+      "cookingIngredientId": "salt",
       "aliases": {
         "en": [],
         "ar": []
@@ -2234,6 +2411,7 @@
       "en": "Black Pepper",
       "ar": "فلفل أسود",
       "categoryIds": ["spices"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2246,6 +2424,7 @@
       "en": "Cumin",
       "ar": "كمون",
       "categoryIds": ["spices"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2258,6 +2437,7 @@
       "en": "Turmeric",
       "ar": "كركم",
       "categoryIds": ["spices"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2270,6 +2450,7 @@
       "en": "Paprika",
       "ar": "بابريكا",
       "categoryIds": ["spices"],
+      "cookingIngredientId": "paprika",
       "aliases": {
         "en": [],
         "ar": []
@@ -2282,6 +2463,7 @@
       "en": "Cinnamon",
       "ar": "قرفة",
       "categoryIds": ["spices"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2294,6 +2476,7 @@
       "en": "Cardamom",
       "ar": "هيل",
       "categoryIds": ["spices"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2306,6 +2489,7 @@
       "en": "Cloves",
       "ar": "قرنفل",
       "categoryIds": ["spices"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2318,6 +2502,7 @@
       "en": "Coriander Seed",
       "ar": "بذور كزبرة",
       "categoryIds": ["spices"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2330,6 +2515,7 @@
       "en": "Sumac",
       "ar": "سماق",
       "categoryIds": ["spices"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": ["sumac"],
         "ar": ["سماق"]
@@ -2342,6 +2528,7 @@
       "en": "Zaatar",
       "ar": "زعتر",
       "categoryIds": ["spices"],
+      "cookingIngredientId": "zaatar_blend",
       "aliases": {
         "en": ["zaatar", "za'atar"],
         "ar": ["زعتر", "زعتر بلدي"]
@@ -2354,6 +2541,7 @@
       "en": "Baking Powder",
       "ar": "بيكنج باودر",
       "categoryIds": ["baking"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2366,6 +2554,7 @@
       "en": "Yeast",
       "ar": "خميرة",
       "categoryIds": ["baking"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2378,6 +2567,7 @@
       "en": "White Sugar",
       "ar": "سكر أبيض",
       "categoryIds": ["sweeteners", "baking"],
+      "cookingIngredientId": "sugar",
       "aliases": {
         "en": [],
         "ar": []
@@ -2390,6 +2580,7 @@
       "en": "Brown Sugar",
       "ar": "سكر بني",
       "categoryIds": ["sweeteners", "baking"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2402,6 +2593,7 @@
       "en": "Cocoa",
       "ar": "كاكاو",
       "categoryIds": ["baking"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2414,6 +2606,7 @@
       "en": "Water",
       "ar": "مياه",
       "categoryIds": ["drinks"],
+      "cookingIngredientId": "water",
       "aliases": {
         "en": [],
         "ar": []
@@ -2426,6 +2619,7 @@
       "en": "Sparkling Water",
       "ar": "مياه غازية",
       "categoryIds": ["drinks"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2438,6 +2632,7 @@
       "en": "Cola",
       "ar": "كولا",
       "categoryIds": ["drinks"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": ["cola", "coke", "coca cola", "pepsi"],
         "ar": ["كولا", "كوكاكولا", "كوكا كولا", "بيبسي"]
@@ -2450,6 +2645,7 @@
       "en": "Lemon Lime Soda",
       "ar": "مشروب ليمون غازي",
       "categoryIds": ["drinks"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": ["lemon lime soda", "sprite", "7up", "seven up"],
         "ar": ["سفن", "سفن اب", "سبرايت"]
@@ -2462,6 +2658,7 @@
       "en": "Orange Soda",
       "ar": "مشروب برتقال غازي",
       "categoryIds": ["drinks"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2474,6 +2671,7 @@
       "en": "Orange Juice",
       "ar": "عصير برتقال",
       "categoryIds": ["drinks"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2486,6 +2684,7 @@
       "en": "Apple Juice",
       "ar": "عصير تفاح",
       "categoryIds": ["drinks"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2498,6 +2697,7 @@
       "en": "Mango Juice",
       "ar": "عصير مانجو",
       "categoryIds": ["drinks"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2510,6 +2710,7 @@
       "en": "Lemonade",
       "ar": "ليمونادة",
       "categoryIds": ["drinks"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2522,6 +2723,7 @@
       "en": "Black Tea",
       "ar": "شاي أسود",
       "categoryIds": ["tea_coffee", "drinks"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2534,6 +2736,7 @@
       "en": "Green Tea",
       "ar": "شاي أخضر",
       "categoryIds": ["tea_coffee", "drinks"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2546,6 +2749,7 @@
       "en": "Arabic Coffee",
       "ar": "قهوة عربية",
       "categoryIds": ["tea_coffee", "drinks"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2558,6 +2762,7 @@
       "en": "Instant Coffee",
       "ar": "قهوة سريعة التحضير",
       "categoryIds": ["tea_coffee", "drinks"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2570,6 +2775,7 @@
       "en": "Coffee Beans",
       "ar": "حبوب قهوة",
       "categoryIds": ["tea_coffee", "drinks"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2582,6 +2788,7 @@
       "en": "Energy Drink",
       "ar": "مشروب طاقة",
       "categoryIds": ["drinks"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2594,6 +2801,7 @@
       "en": "Hot Chocolate",
       "ar": "شوكولاتة ساخنة",
       "categoryIds": ["drinks", "tea_coffee"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2606,6 +2814,7 @@
       "en": "Frozen Peas",
       "ar": "بسلة مجمدة",
       "categoryIds": ["frozen", "vegetables"],
+      "cookingIngredientId": "green_pea_frozen",
       "aliases": {
         "en": ["frozen peas"],
         "ar": ["بسلة مجمدة", "بازلاء مجمدة"]
@@ -2618,6 +2827,7 @@
       "en": "Frozen Mixed Veg",
       "ar": "خضار مشكل مجمد",
       "categoryIds": ["frozen", "vegetables"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2630,6 +2840,7 @@
       "en": "Frozen Spinach",
       "ar": "سبانخ مجمدة",
       "categoryIds": ["frozen", "vegetables"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2642,6 +2853,7 @@
       "en": "Frozen Molokhia",
       "ar": "ملوخية مجمدة",
       "categoryIds": ["frozen", "vegetables"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": ["frozen molokhia", "frozen jute mallow"],
         "ar": ["ملوخية مجمدة", "ملوخيه مجمده"]
@@ -2654,6 +2866,7 @@
       "en": "Frozen Broccoli",
       "ar": "بروكلي مجمد",
       "categoryIds": ["frozen", "vegetables"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2666,6 +2879,7 @@
       "en": "Frozen Berries",
       "ar": "توت مجمد",
       "categoryIds": ["frozen", "fruit"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2678,6 +2892,7 @@
       "en": "Frozen French Fries",
       "ar": "بطاطس مقلية مجمدة",
       "categoryIds": ["frozen", "vegetables"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2690,6 +2905,7 @@
       "en": "Chicken Nuggets",
       "ar": "ناجتس دجاج",
       "categoryIds": ["frozen", "poultry", "ready_meals"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2702,6 +2918,7 @@
       "en": "Frozen Fish Fillet",
       "ar": "فيليه سمك مجمد",
       "categoryIds": ["frozen", "fish", "seafood"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2714,6 +2931,7 @@
       "en": "Frozen Shrimp",
       "ar": "جمبري مجمد",
       "categoryIds": ["frozen", "fish", "seafood"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2726,6 +2944,7 @@
       "en": "Frozen Pizza",
       "ar": "بيتزا مجمدة",
       "categoryIds": ["frozen", "ready_meals"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2738,6 +2957,7 @@
       "en": "Ice Cream",
       "ar": "آيس كريم",
       "categoryIds": ["frozen", "sweets"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2750,6 +2970,7 @@
       "en": "Vegetable Burger",
       "ar": "برغر خضار",
       "categoryIds": ["plant_based", "frozen", "ready_meals"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2762,6 +2983,7 @@
       "en": "Tofu",
       "ar": "توفو",
       "categoryIds": ["plant_based"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2774,6 +2996,7 @@
       "en": "Hummus",
       "ar": "حمص بالطحينة",
       "categoryIds": ["legumes", "spreads", "ready_meals"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2786,6 +3009,7 @@
       "en": "Ready Soup",
       "ar": "شوربة جاهزة",
       "categoryIds": ["ready_meals"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2798,6 +3022,7 @@
       "en": "Potato Chips",
       "ar": "شيبسي",
       "categoryIds": ["snacks"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2810,6 +3035,7 @@
       "en": "Tortilla Chips",
       "ar": "رقائق تورتيلا",
       "categoryIds": ["snacks"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2822,6 +3048,7 @@
       "en": "Popcorn",
       "ar": "فشار",
       "categoryIds": ["snacks"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2834,6 +3061,7 @@
       "en": "Crackers",
       "ar": "مقرمشات",
       "categoryIds": ["snacks"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2846,6 +3074,7 @@
       "en": "Pretzels",
       "ar": "بريتزل",
       "categoryIds": ["snacks"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2858,6 +3087,7 @@
       "en": "Plain Biscuits",
       "ar": "بسكويت سادة",
       "categoryIds": ["snacks", "sweets", "bakery"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2870,6 +3100,7 @@
       "en": "Chocolate Bar",
       "ar": "لوح شوكولاتة",
       "categoryIds": ["sweets", "snacks"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2882,6 +3113,7 @@
       "en": "Wafer",
       "ar": "ويفر",
       "categoryIds": ["sweets", "snacks"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2894,6 +3126,7 @@
       "en": "Cake Slice",
       "ar": "قطعة كيك",
       "categoryIds": ["sweets", "snacks"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2906,6 +3139,7 @@
       "en": "Muffin",
       "ar": "مافن",
       "categoryIds": ["sweets", "bakery"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2918,6 +3152,7 @@
       "en": "Candy",
       "ar": "حلوى",
       "categoryIds": ["sweets"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2930,6 +3165,7 @@
       "en": "Gummy Candy",
       "ar": "حلوى جيلاتينية",
       "categoryIds": ["sweets"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2942,6 +3178,7 @@
       "en": "Maamoul",
       "ar": "معمول",
       "categoryIds": ["sweets", "bakery"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": ["maamoul", "date cookies"],
         "ar": ["معمول", "كعك بالتمر"]
@@ -2954,6 +3191,7 @@
       "en": "Baklava",
       "ar": "بقلاوة",
       "categoryIds": ["sweets"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2966,6 +3204,7 @@
       "en": "Turkish Delight",
       "ar": "راحة الحلقوم",
       "categoryIds": ["sweets"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2978,6 +3217,7 @@
       "en": "Halva",
       "ar": "حلاوة طحينية",
       "categoryIds": ["sweets", "spreads"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -2990,6 +3230,7 @@
       "en": "Fava Bean Can",
       "ar": "فول معلب",
       "categoryIds": ["legumes", "canned"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": ["canned fava beans", "foul can"],
         "ar": ["فول معلب", "علبة فول"]
@@ -3002,6 +3243,7 @@
       "en": "Canned Chickpeas",
       "ar": "حمص معلب",
       "categoryIds": ["legumes", "canned"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -3014,6 +3256,7 @@
       "en": "Canned Beans",
       "ar": "فاصوليا معلبة",
       "categoryIds": ["legumes", "canned"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -3026,6 +3269,7 @@
       "en": "Canned Tomatoes",
       "ar": "طماطم معلبة",
       "categoryIds": ["vegetables", "canned"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -3038,6 +3282,7 @@
       "en": "Pasta Sauce",
       "ar": "صلصة مكرونة",
       "categoryIds": ["condiments", "canned"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -3050,6 +3295,7 @@
       "en": "Chili Sauce",
       "ar": "صلصة حارة",
       "categoryIds": ["canned", "condiments"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -3062,6 +3308,7 @@
       "en": "Soy Sauce",
       "ar": "صويا صوص",
       "categoryIds": ["canned", "condiments"],
+      "cookingIngredientId": "soy_sauce",
       "aliases": {
         "en": [],
         "ar": []
@@ -3074,6 +3321,7 @@
       "en": "Pomegranate Molasses",
       "ar": "دبس رمان",
       "categoryIds": ["canned", "condiments"],
+      "cookingIngredientId": "pomegranate_molasses",
       "aliases": {
         "en": [],
         "ar": []
@@ -3086,6 +3334,7 @@
       "en": "Rose Water",
       "ar": "ماء ورد",
       "categoryIds": ["canned", "baking"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -3098,6 +3347,7 @@
       "en": "Orange Blossom Water",
       "ar": "ماء زهر",
       "categoryIds": ["canned", "baking"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -3110,6 +3360,7 @@
       "en": "Raisins",
       "ar": "زبيب",
       "categoryIds": ["fruit", "dried_fruit"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -3122,6 +3373,7 @@
       "en": "Dried Apricots",
       "ar": "مشمش مجفف",
       "categoryIds": ["fruit", "dried_fruit"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -3134,6 +3386,7 @@
       "en": "Dried Figs",
       "ar": "تين مجفف",
       "categoryIds": ["fruit", "dried_fruit"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -3146,6 +3399,7 @@
       "en": "Chia Seeds",
       "ar": "بذور شيا",
       "categoryIds": ["nuts_seeds"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -3158,6 +3412,7 @@
       "en": "Flaxseeds",
       "ar": "بذور كتان",
       "categoryIds": ["nuts_seeds"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -3170,6 +3425,7 @@
       "en": "Baby Food Jar",
       "ar": "برطمان طعام أطفال",
       "categoryIds": ["baby_food", "canned"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -3182,6 +3438,7 @@
       "en": "Corn Starch",
       "ar": "نشا ذرة",
       "categoryIds": ["baking", "spices"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -3194,6 +3451,7 @@
       "en": "Baking Soda",
       "ar": "بيكربونات الصوديوم",
       "categoryIds": ["baking", "spices"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -3206,6 +3464,7 @@
       "en": "Vanilla",
       "ar": "فانيليا",
       "categoryIds": ["baking", "spices"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -3218,6 +3477,7 @@
       "en": "Coconut Flakes",
       "ar": "جوز هند مبشور",
       "categoryIds": ["baking", "spices"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -3230,6 +3490,7 @@
       "en": "Chocolate Chips",
       "ar": "رقائق شوكولاتة",
       "categoryIds": ["baking", "spices", "sweets"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -3242,6 +3503,7 @@
       "en": "Gelatin",
       "ar": "جيلاتين",
       "categoryIds": ["baking", "spices"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -3254,6 +3516,7 @@
       "en": "Saffron",
       "ar": "زعفران",
       "categoryIds": ["baking", "spices"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -3266,6 +3529,7 @@
       "en": "Nutmeg",
       "ar": "جوزة الطيب",
       "categoryIds": ["baking", "spices"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -3278,6 +3542,7 @@
       "en": "Chili Flakes",
       "ar": "شطة مجروشة",
       "categoryIds": ["baking", "spices"],
+      "cookingIngredientId": "chilli_flake",
       "aliases": {
         "en": [],
         "ar": []
@@ -3290,6 +3555,7 @@
       "en": "Curry Powder",
       "ar": "كاري",
       "categoryIds": ["baking", "spices"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -3302,6 +3568,7 @@
       "en": "Bay Leaves",
       "ar": "ورق لورا",
       "categoryIds": ["baking", "spices"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -3314,6 +3581,7 @@
       "en": "Rosemary",
       "ar": "روزماري",
       "categoryIds": ["baking", "spices"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -3326,6 +3594,7 @@
       "en": "Ground Ginger",
       "ar": "زنجبيل مطحون",
       "categoryIds": ["baking", "spices"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -3338,6 +3607,7 @@
       "en": "Fennel Seed",
       "ar": "بذور شمر",
       "categoryIds": ["baking", "spices"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -3350,6 +3620,7 @@
       "en": "Anise Seed",
       "ar": "يانسون",
       "categoryIds": ["baking", "spices"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []
@@ -3362,6 +3633,7 @@
       "en": "Caraway Seed",
       "ar": "كراوية",
       "categoryIds": ["baking", "spices"],
+      "cookingIngredientId": null,
       "aliases": {
         "en": [],
         "ar": []

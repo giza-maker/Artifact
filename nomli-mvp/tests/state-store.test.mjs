@@ -43,6 +43,42 @@ const item = (overrides = {}) => ({
   ...overrides,
 });
 
+test("a stalled native write fails closed and cannot race later stock writes", async () => {
+  const original = state({
+    eggs: item({ name: "Eggs Medium 30pcs", qty: 30, unit: "pieces" }),
+  });
+  let durable = structuredClone(original),
+    calls = 0,
+    release;
+  const native = {
+    isNative: true,
+    loadDraft: async () => structuredClone(durable),
+    saveDraft: async (_key, value) => {
+      calls++;
+      await new Promise((resolve) => {
+        release = resolve;
+      });
+      durable = structuredClone(value);
+    },
+  };
+  const store = createStateStore({ data, native, writeTimeoutMs: 20 });
+  const loaded = await store.load();
+  const linked = structuredClone(loaded.state);
+  linked.items.eggs.ingredientId = "egg";
+  await assert.rejects(store.save(linked), /timed out.*Reopen Nomli/);
+  assert.equal(durable.items.eggs.ingredientId, undefined);
+  assert.equal(loaded.state.items.eggs.qty, 30);
+  await assert.rejects(store.save(original), /outcome is unknown/);
+  assert.equal(calls, 1);
+  release();
+  await new Promise((resolve) => setImmediate(resolve));
+  await assert.rejects(store.save(original), /outcome is unknown/);
+  assert.equal(calls, 1);
+  const reopened = await createStateStore({ data, native }).load();
+  assert.equal(reopened.state.items.eggs.ingredientId, "egg");
+  assert.equal(reopened.state.items.eggs.qty, 30);
+});
+
 test("photo metadata survives backup without embedding local image bytes", async () => {
   const photoId = "p_" + "ab".repeat(16);
   const store = createStateStore({ data, storage: memory() });
@@ -300,7 +336,9 @@ test("optional category ids are whitelisted while legacy category metadata remai
   const store = createStateStore({ data, storage: memory() });
   const modern = state({ x: item({ categoryId: "rice_grains" }) });
   assert.deepEqual(store.parseBackup(store.exportBackup(modern)), modern);
-  assert.doesNotThrow(() => store.exportBackup(state({ x: item({ category: "Old custom label" }) })));
+  assert.doesNotThrow(() =>
+    store.exportBackup(state({ x: item({ category: "Old custom label" }) })),
+  );
   for (const categoryId of ["invented", "", null, 1]) {
     assert.throws(
       () => store.exportBackup(state({ x: item({ categoryId }) })),

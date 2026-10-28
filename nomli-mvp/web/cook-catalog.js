@@ -1,5 +1,6 @@
 import ingredientCatalog from "../content/ingredients.json" with { type: "json" };
 import recipeCatalog from "../content/recipes.json" with { type: "json" };
+import { resolveCookingIdentity } from "./food-identity.js";
 
 export const COOK_INGREDIENTS = ingredientCatalog.ingredients;
 const ingredientIndex = new Map(
@@ -93,6 +94,9 @@ export function suggestIngredientLinks(name, { limit = 5 } = {}) {
     ? Math.max(0, Math.min(20, Math.floor(limit)))
     : 5;
   if (!query || !count) return [];
+  const identity = resolveCookingIdentity({ name });
+  if (identity.status === "matched")
+    return [getIngredient(identity.ingredientId)];
   // Strip packaging quantities only, preserving preparation/type words.
   const tokens = query
     .replace(/\b\d+(?:\s+\d+)?\s*(?:kg|g|ml|l|pack|packs|pieces|pcs)\b/g, " ")

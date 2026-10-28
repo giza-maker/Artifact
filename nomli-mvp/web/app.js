@@ -70,6 +70,8 @@ import {
   readIngredientLink,
 } from "./cook-linking.js";
 import { applyScanCookingLinks } from "./scan-cooking-links.js";
+import { resolveCookingIdentity } from "./food-identity.js";
+import { syncCookingInventory } from "./cooking-inventory-sync.js";
 (async function leanNomli() {
   const D = { ...window.NOMLI_DATA, recipes: COOK_RECIPES, tools: COOK_TOOLS };
   const store = createStateStore({
@@ -234,6 +236,20 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
   let saveQueue = Promise.resolve();
   let operationBusy = false;
   let storageError = "";
+  let synchronizedItemCount = 0;
+  if (!recoveryRequired) {
+    const repaired = syncCookingInventory(S);
+    if (repaired.state !== S) {
+      try {
+        await store.save(repaired.state);
+        S = repaired.state;
+        synchronizedItemCount = repaired.linkedItemIds.length;
+      } catch {
+        storageError =
+          "Cooking links could not be saved. Your original inventory is unchanged. Reopen Nomli to retry.";
+      }
+    }
+  }
   try {
     scanConfig = await getScanConfig();
   } catch {
@@ -523,6 +539,40 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     const category = inferFoodCategory(item).category;
     return `<label class="field">Category<select name="${name}" data-picker-kind="food-category"${getFoodCategory(item.categoryId) ? ' data-user-touched="1"' : ""}>${FOOD_CATEGORIES.map((entry) => `<option value="${entry.id}"${entry.id === category.id ? " selected" : ""}>${esc(entry.en)} — ${esc(entry.ar)}</option>`).join("")}</select></label>`;
   }
+  function refreshCookingMatch(scope, { nameChanged = false } = {}) {
+    if (!scope) return;
+    const select = $('select[name$="ingredientId"]', scope);
+    if (!select) return;
+    const scanCard = scope.matches("[data-scan-card]");
+    const name = $(
+      scanCard ? 'input[name^="name-"]' : 'input[name="name"]',
+      scope,
+    )?.value;
+    const categoryId = $(
+      scanCard ? 'select[name^="category-"]' : 'select[name="categoryId"]',
+      scope,
+    )?.value;
+    if (nameChanged && select.dataset.cookOptout !== "1") {
+      select.dataset.cookAuto = "1";
+      delete select.dataset.userTouched;
+    }
+    if (select.dataset.cookAuto === "1" && !select.dataset.userTouched) {
+      select.value =
+        resolveCookingIdentity({ name, categoryId }).ingredientId || "";
+      initMobileSelects(scope);
+    }
+    const linked = getIngredient(select.value);
+    const status = $("[data-cook-link-status]", scope);
+    if (status)
+      status.textContent = linked
+        ? `Cook uses ${linked.name.en} · linked after save`
+        : "Kitchen item · cooking match optional in More details";
+    const help = $("[data-cook-link-help]", scope);
+    if (help)
+      help.textContent = linked
+        ? `Cook will use ${linked.name.en} after saving. Review or change anytime.`
+        : "Choose the product type to use this item in recipes. No weights are guessed.";
+  }
   function recipeAction(r) {
     return button("View recipe", "recipe", r.id, "btn-quiet").replace(
       "<button ",
@@ -638,7 +688,8 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
       (a, b) => a.a.missing.length - b.a.missing.length || a.r.time - b.r.time,
     );
     const unlinked = Object.entries(S.items).filter(
-      ([, x]) => x.qty > 0 && !getIngredient(x.ingredientId),
+      ([, x]) =>
+        x.qty > 0 && !getIngredient(x.ingredientId) && !x.cookingLinkDisabled,
     );
     return (
       heading(
@@ -651,7 +702,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         ? `<section class="card resume-card"><p class="eyebrow">${S.cooking.phase === "prep" ? "PREPARATION SAVED" : S.cooking.phase === "review" ? "READY TO REVIEW" : "COOKING IN PROGRESS"}</p><h2>${esc(S.cooking.recipeName || recipe(S.cooking.rid).name)}</h2><p>${servingText(S.cooking.servings)} · stock unchanged</p>${button("Resume cooking", "cook-resume", "", "btn-primary")}</section>`
         : "") +
       (unlinked.length
-        ? `<section class="notice cook-link-notice"><b>${unlinked.length} item${unlinked.length === 1 ? " needs" : "s need"} a cooking link</b>${button("Link", "cook-link-next", unlinked[0][0], "btn-quiet")}</section>`
+        ? `<section class="notice cook-link-notice"><b>${unlinked.length} item${unlinked.length === 1 ? " needs" : "s need"} a cooking match to use in recipes</b>${button("Link", "cook-link-next", unlinked[0][0], "btn-quiet")}</section>`
         : "") +
       `<div class="cook-filters"><label class="field">Recipe time<select data-change="cook-time">${[
         ...new Set([15, 20, 30, 45, 60, 120, 1440, S.profile.time]),
@@ -684,7 +735,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
       `<section class="card"><div class="card-header"><h2>Ingredients</h2><label>Servings <select data-change="servings" data-id="${r.id}">${options(
         Array.from({ length: 12 }, (_, i) => i + 1),
         serv,
-      )}</select></label></div>${a.requirements.map((x) => `<div class="item-row"><div><b>${esc(x.name)}</b><small>${num(x.qty)} ${esc(x.unit)} needed · ${x.missing ? `${num(x.missing)} missing` : "Covered by linked stock"}</small></div>${icon(x.missing ? "shopping-cart" : "check-circle")}</div>`).join("")}${a.blockedItems.length ? '<p class="notice">Items past their recorded date were excluded from this plan.</p>' : ""}${a.incompatibleItems.length ? `<section class="notice"><b>Some units need review</b><p>Mass, volume and count are different. Enter a measured grams-per-unit value or correct stock units in Kitchen.</p>${a.incompatibleItems.map((x) => button(`Review ${x.name}`, "item-edit", x.id, "btn-quiet")).join("")}</section>` : ""}${a.excluded.length ? `<p class="notice notice-warning">Matches your exclusions: ${esc(a.excluded.map(toolLabel).join(", "))}. Choose another recipe.</p>` : ""}${S.cooking ? `<p class="notice">Finish or cancel your current session before starting another.</p>${button("Resume current session", "cook-resume")}` : a.stockReady && !a.excluded.length ? button("Prepare ingredients", "cook-start", r.id, "btn-primary") : `${button("Add missing to shopping", "shopping-missing", r.id)}${button("Review inventory links", "go", "kitchen")}`}</section><section class="card"><h2>Before you start</h2><p>${r.prepMinutes} min preparation · ${r.cookMinutes} min cooking</p><p class="details">Tools: ${esc(r.requiredTools.map(toolLabel).join(", "))}. Confirm these during preparation.</p><p class="details">Listed allergens: ${esc(r.allergens.map(toolLabel).join(", ") || "none listed")}. Check actual product labels and preparation conditions.</p></section>`
+      )}</select></label></div>${a.requirements.map((x) => `<div class="item-row"><div><b>${esc(x.name)}</b><small>${num(x.qty)} ${esc(x.unit)} needed · ${num(x.have)} from Kitchen${x.missing ? ` · ${num(x.missing)} missing` : " · ready"}</small>${x.allocations.length ? `<small>From: ${esc([...new Set(x.allocations.map((lot) => lot.name))].slice(0, 3).join(", "))}</small>` : ""}</div>${icon(x.missing ? "shopping-cart" : "check-circle")}</div>`).join("")}${a.blockedItems.length ? '<p class="notice">Items past their recorded date were excluded from this plan.</p>' : ""}${a.incompatibleItems.length ? `<section class="notice"><b>Some units need review</b><p>Mass, volume and count are different. Enter a measured grams-per-unit value or correct stock units in Kitchen.</p>${a.incompatibleItems.map((x) => button(`Review ${x.name}`, "item-edit", x.id, "btn-quiet")).join("")}</section>` : ""}${a.excluded.length ? `<p class="notice notice-warning">Matches your exclusions: ${esc(a.excluded.map(toolLabel).join(", "))}. Choose another recipe.</p>` : ""}${S.cooking ? `<p class="notice">Finish or cancel your current session before starting another.</p>${button("Resume current session", "cook-resume")}` : a.stockReady && !a.excluded.length ? button("Prepare ingredients", "cook-start", r.id, "btn-primary") : `${button("Add missing to shopping", "shopping-missing", r.id)}${button("Review inventory links", "go", "kitchen")}`}</section><section class="card"><h2>Before you start</h2><p>${r.prepMinutes} min preparation · ${r.cookMinutes} min cooking</p><p class="details">Tools: ${esc(r.requiredTools.map(toolLabel).join(", "))}. Confirm these during preparation.</p><p class="details">Listed allergens: ${esc(r.allergens.map(toolLabel).join(", ") || "none listed")}. Check actual product labels and preparation conditions.</p></section>`
     );
   }
   function timerSeconds() {
@@ -1010,7 +1061,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         : S.items[id];
     openModal(
       id === "new" ? "Add ingredient" : "Edit ingredient",
-      `<form data-form="item" data-id="${id}">${errors()}${photoEditor(id, item)}${categoryField(item)}${field("Ingredient name", "name", item.name, "text", 'maxlength="200" dir="auto" required')}${field("Quantity on hand", "qty", item.qty, "number", 'min="0" max="1000000000" step="any" inputmode="decimal" required')}<label class="field">Unit<select name="unit">${options(["g", "kg", "ml", "l", "count", "pieces", "bunches", "slices", "cloves"], item.unit)}</select></label><div class="cook-link-fields">${renderIngredientLinkFields({ name: item.name, ingredientId: item.ingredientId, unit: item.unit, gramsPerUnit: item.gramsPerUnit })}</div><label class="field">Location<select name="storage">${options(["Fridge", "Freezer", "Pantry", "Spices"], item.storage)}</select></label>${field("Expiry (optional)", "expiry", item.expiry || "", "date")}<label class="field">Expiry source<select name="expiryProvenance">${options(["user", "printed", "estimated"], item.expiryProvenance || (item.estimated ? "estimated" : "user"))}</select><small>Used only when expiry is entered.</small></label><div class="modal-actions">${id === "new" ? "" : button("Delete ingredient", "item-delete", id, "btn-quiet")}<button class="btn btn-primary">Save ingredient</button></div></form>`,
+      `<form data-form="item" data-id="${id}">${errors()}${photoEditor(id, item)}${categoryField(item)}${field("Ingredient name", "name", item.name, "text", 'maxlength="200" dir="auto" required')}${field("Quantity on hand", "qty", item.qty, "number", 'min="0" max="1000000000" step="any" inputmode="decimal" required')}<label class="field">Unit<select name="unit">${options(["g", "kg", "ml", "l", "count", "pieces", "bunches", "slices", "cloves"], item.unit)}</select></label><div class="cook-link-fields">${renderIngredientLinkFields({ name: item.name, ingredientId: item.ingredientId, unit: item.unit, gramsPerUnit: item.gramsPerUnit, autoMatch: true, categoryId: item.categoryId, cookingLinkDisabled: item.cookingLinkDisabled })}</div><label class="field">Location<select name="storage">${options(["Fridge", "Freezer", "Pantry", "Spices"], item.storage)}</select></label>${field("Expiry (optional)", "expiry", item.expiry || "", "date")}<label class="field">Expiry source<select name="expiryProvenance">${options(["user", "printed", "estimated"], item.expiryProvenance || (item.estimated ? "estimated" : "user"))}</select><small>Used only when expiry is entered.</small></label><div class="modal-actions">${id === "new" ? "" : button("Delete ingredient", "item-delete", id, "btn-quiet")}<button class="btn btn-primary">Save ingredient</button></div></form>`,
       "item-edit",
     );
   }
@@ -2314,6 +2365,14 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
   });
   document.addEventListener("change", (e) => {
     if (operationBusy) return;
+    const cookingSelect = e.target.matches('select[name$="ingredientId"]');
+    if (cookingSelect) {
+      e.target.dataset.userTouched = "1";
+      e.target.dataset.cookOptout = e.target.value ? "0" : "1";
+      refreshCookingMatch(
+        e.target.closest("[data-scan-card]") || e.target.form,
+      );
+    }
     const scanForm = e.target.closest(".scan-review-wizard");
     if (scanForm && e.target.name === "excludeFinance") {
       scanForm.elements.confirmed.checked = false;
@@ -2363,6 +2422,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
             ),
           );
       }
+      refreshCookingMatch(card || itemForm);
       return;
     }
     if (scanForm && e.target.matches('select[name^="storage-"]'))
@@ -2498,6 +2558,9 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     render();
   });
   document.addEventListener("input", (e) => {
+    const cookingCard = e.target.closest("[data-scan-card]");
+    if (cookingCard && e.target.name.startsWith("name-"))
+      refreshCookingMatch(cookingCard, { nameChanged: true });
     const itemFormElement = e.target.closest('form[data-form="item"]');
     if (itemFormElement && e.target.name === "name") {
       const select = itemFormElement.elements.categoryId;
@@ -2505,6 +2568,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         select.value = inferFoodCategory({ name: e.target.value }).category.id;
         initMobileSelects(itemFormElement);
       }
+      refreshCookingMatch(itemFormElement, { nameChanged: true });
       const preview = $(
         ".photo-editor-preview .ingredient-thumb",
         itemFormElement,
@@ -2651,6 +2715,13 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
               prefix: `cook-${line.lineId}-`,
               unit: String(fd.get(`unit-${line.lineId}`) || ""),
             });
+          if (scanDraft.kind !== "expiry") {
+            const linkSelect = form.elements.namedItem(
+              `cook-${line.lineId}-ingredientId`,
+            );
+            reviewedLinks[line.lineId].cookingLinkDisabled =
+              linkSelect?.dataset.cookOptout === "1";
+          }
           return {
             ...line,
             name: String(fd.get(`name-${line.lineId}`) || "").trim(),
@@ -2862,6 +2933,9 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
       const updated = {
         ...prior,
         ...cookingLink,
+        cookingLinkDisabled:
+          !cookingLink.ingredientId &&
+          form.elements.ingredientId?.dataset.cookOptout === "1",
         categoryId: getFoodCategory(fd.get("categoryId"))?.id || "other",
         name: String(fd.get("name")).trim(),
         qty: quantity,
@@ -2980,4 +3054,8 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
   window.addEventListener("popstate", syncHash);
   window.addEventListener("hashchange", syncHash);
   render();
+  if (synchronizedItemCount)
+    announce(
+      `${synchronizedItemCount} Kitchen item${synchronizedItemCount === 1 ? "" : "s"} connected to Cook. Quantities unchanged.`,
+    );
 })();

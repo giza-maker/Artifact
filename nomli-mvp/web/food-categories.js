@@ -1,4 +1,5 @@
 import { COOK_INGREDIENTS, getIngredient } from "./cook-catalog.js";
+import { getCookingCategoryId } from "./food-identity.js";
 import foodArtCatalog from "../content/food-art-catalog.json" with { type: "json" };
 
 export const FOOD_CATEGORIES = Object.freeze(
@@ -720,34 +721,7 @@ function containsAlias(name, alias) {
 }
 
 function catalogCategory(ingredient) {
-  if (!ingredient) return null;
-  if (ingredient.id === "egg") return "eggs";
-  if (ingredient.id === "pasta_dry") return "pasta";
-  if (ingredient.id.startsWith("chicken_") || /turkey|duck/.test(ingredient.id))
-    return "poultry";
-  return (
-    {
-      produce: "vegetables",
-      herb: "vegetables",
-      fruit: "fruit",
-      frozen: "frozen",
-      pulse: "legumes",
-      grain: "rice_grains",
-      baking: "baking",
-      bakery: "bakery",
-      dairy_eggs: "dairy",
-      meat: "meat",
-      seafood: "seafood",
-      oil: "oil",
-      spice: "spices",
-      condiment: "condiments",
-      canned: "canned",
-      sweetener: "sweeteners",
-      seed_nut: "nuts_seeds",
-      pantry: "other",
-      basic: "drinks",
-    }[ingredient.category] ?? "other"
-  );
+  return ingredient ? getCookingCategoryId(ingredient.id) : null;
 }
 
 const catalogNames = COOK_INGREDIENTS.map((ingredient) => ({

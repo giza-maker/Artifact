@@ -25,7 +25,7 @@ Gemini free-tier and paid quotas depend on the API account and its billing setup
 
 ## M3 local cooking contract
 
-- The static catalog contains 20 curated recipes and 88 ingredients. Stock participates only after a human explicitly saves `item.ingredientId`; name suggestions do not establish identity.
+- The static catalog contains 20 curated recipes and 88 ingredients. Stock participates through `item.ingredientId`. M8.2 prefills clear deterministic retail-name matches in the editable review; final confirmation saves the link. Existing clear unlinked stock is repaired and persisted on startup, with no quantity changes. Ambiguous products remain available for explicit matching.
 - Compatible units convert within g/kg or ml/l. Count-to-mass conversion requires optional measured or printed `item.gramsPerUnit`. The domain does not infer weights or volume-to-mass density.
 - Recipe assessment scales servings, allocates linked lots by earliest recorded expiry, and excludes recorded dates before today. Dietary filters use catalog tags; they do not establish allergen-free food or cross-contact safety.
 - Sessions freeze servings, requirements and allocations. Preparation checklist and tool confirmation precede cooking. Running timers persist a deadline and resume against that deadline.

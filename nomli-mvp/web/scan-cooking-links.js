@@ -80,6 +80,13 @@ export function applyScanCookingLinks(
       fail("Grams per unit conflicts. Edit inventory first.");
     const metadata = {};
     if (link.ingredientId !== null) metadata.ingredientId = link.ingredientId;
+    if (link.cookingLinkDisabled !== undefined) {
+      if (typeof link.cookingLinkDisabled !== "boolean")
+        fail("Cooking-link preference must be a boolean.");
+      if (!target.ingredientId || link.ingredientId !== null)
+        metadata.cookingLinkDisabled =
+          link.ingredientId === null && link.cookingLinkDisabled;
+    }
     if (weight !== null) metadata.gramsPerUnit = weight;
     if (Object.keys(metadata).length)
       changes.set(id, { ...target, ...metadata });

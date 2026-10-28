@@ -37,7 +37,7 @@ Do not add school, XP, quests, community, investor-tour or social-product langua
 - Announce async state through `#announcer`; use `#toast` only for supplementary status.
 - Forms need persistent labels, associated errors, `aria-invalid` when invalid and explicit confirmation before inventory deletion or backup replacement. Restore shows a validated preview and requires typed `REPLACE`.
 - Honor `prefers-reduced-motion`. Animate only transform and opacity; avoid continuous scroll- or layout-driven motion.
-- Cooking identity requires explicit catalog selection. Count-to-mass conversion requires a measured or printed grams-per-unit value. Preparation and serving changes never silently deduct ingredients.
+- Clear retail names prefill an editable cooking identity during reviewed saving. Existing clear, unlinked Kitchen names are repaired on startup after successful persistence. Category alone never assigns identity; ambiguous preparation, formulation, species and unknown brands require review. Explicit unlinking stays unlinked. Count-to-mass conversion requires a measured or printed grams-per-unit value. Preparation and serving changes never silently deduct ingredients.
 - Freeze servings and allocated stock when preparation starts. Save actual use atomically after review; retain a session ID to prevent repeat deduction. Undo preserves later stock changes and blocks changed or missing ingredient records.
 
 ## Scan review cards
@@ -74,6 +74,8 @@ Do not add school, XP, quests, community, investor-tour or social-product langua
 - Bundle 272 bilingual food types in 17 transparent 4 × 4 lossless WebP atlases. Keep all 32 supermarket sections editable; specific food-type artwork precedes section representatives, with a basket for unknown food.
 - Match longest whole English/Arabic aliases; preserve product distinctions such as fresh/frozen/canned, rice varieties, pasta shapes and drink types. Explicit category gates artwork; an edited name cannot retain stale linked-ingredient art.
 - Uploaded local photos take priority. Generic illustrations never establish identity, brand, allergens, weight or expiry. Artwork does not assign cooking links or change inventory quantities.
+- All 272 food types declare a nullable cooking mapping; 63 have a compatible type mapping. Strict cooking matching uses safe primary names and canonical aliases, preserving meaningful preparation qualifiers. One shared category mapping covers all 88 cooking ingredients; all 32 supermarket categories remain available.
+- Recipe requirements show amounts covered by Kitchen and source lot names. Startup repair skips active cooking and preserves quantities, weights, photos, expiry and finance. A stalled native write fails after eight seconds and blocks further writes until reopen, avoiding races with an unknown write outcome.
 - Keep sprite positions in trusted local CSS variables. Category sheet stays searchable and independently scrollable on narrow phones. Prompts, cell mapping and hashes live in web/public/images/food/atlases/MANIFEST.json.
 
 ## Required document hooks
