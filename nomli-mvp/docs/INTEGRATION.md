@@ -1,6 +1,6 @@
 # Integration boundary
 
-M7.2 continues the single-user, local-first validation build. Inventory and confirmed receipt data remain on the device. Receipt recognition and explicit Zara sends use the paired service.
+M8 continues the single-user, local-first validation build. Inventory and confirmed receipt data remain on the device. Receipt recognition and explicit Zara sends use the paired service.
 
 The deployed scan endpoint is `https://nomli-scan-proxy.ahmed-aljazayeerly.workers.dev`. Receipt OCR uses `GEMINI_RECEIPT_MODEL=gemini-3.1-flash-lite`; grocery/expiry OCR uses `GEMINI_MODEL=gemini-3.5-flash-lite`. Receipt fallback uses `GEMINI_SCAN_FALLBACK_MODEL=gemini-3.5-flash-lite`. Zara uses `GEMINI_ASSISTANT_MODEL=gemini-3.5-flash-lite`. These reuse the existing Gemini API key stored as an encrypted Cloudflare secret. The app stores the endpoint and device access code entered by the user, never the provider key. A private setup QR can fill those fields; the user must still test and save the connection.
 
@@ -10,6 +10,8 @@ Selected receipt files pass through the Cloudflare Worker to Google for recognit
 
 - `GET /api/v1/health` checks whether the configured provider, key and rate limiter are ready. Requests require the device access code and an allowed origin.
 - `POST /api/v1/scan-drafts` accepts one base64-encoded JPEG, PNG, WebP or PDF plus its file name and scan kind. It returns an editable draft; it does not write inventory.
+- M8 opts into `foodCategories: true` for receipt and grocery scans. The response adds a nullable, whitelisted `categoryId` per line. Grocery requests may combine this with `imageRegions: true`. Expiry scans do not request categories. Legacy requests retain their prior response shape; the client retries the legacy request once only when an older service rejects capability fields before processing.
+- Broad categories are editable suggestions. They do not assign cooking IDs, allergens or measured weights. Local Arabic/English matching provides fallback categories; inventory artwork also covers legacy saved names. Uploaded photos remain separate local media and take priority over category art.
 - Images are limited to 4 MiB. PDFs are limited to 2 MiB and three pages. Client and Worker validate file signatures against the declared MIME type.
 - Cloudflare rate limiting is approximately 10 combined scan and Zara requests per 60 seconds per Cloudflare location. It is abuse protection, not a hard account or billing cap.
 - The client deduplicates identical file bytes combined with scan kind. A confirmed draft updates receipt and inventory state atomically in local persistence.

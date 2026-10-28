@@ -1,4 +1,20 @@
-# Nomli M7.2 receipt APK
+# Nomli M8 card review APK
+
+[Download Nomli-M8.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m8-v0.9.0/Nomli-M8.apk). Install over existing Nomli Test. Package com.nomli.mvp.validation; version 0.9.0-m8, code 11; minimum API 26, target API 36. Same signing key; existing inventory, photos and connection remain. No new account, key or reset required.
+
+One food item per review card, with Back/Next and an All items jump list. Category/storage suggestions are prefilled and editable. Expiry, cooking links, measured weights, costs, crop tools and merge choices sit under More details. Final Add stays in the footer and requires confirmation. Unknown quantities still need correction; missing finance can be explicitly excluded.
+
+Sixteen realistic category images appear in inventory and category pickers. Legacy item names receive fallback art without rescanning; uploaded local photos take priority. Categories remain broad display metadata, not canonical cooking identities or allergen/weight facts.
+
+Source 6dcfa83eaf9c91ef5580b9fc170dd83d56aad669; successful CI 40620367726 (4m 42s). All 248 JavaScript checks, content validation, Vite build, Capacitor sync and Android compilation pass. APK 46,025,882 bytes; SHA-256 634296f40af4c298e482043afa62c66135cd33bbecf2151bb31b0f245fcdbfca. Retained validation certificate, v2/v3 signatures, 16 KB alignment and ZIP CRC pass. All 92 production web assets match local dist; two empty Cordova placeholders expected. Configured secrets and QA harness absent. Published asset size/digest match local APK.
+
+390 × 844 browser QA used actual Capacitor core/Android native-bridge.js and production native wrapper with synthetic Android transport. Back preserved Arabic quantity edits; skip saved four selected items with spending excluded; full review saved five items and exact EGP 109.00. Repeating that source was a no-op. Categories and an uploaded local photo survived reload; the photo hid category artwork. Category picker displayed all 16 food icons and scrolled. Grocery crop selection updated the card photo immediately; removing it restored the category icon. Advanced card content scrolled (622 px viewport, 1488 px content) without horizontal overflow. No console errors. Camera, plugin storage and file selection were simulated.
+
+Live production OCR returned editable categories for an Arabic receipt PNG (SAR 23.00), an English PDF (AED 39.62 with AED 1.89 additional tax) and a two-product grocery image with individual crop regions. Categories included vegetables, dairy, legumes, condiments and oil. Observed times: 17.33 s, 6.89 s, 4.34 s. These are fixture observations, not latency or accuracy guarantees. Worker c5dfb215-9db7-4761-ab67-a369d62f9234 retains receipt/grocery model separation and bounded fallback.
+
+Physical installation, permissions, keyboard and hardware remain phone checks.
+
+## Historical M7.2 receipt APK
 
 [Download Nomli-M7.2.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m7.2-v0.8.2/Nomli-M7.2.apk). Update existing Nomli Test. Package com.nomli.mvp.validation, version 0.8.2-m7.2, code 10, minimum API 26, target API 36. Same signing key and inventory schema; no reset or new account/API key needed.
 
