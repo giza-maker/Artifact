@@ -1,0 +1,102 @@
+{
+  "source": {
+    "kind": "user_transcription",
+    "merchant": "Carrefour Mall Egypt",
+    "allText": "Carrefour Mall Egypt\nEggs Medium 30pcs / بيض متوسط 30 قطعة\nParsley Bunch / بقدونس\nMint Bunch / نعناع\nSalt Table 700g / ملح طعام 700 جم\nBlack Pepper Ground 50g / فلفل أسود مطحون 50 جم\nOlive Oil Extra Virgin 250ml / زيت زيتون بكر ممتاز 250 مل\nSubtotal EGP 213.70\nTax EGP 29.92\nDiscount EGP 0.00\nTotal EGP 243.62",
+    "note": "Text-only fixture transcribed by user; no receipt image is stored."
+  },
+  "receipt": {
+    "currency": "EGP",
+    "subtotalMinor": 21370,
+    "taxMinor": 2992,
+    "discountMinor": 0,
+    "totalMinor": 24362
+  },
+  "lines": [
+    {
+      "lineId": "eggs",
+      "name": "Eggs Medium 30pcs / بيض متوسط 30 قطعة",
+      "labelAliases": [
+        "Eggs Medium 30pcs",
+        "بيض متوسط 30 قطعة",
+        "بيض متوسط ٣٠ قطعة"
+      ],
+      "quantity": 30,
+      "unit": "pieces",
+      "categoryId": "eggs",
+      "ingredientId": "egg",
+      "storage": "Fridge",
+      "lineTotalMinor": 8995
+    },
+    {
+      "lineId": "parsley",
+      "name": "Parsley Bunch / بقدونس",
+      "labelAliases": ["Parsley Bunch", "بقدونس"],
+      "quantity": 1,
+      "unit": "bunches",
+      "categoryId": "vegetables",
+      "ingredientId": "parsley",
+      "storage": "Fridge",
+      "lineTotalMinor": 795
+    },
+    {
+      "lineId": "mint",
+      "name": "Mint Bunch / نعناع",
+      "labelAliases": ["Mint Bunch", "نعناع"],
+      "quantity": 1,
+      "unit": "bunches",
+      "categoryId": "vegetables",
+      "ingredientId": "mint",
+      "storage": "Fridge",
+      "lineTotalMinor": 695
+    },
+    {
+      "lineId": "salt",
+      "name": "Salt Table 700g / ملح طعام 700 جم",
+      "labelAliases": ["Salt Table 700g", "ملح طعام 700 جم", "ملح طعام ٧٠٠ جم"],
+      "quantity": 700,
+      "unit": "g",
+      "categoryId": "condiments",
+      "ingredientId": "salt",
+      "storage": "Spices",
+      "lineTotalMinor": 895
+    },
+    {
+      "lineId": "pepper",
+      "name": "Black Pepper Ground 50g / فلفل أسود مطحون 50 جم",
+      "labelAliases": [
+        "Black Pepper Ground 50g",
+        "فلفل أسود مطحون 50 جم",
+        "فلفل أسود مطحون ٥٠ جم"
+      ],
+      "quantity": 50,
+      "unit": "g",
+      "categoryId": "spices",
+      "ingredientId": "black_pepper",
+      "storage": "Spices",
+      "lineTotalMinor": 2495
+    },
+    {
+      "lineId": "oil",
+      "name": "Olive Oil Extra Virgin 250ml / زيت زيتون بكر ممتاز 250 مل",
+      "labelAliases": [
+        "Olive Oil Extra Virgin 250ml",
+        "زيت زيتون بكر ممتاز 250 مل",
+        "زيت زيتون بكر ممتاز ٢٥٠ مل"
+      ],
+      "quantity": 250,
+      "unit": "ml",
+      "categoryId": "oil",
+      "ingredientId": "olive_oil",
+      "storage": "Pantry",
+      "lineTotalMinor": 7495
+    }
+  ],
+  "measuredDomainExample": {
+    "note": "Synthetic measured values for workflow coverage only; variable bunch weights are not receipt facts.",
+    "gramsPerUnit": {
+      "parsley": 30,
+      "mint": 20
+    }
+  }
+}

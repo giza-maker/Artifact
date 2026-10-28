@@ -72,7 +72,13 @@ import {
 import { applyScanCookingLinks } from "./scan-cooking-links.js";
 import { resolveCookingIdentity } from "./food-identity.js";
 import { syncCookingInventory } from "./cooking-inventory-sync.js";
-import { getRecipeStockHints, linkRecipeStock } from "./recipe-stock-hints.js";
+import {
+  getRecipeRequirementStockStatus,
+  getRecipeStockHints,
+  linkRecipeStock,
+} from "./recipe-stock-hints.js";
+import { applyRecipeStockMeasurement } from "./recipe-stock-measurement.js";
+import { parseLocalizedDecimal } from "./localized-number.js";
 import packageInfo from "../package.json" with { type: "json" };
 (async function leanNomli() {
   const D = { ...window.NOMLI_DATA, recipes: COOK_RECIPES, tools: COOK_TOOLS };
@@ -236,6 +242,7 @@ import packageInfo from "../package.json" with { type: "json" };
   let recoveryRequired = Boolean(loadResult.recoveryRequired);
   let importCandidate = null;
   let recipeStockLinkReview = null;
+  let recipeStockMeasurementReview = null;
   let saveQueue = Promise.resolve();
   let operationBusy = false;
   let storageError = "";
@@ -725,7 +732,29 @@ import packageInfo from "../package.json" with { type: "json" };
     const r = recipe(S.recipe),
       serv = servingsFor(r),
       a = assessment(r);
-    const stockHints = getRecipeStockHints(S, a);
+    const requirementStatuses = new Map(
+      a.requirements.map((requirement) => [
+        requirement,
+        getRecipeRequirementStockStatus(S, a, requirement),
+      ]),
+    );
+    const needsMeasurement = [...requirementStatuses.values()].some(
+      ({ status }) => status === "needs-measurement",
+    );
+    const hasTrueMissing = [...requirementStatuses.values()].some(
+      ({ status }) => status === "missing" || status === "partial",
+    );
+    const measurementItemIds = new Set(
+      [...requirementStatuses.values()].flatMap(({ measurementItems }) =>
+        measurementItems.map(({ itemId }) => itemId),
+      ),
+    );
+    const stockHints = getRecipeStockHints(S, a).filter(
+      ({ itemId }) => !measurementItemIds.has(itemId),
+    );
+    const incompatibleReviewItems = a.incompatibleItems.filter(
+      ({ id }) => !measurementItemIds.has(id),
+    );
     const reasons = {
       unlinked: "Not connected to this recipe ingredient",
       "opted-out": "Cooking use was turned off",
@@ -749,7 +778,32 @@ import packageInfo from "../package.json" with { type: "json" };
       `<section class="card"><div class="card-header"><h2>Ingredients</h2><label>Servings <select data-change="servings" data-id="${r.id}">${options(
         Array.from({ length: 12 }, (_, i) => i + 1),
         serv,
-      )}</select></label></div>${a.requirements.map((x) => `<div class="item-row"><div><b>${esc(x.name)}</b><small>${num(x.qty)} ${esc(x.unit)} needed · ${num(x.have)} from Kitchen${x.missing ? ` · ${num(x.missing)} missing` : " · ready"}</small>${x.allocations.length ? `<small>From: ${esc([...new Set(x.allocations.map((lot) => lot.name))].slice(0, 3).join(", "))}</small>` : ""}</div>${icon(x.missing ? "shopping-cart" : "check-circle")}</div>`).join("")}${stockHelp}${a.blockedItems.length ? '<p class="notice">Items past their recorded date were excluded from this plan.</p>' : ""}${a.incompatibleItems.length ? `<section class="notice"><b>Some units need review</b><p>Mass, volume and count are different. Enter a measured grams-per-unit value or correct stock units in Kitchen.</p>${a.incompatibleItems.map((x) => button(`Review ${x.name}`, "item-edit", x.id, "btn-quiet")).join("")}</section>` : ""}${a.excluded.length ? `<p class="notice notice-warning">Matches your exclusions: ${esc(a.excluded.map(toolLabel).join(", "))}. Choose another recipe.</p>` : ""}${S.cooking ? `<p class="notice">Finish or cancel your current session before starting another.</p>${button("Resume current session", "cook-resume")}` : a.stockReady && !a.excluded.length ? button("Prepare ingredients", "cook-start", r.id, "btn-primary") : `${button("Add missing to shopping", "shopping-missing", r.id)}${button("Review inventory links", "go", "kitchen")}`}</section><section class="card"><h2>Before you start</h2><p>${r.prepMinutes} min preparation · ${r.cookMinutes} min cooking</p><p class="details">Tools: ${esc(r.requiredTools.map(toolLabel).join(", "))}. Confirm these during preparation.</p><p class="details">Listed allergens: ${esc(r.allergens.map(toolLabel).join(", ") || "none listed")}. Check actual product labels and preparation conditions.</p></section>`
+      )}</select></label></div>${a.requirements
+        .map((x) => {
+          const status = requirementStatuses.get(x);
+          const candidate = status.measurementItems.find(
+            (item) => item.canMeasure,
+          );
+          const stockText =
+            status.status === "needs-measurement"
+              ? `${status.measurementItems.map((item) => `${num(item.qty)} ${item.qty === 1 ? (normalizeCookUnit(item.unit) === "bunches" ? "bunch" : normalizeCookUnit(item.unit).replace(/s$/, "")) : item.unit}`).join(", ")} in Kitchen · weight needed`
+              : `${num(status.qtyHave)} from Kitchen${status.qtyMissing ? ` · ${num(status.qtyMissing)} missing` : " · ready"}`;
+          const action = candidate
+            ? `<button type="button" class="btn btn-quiet" data-action="recipe-stock-measure" data-id="${esc(candidate.itemId)}" aria-label="Enter measured weight for ${esc(candidate.name)}"><span>Enter weight</span></button>`
+            : status.status === "needs-measurement"
+              ? '<span class="badge">Weight needed</span>'
+              : icon(
+                  status.status === "ready" ? "check-circle" : "shopping-cart",
+                );
+          const source =
+            status.status === "needs-measurement"
+              ? `<small>Kitchen item: ${esc(status.measurementItems.map((item) => item.name).join(", "))}</small>`
+              : "";
+          return `<div class="item-row"><div><b>${esc(x.name)}</b><small>${num(x.qty)} ${esc(x.unit)} needed · ${esc(stockText)}</small>${source}${x.allocations.length ? `<small>From: ${esc([...new Set(x.allocations.map((lot) => lot.name))].slice(0, 3).join(", "))}</small>` : ""}</div>${action}</div>`;
+        })
+        .join(
+          "",
+        )}${stockHelp}${a.blockedItems.length ? '<p class="notice">Items past their recorded date were excluded from this plan.</p>' : ""}${incompatibleReviewItems.length ? `<section class="notice"><b>Some units need review</b><p>Mass, volume and count are different. Correct stock units in Kitchen.</p>${incompatibleReviewItems.map((x) => button(`Review ${x.name}`, "item-edit", x.id, "btn-quiet")).join("")}</section>` : ""}${a.excluded.length ? `<p class="notice notice-warning">Matches your exclusions: ${esc(a.excluded.map(toolLabel).join(", "))}. Choose another recipe.</p>` : ""}${S.cooking ? `<p class="notice">Finish or cancel your current session before starting another.</p>${button("Resume current session", "cook-resume")}` : a.stockReady && !a.excluded.length ? button("Prepare ingredients", "cook-start", r.id, "btn-primary") : `${needsMeasurement ? '<p class="notice">Enter weights to continue. Measured weights update recipe availability without changing Kitchen quantities.</p>' : ""}${hasTrueMissing ? button("Add missing to shopping", "shopping-missing", r.id) : ""}${button("Review inventory links", "go", "kitchen")}`}</section><section class="card"><h2>Before you start</h2><p>${r.prepMinutes} min preparation · ${r.cookMinutes} min cooking</p><p class="details">Tools: ${esc(r.requiredTools.map(toolLabel).join(", "))}. Confirm these during preparation.</p><p class="details">Listed allergens: ${esc(r.allergens.map(toolLabel).join(", ") || "none listed")}. Check actual product labels and preparation conditions.</p></section>`
     );
   }
   function timerSeconds() {
@@ -2077,6 +2131,37 @@ import packageInfo from "../package.json" with { type: "json" };
       }
       return;
     }
+    if (a === "recipe-stock-measure") {
+      const r = recipe(S.recipe);
+      const candidate = assessment(r)
+        .requirements.flatMap(
+          (requirement) =>
+            getRecipeRequirementStockStatus(S, assessment(r), requirement)
+              .measurementItems,
+        )
+        .find((item) => item.itemId === id);
+      if (!candidate?.canMeasure)
+        return announce(
+          "This Kitchen item changed or is allocated to active cooking.",
+        );
+      recipeStockMeasurementReview = {
+        itemId: id,
+        recipeId: r.id,
+        snapshot: JSON.stringify(S.items[id]),
+      };
+      const singular =
+        normalizeCookUnit(candidate.unit) === "bunches"
+          ? "bunch"
+          : normalizeCookUnit(candidate.unit).replace(/s$/, "");
+      const quantityUnit = candidate.qty === 1 ? singular : candidate.unit;
+      openModal(
+        `Measure ${candidate.name}`,
+        `<form data-form="recipe-stock-measurement">${errors()}<p><b>${num(candidate.qty)} ${esc(quantityUnit)} ${esc(candidate.name)}</b> in Kitchen. Weigh one actual ${esc(singular)}; stock quantity stays unchanged.</p><label class="field">Grams in one ${esc(singular)}<input name="gramsPerUnit" type="text" inputmode="decimal" maxlength="128" required aria-describedby="measurement-help" autocomplete="off"></label><small id="measurement-help">Enter measured grams only. No value is guessed.</small><div class="modal-actions"><button class="btn btn-primary">Save measurement</button>${button("Cancel", "modal-close", "", "btn-quiet")}</div></form>`,
+        "recipe-stock-measurement",
+      );
+      $('[name="gramsPerUnit"]', modal)?.focus();
+      return;
+    }
     if (a === "modal-close") return closeModal();
     if (a === "menu")
       return openModal(
@@ -2176,7 +2261,15 @@ import packageInfo from "../package.json" with { type: "json" };
     if (a === "shopping-missing") {
       if (
         await commit(() => {
-          for (const x of assessment(recipe(id)).missing) {
+          const assessed = assessment(recipe(id));
+          for (const x of assessed.missing.filter((requirement) => {
+            const status = getRecipeRequirementStockStatus(
+              S,
+              assessed,
+              requirement,
+            );
+            return status.status === "missing" || status.status === "partial";
+          })) {
             const existing = S.shopping.find((y) => y.id === x.ingredientId);
             const reason = `Need ${num(x.missing)} ${x.unit} for ${recipe(id).name}`;
             if (existing) {
@@ -2966,6 +3059,34 @@ import packageInfo from "../package.json" with { type: "json" };
         importCandidate = null;
         closeModal();
         return navigate("kitchen");
+      }
+      return;
+    }
+    if (kind === "recipe-stock-measurement") {
+      const review = recipeStockMeasurementReview;
+      if (!review)
+        return formError(form, "Measurement review expired. Open it again.");
+      let gramsPerUnit;
+      try {
+        gramsPerUnit = Number(
+          parseLocalizedDecimal(String(fd.get("gramsPerUnit") || "")),
+        );
+      } catch (error) {
+        return formError(
+          form,
+          error?.message || "Enter measured grams.",
+          form.elements.gramsPerUnit,
+        );
+      }
+      const saved = await commit(() => {
+        if (recipe(S.recipe).id !== review.recipeId)
+          throw new Error("Recipe changed. Open the measurement again.");
+        S = applyRecipeStockMeasurement(S, { ...review, gramsPerUnit });
+      }, "Measurement saved. Recipe availability updated.");
+      if (saved) {
+        recipeStockMeasurementReview = null;
+        closeModal();
+        render();
       }
       return;
     }

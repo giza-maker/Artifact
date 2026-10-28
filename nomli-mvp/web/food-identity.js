@@ -31,6 +31,10 @@ const PACK_WORDS = new Set([
   "count",
   "ct",
   "dozen",
+  "bunch",
+  "bunches",
+  "ربطة",
+  "حزمة",
   "عبوة",
   "عبوات",
   "علبة",
@@ -198,12 +202,49 @@ for (const ingredient of ingredients) {
   }
 }
 
+// Retail word order and olive-oil grades are explicit forms of these cooking
+// ingredients. Do not generalize this into token sorting: milk chocolate and
+// chocolate milk, for example, are not interchangeable with plain milk.
+const RETAIL_FORMS = {
+  salt: ["salt table", "table salt", "ملح طعام", "ملح الطعام"],
+  black_pepper: ["black pepper ground", "ground black pepper"],
+  olive_oil: [
+    "olive oil extra virgin",
+    "extra virgin olive oil",
+    "زيت زيتون بكر ممتاز",
+    "زيت الزيتون بكر ممتاز",
+  ],
+};
+for (const [id, forms] of Object.entries(RETAIL_FORMS))
+  for (const form of forms) {
+    addNameVariants(exactIngredientIds, form, id);
+    addNameVariants(aliasIngredientIds, form, id);
+  }
+
 for (const item of artItems) {
   // Primary labels are curated food types. Broad illustration aliases are not
   // canonical identity evidence (for example, an alias may describe packaging).
   for (const name of [item.en, item.ar])
     addNameVariants(exactArtItems, name, item);
 }
+
+// OCR may omit spaces inside a complete label. Only accept full equality to a
+// curated form, including a known packaging suffix; never substring matches.
+function compactIndex(source) {
+  const result = new Map();
+  for (const [form, values] of source) {
+    for (const suffix of ["", ...PACK_WORDS]) {
+      const key = `${form}${suffix}`.replace(/\s/g, "");
+      for (const value of values) add(result, key, value);
+    }
+  }
+  return result;
+}
+const compactPrimary = compactIndex(primaryIngredientIds);
+const compactAliases = compactIndex(aliasIngredientIds);
+const compactArt = compactIndex(exactArtItems);
+const lookup = (index, compact, name) =>
+  index.get(name) ?? compact.get(name.replace(/\s/g, "")) ?? [];
 
 const DISPLAY_CATEGORY = {
   produce: "vegetables",
@@ -254,19 +295,14 @@ const empty = () => ({
   candidates: [],
 });
 
-export function resolveCookingIdentity({
-  name,
-  categoryId = null,
-  cookingLinkDisabled = false,
-} = {}) {
-  if (cookingLinkDisabled) return empty();
+function resolveClause(name) {
   const normalized = normalizeRetailFoodName(name);
   if (!normalized) return empty();
 
-  const artMatches = exactArtItems.get(normalized) ?? [];
+  const artMatches = lookup(exactArtItems, compactArt, normalized);
   const foodType = artMatches.length === 1 ? artMatches[0] : null;
-  const primaryIds = primaryIngredientIds.get(normalized) ?? [];
-  const aliasIds = aliasIngredientIds.get(normalized) ?? [];
+  const primaryIds = lookup(primaryIngredientIds, compactPrimary, normalized);
+  const aliasIds = lookup(aliasIngredientIds, compactAliases, normalized);
   const genericArtVeto =
     artMatches.length > 0 &&
     artMatches.every((item) => !ingredientById.has(item.cookingIngredientId));
@@ -310,4 +346,43 @@ export function resolveCookingIdentity({
       candidates,
     };
   return empty();
+}
+
+export function resolveCookingIdentity({
+  name,
+  cookingLinkDisabled = false,
+} = {}) {
+  if (
+    cookingLinkDisabled ||
+    typeof name !== "string" ||
+    name.length > MAX_INPUT_LENGTH
+  )
+    return empty();
+  // A bilingual label supplies two independent descriptions. Both must agree;
+  // a recognized English half must never override a different Arabic product.
+  const clauses = name
+    .normalize("NFKC")
+    .split(/[\/|]/)
+    .map((part) => part.trim());
+  if (clauses.length === 1) return resolveClause(name);
+  if (clauses.length > 4 || clauses.some((part) => !part)) return empty();
+  const results = clauses.map(resolveClause);
+  const first = results[0];
+  if (
+    results.every(
+      (result) =>
+        result.status === "matched" &&
+        result.ingredientId === first.ingredientId,
+    )
+  )
+    return first;
+  const candidates = [
+    ...new Set(results.flatMap((result) => result.candidates)),
+  ].sort();
+  return {
+    ingredientId: null,
+    foodTypeId: null,
+    status: candidates.length ? "review" : "unmatched",
+    candidates,
+  };
 }

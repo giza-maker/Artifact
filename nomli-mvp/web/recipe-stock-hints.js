@@ -31,6 +31,11 @@ const unitsCompatible = (item, requirement) => {
   );
 };
 
+const countFamily = (unit) =>
+  ["count", "pieces", "slices", "cloves", "bunches"].includes(
+    normalizeCookUnit(unit),
+  );
+
 const localDay = (now) => {
   if (typeof now === "string" && /^\d{4}-\d{2}-\d{2}$/.test(now)) return now;
   const date = new Date(now ?? Date.now());
@@ -58,6 +63,75 @@ const unsafeForDirectLink = (itemName, canonicalName) => {
       !group.some((word) => canonicalWords.includes(` ${word} `)),
   );
 };
+
+export function getRecipeRequirementStockStatus(
+  state,
+  assessment,
+  requirement,
+  { now } = {},
+) {
+  const canonicalId = requirement?.canonicalId ?? requirement?.ingredientId;
+  const assessed =
+    (assessment?.requirements ?? []).find(
+      (entry) =>
+        entry === requirement ||
+        ((entry?.canonicalId ?? entry?.ingredientId) === canonicalId &&
+          normalizeCookUnit(entry?.unit) ===
+            normalizeCookUnit(requirement?.unit)),
+    ) ?? requirement;
+  const qty = positive(assessed?.qty) ? assessed.qty : 0;
+  const boundedQuantity = (value) =>
+    typeof value === "number" && Number.isFinite(value)
+      ? Math.min(qty, Math.max(0, value))
+      : 0;
+  const qtyHave = boundedQuantity(assessed?.have);
+  const qtyMissing = boundedQuantity(assessed?.missing);
+  const today = localDay(now);
+  const frozen = new Set(
+    (state?.cooking?.allocations ?? [])
+      .map((entry) => entry?.id)
+      .filter(Boolean),
+  );
+  const incompatibleIds = new Set(
+    (assessment?.incompatibleItems ?? [])
+      .filter(
+        (entry) => (entry?.canonicalId ?? entry?.ingredientId) === canonicalId,
+      )
+      .map((entry) => entry?.id)
+      .filter(Boolean),
+  );
+  const measurementItems = [];
+  if (qtyMissing > 0 && dimension(assessed?.unit) === "mass") {
+    for (const itemId of incompatibleIds) {
+      const item = state?.items?.[itemId];
+      if (
+        !item ||
+        !positive(item.qty) ||
+        (item.canonicalId ?? item.ingredientId) !== canonicalId ||
+        !countFamily(item.unit) ||
+        positive(item.gramsPerUnit) ||
+        (today && typeof item.expiry === "string" && item.expiry < today)
+      )
+        continue;
+      measurementItems.push({
+        itemId,
+        name: item.name,
+        qty: item.qty,
+        unit: item.unit,
+        canMeasure: !frozen.has(itemId),
+      });
+    }
+  }
+  const status =
+    qtyMissing === 0
+      ? "ready"
+      : measurementItems.length
+        ? "needs-measurement"
+        : qtyHave > 0
+          ? "partial"
+          : "missing";
+  return { status, qtyHave, qtyMissing, measurementItems };
+}
 
 export function getRecipeStockHints(state, assessment, { now } = {}) {
   const requirements = (assessment?.missing ?? []).filter(

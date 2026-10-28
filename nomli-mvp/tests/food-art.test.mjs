@@ -39,6 +39,17 @@ test("explicit category gates detailed matches and wins mismatches", () => {
   assert.notEqual(mismatch.id, "cola");
 });
 
+test("linked bilingual receipt salt keeps salt artwork under an old condiment section", () => {
+  const art = getFoodArtwork({
+    name: "Salt Table 700g / ملح طعام 700 جم",
+    ingredientId: "salt",
+    categoryId: "condiments",
+  });
+  assert.equal(art.id, "salt");
+  assert.equal(art.categoryId, "condiments");
+  assert.equal(art.source, "ingredient");
+});
+
 test("specific item name wins over a different linked ingredient illustration", () => {
   assert.equal(
     getFoodArtwork({

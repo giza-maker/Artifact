@@ -38,6 +38,11 @@
       "sha256": "c92b2f91b95369589ac3124f5b5842e48ab77cbb73b04d8b05fe4b0116e06d20"
     },
     {
+      "path": "fixtures/carrefour-cooking-regression.json",
+      "bytes": 3253,
+      "sha256": "0a324e32dfcc95fac6ae29ebf626765f71efc400ffbe705947bf2079ae109434"
+    },
+    {
       "path": "fixtures/digital-receipt-synthetic.pdf",
       "bytes": 2531,
       "sha256": "321b73e74668cecf2826e588c01bf7372aaf392905564a72135936237d22efa4"

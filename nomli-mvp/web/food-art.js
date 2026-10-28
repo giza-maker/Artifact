@@ -203,7 +203,12 @@ export function getFoodArtwork({ name, ingredientId, categoryId } = {}) {
     );
   }
   const usableQueries = queries.filter(Boolean);
-  const matched = findMatch(usableQueries, explicitCategory?.id);
+  // A confirmed cooking identity can supply its own illustration even when an
+  // old receipt assigned the lot to a different shelf section. This changes
+  // artwork only; it does not infer identity or rewrite the user's category.
+  const matched =
+    findMatch(usableQueries, explicitCategory?.id) ??
+    (ingredient ? findMatch(usableQueries, null) : null);
   if (matched)
     return descriptor(
       matched,

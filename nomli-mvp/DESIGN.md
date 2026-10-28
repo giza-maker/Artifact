@@ -88,3 +88,12 @@ Runtime may rely on `#main`, `#view`, `#bottom-nav`, `#modal`, `#modal-content`,
 - Backup restoration repairs clear links inside the same confirmed replacement. Only allocation-backed stock is frozen during cooking; other items remain linkable, and post-session repair runs without a restart.
 - Missing recipe requirements show relevant Kitchen items, their saved quantity/unit and the specific link, unit or recorded-date issue. Compatible candidate matches offer explicit Use as confirmation; incompatible units, processing qualifiers or existing conflicting identities require item review. Confirmation rechecks current state and preserves quantities.
 - Show installed version in Kitchen utilities. Phone reports remain unverified until the installed version and exact item data are known.
+
+## M8.4 bilingual receipt and weight entry
+
+- Preserve these exact Carrefour review names: `Eggs Medium 30pcs / بيض متوسط 30 قطعة`, `Parsley Bunch / بقدونس`, `Mint Bunch / نعناع`, `Salt Table 700g / ملح طعام 700 جم`, `Black Pepper Ground 50g / فلفل أسود مطحون 50 جم` and `Olive Oil Extra Virgin 250ml / زيت زيتون بكر ممتاز 250 مل`. Each slash-separated clause must resolve to the same cooking ingredient. Use only curated word orders and compact exact forms; do not broaden matching by fuzziness, substrings, brands or processing terms.
+- Startup and confirmed restore repair all six positive unlinked items while preserving quantities and receipt finance. Respect cooking-use opt-outs, valid manual cooking IDs and frozen active-session allocations.
+- Treat one herb bunch as present with unknown mass. On a gram-based Recipe requirement, show the needed amount, `weight needed` and one compact `Enter weight` action. Do not repeat the item in the general unit-review panel.
+- The weight dialog accepts localized digits and explains that quantity stays unchanged. Save only after snapshot revalidation, update only `gramsPerUnit`, and block allocated lots. Keep measurement-only shortages out of the shopping list.
+- Let canonical Salt artwork override an incompatible legacy shelf category only as an illustration fallback. Never change category, cooking identity, quantity or finance through artwork resolution.
+- Keep the existing scan provider, authentication and model contracts unchanged.

@@ -125,3 +125,13 @@ Capacitor plugin proxies must never be returned directly from async functions or
 Shared food-categories.js exposes 32 category IDs, keeping the original 16 stable. The provider prompt lists the full allowlist; returned IDs still pass runtime normalization and invalid IDs become null. Only Gemini omits the expanded enum from its nested provider schema after live HTTP 400 repro; OpenAI strict schemas retain it. Legacy clients without foodCategories keep their old response shape.
 
 content/food-art-catalog.json owns 272 bilingual food types and safe local atlas references. food-art.js provides pure matching/descriptor helpers; it writes no inventory identity. Explicit categories gate compatible illustrations, name matches precede linked-ingredient fallback, and edited-name previews discard stale ingredient hints. Existing photos remain preferred.
+
+## M8.4 Carrefour receipt and measured cooking stock
+
+The Carrefour regression contract covers these exact reviewed lines: `Eggs Medium 30pcs / بيض متوسط 30 قطعة`, `Parsley Bunch / بقدونس`, `Mint Bunch / نعناع`, `Salt Table 700g / ملح طعام 700 جم`, `Black Pepper Ground 50g / فلفل أسود مطحون 50 جم` and `Olive Oil Extra Virgin 250ml / زيت زيتون بكر ممتاز 250 مل`. A bilingual label links only when every slash-separated clause resolves to the same cooking ingredient. Matching accepts curated retail word orders, localized digits and compact exact forms. It does not add fuzzy, substring, brand or general processing matches.
+
+Startup sync and confirmed backup replacement repair all six clear, positive, unlinked items. Repair preserves quantity, finance and receipt data. Cooking-use opt-outs, valid manual ingredient IDs and stock allocated to active cooking remain unchanged.
+
+A one-bunch herb item is present stock, but it cannot cover a gram requirement until `gramsPerUnit` is measured. Recipe rows show the required amount, `weight needed` and one compact `Enter weight` action without duplicating the unit-review panel. The dialog accepts localized digits. Saving revalidates the captured item snapshot and changes only `gramsPerUnit`; quantity, receipt finance and other item fields remain unchanged. Active-session allocations cannot be measured. Measurement-only shortages never become shopping-list entries.
+
+Confirmed cooking identity may provide Salt's canonical artwork when an older receipt category conflicts. This fallback changes the illustration only. It does not rewrite category, identity, quantity or receipt data. M8.4 adds no provider, authentication or model changes.

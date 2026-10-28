@@ -60,6 +60,35 @@ test("display category cannot veto an exact name or create identity alone", () =
   );
 });
 
+test("bilingual retail forms require complete agreement, including compact OCR text", () => {
+  for (const [name, ingredientId] of [
+    ["MintBunch / نعناع", "mint"],
+    ["ParsleyBunch | بقدونس", "parsley"],
+    ["OliveOilExtraVirgin250ml / زيتزيتونبكرممتاز٢٥٠مل", "olive_oil"],
+    ["SaltTable700g / ملحطعام٧٠٠جم", "salt"],
+    ["BlackPepperGround50g / فلفلاسودمطحون٥٠جم", "black_pepper"],
+  ]) {
+    assert.equal(
+      resolveCookingIdentity({ name }).ingredientId,
+      ingredientId,
+      name,
+    );
+  }
+  for (const name of [
+    "Eggs /",
+    "/ Eggs",
+    "Salt / Pepper",
+    "ملح / طح",
+    "Chocolate milk / حليب",
+    "Milk chocolate / حليب",
+    "Olive oil / زيت سمسم",
+    "SuperMintBunch / نعناع",
+    "MintBunchTea / نعناع",
+    "OliveOilExtraVirginBlend / زيت زيتون بكر ممتاز",
+  ])
+    assert.notEqual(resolveCookingIdentity({ name }).status, "matched", name);
+});
+
 test("keeps formulation, preparation, species, and unknown-brand ambiguity for review", () => {
   for (const name of [
     "Chocolate milk",
