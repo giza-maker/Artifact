@@ -9,6 +9,14 @@ import {
 import { createTimerNotifications } from "./timer-notifications.js";
 import { retireReplacedTimer } from "./timer-transition.js";
 import { initMobileSelects } from "./mobile-select.js";
+import {
+  FOOD_CATEGORIES,
+  getFoodCategory,
+  inferFoodCategory,
+} from "./food-categories.js";
+import { renderScanReview } from "./scan-review-view.js";
+import { initScanReviewWizard } from "./scan-review-wizard.js";
+import "./scan-review.css";
 import { itemPhotos } from "./item-photos.js";
 import { attachScanPhotos } from "./scan-item-photos.js";
 import {
@@ -34,6 +42,7 @@ import {
 import { commitScanDraft, reviewScanDraft } from "./scan-domain.js";
 import {
   parseScanQuantity,
+  parseReviewedScanMoney,
   validateScanReviewFields,
 } from "./scan-review-fields.js";
 import {
@@ -121,6 +130,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     lastFocus,
     scanEpoch = 0;
   let scanTimers = [];
+  let scanWizard = null;
   let scanRetry = null;
   let scanConfig = { apiUrl: "", deviceToken: "" };
   let assistantDraft = "",
@@ -338,21 +348,37 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
   function errors() {
     return '<p class="notice notice-warning" data-error role="alert" hidden></p>';
   }
-  function formError(form, text) {
+  function formError(form, text, focusTarget = null) {
     const box = $("[data-error]", form);
+    if (!box) return announce(text);
     box.textContent = text;
     box.hidden = false;
     $("#announcer").textContent = text;
     const target =
+      focusTarget ||
       [...form.elements].find((x) => x.willValidate && !x.validity.valid) ||
       $("input,select", form);
     if (target) {
+      if (scanWizard && form.matches(".scan-review-wizard")) {
+        const cards = [...form.querySelectorAll("[data-scan-card]")];
+        const index = cards.indexOf(target.closest("[data-scan-card]"));
+        scanWizard.show(index < 0 ? cards.length : index);
+      }
+      for (
+        let ancestor = target.parentElement;
+        ancestor && ancestor !== form;
+        ancestor = ancestor.parentElement
+      ) {
+        if (ancestor.tagName === "DETAILS") ancestor.open = true;
+      }
       target.setAttribute("aria-invalid", "true");
       target.setAttribute(
         "aria-describedby",
         box.id || (box.id = "form-error"),
       );
-      target.focus();
+      initMobileSelects(form);
+      const proxy = target.nextElementSibling;
+      (proxy?.matches(".mobile-select-trigger") ? proxy : target).focus();
     }
   }
   function cancelScan() {
@@ -363,6 +389,8 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     scanTimers = [];
   }
   function openModal(title, body, screen = "") {
+    scanWizard?.destroy();
+    scanWizard = null;
     scanRetry = null;
     if (modal.dataset.screen === "item-edit" && screen !== "item-edit")
       releaseItemPhoto();
@@ -380,6 +408,8 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     $("[data-action='modal-close']", modal)?.focus();
   }
   function closeModal() {
+    scanWizard?.destroy();
+    scanWizard = null;
     cancelScan();
     scanRetry = null;
     if (modal.open) modal.close();
@@ -467,7 +497,15 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
   }
   function itemThumbnail(id, item) {
     const fallback = photo(id, item);
-    return `<span class="ingredient-thumb${fallback ? " has-photo" : ""}">${fallback ? `<img src="${esc(fallback)}" alt="" loading="lazy" decoding="async">` : icon("fork-knife")}${item.photoId ? `<img data-photo-id="${esc(item.photoId)}" alt="" hidden decoding="async">` : ""}</span>`;
+    return `<span class="ingredient-thumb${fallback ? " has-photo" : ""}">${fallback ? `<img src="${esc(fallback)}" alt="" loading="lazy" decoding="async">` : categoryArtwork(inferFoodCategory(item).category)}${item.photoId ? `<img data-photo-id="${esc(item.photoId)}" alt="" hidden decoding="async">` : ""}</span>`;
+  }
+  function categoryArtwork(category) {
+    const index = category.atlasIndex;
+    return `<span class="food-category-art" data-food-art="${category.id}" style="--food-x:${((index % 4) * 100) / 3}%;--food-y:${(Math.floor(index / 4) * 100) / 3}%" aria-hidden="true"></span>`;
+  }
+  function categoryField(item, name = "categoryId") {
+    const category = inferFoodCategory(item).category;
+    return `<label class="field">Category<select name="${name}" data-picker-kind="food-category"${getFoodCategory(item.categoryId) ? ' data-user-touched="1"' : ""}>${FOOD_CATEGORIES.map((entry) => `<option value="${entry.id}"${entry.id === category.id ? " selected" : ""}>${esc(entry.en)} — ${esc(entry.ar)}</option>`).join("")}</select></label>`;
   }
   function recipeAction(r) {
     return button("View recipe", "recipe", r.id, "btn-quiet").replace(
@@ -476,12 +514,13 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     );
   }
   function itemRow(id, item) {
+    const category = inferFoodCategory(item).category;
     const left = daysLeft(item),
       urgent = item.qty > 0 && left !== null && left <= 2;
     const freshness = !item.expiry
       ? "No expiry recorded"
       : `${left < 0 ? `${Math.abs(left)} days past date` : `${left} days left`} · ${item.expiryProvenance || (item.estimated ? "estimated" : "user")}`;
-    return `<div class="inventory-row">${itemThumbnail(id, item)}<div class="inventory-copy"><b dir="auto">${esc(item.name)}</b><span>${num(item.qty)} ${esc(item.unit)} <small>${esc(item.storage)}</small></span><small class="${urgent ? "use-soon" : "muted"}">${esc(freshness)}</small>${getIngredient(item.ingredientId) ? `<small class="cook-link-label">${icon("check-circle")} Cooking link saved</small>` : '<small class="cook-link-label">Choose a cooking ingredient</small>'}</div><button class="icononly" data-action="item-edit" data-id="${esc(id)}" aria-label="Edit ${esc(item.name)}">${icon("pencil")}</button></div>`;
+    return `<div class="inventory-row">${itemThumbnail(id, item)}<div class="inventory-copy"><b dir="auto">${esc(item.name)}</b><span>${num(item.qty)} ${esc(item.unit)} <small>${esc(item.storage)}</small></span><small class="${urgent ? "use-soon" : "muted"}">${esc(freshness)}</small><small class="cook-link-label">${esc(category.en)}${getIngredient(item.ingredientId) ? ` · ${icon("check-circle")} Linked for cooking` : ""}</small></div><button class="icononly" data-action="item-edit" data-id="${esc(id)}" aria-label="Edit ${esc(item.name)}">${icon("pencil")}</button></div>`;
   }
   function inventoryRowsMarkup() {
     let rows = Object.entries(S.items).filter(
@@ -955,7 +994,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         : S.items[id];
     openModal(
       id === "new" ? "Add ingredient" : "Edit ingredient",
-      `<form data-form="item" data-id="${id}">${errors()}${photoEditor(id, item)}${field("Ingredient name", "name", item.name, "text", 'maxlength="200" dir="auto" required')}${field("Quantity on hand", "qty", item.qty, "number", 'min="0" max="1000000000" step="any" inputmode="decimal" required')}<label class="field">Unit<select name="unit">${options(["g", "kg", "ml", "l", "count", "pieces", "bunches", "slices", "cloves"], item.unit)}</select></label><div class="cook-link-fields">${renderIngredientLinkFields({ name: item.name, ingredientId: item.ingredientId, unit: item.unit, gramsPerUnit: item.gramsPerUnit })}</div><label class="field">Location<select name="storage">${options(["Fridge", "Freezer", "Pantry", "Spices"], item.storage)}</select></label>${field("Expiry (optional)", "expiry", item.expiry || "", "date")}<label class="field">Expiry source<select name="expiryProvenance">${options(["user", "printed", "estimated"], item.expiryProvenance || (item.estimated ? "estimated" : "user"))}</select><small>Used only when expiry is entered.</small></label><div class="modal-actions">${id === "new" ? "" : button("Delete ingredient", "item-delete", id, "btn-quiet")}<button class="btn btn-primary">Save ingredient</button></div></form>`,
+      `<form data-form="item" data-id="${id}">${errors()}${photoEditor(id, item)}${categoryField(item)}${field("Ingredient name", "name", item.name, "text", 'maxlength="200" dir="auto" required')}${field("Quantity on hand", "qty", item.qty, "number", 'min="0" max="1000000000" step="any" inputmode="decimal" required')}<label class="field">Unit<select name="unit">${options(["g", "kg", "ml", "l", "count", "pieces", "bunches", "slices", "cloves"], item.unit)}</select></label><div class="cook-link-fields">${renderIngredientLinkFields({ name: item.name, ingredientId: item.ingredientId, unit: item.unit, gramsPerUnit: item.gramsPerUnit })}</div><label class="field">Location<select name="storage">${options(["Fridge", "Freezer", "Pantry", "Spices"], item.storage)}</select></label>${field("Expiry (optional)", "expiry", item.expiry || "", "date")}<label class="field">Expiry source<select name="expiryProvenance">${options(["user", "printed", "estimated"], item.expiryProvenance || (item.estimated ? "estimated" : "user"))}</select><small>Used only when expiry is entered.</small></label><div class="modal-actions">${id === "new" ? "" : button("Delete ingredient", "item-delete", id, "btn-quiet")}<button class="btn btn-primary">Save ingredient</button></div></form>`,
       "item-edit",
     );
   }
@@ -1235,7 +1274,81 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     const crop = scanPhotoDraft.crops.get(line.lineId);
     return `<div class="scan-line-photo" data-photo-line="${esc(line.lineId)}"><span>${crop?.previewUrl ? `<img src="${esc(crop.previewUrl)}" alt="Crop for ${esc(line.name || "ingredient")}">` : icon("camera")}</span><div><b>${crop ? "Ingredient crop" : "No photo crop"}</b><small>${crop ? "Review this ingredient’s thumbnail." : "Choose just this ingredient from your photo."}</small><div class="actions">${button(crop ? "Adjust crop" : "Choose crop", "scan-photo-crop", line.lineId, "btn-quiet")}${crop ? button("Remove", "scan-photo-remove", line.lineId, "btn-quiet") : ""}</div></div></div>`;
   }
+  function updateScanSummary(form) {
+    const fd = new FormData(form);
+    const included = scanDraft.lines.filter((line) =>
+      fd.has(`include-${line.lineId}`),
+    );
+    const list = $("[data-scan-summary-list]", form);
+    list.innerHTML = scanDraft.lines
+      .map((line, index) => {
+        const keep = fd.has(`include-${line.lineId}`);
+        const category =
+          getFoodCategory(fd.get(`category-${line.lineId}`)) ||
+          getFoodCategory("other");
+        return `<button type="button" class="scan-summary-item${keep ? "" : " is-skipped"}" data-scan-jump="${index}" value="${index}">${categoryArtwork(category)}<span><b dir="auto">${esc(fd.get(`name-${line.lineId}`) || line.name || "Unnamed item")}</b><small>${keep ? `<bdi dir="ltr">${esc(fd.get(`quantity-${line.lineId}`))} ${esc(fd.get(`unit-${line.lineId}`))}</bdi> · ${esc(fd.get(`storage-${line.lineId}`))}` : "Skipped"}</small></span><span class="scan-summary-edit">Edit</span></button>`;
+      })
+      .join("");
+    const saveButton = $("[data-scan-save]", form);
+    saveButton.textContent = `Add ${included.length} ${included.length === 1 ? "item" : "items"}`;
+    saveButton.disabled = !included.length || !form.elements.confirmed.checked;
+    const choice = form.elements.excludeFinance;
+    if (choice) {
+      let financeComplete = included.length === scanDraft.lines.length;
+      let total = null;
+      try {
+        const currency = String(fd.get("scanCurrency") || "");
+        total = parseMinorAmount(String(fd.get("scanTotal") || ""), currency);
+        const tax = parseMinorAmount(String(fd.get("scanTax") || ""), currency);
+        const discount = parseMinorAmount(
+          String(fd.get("scanDiscount") || ""),
+          currency,
+        );
+        const subtotal = included.reduce(
+          (sum, line) =>
+            sum +
+            parseMinorAmount(
+              String(fd.get(`cost-${line.lineId}`) || ""),
+              currency,
+            ),
+          0,
+        );
+        financeComplete &&= subtotal + tax - discount === total;
+      } catch {
+        financeComplete = false;
+      }
+      if (!choice.dataset.userTouched) choice.checked = !financeComplete;
+      const receiptLabel = $("[data-scan-receipt-summary]", form);
+      receiptLabel.textContent = choice.checked
+        ? "Inventory only · no spending will be added"
+        : total === null
+          ? "Review receipt spending"
+          : `Receipt total · ${formatMoneyMinor(total, String(fd.get("scanCurrency")))}`;
+    }
+  }
   function showScanReview() {
+    if (!scanDraft) return;
+    if (scanDraft.kind === "expiry") return showLegacyScanReview();
+    openModal(
+      "Review items",
+      renderScanReview({
+        draft: scanDraft,
+        items: S.items,
+        scanLinePhoto,
+        lineArtwork: (line) =>
+          scanPhotoDraft?.crops?.get(line.lineId)?.previewUrl
+            ? `<img src="${esc(scanPhotoDraft.crops.get(line.lineId).previewUrl)}" alt="Your ingredient crop">`
+            : "",
+      }),
+      "scan-review",
+    );
+    const form = $('[data-form="scan-import"]', modal);
+    scanWizard = initScanReviewWizard(form, {
+      onInvalid: (field, message) => formError(form, message, field),
+      onSummary: () => updateScanSummary(form),
+    });
+  }
+  function showLegacyScanReview() {
     const draft = scanDraft;
     if (!draft) return;
     const currency = draft.currency || "Not provided";
@@ -2163,6 +2276,39 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
   });
   document.addEventListener("change", (e) => {
     if (operationBusy) return;
+    const scanForm = e.target.closest(".scan-review-wizard");
+    if (scanForm && e.target.name === "excludeFinance") {
+      scanForm.elements.confirmed.checked = false;
+      e.target.dataset.userTouched = "1";
+      updateScanSummary(scanForm);
+      validateScanReviewFields(scanForm);
+      return;
+    }
+    if (
+      e.target.matches(
+        'select[name="categoryId"], .scan-review-wizard select[name^="category-"]',
+      )
+    ) {
+      e.target.dataset.userTouched = "1";
+      const card = e.target.closest("[data-scan-card]");
+      if (card) {
+        const category = getFoodCategory(e.target.value);
+        if (!category) return;
+        const visual = $("[data-scan-card-visual]", card);
+        if (visual && !visual.querySelector("img"))
+          visual.innerHTML = categoryArtwork(category);
+        const storage = $('select[name^="storage-"]', card);
+        if (storage && !storage.dataset.userTouched)
+          storage.value = inferFoodCategory({
+            name: $('input[name^="name-"]', card).value,
+            categoryId: category.id,
+          }).suggestedStorage;
+        initMobileSelects(card);
+      }
+      return;
+    }
+    if (scanForm && e.target.matches('select[name^="storage-"]'))
+      e.target.dataset.userTouched = "1";
     const prepForm = e.target.closest('form[data-form="cook-prep"]');
     if (prepForm && S.cooking?.phase === "prep") {
       S.cooking.prepared = [
@@ -2179,7 +2325,8 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
       ? e.target
       : null;
     if (unitSelect) {
-      const row = unitSelect.closest(".scan-line") || itemFormElement;
+      const row =
+        unitSelect.closest(".scan-line, [data-scan-card]") || itemFormElement;
       const grams = row?.querySelector('input[name$="gramsPerUnit"]');
       if (grams) {
         grams.value = "";
@@ -2242,19 +2389,22 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
           warning.textContent = nextCurrency
             ? "Currency changed. Re-enter receipt total and every line cost; prior numbers were cleared to avoid reinterpretation."
             : "Choose a supported currency or exclude this receipt from spending.";
+        if (form.matches(".scan-review-wizard")) updateScanSummary(form);
       }
       return;
     }
-    const include = e.target.closest('.scan-line input[name^="include-"]');
+    const include = e.target.closest(
+      '.scan-line input[name^="include-"], [data-scan-card] input[name^="include-"]',
+    );
     if (include) {
       include
-        .closest("fieldset")
+        .closest("fieldset, [data-scan-card]")
         .querySelectorAll(
           "input:not([name^='include-']), select, [data-action^='scan-photo-']",
         )
         .forEach((control) => {
           const rowUnit = include
-            .closest("fieldset")
+            .closest("fieldset, [data-scan-card]")
             .querySelector('select[name^="unit-"]')?.value;
           control.disabled =
             !include.checked ||
@@ -2263,6 +2413,13 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
                 rowUnit,
               ));
         });
+      const card = include.closest("[data-scan-card]");
+      if (card) {
+        card.classList.toggle("is-skipped", !include.checked);
+        const message = $("[data-scan-skipped]", card);
+        if (message) message.hidden = include.checked;
+        initMobileSelects(card);
+      }
       return;
     }
     const el = e.target.closest("[data-change]");
@@ -2283,6 +2440,14 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     render();
   });
   document.addEventListener("input", (e) => {
+    const itemFormElement = e.target.closest('form[data-form="item"]');
+    if (itemFormElement && e.target.name === "name") {
+      const select = itemFormElement.elements.categoryId;
+      if (select && !select.dataset.userTouched) {
+        select.value = inferFoodCategory({ name: e.target.value }).category.id;
+        initMobileSelects(itemFormElement);
+      }
+    }
     if (e.target.matches('[data-form="scan-import"] input')) {
       e.target.setCustomValidity("");
       if (e.target.hasAttribute("aria-invalid")) {
@@ -2291,6 +2456,11 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         e.target.removeAttribute("aria-describedby");
       }
       e.target.removeAttribute("aria-invalid");
+      if (e.target.closest("[data-scan-summary]")) {
+        if (e.target.name !== "confirmed")
+          e.target.form.elements.confirmed.checked = false;
+        updateScanSummary(e.target.form);
+      }
     }
     const form = e.target.closest('[data-form="receipt"]');
     if (!form || !e.target.name.startsWith("price-")) return;
@@ -2305,7 +2475,19 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
     const form = e.target.closest("form[data-form]");
     if (!form) return;
     e.preventDefault();
-    if (form.dataset.form === "scan-import") validateScanReviewFields(form);
+    if (form.dataset.form === "scan-import") {
+      if (scanWizard && !scanWizard.canFinish()) {
+        scanWizard.show(scanWizard.firstUnreviewed(), { focus: true });
+        return announce("Check this item, then tap Next item.");
+      }
+      if (scanWizard && $("[data-scan-summary]", form)?.hidden) {
+        scanWizard.show(form.querySelectorAll("[data-scan-card]").length, {
+          focus: true,
+        });
+        return announce("Confirm the final review, then tap Add items.");
+      }
+      validateScanReviewFields(form);
+    }
     if (!form.checkValidity())
       return formError(
         form,
@@ -2353,6 +2535,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
       const excludedLineIds = [];
       const mergeTargets = Object.create(null);
       const reviewedLinks = Object.create(null);
+      const excludeFinance = fd.has("excludeFinance");
       const reviewedCurrency =
         scanDraft.kind === "receipt"
           ? String(fd.get("scanCurrency") || "")
@@ -2362,11 +2545,15 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
       try {
         for (const fieldName of ["scanTotal", "scanTax", "scanDiscount"]) {
           const amount = String(fd.get(fieldName) ?? "");
-          if (amount !== "") parseMinorAmount(amount, reviewedCurrency);
+          if (amount !== "")
+            parseReviewedScanMoney(amount, reviewedCurrency, {
+              excludeFinance,
+            });
         }
         for (const line of scanDraft.lines) {
           const cost = String(fd.get(`cost-${line.lineId}`) ?? "");
-          if (cost !== "") parseMinorAmount(cost, reviewedCurrency);
+          if (cost !== "")
+            parseReviewedScanMoney(cost, reviewedCurrency, { excludeFinance });
         }
       } catch (error) {
         return formError(
@@ -2394,6 +2581,8 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
           return {
             ...line,
             name: String(fd.get(`name-${line.lineId}`) || "").trim(),
+            categoryId:
+              getFoodCategory(fd.get(`category-${line.lineId}`))?.id ?? null,
             quantity: parseScanQuantity(quantityText),
             unit: String(fd.get(`unit-${line.lineId}`) || "") || null,
             storage: String(fd.get(`storage-${line.lineId}`) || "") || null,
@@ -2404,7 +2593,9 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
             lineTotalMinor:
               costText === ""
                 ? null
-                : parseMinorAmount(costText, reviewedCurrency),
+                : parseReviewedScanMoney(costText, reviewedCurrency, {
+                    excludeFinance,
+                  }),
           };
         });
       } catch (error) {
@@ -2428,19 +2619,25 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         currency: reviewedCurrency,
         totalMinor:
           scanDraft.kind === "receipt" && receiptTotalText !== ""
-            ? parseMinorAmount(receiptTotalText, reviewedCurrency)
+            ? parseReviewedScanMoney(receiptTotalText, reviewedCurrency, {
+                excludeFinance,
+              })
             : scanDraft.kind === "receipt"
               ? null
               : scanDraft.totalMinor,
         taxMinor:
           scanDraft.kind === "receipt" && receiptTaxText !== ""
-            ? parseMinorAmount(receiptTaxText, reviewedCurrency)
+            ? parseReviewedScanMoney(receiptTaxText, reviewedCurrency, {
+                excludeFinance,
+              })
             : scanDraft.kind === "receipt"
               ? null
               : scanDraft.taxMinor,
         discountMinor:
           scanDraft.kind === "receipt" && receiptDiscountText !== ""
-            ? parseMinorAmount(receiptDiscountText, reviewedCurrency)
+            ? parseReviewedScanMoney(receiptDiscountText, reviewedCurrency, {
+                excludeFinance,
+              })
             : scanDraft.kind === "receipt"
               ? null
               : scanDraft.discountMinor,
@@ -2464,6 +2661,9 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
         return formError(
           form,
           error?.message || "Review could not be committed.",
+          ["FINANCE_REVIEW_REQUIRED", "TOTAL_MISMATCH"].includes(error?.code)
+            ? form.elements.excludeFinance
+            : null,
         );
       }
       const linePhotoIds = new Map();
@@ -2589,6 +2789,7 @@ import { applyScanCookingLinks } from "./scan-cooking-links.js";
       const updated = {
         ...prior,
         ...cookingLink,
+        categoryId: getFoodCategory(fd.get("categoryId"))?.id || "other",
         name: String(fd.get("name")).trim(),
         qty: quantity,
         unit: fd.get("unit"),

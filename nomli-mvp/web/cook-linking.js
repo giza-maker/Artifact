@@ -53,7 +53,7 @@ export function renderIngredientLinkFields({
     <span class="details">Choose the product type explicitly. Suggestions do not save a link.</span>
   </label>
   <label class="field">Grams per current unit (optional)
-    <input type="text" inputmode="decimal" dir="ltr" maxlength="128" name="${esc(prefix)}gramsPerUnit" value="${esc(weight)}"${canWeigh ? "" : " disabled"}>
+    <input type="text" inputmode="decimal" dir="ltr" maxlength="128" data-scan-weight name="${esc(prefix)}gramsPerUnit" value="${esc(weight)}"${canWeigh ? "" : " disabled"}>
     <span class="details">For count, pieces, bunches, cloves, or slices only. Enter measured or printed grams per current unit; never guess weights.</span>
   </label>`;
 }

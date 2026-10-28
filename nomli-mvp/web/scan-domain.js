@@ -1,6 +1,7 @@
 "use strict";
 
 import { currencyDigits } from "./scan-money.js";
+import { getFoodCategory } from "./food-categories.js";
 
 const KINDS = new Set(["groceries", "receipt", "expiry"]);
 const UNITS = new Set(["g", "kg", "ml", "l", "count", "pieces", "bunches", "cloves", "slices"]);
@@ -50,6 +51,7 @@ function validateLine(line, index) {
   if (line.expiry !== null && !date(line.expiry)) fail("INVALID_DRAFT", `Line ${index + 1} has invalid expiry.`);
   if (line.expiryProvenance !== null && line.expiryProvenance !== "printed") fail("INVALID_DRAFT", `Line ${index + 1} has invalid expiry provenance.`);
   if (line.storage !== null && !STORAGE.has(line.storage)) fail("INVALID_DRAFT", `Line ${index + 1} has invalid storage.`);
+  if (line.categoryId !== undefined && line.categoryId !== null && !getFoodCategory(line.categoryId)) fail("INVALID_DRAFT", `Line ${index + 1} has invalid food category.`);
   if (!Array.isArray(line.warnings) || line.warnings.length > 100 || line.warnings.some((x) => typeof x !== "string" || x.length > 500)) fail("INVALID_DRAFT", `Line ${index + 1} has invalid warnings.`);
 }
 
@@ -124,6 +126,7 @@ export function reviewScanDraft(raw, { catalog = [] } = {}) {
         expiry: printedExpiry ? expiry : null,
         expiryProvenance: printedExpiry ? "printed" : null,
         storage,
+        categoryId: getFoodCategory(candidate.categoryId)?.id ?? null,
         warnings: reviewWarnings(candidate.warnings, warnings),
         ...(raw.kind === "groceries" && Object.hasOwn(candidate, "photoRegion") ? { photoRegion: normalizePhotoRegion(candidate.photoRegion) } : {}),
       };
@@ -187,8 +190,8 @@ export function commitScanDraft(state, draft, { confirmed = false, edits = {}, m
   const excluded = new Set(excludedLineIds);
   const imports = Array.isArray(state.scanImports) ? state.scanImports : [];
   const prior = imports.find((x) => (typeof x === "string" ? x : x?.fingerprint) === reviewed.fingerprint);
-  // Regions affect local presentation only; old imports must replay unchanged.
-  const signatureDraft = { ...reviewed, lines: reviewed.lines.map(({ photoRegion, ...line }) => line) };
+  // Regions and categories affect local presentation only; old imports must replay unchanged.
+  const signatureDraft = { ...reviewed, lines: reviewed.lines.map(({ photoRegion, categoryId, ...line }) => line) };
   const signature = signatureDigest(JSON.stringify({ draft: signatureDraft, excluded: [...excluded].sort(), mergeTargets: Object.entries(mergeTargets).sort(([a], [b]) => a.localeCompare(b)), excludeFinance }));
   if (prior) {
     if (plain(prior) && prior.signature && prior.signature !== signature) fail("IDEMPOTENCY_CONFLICT", "Fingerprint was already committed with different reviewed content.");
@@ -223,11 +226,12 @@ export function commitScanDraft(state, draft, { confirmed = false, edits = {}, m
           target.expiryProvenance = "printed";
         }
       }
+      if (!target.categoryId && line.categoryId) target.categoryId = line.categoryId;
       importedItemIds.push(targetId);
     } else {
       if (reviewed.kind === "expiry") fail("INVALID_MERGE_TARGET", "Expiry scans cannot create stock items.");
       const id = uniqueId(next.items, line);
-      next.items[id] = { name: line.name, qty: line.quantity, unit: line.unit, storage: line.storage, expiry: line.expiry, expiryProvenance: line.expiryProvenance };
+      next.items[id] = { name: line.name, qty: line.quantity, unit: line.unit, storage: line.storage, expiry: line.expiry, expiryProvenance: line.expiryProvenance, ...(line.categoryId ? { categoryId: line.categoryId } : {}) };
       importedItemIds.push(id);
     }
   }
@@ -254,7 +258,7 @@ export function commitScanDraft(state, draft, { confirmed = false, edits = {}, m
       taxMinor: reviewed.taxMinor,
       discountMinor: reviewed.discountMinor,
       financeExcluded,
-      lines: included.map((line, index) => ({ id: importedItemIds[index], name: line.name, qty: line.quantity, cents: line.lineTotalMinor ?? 0, expiry: line.expiry })),
+      lines: included.map((line, index) => ({ id: importedItemIds[index], name: line.name, qty: line.quantity, cents: line.lineTotalMinor, expiry: line.expiry, ...(line.categoryId ? { categoryId: line.categoryId } : {}) })),
     });
   }
   next.scanImports = [...imports, { fingerprint: reviewed.fingerprint, financeExcluded, signature }];

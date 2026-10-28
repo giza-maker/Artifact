@@ -68,6 +68,22 @@ test("committed scan survives reload and still blocks duplicate import", async (
   assert.equal(Object.keys(replay.state.items).length, 1);
 });
 
+test("reviewed category survives save, reload, and backup", async () => {
+  const storage = memory();
+  const store = createStateStore({ data, storage });
+  const reviewed = draft();
+  reviewed.lines[0].categoryId = "other";
+  const committed = commitScanDraft(baseState(), reviewed, { confirmed: true }).state;
+  await store.save(committed);
+  const loaded = (await store.load()).state;
+  const itemId = Object.keys(loaded.items)[0];
+  assert.equal(loaded.items[itemId].categoryId, "other");
+  assert.equal(loaded.receipts[0].lines[0].categoryId, "other");
+  const restored = store.parseBackup(store.exportBackup(loaded));
+  assert.equal(restored.items[itemId].categoryId, "other");
+  assert.equal(restored.receipts[0].lines[0].categoryId, "other");
+});
+
 test("501st scan can merge existing stock, persist, and replay once", async () => {
   const storage = memory();
   const store = createStateStore({ data, storage });
@@ -138,6 +154,25 @@ test("scan receipt metadata and import records are validated", () => {
   const invalidCents = structuredClone(valid);
   invalidCents.receipts[0].lines[0].cents = -1;
   assert.throws(() => store.exportBackup(invalidCents), /amount/i);
+});
+
+test("only finance-excluded scan receipts may persist unknown line amount", () => {
+  const store = createStateStore({ data, storage: memory() });
+  const reviewed = draft();
+  reviewed.totalMinor = null;
+  reviewed.lines[0].lineTotalMinor = null;
+  const valid = commitScanDraft(baseState(), reviewed, { confirmed: true, excludeFinance: true }).state;
+  assert.equal(valid.receipts[0].lines[0].cents, null);
+  assert.doesNotThrow(() => store.parseBackup(store.exportBackup(valid)));
+
+  for (const mutate of [
+    (receipt) => { receipt.source = "manual"; },
+    (receipt) => { receipt.financeExcluded = false; },
+  ]) {
+    const invalid = structuredClone(valid);
+    mutate(invalid.receipts[0]);
+    assert.throws(() => store.exportBackup(invalid), /amount/i);
+  }
 });
 
 test("M1 state and backup remain accepted while malformed scan data rejects", async () => {

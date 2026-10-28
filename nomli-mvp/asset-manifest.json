@@ -148,6 +148,16 @@
       "sha256": "4adbae48210838f829ba9cccaf2b4899face90e5a2142b52ee46013dde0db0d8"
     },
     {
+      "path": "web/public/images/food/ASSETS.md",
+      "bytes": 1006,
+      "sha256": "d2f61e1f60edd50717949b35c1e4690de677d52654bb60e2a3e6c3aa15dd3004"
+    },
+    {
+      "path": "web/public/images/food/nomli-food-atlas.png",
+      "bytes": 2122379,
+      "sha256": "326fd95c72effd8b493eee4b550c3db6da7b63d367e661312842c5308500980f"
+    },
+    {
       "path": "web/public/images/fridge-1280.webp",
       "bytes": 25140,
       "sha256": "18778d694ccde510b9e6a1cde10e6fa248faa5c28c1af55b916bef9ba42a32ac"

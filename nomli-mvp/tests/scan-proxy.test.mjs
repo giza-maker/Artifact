@@ -277,3 +277,50 @@ test("opt-in grocery regions use bounded nullable metadata without changing lega
     assert.equal(Object.hasOwn((await response.json()).draft.lines[0], "photoRegion"), false);
   }
 });
+
+test("opt-in food categories add only nullable whitelisted review metadata", async () => {
+  let providerBody;
+  const categorized = { ...raw, lines: [{ ...raw.lines[0], categoryId: "dairy" }] };
+  const fetchImpl = async (_url, init) => { providerBody = JSON.parse(init.body); return upstream(categorized)(); };
+  let response = await createScanHandler({ fetchImpl })(req({ ...valid, foodCategories: true }), env);
+  assert.equal(response.status, 200);
+  const { draft } = await response.json();
+  assert.equal(draft.lines[0].categoryId, "dairy");
+  assert.equal(draft.lines[0].ingredientId, null);
+  assert.equal(draft.lines[0].storage, null);
+  const category = providerBody.generationConfig.responseFormat.text.schema.properties.lines.items.properties.categoryId;
+  assert.deepEqual(category.anyOf[0].enum, ["rice_grains", "pasta", "oil", "dairy", "eggs", "meat", "poultry", "fish", "vegetables", "fruit", "legumes", "spices", "bakery", "drinks", "condiments", "other"]);
+  assert.ok(providerBody.generationConfig.responseFormat.text.schema.properties.lines.items.required.includes("categoryId"));
+  assert.match(providerBody.contents[0].parts[1].text, /editable broad food category/);
+  assert.match(providerBody.contents[0].parts[1].text, /human confirmation/);
+  assert.match(providerBody.contents[0].parts[1].text, /Never infer or populate ingredientId, allergy information, pack weight, quantity, unit, or storage from categoryId/);
+
+  response = await createScanHandler({ fetchImpl: upstream({ ...raw, lines: [{ ...raw.lines[0], categoryId: "private_catalog_id" }] }) })(req({ ...valid, foodCategories: true }), env);
+  assert.equal(response.status, 200);
+  assert.equal((await response.json()).draft.lines[0].categoryId, null);
+});
+
+test("food-category capability validates flags and composes with image regions", async () => {
+  for (const foodCategories of [null, 1, "true", {}, []]) {
+    const response = await createScanHandler({ fetchImpl: upstream() })(req({ ...valid, foodCategories }), env);
+    assert.equal(response.status, 422);
+  }
+  let response = await createScanHandler({ fetchImpl: upstream() })(req({ ...valid, kind: "expiry", foodCategories: true }), env);
+  assert.equal(response.status, 422);
+
+  const box = { x: .1, y: .2, width: .3, height: .4 };
+  let providerBody;
+  const combined = { ...raw, kind: "groceries", lines: [{ ...raw.lines[0], photoRegion: box, categoryId: "fruit" }] };
+  response = await createScanHandler({ fetchImpl: async (_url, init) => { providerBody = JSON.parse(init.body); return upstream(combined)(); } })(req({ ...valid, kind: "groceries", imageRegions: true, foodCategories: true }), env);
+  assert.equal(response.status, 200);
+  const { draft } = await response.json();
+  assert.deepEqual(draft.lines[0].photoRegion, box);
+  assert.equal(draft.lines[0].categoryId, "fruit");
+  const properties = providerBody.generationConfig.responseFormat.text.schema.properties.lines.items.properties;
+  assert.ok(properties.photoRegion);
+  assert.ok(properties.categoryId);
+
+  response = await createScanHandler({ fetchImpl: upstream() })(req({ ...valid, foodCategories: false }), env);
+  assert.equal(response.status, 200);
+  assert.equal(Object.hasOwn((await response.json()).draft.lines[0], "categoryId"), false);
+});

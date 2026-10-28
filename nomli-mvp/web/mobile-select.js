@@ -1,3 +1,5 @@
+import { getFoodCategory } from "./food-categories.js";
+
 const pickers = new WeakMap();
 let sequence = 0;
 let active = null;
@@ -39,6 +41,24 @@ function pickerIcon(name) {
   use.setAttribute("href", `icons.svg#${name}`);
   svg.append(use);
   return svg;
+}
+
+function foodCategoryArt(value) {
+  const category = getFoodCategory(value);
+  if (!category) return null;
+  const art = document.createElement("span");
+  art.className = "food-category-art picker-food-art";
+  art.dataset.foodArt = category.id;
+  art.style.setProperty(
+    "--food-x",
+    `${((category.atlasIndex % 4) * 100) / 3}%`,
+  );
+  art.style.setProperty(
+    "--food-y",
+    `${(Math.floor(category.atlasIndex / 4) * 100) / 3}%`,
+  );
+  art.setAttribute("aria-hidden", "true");
+  return art;
 }
 
 function focusIdentity(select) {
@@ -149,7 +169,16 @@ function openPicker(select, proxy) {
         text.textContent = option.label;
         const check = pickerIcon("check");
         check.style.visibility = option.selected ? "visible" : "hidden";
-        button.append(text, check);
+        const art =
+          select.getAttribute("data-picker-kind") === "food-category"
+            ? foodCategoryArt(option.value)
+            : null;
+        if (art) {
+          const copy = document.createElement("span");
+          copy.className = "picker-food-option-copy";
+          copy.append(art, text);
+          button.append(copy, check);
+        } else button.append(text, check);
         button.addEventListener("click", () => {
           const changed = select.selectedIndex !== option.index;
           select.selectedIndex = option.index;

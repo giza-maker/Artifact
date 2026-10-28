@@ -295,3 +295,16 @@ test("render-consumed optional fields reject unsafe types", () => {
   );
   assert.deepEqual(store.parseBackup(store.exportBackup(valid)), valid);
 });
+
+test("optional category ids are whitelisted while legacy category metadata remains valid", () => {
+  const store = createStateStore({ data, storage: memory() });
+  const modern = state({ x: item({ categoryId: "rice_grains" }) });
+  assert.deepEqual(store.parseBackup(store.exportBackup(modern)), modern);
+  assert.doesNotThrow(() => store.exportBackup(state({ x: item({ category: "Old custom label" }) })));
+  for (const categoryId of ["invented", "", null, 1]) {
+    assert.throws(
+      () => store.exportBackup(state({ x: item({ categoryId }) })),
+      /food category/i,
+    );
+  }
+});

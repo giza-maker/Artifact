@@ -162,6 +162,23 @@ test("unknown receipt adjustments require explicit finance exclusion", () => {
   assert.equal(excluded.state.receipts[0].taxMinor, null);
 });
 
+test("unknown excluded scan price stays null while explicit zero stays zero", () => {
+  const unknown = draft({
+    fingerprint: "7".repeat(64),
+    totalMinor: null,
+    lines: [rawLine({ lineTotalMinor: null })],
+  });
+  const unknownResult = commitScanDraft(baseState(), unknown, { confirmed: true, excludeFinance: true });
+  assert.equal(unknownResult.state.receipts[0].lines[0].cents, null);
+
+  const free = draft({
+    fingerprint: "8".repeat(64),
+    totalMinor: 0,
+    lines: [rawLine({ lineTotalMinor: 0 })],
+  });
+  assert.equal(commitScanDraft(baseState(), free, { confirmed: true }).state.receipts[0].lines[0].cents, 0);
+});
+
 test("unsupported currency requires review or explicit finance exclusion", () => {
   const unsupported = draft({ fingerprint: "e".repeat(64), currency: "ZZZ" });
   assert.throws(
@@ -328,4 +345,39 @@ test("region metadata changes replay the same grocery fingerprint without stock 
   assert.equal(commitScanDraft(regionFirst.state, original, { confirmed: true }).replayed, true);
   const changedQuantity = draft({ kind: "groceries", lines: [rawLine({ quantity: 2, photoRegion: withRegion.lines[0].photoRegion })] });
   assert.throws(() => commitScanDraft(first.state, changedQuantity, { confirmed: true }), error => error.code === "IDEMPOTENCY_CONFLICT");
+});
+
+test("reviewed category imports as presentation metadata without changing replay identity", () => {
+  const categorized = draft({ lines: [rawLine({ categoryId: "dairy" })] });
+  const first = commitScanDraft(baseState(), categorized, { confirmed: true });
+  const itemId = first.importedItemIds[0];
+  assert.equal(first.state.items[itemId].categoryId, "dairy");
+  assert.equal(first.state.receipts[0].lines[0].categoryId, "dairy");
+
+  const recategorizedReplay = draft({ lines: [rawLine({ categoryId: "drinks" })] });
+  const replay = commitScanDraft(first.state, recategorizedReplay, { confirmed: true });
+  assert.equal(replay.replayed, true);
+  assert.equal(replay.state, first.state);
+  assert.equal(replay.state.items[itemId].categoryId, "dairy");
+  assert.equal(replay.state.items[itemId].qty, 1);
+  assert.equal(replay.state.receipts.length, 1);
+});
+
+test("merge fills missing category but preserves existing explicit category", () => {
+  const state = baseState();
+  state.items.uncategorized = { name: "Milk", qty: 1, unit: "l", storage: "Fridge", expiry: null };
+  state.items.explicit = { name: "Milk", qty: 1, unit: "l", storage: "Fridge", expiry: null, categoryId: "drinks" };
+  const reviewed = draft({ lines: [rawLine({ categoryId: "dairy" })] });
+  const filled = commitScanDraft(state, reviewed, { confirmed: true, mergeTargets: { "milk-line": "uncategorized" } });
+  assert.equal(filled.state.items.uncategorized.categoryId, "dairy");
+  const otherDraft = draft({ fingerprint: "9".repeat(64), lines: [rawLine({ categoryId: "dairy" })] });
+  const preserved = commitScanDraft(state, otherDraft, { confirmed: true, mergeTargets: { "milk-line": "explicit" } });
+  assert.equal(preserved.state.items.explicit.categoryId, "drinks");
+});
+
+test("invalid provider category falls back to unclassified review metadata", () => {
+  const reviewed = draft({ lines: [rawLine({ categoryId: "invented" })] });
+  assert.equal(reviewed.lines[0].categoryId, null);
+  const result = commitScanDraft(baseState(), reviewed, { confirmed: true });
+  assert.equal(Object.hasOwn(result.state.items[result.importedItemIds[0]], "categoryId"), false);
 });

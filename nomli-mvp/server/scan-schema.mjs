@@ -1,5 +1,6 @@
 export const SCAN_KINDS = Object.freeze(["groceries", "receipt", "expiry"]);
 export const SCAN_MIME_TYPES = Object.freeze(["image/jpeg", "image/png", "image/webp", "application/pdf"]);
+export const FOOD_CATEGORY_IDS = Object.freeze(["rice_grains", "pasta", "oil", "dairy", "eggs", "meat", "poultry", "fish", "vegetables", "fruit", "legumes", "spices", "bakery", "drinks", "condiments", "other"]);
 
 const nullable = (schema) => ({ anyOf: [schema, { type: "null" }] });
 const line = {
@@ -56,16 +57,22 @@ export const GEMINI_SCAN_SCHEMA = Object.freeze(geminiSchema(SCAN_PROVIDER_SCHEM
 
 
 // Opt-in keeps legacy clients and non-grocery scans on the original schema.
-export function scanProviderSchema(imageRegions = false, gemini = false) {
-  if (!imageRegions) return gemini ? GEMINI_SCAN_SCHEMA : SCAN_PROVIDER_SCHEMA;
+export function scanProviderSchema(imageRegions = false, gemini = false, foodCategories = false) {
+  if (!imageRegions && !foodCategories) return gemini ? GEMINI_SCAN_SCHEMA : SCAN_PROVIDER_SCHEMA;
   const schema = structuredClone(SCAN_PROVIDER_SCHEMA);
   const region = {
     type: "object", additionalProperties: false,
     properties: Object.fromEntries(["x", "y", "width", "height"].map(key => [key, { type: "number", minimum: 0, maximum: 1 }])),
     required: ["x", "y", "width", "height"],
   };
-  schema.properties.lines.items.properties.photoRegion = nullable(region);
-  // Strict provider schemas require all keys; null represents uncertainty.
-  schema.properties.lines.items.required.push("photoRegion");
+  if (imageRegions) {
+    schema.properties.lines.items.properties.photoRegion = nullable(region);
+    // Strict provider schemas require all keys; null represents uncertainty.
+    schema.properties.lines.items.required.push("photoRegion");
+  }
+  if (foodCategories) {
+    schema.properties.lines.items.properties.categoryId = nullable({ type: "string", enum: FOOD_CATEGORY_IDS });
+    schema.properties.lines.items.required.push("categoryId");
+  }
   return gemini ? geminiSchema(schema) : schema;
 }

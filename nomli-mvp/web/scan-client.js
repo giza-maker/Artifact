@@ -164,12 +164,13 @@ export async function scanFile({ file, nativePhoto, kind, config, signal, fetchI
   const prepared = await prepareScanFile({ file, nativePhoto, signal, fetchImpl });
   const { bytes, ...payload } = prepared;
   const regionRequest = kind === "groceries" && payload.mimeType.startsWith("image/");
+  const categoryRequest = kind !== "expiry";
   let result;
   try {
-    result = await request(config, "/api/v1/scan-drafts", { signal, fetchImpl, timeoutMs, payload: { kind, ...payload, ...(regionRequest ? { imageRegions: true } : {}) } });
+    result = await request(config, "/api/v1/scan-drafts", { signal, fetchImpl, timeoutMs, payload: { kind, ...payload, ...(regionRequest ? { imageRegions: true } : {}), ...(categoryRequest ? { foodCategories: true } : {}) } });
   } catch (error) {
     // Older paired Workers reject unknown request fields before provider work.
-    if (!regionRequest || error.httpStatus !== 422 || error.code !== "invalid_request") throw error;
+    if ((!regionRequest && !categoryRequest) || error.httpStatus !== 422 || error.code !== "invalid_request") throw error;
     result = await request(config, "/api/v1/scan-drafts", { signal, fetchImpl, timeoutMs, payload: { kind, ...payload } });
   }
   const expectedFingerprint = await fingerprint(kind, bytes);

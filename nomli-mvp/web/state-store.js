@@ -1,5 +1,6 @@
 "use strict";
 import { isPhotoId } from "./item-photos.js";
+import { getFoodCategory } from "./food-categories.js";
 
 const CURRENT_KEY = "nomli-kitchen-state-v1";
 const LEGACY_KEY = "nomli-kitchen-mvp-v1";
@@ -126,6 +127,8 @@ function validateItem(item, id) {
   plain(item, `Item ${id}`);
   if (item.photoId !== undefined && !isPhotoId(item.photoId))
     fail(`Item ${id} has invalid photo ID.`);
+  if (item.categoryId !== undefined && !getFoodCategory(item.categoryId))
+    fail(`Item ${id} has invalid food category.`);
   if (
     typeof item.name !== "string" ||
     !item.name.trim() ||
@@ -286,11 +289,18 @@ export function validateState(value) {
       plain(line, "Receipt line");
       safeId(line.id, "Receipt item id");
       shortString(line.name, "Receipt item name", 200);
+      if (line.categoryId !== undefined && !getFoodCategory(line.categoryId))
+        fail("Receipt item food category is invalid.");
       nonNegative(line.qty, "Receipt quantity");
+      const unknownExcludedScanAmount =
+        receipt.source === "scan" &&
+        receipt.financeExcluded === true &&
+        line.cents === null;
       if (
-        !Number.isSafeInteger(line.cents) ||
-        line.cents < 0 ||
-        line.cents > 1e12
+        !unknownExcludedScanAmount &&
+        (!Number.isSafeInteger(line.cents) ||
+          line.cents < 0 ||
+          line.cents > 1e12)
       )
         fail("Receipt amount is invalid.");
       if (
