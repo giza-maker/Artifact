@@ -3078,16 +3078,38 @@ import packageInfo from "../package.json" with { type: "json" };
           form.elements.gramsPerUnit,
         );
       }
+      if (
+        !Number.isFinite(gramsPerUnit) ||
+        gramsPerUnit <= 0 ||
+        gramsPerUnit > 1e9
+      )
+        return formError(
+          form,
+          "Enter grams greater than 0 and no more than 1,000,000,000.",
+          form.elements.gramsPerUnit,
+        );
+      let measurementError = "";
       const saved = await commit(() => {
-        if (recipe(S.recipe).id !== review.recipeId)
-          throw new Error("Recipe changed. Open the measurement again.");
-        S = applyRecipeStockMeasurement(S, { ...review, gramsPerUnit });
+        try {
+          if (recipe(S.recipe).id !== review.recipeId)
+            throw new Error("Recipe changed. Open the measurement again.");
+          S = applyRecipeStockMeasurement(S, { ...review, gramsPerUnit });
+        } catch (error) {
+          measurementError = error.message;
+          throw error;
+        }
       }, "Measurement saved. Recipe availability updated.");
       if (saved) {
         recipeStockMeasurementReview = null;
         closeModal();
         render();
-      }
+      } else
+        formError(
+          form,
+          measurementError ||
+            "Measurement was not saved. Close and reopen Nomli before trying again.",
+          form.elements.gramsPerUnit,
+        );
       return;
     }
     if (operationBusy) return;
