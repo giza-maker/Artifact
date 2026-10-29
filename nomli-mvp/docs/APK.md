@@ -1,4 +1,20 @@
-# Nomli M10 visual cooking APK
+# Nomli M11 calorie diary APK
+
+[Download Nomli-M11.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m11-v0.12.0/Nomli-M11.apk). Package com.nomli.mvp.validation; version 0.12.0-m11, code 18; minimum API 26, target API 36. Install over Nomli Test.
+
+Calories now has an offline daily food diary, explicit portions eaten, dated history, editing/removal and an optional user-entered goal. Kitchen includes a daily shortcut. Arabic, Persian and English numerals work; fractional portions are supported and ambiguous grouping is rejected.
+
+Recipe pages show estimated kcal per serving and the total for the selected recipe size. A documented subset of 54 USDA SR Legacy references covers 17 of 20 recipes completely. Three recipes with labneh, zaatar or mixed-spice blends remain visibly incomplete and offer manual calorie entry. Generic references, portion weights and preparation states are documented in docs/NUTRITION.md; brand labels take precedence when entering packaged food.
+
+Cooking does not mean eating: food logging never changes stock or spending, and cooking/stock undo never changes the food diary. Entries retain their original per-portion calorie snapshot. Diary and goal are included in local backups and excluded from Zara context. Existing inventory, photos, connection and step-specific cooking media remain available.
+
+Source cad37f56e4fe0849bf1d7e4fb1a038b461800df6; CI 40945088800 (4m 17s). 403 JavaScript tests, content/art/media validation, Vite build, Capacitor sync and Android compilation passed. APK 95,839,491 bytes; SHA-256 8b7fb1cb983faef90a4d8a9fffd99d9d90b6365246b7e89d3fbf04a22e1a7d70. Certificate SHA-256 8c02c3045c97327f5415451feb9ccb0db326322b90d460dde9f28a7c0b559ef0; v2/v3 signatures, 16 KB alignment, ZIP CRC and all 232 production assets verified. Configured secrets and QA harness absent. Published size/digest match local APK.
+
+Production browser QA at 390×844 and 320×568 verified Arabic calorie entry, fractions, invalid-input errors, goal set/remove, dated edits, recipe picker search, recipe scaling, incomplete-estimate manual entry, deletion, reload persistence, scrollable forms, focus restoration and no horizontal overflow. Console errors: none. Tests used an isolated local origin and synthetic food entries; no live nutrition/AI service or phone was used. Physical Android update acceptance remains pending.
+
+Scanner/assistant Worker unchanged. All 60 cooking-step demonstrations remain bundled.
+
+## Historical Nomli M10 visual cooking APK
 
 [Download Nomli-M10.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m10-v0.11.0/Nomli-M10.apk). Package com.nomli.mvp.validation; version 0.11.0-m10, code 17; minimum API 26, target API 36. Install over Nomli Test.
 
