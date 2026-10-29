@@ -38,6 +38,28 @@
   padding-bottom: 0;
 }
 
+.cook-guide-heading {
+  margin: 16px var(--cook-pad) 18px;
+}
+
+.cook-active .cook-step-media {
+  width: calc(100% - 2 * var(--cook-pad));
+  max-width: none;
+  margin-bottom: 0;
+}
+
+.cook-active .cook-step-media__title {
+  display: none;
+}
+
+.cook-active .cook-step-media__cue {
+  font-size: 15px;
+}
+
+.cook-instruction-card .cook-step-instructions {
+  margin-top: 0;
+}
+
 .cooking-experience button,
 .cooking-experience input,
 .cooking-experience summary {

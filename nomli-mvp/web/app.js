@@ -86,6 +86,8 @@ import { renderCookingExperience } from "./cooking-view.js";
 import { getCookingStepGuide } from "./cooking-guide.js";
 import { createCookingSpeechController } from "./cooking-speech.js";
 import "./cooking-experience.css";
+import { mountCookingMedia } from "./cooking-media-player.js";
+import "./cooking-media.css";
 import packageInfo from "../package.json" with { type: "json" };
 (async function leanNomli() {
   const D = { ...window.NOMLI_DATA, recipes: COOK_RECIPES, tools: COOK_TOOLS };
@@ -147,6 +149,7 @@ import packageInfo from "../package.json" with { type: "json" };
   ];
   const view = $("#view"),
     modal = $("#modal");
+  let cookingMediaCleanup = () => {};
   let toastTimer,
     timerHandle,
     lastFocus,
@@ -197,6 +200,7 @@ import packageInfo from "../package.json" with { type: "json" };
         focusId === "assistant-question"
           ? [focused.selectionStart, focused.selectionEnd]
           : null;
+      cookingMediaCleanup();
       view.innerHTML = viewMarkup();
       mountView({ chatScroll: scroll });
       const target =
@@ -475,6 +479,7 @@ import packageInfo from "../package.json" with { type: "json" };
     scanTimers = [];
   }
   function openModal(title, body, screen = "") {
+    cookingMediaCleanup.suspend?.();
     void cookingSpeech.stop();
     scanWizard?.destroy();
     scanWizard = null;
@@ -533,6 +538,8 @@ import packageInfo from "../package.json" with { type: "json" };
     });
   }
   function mountView({ chatScroll = null } = {}) {
+    cookingMediaCleanup = mountCookingMedia(view);
+    if (modal.open) cookingMediaCleanup.suspend?.();
     $(".app-device")?.classList.toggle(
       "is-cooking-focus",
       Boolean($(".cooking-experience", view)),
@@ -1131,6 +1138,7 @@ import packageInfo from "../package.json" with { type: "json" };
     clearInterval(timerHandle);
     timerHandle = null;
     view.dataset.screen = S.route;
+    cookingMediaCleanup();
     view.innerHTML = viewMarkup();
     mountView();
     view.setAttribute("aria-busy", "false");
@@ -2079,6 +2087,7 @@ import packageInfo from "../package.json" with { type: "json" };
           mode: a === "voice-replace" ? "replace" : "append",
         });
         voiceExpanded = false;
+        cookingMediaCleanup();
         view.innerHTML = viewMarkup();
         mountView();
         $("#assistant-question")?.focus();
@@ -3404,6 +3413,7 @@ import packageInfo from "../package.json" with { type: "json" };
     cancelScan();
   });
   modal.addEventListener("close", () => {
+    cookingMediaCleanup.resume?.();
     cancelScan();
     if (modal.dataset.screen === "item-edit") releaseItemPhoto();
     if (["scan-review", "scan-reading"].includes(modal.dataset.screen))

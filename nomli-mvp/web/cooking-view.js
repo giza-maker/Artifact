@@ -1,4 +1,6 @@
 import { getCookingStepGuide, getCurrentStepAmounts } from "./cooking-guide.js";
+import { getCookingStepMedia } from "./cooking-media.js";
+import { renderCookingStepMedia } from "./cooking-media-view.js";
 
 export function renderCookingExperience({
   recipe: r,
@@ -58,6 +60,8 @@ export function renderCookingExperience({
   }
 
   const guide = getCookingStepGuide(r, c.step);
+  const stepMedia = getCookingStepMedia(r, c.step);
+  if (stepMedia) stepMedia.playbackKey = `${c.id}:${r.id}:${c.step}`;
   const next =
     c.step + 1 < r.steps.length ? getCookingStepGuide(r, c.step + 1) : null;
   const amounts = getCurrentStepAmounts(r, c.step, c);
@@ -69,9 +73,11 @@ export function renderCookingExperience({
       : canRead
         ? "Read aloud uses your phone’s speech service."
         : "Read aloud is available in the Android app.");
-  return `<section class="cooking-experience cook-active">${top}${hero}
+  return `<section class="cooking-experience cook-active">${top}
     <ol class="cook-progress" aria-label="Step ${c.step + 1} of ${r.steps.length}">${r.steps.map((_, i) => `<li class="${i === c.step ? "is-current" : i < c.step ? "is-done" : ""}"${i === c.step ? ' aria-current="step"' : ""}>${i < c.step ? `${icon("check")}<span class="sr-only">Step ${i + 1} complete</span>` : i + 1}</li>`).join("")}</ol>
-    <article class="cook-step-card"><p class="cook-step-kicker">STEP ${c.step + 1} OF ${r.steps.length}</p><h1 class="cook-step-title" data-title tabindex="-1">${e(guide.title)}</h1>
+    <header class="cook-guide-heading"><p class="cook-step-kicker">${e(r.name)} · STEP ${c.step + 1} OF ${r.steps.length}</p><h1 class="cook-step-title" data-title tabindex="-1">${e(guide.title)}</h1></header>
+    ${renderCookingStepMedia(stepMedia, { esc: e, icon })}
+    <article class="cook-step-card cook-instruction-card">
       <div class="cook-step-instructions">${guide.instructions.map((text) => `<p>${e(text)}</p>`).join("")}</div>
       ${guide.heatCue ? `<p class="cook-heat">${icon("fire")}${e(guide.heatCue)}</p>` : ""}
       <div class="cook-step-tools"><button type="button" class="btn btn-secondary" data-action="cook-read" aria-describedby="cook-speech-status"${!canRead || speech.phase === "stopping" ? " disabled" : ""}>${icon(speaking ? "pause" : "speaker-high")}<span data-cook-read-label>${speaking ? "Stop reading" : "Read step"}</span></button>${action("All steps", "cook-roadmap")}</div>

@@ -1,5 +1,13 @@
 # Nomli MVP design contract
 
+## M10 visual cooking guide
+
+- All 60 steps across 20 recipes have a distinct local illustration and motion asset. Active steps show the current action instead of the finished dish photo. Add a short observable “Look for” cue; quantities and cooking requirements remain in the canonical instructions.
+- Use completed, reviewed clips already created before the provider change. New replacement images use the built-in image generator. The final set contains 45 silent five-second clips and 15 four-frame illustrated sequences. No media generation or external media fetching occurs in the installed app.
+- Illustrations follow preparation order and ingredient form. Keep raw meat out of cooked-food scenes; do not infer food safety from appearance. Corrected sequences cover four eggs in shakshuka, cold yogurt/tahini mixing, fatteh layer order, grain identity and raw shaping before browning.
+- Bundle 960×540 posters and muted H.264 clips; sequence sheets have four 960×540 cells. Only the current visible step plays. Pause off-screen, behind dialogs and in the background; preserve manual pause. Reduced-motion users get a still unless they explicitly start playback. Never advance the step or start a cooking timer through media playback.
+- Keep source prompts, generation identifiers and file hashes in the media manifest. Validate all 60 mappings, file inventory, formats, source text, hashes and byte limits before building.
+
 ## Product focus
 
 Nomli is a lean mobile kitchen companion. Four primary destinations have equal weight:

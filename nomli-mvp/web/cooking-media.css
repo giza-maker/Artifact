@@ -1,0 +1,198 @@
+.cook-step-media {
+  --cook-media-accent: var(--accent, #f08a48);
+  --cook-media-ink: #fff8ef;
+  --cook-media-surface: #211b18;
+  width: min(100%, 390px);
+  margin: 0 auto 1.25rem;
+  color: var(--cook-media-ink);
+}
+
+.cook-step-media__frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  min-height: 210px;
+  overflow: hidden;
+  border: 1px solid
+    color-mix(in srgb, var(--cook-media-accent) 35%, transparent);
+  border-radius: 1.25rem;
+  background: var(--cook-media-surface);
+  box-shadow: 0 0.8rem 2rem rgb(22 13 9 / 22%);
+}
+
+.cook-step-media__poster,
+.cook-step-media__video,
+.cook-step-media__sequence {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cook-step-media__poster {
+  z-index: 0;
+}
+.cook-step-media__video {
+  z-index: 1;
+}
+.cook-step-media__sequence {
+  z-index: 1;
+  overflow: hidden;
+}
+.cook-step-media__sequence-source {
+  display: none;
+}
+.cook-step-media__sequence-stage {
+  position: absolute;
+  inset: 0;
+  background-size: 200% 200%;
+  background-repeat: no-repeat;
+  opacity: 0;
+  animation: cook-step-sequence 4.8s linear infinite;
+  animation-play-state: paused;
+}
+.cook-step-media__sequence-stage--1 {
+  background-position: 0 0;
+  animation-delay: 0s;
+  opacity: 1;
+}
+.cook-step-media__sequence-stage--2 {
+  background-position: 100% 0;
+  animation-delay: -3.6s;
+}
+.cook-step-media__sequence-stage--3 {
+  background-position: 0 100%;
+  animation-delay: -2.4s;
+}
+.cook-step-media__sequence-stage--4 {
+  background-position: 100% 100%;
+  animation-delay: -1.2s;
+}
+.cook-step-media.is-playing .cook-step-media__sequence-stage {
+  animation-play-state: running;
+}
+.cook-step-media.has-error .cook-step-media__poster {
+  z-index: 2;
+}
+.cook-step-media.has-error .cook-step-media__video,
+.cook-step-media.has-error .cook-step-media__sequence {
+  visibility: hidden;
+}
+
+@keyframes cook-step-sequence {
+  0%,
+  20% {
+    opacity: 1;
+  }
+  25%,
+  95% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.cook-step-media__eyebrow {
+  position: absolute;
+  z-index: 2;
+  top: 0.75rem;
+  left: 0.75rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: 999px;
+  background: rgb(25 18 15 / 82%);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.cook-step-media__control,
+.cook-step-media__retry {
+  position: absolute;
+  z-index: 3;
+  right: 0.75rem;
+  bottom: 0.75rem;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0.6rem 0.9rem;
+  border: 1px solid rgb(255 255 255 / 30%);
+  border-radius: 999px;
+  background: rgb(25 18 15 / 88%);
+  color: #fff;
+  font: inherit;
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.cook-step-media__control [data-cook-media-play-icon],
+.cook-step-media__control [data-cook-media-pause-icon] {
+  margin-right: 0.35rem;
+}
+.cook-step-media__control svg {
+  vertical-align: middle;
+}
+.cook-step-media__retry {
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+}
+.cook-step-media__control:focus-visible,
+.cook-step-media__retry:focus-visible {
+  outline: 3px solid var(--cook-media-accent);
+  outline-offset: 3px;
+}
+
+.cook-step-media figcaption {
+  display: grid;
+  gap: 0.2rem;
+  padding: 0.7rem 0.25rem 0;
+  color: inherit;
+}
+
+.cook-step-media__title {
+  font-weight: 800;
+}
+.cook-step-media__cue {
+  color: color-mix(in srgb, currentColor 78%, transparent);
+  line-height: 1.45;
+}
+.cook-step-media__cue b {
+  color: var(--cook-media-accent);
+}
+
+@media (max-width: 420px) {
+  .cook-step-media__frame {
+    min-height: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cook-step-media__video {
+    display: none;
+  }
+  .cook-step-media.is-explicitly-playing .cook-step-media__video {
+    display: block;
+  }
+  .cook-step-media__sequence-stage {
+    animation: none;
+    opacity: 0;
+  }
+  .cook-step-media__sequence-stage--1 {
+    opacity: 1;
+  }
+  .cook-step-media.is-explicitly-playing .cook-step-media__sequence-stage {
+    animation: cook-step-sequence 4.8s linear infinite;
+    animation-play-state: running;
+  }
+  .cook-step-media.is-explicitly-playing .cook-step-media__sequence-stage--2 {
+    animation-delay: -3.6s;
+  }
+  .cook-step-media.is-explicitly-playing .cook-step-media__sequence-stage--3 {
+    animation-delay: -2.4s;
+  }
+  .cook-step-media.is-explicitly-playing .cook-step-media__sequence-stage--4 {
+    animation-delay: -1.2s;
+  }
+}

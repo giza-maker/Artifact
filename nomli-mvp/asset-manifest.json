@@ -3,6 +3,16 @@
   "provenance": "Brand media reused from kitchenaut-landing/ASSETS.md; Phosphor MIT and fonts OFL licenses included. Content and fixtures authored synthetically for Nomli. See content/LICENSE.md and web/public/images/recipes/ASSETS.md for generated recipe imagery.",
   "assets": [
     {
+      "path": "content/cooking-sequences.json",
+      "bytes": 29855,
+      "sha256": "40a6306f037933e3cc356cad354df29987a7bd8db50ac1e556466c5ffd3c25cc"
+    },
+    {
+      "path": "content/cooking-visuals.json",
+      "bytes": 50946,
+      "sha256": "f3544996cf7a32a70c318f406ac70b53584e70d7d10599dd3b061b766a3f8dfc"
+    },
+    {
       "path": "content/food-art-catalog.json",
       "bytes": 81486,
       "sha256": "c22b94405c855b237cc497b63abdf75664d7830fd1178dce465974b518aca107"
@@ -561,6 +571,611 @@
       "path": "web/public/images/zara-96.webp",
       "bytes": 1128,
       "sha256": "b3ba55ef44288b183b8beb9d536924ca4d4034aa2faa5eceb062abc4be53fbe6"
+    },
+    {
+      "path": "web/public/media/cooking/beef_kofta_pan-step-1.mp4",
+      "bytes": 978649,
+      "sha256": "391ccad32bfaa874555bc63d36834054f681c39d0004746341e9b4348f5d6067"
+    },
+    {
+      "path": "web/public/media/cooking/beef_kofta_pan-step-1.webp",
+      "bytes": 22950,
+      "sha256": "f7e5538abe1bf6d19bc6222eb3bcd6f6b3e8eb19b09b96cc66a0ac4663398fe0"
+    },
+    {
+      "path": "web/public/media/cooking/beef_kofta_pan-step-2-sequence.webp",
+      "bytes": 230976,
+      "sha256": "5f8602d4145d4f9ef6677da1efd3cc2e02bca2bccb1ad27a3f1d695185571c86"
+    },
+    {
+      "path": "web/public/media/cooking/beef_kofta_pan-step-2.webp",
+      "bytes": 59200,
+      "sha256": "4af4e19e9fcd069fe1cea5b07ee93ed2e8f6b816ba9f3852272ad06b9e9bc8c0"
+    },
+    {
+      "path": "web/public/media/cooking/beef_kofta_pan-step-3-sequence.webp",
+      "bytes": 302792,
+      "sha256": "a9aff4d03c60e3ef9dc227bbc7667beeae3cf0d83bba71595a349621fccf1537"
+    },
+    {
+      "path": "web/public/media/cooking/beef_kofta_pan-step-3.webp",
+      "bytes": 66542,
+      "sha256": "ab5e7ebac113d1b1011151af81e8e3998c55e73eb2137d5bf0891c3940c05b0c"
+    },
+    {
+      "path": "web/public/media/cooking/bulgur_chickpea_pilaf-step-1.mp4",
+      "bytes": 443126,
+      "sha256": "219d6177cf700d3092cb14bdc9ce47b3517af67186b3b13f718bc60827c8e42c"
+    },
+    {
+      "path": "web/public/media/cooking/bulgur_chickpea_pilaf-step-1.webp",
+      "bytes": 28650,
+      "sha256": "d010b172f9c31937568667b0a0149b4c34d04ee71e5e18b28a54df14d43a57a0"
+    },
+    {
+      "path": "web/public/media/cooking/bulgur_chickpea_pilaf-step-2.mp4",
+      "bytes": 365494,
+      "sha256": "ff8ea6f3fd2f44f2f57f08545dd65875e5d5d8dc4bcc11e27780262e8d6408f5"
+    },
+    {
+      "path": "web/public/media/cooking/bulgur_chickpea_pilaf-step-2.webp",
+      "bytes": 27820,
+      "sha256": "c1460f156091ad1d0a6752aae31ec9d3d69d987e0a875aac02c78d05f8d167b5"
+    },
+    {
+      "path": "web/public/media/cooking/bulgur_chickpea_pilaf-step-3-sequence.webp",
+      "bytes": 255662,
+      "sha256": "a31a77e33eaa7f4bfd4af9961c8780482789c04262f7b5f592c2a0f41cdbf1d2"
+    },
+    {
+      "path": "web/public/media/cooking/bulgur_chickpea_pilaf-step-3.webp",
+      "bytes": 57486,
+      "sha256": "3072f409decb8effa36ee85a8276d8bc7d9efd5758610573b118a8a7c68c8a2d"
+    },
+    {
+      "path": "web/public/media/cooking/chicken_rice_one_pot-step-1.mp4",
+      "bytes": 293376,
+      "sha256": "36f0f89920970298b948cc8e094d29c4c6c94b0ea2f09f99cffa2e81766ce902"
+    },
+    {
+      "path": "web/public/media/cooking/chicken_rice_one_pot-step-1.webp",
+      "bytes": 28298,
+      "sha256": "d9b1451fc3cf4e7c377edd9353ddadd9a8aa726d3ed70fb54ba8ee3aff02b306"
+    },
+    {
+      "path": "web/public/media/cooking/chicken_rice_one_pot-step-2-sequence.webp",
+      "bytes": 372330,
+      "sha256": "bf0f43643bbe52d06d45e585acad33e0d221302868e693317044bfb45620eb1a"
+    },
+    {
+      "path": "web/public/media/cooking/chicken_rice_one_pot-step-2.webp",
+      "bytes": 100548,
+      "sha256": "5c6f1e7858e7fbbfd7d3fe72f80cf9ac36fd4e351de4d087a422ba8d0d605d8f"
+    },
+    {
+      "path": "web/public/media/cooking/chicken_rice_one_pot-step-3-sequence.webp",
+      "bytes": 299416,
+      "sha256": "50c23a913ad7d627188eaffd27f15c8bbfeaac411c4f939abfc2f297a0f361a0"
+    },
+    {
+      "path": "web/public/media/cooking/chicken_rice_one_pot-step-3.webp",
+      "bytes": 83960,
+      "sha256": "5ac7b8130ab40d1f21f5ce93cd8f52125a7e126d0870c742f7a377ac49eedf5d"
+    },
+    {
+      "path": "web/public/media/cooking/couscous_roast_veg-step-1.mp4",
+      "bytes": 592042,
+      "sha256": "ace1b4e134bec3bbf6eae59be350a660c0feeb92659219013f3fe86f56e3876e"
+    },
+    {
+      "path": "web/public/media/cooking/couscous_roast_veg-step-1.webp",
+      "bytes": 47052,
+      "sha256": "effe5f4c17b5290e53884780456048721982b6fad58532096af4eda389789e66"
+    },
+    {
+      "path": "web/public/media/cooking/couscous_roast_veg-step-2.mp4",
+      "bytes": 390474,
+      "sha256": "b27b2825a697a2350224bbc3e9db933c336b63fee008a340337fa885f7f04d7a"
+    },
+    {
+      "path": "web/public/media/cooking/couscous_roast_veg-step-2.webp",
+      "bytes": 29804,
+      "sha256": "0c1818a63edc9757f5ea26d5ab647b1d44786aee2e8b47f40ff3ce5755413e71"
+    },
+    {
+      "path": "web/public/media/cooking/couscous_roast_veg-step-3-sequence.webp",
+      "bytes": 322674,
+      "sha256": "b1815c9aaece24d51c683c14ba48cf411ca1eb17f74c1378ca93d0eb29e4d858"
+    },
+    {
+      "path": "web/public/media/cooking/couscous_roast_veg-step-3.webp",
+      "bytes": 66440,
+      "sha256": "a4485cf3fe2ecf609598d69968651067295641fd20a6e7ea2887296044702d20"
+    },
+    {
+      "path": "web/public/media/cooking/date_oat_breakfast-step-1.mp4",
+      "bytes": 306939,
+      "sha256": "e36ac8f2d9898bf1475fd16403a3aebdbad37b856d31628b4d11e84dc80dd3e0"
+    },
+    {
+      "path": "web/public/media/cooking/date_oat_breakfast-step-1.webp",
+      "bytes": 30740,
+      "sha256": "28dc69ee448e1d1af80b9ff5d56fa954e18563ed02839fdb8d39808715c97d24"
+    },
+    {
+      "path": "web/public/media/cooking/date_oat_breakfast-step-2-sequence.webp",
+      "bytes": 226476,
+      "sha256": "5de7ab0b44e5bfdd3e0a0da2459466d4870310fa687a055791e6a0a2170118a1"
+    },
+    {
+      "path": "web/public/media/cooking/date_oat_breakfast-step-2.webp",
+      "bytes": 65362,
+      "sha256": "ad220aa855940476b8a8ad28fa4ba44aa9d6e90d0a699b27034063f81d4af5d3"
+    },
+    {
+      "path": "web/public/media/cooking/date_oat_breakfast-step-3.mp4",
+      "bytes": 295048,
+      "sha256": "f77b4c861ba18264be736400293cfcab59b2d4162642a0bbfd66c0d804074f13"
+    },
+    {
+      "path": "web/public/media/cooking/date_oat_breakfast-step-3.webp",
+      "bytes": 28936,
+      "sha256": "b772b0ac875cd3deb74cc58b6ec93d5822542a59f3f1558546b93df80c13932d"
+    },
+    {
+      "path": "web/public/media/cooking/fatteh_chickpea-step-1.mp4",
+      "bytes": 492214,
+      "sha256": "747a45e93cfa85aaeeadcb8a1da266a936e90873769d9b57e8c16dc78d7c80a2"
+    },
+    {
+      "path": "web/public/media/cooking/fatteh_chickpea-step-1.webp",
+      "bytes": 29416,
+      "sha256": "34c0aa8ffa0ba825848d33306da7172ec3d96cf5a74806f87fd64818890f6240"
+    },
+    {
+      "path": "web/public/media/cooking/fatteh_chickpea-step-2-sequence.webp",
+      "bytes": 174190,
+      "sha256": "41cd2cae7f54daa99d978642b815b02d407c0352d73de2cd53a94bd563b6bcaa"
+    },
+    {
+      "path": "web/public/media/cooking/fatteh_chickpea-step-2.webp",
+      "bytes": 40916,
+      "sha256": "effb8f6d33610884bfd8dd9546c7e12d511e808d66aa6a96be36351371a056ab"
+    },
+    {
+      "path": "web/public/media/cooking/fatteh_chickpea-step-3-sequence.webp",
+      "bytes": 229084,
+      "sha256": "b8feedba37bf57801d72a038fb729d5a51c915797ac48f20c54c34b46787058d"
+    },
+    {
+      "path": "web/public/media/cooking/fatteh_chickpea-step-3.webp",
+      "bytes": 51328,
+      "sha256": "5507225d65bfb2468ecb65d75d9a130651df3770698a58c67eb935f485db5ec0"
+    },
+    {
+      "path": "web/public/media/cooking/fish_tahini_tray-step-1.mp4",
+      "bytes": 296302,
+      "sha256": "e4dcc2f378b104904ee7b4112d4b815e24ef76feed2ea42d20a5f09609ba3d99"
+    },
+    {
+      "path": "web/public/media/cooking/fish_tahini_tray-step-1.webp",
+      "bytes": 22444,
+      "sha256": "e22133bdc0df347248de3876cafb8ffef02ae9092ee3a2fd445ad908d5dd259c"
+    },
+    {
+      "path": "web/public/media/cooking/fish_tahini_tray-step-2.mp4",
+      "bytes": 575311,
+      "sha256": "dc6fc78f87b87a1475f57758faee317c546b70b72d72353d47c1d94c72996bfa"
+    },
+    {
+      "path": "web/public/media/cooking/fish_tahini_tray-step-2.webp",
+      "bytes": 26108,
+      "sha256": "038d42785675b943f420acf727959d44893bbd59d57aaeb8a807aafe7a5c70f5"
+    },
+    {
+      "path": "web/public/media/cooking/fish_tahini_tray-step-3.mp4",
+      "bytes": 282305,
+      "sha256": "14a4bbb73b511dc4ef900c211be3a723e94bc13191f710eff0c7b812a65bcd25"
+    },
+    {
+      "path": "web/public/media/cooking/fish_tahini_tray-step-3.webp",
+      "bytes": 38446,
+      "sha256": "03ace97cb4bfee60f7e00eadba035f550d50e58974eff92b0781d72a40d6aa6f"
+    },
+    {
+      "path": "web/public/media/cooking/herb_omelette-step-1-sequence.webp",
+      "bytes": 214820,
+      "sha256": "6dfbcc3b997df1743b1fef6375ebb117db54f75337043faad1fb10f59c2afd0b"
+    },
+    {
+      "path": "web/public/media/cooking/herb_omelette-step-1.webp",
+      "bytes": 50266,
+      "sha256": "75071b4cb1a99284d5e7bc83c808701fdc27ee5c2c86fc92efbc9ad53fcc413b"
+    },
+    {
+      "path": "web/public/media/cooking/herb_omelette-step-2.mp4",
+      "bytes": 569066,
+      "sha256": "adc829a707d0a791f89a798cd10d1239f60087bb68724aa80f8ad45200a277c9"
+    },
+    {
+      "path": "web/public/media/cooking/herb_omelette-step-2.webp",
+      "bytes": 26494,
+      "sha256": "2a399d8b5edb77f35b642ead5a34b4d6623f28115811abebc3de66baab651331"
+    },
+    {
+      "path": "web/public/media/cooking/herb_omelette-step-3.mp4",
+      "bytes": 216986,
+      "sha256": "c093777dd17bddd4eecb548ca69d2be050b35ca5f1bca3bafd2ffb90a3a9df5e"
+    },
+    {
+      "path": "web/public/media/cooking/herb_omelette-step-3.webp",
+      "bytes": 26570,
+      "sha256": "20e1c858feec41e4dd2eac0235aa8f57d1f5c59c52ee3b28bcc4baa662ec5f81"
+    },
+    {
+      "path": "web/public/media/cooking/hummus_bowl-step-1.mp4",
+      "bytes": 300133,
+      "sha256": "84784afafb74dd0e04bdbb5c206e0e8b69e49f7f47bf924e32bcb0d4a3e8b00d"
+    },
+    {
+      "path": "web/public/media/cooking/hummus_bowl-step-1.webp",
+      "bytes": 23304,
+      "sha256": "bea03a893f78aa775391649956137f17c9dab986b625fc338447c6975ef9a69a"
+    },
+    {
+      "path": "web/public/media/cooking/hummus_bowl-step-2-sequence.webp",
+      "bytes": 229414,
+      "sha256": "9035a462101f123e96fb125d670f8137443261f52aca0408398ec3d6fd5936ee"
+    },
+    {
+      "path": "web/public/media/cooking/hummus_bowl-step-2.webp",
+      "bytes": 73802,
+      "sha256": "a7ccb179e7a64ad36598737b71a18034c9f1489df666f0b9f6a478498c93378c"
+    },
+    {
+      "path": "web/public/media/cooking/hummus_bowl-step-3.mp4",
+      "bytes": 410163,
+      "sha256": "4b82e4651023c5dea504dd9ca9a7366d5d9db546f0aaa53dfdad65e12e5b5ede"
+    },
+    {
+      "path": "web/public/media/cooking/hummus_bowl-step-3.webp",
+      "bytes": 23162,
+      "sha256": "a5377ee836da8b7b5c63a22187a793741c6e910f9502a8175a302d555ef1ac7e"
+    },
+    {
+      "path": "web/public/media/cooking/MANIFEST.json",
+      "bytes": 108421,
+      "sha256": "15235ac244e02a890da474ffe2da4bae5d941223915e60bc2ac9182b8e7a64f3"
+    },
+    {
+      "path": "web/public/media/cooking/mujaddara_quick-step-1.mp4",
+      "bytes": 345945,
+      "sha256": "f95c07b03e445fa9d8320b396118c9124b40877f6ce7bda5e7db5f5df5bf4c77"
+    },
+    {
+      "path": "web/public/media/cooking/mujaddara_quick-step-1.webp",
+      "bytes": 26084,
+      "sha256": "2afaa3cebbe62c358ab1b01da8e7068fbca3f21b79e6de25be68c5d480e992f3"
+    },
+    {
+      "path": "web/public/media/cooking/mujaddara_quick-step-2.mp4",
+      "bytes": 340940,
+      "sha256": "01c66f79a1afc6209e871fc61038a20c7d142fb9dcb6ce7ec550e338dcc1af6e"
+    },
+    {
+      "path": "web/public/media/cooking/mujaddara_quick-step-2.webp",
+      "bytes": 25932,
+      "sha256": "26f4b8a3edd77e6982e638000201dd49506eec4adadb9d6f1bfd25b6fb70856c"
+    },
+    {
+      "path": "web/public/media/cooking/mujaddara_quick-step-3.mp4",
+      "bytes": 590537,
+      "sha256": "ed4b5a62fa7a56a09ea0c72ff85020968576c0fcf16ed090d04effbb6515c1bc"
+    },
+    {
+      "path": "web/public/media/cooking/mujaddara_quick-step-3.webp",
+      "bytes": 34032,
+      "sha256": "deed5dadde1a92f24a55859371589012dfcefe5ba86c46f694bcfc82d8f1e897"
+    },
+    {
+      "path": "web/public/media/cooking/mushroom_spinach_wrap-step-1-sequence.webp",
+      "bytes": 273366,
+      "sha256": "05bafbd3c7bc7150524960daf482ab15b3699667198f3e123635250ea5fbab9e"
+    },
+    {
+      "path": "web/public/media/cooking/mushroom_spinach_wrap-step-1.webp",
+      "bytes": 60444,
+      "sha256": "d6065fce722de16811c64ce69eabd9bae66f79deb912d9e4edf1c4bfe449c42a"
+    },
+    {
+      "path": "web/public/media/cooking/mushroom_spinach_wrap-step-2.mp4",
+      "bytes": 643550,
+      "sha256": "3128150c430658207858c5eea08b903c8081a9e361346db593439f7916759da3"
+    },
+    {
+      "path": "web/public/media/cooking/mushroom_spinach_wrap-step-2.webp",
+      "bytes": 32992,
+      "sha256": "bab14c6bae122da2e2908bc9e99809d65dada9d309d01db4edf58fbac28f9e37"
+    },
+    {
+      "path": "web/public/media/cooking/mushroom_spinach_wrap-step-3.mp4",
+      "bytes": 624440,
+      "sha256": "87d28cd88080f7f3599c94be8ec6e860f4ec93b156159da10a7cca2e9abc6302"
+    },
+    {
+      "path": "web/public/media/cooking/mushroom_spinach_wrap-step-3.webp",
+      "bytes": 35764,
+      "sha256": "6fd57493c92849985bd90dd5eb63e50af779b383c6cd2554bd32fd15451b788e"
+    },
+    {
+      "path": "web/public/media/cooking/pea_spinach_rice-step-1.mp4",
+      "bytes": 280938,
+      "sha256": "40ad6770bd2845ed9133cb0f52e08ff8a1fb4d383b8e0c27fd614ae9ce80f08e"
+    },
+    {
+      "path": "web/public/media/cooking/pea_spinach_rice-step-1.webp",
+      "bytes": 28502,
+      "sha256": "973e3a820c2bd932a7b876305536566a849995d37e15477882a871134996e822"
+    },
+    {
+      "path": "web/public/media/cooking/pea_spinach_rice-step-2.mp4",
+      "bytes": 655078,
+      "sha256": "f3a1ae85b4d75f3f8fabb9d82974ed9ecd953bc3a9c74462aebbe45b1341ae35"
+    },
+    {
+      "path": "web/public/media/cooking/pea_spinach_rice-step-2.webp",
+      "bytes": 27588,
+      "sha256": "abbb4b6bc33a57d4b365da63dbac36b66c20198c1bb721a8314bf44d5fb63dad"
+    },
+    {
+      "path": "web/public/media/cooking/pea_spinach_rice-step-3.mp4",
+      "bytes": 435822,
+      "sha256": "4806bcc0c6ff8e88a0e0ae860a12cc06e772be84bb3c59d1e4631150a955bb02"
+    },
+    {
+      "path": "web/public/media/cooking/pea_spinach_rice-step-3.webp",
+      "bytes": 23996,
+      "sha256": "ac1ed9a18c93401625e00bb08bef30d24e2f09b8f0aae12ec4a9d295bf398806"
+    },
+    {
+      "path": "web/public/media/cooking/red_lentil_soup-step-1.mp4",
+      "bytes": 277788,
+      "sha256": "66dc8b2db5421610a2e3c0afaa333fa6002f1cddf253a7492101005538995bd4"
+    },
+    {
+      "path": "web/public/media/cooking/red_lentil_soup-step-1.webp",
+      "bytes": 30972,
+      "sha256": "50b58ad70f6f0c4d720579b8f6c05a177ce9ed79498247f959210e80dcb21a3d"
+    },
+    {
+      "path": "web/public/media/cooking/red_lentil_soup-step-2-sequence.webp",
+      "bytes": 239194,
+      "sha256": "d7f3b829b6aa67ec4591dc4ff328dd2001b899b0638f01997aecb98cf9ea9eef"
+    },
+    {
+      "path": "web/public/media/cooking/red_lentil_soup-step-2.webp",
+      "bytes": 58594,
+      "sha256": "6a20f846fee2622fc57a15c293452fb27fd7fc523588cc4dcbb1cc05a776e46a"
+    },
+    {
+      "path": "web/public/media/cooking/red_lentil_soup-step-3.mp4",
+      "bytes": 300382,
+      "sha256": "2d12d029d7e7915f0c065899df354cbe41054a065fe93f3b1472484529bbe191"
+    },
+    {
+      "path": "web/public/media/cooking/red_lentil_soup-step-3.webp",
+      "bytes": 18258,
+      "sha256": "33285bbb429de75627a08279451024c83e58a879e08f0a20f2edc29509421e9e"
+    },
+    {
+      "path": "web/public/media/cooking/shakshuka_simple-step-1.mp4",
+      "bytes": 307087,
+      "sha256": "c1cb1639c2435bfd51a11c10927beb8460dfe25d522be6d82ba831de62041007"
+    },
+    {
+      "path": "web/public/media/cooking/shakshuka_simple-step-1.webp",
+      "bytes": 23126,
+      "sha256": "2de9df45732a9eac7d0b2d48d2d4ec5ce31b16664df91183b3421dec530022c4"
+    },
+    {
+      "path": "web/public/media/cooking/shakshuka_simple-step-2.mp4",
+      "bytes": 632745,
+      "sha256": "3a1edeaca54ae364059b098c16c264d956ee8a0bc375e13805f5280b8e221712"
+    },
+    {
+      "path": "web/public/media/cooking/shakshuka_simple-step-2.webp",
+      "bytes": 27762,
+      "sha256": "678b1c7b33d2faf673be78f7c574d48d8b0c0d26cbbb32ae72d9a5a4ab9fd1e3"
+    },
+    {
+      "path": "web/public/media/cooking/shakshuka_simple-step-3-sequence.webp",
+      "bytes": 259172,
+      "sha256": "8790611bd2cf1d7b6f5edea4e03754189b79521d515697000a28e419b3f7b991"
+    },
+    {
+      "path": "web/public/media/cooking/shakshuka_simple-step-3.webp",
+      "bytes": 64992,
+      "sha256": "517be150b81060f8a7cdb05aaf78398e56396bd4b078eef02e9673107eda9f35"
+    },
+    {
+      "path": "web/public/media/cooking/sheet_pan_chicken_veg-step-1.mp4",
+      "bytes": 330568,
+      "sha256": "7f9dc69ad330ac78af8e9cd0beeddcbf6d92b98f35b4032a54c8ccd6d94ed5f7"
+    },
+    {
+      "path": "web/public/media/cooking/sheet_pan_chicken_veg-step-1.webp",
+      "bytes": 18720,
+      "sha256": "270d073beab8fe30f0fa6a7c60fba90c09ebac791a546fb0aef9a787d64d93f0"
+    },
+    {
+      "path": "web/public/media/cooking/sheet_pan_chicken_veg-step-2.mp4",
+      "bytes": 387126,
+      "sha256": "13978ddb644eaef4d08b1dd4881e7eefabdcfa8aef5132d895d4ec4a9a973fd8"
+    },
+    {
+      "path": "web/public/media/cooking/sheet_pan_chicken_veg-step-2.webp",
+      "bytes": 47202,
+      "sha256": "061cd76142840896baa8f680aece3b981b5d2a129e32ab871f54a70efb22a1b7"
+    },
+    {
+      "path": "web/public/media/cooking/sheet_pan_chicken_veg-step-3.mp4",
+      "bytes": 339556,
+      "sha256": "3d6a6b532df814cd25f70d311b01ea15f2704c7754af42208ef73d666773d7cb"
+    },
+    {
+      "path": "web/public/media/cooking/sheet_pan_chicken_veg-step-3.webp",
+      "bytes": 38346,
+      "sha256": "e025040d1dfbeff8951e0de5cd2b66c30206381eea04e876703a3e1b1b49e462"
+    },
+    {
+      "path": "web/public/media/cooking/sweet_potato_chickpea_tray-step-1.mp4",
+      "bytes": 805629,
+      "sha256": "c909589dbae8ed3d0e19c3c8186bd362b04800f10795b39bf52831311536d0c2"
+    },
+    {
+      "path": "web/public/media/cooking/sweet_potato_chickpea_tray-step-1.webp",
+      "bytes": 56430,
+      "sha256": "89cfb7af3e15f322dba0c955962a501807579119abf26b62f7732746653aa1ad"
+    },
+    {
+      "path": "web/public/media/cooking/sweet_potato_chickpea_tray-step-2.mp4",
+      "bytes": 270594,
+      "sha256": "5e52d01a2658a636325fd60b99bbed0cee9741dde04d6df04d475b80473bcedb"
+    },
+    {
+      "path": "web/public/media/cooking/sweet_potato_chickpea_tray-step-2.webp",
+      "bytes": 37206,
+      "sha256": "3f1be2e0f8ab1289530bca5dc07d53ed3c48f168ae09967be931928a489a6c2d"
+    },
+    {
+      "path": "web/public/media/cooking/sweet_potato_chickpea_tray-step-3-sequence.webp",
+      "bytes": 249346,
+      "sha256": "f9a58d6084b31ffa4e06238cef9d9abd0b7e024551391ee93b0eac36c7a45a4f"
+    },
+    {
+      "path": "web/public/media/cooking/sweet_potato_chickpea_tray-step-3.webp",
+      "bytes": 62566,
+      "sha256": "1f8dab8c4efc7a0b6a80dddee44f05ff767eb73f48dc28ff142c65607906b1ed"
+    },
+    {
+      "path": "web/public/media/cooking/tomato_basil_pasta-step-1.mp4",
+      "bytes": 238945,
+      "sha256": "d786e242f407aeefeb789bf055638186b9666edfedc75e85e480b144337d6824"
+    },
+    {
+      "path": "web/public/media/cooking/tomato_basil_pasta-step-1.webp",
+      "bytes": 28134,
+      "sha256": "594a6b1597d35136f4bae596c2c746b26720abec1bcc338d6647e7c37c87aedf"
+    },
+    {
+      "path": "web/public/media/cooking/tomato_basil_pasta-step-2.mp4",
+      "bytes": 527329,
+      "sha256": "579e8de01b83d59495287e50f9b6c8c6c25a95e861dc19db30f5a9b6b81188b5"
+    },
+    {
+      "path": "web/public/media/cooking/tomato_basil_pasta-step-2.webp",
+      "bytes": 25814,
+      "sha256": "d86d693d1f316a3f5eabafc9d8b70fac988a190e98d8e5dd8c14f6d590e255d3"
+    },
+    {
+      "path": "web/public/media/cooking/tomato_basil_pasta-step-3.mp4",
+      "bytes": 508649,
+      "sha256": "d722069d00ebe247df9c51b3d052186664192b643eace776a2bbb40f82de5b76"
+    },
+    {
+      "path": "web/public/media/cooking/tomato_basil_pasta-step-3.webp",
+      "bytes": 28794,
+      "sha256": "10798824c961b3b982bc97886cbf09c64bc9e9b327465aba9bdc80798aa8d0f5"
+    },
+    {
+      "path": "web/public/media/cooking/tomato_cucumber_salad-step-1.mp4",
+      "bytes": 504614,
+      "sha256": "e5e7a9005e3e1b13388ee8c89c22663d0197d7feef87f7f07fd691346f4aae9e"
+    },
+    {
+      "path": "web/public/media/cooking/tomato_cucumber_salad-step-1.webp",
+      "bytes": 34606,
+      "sha256": "a4337b26eb684d567ea77592e33e8408db61da01deaf9bda810a95add6bb90a8"
+    },
+    {
+      "path": "web/public/media/cooking/tomato_cucumber_salad-step-2.mp4",
+      "bytes": 432679,
+      "sha256": "f898c93c665df3b6a54bdc64988b46e04e2101245c796d8c101160994e4d4ef4"
+    },
+    {
+      "path": "web/public/media/cooking/tomato_cucumber_salad-step-2.webp",
+      "bytes": 30954,
+      "sha256": "8646b64de871a99f3255e7c8dbc4e943d9109136246669b85bd350f91708838f"
+    },
+    {
+      "path": "web/public/media/cooking/tomato_cucumber_salad-step-3.mp4",
+      "bytes": 490686,
+      "sha256": "67185cbb39dfb504afa5d22c0b0a7d5c9171eaf70f56b64dee0777332e58b146"
+    },
+    {
+      "path": "web/public/media/cooking/tomato_cucumber_salad-step-3.webp",
+      "bytes": 29128,
+      "sha256": "71047db36dc0859ae59b93b970d914454a884ebb3cbb48884c9b7aeee401ac00"
+    },
+    {
+      "path": "web/public/media/cooking/tuna_white_bean_salad-step-1.mp4",
+      "bytes": 243213,
+      "sha256": "e3ef94d482b365fa9ba7c1b61cc1ed566180c2f7db1de2b9ee52dc8fb9f10b38"
+    },
+    {
+      "path": "web/public/media/cooking/tuna_white_bean_salad-step-1.webp",
+      "bytes": 38258,
+      "sha256": "049b0727945c55cf2a64aeb7f7ba0b5a7a5e2e49acb738c23b4069bdc5ffe3aa"
+    },
+    {
+      "path": "web/public/media/cooking/tuna_white_bean_salad-step-2.mp4",
+      "bytes": 341314,
+      "sha256": "85a9ef9458a549f0d1314f93dc5b65f7f50f2b9f7d293b710bb2074a83d0c44e"
+    },
+    {
+      "path": "web/public/media/cooking/tuna_white_bean_salad-step-2.webp",
+      "bytes": 42218,
+      "sha256": "cb47dda78e245ca4d93901eb47285bf577d8dbd8a4495774222550a25a7c8921"
+    },
+    {
+      "path": "web/public/media/cooking/tuna_white_bean_salad-step-3.mp4",
+      "bytes": 558935,
+      "sha256": "d77071bf0815d46beb852794fd3ae98adf15ecb0a6c14c6aa949d47cbae41795"
+    },
+    {
+      "path": "web/public/media/cooking/tuna_white_bean_salad-step-3.webp",
+      "bytes": 28230,
+      "sha256": "f0f116f4fc2fba3ae7501a0bda264de26ef8c03bb87f139ca80a6eba89915380"
+    },
+    {
+      "path": "web/public/media/cooking/zaatar_labneh_toast-step-1.mp4",
+      "bytes": 350198,
+      "sha256": "72d4da49879683dc4aef97713b97f09b6fa92b74362acf3dc4f0c7f5da1c7397"
+    },
+    {
+      "path": "web/public/media/cooking/zaatar_labneh_toast-step-1.webp",
+      "bytes": 25704,
+      "sha256": "c9af6bcb419973ca75d91ae8ab9fc7829026766b1595220a0123d94aa60755d7"
+    },
+    {
+      "path": "web/public/media/cooking/zaatar_labneh_toast-step-2.mp4",
+      "bytes": 329929,
+      "sha256": "e8296d04b11cfe18ed8baaf88a1ff6dc7b21a2b39a93e2e5db0f9093ef5849f0"
+    },
+    {
+      "path": "web/public/media/cooking/zaatar_labneh_toast-step-2.webp",
+      "bytes": 31036,
+      "sha256": "ecea2f970ff5d446d9bc06e95c6d95dda374a48d652c07cd9336ad704cb2d162"
+    },
+    {
+      "path": "web/public/media/cooking/zaatar_labneh_toast-step-3.mp4",
+      "bytes": 235883,
+      "sha256": "2d2cc9b310e2b68c281efd326e73465c933ede0312066c947ccd2e48ad452709"
+    },
+    {
+      "path": "web/public/media/cooking/zaatar_labneh_toast-step-3.webp",
+      "bytes": 34036,
+      "sha256": "a5cd5fbcf14c72a56aa68c5b7dc3fc90ab7fc20c3900bf1906c4b62d40e2614b"
     }
   ]
 }
