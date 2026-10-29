@@ -1,4 +1,13 @@
-# M7.1 hang regression
+# M9 cooking phone check
+
+Install M9 over Nomli Test. No reset, rescan or new API key. Browser checks and 350 automated tests passed; these checks cover physical Android behavior.
+
+1. Open a ready recipe. Prepare its visual ingredient cards and tools, then start. Confirm large instructions, working Previous/Next, scrolling and readable amounts with your phone's font size.
+2. Start/pause a timer; background and reopen Nomli. Check the phone notification and resumed countdown. Timers never start automatically.
+3. Tap Read step. Check the installed phone voice, Stop reading, step changes and background cleanup. Missing speech data should produce a visible error. Ask Zara should prepare an editable question without sending it.
+4. Finish, review actual use and save once. Confirm Kitchen deductions and Recent meals undo. Existing receipt links, photos and measured herb weights remain.
+
+## Historical M7.1 hang regression
 
 1. Install M7.1 over Nomli Test; preserve existing inventory and private connection.
 2. Add an ingredient without a photo; save and reopen.

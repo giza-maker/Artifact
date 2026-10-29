@@ -1,14 +1,14 @@
-# Nomli kitchen MVP, M8.4 bilingual receipt cooking links
+# Nomli kitchen MVP, M9 guided cooking
 
-Single-user local kitchen inventory with reviewed receipt recognition, curated cooking and live Zara assistance. M7 adds local ingredient thumbnails, artwork for every recipe, chronological Zara chat, mobile selector sheets and cleaner cooking screens. Optional Android speech-to-text feeds reviewed Zara questions. Zara sends explicitly requested kitchen context through the paired Cloudflare service to Gemini. Proposed quantity or recipe changes require separate review and confirmation. M3 cooking and the protected M2 receipt workflow remain available.
+Single-user local kitchen inventory with reviewed receipt recognition, visual guided cooking and live Zara assistance. Cooking now has visual ingredient preparation cards, readable 20px instructions, prominent action titles, dish photography, numbered progress and heat cues. Optional timers use recipe-stated presets or your own duration and start only on tap. Read step uses the phone’s configured speech service, with Stop reading and cleanup on step changes, navigation, dialogs and backgrounding. Ask Zara prepares a current-step question; only Send shares it. Final review keeps editable actual-use amounts, one confirmed stock update and undo.
 
-Validation package: `com.nomli.mvp.validation`, app label **Nomli Test**, version **0.9.4-m8.4** (`versionCode` 15). It uses the M1/M2 validation update channel and remains separate from the earlier demo package. Published milestone APKs use the retained local validation signing key; GitHub Actions does not receive that key.
+Validation package: `com.nomli.mvp.validation`, app label **Nomli Test**, version **0.10.0-m9** (`versionCode` 16). It uses the M1/M2 validation update channel and remains separate from the earlier demo package. Published milestone APKs use the retained local validation signing key; GitHub Actions does not receive that key.
 
 Inventory works offline. Receipt recognition and live Zara need internet access. Current recognition service is `https://nomli-scan-proxy.ahmed-aljazayeerly.workers.dev`, with Gemini 3.1 Flash-Lite for receipts and Gemini 3.5 Flash-Lite for grocery/expiry scans, receipt fallback and Zara. Provider credentials are encrypted server-side and never bundled in the app.
 
-Verified M8.4: [Nomli-M8.4.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m8.4-v0.9.4/Nomli-M8.4.apk). The six bilingual Carrefour receipt lines now link automatically to Cook. Herb bunches appear as present with quick measured-weight entry; quantities change only after confirmed cooking. Salt artwork handles the old category mismatch. Utilities shows v0.9.4. Update existing Nomli Test; no reset or rescan required.
+Verified M9: [Nomli-M9.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m9-v0.10.0/Nomli-M9.apk). Update existing Nomli Test; no reset, rescan or new key required. The M8.4 bilingual receipt and measured-weight fixes remain included.
 
-Historical M7 APK has the plugin-loading defect. Use M8.4 above; archived evidence remains in docs/APK.md.
+Historical M7 APK has the plugin-loading defect. Use M9 above; archived evidence remains in docs/APK.md.
 
 Historical verified M6 APK: [Nomli-M6.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m6-v0.7.0/Nomli-M6.apk). See the [phone acceptance checklist](docs/TESTING.md).
 

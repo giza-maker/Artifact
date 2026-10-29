@@ -1,4 +1,18 @@
-# M8.4 exact bilingual receipt — verified
+# M9 guided cooking — verified
+
+Cooking had compact text and dominant timer/review forms. The active task now has a large instruction card, visual context and persistent next action.
+
+Cooking now has visual ingredient preparation cards, readable 20px instructions, prominent action titles, dish photography, numbered progress and heat cues. Optional timers use recipe-stated presets or your own duration and start only on tap. Read step uses the phone’s configured speech service, with Stop reading and cleanup on step changes, navigation, dialogs and backgrounding. Ask Zara prepares a current-step question; only Send shares it. Final review keeps editable actual-use amounts, one confirmed stock update and undo.
+
+Timer rollback recovery preserves alert ownership after failed saves; restoration failures show a foreground-countdown warning.
+
+Source 23d58f76ec11f854a828f871c40093b5aae54724; successful CI 40796074798 (4m 22s). All 350 JavaScript tests, content/art validation, Vite build, Capacitor sync and Android compilation pass. APK 70,402,992 bytes; SHA-256 542756b11ea90589866cdd88cb3384e7413363dbb23c538249f5deee055d6c2c. Retained certificate SHA-256 8c02c3045c97327f5415451feb9ccb0db326322b90d460dde9f28a7c0b559ef0; v2/v3 signatures, 16 KB alignment and ZIP CRC verified. All 111 production web assets match local dist; two empty Cordova placeholders expected. Configured secrets and QA harness absent. Published size/digest match local APK.
+
+Browser QA at 390 × 844 and 320 × 568 verified readable instructions, reachable sticky controls, scrollable ingredients/review, no horizontal overflow, preparation confirmations, timer start/pause/reload, next/previous steps, overview dialog, Zara draft/return, final confirmation, exact six-item deduction and undo. Production Capacitor wrappers and Android bridge used synthetic native transport, including explicit speech stop, step cleanup and a retryable speech-engine error. The bilingual Carrefour fixture used synthetic measured herb weights (30 g/bunch and 20 g/bunch), never inferred in production. Reduced-motion rules were reviewed. Physical Android TTS quality, hardware/lifecycle and update acceptance remain phone checks.
+
+Scanner/assistant Worker d3b10002-0f5c-45f7-ae0f-afe19040bd65 remains unchanged.
+
+## Historical M8.4 exact bilingual receipt — verified
 
 The supplied Carrefour receipt exposed the actual M8.3 failure: English and Arabic halves were normalized into one unknown phrase. Retail word orders and Bunch labels also lacked exact forms. All six saved names failed automatic linking despite valid quantities. Herb bunches additionally have no known gram weight; that is a distinct conversion requirement.
 
