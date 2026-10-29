@@ -1,4 +1,17 @@
-# M11.1 cooking and Zara phone check
+# M11.2 cooking chat sheet phone check
+
+Install M11.2 over Nomli Test. No reset, rescan or new API key.
+
+1. In preparation, cooking and actual-use review, open Zara. The current screen must remain visible behind a sheet; URL and step must stay unchanged. Close with Back to cooking, backdrop, Escape or device Back, then reopen the same conversation.
+2. Keep two preparation selections or an edited actual-use quantity before opening chat. Send a question, close while pending, reopen after completion: those edits and the conversation must remain intact.
+3. Open Zara settings above the sheet. Back closes settings first, retaining the sheet and typed draft. Full Zara navigation must close/remove the sheet without duplicate textareas or labels.
+4. Start a timer, open chat, and type while it expires. Timer completion must appear inside the sheet without losing focus or text. Closing chat restores correct Start/Pause controls.
+5. Start voice capture in the sheet, close it, and reopen voice: capture must have stopped and typed text must remain. Test real microphone permissions and keyboard layout on the phone.
+6. Verify narrow and short viewports, independently scrolling conversation/voice controls, reachable Send/Back actions, focus restoration and reduced motion. Cooking media should pause under chat and preserve manual pause.
+
+Browser checks use controlled native transport and assistant responses. Physical Android keyboard, Back and update acceptance remain device checks.
+
+## Historical M11.1 cooking and Zara phone check
 
 Install M11.1 over Nomli Test. No reset, rescan or new API key.
 

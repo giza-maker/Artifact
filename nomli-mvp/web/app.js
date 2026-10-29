@@ -95,6 +95,8 @@ import {
   renderCookingChatCoach,
 } from "./cooking-chat.js";
 import "./cooking-chat.css";
+import { renderCookingChatPanelContext } from "./cooking-chat-panel.js";
+import "./cooking-chat-panel.css";
 import { estimateRecipeCalories } from "./nutrition.js";
 import {
   createCalorieEntry,
@@ -169,6 +171,10 @@ import packageInfo from "../package.json" with { type: "json" };
   ];
   const view = $("#view"),
     modal = $("#modal");
+  const cookingChatPanel = $("#cooking-chat-panel");
+  let cookingChatFocus = null;
+  let cookingChatScroll = null;
+  let cookingChatViewportFrame = null;
   let cookingMediaCleanup = () => {};
   let calorieDate = localDateKey();
   let calorieFollowToday = true;
@@ -208,12 +214,13 @@ import packageInfo from "../package.json" with { type: "json" };
   const voice = createVoiceController({
     getNative: () => window.NomliNative,
     onChange(state) {
-      if (typeof S === "undefined" || S.route !== "assistant") return;
+      if (typeof S === "undefined" || !assistantSurfaceVisible()) return;
       if (
         state.phase === "review" &&
         document.activeElement?.id === "voice-transcript"
       )
         return;
+      if (cookingChatPanel.open) return renderCookingChatPanel();
       const focused = document.activeElement;
       const thread = $(".zara-thread");
       const scroll = thread ? thread.scrollTop : null;
@@ -261,6 +268,145 @@ import packageInfo from "../package.json" with { type: "json" };
       assistantUnread = false;
       assistantContext = null;
       assistantReview = null;
+    }
+  }
+  function assistantSurfaceVisible() {
+    return S.route === "assistant" || cookingChatPanel.open;
+  }
+  function chatHistoryState() {
+    return history.state && typeof history.state === "object"
+      ? history.state
+      : {};
+  }
+  function withoutChatHistory() {
+    const { nomliCookingChat, nomliCookingChatModal, ...rest } =
+      chatHistoryState();
+    return Object.keys(rest).length ? rest : null;
+  }
+  function updateCookingChatViewport() {
+    if (!cookingChatPanel.open || cookingChatViewportFrame !== null) return;
+    cookingChatViewportFrame = requestAnimationFrame(() => {
+      cookingChatViewportFrame = null;
+      if (!cookingChatPanel.open) return;
+      const viewport = window.visualViewport;
+      const height = viewport?.height ?? window.innerHeight;
+      const bottom = Math.max(
+        0,
+        window.innerHeight - height - (viewport?.offsetTop ?? 0),
+      );
+      cookingChatPanel.classList.toggle("is-compact", height < 560);
+      cookingChatPanel.classList.toggle("is-ultra-compact", height < 280);
+      cookingChatPanel.style.setProperty(
+        "--chat-viewport-height",
+        `${height}px`,
+      );
+      cookingChatPanel.style.setProperty(
+        "--chat-viewport-bottom",
+        `${bottom}px`,
+      );
+    });
+  }
+  function renderCookingChatPanel() {
+    if (!cookingChatPanel.open) return;
+    if (!S.cooking || !["cooking", "review"].includes(S.route))
+      return closeCookingChatPanel();
+    const focused = document.activeElement;
+    const hadPanelFocus = cookingChatPanel.contains(focused);
+    const focusId = cookingChatPanel.contains(focused) ? focused?.id : null;
+    const focusAction = cookingChatPanel.contains(focused)
+      ? focused?.dataset?.action
+      : null;
+    const selection =
+      typeof focused?.selectionStart === "number"
+        ? [focused.selectionStart, focused.selectionEnd]
+        : null;
+    const thread = $(".zara-thread", cookingChatPanel);
+    const followLatest = thread
+      ? thread.scrollHeight - thread.scrollTop - thread.clientHeight < 64
+      : cookingChatScroll === null;
+    const scroll = thread?.scrollTop ?? cookingChatScroll;
+    cookingChatPanel.innerHTML = `<div class="cooking-chat-panel-shell"><div class="cooking-chat-panel-topbar"><b class="cooking-chat-panel-mini-title">Zara</b><span class="cooking-chat-panel-handle" aria-hidden="true"></span><button type="button" class="btn btn-quiet cooking-chat-panel-close" data-action="cook-chat-close">${icon("arrow-down")}<span>Back to cooking</span></button></div>${renderCookingChatPanelContext({ session: S.cooking, recipe: recipe(S.cooking.rid), seconds: timerSeconds(), esc, icon })}<div class="cooking-chat-panel-body" data-screen="assistant">${assistantView({ panel: true })}</div></div>`;
+    initMobileSelects(cookingChatPanel);
+    const newThread = $(".zara-thread", cookingChatPanel);
+    if (newThread)
+      newThread.scrollTop = followLatest
+        ? newThread.scrollHeight
+        : (scroll ?? newThread.scrollHeight);
+    const target =
+      (focusId ? document.getElementById(focusId) : null) ||
+      (focusAction
+        ? $(`[data-action="${focusAction}"]`, cookingChatPanel)
+        : null) ||
+      (hadPanelFocus
+        ? $(
+            '[data-action="voice-finish"],[data-action="voice-cancel"]',
+            cookingChatPanel,
+          ) || $(".cooking-chat-panel-close", cookingChatPanel)
+        : null);
+    if (target && !modal.open) {
+      target.focus({ preventScroll: true });
+      if (selection && typeof target.setSelectionRange === "function")
+        target.setSelectionRange(...selection);
+    }
+    updateCookingChatViewport();
+  }
+  function openCookingChatPanel({ fromHistory = false } = {}) {
+    if (!S.cooking || !["cooking", "review"].includes(S.route))
+      return navigate("assistant");
+    if (cookingChatPanel.open) return;
+    cookingChatFocus = document.activeElement;
+    if (assistantUnread) cookingChatScroll = null;
+    assistantUnread = false;
+    void cookingSpeech.stop();
+    cookingMediaCleanup.suspend?.();
+    cookingChatPanel.showModal();
+    renderCookingChatPanel();
+    if (!fromHistory && chatHistoryState().nomliCookingChat !== S.cooking.id)
+      history.pushState(
+        { ...chatHistoryState(), nomliCookingChat: S.cooking.id },
+        "",
+        location.href,
+      );
+    window.visualViewport?.addEventListener(
+      "resize",
+      updateCookingChatViewport,
+    );
+    window.visualViewport?.addEventListener(
+      "scroll",
+      updateCookingChatViewport,
+    );
+    window.addEventListener("resize", updateCookingChatViewport);
+    $(".cooking-chat-panel-close", cookingChatPanel)?.focus({
+      preventScroll: true,
+    });
+  }
+  function closeCookingChatPanel({ restoreFocus = true } = {}) {
+    if (!cookingChatPanel.open) return;
+    cookingChatScroll = $(".zara-thread", cookingChatPanel)?.scrollTop ?? null;
+    cookingChatPanel.close();
+    cancelVoice();
+    voiceExpanded = false;
+    cookingChatPanel.innerHTML = "";
+    window.visualViewport?.removeEventListener(
+      "resize",
+      updateCookingChatViewport,
+    );
+    window.visualViewport?.removeEventListener(
+      "scroll",
+      updateCookingChatViewport,
+    );
+    window.removeEventListener("resize", updateCookingChatViewport);
+    if (cookingChatViewportFrame !== null)
+      cancelAnimationFrame(cookingChatViewportFrame);
+    cookingChatViewportFrame = null;
+    refreshCookingChatControls();
+    refreshCookingTimerControls();
+    if (!modal.open) cookingMediaCleanup.resume?.();
+    if (restoreFocus && !modal.open) {
+      const target = cookingChatFocus?.isConnected
+        ? cookingChatFocus
+        : $('[data-action="cook-chat"]', view);
+      target?.focus({ preventScroll: true });
     }
   }
   let scanDraft = null;
@@ -503,7 +649,7 @@ import packageInfo from "../package.json" with { type: "json" };
       target.setAttribute("aria-invalid", "true");
       target.setAttribute(
         "aria-describedby",
-        box.id || (box.id = "form-error"),
+        box.id || (box.id = `form-error-${crypto.randomUUID()}`),
       );
       initMobileSelects(form);
       const proxy = target.nextElementSibling;
@@ -528,12 +674,21 @@ import packageInfo from "../package.json" with { type: "json" };
     if (modal.dataset.screen === "scan-review" && screen !== "scan-review")
       releaseScanPhoto();
     cancelScan();
-    cancelAssistant(false);
+    if (cookingChatPanel.open) cancelVoice();
+    else cancelAssistant(false);
     if (!modal.open) lastFocus = document.activeElement;
     modal.dataset.screen = screen;
     $("#modal-content").innerHTML =
       `<header class="modal-heading"><h2 id="modal-title">${esc(title)}</h2><button class="icononly" data-action="modal-close" aria-label="Close">${icon("x")}</button></header><div class="modal-body">${body}</div>`;
-    if (!modal.open) modal.showModal();
+    if (!modal.open) {
+      if (cookingChatPanel.open && !chatHistoryState().nomliCookingChatModal)
+        history.pushState(
+          { ...chatHistoryState(), nomliCookingChatModal: true },
+          "",
+          location.href,
+        );
+      modal.showModal();
+    }
     initMobileSelects(modal);
     hydratePhotos(modal);
     $("[data-action='modal-close']", modal)?.focus();
@@ -578,7 +733,7 @@ import packageInfo from "../package.json" with { type: "json" };
   }
   function mountView({ chatScroll = null } = {}) {
     cookingMediaCleanup = mountCookingMedia(view);
-    if (modal.open) cookingMediaCleanup.suspend?.();
+    if (modal.open || cookingChatPanel.open) cookingMediaCleanup.suspend?.();
     $(".app-device")?.classList.toggle(
       "is-cooking-focus",
       Boolean($(".cooking-experience", view)),
@@ -591,6 +746,13 @@ import packageInfo from "../package.json" with { type: "json" };
   }
   function navigate(route, { keepCalorieDate = false } = {}) {
     if (!routes.includes(route)) return;
+    const replaceChatHistory = Boolean(chatHistoryState().nomliCookingChat);
+    if (replaceChatHistory)
+      history.replaceState(withoutChatHistory(), "", location.href);
+    if (cookingChatPanel.open) {
+      if (modal.open) modal.close();
+      closeCookingChatPanel({ restoreFocus: false });
+    }
     if (route === "calories" && S.route !== "calories" && !keepCalorieDate)
       calorieFollowToday = true;
     if (
@@ -607,7 +769,8 @@ import packageInfo from "../package.json" with { type: "json" };
     voiceExpanded = false;
     S.route = route;
     backgroundSave();
-    history.pushState(null, "", "#" + route);
+    if (replaceChatHistory) history.replaceState(null, "", "#" + route);
+    else history.pushState(null, "", "#" + route);
     render();
     $(".app-scroll")?.scrollTo(0, 0);
   }
@@ -973,6 +1136,26 @@ import packageInfo from "../package.json" with { type: "json" };
       hasConversation: Boolean(S.chat.length),
     };
   }
+  function refreshCookingTimerControls() {
+    if (!S.cooking || S.cooking.phase !== "cooking") return;
+    const seconds = timerSeconds();
+    const time = `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
+    view
+      .querySelectorAll("[data-timer], [data-timer-summary]")
+      .forEach((el) => {
+        el.textContent = time;
+      });
+    const control = $('[data-action="timer-wall"]', view);
+    if (control)
+      control.textContent = S.cooking.running ? "Pause timer" : "Start timer";
+    const status = $("[data-cook-timer-state]", view);
+    if (status)
+      status.textContent = S.cooking.running
+        ? "Running · check your food as you go"
+        : seconds === 0
+          ? "Timer finished · check your food"
+          : "Starts only when you tap Start timer";
+  }
   function refreshCookingChatControls() {
     const chat = cookingChatState();
     const shortcut = $("[data-cooking-chat-shortcut]", view);
@@ -1176,7 +1359,7 @@ import packageInfo from "../package.json" with { type: "json" };
     }[state.phase];
     return `<section class="voice-panel" aria-labelledby="voice-title"><h3 id="voice-title">Speak to Zara</h3><p id="voice-disclosure" class="details">Your phone’s speech service may process audio online and may need internet or language packs. Nomli receives text. Nothing goes to Zara until you tap Send question.</p><label for="voice-language">Speech language</label><select id="voice-language" aria-describedby="voice-disclosure">${VOICE_LANGUAGES.map((language) => `<option value="${esc(language.id)}"${voiceLanguage === language.id ? " selected" : ""}>${esc(language.id === "en-US" ? "English (US)" : language.label)}</option>`).join("")}</select><p id="voice-status" class="voice-status" role="status" aria-live="polite"><span class="voice-indicator ${busy ? "is-active" : ""}" aria-hidden="true"></span>${esc(status)}</p>${state.error ? `<p id="voice-error" class="notice notice-warning" role="alert">${esc(state.error)} Type your question or try Speak again.</p>` : ""}<div class="actions">${!busy && state.phase !== "review" ? `<button type="button" class="btn btn-secondary" data-action="voice-start" aria-describedby="voice-disclosure voice-status${state.error ? " voice-error" : ""}"${assistantAbort ? " disabled" : ""}>Speak</button>` : ""}${state.phase === "listening" ? button("Finish", "voice-finish", "", "btn-primary") : ""}${busy ? button("Cancel voice", "voice-cancel", "", "btn-quiet") : ""}</div>${state.phase === "review" ? `<label for="voice-transcript">Transcript · edit before using</label><textarea id="voice-transcript" rows="4" dir="auto" maxlength="2000" aria-invalid="${!state.transcript.trim()}" aria-describedby="voice-status voice-edit-status voice-use-error">${esc(state.transcript)}</textarea><p id="voice-use-error" class="notice notice-warning" role="alert"${voiceUseError ? "" : " hidden"}>${esc(voiceUseError)}</p><p id="voice-edit-status" class="details">${state.transcript.trim() ? `${state.transcript.length}/2000 characters` : "Enter 1–2000 characters before using transcript."}</p><div class="actions"><button type="button" class="btn btn-secondary" data-action="voice-use"${state.transcript.trim() ? "" : " disabled"}>Use transcript${assistantDraft.trim() ? " · append to question" : ""}</button>${assistantDraft.trim() ? button("Replace question with transcript", "voice-replace", "", "btn-quiet").replace("<button ", `<button${state.transcript.trim() ? "" : " disabled"} `) : ""}${button("Discard transcript", "voice-cancel", "", "btn-quiet")}</div>` : ""}</section>`;
   }
-  function assistantView() {
+  function assistantView({ panel = false } = {}) {
     const connected = Boolean(scanConfig.apiUrl && scanConfig.deviceToken);
     const newest = S.chat.at(-1);
     const savedReply =
@@ -1219,22 +1402,24 @@ import packageInfo from "../package.json" with { type: "json" };
     const pending = assistantAbort
       ? `<article class="message message-user"><span class="sr-only">You</span><p dir="auto">${esc(assistantSentQuestion)}</p></article><div class="message message-zara" role="status"><img class="message-avatar" src="images/zara-96.webp" alt="" width="28" height="28"><div class="zara-typing"><span></span><span></span><span></span><b class="sr-only">Zara is thinking</b></div></div>`
       : "";
-    const context = S.cooking
-      ? renderCookingChatReturn({
-          session: S.cooking,
-          recipe: recipe(S.cooking.rid),
-          esc,
-          icon,
-        })
-      : `<p class="zara-context-summary">${icon("refrigerator")} ${Object.values(S.items).filter((item) => item.qty > 0).length} ingredients in your kitchen</p>`;
+    const context = panel
+      ? ""
+      : S.cooking
+        ? renderCookingChatReturn({
+            session: S.cooking,
+            recipe: recipe(S.cooking.rid),
+            esc,
+            icon,
+          })
+        : `<p class="zara-context-summary">${icon("refrigerator")} ${Object.values(S.items).filter((item) => item.qty > 0).length} ingredients in your kitchen</p>`;
     const empty =
       !S.chat.length && !assistantReply && !assistantAbort
-        ? `<section class="zara-welcome"><img src="images/zara-192.webp" alt="" width="76" height="76"><h2>What’s cooking?</h2><p>Let’s make something with what’s in your kitchen.</p><div class="zara-suggestions">${["What can I cook?", "Help with the current step", "What can I substitute?", "What should I use soon?"].map((q, i) => button(q, "assistant-suggestion", String(i), "btn-quiet")).join("")}</div></section>`
+        ? `<section class="zara-welcome"><img src="images/zara-192.webp" alt="" width="76" height="76"><h2>${panel ? "Need a hand?" : "What’s cooking?"}</h2><p>${panel ? "Ask about this step, timing or ingredients." : "Let’s make something with what’s in your kitchen."}</p><div class="zara-suggestions">${(panel ? ["Explain this step", "What should I look for?", "Help with timing", "What can I substitute?"] : ["What can I cook?", "Help with the current step", "What can I substitute?", "What should I use soon?"]).map((q, i) => button(q, panel ? "assistant-prompt" : "assistant-suggestion", panel ? `panel-${i}` : String(i), "btn-quiet")).join("")}</div></section>`
         : "";
-    return `<section class="zara-shell"><header class="zara-header"><img src="images/zara-96.webp" alt="" width="44" height="44"><div><h1 data-title tabindex="-1">Zara</h1><p>Your kitchen companion</p></div><button class="icononly" data-action="assistant-info" aria-label="Chat settings and privacy">${icon("dots-three")}</button></header>${context}<div class="zara-thread" role="log" aria-label="Conversation with Zara" aria-live="polite" aria-relevant="additions">${empty}${history}${live}${pending}</div><section class="zara-compose-area">${!connected ? `<div class="zara-connect"><p>Connect your kitchen to chat with Zara.</p>${button("Connect Zara", "scan-settings", "", "btn-secondary")}</div>` : ""}${voiceExpanded || voicePending() ? `<div class="zara-voice-drawer"><button class="icononly voice-drawer-close" data-action="voice-panel-close" aria-label="Close voice controls">${icon("x")}</button>${voiceView()}</div>` : ""}${assistantError ? `<p class="chat-error" role="alert">${esc(assistantError)}</p>` : ""}<form data-form="assistant" class="zara-composer" aria-busy="${Boolean(assistantAbort)}"><label class="sr-only" for="assistant-question">Question</label><textarea id="assistant-question" name="question" placeholder="Ask about your kitchen…" rows="1" maxlength="2000" dir="auto" required aria-describedby="assistant-status"${assistantAbort || voicePending() ? " readonly" : ""}>${esc(assistantDraft)}</textarea>${window.NomliNative?.isNative ? `<button type="button" class="composer-mic" data-action="voice-toggle" aria-label="Voice message" aria-expanded="${voiceExpanded || voicePending()}"${assistantAbort ? " disabled" : ""}>${icon("microphone")}</button>` : ""}<button class="composer-send" aria-label="${assistantError ? "Retry question" : "Send question"}"${assistantAbort || voicePending() || !connected ? " disabled" : ""}>${icon("arrow-right")}</button></form><p id="assistant-status" class="zara-send-note" role="status">${assistantAbort ? `Zara is thinking. ${button("Cancel", "assistant-cancel", "", "btn-quiet")}` : voicePending() ? "Use or discard your transcript before sending." : "Uses your kitchen context · review advice before acting"}</p></section></section>`;
+    return `<section class="zara-shell"><header class="zara-header"><img src="images/zara-96.webp" alt="" width="44" height="44"><div><h1 data-title tabindex="-1"${panel ? ' id="cooking-chat-title"' : ""}>Zara</h1><p>Your kitchen companion</p></div><button class="icononly" data-action="assistant-info" aria-label="Chat settings and privacy">${icon("dots-three")}</button></header>${context}<div class="zara-thread" role="log" aria-label="Conversation with Zara" aria-live="polite" aria-relevant="additions">${empty}${history}${live}${pending}</div><section class="zara-compose-area">${!connected ? `<div class="zara-connect"><p>Connect your kitchen to chat with Zara.</p>${button("Connect Zara", "scan-settings", "", "btn-secondary")}</div>` : ""}${voiceExpanded || voicePending() ? `<div class="zara-voice-drawer"><button class="icononly voice-drawer-close" data-action="voice-panel-close" aria-label="Close voice controls">${icon("x")}</button>${voiceView()}</div>` : ""}${assistantError ? `<p class="chat-error" role="alert">${esc(assistantError)}</p>` : ""}<form data-form="assistant" class="zara-composer" aria-busy="${Boolean(assistantAbort)}"><label class="sr-only" for="assistant-question">Question</label><textarea id="assistant-question" name="question" placeholder="${panel ? "Ask about this step…" : "Ask about your kitchen…"}" rows="1" maxlength="2000" dir="auto" required aria-describedby="assistant-status"${assistantAbort || voicePending() ? " readonly" : ""}>${esc(assistantDraft)}</textarea>${window.NomliNative?.isNative ? `<button type="button" class="composer-mic" data-action="voice-toggle" aria-label="Voice message" aria-expanded="${voiceExpanded || voicePending()}"${assistantAbort ? " disabled" : ""}>${icon("microphone")}</button>` : ""}<button class="composer-send" aria-label="${assistantError ? "Retry question" : "Send question"}"${assistantAbort || voicePending() || !connected ? " disabled" : ""}>${icon("arrow-right")}</button></form><p id="assistant-status" class="zara-send-note" role="status">${assistantAbort ? `Zara is thinking. ${button("Cancel", "assistant-cancel", "", "btn-quiet")}` : voicePending() ? "Use or discard your transcript before sending." : "Uses your kitchen context · review advice before acting"}</p></section></section>`;
   }
   async function sendAssistant(question) {
-    if (assistantAbort || voicePending()) return;
+    if (operationBusy || assistantAbort || voicePending()) return;
     assistantDraft = question.trim();
     const sentQuestion = assistantDraft;
     assistantSentQuestion = sentQuestion;
@@ -1291,7 +1476,7 @@ import packageInfo from "../package.json" with { type: "json" };
         assistantError =
           "Reply received, but could not be saved on this device.";
       }
-      assistantUnread = S.route !== "assistant";
+      assistantUnread = !assistantSurfaceVisible();
     } catch (error) {
       if (epoch === assistantEpoch) {
         assistantAbort = null;
@@ -1300,7 +1485,7 @@ import packageInfo from "../package.json" with { type: "json" };
     } finally {
       if (epoch === assistantEpoch || !assistantAbort) {
         assistantAbort = null;
-        if (S.route === "assistant") render();
+        if (assistantSurfaceVisible()) render();
         else refreshCookingChatControls();
       }
     }
@@ -1322,6 +1507,10 @@ import packageInfo from "../package.json" with { type: "json" };
     return `${storageError ? `<section class="notice notice-warning recovery-notice" role="alert"><b>Storage error</b><p>${esc(storageError)}</p></section>` : ""}${recoveryRequired ? `<section class="notice notice-warning recovery-notice" role="alert"><b>Stored data needs recovery.</b><p>${esc(loadResult.notice || "Import a valid backup or explicitly clear local data. Current data will not be overwritten automatically.")}</p></section>` : ""}${(screens[S.route] || kitchenView)()}`;
   }
   function render() {
+    if (cookingChatPanel.open) {
+      renderCookingChatPanel();
+      return;
+    }
     const editingQuestion = document.activeElement?.id === "assistant-question";
     clearInterval(timerHandle);
     timerHandle = null;
@@ -1821,9 +2010,21 @@ import packageInfo from "../package.json" with { type: "json" };
         render();
       }
       for (const el of document.querySelectorAll(
-        "[data-timer], [data-timer-summary]",
-      ))
-        el.textContent = `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
+        "[data-timer], [data-timer-summary], [data-cooking-panel-timer]",
+      )) {
+        const time = `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
+        el.textContent =
+          el.hasAttribute("data-cooking-panel-timer") && seconds === 0
+            ? "Timer finished"
+            : time;
+        if (el.hasAttribute("data-cooking-panel-timer"))
+          el.parentElement.setAttribute(
+            "aria-label",
+            seconds === 0
+              ? "Cooking timer finished"
+              : `Cooking timer, ${time} remaining`,
+          );
+      }
     }, 500);
   }
 
@@ -2333,9 +2534,12 @@ import packageInfo from "../package.json" with { type: "json" };
           mode: a === "voice-replace" ? "replace" : "append",
         });
         voiceExpanded = false;
-        cookingMediaCleanup();
-        view.innerHTML = viewMarkup();
-        mountView();
+        if (cookingChatPanel.open) renderCookingChatPanel();
+        else {
+          cookingMediaCleanup();
+          view.innerHTML = viewMarkup();
+          mountView();
+        }
         $("#assistant-question")?.focus();
       } catch (error) {
         voiceUseError = error.message;
@@ -2702,7 +2906,7 @@ import packageInfo from "../package.json" with { type: "json" };
       }
       for (const field of form.elements) {
         field.removeAttribute?.("aria-invalid");
-        if (field.getAttribute?.("aria-describedby") === "form-error")
+        if (field.getAttribute?.("aria-describedby")?.startsWith("form-error"))
           field.removeAttribute("aria-describedby");
       }
       el.disabled = true;
@@ -2780,10 +2984,13 @@ import packageInfo from "../package.json" with { type: "json" };
       if (!assistantDraft.trim())
         assistantDraft =
           "Help me with “" + guide.title + "” in " + r.name + ".";
-      return navigate("assistant");
+      return openCookingChatPanel();
     }
     if (a === "cook-chat") {
-      return navigate("assistant");
+      return openCookingChatPanel();
+    }
+    if (a === "cook-chat-close") {
+      return closeCookingChatPanel();
     }
     if (a === "cook-timer-preset") {
       const c = S.cooking;
@@ -2835,6 +3042,7 @@ import packageInfo from "../package.json" with { type: "json" };
       return;
     }
     if (a === "cook-resume") {
+      if (cookingChatPanel.open) return closeCookingChatPanel();
       if (!S.cooking) return navigate("cook");
       return navigate(S.cooking?.phase === "review" ? "review" : "cooking");
     }
@@ -3753,22 +3961,49 @@ import packageInfo from "../package.json" with { type: "json" };
   });
   function syncHash() {
     const r = location.hash.slice(1);
+    if (cookingChatPanel.open && routes.includes(r) && r !== S.route) {
+      history.replaceState(withoutChatHistory(), "", location.href);
+      if (modal.open) modal.close();
+      closeCookingChatPanel({ restoreFocus: false });
+    }
+    const panelState = chatHistoryState();
+    if (
+      modal.open &&
+      cookingChatPanel.open &&
+      !panelState.nomliCookingChatModal
+    )
+      modal.close();
+    if (cookingChatPanel.open && panelState.nomliCookingChat !== S.cooking?.id)
+      closeCookingChatPanel();
     if (r === "home") {
       navigate("kitchen");
       return;
     }
     if (routes.includes(r)) {
-      if (r === S.route) return;
+      if (r !== S.route) {
+        if (
+          shouldPreserveCookingChat({
+            from: S.route,
+            to: r,
+            session: S.cooking,
+          })
+        )
+          cancelVoice();
+        else cancelAssistant();
+        if (r === "assistant") assistantUnread = false;
+        if (r === "calories" && S.route !== "calories")
+          calorieFollowToday = true;
+        S.route = r;
+        backgroundSave();
+        render();
+      }
       if (
-        shouldPreserveCookingChat({ from: S.route, to: r, session: S.cooking })
+        !cookingChatPanel.open &&
+        S.cooking &&
+        panelState.nomliCookingChat === S.cooking.id &&
+        ["cooking", "review"].includes(r)
       )
-        cancelVoice();
-      else cancelAssistant();
-      if (r === "assistant") assistantUnread = false;
-      if (r === "calories" && S.route !== "calories") calorieFollowToday = true;
-      S.route = r;
-      backgroundSave();
-      render();
+        openCookingChatPanel({ fromHistory: true });
     }
   }
   modal.addEventListener("cancel", (event) => {
@@ -3777,12 +4012,45 @@ import packageInfo from "../package.json" with { type: "json" };
   });
   modal.addEventListener("close", () => {
     calorieDraft = null;
-    cookingMediaCleanup.resume?.();
+    if (!cookingChatPanel.open) cookingMediaCleanup.resume?.();
     cancelScan();
     if (modal.dataset.screen === "item-edit") releaseItemPhoto();
     if (["scan-review", "scan-reading"].includes(modal.dataset.screen))
       releaseScanPhoto();
     if (lastFocus?.isConnected) lastFocus.focus();
+    else if (cookingChatPanel.open)
+      $(".cooking-chat-panel-close", cookingChatPanel)?.focus({
+        preventScroll: true,
+      });
+    if (
+      cookingChatPanel.open &&
+      chatHistoryState().nomliCookingChatModal &&
+      !modal.open
+    )
+      history.back();
+  });
+  cookingChatPanel.addEventListener("cancel", (event) => {
+    event.preventDefault();
+    if (!operationBusy) closeCookingChatPanel();
+  });
+  cookingChatPanel.addEventListener("click", (event) => {
+    if (event.target !== cookingChatPanel || operationBusy) return;
+    const rect = cookingChatPanel.getBoundingClientRect();
+    if (
+      event.clientY < rect.top ||
+      event.clientY > rect.bottom ||
+      event.clientX < rect.left ||
+      event.clientX > rect.right
+    )
+      closeCookingChatPanel();
+  });
+  cookingChatPanel.addEventListener("close", () => {
+    if (
+      !cookingChatPanel.open &&
+      chatHistoryState().nomliCookingChat &&
+      ["cooking", "review"].includes(S.route)
+    )
+      history.go(chatHistoryState().nomliCookingChatModal ? -2 : -1);
   });
   document.addEventListener("change", (event) => {
     if (event.target.id !== "voice-language") return;

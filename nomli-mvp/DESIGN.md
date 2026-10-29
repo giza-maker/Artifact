@@ -1,5 +1,14 @@
 # Nomli MVP design contract
 
+## M11.2 cooking chat sheet
+
+- Opening Zara from preparation, a cooking step or actual-use review opens a native modal sheet over that exact screen. Keep its route, DOM, scroll position and unsaved form values intact.
+- Reuse the same conversation, question and voice controls as full Zara. Mount only one chat surface at a time so labels, IDs and live regions stay unique. Opening the sheet never sends a question.
+- Keep recipe, phase/step and running timer in the sheet header. Announce timer completion inside the sheet. Stop step speech and pause decorative cooking motion under the sheet; resume prior playback intent when it closes.
+- Close with Back to cooking, Escape, backdrop or browser/native history Back. A settings dialog above chat closes first. Ephemeral history entries belong to the active cooking session; route changes clear the sheet before mounting another screen.
+- Closing the sheet stops microphone capture and transcript review while retaining typed text, completed history and any pending network reply. Background replies update chat controls without rebuilding cooking forms.
+- Adapt to visual viewport and keyboard changes without animating layout. Keep composer actions at 44px, thread and voice controls independently scrollable, and reduce entry motion when requested.
+
 ## M11.1 cooking and Zara continuity
 
 - Zara shows an explicit phase-specific Resume control while a cooking session exists. Keep its action label readable and the recipe/step context visible on narrow phones.
