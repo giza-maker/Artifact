@@ -1,4 +1,18 @@
-# M11 calories — verified
+# M11.1 cooking and Zara continuity — verified
+
+[Download Nomli-M11.1.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m11.1-v0.12.1/Nomli-M11.1.apk). Package com.nomli.mvp.validation; version 0.12.1-m11.1, code 19; minimum API 26, target API 36. Install over Nomli Test.
+
+Zara now shows an explicit Resume preparation, Resume cooking or Resume review button with the current recipe and step. Every cooking phase has a chat shortcut; active steps also show Continue chat. Returning to an existing exchange keeps the question instead of seeding a new step prompt.
+
+Cooking/chat round trips preserve pending replies, including browser Back. Duplicate history events no longer cancel requests. Replies arriving during cooking update only chat controls, keeping timer/preparation/review fields intact; persistence restores focus to the active field. Opening chat clears its reply-ready indicator. Voice capture stops on navigation. Unrelated navigation and cooking mutations still cancel pending requests so stale advice cannot apply.
+
+Source 6cd4850be1b5914fd4729513b3ff3ecb52900260; CI 40956619985 (4m 40s). 408 JavaScript tests, content/art/media validation, Vite build, Capacitor sync and Android compilation passed. APK 95,843,587 bytes; SHA-256 fbe290595f0f24cd119385805a3b5bfe92f38aca1f6d6301bd6628bd6c61b9b7. Certificate SHA-256 8c02c3045c97327f5415451feb9ccb0db326322b90d460dde9f28a7c0b559ef0; v2/v3 signatures, 16 KB alignment, ZIP CRC and all 232 production assets verified. Configured secrets and QA harness absent. Published size/digest match local APK.
+
+390×844 and 320×568 browser/native-bridge QA verified the original abort, explicit return controls, bilingual unsent draft retention, pending replies through both Resume and browser Back, saved conversation reopening, background reply completion with timer field value 7 and focus retained, running timer continuity, read-indicator clearing, step-change cancellation, scrolling and no horizontal overflow. Synthetic native transport and a controlled delayed assistant response were used; no live AI or physical phone was used for this flow. Physical Android update/hardware acceptance remains pending.
+
+The calorie diary, stock deduction/undo, 60 cooking demonstrations and deployed scanner/assistant service remain unchanged.
+
+## Historical M11 calories — verified
 
 [Download Nomli-M11.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m11-v0.12.0/Nomli-M11.apk). Package com.nomli.mvp.validation; version 0.12.0-m11, code 18; minimum API 26, target API 36. Install over Nomli Test.
 

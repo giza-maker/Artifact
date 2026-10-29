@@ -1,16 +1,18 @@
-# Nomli kitchen MVP, M11 calories
+# Nomli kitchen MVP, M11.1 cooking and Zara continuity
 
-Single-user local kitchen inventory with reviewed scanning, visual cooking, Zara assistance and an offline calorie diary. Calories now has an offline daily food diary, explicit portions eaten, dated history, editing/removal and an optional user-entered goal. Kitchen includes a daily shortcut. Arabic, Persian and English numerals work; fractional portions are supported and ambiguous grouping is rejected. Recipe pages show estimated kcal per serving and the total for the selected recipe size. A documented subset of 54 USDA SR Legacy references covers 17 of 20 recipes completely. Three recipes with labneh, zaatar or mixed-spice blends remain visibly incomplete and offer manual calorie entry. Generic references, portion weights and preparation states are documented in docs/NUTRITION.md; brand labels take precedence when entering packaged food. Cooking does not mean eating: food logging never changes stock or spending, and cooking/stock undo never changes the food diary. Entries retain their original per-portion calorie snapshot. Diary and goal are included in local backups and excluded from Zara context. Existing inventory, photos, connection and step-specific cooking media remain available.
+Single-user local kitchen inventory with reviewed scanning, visual cooking, Zara assistance and an offline calorie diary. Cooking and chat now have clear controls in both directions. Same-session navigation preserves drafts, conversations and pending replies without resetting cooking steps or timers. Recipe calorie estimates cover 17 of 20 recipes; manual food logging covers other meals.
 
-Validation package: `com.nomli.mvp.validation`, app label **Nomli Test**, version **0.12.0-m11** (`versionCode` 18). It uses the M1/M2 validation update channel and remains separate from the earlier demo package. Published milestone APKs use the retained local validation signing key; GitHub Actions does not receive that key.
+Validation package: `com.nomli.mvp.validation`, app label **Nomli Test**, version **0.12.1-m11.1** (`versionCode` 19). It uses the M1/M2 validation update channel and remains separate from the earlier demo package. Published milestone APKs use the retained local validation signing key; GitHub Actions does not receive that key.
 
 Inventory works offline. Receipt recognition and live Zara need internet access. Current recognition service is `https://nomli-scan-proxy.ahmed-aljazayeerly.workers.dev`, with Gemini 3.1 Flash-Lite for receipts and Gemini 3.5 Flash-Lite for grocery/expiry scans, receipt fallback and Zara. Provider credentials are encrypted server-side and never bundled in the app.
 
-Verified M11: [Nomli-M11.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m11-v0.12.0/Nomli-M11.apk). Install over Nomli Test. No reset, rescan or new API key. 403 automated tests and production Android build passed; phone acceptance remains pending.
+Verified M11.1: [Nomli-M11.1.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m11.1-v0.12.1/Nomli-M11.1.apk). Install over Nomli Test. No reset, rescan or new API key. 408 automated tests and Android build passed; physical phone acceptance remains pending.
+
+Historical M11: [Nomli-M11.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m11-v0.12.0/Nomli-M11.apk). Install over Nomli Test. No reset, rescan or new API key. 403 automated tests and production Android build passed; phone acceptance remains pending.
 
 Historical M10: [Nomli-M10.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m10-v0.11.0/Nomli-M10.apk). Update Nomli Test; no reset, rescan or new key required. All 60 steps have offline visual demonstrations; bilingual receipt and measured-weight fixes remain included.
 
-Historical M7 APK has the plugin-loading defect. Use M11 above; archived evidence remains in docs/APK.md.
+Historical M7 APK has the plugin-loading defect. Use M11.1 above; archived evidence remains in docs/APK.md.
 
 Historical verified M6 APK: [Nomli-M6.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m6-v0.7.0/Nomli-M6.apk). See the [phone acceptance checklist](docs/TESTING.md).
 
