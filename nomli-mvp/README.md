@@ -1,14 +1,14 @@
-# Nomli kitchen MVP, M9 guided cooking
+# Nomli kitchen MVP, M10 visual cooking guide
 
-Single-user local kitchen inventory with reviewed receipt recognition, visual guided cooking and live Zara assistance. Cooking now has visual ingredient preparation cards, readable 20px instructions, prominent action titles, dish photography, numbered progress and heat cues. Optional timers use recipe-stated presets or your own duration and start only on tap. Read step uses the phone’s configured speech service, with Stop reading and cleanup on step changes, navigation, dialogs and backgrounding. Ask Zara prepares a current-step question; only Send shares it. Final review keeps editable actual-use amounts, one confirmed stock update and undo.
+Single-user local kitchen inventory with reviewed scanning, step-specific visual cooking and Zara assistance. All 60 steps across 20 recipes now show the current cooking action, with a distinct poster, motion and an observable Look for cue. The offline set contains 45 silent five-second clips and 15 four-frame illustrated sequences. New replacement images were generated with the built-in image generator; usable completed clips were retained as requested. Incorrect ingredient forms, preparation stages and layering were corrected before packaging. Active steps no longer repeat the finished-dish photograph. Pause/replay works independently of the cooking timer. Media pauses off-screen, behind dialogs and in the background; a manual pause survives timer changes and returning to the same step. Reduced-motion settings show a still until explicit playback. Media never advances the recipe or changes inventory. Preparation, reviewed deduction, undo, Zara and scanning remain available.
 
-Validation package: `com.nomli.mvp.validation`, app label **Nomli Test**, version **0.10.0-m9** (`versionCode` 16). It uses the M1/M2 validation update channel and remains separate from the earlier demo package. Published milestone APKs use the retained local validation signing key; GitHub Actions does not receive that key.
+Validation package: `com.nomli.mvp.validation`, app label **Nomli Test**, version **0.11.0-m10** (`versionCode` 17). It uses the M1/M2 validation update channel and remains separate from the earlier demo package. Published milestone APKs use the retained local validation signing key; GitHub Actions does not receive that key.
 
 Inventory works offline. Receipt recognition and live Zara need internet access. Current recognition service is `https://nomli-scan-proxy.ahmed-aljazayeerly.workers.dev`, with Gemini 3.1 Flash-Lite for receipts and Gemini 3.5 Flash-Lite for grocery/expiry scans, receipt fallback and Zara. Provider credentials are encrypted server-side and never bundled in the app.
 
-Verified M9: [Nomli-M9.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m9-v0.10.0/Nomli-M9.apk). Update existing Nomli Test; no reset, rescan or new key required. The M8.4 bilingual receipt and measured-weight fixes remain included.
+Verified M10: [Nomli-M10.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m10-v0.11.0/Nomli-M10.apk). Update Nomli Test; no reset, rescan or new key required. All 60 steps have offline visual demonstrations; bilingual receipt and measured-weight fixes remain included.
 
-Historical M7 APK has the plugin-loading defect. Use M9 above; archived evidence remains in docs/APK.md.
+Historical M7 APK has the plugin-loading defect. Use M10 above; archived evidence remains in docs/APK.md.
 
 Historical verified M6 APK: [Nomli-M6.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m6-v0.7.0/Nomli-M6.apk). See the [phone acceptance checklist](docs/TESTING.md).
 

@@ -1,4 +1,18 @@
-# M9 guided cooking — verified
+# M10 step demonstrations — verified
+
+[Download Nomli-M10.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m10-v0.11.0/Nomli-M10.apk). Package com.nomli.mvp.validation; version 0.11.0-m10, code 17; minimum API 26, target API 36. Install over Nomli Test.
+
+All 60 steps across 20 recipes now show the current cooking action, with a distinct poster, motion and an observable Look for cue. The offline set contains 45 silent five-second clips and 15 four-frame illustrated sequences. New replacement images were generated with the built-in image generator; usable completed clips were retained as requested. Incorrect ingredient forms, preparation stages and layering were corrected before packaging. Active steps no longer repeat the finished-dish photograph.
+
+Pause/replay works independently of the cooking timer. Media pauses off-screen, behind dialogs and in the background; a manual pause survives timer changes and returning to the same step. Reduced-motion settings show a still until explicit playback. Media never advances the recipe or changes inventory. Preparation, reviewed deduction, undo, Zara and scanning remain available.
+
+Source 0ec1e932013e7f7671c425bfe7b336c2b2ff8a83; CI 40936298448 (3m 53s). 374 tests, content/art/media validation, Vite build, Capacitor sync and Android compilation passed. APK 95,831,299 bytes; SHA-256 b0928762eb8d62f5e3d1ce4d6da4a3f7aca7dce397fbeb807f6e9f9a477fbedb. Certificate SHA-256 8c02c3045c97327f5415451feb9ccb0db326322b90d460dde9f28a7c0b559ef0; v2/v3 signatures, 16 KB alignment, ZIP CRC and all 232 production assets verified. Configured secrets and QA harness absent. Published size/digest match the local APK.
+
+390 × 844 and 320 × 568 browser/native-bridge QA verified local silent playback, illustrated-frame progression, pause across dialogs and timer rerenders, off-screen pause, scrolling, step navigation, required preparation, actual-use review, exact six-item deduction and undo. All 60 source visuals received review; 15 inaccurate scenes were replaced. All 45 retained clips decoded fully without errors. Camera/native transport was synthetic. Physical Android playback and update acceptance remain device checks.
+
+All 120 media files (25,350,103 bytes) are bundled. Prompts and provenance: web/public/media/cooking/MANIFEST.json and content/cooking-sequences.json. Scanner/assistant Worker unchanged.
+
+## Historical M9 guided cooking — verified
 
 Cooking had compact text and dominant timer/review forms. The active task now has a large instruction card, visual context and persistent next action.
 

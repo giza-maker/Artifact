@@ -1,4 +1,14 @@
-# M9 cooking phone check
+# M10 visual cooking phone check
+
+Install M10 over Nomli Test. No reset, rescan or new API key. All 60 steps have bundled media; 374 automated tests and media validation passed.
+
+1. Open a ready recipe. Confirm each step shows its own action, still and Look for cue. Play/pause a clip and an illustrated sequence; both should remain silent.
+2. Pause a demonstration, open All steps, return, then start/pause the cooking timer. The demonstration should stay paused. Scrolling it off-screen or backgrounding Nomli should pause motion. Reduced-motion mode should show a still until explicit playback.
+3. Complete the recipe, confirm actual use and save once. Check Kitchen and Recent meals undo. Media must never advance a recipe or deduct stock by itself.
+
+Physical Android playback and update acceptance remain device checks. Browser QA covered 390×844 and 320×568 with synthetic native transport.
+
+## Historical M9 cooking phone check
 
 Install M9 over Nomli Test. No reset, rescan or new API key. Browser checks and 350 automated tests passed; these checks cover physical Android behavior.
 
