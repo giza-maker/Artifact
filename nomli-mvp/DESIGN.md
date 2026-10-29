@@ -1,5 +1,13 @@
 # Nomli MVP design contract
 
+## M11 calories
+
+- Calories live in Kitchen utilities, with a compact daily summary above inventory. Keep the four primary destinations unchanged.
+- Show estimated energy per recipe serving and the total for the selected recipe size. USDA generic reference values are estimates; incomplete ingredients remain visibly missing, with manual calorie entry available.
+- Food intake is a separate dated diary. Users explicitly enter portions eaten, including fractions; cooking, deduction and undo never log food. Store the original per-portion calorie snapshot so later stock or recipe changes cannot rewrite history.
+- Daily goals are optional user inputs with no recommended target. Show whole kcal, calculate with original precision, support Arabic/Persian/English numerals and reject ambiguous grouping.
+- Edit and remove entries, review other dates, retain diary and goal in local backups. Do not include this diary in Zara context or require network access for logging.
+
 ## M10 visual cooking guide
 
 - All 60 steps across 20 recipes have a distinct local illustration and motion asset. Active steps show the current action instead of the finished dish photo. Add a short observable “Look for” cue; quantities and cooking requirements remain in the canonical instructions.

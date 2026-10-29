@@ -1,0 +1,409 @@
+{
+  "schemaVersion": 1,
+  "sourceVersion": "USDA FoodData Central SR Legacy, April 2018",
+  "datasetUrl": "https://fdc.nal.usda.gov/fdc-datasets/FoodData_Central_sr_legacy_food_csv_2018-04.zip",
+  "foods": [
+    {
+      "ingredientId": "almond",
+      "fdcId": 170567,
+      "description": "Nuts, almonds",
+      "state": "raw/generic",
+      "kcalPer100g": 579
+    },
+    {
+      "ingredientId": "aubergine",
+      "fdcId": 169228,
+      "description": "Eggplant, raw",
+      "state": "raw",
+      "kcalPer100g": 25
+    },
+    {
+      "ingredientId": "basil",
+      "fdcId": 172232,
+      "description": "Basil, fresh",
+      "state": "fresh",
+      "kcalPer100g": 23
+    },
+    {
+      "ingredientId": "beef_mince",
+      "fdcId": 174036,
+      "description": "Beef, ground, 80% lean meat / 20% fat, raw",
+      "state": "raw",
+      "kcalPer100g": 254
+    },
+    {
+      "ingredientId": "bell_pepper",
+      "fdcId": 170108,
+      "description": "Peppers, sweet, red, raw",
+      "state": "raw",
+      "kcalPer100g": 26
+    },
+    {
+      "ingredientId": "black_pepper",
+      "fdcId": 170931,
+      "description": "Spices, pepper, black",
+      "state": "dried",
+      "kcalPer100g": 251
+    },
+    {
+      "ingredientId": "bread_pita",
+      "fdcId": 174915,
+      "description": "Bread, pita, white, enriched",
+      "state": "prepared",
+      "kcalPer100g": 275,
+      "gramsPerUnit": { "piece": 60 },
+      "portionNote": "1 large pita, 6-1/2 inch diameter"
+    },
+    {
+      "ingredientId": "bread_sliced",
+      "fdcId": 174924,
+      "description": "Bread, white, commercially prepared (includes soft bread crumbs)",
+      "state": "prepared",
+      "kcalPer100g": 266,
+      "gramsPerUnit": { "slice": 29 },
+      "portionNote": "1 regular slice"
+    },
+    {
+      "ingredientId": "brown_lentil_cooked",
+      "fdcId": 172421,
+      "description": "Lentils, mature seeds, cooked, boiled, without salt",
+      "state": "cooked",
+      "kcalPer100g": 116
+    },
+    {
+      "ingredientId": "bulgur_dry",
+      "fdcId": 170688,
+      "description": "Bulgur, dry",
+      "state": "dry",
+      "kcalPer100g": 342
+    },
+    {
+      "ingredientId": "carrot",
+      "fdcId": 170393,
+      "description": "Carrots, raw",
+      "state": "raw",
+      "kcalPer100g": 41
+    },
+    {
+      "ingredientId": "chicken_breast",
+      "fdcId": 171077,
+      "description": "Chicken, broiler or fryers, breast, skinless, boneless, meat only, raw",
+      "state": "raw",
+      "kcalPer100g": 120
+    },
+    {
+      "ingredientId": "chicken_stock",
+      "fdcId": 174536,
+      "description": "Soup, chicken broth, ready-to-serve",
+      "state": "ready-to-serve proxy",
+      "kcalPer100g": 6,
+      "gramsPerMl": 1.050632911392,
+      "portionNote": "USDA cup: 249 g; USDA standard cup: 237 ml"
+    },
+    {
+      "ingredientId": "chicken_thigh",
+      "fdcId": 172385,
+      "description": "Chicken, broilers or fryers, thigh, meat and skin, raw",
+      "state": "raw",
+      "kcalPer100g": 221
+    },
+    {
+      "ingredientId": "chickpea_cooked",
+      "fdcId": 173757,
+      "description": "Chickpeas (garbanzo beans, bengal gram), mature seeds, cooked, boiled, without salt",
+      "state": "cooked",
+      "kcalPer100g": 164
+    },
+    {
+      "ingredientId": "cinnamon",
+      "fdcId": 171320,
+      "description": "Spices, cinnamon, ground",
+      "state": "dried",
+      "kcalPer100g": 247
+    },
+    {
+      "ingredientId": "courgette",
+      "fdcId": 169291,
+      "description": "Squash, summer, zucchini, includes skin, raw",
+      "state": "raw",
+      "kcalPer100g": 17
+    },
+    {
+      "ingredientId": "couscous_dry",
+      "fdcId": 169699,
+      "description": "Couscous, dry",
+      "state": "dry",
+      "kcalPer100g": 376
+    },
+    {
+      "ingredientId": "cucumber",
+      "fdcId": 168409,
+      "description": "Cucumber, with peel, raw",
+      "state": "raw",
+      "kcalPer100g": 15
+    },
+    {
+      "ingredientId": "cumin",
+      "fdcId": 170923,
+      "description": "Spices, cumin seed",
+      "state": "dried seed",
+      "kcalPer100g": 375
+    },
+    {
+      "ingredientId": "date_fruit",
+      "fdcId": 171726,
+      "description": "Dates, deglet noor",
+      "state": "dried fruit",
+      "kcalPer100g": 282
+    },
+    {
+      "ingredientId": "egg",
+      "fdcId": 171287,
+      "description": "Egg, whole, raw, fresh",
+      "state": "raw",
+      "kcalPer100g": 143,
+      "gramsPerUnit": { "piece": 50 },
+      "portionNote": "1 large egg"
+    },
+    {
+      "ingredientId": "feta",
+      "fdcId": 173420,
+      "description": "Cheese, feta",
+      "state": "prepared",
+      "kcalPer100g": 265
+    },
+    {
+      "ingredientId": "garlic",
+      "fdcId": 169230,
+      "description": "Garlic, raw",
+      "state": "raw",
+      "kcalPer100g": 149,
+      "gramsPerUnit": { "clove": 3 },
+      "portionNote": "1 clove"
+    },
+    {
+      "ingredientId": "green_pea_frozen",
+      "fdcId": 170016,
+      "description": "Peas, green, frozen, unprepared (Includes foods for USDA's Food Distribution Program)",
+      "state": "frozen, unprepared",
+      "kcalPer100g": 77
+    },
+    {
+      "ingredientId": "lemon",
+      "fdcId": 167746,
+      "description": "Lemons, raw, without peel",
+      "state": "raw, without peel",
+      "kcalPer100g": 29,
+      "gramsPerUnit": { "piece": 58 },
+      "portionNote": "1 fruit, 2-1/8 inch diameter"
+    },
+    {
+      "ingredientId": "milk",
+      "fdcId": 172217,
+      "description": "Milk, whole, 3.25% milkfat, without added vitamin A and vitamin D",
+      "state": "fluid",
+      "kcalPer100g": 61,
+      "gramsPerMl": 1.029535864979,
+      "portionNote": "USDA cup: 244 g; USDA standard cup: 237 ml"
+    },
+    {
+      "ingredientId": "mint",
+      "fdcId": 173474,
+      "description": "Peppermint, fresh",
+      "state": "fresh",
+      "kcalPer100g": 70
+    },
+    {
+      "ingredientId": "mushroom",
+      "fdcId": 169251,
+      "description": "Mushrooms, white, raw",
+      "state": "raw",
+      "kcalPer100g": 22
+    },
+    {
+      "ingredientId": "oats_rolled",
+      "fdcId": 173904,
+      "description": "Cereals, oats, regular and quick, not fortified, dry",
+      "state": "dry",
+      "kcalPer100g": 379
+    },
+    {
+      "ingredientId": "olive_oil",
+      "fdcId": 171413,
+      "description": "Oil, olive, salad or cooking",
+      "state": "oil",
+      "kcalPer100g": 884,
+      "gramsPerMl": 0.911392405063,
+      "portionNote": "USDA cup: 216 g; USDA standard cup: 237 ml"
+    },
+    {
+      "ingredientId": "onion",
+      "fdcId": 170000,
+      "description": "Onions, raw",
+      "state": "raw",
+      "kcalPer100g": 40
+    },
+    {
+      "ingredientId": "red_onion",
+      "fdcId": 170000,
+      "description": "Onions, raw",
+      "state": "raw, variety-unspecified proxy",
+      "kcalPer100g": 40
+    },
+    {
+      "ingredientId": "paprika",
+      "fdcId": 171329,
+      "description": "Spices, paprika",
+      "state": "dried",
+      "kcalPer100g": 282
+    },
+    {
+      "ingredientId": "parsley",
+      "fdcId": 170416,
+      "description": "Parsley, fresh",
+      "state": "fresh",
+      "kcalPer100g": 36
+    },
+    {
+      "ingredientId": "pasta_dry",
+      "fdcId": 169736,
+      "description": "Pasta, dry, enriched",
+      "state": "dry",
+      "kcalPer100g": 371
+    },
+    {
+      "ingredientId": "red_lentil_dry",
+      "fdcId": 174284,
+      "description": "Lentils, pink or red, raw",
+      "state": "dry/raw",
+      "kcalPer100g": 358
+    },
+    {
+      "ingredientId": "rice_basmati_dry",
+      "fdcId": 169756,
+      "description": "Rice, white, long-grain, regular, raw, unenriched",
+      "state": "dry/raw, long-grain proxy",
+      "kcalPer100g": 365
+    },
+    {
+      "ingredientId": "salt",
+      "fdcId": 173468,
+      "description": "Salt, table",
+      "state": "dry",
+      "kcalPer100g": 0
+    },
+    {
+      "ingredientId": "spinach",
+      "fdcId": 168462,
+      "description": "Spinach, raw",
+      "state": "raw",
+      "kcalPer100g": 23
+    },
+    {
+      "ingredientId": "sweet_potato",
+      "fdcId": 168482,
+      "description": "Sweet potato, raw, unprepared (Includes foods for USDA's Food Distribution Program)",
+      "state": "raw",
+      "kcalPer100g": 86
+    },
+    {
+      "ingredientId": "tahini",
+      "fdcId": 168604,
+      "description": "Seeds, sesame butter, tahini, type of kernels unspecified",
+      "state": "prepared",
+      "kcalPer100g": 592
+    },
+    {
+      "ingredientId": "tomato",
+      "fdcId": 170457,
+      "description": "Tomatoes, red, ripe, raw, year round average",
+      "state": "raw",
+      "kcalPer100g": 18
+    },
+    {
+      "ingredientId": "cherry_tomato",
+      "fdcId": 170457,
+      "description": "Tomatoes, red, ripe, raw, year round average",
+      "state": "raw, variety-unspecified proxy",
+      "kcalPer100g": 18
+    },
+    {
+      "ingredientId": "tomato_passata",
+      "fdcId": 170460,
+      "description": "Tomato products, canned, puree, without salt added",
+      "state": "canned puree proxy",
+      "kcalPer100g": 38,
+      "gramsPerMl": 1.054852320675,
+      "portionNote": "USDA cup: 250 g; USDA standard cup: 237 ml"
+    },
+    {
+      "ingredientId": "tomato_paste",
+      "fdcId": 170459,
+      "description": "Tomato products, canned, paste, without salt added (Includes foods for USDA's Food Distribution Program)",
+      "state": "canned",
+      "kcalPer100g": 82
+    },
+    {
+      "ingredientId": "tortilla_wheat",
+      "fdcId": 167535,
+      "description": "Tortillas, ready-to-bake or -fry, flour, shelf stable",
+      "state": "prepared",
+      "kcalPer100g": 297,
+      "gramsPerUnit": { "piece": 49 },
+      "portionNote": "1 tortilla"
+    },
+    {
+      "ingredientId": "tuna_canned",
+      "fdcId": 173709,
+      "description": "Fish, tuna, light, canned in water, drained solids (Includes foods for USDA's Food Distribution Program)",
+      "state": "canned in water, drained",
+      "kcalPer100g": 86
+    },
+    {
+      "ingredientId": "turmeric",
+      "fdcId": 172231,
+      "description": "Spices, turmeric, ground",
+      "state": "dried",
+      "kcalPer100g": 312
+    },
+    {
+      "ingredientId": "vegetable_stock",
+      "fdcId": 171583,
+      "description": "Soup, vegetable broth, ready to serve",
+      "state": "ready-to-serve proxy",
+      "kcalPer100g": 5,
+      "gramsPerMl": 0.932489451477,
+      "portionNote": "USDA cup: 221 g; USDA standard cup: 237 ml"
+    },
+    {
+      "ingredientId": "water",
+      "fdcId": 173647,
+      "description": "Beverages, water, tap, drinking",
+      "state": "fluid",
+      "kcalPer100g": 0,
+      "gramsPerMl": 1,
+      "portionNote": "USDA liter: 1000 g"
+    },
+    {
+      "ingredientId": "white_bean_cooked",
+      "fdcId": 175203,
+      "description": "Beans, white, mature seeds, cooked, boiled, without salt",
+      "state": "cooked",
+      "kcalPer100g": 139
+    },
+    {
+      "ingredientId": "white_fish_fillet",
+      "fdcId": 174191,
+      "description": "Fish, cod, Pacific, raw (may have been previously frozen)",
+      "state": "raw cod proxy",
+      "kcalPer100g": 69
+    },
+    {
+      "ingredientId": "yogurt_plain",
+      "fdcId": 171284,
+      "description": "Yogurt, plain, whole milk",
+      "state": "prepared",
+      "kcalPer100g": 61
+    }
+  ]
+}

@@ -1,0 +1,462 @@
+.calorie-dashboard,
+.nutrition-recipe {
+  min-width: 0;
+}
+
+.calorie-kitchen-link {
+  display: flex;
+  width: 100%;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+  text-align: start;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+.calorie-kitchen-link > span {
+  display: grid;
+  flex: 1;
+  gap: 4px;
+  min-width: 0;
+}
+.calorie-kitchen-link small {
+  color: var(--muted);
+}
+.calorie-kitchen-link > .ui-icon:first-child {
+  color: var(--accent-text);
+}
+.calorie-form-estimate {
+  padding: 14px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+}
+.calorie-form-estimate p,
+.calorie-add-options .details {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+.calorie-form-total {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--accent-text);
+}
+.calorie-add-options > .btn {
+  width: 100%;
+  white-space: normal;
+}
+
+.calorie-dashboard {
+  display: grid;
+  gap: 16px;
+  padding-bottom: 24px;
+}
+
+.calorie-heading,
+.calorie-section-heading,
+.nutrition-recipe-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+}
+
+.calorie-heading > div,
+.calorie-section-heading > div,
+.nutrition-recipe-heading > div,
+.calorie-entry-copy {
+  min-width: 0;
+}
+
+.calorie-heading h1,
+.calorie-section-heading h2,
+.calorie-empty h2 {
+  margin: 0;
+  color: var(--text);
+}
+
+.calorie-heading h1 {
+  font-size: clamp(22px, 7vw, 25px);
+  line-height: 1.1;
+  letter-spacing: -0.035em;
+}
+
+.calorie-kicker,
+.nutrition-label {
+  margin: 0 0 4px;
+  color: var(--accent-text);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+}
+
+.calorie-add,
+.calorie-date-controls .btn,
+.calorie-goal-button,
+.calorie-footer .btn,
+.nutrition-log-button {
+  min-height: 44px;
+}
+
+.calorie-add {
+  flex: 0 0 auto;
+}
+
+.calorie-date-form {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+}
+
+.calorie-date-form > label {
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 650;
+}
+
+.calorie-date-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  gap: 8px;
+  min-width: 0;
+}
+
+.calorie-date-controls input {
+  min-width: 0;
+  min-height: 44px;
+  padding: 9px 10px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  color: var(--text);
+  background: var(--surface);
+  font: inherit;
+  color-scheme: dark;
+}
+
+.calorie-summary {
+  position: relative;
+  overflow: hidden;
+  padding: 20px;
+  border-color: color-mix(in srgb, var(--accent) 30%, var(--border));
+  background: linear-gradient(145deg, var(--surface), var(--surface-2));
+}
+
+.calorie-summary > p:first-child {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.calorie-total {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  margin: 3px 0 15px;
+  color: var(--text);
+}
+
+.calorie-total strong {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  font-size: clamp(42px, 15vw, 60px);
+  line-height: 1;
+  letter-spacing: -0.065em;
+}
+
+.calorie-total span {
+  color: var(--accent-text);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.calorie-goal-progress {
+  display: grid;
+  gap: 9px;
+  margin-bottom: 14px;
+}
+
+.calorie-goal-progress > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.calorie-goal-progress strong {
+  color: var(--text);
+  text-align: end;
+}
+
+.calorie-goal-progress progress {
+  width: 100%;
+  height: 8px;
+  overflow: hidden;
+  border: 0;
+  border-radius: 999px;
+  background: var(--surface-3);
+  accent-color: var(--accent);
+}
+
+.calorie-goal-progress progress::-webkit-progress-bar {
+  background: var(--surface-3);
+}
+
+.calorie-goal-progress progress::-webkit-progress-value {
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+.calorie-goal-progress progress::-moz-progress-bar {
+  border-radius: 999px;
+  background: var(--accent);
+}
+
+.calorie-no-goal,
+.calorie-goal-zero {
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.calorie-section-heading {
+  margin-bottom: 10px;
+}
+
+.calorie-section-heading h2 {
+  font-size: 18px;
+}
+
+.calorie-section-heading > span {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.calorie-diary-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.calorie-diary-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  min-width: 0;
+  padding: 13px;
+  border: 1px solid var(--border);
+  border-radius: 17px;
+  background: var(--surface);
+}
+
+.calorie-entry-copy > b {
+  display: block;
+  overflow-wrap: anywhere;
+  unicode-bidi: plaintext;
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.calorie-entry-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px 9px;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+.calorie-entry-meta strong {
+  color: var(--text);
+}
+
+.calorie-estimate-tag {
+  padding: 1px 6px;
+  border-radius: 999px;
+  color: var(--accent-text);
+  background: var(--surface-3);
+}
+
+.calorie-entry-actions {
+  display: flex;
+  align-items: center;
+  align-self: center;
+  gap: 2px;
+}
+
+.calorie-entry-button {
+  min-width: 44px;
+  min-height: 44px;
+  padding: 7px;
+  font-size: 10px;
+}
+
+.calorie-entry-button > span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.calorie-entry-delete {
+  color: var(--danger);
+}
+
+.calorie-empty {
+  padding: 28px 18px;
+  border: 1px dashed var(--border-strong);
+  border-radius: 20px;
+  background: var(--surface);
+  text-align: center;
+}
+
+.calorie-empty > .ui-icon {
+  width: 30px;
+  height: 30px;
+  color: var(--accent-text);
+}
+
+.calorie-empty h2 {
+  margin-top: 8px;
+  font-size: 17px;
+}
+
+.calorie-empty p,
+.calorie-footer p,
+.nutrition-recipe p {
+  overflow-wrap: anywhere;
+}
+
+.calorie-empty p {
+  max-width: 270px;
+  margin: 7px auto 15px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.calorie-footer {
+  padding: 15px 4px 0;
+  border-top: 1px solid var(--border);
+}
+
+.calorie-footer p {
+  margin: 0 0 4px;
+  color: var(--muted);
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+.calorie-footer .btn {
+  margin-top: 4px;
+  padding-inline: 0;
+  color: var(--accent-text);
+}
+
+.nutrition-recipe {
+  display: grid;
+  gap: 11px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--surface-2);
+}
+
+.nutrition-recipe-heading > .ui-icon {
+  flex: 0 0 auto;
+  width: 25px;
+  height: 25px;
+  color: var(--accent-text);
+}
+
+.nutrition-per-serving,
+.nutrition-incomplete-title {
+  margin: 0;
+  color: var(--text);
+  font-size: 16px;
+  line-height: 1.25;
+}
+
+.nutrition-per-serving strong {
+  font-size: 24px;
+  letter-spacing: -0.035em;
+}
+
+.nutrition-per-serving span,
+.nutrition-total,
+.nutrition-incomplete p,
+.nutrition-help {
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.nutrition-total,
+.nutrition-incomplete p {
+  margin: 0;
+}
+
+.nutrition-incomplete-title {
+  font-weight: 700;
+}
+
+.nutrition-missing {
+  color: var(--text) !important;
+}
+
+.nutrition-log-button {
+  justify-self: start;
+}
+
+@media (max-width: 350px) {
+  .calorie-heading {
+    align-items: end;
+  }
+
+  .calorie-add {
+    padding-inline: 11px;
+  }
+
+  .calorie-date-controls {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .calorie-date-controls [data-action="calorie-today"] {
+    grid-column: 1 / -1;
+  }
+
+  .calorie-diary-item {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .calorie-entry-actions {
+    justify-content: end;
+  }
+
+  .calorie-goal-progress > div {
+    display: grid;
+  }
+
+  .calorie-goal-progress strong {
+    text-align: start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .calorie-dashboard *,
+  .nutrition-recipe * {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

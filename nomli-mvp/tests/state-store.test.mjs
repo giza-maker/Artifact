@@ -26,6 +26,7 @@ const state = (items = {}) => ({
   meals: [],
   shopping: [],
   receipts: [],
+  calories: { goalKcal: null, entries: [] },
   budget: 160000,
   profile: { allergies: [], cuisine: "Any", time: 20, household: 2 },
   chat: [],
@@ -344,5 +345,77 @@ test("optional category ids are whitelisted while legacy category metadata remai
       () => store.exportBackup(state({ x: item({ categoryId }) })),
       /food category/i,
     );
+  }
+});
+
+test("old snapshots gain an empty calorie diary and accept calories route", async () => {
+  const oldState = state();
+  delete oldState.calories;
+  const storage = memory({
+    "nomli-kitchen-state-v1": JSON.stringify(oldState),
+  });
+  const loaded = await createStateStore({ data, storage }).load();
+  assert.deepEqual(loaded.state.calories, { goalKcal: null, entries: [] });
+  loaded.state.route = "calories";
+  await createStateStore({ data, storage }).save(loaded.state);
+  assert.equal(
+    (await createStateStore({ data, storage }).load()).state.route,
+    "calories",
+  );
+});
+
+test("calorie diary survives persistence and backup", async () => {
+  const storage = memory();
+  const store = createStateStore({ data, storage });
+  const value = state();
+  value.calories = {
+    goalKcal: 2200,
+    entries: [
+      {
+        id: "cal-1",
+        date: "2027-01-01",
+        name: "Future lunch",
+        kcal: 625.5,
+        servings: 1.5,
+        source: "recipe",
+        recipeId: "salad",
+      },
+    ],
+  };
+  await store.save(value);
+  assert.deepEqual((await store.load()).state.calories, value.calories);
+  assert.deepEqual(
+    store.parseBackup(store.exportBackup(value)).calories,
+    value.calories,
+  );
+});
+
+test("invalid calorie diaries reject", () => {
+  const store = createStateStore({ data, storage: memory() });
+  const base = {
+    id: "cal-1",
+    date: "2026-10-29",
+    name: "Lunch",
+    kcal: 0,
+    servings: 1,
+    source: "manual",
+  };
+  for (const entry of [
+    { ...base, date: "2026-02-30" },
+    { ...base, kcal: NaN },
+    { ...base, kcal: -1 },
+    { ...base, servings: 0 },
+  ]) {
+    const candidate = state();
+    candidate.calories = { goalKcal: null, entries: [entry] };
+    assert.throws(() => store.exportBackup(candidate), /Calorie/);
+  }
+  const duplicate = state();
+  duplicate.calories = { goalKcal: null, entries: [base, { ...base }] };
+  assert.throws(() => store.exportBackup(duplicate), /duplicate/);
+  for (const goalKcal of [0, -1, 1.5, NaN, 100001]) {
+    const candidate = state();
+    candidate.calories = { goalKcal, entries: [] };
+    assert.throws(() => store.exportBackup(candidate), /goal/);
   }
 });

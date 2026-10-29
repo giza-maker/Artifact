@@ -88,6 +88,18 @@ import { createCookingSpeechController } from "./cooking-speech.js";
 import "./cooking-experience.css";
 import { mountCookingMedia } from "./cooking-media-player.js";
 import "./cooking-media.css";
+import { estimateRecipeCalories } from "./nutrition.js";
+import {
+  createCalorieEntry,
+  dailyCalorieSummary,
+  localDateKey,
+  parseCalorieNumber,
+} from "./calorie-log.js";
+import {
+  renderCalorieDashboard,
+  renderRecipeCalories,
+} from "./calorie-view.js";
+import "./calories.css";
 import packageInfo from "../package.json" with { type: "json" };
 (async function leanNomli() {
   const D = { ...window.NOMLI_DATA, recipes: COOK_RECIPES, tools: COOK_TOOLS };
@@ -145,11 +157,15 @@ import packageInfo from "../package.json" with { type: "json" };
     "review",
     "shopping",
     "expenses",
+    "calories",
     "profile",
   ];
   const view = $("#view"),
     modal = $("#modal");
   let cookingMediaCleanup = () => {};
+  let calorieDate = localDateKey();
+  let calorieFollowToday = true;
+  let calorieDraft = null;
   let toastTimer,
     timerHandle,
     lastFocus,
@@ -490,7 +506,7 @@ import packageInfo from "../package.json" with { type: "json" };
       releaseScanPhoto();
     cancelScan();
     cancelAssistant(false);
-    lastFocus = document.activeElement;
+    if (!modal.open) lastFocus = document.activeElement;
     modal.dataset.screen = screen;
     $("#modal-content").innerHTML =
       `<header class="modal-heading"><h2 id="modal-title">${esc(title)}</h2><button class="icononly" data-action="modal-close" aria-label="Close">${icon("x")}</button></header><div class="modal-body">${body}</div>`;
@@ -550,8 +566,10 @@ import packageInfo from "../package.json" with { type: "json" };
     const thread = $(".zara-thread", view);
     if (thread) thread.scrollTop = chatScroll ?? thread.scrollHeight;
   }
-  function navigate(route) {
+  function navigate(route, { keepCalorieDate = false } = {}) {
     if (!routes.includes(route)) return;
+    if (route === "calories" && S.route !== "calories" && !keepCalorieDate)
+      calorieFollowToday = true;
     cancelAssistant();
     void cookingSpeech.stop();
     voiceExpanded = false;
@@ -564,7 +582,7 @@ import packageInfo from "../package.json" with { type: "json" };
   function renderNav() {
     const active = ["recipe", "cooking", "review"].includes(S.route)
       ? "cook"
-      : ["shopping", "expenses", "profile"].includes(S.route)
+      : ["shopping", "expenses", "calories", "profile"].includes(S.route)
         ? "kitchen"
         : S.route;
     $("#bottom-nav").innerHTML = nav
@@ -694,9 +712,10 @@ import packageInfo from "../package.json" with { type: "json" };
         `${Object.values(S.items).filter((x) => x.qty > 0).length} ingredients${soon ? ` · ${soon} to use soon` : ""}`,
         `<button class="icononly kitchen-add" data-action="item-edit" data-id="new" aria-label="Add ingredient">${icon("plus")}</button>`,
       ) +
-      `<button class="scan-banner" data-action="go" data-id="scan"><img src="images/fridge-vf-480.webp" alt=""><span>${icon("scan")}<b>Scan groceries or receipts</b><small>Protected connection · review before save</small></span>${icon("arrow-right")}</button><section class="card inventory-card"><div class="card-header"><h2>Inventory</h2><button class="icononly" data-action="item-edit" data-id="new" aria-label="Add ingredient">${icon("plus")}</button></div><div class="inventory-tools"><label class="field"><span class="sr-only">Search</span><input type="search" data-change="search" value="${esc(S.search || "")}" placeholder="Search ingredients"></label><div class="inventory-sort"><label>Storage <select data-change="storage">${options(["All", "Fridge", "Freezer", "Pantry", "Spices"], S.storage)}</select></label><label>Sort <select data-change="sort">${options(["expiry", "name", "quantity"], S.sort)}</select></label></div></div><div data-inventory-list>${inventoryRowsMarkup()}</div></section><div class="quick-grid">${[
+      `<button class="scan-banner" data-action="go" data-id="scan"><img src="images/fridge-vf-480.webp" alt=""><span>${icon("scan")}<b>Scan groceries or receipts</b><small>Protected connection · review before save</small></span>${icon("arrow-right")}</button>${calorieKitchenSummary()}<section class="card inventory-card"><div class="card-header"><h2>Inventory</h2><button class="icononly" data-action="item-edit" data-id="new" aria-label="Add ingredient">${icon("plus")}</button></div><div class="inventory-tools"><label class="field"><span class="sr-only">Search</span><input type="search" data-change="search" value="${esc(S.search || "")}" placeholder="Search ingredients"></label><div class="inventory-sort"><label>Storage <select data-change="storage">${options(["All", "Fridge", "Freezer", "Pantry", "Spices"], S.storage)}</select></label><label>Sort <select data-change="sort">${options(["expiry", "name", "quantity"], S.sort)}</select></label></div></div><div data-inventory-list>${inventoryRowsMarkup()}</div></section><div class="quick-grid">${[
         ["shopping", "shopping-cart", "Shopping", "Restock list"],
         ["expenses", "wallet", "Spending", "Receipts & budget"],
+        ["calories", "fire", "Calories", "Food diary & portions"],
         ["profile", "gear", "Preferences", "Diet, time & tools"],
       ]
         .map(
@@ -843,6 +862,13 @@ import packageInfo from "../package.json" with { type: "json" };
       (r.image
         ? `<article class="featured-meal"><img src="${r.image}" alt="${esc(r.name)}"></article>`
         : "") +
+      renderRecipeCalories({
+        estimate: estimateRecipeCalories(r, serv),
+        recipeId: r.id,
+        esc,
+        num,
+        icon,
+      }) +
       `<section class="card"><div class="card-header"><h2>Ingredients</h2><label>Servings <select data-change="servings" data-id="${r.id}">${options(
         Array.from({ length: 12 }, (_, i) => i + 1),
         serv,
@@ -921,6 +947,96 @@ import packageInfo from "../package.json" with { type: "json" };
         button("Back to kitchen", "go", "kitchen"),
       ) +
       `<section class="card">${S.shopping.length ? S.shopping.map((x) => `<div class="item-row"><label class="checkbox-field"><input type="checkbox" data-change="shopping-check" data-id="${x.id}"${x.got ? " checked" : ""}><span><b>${esc(S.items[x.id]?.name || ingredientLabel(x.id))}</b><small>${esc(x.reason)}</small></span></label>${button("Remove", "shopping-remove", x.id, "btn-quiet")}</div>`).join("") : '<p class="empty">Nothing to buy yet.</p>'}</section>`
+    );
+  }
+  function caloriesView() {
+    if (calorieFollowToday) calorieDate = localDateKey();
+    return renderCalorieDashboard({
+      date: calorieDate,
+      today: localDateKey(),
+      summary: dailyCalorieSummary(
+        S.calories.entries,
+        calorieDate,
+        S.calories.goalKcal,
+      ),
+      esc,
+      num,
+      icon,
+    });
+  }
+  function calorieKitchenSummary() {
+    const summary = dailyCalorieSummary(S.calories.entries, localDateKey());
+    return `<button type="button" class="calorie-kitchen-link" data-action="go" data-id="calories">${icon("fire")}<span><b>Today’s calories</b><small>${summary.entries.length ? `${num(summary.totalKcal)} kcal logged` : "Log food and recipe portions"}</small></span>${icon("arrow-right")}</button>`;
+  }
+  function calorieEntryForm({
+    entry = null,
+    recipeId = null,
+    manualRecipeId = null,
+  } = {}) {
+    if (calorieFollowToday) calorieDate = localDateKey();
+    let draft = entry ? structuredClone(entry) : null;
+    if (!draft && recipeId) {
+      const r = D.recipes.find((value) => value.id === recipeId);
+      if (!r) return announce("Recipe is unavailable.");
+      const estimate = estimateRecipeCalories(r);
+      if (!estimate.complete || estimate.perServingKcal === null)
+        return announce(
+          "Recipe estimate is incomplete. Enter calories manually.",
+        );
+      draft = {
+        name: r.name,
+        kcal: estimate.perServingKcal,
+        servings: 1,
+        source: "recipe",
+        recipeId: r.id,
+        date: calorieDate,
+      };
+    }
+    draft ??= {
+      name: D.recipes.find((r) => r.id === manualRecipeId)?.name || "",
+      kcal: null,
+      servings: 1,
+      source: "manual",
+      date: calorieDate,
+    };
+    calorieDraft = draft;
+    const estimated = draft.source !== "manual";
+    openModal(
+      entry ? "Edit food entry" : "Log food eaten",
+      `<form data-form="calorie-entry">${errors()}${field("Food or meal", "name", draft.name, "text", 'maxlength="200" dir="auto" required')}${field("Diary date", "date", draft.date, "date", "required")}${estimated ? `<div class="calorie-form-estimate"><b>${num(Math.round(draft.kcal))} kcal per serving</b><p>Generic recipe estimate. Uses the saved portion value when editing; changes to inventory do not alter this entry.</p></div>` : field("Calories per portion (kcal)", "kcal", draft.kcal ?? "", "text", 'inputmode="decimal" dir="ltr" maxlength="128" required autocomplete="off"')}${field("Portions eaten", "servings", draft.servings, "text", 'inputmode="decimal" dir="ltr" maxlength="128" required autocomplete="off"')}<p class="details">Half a serving? Enter <bdi>0.5</bdi> or <bdi>٠٫٥</bdi>. Log only what you ate. Packaged foods: use the nutrition label, including its portion size.</p><p class="calorie-form-total" data-calorie-preview aria-live="polite"></p><p class="details">This saves a food-diary entry. Kitchen quantities stay unchanged.</p><div class="modal-actions"><button class="btn btn-primary">${entry ? "Save changes" : "Add to diary"}</button>${button("Cancel", "modal-close", "", "btn-quiet")}</div></form>`,
+      "calorie-entry",
+    );
+    updateCaloriePreview();
+    $('[name="name"]', modal)?.focus();
+  }
+  function updateCaloriePreview() {
+    const form = $('[data-form="calorie-entry"]', modal);
+    if (!form || !calorieDraft) return;
+    const portions = parseCalorieNumber(form.elements.servings.value);
+    const kcal =
+      calorieDraft.source === "manual"
+        ? parseCalorieNumber(form.elements.kcal.value)
+        : calorieDraft.kcal;
+    const valid =
+      portions !== null &&
+      portions > 0 &&
+      portions <= 100 &&
+      kcal !== null &&
+      kcal >= 0 &&
+      kcal <= 100000;
+    $("[data-calorie-preview]", form).textContent = valid
+      ? `${num(Math.round(kcal * portions))} kcal for this entry`
+      : "Enter calories and portions to see the total.";
+  }
+  function calorieAddMenu() {
+    const available = D.recipes.flatMap((r) => {
+      const estimate = estimateRecipeCalories(r);
+      return estimate.complete ? [{ r, estimate }] : [];
+    });
+    openModal(
+      "Add food",
+      `<div class="calorie-add-options"><button type="button" class="btn btn-primary" data-action="calorie-manual">${icon("pencil")}Enter food or label calories</button><p class="details">Use a package label, a restaurant’s nutrition information, or your own calorie value.</p>${available.length ? `<form data-form="calorie-recipe-pick">${errors()}<label class="field">Or choose a Nomli recipe<select name="recipeId" required>${available.map(({ r, estimate }) => `<option value="${esc(r.id)}">${esc(r.name)} · ~${num(Math.round(estimate.perServingKcal))} kcal / serving</option>`).join("")}</select></label><p class="details">${available.length} of ${D.recipes.length} recipes have complete ingredient estimates. You choose portions on the next screen.</p><button class="btn btn-secondary">Choose recipe</button></form>` : ""}</div>`,
+      "calorie-add",
     );
   }
   function expensesView() {
@@ -1128,6 +1244,7 @@ import packageInfo from "../package.json" with { type: "json" };
     review: reviewView,
     shopping: shoppingView,
     expenses: expensesView,
+    calories: caloriesView,
     profile: profileView,
   };
   function viewMarkup() {
@@ -1688,6 +1805,8 @@ import packageInfo from "../package.json" with { type: "json" };
   );
 
   document.addEventListener("input", (event) => {
+    if (event.target.closest('[data-form="calorie-entry"]'))
+      updateCaloriePreview();
     if (event.target.matches('[data-change="search"]')) {
       S.search = event.target.value.trim();
       const list = $("[data-inventory-list]", view);
@@ -1907,6 +2026,62 @@ import packageInfo from "../package.json" with { type: "json" };
     if (el.dataset.route) return navigate(el.dataset.route);
     const a = el.dataset.action,
       id = el.dataset.id || "";
+    if (a === "calorie-add") return calorieAddMenu();
+    if (a === "calorie-manual") {
+      if (id && S.route !== "calories") calorieDate = localDateKey();
+      return calorieEntryForm({ manualRecipeId: id || null });
+    }
+    if (a === "calorie-recipe") {
+      if (S.route !== "calories") calorieDate = localDateKey();
+      return calorieEntryForm({ recipeId: id });
+    }
+    if (a === "calorie-today") {
+      calorieFollowToday = true;
+      calorieDate = localDateKey();
+      return render();
+    }
+    if (a === "calorie-edit") {
+      const entry = S.calories.entries.find((value) => value.id === id);
+      return entry
+        ? calorieEntryForm({ entry })
+        : announce("Entry no longer exists.");
+    }
+    if (a === "calorie-delete") {
+      const entry = S.calories.entries.find((value) => value.id === id);
+      if (!entry) return announce("Entry no longer exists.");
+      return openModal(
+        "Remove food entry?",
+        `<p dir="auto">${esc(entry.name)}</p><p>Remove ${num(Math.round(entry.kcal * entry.servings))} kcal from this day’s diary? Kitchen stock stays unchanged.</p><div class="modal-actions">${button("Remove entry", "calorie-delete-confirm", id, "btn-primary")}${button("Keep entry", "modal-close", "", "btn-quiet")}</div>`,
+        "calorie-delete",
+      );
+    }
+    if (a === "calorie-delete-confirm") {
+      if (
+        await commit(() => {
+          S.calories.entries = S.calories.entries.filter(
+            (value) => value.id !== id,
+          );
+        }, "Food entry removed.")
+      ) {
+        closeModal();
+        render();
+      }
+      return;
+    }
+    if (a === "calorie-goal") {
+      return openModal(
+        "Your daily goal",
+        `<form data-form="calorie-goal">${errors()}${field("Optional daily goal (kcal)", "goalKcal", S.calories.goalKcal ?? "", "text", 'inputmode="numeric" maxlength="128" dir="ltr"')}<p class="details">Set your own goal, or leave blank to remove it. Nomli does not calculate a recommended intake.</p><button class="btn btn-primary">Save goal</button></form>`,
+        "calorie-goal",
+      );
+    }
+    if (a === "calorie-info") {
+      return openModal(
+        "About calorie estimates",
+        `<div class="stack"><p>Recipe estimates use generic foods from USDA FoodData Central’s SR Legacy April 2018 dataset, including recorded portion weights. Brand, size and cooking method can change calories.</p><p>17 of 20 recipes have complete references. Labneh, zaatar and mixed-spice blends need product-specific data; their recipes stay visibly incomplete.</p><p>Receipts identify groceries, not their nutrition. For packaged foods, enter the label’s calories and the number of portions you ate. Recipe estimates assume all listed ingredients are eaten and do not model oil or food left in the pan.</p><p>Your diary stores the calorie value at the time you log it. Cooking, undoing stock use or changing inventory does not add, remove or recalculate food entries. Diary entries and your optional goal stay on this device and in exported backups; they are not sent to Zara.</p><p><a href="https://fdc.nal.usda.gov/download-datasets/" target="_blank" rel="noopener noreferrer">USDA FoodData Central dataset source</a></p></div>`,
+        "calorie-info",
+      );
+    }
     if (a === "assistant-info") {
       if (assistantAbort) return;
       return openModal(
@@ -2241,6 +2416,7 @@ import packageInfo from "../package.json" with { type: "json" };
         "Kitchen utilities",
         button("Shopping list", "go", "shopping") +
           button("Spending", "go", "expenses") +
+          button("Calories", "go", "calories") +
           button("Preferences & tools", "go", "profile") +
           button("Export backup", "backup-export") +
           button("Import backup", "backup-import") +
@@ -2252,7 +2428,7 @@ import packageInfo from "../package.json" with { type: "json" };
     if (a === "reset-ask")
       return openModal(
         "Clear local data",
-        `<p>Clear inventory, meals, receipts, shopping and assistant history on this device?</p>${button("Clear local data", "reset-confirm", "", "btn-primary")}`,
+        `<p>Clear inventory, meals, receipts, shopping, calorie diary and assistant history on this device?</p>${button("Clear local data", "reset-confirm", "", "btn-primary")}`,
       );
     if (a === "reset-confirm") {
       if (
@@ -2263,6 +2439,7 @@ import packageInfo from "../package.json" with { type: "json" };
             S.shopping = [];
             S.receipts = [];
             S.chat = [];
+            S.calories = { goalKcal: null, entries: [] };
             S.cooking = null;
             S = syncCookingInventory(S).state;
           },
@@ -2969,6 +3146,110 @@ import packageInfo from "../package.json" with { type: "json" };
       );
     const fd = new FormData(form),
       kind = form.dataset.form;
+    if (kind.startsWith("calorie-")) {
+      if (operationBusy) return;
+      if (kind === "calorie-date") {
+        try {
+          const selectedDate = String(fd.get("date") || "");
+          dailyCalorieSummary(S.calories.entries, selectedDate);
+          calorieDate = selectedDate;
+          calorieFollowToday = selectedDate === localDateKey();
+          render();
+        } catch (error) {
+          formError(form, error.message);
+        }
+        return;
+      }
+      if (kind === "calorie-recipe-pick")
+        return calorieEntryForm({ recipeId: String(fd.get("recipeId") || "") });
+      if (kind === "calorie-goal") {
+        const text = String(fd.get("goalKcal") || "").trim();
+        const goal = text ? parseCalorieNumber(text) : null;
+        if (text && (!Number.isInteger(goal) || goal <= 0 || goal > 100000))
+          return formError(
+            form,
+            "Enter a positive whole-number goal, or leave blank to remove it.",
+          );
+        if (
+          await commit(() => {
+            S.calories.goalKcal = goal;
+          }, "Daily goal saved.")
+        ) {
+          closeModal();
+          render();
+        }
+        return;
+      }
+      if (kind === "calorie-entry") {
+        if (!calorieDraft || modal.dataset.screen !== "calorie-entry")
+          return formError(form, "Entry expired. Open Add food again.");
+        const editing = Boolean(calorieDraft.id);
+        if (!editing && S.calories.entries.length >= 1000)
+          return formError(
+            form,
+            "Diary holds 1,000 entries. Export a backup, then remove old entries to add more.",
+          );
+        if (
+          editing &&
+          !S.calories.entries.some((entry) => entry.id === calorieDraft.id)
+        )
+          return formError(
+            form,
+            "Entry no longer exists. Close this form and try again.",
+          );
+        const kcal =
+          calorieDraft.source === "manual"
+            ? parseCalorieNumber(fd.get("kcal"))
+            : calorieDraft.kcal;
+        const servings = parseCalorieNumber(fd.get("servings"));
+        if (kcal === null || kcal < 0 || kcal > 100000)
+          return formError(
+            form,
+            "Enter calories from 0 to 100,000 per portion. Use a dot or Arabic decimal separator.",
+            form.elements.kcal,
+          );
+        if (servings === null || servings <= 0 || servings > 100)
+          return formError(
+            form,
+            "Enter portions above 0 and up to 100, such as 0.5 or ١٫٥.",
+            form.elements.servings,
+          );
+        let entry;
+        try {
+          entry = createCalorieEntry({
+            ...calorieDraft,
+            id: calorieDraft.id || `food-${crypto.randomUUID()}`,
+            date: String(fd.get("date") || ""),
+            name: String(fd.get("name") || "").trim(),
+            kcal,
+            servings,
+          });
+        } catch (error) {
+          return formError(form, error.message);
+        }
+        if (
+          await commit(
+            () => {
+              S.calories.entries = editing
+                ? S.calories.entries.map((value) =>
+                    value.id === entry.id ? entry : value,
+                  )
+                : [...S.calories.entries, entry];
+            },
+            editing
+              ? "Food entry updated."
+              : "Food logged. Kitchen stock unchanged.",
+          )
+        ) {
+          calorieDate = entry.date;
+          calorieFollowToday = entry.date === localDateKey();
+          closeModal();
+          if (S.route === "calories") render();
+          else navigate("calories", { keepCalorieDate: true });
+        }
+        return;
+      }
+    }
     if (kind === "scan-config") {
       const candidate = {
         apiUrl: String(fd.get("apiUrl") || "").trim(),
@@ -3403,6 +3684,7 @@ import packageInfo from "../package.json" with { type: "json" };
     }
     if (routes.includes(r)) {
       cancelAssistant();
+      if (r === "calories" && S.route !== "calories") calorieFollowToday = true;
       S.route = r;
       backgroundSave();
       render();
@@ -3413,6 +3695,7 @@ import packageInfo from "../package.json" with { type: "json" };
     cancelScan();
   });
   modal.addEventListener("close", () => {
+    calorieDraft = null;
     cookingMediaCleanup.resume?.();
     cancelScan();
     if (modal.dataset.screen === "item-edit") releaseItemPhoto();

@@ -32,6 +32,7 @@ const ROUTES = new Set([
   "review",
   "shopping",
   "expenses",
+  "calories",
   "profile",
 ]);
 const AREAS = new Set(["All", "Fridge", "Freezer", "Pantry", "Spices"]);
@@ -221,6 +222,54 @@ export function validateState(value) {
     fail("Budget must be a positive safe integer.");
   for (const field of ["meals", "shopping", "receipts", "chat"])
     if (!Array.isArray(state[field])) fail(`${field} must be a list.`);
+  if (state.calories !== undefined) {
+    const calories = plain(state.calories, "Calories");
+    if (
+      calories.goalKcal !== null &&
+      (!Number.isInteger(calories.goalKcal) ||
+        calories.goalKcal <= 0 ||
+        calories.goalKcal > 100000)
+    )
+      fail("Calorie goal is invalid.");
+    if (!Array.isArray(calories.entries) || calories.entries.length > 1000)
+      fail("Calorie entries are invalid.");
+    const calorieIds = new Set();
+    for (const entry of calories.entries) {
+      plain(entry, "Calorie entry");
+      if (
+        Object.keys(entry).some(
+          (key) =>
+            ![
+              "id",
+              "date",
+              "name",
+              "kcal",
+              "servings",
+              "source",
+              "recipeId",
+            ].includes(key),
+        )
+      )
+        fail("Calorie entry contains an unknown field.");
+      safeId(entry.id, "Calorie entry id");
+      if (calorieIds.has(entry.id))
+        fail("Calorie entries contain duplicate ids.");
+      calorieIds.add(entry.id);
+      if (!validDate(entry.date)) fail("Calorie entry date is invalid.");
+      shortString(entry.name, "Calorie entry name", 200);
+      nonNegative(entry.kcal, "Calorie entry kcal", 100000);
+      if (
+        !Number.isFinite(entry.servings) ||
+        entry.servings <= 0 ||
+        entry.servings > 100
+      )
+        fail("Calorie entry servings are invalid.");
+      if (!["recipe", "manual", "food"].includes(entry.source))
+        fail("Calorie entry source is invalid.");
+      if (entry.recipeId !== undefined)
+        safeId(entry.recipeId, "Calorie entry recipe id");
+    }
+  }
   if (state.scanImports !== undefined) {
     if (
       !Array.isArray(state.scanImports) ||
@@ -499,6 +548,7 @@ function freshState(data) {
     meals: [],
     shopping: [],
     receipts: [],
+    calories: { goalKcal: null, entries: [] },
     scanImports: [],
     budget: 160000,
     profile: { allergies: [], cuisine: "Any", time: 20, household: 2 },
@@ -516,6 +566,8 @@ function parseStored(raw) {
 
 function normalizeForData(value, data, { includeScanImports = false } = {}) {
   const state = copy(value);
+  if (state.calories === undefined)
+    state.calories = { goalKcal: null, entries: [] };
   if (includeScanImports && !Array.isArray(state.scanImports))
     state.scanImports = [];
   if (!ROUTES.has(state.route)) state.route = "kitchen";

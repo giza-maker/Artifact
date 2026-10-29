@@ -1,4 +1,16 @@
-# M10 visual cooking phone check
+# M11 calories phone check
+
+Install M11 over Nomli Test. No reset, rescan or new API key. Calories and food logging work offline.
+
+1. Kitchen → Calories → Add food. Enter a food name, label calories and portions. Try Arabic digits and 0.5 portions. Confirm the live total, save, close/reopen and verify the same dated entry.
+2. Add a Nomli recipe. Confirm the per-serving estimate and enter only portions eaten. Change recipe servings: total energy scales, per-serving energy stays constant. Three recipes with missing blend/labneh references must stay incomplete and offer manual entry.
+3. Edit an entry, move it to yesterday, view that date, then return to Today. Remove a test entry through confirmation. Set your own optional goal and remove it by saving a blank value.
+4. Inventory and receipt spending must remain unchanged by food logging. Cooking and stock undo must leave the diary unchanged. Export/import a backup: entries and goal must round-trip.
+5. At narrow phone widths, forms and recipe pickers must scroll, controls remain reachable and Arabic names must fit. Diary data must not appear in Zara context.
+
+Automated and browser evidence is recorded in VERIFICATION.md. Physical Android update acceptance remains a device check.
+
+## Historical M10 visual cooking phone check
 
 Install M10 over Nomli Test. No reset, rescan or new API key. All 60 steps have bundled media; 374 automated tests and media validation passed.
 

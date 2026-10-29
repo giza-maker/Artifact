@@ -73,7 +73,9 @@ test("reviewed category survives save, reload, and backup", async () => {
   const store = createStateStore({ data, storage });
   const reviewed = draft();
   reviewed.lines[0].categoryId = "seafood";
-  const committed = commitScanDraft(baseState(), reviewed, { confirmed: true }).state;
+  const committed = commitScanDraft(baseState(), reviewed, {
+    confirmed: true,
+  }).state;
   await store.save(committed);
   const loaded = (await store.load()).state;
   const itemId = Object.keys(loaded.items)[0];
@@ -161,13 +163,20 @@ test("only finance-excluded scan receipts may persist unknown line amount", () =
   const reviewed = draft();
   reviewed.totalMinor = null;
   reviewed.lines[0].lineTotalMinor = null;
-  const valid = commitScanDraft(baseState(), reviewed, { confirmed: true, excludeFinance: true }).state;
+  const valid = commitScanDraft(baseState(), reviewed, {
+    confirmed: true,
+    excludeFinance: true,
+  }).state;
   assert.equal(valid.receipts[0].lines[0].cents, null);
   assert.doesNotThrow(() => store.parseBackup(store.exportBackup(valid)));
 
   for (const mutate of [
-    (receipt) => { receipt.source = "manual"; },
-    (receipt) => { receipt.financeExcluded = false; },
+    (receipt) => {
+      receipt.source = "manual";
+    },
+    (receipt) => {
+      receipt.financeExcluded = false;
+    },
   ]) {
     const invalid = structuredClone(valid);
     mutate(invalid.receipts[0]);
@@ -187,7 +196,10 @@ test("M1 state and backup remain accepted while malformed scan data rejects", as
     exportedAt: "2026-10-26T00:00:00.000Z",
     state: baseState(),
   });
-  assert.deepEqual(store.parseBackup(oldBackup), baseState());
+  assert.deepEqual(store.parseBackup(oldBackup), {
+    ...baseState(),
+    calories: { goalKcal: null, entries: [] },
+  });
   const malformed = JSON.parse(oldBackup);
   malformed.state.scanImports = [
     { fingerprint, signature: "b".repeat(64), financeExcluded: false },

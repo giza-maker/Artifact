@@ -28,6 +28,11 @@
       "sha256": "a91998c59e389ec3f58d39da648c0480baa2420a97039ce16cd1bc995745f3b0"
     },
     {
+      "path": "content/nutrition.json",
+      "bytes": 11234,
+      "sha256": "98224fc8d9d7153020300596a858eff7dbdc063ba319fb8146f7225963262c51"
+    },
+    {
       "path": "content/README.md",
       "bytes": 2278,
       "sha256": "5dd802a565c2822f2c2b6a226a130767d67b2a20d35b736132f80d02cef39a70"
