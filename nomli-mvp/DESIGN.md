@@ -1,5 +1,13 @@
 # Nomli MVP design contract
 
+## M11.1 cooking and Zara continuity
+
+- Zara shows an explicit phase-specific Resume control while a cooking session exists. Keep its action label readable and the recipe/step context visible on narrow phones.
+- Cooking preparation, steps and final review have a persistent chat shortcut. Reopen the existing conversation without replacing the user’s question with a new step prompt.
+- Same-session cooking/chat round trips preserve pending replies, including browser history navigation. Duplicate history events must be idempotent. Stop voice capture on route changes; unrelated navigation and cooking mutations still invalidate pending advice.
+- Background replies update chat controls without replacing preparation, timer or actual-use forms. Preserve form focus through persistence. Clear the reply-ready indicator when the conversation is opened.
+- Chat never advances a cooking step, resets a timer, changes allocations or deducts stock.
+
 ## M11 calories
 
 - Calories live in Kitchen utilities, with a compact daily summary above inventory. Keep the four primary destinations unchanged.

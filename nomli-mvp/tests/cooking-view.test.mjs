@@ -51,6 +51,7 @@ function render({
   recipe = baseRecipe,
   session = baseSession,
   items = {},
+  chat = {},
 } = {}) {
   return renderCookingExperience({
     recipe,
@@ -59,6 +60,7 @@ function render({
     seconds: session.seconds ?? 120,
     speech: { phase: "idle", error: "" },
     canRead: false,
+    chat,
     esc,
     num: (value) => String(value),
     icon: (name) => `<i data-icon="${esc(name)}"></i>`,
@@ -74,6 +76,21 @@ function render({
 function ids(markup) {
   return [...markup.matchAll(/\sid="([^"]+)"/g)].map((match) => match[1]);
 }
+
+test("Zara stays reachable in every cooking phase and existing exchanges reopen without a new prompt", () => {
+  for (const phase of ["prep", "cooking", "review"]) {
+    const html = render({
+      session: { ...baseSession, phase },
+      chat: { hasConversation: true, pending: phase === "cooking" },
+    });
+    assert.match(html, /data-cooking-chat-shortcut/);
+    assert.match(html, /data-action="cook-chat"/);
+    if (phase === "cooking") {
+      assert.match(html, /Keep cooking while Zara replies/);
+      assert.doesNotMatch(html, /data-action="cook-ask"/);
+    }
+  }
+});
 
 test("prep renders frozen canonical quantity, allocated lot photo, and required confirmations", () => {
   const html = render({

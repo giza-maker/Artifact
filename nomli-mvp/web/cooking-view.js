@@ -1,6 +1,10 @@
 import { getCookingStepGuide, getCurrentStepAmounts } from "./cooking-guide.js";
 import { getCookingStepMedia } from "./cooking-media.js";
 import { renderCookingStepMedia } from "./cooking-media-view.js";
+import {
+  renderCookingChatShortcut,
+  renderCookingChatCoach,
+} from "./cooking-chat.js";
 
 export function renderCookingExperience({
   recipe: r,
@@ -10,6 +14,7 @@ export function renderCookingExperience({
   speech,
   canRead,
   timerOpen = false,
+  chat = {},
   esc: e,
   num,
   icon,
@@ -20,7 +25,7 @@ export function renderCookingExperience({
 }) {
   const action = (label, name, id = "", primary = false) =>
     `<button type="button" class="btn ${primary ? "btn-primary" : "btn-quiet"}" data-action="${name}" data-id="${e(id)}">${e(label)}</button>`;
-  const top = `<header class="cook-session-top"><button type="button" class="btn btn-quiet" data-action="go" data-id="cook">${icon("arrow-left")}Recipes</button><p>${c.servings} servings · saved on this device</p></header>`;
+  const top = `<header class="cook-session-top"><button type="button" class="btn btn-quiet" data-action="go" data-id="cook">${icon("arrow-left")}Recipes</button><p>${c.servings} servings</p><div data-cooking-chat-shortcut>${renderCookingChatShortcut({ chat, esc: e, icon })}</div></header>`;
   const hero = r.image
     ? `<div class="cook-hero"><img src="${e(r.image)}" alt="${e(r.name)}" width="560" height="320"><p class="cook-hero-caption">${e(r.name)}</p></div>`
     : "";
@@ -89,7 +94,7 @@ export function renderCookingExperience({
       <div class="cook-timer-presets">${guide.timerPresets.map((preset) => `<button type="button" data-action="cook-timer-preset" data-id="${preset.seconds}">${e(preset.label)}</button>`).join("")}</div>
       ${action(c.running ? "Pause timer" : "Start timer", "timer-wall", "", true)}
       <details class="cook-timer-settings"><summary>Change timer</summary><form data-form="cook-timer">${errors()}<div class="field-grid"><label class="field">Timer minutes<input type="number" name="minutes" value="${Math.max(1, Math.ceil(seconds / 60))}" min="1" max="180" step="1" required inputmode="numeric"></label><button class="btn btn-secondary">Set timer</button></div></form></details></div></details>
-    <aside class="cook-coach"><img src="images/zara-96.webp" alt="" width="40" height="40"><div><b>Zara’s here if you need a hand</b><p>Ask about this step or a substitution.</p></div>${action("Ask Zara", "cook-ask")}</aside>
+    ${renderCookingChatCoach({ chat, esc: e, icon })}
     <div class="cook-next-preview"><small>${next ? "UP NEXT" : "LAST STEP"}</small><p>${e(next?.title ?? "Review what you used, then update your Kitchen.")}</p></div>
     <div class="cook-action-dock">${c.step ? action("Previous", "cook-prev") : action("Exit", "go", "cook")}${action(next ? "Done · next step" : "Finish & review", "cook-next", r.id, true)}</div>
     </section>`;

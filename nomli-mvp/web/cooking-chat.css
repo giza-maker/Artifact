@@ -1,0 +1,112 @@
+.zara-cooking-return,
+.cook-chat-shortcut {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  min-height: 44px;
+  color: var(--text, #faf6ef);
+  border: 1px solid var(--border, rgba(250, 246, 239, 0.12));
+  background: var(--surface, #1c1a17);
+  text-align: start;
+}
+
+.zara-cooking-return {
+  flex: 0 0 auto;
+  width: calc(100% - 40px);
+  margin: 0 20px 8px;
+  padding: 9px 12px;
+  border-radius: 16px;
+}
+
+.zara-cooking-return > span,
+.cook-chat-shortcut > span {
+  display: grid;
+  flex: 1 1 auto;
+  min-width: 0;
+  gap: 2px;
+}
+
+.zara-cooking-return strong,
+.cook-chat-shortcut strong {
+  font-size: 14px;
+  line-height: 1.3;
+}
+
+.zara-cooking-return strong {
+  font-size: 16px;
+}
+.zara-cooking-return small {
+  font-size: 12px;
+}
+.cook-session-top:has([data-cooking-chat-shortcut]) {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2px 12px;
+}
+.cook-session-top > button {
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: start;
+}
+.cook-session-top > p {
+  grid-column: 1;
+  grid-row: 2;
+  padding-inline-start: 12px;
+  text-align: start;
+}
+.cook-session-top > [data-cooking-chat-shortcut] {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+}
+.cook-session-top .cook-chat-shortcut small {
+  text-align: start;
+  font-size: 11px;
+}
+
+.zara-cooking-return small,
+.cook-chat-shortcut small {
+  color: var(--muted, #a89f94);
+  font-size: 12px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.zara-cooking-return .ui-icon,
+.cook-chat-shortcut .ui-icon {
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  color: var(--accent, #ff7a18);
+}
+
+.cook-chat-shortcut {
+  position: relative;
+  padding: 7px 10px;
+  border-radius: 14px;
+}
+
+.cook-chat-shortcut__badge {
+  width: 7px;
+  height: 7px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--accent, #ff7a18);
+}
+
+.cook-coach[data-cooking-chat-coach] button {
+  min-height: 44px;
+}
+
+.zara-cooking-return:focus-visible,
+.cook-chat-shortcut:focus-visible {
+  outline: 2px solid var(--accent, #ff7a18);
+  outline-offset: 3px;
+}
+
+@media (max-width: 350px) {
+  .zara-cooking-return {
+    width: calc(100% - 24px);
+    margin-inline: 12px;
+  }
+}

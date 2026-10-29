@@ -1,4 +1,16 @@
-# M11 calories phone check
+# M11.1 cooking and Zara phone check
+
+Install M11.1 over Nomli Test. No reset, rescan or new API key.
+
+1. During preparation, cooking and final review, open Zara. Use the explicit Resume button to return to the same phase and step. Use Continue chat to reopen the same conversation.
+2. Type a question, return to cooking, then reopen chat. The draft must stay intact. Send a question, return while Zara is thinking, and reopen after the reply: the response must be saved. Browser Back must work too.
+3. While a reply is pending, edit a timer field without saving. Reply completion must preserve the field value and keyboard focus. A running timer must continue through a chat round trip.
+4. Move to another cooking step while advice is pending. The old request must be cancelled; no stale reply or stock mutation may be applied. Cooking completion/undo and calorie diary behavior remain unchanged.
+5. At 320px width, Resume and Continue chat controls must remain readable and reachable. Reading a new reply must clear its ready indicator.
+
+Automated and browser evidence is recorded in VERIFICATION.md. Physical phone update/hardware acceptance remains pending.
+
+## Historical M11 calories phone check
 
 Install M11 over Nomli Test. No reset, rescan or new API key. Calories and food logging work offline.
 

@@ -88,6 +88,13 @@ import { createCookingSpeechController } from "./cooking-speech.js";
 import "./cooking-experience.css";
 import { mountCookingMedia } from "./cooking-media-player.js";
 import "./cooking-media.css";
+import {
+  shouldPreserveCookingChat,
+  renderCookingChatReturn,
+  renderCookingChatShortcut,
+  renderCookingChatCoach,
+} from "./cooking-chat.js";
+import "./cooking-chat.css";
 import { estimateRecipeCalories } from "./nutrition.js";
 import {
   createCalorieEntry,
@@ -179,6 +186,7 @@ import packageInfo from "../package.json" with { type: "json" };
     assistantAbort = null,
     assistantEpoch = 0;
   let assistantReply = null,
+    assistantUnread = false,
     assistantContext = null,
     assistantReview = null;
   const liveChats = new WeakSet();
@@ -250,6 +258,7 @@ import packageInfo from "../package.json" with { type: "json" };
     assistantAbort = null;
     if (clear) {
       assistantReply = null;
+      assistantUnread = false;
       assistantContext = null;
       assistantReview = null;
     }
@@ -373,6 +382,11 @@ import packageInfo from "../package.json" with { type: "json" };
   async function commit(mutator, success, replace = false) {
     if (operationBusy) return false;
     cancelAssistant();
+    const previousFocus = document.activeElement;
+    const previousSelection =
+      typeof previousFocus?.selectionStart === "number"
+        ? [previousFocus.selectionStart, previousFocus.selectionEnd]
+        : null;
     setBusy(true, modal.open ? modal : document);
     await saveQueue.catch(() => {});
     const before = structuredClone(S);
@@ -414,6 +428,15 @@ import packageInfo from "../package.json" with { type: "json" };
       return false;
     } finally {
       setBusy(false, modal.open ? modal : document);
+      if (
+        previousFocus?.isConnected &&
+        document.activeElement === document.body &&
+        !previousFocus.disabled
+      ) {
+        previousFocus.focus({ preventScroll: true });
+        if (previousSelection)
+          previousFocus.setSelectionRange(...previousSelection);
+      }
     }
   }
   function announce(text) {
@@ -570,7 +593,16 @@ import packageInfo from "../package.json" with { type: "json" };
     if (!routes.includes(route)) return;
     if (route === "calories" && S.route !== "calories" && !keepCalorieDate)
       calorieFollowToday = true;
-    cancelAssistant();
+    if (
+      shouldPreserveCookingChat({
+        from: S.route,
+        to: route,
+        session: S.cooking,
+      })
+    )
+      cancelVoice();
+    else cancelAssistant();
+    if (route === "assistant") assistantUnread = false;
     void cookingSpeech.stop();
     voiceExpanded = false;
     S.route = route;
@@ -916,6 +948,7 @@ import packageInfo from "../package.json" with { type: "json" };
       speech: cookingSpeech.snapshot(),
       canRead: window.NomliNative?.isNative === true,
       timerOpen: cookingTimerPanels.has(c.id + ":" + c.step),
+      chat: cookingChatState(),
       esc,
       num,
       icon,
@@ -931,6 +964,33 @@ import packageInfo from "../package.json" with { type: "json" };
   function cookingView() {
     if (!S.cooking) return cookView();
     return renderCookingExperience(cookingViewOptions());
+  }
+  function cookingChatState() {
+    return {
+      pending: Boolean(assistantAbort),
+      hasReply: assistantUnread && Boolean(assistantReply),
+      hasDraft: Boolean(assistantDraft.trim()),
+      hasConversation: Boolean(S.chat.length),
+    };
+  }
+  function refreshCookingChatControls() {
+    const chat = cookingChatState();
+    const shortcut = $("[data-cooking-chat-shortcut]", view);
+    const coach = $("[data-cooking-chat-coach]", view);
+    const focusedAction = document.activeElement?.closest("[data-action]");
+    const restoreShortcut = Boolean(shortcut?.contains(focusedAction));
+    const restoreCoach = Boolean(coach?.contains(focusedAction));
+    if (shortcut)
+      shortcut.innerHTML = renderCookingChatShortcut({ chat, esc, icon });
+    if (coach) coach.outerHTML = renderCookingChatCoach({ chat, esc, icon });
+    if (restoreShortcut)
+      $("[data-cooking-chat-shortcut] button", view)?.focus({
+        preventScroll: true,
+      });
+    else if (restoreCoach)
+      $("[data-cooking-chat-coach] button", view)?.focus({
+        preventScroll: true,
+      });
   }
   function preparationView() {
     return cookingView();
@@ -1160,7 +1220,12 @@ import packageInfo from "../package.json" with { type: "json" };
       ? `<article class="message message-user"><span class="sr-only">You</span><p dir="auto">${esc(assistantSentQuestion)}</p></article><div class="message message-zara" role="status"><img class="message-avatar" src="images/zara-96.webp" alt="" width="28" height="28"><div class="zara-typing"><span></span><span></span><span></span><b class="sr-only">Zara is thinking</b></div></div>`
       : "";
     const context = S.cooking
-      ? `<button class="zara-context-link" data-action="cook-resume">${icon("chef-hat")}<span>${esc(recipe(S.cooking.rid).name)} · ${S.cooking.phase === "prep" ? "preparation" : `Step ${S.cooking.step + 1}`}</span>${icon("caret-right")}</button>`
+      ? renderCookingChatReturn({
+          session: S.cooking,
+          recipe: recipe(S.cooking.rid),
+          esc,
+          icon,
+        })
       : `<p class="zara-context-summary">${icon("refrigerator")} ${Object.values(S.items).filter((item) => item.qty > 0).length} ingredients in your kitchen</p>`;
     const empty =
       !S.chat.length && !assistantReply && !assistantAbort
@@ -1176,6 +1241,7 @@ import packageInfo from "../package.json" with { type: "json" };
     voiceExpanded = false;
     assistantError = "";
     assistantReply = null;
+    assistantUnread = false;
     assistantReview = null;
     try {
       assistantContext = buildAssistantContext(S);
@@ -1198,11 +1264,14 @@ import packageInfo from "../package.json" with { type: "json" };
         context,
         signal: controller.signal,
       });
+      if (epoch !== assistantEpoch) return;
       if (
-        epoch !== assistantEpoch ||
         JSON.stringify(buildAssistantContext(S)) !== JSON.stringify(context)
-      )
+      ) {
+        assistantError =
+          "Cooking or kitchen changed. Send your question again for current advice.";
         return;
+      }
       assistantAbort = null;
       assistantReply = reply;
       const entry = { q: sentQuestion, a: reply.answer };
@@ -1222,6 +1291,7 @@ import packageInfo from "../package.json" with { type: "json" };
         assistantError =
           "Reply received, but could not be saved on this device.";
       }
+      assistantUnread = S.route !== "assistant";
     } catch (error) {
       if (epoch === assistantEpoch) {
         assistantAbort = null;
@@ -1230,7 +1300,8 @@ import packageInfo from "../package.json" with { type: "json" };
     } finally {
       if (epoch === assistantEpoch || !assistantAbort) {
         assistantAbort = null;
-        render();
+        if (S.route === "assistant") render();
+        else refreshCookingChatControls();
       }
     }
   }
@@ -2711,6 +2782,9 @@ import packageInfo from "../package.json" with { type: "json" };
           "Help me with “" + guide.title + "” in " + r.name + ".";
       return navigate("assistant");
     }
+    if (a === "cook-chat") {
+      return navigate("assistant");
+    }
     if (a === "cook-timer-preset") {
       const c = S.cooking;
       if (!c || c.phase !== "cooking") return;
@@ -2761,6 +2835,7 @@ import packageInfo from "../package.json" with { type: "json" };
       return;
     }
     if (a === "cook-resume") {
+      if (!S.cooking) return navigate("cook");
       return navigate(S.cooking?.phase === "review" ? "review" : "cooking");
     }
     if (a === "cook-cancel-ask") {
@@ -3683,7 +3758,13 @@ import packageInfo from "../package.json" with { type: "json" };
       return;
     }
     if (routes.includes(r)) {
-      cancelAssistant();
+      if (r === S.route) return;
+      if (
+        shouldPreserveCookingChat({ from: S.route, to: r, session: S.cooking })
+      )
+        cancelVoice();
+      else cancelAssistant();
+      if (r === "assistant") assistantUnread = false;
       if (r === "calories" && S.route !== "calories") calorieFollowToday = true;
       S.route = r;
       backgroundSave();
