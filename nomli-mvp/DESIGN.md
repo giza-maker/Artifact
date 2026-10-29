@@ -24,7 +24,7 @@ Do not add school, XP, quests, community, investor-tour or social-product langua
 
 - Desktop: centered phone, maximum width 430px and maximum height 900px.
 - Phone or embedded browser: edge-to-edge `100dvh` shell with safe-area padding.
-- Status bar and header frame one independently scrolling main region. Bottom navigation stays visible in a four-column grid.
+- Status bar and header frame one independently scrolling main region. Bottom navigation stays visible in a four-column grid outside active cooking. Preparation, guided steps and actual-use review use a focused shell with Recipes exit and a sticky action dock.
 - Default route and Nomli brand link are `#kitchen`.
 - App chrome carries product navigation without visible milestone labels. Zara and scanning reuse the protected connection; connection and data disclosures remain available in their relevant flows.
 - Panels and dialog bodies scroll within viewport bounds. Camera simulation may fill device; other dialogs present as bottom sheets.
@@ -97,3 +97,13 @@ Runtime may rely on `#main`, `#view`, `#bottom-nav`, `#modal`, `#modal-content`,
 - The weight dialog accepts localized digits and explains that quantity stays unchanged. Save only after snapshot revalidation, update only `gramsPerUnit`, and block allocated lots. Keep measurement-only shortages out of the shopping list.
 - Let canonical Salt artwork override an incompatible legacy shelf category only as an illustration fallback. Never change category, cooking identity, quantity or finance through artwork resolution.
 - Keep the existing scan provider, authentication and model contracts unchanged.
+
+## M9 guided cooking
+
+- Make current action prominent: 30–34px action title, 20px source instructions, finished-dish photography, numbered progress, source heat cues and a visible next-step action. Use 200ms transform/opacity entry only, with reduced-motion overrides.
+- Preparation uses visual ingredient cards with canonical amounts and 18px quantities. Each card and tools confirmation remain required. Frozen servings and allocations stay unchanged.
+- Step ingredient details show whole-recipe prep totals, explicitly labeled as totals. They never imply a second dose or invent per-step consumption. Curated titles and ingredient references cover all 20 recipes and 60 steps; displayed instructions preserve source text.
+- Offer source timer presets only where the recipe states an explicit duration. Custom timers remain optional and start only on explicit tap. Preserve wall-clock deadline and notification ownership; failed replacement saves restore retired alerts where possible.
+- Optional Read step invokes Android TextToSpeech only on tap, through the configured phone service. No new API key or microphone permission. Stop on navigation, step changes, dialogs, backgrounding and destruction; bound initialization and playback. Voice quality and availability depend on installed engine/data.
+- All steps opens a scrollable reference dialog. Ask Zara prefills current-step question without replacing an existing draft or sending automatically. Return to the active step from the chat context.
+- Final review shows allocated lots, current stock, editable actual use, explicit confirmation and one atomic save. No deduction during preparation or steps; undo remains available in Recent meals. Keep every row reachable at 320px width and short heights.

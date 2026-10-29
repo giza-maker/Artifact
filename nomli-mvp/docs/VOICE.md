@@ -49,3 +49,7 @@ Run on the validation package and record device, Android version, speech provide
 - [RecognizerIntent](https://developer.android.com/reference/android/speech/RecognizerIntent)
 
 See [integration boundaries](INTEGRATION.md), [M4 assistant checklist](ASSISTANT.md) and [release verification](VERIFICATION.md). Historical M4 records remain historical.
+
+## Cooking-step read-aloud (M9)
+
+Read step uses Android TextToSpeech through NomliDevice. It reads only the current curated step/title after an explicit tap; it does not start microphone capture or send Zara a question. The phone speech service may require language data or network access, depending on its installed engine. Stop reading, step/navigation changes, dialogs and backgrounding stop playback. Initialization has a 5-second deadline; playback has a 120-second deadline in both native and web layers. Unsupported engines/languages show a retryable error. Physical engine quality and lifecycle behavior remain device acceptance checks.

@@ -28,6 +28,14 @@ window.NomliNative = Object.freeze({
   stopVoice,
   cancelVoice,
   voiceStatus,
+  async speakCookingStep(options) {
+    return (await loadNativePlugin("NomliDevice")).plugin.speakCookingStep(
+      options,
+    );
+  },
+  async stopCookingSpeech() {
+    return (await loadNativePlugin("NomliDevice")).plugin.stopCookingSpeech();
+  },
   async saveItemPhoto(options) {
     return (await loadNativePlugin("NomliScan")).plugin.saveItemPhoto(options);
   },

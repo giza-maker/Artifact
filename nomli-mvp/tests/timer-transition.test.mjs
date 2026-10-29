@@ -1,34 +1,58 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createTimerNotifications } from "../web/timer-notifications.js";
-import { retireReplacedTimer } from "../web/timer-transition.js";
+import {
+  restoreRetiredTimer,
+  retireReplacedTimer,
+} from "../web/timer-transition.js";
 import { createStateStore } from "../web/state-store.js";
 
 async function fixture({ failures = 0 } = {}) {
   const data = { recipes: [{ id: "salad", steps: ["mix"] }], tools: [] };
   let raw;
-  const writes = [], cancelled = [];
-  const store = createStateStore({ data, storage: {
-    getItem: () => raw,
-    setItem: (_, value) => { raw = value; writes.push(JSON.parse(value)); },
-  } });
+  const writes = [],
+    cancelled = [];
+  const store = createStateStore({
+    data,
+    storage: {
+      getItem: () => raw,
+      setItem: (_, value) => {
+        raw = value;
+        writes.push(JSON.parse(value));
+      },
+    },
+  });
   let state = (await store.load()).state;
   state.cooking = {
-    id: "cook-1", rid: "salad", recipeName: "Salad", servings: 1,
-    phase: "cooking", prepared: [], toolsConfirmed: true, step: 0,
-    seconds: 60, running: true, deadline: 1800000000000,
-    startedAt: "2026-10-27T12:00:00.000Z", requirements: [], allocations: [],
-    notificationId: 12, notificationGeneration: 1,
+    id: "cook-1",
+    rid: "salad",
+    recipeName: "Salad",
+    servings: 1,
+    phase: "cooking",
+    prepared: [],
+    toolsConfirmed: true,
+    step: 0,
+    seconds: 60,
+    running: true,
+    deadline: 1800000000000,
+    startedAt: "2026-10-27T12:00:00.000Z",
+    requirements: [],
+    allocations: [],
+    notificationId: 12,
+    notificationGeneration: 1,
   };
   await store.save(state);
   const failure = new Error("Native cancellation failed");
-  const notifications = createTimerNotifications(() => ({
-    isNative: true,
-    cancelTimer: async id => {
-      cancelled.push(id);
-      if (failures-- > 0) throw failure;
-    },
-  }), () => assert.fail("Transition must persist through outer commit only"));
+  const notifications = createTimerNotifications(
+    () => ({
+      isNative: true,
+      cancelTimer: async (id) => {
+        cancelled.push(id);
+        if (failures-- > 0) throw failure;
+      },
+    }),
+    () => assert.fail("Transition must persist through outer commit only"),
+  );
   async function commit(mutate) {
     const before = structuredClone(state);
     try {
@@ -45,9 +69,14 @@ async function fixture({ failures = 0 } = {}) {
 
 test("failed cancellation blocks replacement persist, retains retryable durable ID", async () => {
   const f = await fixture({ failures: 1 });
-  const replace = state => { state.cooking = null; };
-  await assert.rejects(f.commit(replace), error => {
-    assert.equal(error.message, "Timer alert could not be cancelled. Change was not saved. Retry.");
+  const replace = (state) => {
+    state.cooking = null;
+  };
+  await assert.rejects(f.commit(replace), (error) => {
+    assert.equal(
+      error.message,
+      "Timer alert could not be cancelled. Change was not saved. Retry.",
+    );
     return error.cause === f.failure;
   });
   assert.equal(f.writes.length, 1);
@@ -61,7 +90,7 @@ test("failed cancellation blocks replacement persist, retains retryable durable 
 
 test("unrelated cloned state preserves same timer ownership", async () => {
   const f = await fixture();
-  await f.commit(state => {
+  await f.commit((state) => {
     state.cooking = structuredClone(state.cooking);
     state.budget += 1;
   });
@@ -72,15 +101,146 @@ test("unrelated cloned state preserves same timer ownership", async () => {
 
 test("removal and each ownership change cancel prior native timer", async () => {
   for (const mutate of [
-    state => { state.cooking = null; },
-    state => { state.cooking.id = "cook-2"; },
-    state => { state.cooking.notificationId = 13; },
-    state => { state.cooking.notificationGeneration += 1; },
+    (state) => {
+      state.cooking = null;
+    },
+    (state) => {
+      state.cooking.id = "cook-2";
+    },
+    (state) => {
+      state.cooking.notificationId = 13;
+    },
+    (state) => {
+      state.cooking.notificationGeneration += 1;
+    },
   ]) {
     const f = await fixture();
     await f.commit(mutate);
     assert.deepEqual(f.cancelled, [12]);
     assert.equal(f.writes.length, 2);
     if (f.state().cooking) assert.equal(f.state().cooking.running, true);
+  }
+});
+
+test("retirement reports ownership change without mutating rollback snapshot", async () => {
+  const previous = {
+    id: "cook-1",
+    running: true,
+    notificationId: 12,
+    notificationGeneration: 1,
+  };
+  const cancelled = [];
+  const notifications = createTimerNotifications(() => ({
+    isNative: true,
+    cancelTimer: async (id) => cancelled.push(id),
+  }));
+
+  assert.equal(
+    await retireReplacedTimer(
+      previous,
+      structuredClone(previous),
+      notifications,
+    ),
+    false,
+  );
+  assert.equal(await retireReplacedTimer(previous, null, notifications), true);
+  assert.deepEqual(cancelled, [12]);
+  assert.equal(previous.notificationId, 12);
+  assert.equal(previous.notificationGeneration, 1);
+  assert.equal(await retireReplacedTimer(null, null, notifications), false);
+});
+
+test("rollback restore clears stale owner and schedules rounded remaining time", async () => {
+  const now = 1_800_000_000_000;
+  const previous = {
+    id: "cook-1",
+    running: true,
+    deadline: now + 60_001,
+    notificationId: 12,
+    notificationGeneration: 1,
+  };
+  const cancelled = [],
+    scheduled = [],
+    persisted = [];
+  const notifications = createTimerNotifications(
+    () => ({
+      isNative: true,
+      cancelTimer: async (id) => cancelled.push(id),
+      scheduleTimer: async (seconds) => {
+        scheduled.push(seconds);
+        return 42;
+      },
+    }),
+    async () => persisted.push(structuredClone(previous)),
+  );
+
+  assert.equal(await retireReplacedTimer(previous, null, notifications), true);
+  assert.equal(
+    await restoreRetiredTimer(previous, notifications, { now: () => now }),
+    true,
+  );
+  assert.deepEqual(cancelled, [12]);
+  assert.deepEqual(scheduled, [61]);
+  assert.equal(previous.notificationId, 42);
+  assert.equal(persisted.at(-1).notificationId, 42);
+});
+
+test("rollback persistence failure cleans newly scheduled native alert", async () => {
+  const now = 1_800_000_000_000;
+  const previous = {
+    id: "cook-1",
+    running: true,
+    deadline: now + 60_000,
+    notificationId: 12,
+    notificationGeneration: 1,
+  };
+  const liveNativeIds = new Set([12]);
+  const failure = new Error("Rollback save failed");
+  const notifications = createTimerNotifications(
+    () => ({
+      isNative: true,
+      cancelTimer: async (id) => liveNativeIds.delete(id),
+      scheduleTimer: async () => {
+        liveNativeIds.add(42);
+        return 42;
+      },
+    }),
+    async () => {
+      if (previous.notificationId === 42) throw failure;
+    },
+  );
+
+  await retireReplacedTimer(previous, null, notifications);
+  await assert.rejects(
+    restoreRetiredTimer(previous, notifications, { now: () => now }),
+    (error) => error === failure,
+  );
+  assert.deepEqual([...liveNativeIds], []);
+  assert.equal(previous.notificationId, null);
+});
+
+test("rollback never creates timer for paused or expired session", async () => {
+  const now = 1_800_000_000_000;
+  for (const previous of [
+    { running: false, deadline: now + 60_000, notificationId: 12 },
+    { running: true, deadline: now, notificationId: 12 },
+  ]) {
+    let schedules = 0;
+    const persisted = [];
+    const notifications = createTimerNotifications(
+      () => ({
+        isNative: true,
+        cancelTimer: async () => {},
+        scheduleTimer: async () => ++schedules,
+      }),
+      async () => persisted.push(structuredClone(previous)),
+    );
+    assert.equal(
+      await restoreRetiredTimer(previous, notifications, { now: () => now }),
+      false,
+    );
+    assert.equal(schedules, 0);
+    assert.equal(previous.notificationId, null);
+    assert.equal(persisted.at(-1).notificationId, null);
   }
 });

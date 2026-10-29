@@ -9,6 +9,7 @@ public class MainActivity extends BridgeActivity {
         registerPlugin(NomliBackupPlugin.class);
         registerPlugin(NomliScanPlugin.class);
         registerPlugin(NomliVoicePlugin.class);
+        registerPlugin(NomliDevicePlugin.class);
         super.onCreate(savedInstanceState);
     }
 }

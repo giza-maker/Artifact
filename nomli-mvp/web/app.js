@@ -7,7 +7,10 @@ import {
   applyAssistantProposal,
 } from "./assistant-domain.js";
 import { createTimerNotifications } from "./timer-notifications.js";
-import { retireReplacedTimer } from "./timer-transition.js";
+import {
+  retireReplacedTimer,
+  restoreRetiredTimer,
+} from "./timer-transition.js";
 import { initMobileSelects } from "./mobile-select.js";
 import {
   FOOD_CATEGORIES,
@@ -79,6 +82,10 @@ import {
 } from "./recipe-stock-hints.js";
 import { applyRecipeStockMeasurement } from "./recipe-stock-measurement.js";
 import { parseLocalizedDecimal } from "./localized-number.js";
+import { renderCookingExperience } from "./cooking-view.js";
+import { getCookingStepGuide } from "./cooking-guide.js";
+import { createCookingSpeechController } from "./cooking-speech.js";
+import "./cooking-experience.css";
 import packageInfo from "../package.json" with { type: "json" };
 (async function leanNomli() {
   const D = { ...window.NOMLI_DATA, recipes: COOK_RECIPES, tools: COOK_TOOLS };
@@ -243,6 +250,38 @@ import packageInfo from "../package.json" with { type: "json" };
   let importCandidate = null;
   let recipeStockLinkReview = null;
   let recipeStockMeasurementReview = null;
+  const cookingTimerPanels = new Set();
+  const cookingSpeech = createCookingSpeechController({
+    native: window.NomliNative,
+    onChange: updateCookingSpeechControls,
+  });
+  function updateCookingSpeechControls(state) {
+    const active = ["starting", "speaking", "stopping"].includes(state.phase);
+    const control = $('[data-action="cook-read"]', view);
+    if (control) {
+      control.disabled =
+        window.NomliNative?.isNative !== true || state.phase === "stopping";
+      $("[data-cook-read-label]", control).textContent = active
+        ? "Stop reading"
+        : "Read step";
+      $("use", control)?.setAttribute(
+        "href",
+        "icons.svg#" + (active ? "pause" : "speaker-high"),
+      );
+    }
+    const status = $("#cook-speech-status", view);
+    if (status) {
+      status.textContent =
+        state.error ||
+        (active
+          ? "Reading this step. You can stop at any time."
+          : window.NomliNative?.isNative
+            ? "Read aloud uses your phone’s speech service."
+            : "Read aloud is available in the Android app.");
+      status.classList.toggle("is-error", Boolean(state.error));
+      status.setAttribute("role", state.error ? "alert" : "status");
+    }
+  }
   let saveQueue = Promise.resolve();
   let operationBusy = false;
   let storageError = "";
@@ -317,10 +356,15 @@ import packageInfo from "../package.json" with { type: "json" };
     setBusy(true, modal.open ? modal : document);
     await saveQueue.catch(() => {});
     const before = structuredClone(S);
+    let timerRetired = false;
     try {
       mutator();
       // Retire the native alert before a save can drop its durable owner.
-      await retireReplacedTimer(before.cooking, S.cooking, timerNotifications);
+      timerRetired = await retireReplacedTimer(
+        before.cooking,
+        S.cooking,
+        timerNotifications,
+      );
       if (replace) {
         const snapshot = structuredClone(S);
         saveQueue = saveQueue
@@ -334,8 +378,19 @@ import packageInfo from "../package.json" with { type: "json" };
       return true;
     } catch (error) {
       S = before;
+      let timerWarning = "";
+      if (timerRetired && S.cooking?.notificationId != null) {
+        try {
+          await restoreRetiredTimer(S.cooking, timerNotifications);
+        } catch {
+          timerWarning =
+            " Timer alert could not be restored. Keep Nomli open to see the countdown.";
+        }
+      }
       render();
-      announce(`Not saved: ${error?.message || "storage failed"}`);
+      announce(
+        `Not saved: ${error?.message || "storage failed"}${timerWarning}`,
+      );
       return false;
     } finally {
       setBusy(false, modal.open ? modal : document);
@@ -420,6 +475,7 @@ import packageInfo from "../package.json" with { type: "json" };
     scanTimers = [];
   }
   function openModal(title, body, screen = "") {
+    void cookingSpeech.stop();
     scanWizard?.destroy();
     scanWizard = null;
     scanRetry = null;
@@ -477,6 +533,10 @@ import packageInfo from "../package.json" with { type: "json" };
     });
   }
   function mountView({ chatScroll = null } = {}) {
+    $(".app-device")?.classList.toggle(
+      "is-cooking-focus",
+      Boolean($(".cooking-experience", view)),
+    );
     initMobileSelects(view);
     hydratePhotos(view);
     document.body.classList.toggle("zara-route", S.route === "assistant");
@@ -486,6 +546,7 @@ import packageInfo from "../package.json" with { type: "json" };
   function navigate(route) {
     if (!routes.includes(route)) return;
     cancelAssistant();
+    void cookingSpeech.stop();
     voiceExpanded = false;
     S.route = route;
     backgroundSave();
@@ -812,51 +873,37 @@ import packageInfo from "../package.json" with { type: "json" };
       return Math.max(0, Math.ceil((S.cooking.deadline - Date.now()) / 1000));
     return Math.max(0, S.cooking.seconds || 0);
   }
+  function cookingViewOptions() {
+    const c = S.cooking;
+    return {
+      recipe: recipe(c.rid),
+      session: c,
+      items: S.items,
+      seconds: timerSeconds(),
+      speech: cookingSpeech.snapshot(),
+      canRead: window.NomliNative?.isNative === true,
+      timerOpen: cookingTimerPanels.has(c.id + ":" + c.step),
+      esc,
+      num,
+      icon,
+      ingredientLabel,
+      toolLabel,
+      thumbnail: (id, item) =>
+        item.photo || item.photoId
+          ? itemThumbnail(id, item)
+          : `<span class="ingredient-thumb">${categoryArtwork(inferFoodCategory(item).category, item)}</span>`,
+      errors,
+    };
+  }
   function cookingView() {
-    const c = S.cooking,
-      r = recipe(c?.rid);
-    if (!c) return cookView();
-    if (c.phase === "prep") return preparationView();
-    if (c.phase === "review") return reviewView();
-    const step = r.steps[c.step],
-      seconds = timerSeconds();
-    return (
-      heading(
-        `${r.name} · STEP ${c.step + 1} OF ${r.steps.length}`,
-        step.title,
-        step.text,
-        button("Recipes", "go", "cook"),
-      ) +
-      `<section class="card cooking-progress"><div class="step-dots" aria-label="Step ${c.step + 1} of ${r.steps.length}">${r.steps.map((_, i) => `<span class="${i <= c.step ? "is-done" : ""}"></span>`).join("")}</div><p>${servingText(c.servings)} · planned amounts frozen at preparation</p></section><section class="card timer-card"><p class="eyebrow">YOUR COOKING TIMER</p><h2 data-timer role="timer" aria-label="Cooking timer">${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}</h2><form data-form="cook-timer"><div class="field-grid">${field("Timer minutes", "minutes", Math.max(1, Math.ceil(seconds / 60)), "number", 'min="1" max="180" step="1" required')}<button class="btn btn-secondary">Set timer</button></div></form><div class="actions">${button(c.running ? "Pause timer" : "Start timer", "timer-wall")}${c.step ? button("Previous step", "cook-prev") : ""}</div><p class="details">Timer resumes from its saved deadline. Check food doneness yourself; this timer does not verify safety.</p></section><div class="cook-primary-action">${button(c.step === r.steps.length - 1 ? "Review ingredients used" : "Next step", "cook-next", r.id, "btn-primary")}${button("Ask Zara about this step", "go", "assistant")}${button("Cancel session", "cook-cancel-ask", "", "btn-quiet")}</div>`
-    );
+    if (!S.cooking) return cookView();
+    return renderCookingExperience(cookingViewOptions());
   }
   function preparationView() {
-    const c = S.cooking,
-      r = recipe(c?.rid);
-    if (!c) return cookView();
-    return (
-      heading(
-        "GET EVERYTHING READY",
-        r.name,
-        `${servingText(c.servings)} · stock stays unchanged until final review`,
-        button("Recipes", "go", "cook"),
-      ) +
-      `<form data-form="cook-prep" class="card">${errors()}<h2>Gather and measure</h2><p class="muted">Check each ingredient after measuring. Stock is allocated from the earliest recorded dates first.</p>${c.requirements.map((x) => `<label class="checkbox-field prep-item"><input type="checkbox" name="prepared" value="${esc(x.ingredientId)}"${c.prepared.includes(x.ingredientId) ? " checked" : ""} required><span><b>${esc(ingredientLabel(x.ingredientId))}</b><small>${num(x.qty)} ${esc(x.unit)}</small></span></label>`).join("")}<h2>Tools ready?</h2><p>${esc(r.requiredTools.map(toolLabel).join(", "))}</p><label class="checkbox-field"><input type="checkbox" name="toolsConfirmed"${c.toolsConfirmed ? " checked" : ""} required><span>I have these tools ready.</span></label><p class="details">Confirming records these tools as available. Ingredient links and measured conversions determine this plan; no weights are guessed.</p><button class="btn btn-primary">Start cooking</button>${button("Cancel preparation", "cook-cancel-ask", "", "btn-quiet")}</form>`
-    );
+    return cookingView();
   }
   function reviewView() {
-    const c = S.cooking,
-      r = recipe(c?.rid);
-    if (!c) return cookView();
-    if (c.phase !== "review") return cookingView();
-    return (
-      heading(
-        "CONFIRM USE",
-        "Update your kitchen",
-        `${r.name} · ${servingText(c.servings)}. Change the planned quantities to what you actually used.`,
-      ) +
-      `<form data-form="meal" class="card">${errors()}<p class="notice">Nothing deducted yet. Enter zero for an item you did not use.</p>${c.allocations.map((x) => `<div class="cook-use-row">${field(`${x.name} used (${x.unit})`, `used-${x.id}`, x.qty, "number", `min="0" max="${S.items[x.id]?.qty ?? 0}" step="any" inputmode="decimal" required`)}<small>${num(S.items[x.id]?.qty ?? 0)} ${esc(x.unit)} currently on hand${S.items[x.id] ? "" : " · item was removed"}</small></div>`).join("")}<label class="checkbox-field"><input type="checkbox" name="confirmed" required><span>I checked actual use against current stock.</span></label><button class="btn btn-primary">Save meal and deduct once</button>${button("Back to last step", "cook-back")}${button("Cancel without deduction", "cook-cancel-ask", "", "btn-quiet")}<p class="details">A successful save updates every ingredient together. Undo is available in Recent meals.</p></form>`
-    );
+    return cookingView();
   }
   function shoppingView() {
     return (
@@ -1547,6 +1594,21 @@ import packageInfo from "../package.json" with { type: "json" };
       "scan-review",
     );
   }
+  document.addEventListener(
+    "toggle",
+    (event) => {
+      if (
+        !event.target.matches?.(".cook-timer-panel") ||
+        !event.target.isConnected ||
+        !S.cooking
+      )
+        return;
+      const key = S.cooking.id + ":" + S.cooking.step;
+      if (event.target.open) cookingTimerPanels.add(key);
+      else cookingTimerPanels.delete(key);
+    },
+    true,
+  );
   function startTimer() {
     clearInterval(timerHandle);
     timerHandle = setInterval(() => {
@@ -1559,10 +1621,12 @@ import packageInfo from "../package.json" with { type: "json" };
         cancelCookingNotification();
         clearInterval(timerHandle);
         backgroundSave();
-        announce("Timer finished.");
+        announce("Timer finished. Check your food.");
+        render();
       }
-      const el = $("[data-timer]");
-      if (el)
+      for (const el of document.querySelectorAll(
+        "[data-timer], [data-timer-summary]",
+      ))
         el.textContent = `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
     }, 500);
   }
@@ -2405,6 +2469,93 @@ import packageInfo from "../package.json" with { type: "json" };
       backgroundSave();
       return navigate("recipe");
     }
+    if (a === "cook-read") {
+      if (!S.cooking || S.cooking.phase !== "cooking") return;
+      if (
+        ["starting", "speaking", "stopping"].includes(
+          cookingSpeech.snapshot().phase,
+        )
+      ) {
+        void cookingSpeech.stop();
+      } else {
+        const r = recipe(S.cooking.rid),
+          guide = getCookingStepGuide(r, S.cooking.step);
+        void cookingSpeech.speak(
+          "Step " +
+            (S.cooking.step + 1) +
+            " of " +
+            r.steps.length +
+            ". " +
+            guide.title +
+            ". " +
+            guide.instructions.join(" "),
+        );
+      }
+      return;
+    }
+    if (a === "cook-roadmap") {
+      if (!S.cooking) return;
+      const r = recipe(S.cooking.rid);
+      return openModal(
+        r.name + " · all steps",
+        '<ol class="cook-roadmap">' +
+          r.steps
+            .map((_, i) => {
+              const guide = getCookingStepGuide(r, i);
+              return (
+                "<li" +
+                (i === S.cooking.step ? ' aria-current="step"' : "") +
+                "><h3>" +
+                esc(guide.title) +
+                "</h3><p>" +
+                esc(guide.instructions.join(" ")) +
+                "</p></li>"
+              );
+            })
+            .join("") +
+          "</ol>",
+      );
+    }
+    if (a === "cook-ask") {
+      if (!S.cooking) return;
+      const r = recipe(S.cooking.rid),
+        guide = getCookingStepGuide(r, S.cooking.step);
+      if (!assistantDraft.trim())
+        assistantDraft =
+          "Help me with “" + guide.title + "” in " + r.name + ".";
+      return navigate("assistant");
+    }
+    if (a === "cook-timer-preset") {
+      const c = S.cooking;
+      if (!c || c.phase !== "cooking") return;
+      const preset = getCookingStepGuide(
+        recipe(c.rid),
+        c.step,
+      ).timerPresets.find((p) => String(p.seconds) === id);
+      if (!preset) return;
+      if (
+        await commit(() => {
+          if (
+            S.cooking?.id !== c.id ||
+            S.cooking.step !== c.step ||
+            S.cooking.phase !== "cooking"
+          )
+            throw new Error("Cooking step changed. Select the timing again.");
+          S.cooking = {
+            ...S.cooking,
+            seconds: preset.seconds,
+            running: false,
+            deadline: null,
+            notificationId: null,
+            notificationGeneration: (c.notificationGeneration || 0) + 1,
+          };
+        }, "Timer set. Start when ready.")
+      ) {
+        cookingTimerPanels.add(c.id + ":" + c.step);
+        render();
+      }
+      return;
+    }
     if (a === "cook-start") {
       const selected = D.recipes.find((x) => x.id === id);
       if (!selected) return announce("Recipe no longer available.");
@@ -2415,6 +2566,8 @@ import packageInfo from "../package.json" with { type: "json" };
             sessionId: `cook-${crypto.randomUUID()}`,
             ingredients: COOK_INGREDIENTS,
           });
+          S.cooking.seconds =
+            getCookingStepGuide(selected, 0).timerPresets[0]?.seconds ?? 120;
           S.recipe = selected.id;
         }, "Preparation started. No stock deducted.")
       )
@@ -2446,6 +2599,7 @@ import packageInfo from "../package.json" with { type: "json" };
       return;
     }
     if (["cook-next", "cook-prev", "cook-back"].includes(a)) {
+      void cookingSpeech.stop();
       const c = S.cooking;
       if (!c || !["cooking", "review"].includes(c.phase)) return;
       if (
@@ -2461,7 +2615,15 @@ import packageInfo from "../package.json" with { type: "json" };
                 : a === "cook-next" && !end
                   ? c.step + 1
                   : c.step,
-            seconds: 120,
+            seconds:
+              getCookingStepGuide(
+                r,
+                a === "cook-prev"
+                  ? Math.max(0, c.step - 1)
+                  : a === "cook-next" && !end
+                    ? c.step + 1
+                    : c.step,
+              ).timerPresets[0]?.seconds ?? 120,
             running: false,
             deadline: null,
             notificationId: null,
@@ -2586,6 +2748,15 @@ import packageInfo from "../package.json" with { type: "json" };
         ...new Set(new FormData(prepForm).getAll("prepared")),
       ];
       S.cooking.toolsConfirmed = prepForm.elements.toolsConfirmed.checked;
+      const count = $("#cook-prep-count", prepForm),
+        progress = $("#cook-prep-progress", prepForm);
+      if (count)
+        count.textContent =
+          S.cooking.prepared.length +
+          " of " +
+          S.cooking.requirements.length +
+          " ready";
+      if (progress) progress.value = S.cooking.prepared.length;
       backgroundSave();
       return;
     }
