@@ -1,4 +1,18 @@
-# M11.1 cooking and Zara continuity — verified
+# M11.2 cooking chat sheet — verified
+
+[Download Nomli-M11.2.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m11.2-v0.12.2/Nomli-M11.2.apk). Package com.nomli.mvp.validation; version 0.12.2-m11.2, code 20; minimum API 26, target API 36. Install over Nomli Test.
+
+Zara opens as a chat sheet over preparation, the active cooking step and actual-use review. The cooking screen stays mounted behind it. The sheet shows the recipe, current phase and running or finished timer; Back to cooking, backdrop and Back dismiss it without changing the step.
+
+Replies, voice controls and nested settings reuse the existing assistant. Chat rerenders never rebuild the underlying cooking form. Closing the sheet retains typed drafts, saved exchanges and pending replies, stops voice capture, restores focus and resumes cooking media according to the previous playback intent. Settings unwind before the sheet on Back; navigating to the full assistant closes the sheet. Drafts and unsaved actual-use edits survive navigation, but are not promised across a full app restart.
+
+Source 199d7786c0c21fdc29f34a80e74cf80d0fd1efb9; CI 40967546204 (2m 50s). 412 JavaScript tests, content/art/media validation, Vite build, Capacitor sync and Android compilation passed. APK 95,847,683 bytes; SHA-256 3a5e4a7ff7512a4e2761cd33700429f233803bf9a28f538e6dfffa741b23f522. Certificate SHA-256 8c02c3045c97327f5415451feb9ccb0db326322b90d460dde9f28a7c0b559ef0; v2/v3 signatures, 16 KB alignment, ZIP CRC and all 232 production assets verified. Configured secrets and QA harness absent. Published size/digest match local APK.
+
+Isolated browser/native-bridge QA at 390×844 and 320×360 verified preparation selections, Arabic drafts, delayed replies without abort, nested settings and Back, voice cancellation, full-assistant route changes, reachable composer actions, no horizontal overflow and focus restoration. A real one-minute timer expired while the sheet stayed open with the typed draft and focus intact. An edited egg quantity of 3 survived reply completion and sheet dismissal in final review without deducting stock. Controlled assistant responses and synthetic native transport were used; physical Android microphone, keyboard, hardware Back and update installation remain unverified.
+
+The calorie diary, stock deduction/undo, 60 cooking demonstrations and deployed scanner/assistant service remain unchanged.
+
+## Historical M11.1 cooking and Zara continuity — verified
 
 [Download Nomli-M11.1.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m11.1-v0.12.1/Nomli-M11.1.apk). Package com.nomli.mvp.validation; version 0.12.1-m11.1, code 19; minimum API 26, target API 36. Install over Nomli Test.
 
