@@ -77,12 +77,18 @@
   min-height: 44px;
 }
 
+.cook-session-top button {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
 .cook-session-top p,
 .cook-session-top small {
   margin: 0;
   color: var(--muted);
   font-size: 12px;
   line-height: 1.4;
+  text-align: end;
 }
 
 .cook-hero {
@@ -865,7 +871,10 @@ details.cook-timer-panel > summary b {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .cooking-experience > * {
+  .cooking-experience > .cook-hero,
+  .cooking-experience > .cook-step-card,
+  .cooking-experience > .cook-review-summary,
+  .cooking-experience > .cook-progress {
     animation: cook-enter 200ms ease-out both;
   }
 
