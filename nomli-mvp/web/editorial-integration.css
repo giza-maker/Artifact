@@ -459,6 +459,32 @@ input[type="checkbox"],
 input[type="radio"] {
   min-height: 22px;
 }
+.cook-prep-item:has(input:checked) {
+  border-color: var(--border-strong);
+  box-shadow: none;
+}
+.cook-prep-item input {
+  accent-color: var(--text);
+}
+dialog,
+dialog * {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(33, 29, 23, 0.22) transparent;
+}
+dialog::-webkit-scrollbar,
+dialog *::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+dialog::-webkit-scrollbar-thumb,
+dialog *::-webkit-scrollbar-thumb {
+  background: rgba(33, 29, 23, 0.22);
+  border-radius: 8px;
+}
+dialog::-webkit-scrollbar-track,
+dialog *::-webkit-scrollbar-track {
+  background: transparent;
+}
 .cook-step-card.cook-instruction-card {
   background: transparent;
   border: 0;
