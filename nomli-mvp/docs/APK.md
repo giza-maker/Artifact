@@ -1,4 +1,18 @@
-# Nomli M13 interruption-recovery APK
+# Nomli M14 warm editorial APK
+
+[Download Nomli-M14.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m14-v0.15.0/Nomli-M14.apk). Install over **Nomli Test** to retain inventory and connection settings. Version **0.15.0-m14**, code **23**; package `com.nomli.mvp.validation`; minimum Android API 26, target API 36.
+
+Option 1's warm editorial style now covers Kitchen, scanning, recipes, preparation, cooking, Zara, dialogs and utilities. Kitchen groups inventory into eight browsable sections over the existing 32 categories. Its image rail scrolls horizontally; the whole top bar scrolls with the page; Add groceries stays reachable above navigation. Local photos keep priority over the 272 food illustrations.
+
+Cooking uses its existing 60 distinct step visuals and animations, one progress indicator, focused controls, an in-step Zara panel and a meal-completion screen. Preparation and actual-use buttons enable after their required confirmations. Reviewed deduction, explicit undo, recipe identity matching, local photo privacy and M13 draft recovery remain intact.
+
+485 tests, content/art/media validation, Vite build, Capacitor sync and [Android CI](https://github.com/giza-maker/Artifact/actions/runs/41085676206) passed. Source `1a5f43f351452a739f07b446203470ece0849aef`; CI wall time 1m 57s. Signed APK **95,876,272 bytes**; SHA-256 `73a2ef1c68efd86b63641a278d12ded58941951aef6f1bd87b395443f30859a8`. Retained certificate SHA-256 `8c02c3045c97327f5415451feb9ccb0db326322b90d460dde9f28a7c0b559ef0`; v2/v3 signatures, 16 KB alignment, ZIP CRC, all **231 bundled web assets**, configured-secret exclusion and QA-harness exclusion verified. Published asset size and digest match the verified local APK.
+
+Browser checks covered 390×844, 320×640 and 320×568: all-category picker scrolling, Arabic inventory search, Arabic receipt quantity `٣٠`, six-card review and confirmed import, prep gating, three cooking steps, media pause, timers, Zara reply/return, actual use `٠٫٥`, atomic deduction, confirmation gating, explicit undo and completion navigation. Ordinary browser preview also loaded without console errors. [Design QA](../design-qa.md) passed; screenshots use synthetic inventory and controlled native/AI transport. Physical Android camera, microphone, keyboard, hardware Back and process-kill acceptance remain pending.
+
+![Nomli M14 Kitchen, cooking and completion](../artifacts/m14-editorial/nomli-m14-showcase.jpg)
+
+## Historical Nomli M13 interruption-recovery APK
 
 [Download Nomli-M13.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m13-v0.14.0/Nomli-M13.apk). Package com.nomli.mvp.validation; version 0.14.0-m13, code 22; minimum API 26, target API 36. Install over Nomli Test.
 

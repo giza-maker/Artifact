@@ -1,0 +1,37 @@
+{
+  "version": "0.15.0-m14",
+  "versionCode": 23,
+  "package": "com.nomli.mvp.validation",
+  "minSdk": 26,
+  "targetSdk": 36,
+  "sourceCommit": "1a5f43f351452a739f07b446203470ece0849aef",
+  "ci": {
+    "runId": 41085676206,
+    "url": "https://github.com/giza-maker/Artifact/actions/runs/41085676206",
+    "conclusion": "success",
+    "elapsedSeconds": 117
+  },
+  "tests": 485,
+  "apk": "Nomli-M14.apk",
+  "bytes": 95876272,
+  "sha256": "73a2ef1c68efd86b63641a278d12ded58941951aef6f1bd87b395443f30859a8",
+  "webAssetsMatched": 231,
+  "crc": "passed",
+  "secretScan": "passed",
+  "certificateSha256": "8c02c3045c97327f5415451feb9ccb0db326322b90d460dde9f28a7c0b559ef0",
+  "signatures": {
+    "v2": true,
+    "v3": true
+  },
+  "alignment16KB": "passed",
+  "qaHarnessExclusion": "passed",
+  "published": {
+    "url": "https://github.com/giza-maker/Artifact/releases/download/nomli-m14-v0.15.0/Nomli-M14.apk",
+    "bytes": 95876272,
+    "digest": "sha256:73a2ef1c68efd86b63641a278d12ded58941951aef6f1bd87b395443f30859a8",
+    "matched": true
+  },
+  "designQA": "passed",
+  "browserTransport": "controlled fixtures through real Capacitor wrappers; separate ordinary browser preview checked",
+  "physicalPhoneAcceptance": "pending"
+}
