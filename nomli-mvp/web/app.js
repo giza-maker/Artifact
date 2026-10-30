@@ -109,6 +109,23 @@ import {
   renderRecipeCalories,
 } from "./calorie-view.js";
 import "./calories.css";
+import { renderKitchenOverview } from "./kitchen-overview.js";
+import "./kitchen-overview.css";
+import {
+  renderCookDiscovery,
+  renderCookDiscoveryResults,
+} from "./cook-discovery.js";
+import "./cook-discovery.css";
+import { renderItemEditor } from "./item-editor-view.js";
+import "./item-editor-view.css";
+import {
+  renderScanHome,
+  renderConnectionSetup,
+  renderZaraWelcome,
+  renderRecipeIntro,
+  renderRecipePreview,
+} from "./flow-polish.js";
+import "./flow-polish.css";
 import packageInfo from "../package.json" with { type: "json" };
 (async function leanNomli() {
   const D = { ...window.NOMLI_DATA, recipes: COOK_RECIPES, tools: COOK_TOOLS };
@@ -421,6 +438,11 @@ import packageInfo from "../package.json" with { type: "json" };
     return;
   }
   let S = loadResult.state;
+  let cookBrowseMode = S.matchOnly ? "ready" : "all";
+  let cookSearch = "";
+  let cookSearchAnnouncement = null;
+  let pendingScanSource = null;
+  let recentImportCount = 0;
   let recoveryRequired = Boolean(loadResult.recoveryRequired);
   let importCandidate = null;
   let recipeStockLinkReview = null;
@@ -746,6 +768,7 @@ import packageInfo from "../package.json" with { type: "json" };
   }
   function navigate(route, { keepCalorieDate = false } = {}) {
     if (!routes.includes(route)) return;
+    if (route !== "kitchen") recentImportCount = 0;
     const replaceChatHistory = Boolean(chatHistoryState().nomliCookingChat);
     if (replaceChatHistory)
       history.replaceState(withoutChatHistory(), "", location.href);
@@ -871,13 +894,26 @@ import packageInfo from "../package.json" with { type: "json" };
     );
   }
   function itemRow(id, item) {
-    const category = inferFoodCategory(item).category;
     const left = daysLeft(item),
       urgent = item.qty > 0 && left !== null && left <= 2;
-    const freshness = !item.expiry
-      ? "No expiry recorded"
-      : `${left < 0 ? `${Math.abs(left)} days past date` : `${left} days left`} · ${item.expiryProvenance || (item.estimated ? "estimated" : "user")}`;
-    return `<div class="inventory-row">${itemThumbnail(id, item)}<div class="inventory-copy"><b dir="auto">${esc(item.name)}</b><span>${num(item.qty)} ${esc(item.unit)} <small>${esc(item.storage)}</small></span><small class="${urgent ? "use-soon" : "muted"}">${esc(freshness)}</small><small class="cook-link-label">${esc(category.en)}${getIngredient(item.ingredientId) ? ` · ${icon("check-circle")} Linked for cooking` : ""}</small></div><button class="icononly" data-action="item-edit" data-id="${esc(id)}" aria-label="Edit ${esc(item.name)}">${icon("pencil")}</button></div>`;
+    const linked = getIngredient(item.ingredientId);
+    const title = linked?.name.en || item.name;
+    const unit =
+      item.unit === "count"
+        ? item.qty === 1
+          ? "item"
+          : "items"
+        : item.unit === "bunches" && item.qty === 1
+          ? "bunch"
+          : item.unit;
+    const freshness = item.expiry
+      ? left < 0
+        ? `${Math.abs(left)} days past date`
+        : left === 0
+          ? "Date is today"
+          : `${left} days left`
+      : "";
+    return `<div class="inventory-row">${itemThumbnail(id, item)}<div class="inventory-copy"><b dir="auto" title="${esc(item.name)}">${esc(title)}</b>${linked && item.name !== title ? `<small class="inventory-retail-name" dir="auto" title="${esc(item.name)}">${esc(item.name)}</small>` : ""}<span>${num(item.qty)} ${esc(unit)} <small>· ${esc(item.storage)}</small></span>${freshness ? `<small class="${urgent ? "use-soon" : "muted"}">${esc(freshness)}</small>` : ""}${!linked && !item.cookingLinkDisabled ? '<small class="cook-link-label">Recipe match needs review</small>' : ""}</div><button class="icononly" data-action="item-edit" data-id="${esc(id)}" aria-label="Edit ${esc(item.name)}">${icon("pencil")}</button></div>`;
   }
   function inventoryRowsMarkup() {
     let rows = Object.entries(S.items).filter(
@@ -900,47 +936,27 @@ import packageInfo from "../package.json" with { type: "json" };
     const soon = Object.values(S.items).filter(
       (x) => x.qty > 0 && daysLeft(x) !== null && daysLeft(x) <= 2,
     ).length;
-    const markup =
-      heading(
-        "INVENTORY",
-        "Your kitchen",
-        `${Object.values(S.items).filter((x) => x.qty > 0).length} ingredients${soon ? ` · ${soon} to use soon` : ""}`,
-        `<button class="icononly kitchen-add" data-action="item-edit" data-id="new" aria-label="Add ingredient">${icon("plus")}</button>`,
-      ) +
-      `<button class="scan-banner" data-action="go" data-id="scan"><img src="images/fridge-vf-480.webp" alt=""><span>${icon("scan")}<b>Scan groceries or receipts</b><small>Protected connection · review before save</small></span>${icon("arrow-right")}</button>${calorieKitchenSummary()}<section class="card inventory-card"><div class="card-header"><h2>Inventory</h2><button class="icononly" data-action="item-edit" data-id="new" aria-label="Add ingredient">${icon("plus")}</button></div><div class="inventory-tools"><label class="field"><span class="sr-only">Search</span><input type="search" data-change="search" value="${esc(S.search || "")}" placeholder="Search ingredients"></label><div class="inventory-sort"><label>Storage <select data-change="storage">${options(["All", "Fridge", "Freezer", "Pantry", "Spices"], S.storage)}</select></label><label>Sort <select data-change="sort">${options(["expiry", "name", "quantity"], S.sort)}</select></label></div></div><div data-inventory-list>${inventoryRowsMarkup()}</div></section><div class="quick-grid">${[
-        ["shopping", "shopping-cart", "Shopping", "Restock list"],
-        ["expenses", "wallet", "Spending", "Receipts & budget"],
-        ["calories", "fire", "Calories", "Food diary & portions"],
-        ["profile", "gear", "Preferences", "Diet, time & tools"],
-      ]
-        .map(
-          ([r, ic, t, s]) =>
-            `<button data-action="go" data-id="${r}">${icon(ic)}<b>${t}</b><small>${s}</small></button>`,
-        )
-        .join("")}</div>`;
-    return markup;
+    return renderKitchenOverview({
+      items: S.items,
+      recentImportCount,
+      soon,
+      search: S.search,
+      storage: S.storage,
+      sort: S.sort,
+      rowsHtml: inventoryRowsMarkup(),
+      esc,
+      icon,
+      button,
+      options,
+    });
   }
   function scanView() {
-    const connected = Boolean(scanConfig.apiUrl && scanConfig.deviceToken);
-    return (
-      heading(
-        "SCAN",
-        "Scan into your kitchen",
-        connected
-          ? "Choose a source. Every extracted line stays editable until you confirm."
-          : "Connect your protected scanner before choosing a photo or receipt.",
-      ) +
-      `<p class="milestone-banner">Real scans · optional cooking links</p>
-      ${connected ? "" : `<section class="notice notice-warning" role="status"><b>Scanner not connected</b><p>Add HTTPS API URL and device access code in Scan connection. No provider key belongs in this app.</p>${button("Connect scanner", "scan-settings", "", "btn-primary")}</section>`}
-      <section class="card scan-source-card" aria-labelledby="scan-source-title"><div class="card-header"><div><p class="eyebrow">SOURCE</p><h2 id="scan-source-title">What are you scanning?</h2></div>${button("Connection", "scan-settings", "", "btn-quiet")}</div>
-      <div class="scan-source-grid">
-        <button data-action="scan-choose" data-id="groceries" ${connected ? "" : "disabled"}>${icon("camera")}<b>Grocery photo</b><small>Camera or gallery</small></button>
-        <button data-action="scan-choose" data-id="expiry" ${connected ? "" : "disabled"}>${icon("calendar-blank")}<b>Expiry label</b><small>Camera or image</small></button>
-        <button data-action="scan-choose" data-id="receipt-paper" ${connected ? "" : "disabled"}>${icon("receipt")}<b>Paper receipt</b><small>Photo, image or PDF</small></button>
-        <button data-action="scan-choose" data-id="receipt-digital" ${connected ? "" : "disabled"}>${icon("upload-simple")}<b>Digital receipt</b><small>Image or PDF file</small></button>
-      </div></section>
-      <section class="card scan-guardrail"><h2>Review before saving</h2><p class="muted">Unknown quantities, units and dates stay blank. Exclude non-food lines, correct extracted values, then choose whether each line creates or merges an ingredient.</p></section>`
-    );
+    return renderScanHome({
+      connected: Boolean(scanConfig.apiUrl && scanConfig.deviceToken),
+      heading,
+      button,
+      icon,
+    });
   }
   function servingsFor(r) {
     return Math.max(
@@ -965,48 +981,68 @@ import packageInfo from "../package.json" with { type: "json" };
     if (!meals.length) return "";
     return `<section class="card meal-history"><h2>Recent meals</h2>${meals.map((m) => `<div class="item-row"><div><b>${esc(recipe(m.rid).name)}</b><small>${esc(m.date)} · ${m.status === "undone" ? "Stock restored" : "Stock updated"}</small></div>${m.status === "completed" ? button("Undo use", "meal-undo-ask", m.id, "btn-quiet") : `<span class="badge">Undone</span>`}</div>`).join("")}<p class="details">Undo adds back only this meal's recorded use. Later stock changes stay intact.</p></section>`;
   }
-  function cookView() {
-    const eligible = D.recipes
+  function cookEntries() {
+    return D.recipes
       .filter(
         (r) =>
           (S.profile.cuisine === "Any" || r.cuisine === S.profile.cuisine) &&
           r.time <= S.profile.time &&
           !assessment(r).excluded.length,
       )
-      .map((r) => ({ r, a: assessment(r) }));
-    const shown = (
-      S.matchOnly ? eligible.filter((x) => x.a.stockReady) : eligible
-    ).sort(
-      (a, b) => a.a.missing.length - b.a.missing.length || a.r.time - b.r.time,
-    );
+      .map((r) => {
+        const a = assessment(r);
+        const statuses = a.requirements.map((requirement) =>
+          getRecipeRequirementStockStatus(S, a, requirement),
+        );
+        return {
+          r,
+          a,
+          missingIngredientCount: statuses.filter(
+            (x) => x.status === "missing" || x.status === "partial",
+          ).length,
+          measurementCount: statuses.filter(
+            (x) => x.status === "needs-measurement",
+          ).length,
+        };
+      })
+      .sort(
+        (a, b) =>
+          a.a.missing.length - b.a.missing.length || a.r.time - b.r.time,
+      );
+  }
+  function cookDiscoveryOptions() {
+    return {
+      entries: cookEntries(),
+      inventoryCount: Object.values(S.items).filter((x) => x.qty > 0).length,
+      mode: cookBrowseMode,
+      query: cookSearch,
+      time: S.profile.time,
+      esc,
+      icon,
+      button,
+      servingsFor,
+      recipeAction,
+    };
+  }
+  function cookView() {
     const unlinked = Object.entries(S.items).filter(
       ([, x]) =>
         x.qty > 0 && !getIngredient(x.ingredientId) && !x.cookingLinkDisabled,
     );
     return (
       heading(
-        "USE WHAT YOU HAVE",
+        "COOK",
         "What can I cook?",
-        "Find your next meal.",
+        "Choose a meal from your kitchen.",
         `<button class="icononly" data-action="go" data-id="profile" aria-label="Cooking preferences">${icon("gear")}</button>`,
       ) +
       (S.cooking
-        ? `<section class="card resume-card"><p class="eyebrow">${S.cooking.phase === "prep" ? "PREPARATION SAVED" : S.cooking.phase === "review" ? "READY TO REVIEW" : "COOKING IN PROGRESS"}</p><h2>${esc(S.cooking.recipeName || recipe(S.cooking.rid).name)}</h2><p>${servingText(S.cooking.servings)} · stock unchanged</p>${button("Resume cooking", "cook-resume", "", "btn-primary")}</section>`
+        ? `<section class="card resume-card"><p class="eyebrow">YOUR SAVED COOKING SESSION</p><h2>${esc(S.cooking.recipeName || recipe(S.cooking.rid).name)}</h2><p>${servingText(S.cooking.servings)} · ${S.cooking.phase === "prep" ? "Preparation" : S.cooking.phase === "review" ? "Final review" : `Step ${S.cooking.step + 1}`}</p>${button("Resume cooking", "cook-resume", "", "btn-primary")}</section>`
         : "") +
       (unlinked.length
-        ? `<section class="notice cook-link-notice"><b>${unlinked.length} item${unlinked.length === 1 ? " needs" : "s need"} a cooking match to use in recipes</b>${button("Link", "cook-link-next", unlinked[0][0], "btn-quiet")}</section>`
+        ? `<details class="cook-match-help"><summary>${unlinked.length} kitchen ${unlinked.length === 1 ? "item needs" : "items need"} a recipe match</summary><p>Review these items so recipes can count what you have.</p>${button("Review an ingredient", "cook-link-next", unlinked[0][0], "btn-secondary")}</details>`
         : "") +
-      `<div class="cook-filters"><label class="field">Recipe time<select data-change="cook-time">${[
-        ...new Set([15, 20, 30, 45, 60, 120, 1440, S.profile.time]),
-      ]
-        .sort((a, b) => a - b)
-        .map(
-          (n) =>
-            `<option value="${n}"${n === S.profile.time ? " selected" : ""}>${n === 1440 ? "Any duration" : `Up to ${n} minutes`}</option>`,
-        )
-        .join(
-          "",
-        )}</select></label><label class="checkbox-field cook-stock-toggle"><input type="checkbox" data-change="match"${S.matchOnly ? " checked" : ""}><span class="switch-track" aria-hidden="true"></span><span>Ingredients I have</span></label></div><p class="details">${shown.length} of ${D.recipes.length} recipes · ${esc(S.profile.cuisine)} cuisine. Check product labels for allergens.</p><div class="recipe-grid">${shown.map(({ r, a }) => `<article class="recipe-card${r.image ? "" : " recipe-no-photo"}">${r.image ? `<img src="${r.cardImage || r.image}" alt="${esc(r.name)}" loading="lazy" decoding="async" width="560" height="420">` : `<span class="recipe-art" aria-hidden="true">${icon("fork-knife")}</span>`}<div><span class="badge ${a.stockReady ? "badge-demo" : "badge-planned"}">${a.stockReady ? "INGREDIENTS READY" : "MISSING " + a.missing.length}</span><h2>${esc(r.name)}</h2><p>${r.time} min · ${esc(r.cuisine)} · ${servingText(servingsFor(r))}</p>${recipeAction(r)}</div></article>`).join("") || '<p class="empty">No match for these filters. Turn off ingredients-only, choose a longer time, or adjust preferences.</p>'}</div>` +
+      renderCookDiscovery(cookDiscoveryOptions()) +
       mealHistory()
     );
   }
@@ -1044,6 +1080,63 @@ import packageInfo from "../package.json" with { type: "json" };
       units: "Quantity units need review",
       identity: "Linked to a different cooking ingredient",
     };
+    const inventoryCount = Object.values(S.items).filter(
+      (x) => x.qty > 0,
+    ).length;
+    const readiness = S.cooking
+      ? {
+          title: "Your cooking session is saved",
+          description: "Resume your current session before starting another.",
+        }
+      : a.excluded.length
+        ? {
+            title: "Check your food preferences",
+            description: "This recipe includes an ingredient you excluded.",
+          }
+        : a.stockReady
+          ? {
+              title: "Your ingredients are ready",
+              description:
+                "Measure your ingredients, gather your tools, then follow each step.",
+            }
+          : !inventoryCount
+            ? {
+                title: "Start with your groceries",
+                description:
+                  "Add what you have to check this recipe. You can preview every step now.",
+              }
+            : needsMeasurement && !hasTrueMissing
+              ? {
+                  title: "Check ingredient amounts",
+                  description:
+                    "Your kitchen has these items. Enter any required measured weights to continue.",
+                }
+              : {
+                  title: `${a.missing.length} ingredient${a.missing.length === 1 ? "" : "s"} to check`,
+                  description:
+                    "Review quantities below. Add missing ingredients to your shopping list.",
+                };
+    const primaryHtml = S.cooking
+      ? button("Resume cooking", "cook-resume", "", "btn-primary")
+      : a.excluded.length
+        ? button("Choose another meal", "go", "cook", "btn-primary")
+        : a.stockReady
+          ? button("Prepare ingredients", "cook-start", r.id, "btn-primary")
+          : !inventoryCount
+            ? button("Scan groceries", "go", "scan", "btn-primary")
+            : needsMeasurement && !hasTrueMissing
+              ? button(
+                  "Review ingredient amounts",
+                  "recipe-ingredients",
+                  "",
+                  "btn-primary",
+                )
+              : button(
+                  "Add missing to shopping",
+                  "shopping-missing",
+                  r.id,
+                  "btn-primary",
+                );
     const stockHelp = stockHints.length
       ? `<section class="notice" aria-label="Kitchen items to review"><h3>Already in your Kitchen?</h3><p>These items need a match or quantity review before this recipe can use them.</p>${stockHints.map((h) => `<div class="item-row"><div><b dir="auto">${esc(h.name)}</b><small>${num(h.qty)} ${esc(h.unit)} · ${esc(reasons[h.reason])}</small></div>${h.canLink ? `<button type="button" class="btn btn-quiet" data-action="recipe-stock-link" data-id="${esc(h.itemId)}" data-ingredient="${esc(h.ingredientId)}" aria-label="Use ${esc(h.name)} as ${esc(ingredientLabel(h.ingredientId))}">Use as ${esc(ingredientLabel(h.ingredientId))}</button>` : button("Review item", "item-edit", h.itemId, "btn-quiet")}</div>`).join("")}</section>`
       : "";
@@ -1054,17 +1147,15 @@ import packageInfo from "../package.json" with { type: "json" };
         `${r.time} min · ${esc(r.cuisine)} · ${r.difficulty}`,
         `<button class="icononly" data-action="go" data-id="cook" aria-label="Back to recipes">${icon("arrow-left")}</button>`,
       ) +
-      (r.image
-        ? `<article class="featured-meal"><img src="${r.image}" alt="${esc(r.name)}"></article>`
-        : "") +
-      renderRecipeCalories({
-        estimate: estimateRecipeCalories(r, serv),
-        recipeId: r.id,
+      renderRecipeIntro({
+        recipe: r,
+        readiness,
+        primaryHtml,
         esc,
-        num,
+        button,
         icon,
       }) +
-      `<section class="card"><div class="card-header"><h2>Ingredients</h2><label>Servings <select data-change="servings" data-id="${r.id}">${options(
+      `<section class="recipe-ingredients-section" aria-labelledby="recipe-ingredients-title"><div class="card-header"><h2 id="recipe-ingredients-title" tabindex="-1">Ingredients</h2><label>Servings <select data-change="servings" data-id="${r.id}">${options(
         Array.from({ length: 12 }, (_, i) => i + 1),
         serv,
       )}</select></label></div>${a.requirements
@@ -1092,7 +1183,7 @@ import packageInfo from "../package.json" with { type: "json" };
         })
         .join(
           "",
-        )}${stockHelp}${a.blockedItems.length ? '<p class="notice">Items past their recorded date were excluded from this plan.</p>' : ""}${incompatibleReviewItems.length ? `<section class="notice"><b>Some units need review</b><p>Mass, volume and count are different. Correct stock units in Kitchen.</p>${incompatibleReviewItems.map((x) => button(`Review ${x.name}`, "item-edit", x.id, "btn-quiet")).join("")}</section>` : ""}${a.excluded.length ? `<p class="notice notice-warning">Matches your exclusions: ${esc(a.excluded.map(toolLabel).join(", "))}. Choose another recipe.</p>` : ""}${S.cooking ? `<p class="notice">Finish or cancel your current session before starting another.</p>${button("Resume current session", "cook-resume")}` : a.stockReady && !a.excluded.length ? button("Prepare ingredients", "cook-start", r.id, "btn-primary") : `${needsMeasurement ? '<p class="notice">Enter weights to continue. Measured weights update recipe availability without changing Kitchen quantities.</p>' : ""}${hasTrueMissing ? button("Add missing to shopping", "shopping-missing", r.id) : ""}${button("Review inventory links", "go", "kitchen")}`}</section><section class="card"><h2>Before you start</h2><p>${r.prepMinutes} min preparation · ${r.cookMinutes} min cooking</p><p class="details">Tools: ${esc(r.requiredTools.map(toolLabel).join(", "))}. Confirm these during preparation.</p><p class="details">Listed allergens: ${esc(r.allergens.map(toolLabel).join(", ") || "none listed")}. Check actual product labels and preparation conditions.</p></section>`
+        )}${stockHelp}${a.blockedItems.length ? '<p class="notice">Items past their recorded date were excluded from this plan.</p>' : ""}${incompatibleReviewItems.length ? `<section class="notice"><b>Some quantities need review</b><p>Check the units for these items before cooking.</p>${incompatibleReviewItems.map((x) => button(`Review ${x.name}`, "item-edit", x.id, "btn-quiet")).join("")}</section>` : ""}${a.excluded.length ? `<p class="notice notice-warning">Matches your exclusions: ${esc(a.excluded.map(toolLabel).join(", "))}. Choose another recipe.</p>` : ""}${needsMeasurement ? '<p class="notice">Enter any required measured weights above. Kitchen quantities stay unchanged.</p>' : ""}</section><details class="recipe-extra-details"><summary>Tools and allergens</summary><p>Tools: ${esc(r.requiredTools.map(toolLabel).join(", "))}.</p><p>Listed allergens: ${esc(r.allergens.map(toolLabel).join(", ") || "none listed")}. Check actual product labels and preparation conditions.</p></details><details class="recipe-extra-details"><summary>Calories and food diary</summary>${renderRecipeCalories({ estimate: estimateRecipeCalories(r, serv), recipeId: r.id, esc, num, icon })}</details>`
     );
   }
   function timerSeconds() {
@@ -1414,9 +1505,29 @@ import packageInfo from "../package.json" with { type: "json" };
         : `<p class="zara-context-summary">${icon("refrigerator")} ${Object.values(S.items).filter((item) => item.qty > 0).length} ingredients in your kitchen</p>`;
     const empty =
       !S.chat.length && !assistantReply && !assistantAbort
-        ? `<section class="zara-welcome"><img src="images/zara-192.webp" alt="" width="76" height="76"><h2>${panel ? "Need a hand?" : "What’s cooking?"}</h2><p>${panel ? "Ask about this step, timing or ingredients." : "Let’s make something with what’s in your kitchen."}</p><div class="zara-suggestions">${(panel ? ["Explain this step", "What should I look for?", "Help with timing", "What can I substitute?"] : ["What can I cook?", "Help with the current step", "What can I substitute?", "What should I use soon?"]).map((q, i) => button(q, panel ? "assistant-prompt" : "assistant-suggestion", panel ? `panel-${i}` : String(i), "btn-quiet")).join("")}</div></section>`
+        ? renderZaraWelcome({
+            panel,
+            session: S.cooking,
+            inventoryCount: Object.values(S.items).filter((x) => x.qty > 0)
+              .length,
+            readyRecipe: panel
+              ? null
+              : cookEntries().find((x) => x.a.stockReady)?.r,
+            soonNames: Object.values(S.items)
+              .filter(
+                (x) =>
+                  x.qty > 0 &&
+                  daysLeft(x) !== null &&
+                  daysLeft(x) >= 0 &&
+                  daysLeft(x) <= 2,
+              )
+              .map((x) => x.name),
+            esc,
+            icon,
+            button,
+          })
         : "";
-    return `<section class="zara-shell"><header class="zara-header"><img src="images/zara-96.webp" alt="" width="44" height="44"><div><h1 data-title tabindex="-1"${panel ? ' id="cooking-chat-title"' : ""}>Zara</h1><p>Your kitchen companion</p></div><button class="icononly" data-action="assistant-info" aria-label="Chat settings and privacy">${icon("dots-three")}</button></header>${context}<div class="zara-thread" role="log" aria-label="Conversation with Zara" aria-live="polite" aria-relevant="additions">${empty}${history}${live}${pending}</div><section class="zara-compose-area">${!connected ? `<div class="zara-connect"><p>Connect your kitchen to chat with Zara.</p>${button("Connect Zara", "scan-settings", "", "btn-secondary")}</div>` : ""}${voiceExpanded || voicePending() ? `<div class="zara-voice-drawer"><button class="icononly voice-drawer-close" data-action="voice-panel-close" aria-label="Close voice controls">${icon("x")}</button>${voiceView()}</div>` : ""}${assistantError ? `<p class="chat-error" role="alert">${esc(assistantError)}</p>` : ""}<form data-form="assistant" class="zara-composer" aria-busy="${Boolean(assistantAbort)}"><label class="sr-only" for="assistant-question">Question</label><textarea id="assistant-question" name="question" placeholder="${panel ? "Ask about this step…" : "Ask about your kitchen…"}" rows="1" maxlength="2000" dir="auto" required aria-describedby="assistant-status"${assistantAbort || voicePending() ? " readonly" : ""}>${esc(assistantDraft)}</textarea>${window.NomliNative?.isNative ? `<button type="button" class="composer-mic" data-action="voice-toggle" aria-label="Voice message" aria-expanded="${voiceExpanded || voicePending()}"${assistantAbort ? " disabled" : ""}>${icon("microphone")}</button>` : ""}<button class="composer-send" aria-label="${assistantError ? "Retry question" : "Send question"}"${assistantAbort || voicePending() || !connected ? " disabled" : ""}>${icon("arrow-right")}</button></form><p id="assistant-status" class="zara-send-note" role="status">${assistantAbort ? `Zara is thinking. ${button("Cancel", "assistant-cancel", "", "btn-quiet")}` : voicePending() ? "Use or discard your transcript before sending." : "Uses your kitchen context · review advice before acting"}</p></section></section>`;
+    return `<section class="zara-shell"><header class="zara-header"><img src="images/zara-96.webp" alt="" width="44" height="44"><div><h1 data-title tabindex="-1"${panel ? ' id="cooking-chat-title"' : ""}>Zara</h1><p>Your kitchen companion</p></div><button class="icononly" data-action="assistant-info" aria-label="Chat settings and privacy">${icon("dots-three")}</button></header>${context}<div class="zara-thread" role="log" aria-label="Conversation with Zara" aria-live="polite" aria-relevant="additions">${empty}${history}${live}${pending}</div><section class="zara-compose-area">${!connected ? `<div class="zara-connect"><p>Connect once to ask Zara.</p>${button("Connect Nomli", "scan-settings", "", "btn-secondary")}</div>` : ""}${voiceExpanded || voicePending() ? `<div class="zara-voice-drawer"><button class="icononly voice-drawer-close" data-action="voice-panel-close" aria-label="Close voice controls">${icon("x")}</button>${voiceView()}</div>` : ""}${assistantError ? `<p class="chat-error" role="alert">${esc(assistantError)}</p>` : ""}<form data-form="assistant" class="zara-composer" aria-busy="${Boolean(assistantAbort)}"><label class="sr-only" for="assistant-question">Question</label><textarea id="assistant-question" name="question" placeholder="${panel ? "Ask about this step…" : "Ask about your kitchen…"}" rows="1" maxlength="2000" dir="auto" required aria-describedby="assistant-status"${assistantAbort || voicePending() ? " readonly" : ""}>${esc(assistantDraft)}</textarea>${window.NomliNative?.isNative ? `<button type="button" class="composer-mic" data-action="voice-toggle" aria-label="Voice message" aria-expanded="${voiceExpanded || voicePending()}"${assistantAbort ? " disabled" : ""}>${icon("microphone")}</button>` : ""}<button class="composer-send" aria-label="${assistantError ? "Retry question" : "Send question"}"${assistantAbort || voicePending() || !connected ? " disabled" : ""}>${icon("arrow-right")}</button></form><p id="assistant-status" class="zara-send-note" role="status">${assistantAbort ? `Zara is thinking. ${button("Cancel", "assistant-cancel", "", "btn-quiet")}` : voicePending() ? "Use or discard your transcript before sending." : "Kitchen context included · review advice before acting"}</p></section></section>`;
   }
   async function sendAssistant(question) {
     if (operationBusy || assistantAbort || voicePending()) return;
@@ -1561,9 +1672,36 @@ import packageInfo from "../package.json" with { type: "json" };
         : S.items[id];
     openModal(
       id === "new" ? "Add ingredient" : "Edit ingredient",
-      `<form data-form="item" data-id="${id}">${errors()}${photoEditor(id, item)}${categoryField(item)}${field("Ingredient name", "name", item.name, "text", 'maxlength="200" dir="auto" required')}${field("Quantity on hand", "qty", item.qty, "number", 'min="0" max="1000000000" step="any" inputmode="decimal" required')}<label class="field">Unit<select name="unit">${options(["g", "kg", "ml", "l", "count", "pieces", "bunches", "slices", "cloves"], item.unit)}</select></label><div class="cook-link-fields">${renderIngredientLinkFields({ name: item.name, ingredientId: item.ingredientId, unit: item.unit, gramsPerUnit: item.gramsPerUnit, autoMatch: true, categoryId: item.categoryId, cookingLinkDisabled: item.cookingLinkDisabled })}</div><label class="field">Location<select name="storage">${options(["Fridge", "Freezer", "Pantry", "Spices"], item.storage)}</select></label>${field("Expiry (optional)", "expiry", item.expiry || "", "date")}<label class="field">Expiry source<select name="expiryProvenance">${options(["user", "printed", "estimated"], item.expiryProvenance || (item.estimated ? "estimated" : "user"))}</select><small>Used only when expiry is entered.</small></label><div class="modal-actions">${id === "new" ? "" : button("Delete ingredient", "item-delete", id, "btn-quiet")}<button class="btn btn-primary">Save ingredient</button></div></form>`,
+      renderItemEditor({
+        id,
+        item,
+        errorsHtml: errors(),
+        photoHtml: photoEditor(id, item),
+        categoryHtml: categoryField(item),
+        cookingLinkHtml: renderIngredientLinkFields({
+          name: item.name,
+          ingredientId: item.ingredientId,
+          unit: item.unit,
+          gramsPerUnit: item.gramsPerUnit,
+          autoMatch: true,
+          categoryId: item.categoryId,
+          cookingLinkDisabled: item.cookingLinkDisabled,
+        }),
+        esc,
+        icon,
+        button,
+        options,
+        field,
+      }),
       "item-edit",
     );
+    if (id !== "new")
+      $(
+        'form[data-form="item"] select[name="storage"]',
+        modal,
+      ).dataset.userTouched = "1";
+    if (id === "new")
+      $('form[data-form="item"] input[name="name"]', modal)?.focus();
   }
   async function exportBackup() {
     cancelVoice();
@@ -1649,12 +1787,16 @@ import packageInfo from "../package.json" with { type: "json" };
     }
   }
   function scanConnectionForm() {
-    const suggestedApiUrl =
-      scanConfig.apiUrl ||
-      "https://nomli-scan-proxy.ahmed-aljazayeerly.workers.dev";
     openModal(
-      "Scan connection",
-      `<form data-form="scan-config">${errors()}${field("HTTPS API URL", "apiUrl", suggestedApiUrl, "url", 'placeholder="https://scanner.example.com" autocomplete="url" required')}${field("Device access code", "deviceToken", scanConfig.deviceToken || "", "password", 'autocomplete="off" minlength="32" maxlength="512" required')}<p class="details">Stored separately on this device. Excluded from Nomli backups and source code. Use a device code, never a provider API key.</p><div class="form-actions">${window.NomliNative?.isNative ? '<button type="button" class="btn btn-secondary" data-action="scan-setup-qr">Scan setup QR</button>' : ""}<button type="button" class="btn btn-secondary" data-action="scan-test">Test connection</button><button class="btn btn-primary">Save connection</button></div><p class="scan-connection-status" data-connection-status role="status" aria-live="polite"></p></form>`,
+      "Connect Nomli",
+      renderConnectionSetup({
+        config: scanConfig,
+        native: Boolean(window.NomliNative?.isNative),
+        esc,
+        errorsHtml: errors(),
+        field,
+      }),
+      "scan-connection",
     );
   }
   function scanSourceDialog(source) {
@@ -2079,6 +2221,19 @@ import packageInfo from "../package.json" with { type: "json" };
   document.addEventListener("input", (event) => {
     if (event.target.closest('[data-form="calorie-entry"]'))
       updateCaloriePreview();
+    if (event.target.matches('[data-change="cook-search"]')) {
+      cookSearch = event.target.value;
+      const results = $("[data-cook-discovery-results]", view);
+      if (results)
+        results.outerHTML = renderCookDiscoveryResults(cookDiscoveryOptions());
+      clearTimeout(cookSearchAnnouncement);
+      cookSearchAnnouncement = setTimeout(() => {
+        if (S.route === "cook")
+          $("#announcer").textContent =
+            $(".cook-discovery-summary", view)?.textContent || "";
+      }, 350);
+      return;
+    }
     if (event.target.matches('[data-change="search"]')) {
       S.search = event.target.value.trim();
       const list = $("[data-inventory-list]", view);
@@ -2564,7 +2719,8 @@ import packageInfo from "../package.json" with { type: "json" };
         "What can I substitute?",
         "What should I use soon?",
       ];
-      assistantDraft = suggestions[Number(id)] || el.textContent.trim();
+      assistantDraft =
+        el.dataset.question || suggestions[Number(id)] || el.textContent.trim();
       const input = $("#assistant-question");
       if (input && !assistantAbort) {
         input.value = assistantDraft;
@@ -2807,8 +2963,47 @@ import packageInfo from "../package.json" with { type: "json" };
         navigate("shopping");
       return;
     }
-    if (a === "scan-settings") return scanConnectionForm();
-    if (a === "scan-choose") return scanSourceDialog(id);
+    if (a === "cook-browse") {
+      if (!["all", "ready", "near"].includes(id)) return;
+      cookBrowseMode = id;
+      S.matchOnly = id === "ready";
+      backgroundSave();
+      const discovery = $(".cook-discovery", view);
+      if (discovery)
+        discovery.outerHTML = renderCookDiscovery(cookDiscoveryOptions());
+      initMobileSelects(view);
+      $(`[data-action="cook-browse"][data-id="${id}"]`, view)?.focus({
+        preventScroll: true,
+      });
+      $("#announcer").textContent =
+        $(".cook-discovery-summary", view)?.textContent || "";
+      return;
+    }
+    if (a === "recipe-preview")
+      return openModal(
+        "Cooking steps",
+        renderRecipePreview({ recipe: recipe(id), esc }),
+        "recipe-preview",
+      );
+    if (a === "recipe-ingredients") {
+      $("#recipe-ingredients-title", view)?.scrollIntoView({
+        block: "start",
+        behavior: "auto",
+      });
+      $("#recipe-ingredients-title", view)?.focus({ preventScroll: true });
+      return;
+    }
+    if (a === "scan-settings") {
+      pendingScanSource = null;
+      return scanConnectionForm();
+    }
+    if (a === "scan-choose") {
+      if (!scanConfig.apiUrl || !scanConfig.deviceToken) {
+        pendingScanSource = id;
+        return scanConnectionForm();
+      }
+      return scanSourceDialog(id);
+    }
     if (a === "scan-retry") {
       const retry = scanRetry;
       if (retry) return runScan(retry.source, retry.payload);
@@ -2871,7 +3066,7 @@ import packageInfo from "../package.json" with { type: "json" };
         });
         form.elements.apiUrl.value = candidate.apiUrl;
         form.elements.deviceToken.value = candidate.deviceToken;
-        status.textContent = "Setup loaded. Test, then save connection.";
+        status.textContent = "Setup loaded. Choose Save connection to finish.";
       } catch (error) {
         if (!document.contains(form)) return;
         status.textContent = /cancel/i.test(String(error?.message || ""))
@@ -2889,7 +3084,10 @@ import packageInfo from "../package.json" with { type: "json" };
         deviceToken: String(fd.get("deviceToken") || ""),
       };
       if (!form.checkValidity())
-        return formError(form, "Enter HTTPS API URL and device access code.");
+        return formError(
+          form,
+          "Enter your setup code and check connection details.",
+        );
       try {
         validateScanConfig(candidate);
       } catch (error) {
@@ -2914,6 +3112,7 @@ import packageInfo from "../package.json" with { type: "json" };
       try {
         const result = await testScanConnection(candidate, {
           signal: controller.signal,
+          timeoutMs: 10000,
         });
         status.textContent = result?.ready
           ? "Scanner is ready."
@@ -3149,6 +3348,8 @@ import packageInfo from "../package.json" with { type: "json" };
   });
   document.addEventListener("change", (e) => {
     if (operationBusy) return;
+    if (e.target.matches('form[data-form="item"] select[name="storage"]'))
+      e.target.dataset.userTouched = "1";
     const cookingSelect = e.target.matches('select[name$="ingredientId"]');
     if (cookingSelect) {
       e.target.dataset.userTouched = "1";
@@ -3261,11 +3462,23 @@ import packageInfo from "../package.json" with { type: "json" };
           (["ml", "l"].includes(previous) &&
             ["ml", "l"].includes(unitSelect.value));
         const quantity = itemFormElement.elements.qty;
-        if (sameDimension)
-          quantity.value =
-            (Number(quantity.value) * factors[previous]) /
-            factors[unitSelect.value];
-        else {
+        if (sameDimension) {
+          try {
+            quantity.value = num(
+              (Number(parseLocalizedDecimal(quantity.value)) *
+                factors[previous]) /
+                factors[unitSelect.value],
+            );
+          } catch {
+            quantity.value = "";
+            announce("Enter the amount in the selected unit.");
+          }
+        } else if (
+          ["count", "pieces"].includes(previous) &&
+          ["count", "pieces"].includes(unitSelect.value)
+        ) {
+          // Both names denote an item count; no mass or volume is inferred.
+        } else {
           quantity.value = "";
           announce(
             "Enter the actual quantity in the new unit. No weight was assumed.",
@@ -3336,10 +3549,14 @@ import packageInfo from "../package.json" with { type: "json" };
     const el = e.target.closest("[data-change]");
     if (!el) return;
     const what = el.dataset.change;
+    if (what === "cook-search") return;
     if (what === "storage") S.storage = el.value;
     if (what === "sort") S.sort = el.value;
     if (what === "search") S.search = el.value.trim();
-    if (what === "match") S.matchOnly = el.checked;
+    if (what === "match") {
+      S.matchOnly = el.checked;
+      cookBrowseMode = el.checked ? "ready" : "all";
+    }
     if (what === "cook-time") S.profile.time = Number(el.value);
     if (what === "servings") S.servings[el.dataset.id] = Number(el.value);
     if (what === "swap") S.swaps[el.dataset.id] = el.value;
@@ -3358,7 +3575,10 @@ import packageInfo from "../package.json" with { type: "json" };
     if (itemFormElement && e.target.name === "name") {
       const select = itemFormElement.elements.categoryId;
       if (select && !select.dataset.userTouched) {
-        select.value = inferFoodCategory({ name: e.target.value }).category.id;
+        const suggestion = inferFoodCategory({ name: e.target.value });
+        select.value = suggestion.category.id;
+        if (!itemFormElement.elements.storage.dataset.userTouched)
+          itemFormElement.elements.storage.value = suggestion.suggestedStorage;
         initMobileSelects(itemFormElement);
       }
       refreshCookingMatch(itemFormElement, { nameChanged: true });
@@ -3401,6 +3621,18 @@ import packageInfo from "../package.json" with { type: "json" };
     $("[data-revised-total]", form).textContent =
       "Reviewed total: " + money(cents);
   });
+  document.addEventListener(
+    "invalid",
+    (event) => {
+      for (
+        let ancestor = event.target.parentElement;
+        ancestor && ancestor !== event.target.form;
+        ancestor = ancestor.parentElement
+      )
+        if (ancestor.tagName === "DETAILS") ancestor.open = true;
+    },
+    true,
+  );
   document.addEventListener("submit", async (e) => {
     const form = e.target.closest("form[data-form]");
     if (!form) return;
@@ -3548,6 +3780,11 @@ import packageInfo from "../package.json" with { type: "json" };
       }
       setBusy(true, form);
       try {
+        const status = $("[data-connection-status]", form);
+        if (status) status.textContent = "Connecting scanning and Zara…";
+        const check = await testScanConnection(candidate, { timeoutMs: 10000 });
+        if (!check.ready)
+          throw new Error("The service is not ready yet. Try again shortly.");
         await saveScanConfig(candidate);
         cancelAssistant();
         scanConfig = candidate;
@@ -3560,8 +3797,14 @@ import packageInfo from "../package.json" with { type: "json" };
       }
       setBusy(false, form);
       closeModal();
-      announce("Scan connection saved on this device.");
-      return render();
+      announce("Nomli connected. Scanning and Zara are ready.");
+      render();
+      if (pendingScanSource) {
+        const source = pendingScanSource;
+        pendingScanSource = null;
+        scanSourceDialog(source);
+      }
+      return;
     }
     if (kind === "scan-import") {
       if (!scanDraft)
@@ -3760,9 +4003,12 @@ import packageInfo from "../package.json" with { type: "json" };
         );
         scanDraft = null;
         closeModal();
-        return navigate(
-          editedDraft.kind === "receipt" ? "expenses" : "kitchen",
-        );
+        recentImportCount = result.replayed
+          ? 0
+          : editedDraft.lines.filter(
+              (line) => !excludedLineIds.includes(line.lineId),
+            ).length;
+        return navigate("kitchen");
       }
       return;
     }
@@ -3865,7 +4111,16 @@ import packageInfo from "../package.json" with { type: "json" };
           : form.dataset.id;
       if (!String(fd.get("name")).trim())
         return formError(form, "Enter an ingredient name.");
-      const quantity = Number(fd.get("qty"));
+      let quantity;
+      try {
+        quantity = Number(parseLocalizedDecimal(String(fd.get("qty") || "")));
+      } catch {
+        return formError(
+          form,
+          "Enter an amount using Arabic or English digits.",
+          form.elements.qty,
+        );
+      }
       if (!Number.isFinite(quantity) || quantity < 0 || quantity > 1e9)
         return formError(form, "Quantity must be between 0 and 1,000,000,000.");
       let cookingLink;

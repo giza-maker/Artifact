@@ -1,6 +1,20 @@
 # Nomli MVP design contract
 
-## M11.2 cooking chat sheet
+## M12 kitchen, cooking and connection refinement
+
+- An empty Kitchen leads with one Scan action and a quieter manual-add action. Inventory utilities stay inside a collapsed native details section so the first view remains focused on stock.
+- Inventory uses a canonical food name where a strict match exists, while retaining the retail name and the original editable name. Editing must not replace a specific package name with a generic cooking label or discard bilingual text.
+- Manual add starts with Name, Amount, Unit and Location. Expiry, photo, category, cooking identity and measured weights stay under More details. Category and storage may be inferred for a clear name, but a manual choice wins. Manual quantities accept Arabic, Persian and English decimal digits through the shared localized parser.
+- Missing mass remains unknown. Count or bunch stock never gains an assumed weight; recipe readiness asks for a measured or printed grams-per-unit value when conversion needs one. Explicit cooking-link opt-out remains unlinked.
+- Cook provides search plus All, Ready and Near groups. Ready contains only recipes whose `stockReady` result is true. Near shows recipes that need limited review or stock. Search filters results without leaving unrelated sections in the result view.
+- Recipe readiness and Prepare controls appear before calorie estimates. Recipe detail may show read-only previews for all 60 bundled step posters; previews never start a session, advance a step or mutate stock.
+- Scan and Zara share one Connect Nomli flow. Primary setup uses QR or a manual code; service address is an advanced option. Nomli validates the connection against its health endpoint for up to 10 seconds before saving. Scan retains the selected source type and opens its camera/file choices after setup; no image is selected or sent before connecting. Zara returns to its existing chat. Failed validation preserves entered setup values and does not replace a working connection.
+- Reviewed scans return to Kitchen with a reviewed-item count and a Find a meal action. Receipt spending remains saved and accessible in Kitchen tools; importing does not redirect into budgeting.
+- Zara opens with a welcome and local, contextual actions based on Kitchen and cooking state. Suggestions only fill the editable question; Send remains explicit. Cooking chat remains a sheet over preparation, steps and actual-use review, preserving the underlying route, draft values and active session.
+- Scanning still sends only the selected source through the protected connection. Ingredient photos remain local. Connection credentials remain outside inventory backups and assistant context disclosure stays reviewable before Send.
+- Cooking still freezes allocations at preparation, deducts only after actual-use confirmation and supports guarded undo. UI refinement must not infer consumption, log food or change stock from previews, search, connection setup or Zara suggestions.
+
+## Historical M11.2 cooking chat sheet
 
 - Opening Zara from preparation, a cooking step or actual-use review opens a native modal sheet over that exact screen. Keep its route, DOM, scroll position and unsaved form values intact.
 - Reuse the same conversation, question and voice controls as full Zara. Mount only one chat surface at a time so labels, IDs and live regions stay unique. Opening the sheet never sends a question.

@@ -1,4 +1,21 @@
-# M11.2 cooking chat sheet phone check
+# M12 kitchen, cooking and connection phone check
+
+Install M12 over Nomli Test without clearing inventory, cooking links, meals, calorie diary, chat or private connection. Browser checks may cover layout and controlled transport. Physical Android keyboard, Back, camera/QR, file picker, lifecycle and update acceptance remain pending until tested on a phone.
+
+1. Start with an empty Kitchen. Confirm one primary Scan action, a secondary manual-add action and collapsed utilities. At 320px width and with large text, check for horizontal overflow, clipped labels and unreachable actions.
+2. Add stock manually. The initial form must show Name, Amount, Unit and Location, with Add reachable above the keyboard. Test English, Arabic and Persian decimal digits. Open More details and exercise expiry, category, cooking link, measured weight and photo add/change/remove. Long pickers and the full form must scroll without hiding Save.
+3. Enter a clear retail or bilingual name. Confirm inferred category, storage and cooking identity where matching is strict. Change category or storage manually, reopen the item and verify the manual choice remains. Edit the item and verify its original retail name remains editable even when inventory also uses a canonical cooking name. Explicitly opt out of cooking matching, reload and confirm it stays unlinked.
+4. Review count and bunch stock with no measured mass. Recipe readiness must report weight needed instead of assuming grams. Enter a measured weight, then confirm quantity and finance data remain unchanged.
+5. Import a receipt card through Scan. Review quantity, unit, storage, category, cooking link, crop and finance choice before saving. Confirm one atomic import, retained retail names, distinct local photos where selected and no ingredient photo sourced from the receipt itself.
+6. In Cook, test search and All, Ready and Near. Ready must contain only `stockReady` recipes. Search must show matching result content without unrelated sections. Open a recipe and verify readiness and Prepare appear before calories. Browse all read-only step posters; none may start cooking, advance a step or change stock.
+7. On a fresh test profile, select a Scan source before connecting. Scan and Zara must expose the same Connect Nomli flow. Test QR cancellation/denial, manual code and advanced service address. A bad endpoint or code must fail within the 10-second health-validation window without replacing a working connection. Valid setup must return to chat or open camera/file choices for the selected Scan source type. No image is selected or sent before connecting.
+8. Verify connection privacy: only the selected scan source is sent, ingredient photos remain local, credentials stay out of exported inventory backup and Zara shows its data disclosure before explicit Send.
+9. Open Zara from Kitchen and during an active cooking phase. Check contextual local actions, editable question suggestions and explicit Send. Type a draft, open cooking chat as an overlay, use device/browser Back and reopen it. Preserve the draft, route, preparation checks, timer state and edited actual-use values.
+10. Complete one cooking session with reviewed actual use. Confirm stock deducts once, reload, then undo once. Later top-ups must remain. Search, posters, setup and Zara suggestions must never deduct stock or create calorie entries. Calorie summary and diary controls must remain keyboard and screen-reader accessible after the UI changes.
+
+Record device, Android version, installed build and pass/fail evidence for each physical check. Do not mark native behavior complete from browser simulation.
+
+# Historical M11.2 cooking chat sheet phone check
 
 Install M11.2 over Nomli Test. No reset, rescan or new API key.
 

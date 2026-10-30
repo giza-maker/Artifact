@@ -1,0 +1,119 @@
+form.item-editor-form {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  gap: 16px;
+  font-size: 14px;
+}
+
+form.item-editor-form .item-editor-basics,
+form.item-editor-form .item-editor-details-body {
+  display: grid;
+  min-width: 0;
+  gap: 14px;
+}
+
+form.item-editor-form .item-editor-stock-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(120px, 0.8fr);
+  gap: 10px;
+  min-width: 0;
+}
+
+form.item-editor-form .item-editor-location {
+  grid-column: 1 / -1;
+}
+
+form.item-editor-form .item-editor-stock-row select {
+  white-space: nowrap;
+}
+
+form.item-editor-form .field,
+form.item-editor-form .field small,
+form.item-editor-form .item-editor-details summary {
+  font-size: 14px;
+}
+
+form.item-editor-form input,
+form.item-editor-form select,
+form.item-editor-form button,
+form.item-editor-form summary {
+  min-height: 44px;
+}
+
+form.item-editor-form input,
+form.item-editor-form select {
+  min-width: 0;
+  max-width: 100%;
+}
+
+form.item-editor-form .item-editor-details {
+  min-width: 0;
+  margin: 0;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--surface-2);
+}
+
+form.item-editor-form .item-editor-details summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  justify-content: center;
+  gap: 2px;
+  padding: 10px 14px;
+  cursor: pointer;
+  font-weight: 700;
+  list-style: none;
+}
+
+form.item-editor-form .item-editor-details summary::-webkit-details-marker {
+  display: none;
+}
+
+form.item-editor-form .item-editor-details summary::after {
+  content: "›";
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+  color: var(--accent);
+  font-size: 24px;
+  line-height: 1;
+  transform: rotate(90deg);
+}
+
+form.item-editor-form .item-editor-details[open] summary::after {
+  transform: rotate(-90deg);
+}
+
+form.item-editor-form .item-editor-details summary small {
+  grid-column: 1;
+  color: var(--muted, #a89f94);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+form.item-editor-form .item-editor-details summary:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -3px;
+}
+
+form.item-editor-form .item-editor-details-body {
+  padding: 4px 14px 14px;
+}
+
+form.item-editor-form .item-editor-actions {
+  position: sticky;
+  z-index: 2;
+  bottom: 0;
+  margin: 0 -2px -2px;
+  padding: 12px 2px max(2px, env(safe-area-inset-bottom));
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  box-shadow: 0 -8px 16px rgba(16, 15, 14, 0.9);
+}
+
+form.item-editor-form .item-editor-actions .btn-primary {
+  flex: 1 1 150px;
+}

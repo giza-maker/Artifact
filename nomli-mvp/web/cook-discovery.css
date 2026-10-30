@@ -1,0 +1,236 @@
+.cook-discovery {
+  display: grid;
+  gap: 20px;
+  margin-top: 14px;
+}
+
+.cook-discovery-controls {
+  display: grid;
+  gap: 12px;
+}
+
+.cook-discovery-search {
+  display: grid;
+  gap: 7px;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.cook-discovery-search-field {
+  display: flex;
+  align-items: center;
+  min-height: 46px;
+  padding: 0 13px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+
+.cook-discovery-search-field:focus-within {
+  border-color: var(--accent);
+  outline: 2px solid color-mix(in srgb, var(--accent) 28%, transparent);
+  outline-offset: 2px;
+}
+
+.cook-discovery-search-field input {
+  min-width: 0;
+  width: 100%;
+  min-height: 44px;
+  padding: 0;
+  color: var(--text);
+  background: transparent;
+  border: 0;
+  outline: 0;
+  font: inherit;
+}
+
+.cook-discovery-filters {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.cook-discovery-filter,
+.cook-discovery-filter.btn {
+  min-width: 0;
+  min-height: 44px;
+  padding: 8px 9px;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  font-size: 13px;
+  font-weight: 750;
+  line-height: 1.15;
+}
+
+.cook-discovery-filter.is-active,
+.cook-discovery-filter[aria-pressed="true"] {
+  color: var(--accent-ink);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.cook-discovery-summary,
+.cook-discovery-group-copy {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.cook-discovery-onboarding {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 13px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+}
+
+.cook-discovery-onboarding > .ui-icon {
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  color: var(--accent);
+}
+
+.cook-discovery-onboarding p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+[data-cook-discovery-results] {
+  display: grid;
+  gap: 20px;
+}
+
+.cook-discovery-group {
+  display: grid;
+  gap: 10px;
+}
+
+.cook-discovery-group > header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cook-discovery-group > header h2,
+.cook-discovery-group > header p {
+  margin: 0;
+}
+
+.cook-discovery-group > header h2 {
+  margin-top: 2px;
+  font-size: 22px;
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
+.cook-discovery-group > header > span {
+  display: grid;
+  place-items: center;
+  min-width: 30px;
+  min-height: 30px;
+  color: var(--muted);
+  background: var(--surface-2);
+  border-radius: 99px;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.cook-discovery-list {
+  display: grid;
+  gap: 14px;
+}
+
+.meal-choice-card {
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+}
+
+.meal-choice-card > img,
+.meal-choice-art {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  color: var(--accent);
+  background: var(--surface-2);
+}
+
+.meal-choice-card > img {
+  height: auto;
+  max-height: 180px;
+  aspect-ratio: 2 / 1;
+}
+
+.meal-choice-art .ui-icon {
+  width: 44px;
+  height: 44px;
+}
+
+.meal-choice-body {
+  display: grid;
+  gap: 8px;
+  padding: 14px;
+}
+
+.meal-choice-body h3 {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.15;
+  text-wrap: balance;
+}
+
+.meal-choice-status {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+.meal-choice-status-ready {
+  color: var(--success, #72d39b);
+}
+
+.meal-choice-status-near {
+  color: var(--warning, #f5b84b);
+}
+
+.meal-choice-meta {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.meal-choice-body > .btn,
+.meal-choice-body > button,
+.meal-choice-body > a {
+  width: 100%;
+  min-height: 44px;
+  margin-top: 2px;
+}
+
+.cook-discovery-empty {
+  margin: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cook-discovery .btn,
+  .cook-discovery button,
+  .cook-discovery a {
+    transition: none;
+  }
+}

@@ -59,11 +59,11 @@ export function renderIngredientLinkFields({
         .map(option)
         .join("")}</optgroup>
     </select>
-    <span class="details" data-cook-link-help>${matched?.ingredientId ? `Matched to ${esc(getIngredient(selected).name.en)}. Review or change before saving.` : "Choose the product type explicitly. Suggestions do not save a link."}</span>
+    <span class="details" data-cook-link-help>${matched?.ingredientId ? `Matched to ${esc(getIngredient(selected).name.en)}. Change it here if needed.` : "Optional. Match this item to a recipe ingredient when needed."}</span>
   </label>
   <label class="field">Grams per current unit (optional)
     <input type="text" inputmode="decimal" dir="ltr" maxlength="128" data-scan-weight name="${esc(prefix)}gramsPerUnit" value="${esc(weight)}"${canWeigh ? "" : " disabled"}>
-    <span class="details">For count, pieces, bunches, cloves, or slices only. Enter measured or printed grams per current unit; never guess weights.</span>
+    <span class="details">Only needed when a recipe uses grams for an item you count. Use a measured or package weight; never guess weights.</span>
   </label>`;
 }
 
