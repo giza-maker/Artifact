@@ -40,7 +40,7 @@ export function reduceScanReviewState(state, action) {
 
 export function initScanReviewWizard(
   form,
-  { onInvalid = () => {}, onSummary = () => {} } = {},
+  { onInvalid = () => {}, onSummary = () => {}, onChange = () => {} } = {},
 ) {
   if (!form?.querySelectorAll || !form?.addEventListener)
     throw new TypeError("Scan review form is required.");
@@ -113,7 +113,37 @@ export function initScanReviewWizard(
   function show(index, options) {
     state = reduceScanReviewState(state, { type: "show", index });
     render(options);
+    onChange(snapshot());
     return state.index;
+  }
+
+  function snapshot() {
+    return { index: state.index, reviewed: [...state.reviewed] };
+  }
+
+  function restore(saved) {
+    const input =
+      saved && typeof saved === "object" && !Array.isArray(saved) ? saved : {};
+    const restored = Array(cards.length).fill(false);
+    if (Array.isArray(input.reviewed)) {
+      for (let index = 0; index < cards.length; index += 1) {
+        restored[index] = input.reviewed[index] === true;
+      }
+    }
+    let index = Number.isFinite(input.index) ? Math.trunc(input.index) : 0;
+    index = Math.min(cards.length, Math.max(0, index));
+    // A summary saved for a different card set cannot imply review completion.
+    if (
+      !Array.isArray(input.reviewed) ||
+      input.reviewed.length !== cards.length
+    ) {
+      restored.fill(false);
+      if (index === cards.length && cards.length) index = 0;
+    }
+    state = { index, reviewed: restored };
+    if (form.elements?.confirmed) form.elements.confirmed.checked = false;
+    render();
+    return snapshot();
   }
 
   function firstUnreviewed() {
@@ -158,6 +188,7 @@ export function initScanReviewWizard(
       index: state.index,
     });
     render({ focus: true });
+    onChange(snapshot());
   }
 
   function refresh() {
@@ -211,6 +242,7 @@ export function initScanReviewWizard(
     if (form.elements.confirmed) form.elements.confirmed.checked = false;
     state = reduceScanReviewState(state, { type: "edit", index: cardIndex });
     syncReviewAttributes();
+    onChange(snapshot());
   }
 
   function destroy() {
@@ -234,5 +266,7 @@ export function initScanReviewWizard(
     isReviewed,
     firstUnreviewed,
     canFinish,
+    snapshot,
+    restore,
   };
 }

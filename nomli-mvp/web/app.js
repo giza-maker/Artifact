@@ -25,7 +25,26 @@ import {
 import { renderScanReview } from "./scan-review-view.js";
 import { initScanReviewWizard } from "./scan-review-wizard.js";
 import "./scan-review.css";
-import { itemPhotos } from "./item-photos.js";
+import { itemPhotos, loadItemPhotoSource } from "./item-photos.js";
+import { registerPlugin } from "@capacitor/core";
+import { createRecoveryStore } from "./recovery-store.js";
+import { createDraftRecovery } from "./recovery-controller.js";
+import {
+  captureScanReview,
+  restoreScanReview,
+  validateScanRecovery,
+} from "./scan-recovery.js";
+import {
+  captureAssistantDraft,
+  validateAssistantDraft,
+  restoreAssistantDraft,
+  captureCookingReview,
+  restoreCookingReview,
+  validateCookingReview,
+  cookingReviewKey,
+} from "./cooking-draft-recovery.js";
+import { renderRecoveryShelf, recoveryStatusText } from "./recovery-ui.js";
+import "./recovery.css";
 import { attachScanPhotos } from "./scan-item-photos.js";
 import {
   cropItemPhoto,
@@ -204,6 +223,8 @@ import packageInfo from "../package.json" with { type: "json" };
   let scanWizard = null;
   let scanRetry = null;
   let scanConfig = { apiUrl: "", deviceToken: "" };
+  let recoveryReady = false,
+    assistantRecoveryPending = false;
   let assistantDraft = "",
     assistantError = "",
     assistantAbort = null,
@@ -280,6 +301,7 @@ import packageInfo from "../package.json" with { type: "json" };
     assistantEpoch++;
     assistantAbort?.abort();
     assistantAbort = null;
+    if (recoveryReady) captureChatRecovery();
     if (clear) {
       assistantReply = null;
       assistantUnread = false;
@@ -366,6 +388,7 @@ import packageInfo from "../package.json" with { type: "json" };
         target.setSelectionRange(...selection);
     }
     updateCookingChatViewport();
+    if (recoveryReady) refreshRecovery();
   }
   function openCookingChatPanel({ fromHistory = false } = {}) {
     if (!S.cooking || !["cooking", "review"].includes(S.route))
@@ -501,6 +524,326 @@ import packageInfo from "../package.json" with { type: "json" };
   } catch {
     scanConfig = { apiUrl: "", deviceToken: "" };
   }
+  // Recovery is deliberately separate from inventory and exported backups.
+  // Native proxies stay inside objects: resolving a proxy as a Promise would
+  // assimilate Capacitor's synthetic `then` method and hang startup.
+  let recoveryNotice = "",
+    assistantRecoveryNotice = "";
+  let scanOwnerId = null,
+    scanCaptureRevision = 0,
+    recoveryCleaning = false;
+  let recoveryMediaError = "";
+  const recoveryAssets = new WeakMap(),
+    recoveryAssetTasks = new Set();
+  const recoveryStore = createRecoveryStore({
+    native: window.NomliNative,
+    plugin: window.NomliNative?.isNative
+      ? registerPlugin("NomliRecovery")
+      : null,
+  });
+  const recovery = createDraftRecovery({
+    store: recoveryStore,
+    onStatus: () => {
+      if (recoveryReady) refreshRecovery();
+    },
+  });
+  function refreshRecovery() {
+    if (!recoveryReady) return;
+    const status = recovery.status(),
+      snapshot = recovery.snapshot();
+    const shelf = $("#draft-recovery");
+    const activeScan =
+      modal.open &&
+      ["scan-review", "scan-reading"].includes(modal.dataset.screen);
+    const html = renderRecoveryShelf({
+      status,
+      scan: activeScan ? null : snapshot.scan,
+      notice: recoveryNotice || recoveryMediaError,
+      chatNotice: "",
+    });
+    // Keep focused shelf buttons stable while their state has not changed.
+    if (shelf.innerHTML !== html) shelf.innerHTML = html;
+    shelf.hidden = !html;
+    document.querySelectorAll("[data-recovery-status]").forEach((node) => {
+      const ownDraft = node.closest('form[data-form="meal"]')
+        ? snapshot.review
+        : node.closest(".zara-compose-area")
+          ? snapshot.chat
+          : snapshot.scan;
+      if (!ownDraft && !status.blocked && status.phase !== "error") {
+        node.textContent = "";
+        return;
+      }
+      node.textContent = recoveryAssetTasks.size
+        ? "Saving scan photos on this device…"
+        : recoveryStatusText(status);
+    });
+  }
+  function captureChatRecovery() {
+    if (!recoveryReady) return;
+    recovery.update(
+      "chat",
+      captureAssistantDraft({
+        question: assistantDraft,
+        pending: Boolean(assistantAbort) || assistantRecoveryPending,
+        chat: S.chat,
+      }),
+    );
+  }
+  function captureReviewRecovery() {
+    if (!recoveryReady) return;
+    const form = $('form[data-form="meal"]', view);
+    if (form?.dataset.recoveryDirty === "1" && S.cooking?.phase === "review") {
+      const draft = captureCookingReview(form, S.cooking);
+      if (draft) recovery.update("review", draft);
+    }
+  }
+  function recoveryAsset(blob) {
+    if (recoveryAssets.has(blob)) return recoveryAssets.get(blob);
+    const task = recoveryStore.saveAsset(blob);
+    recoveryAssets.set(blob, task);
+    recoveryAssetTasks.add(task);
+    refreshRecovery();
+    void task
+      .finally(() => {
+        recoveryAssetTasks.delete(task);
+        refreshRecovery();
+      })
+      .catch(() => {});
+    return task;
+  }
+  function updateOwnedScan(id, change) {
+    const current = recovery.snapshot().scan;
+    if (!current || current.id !== id || scanOwnerId !== id) return;
+    recovery.update("scan", { ...current, ...change });
+  }
+  function captureScanRecovery() {
+    if (!recoveryReady || !scanOwnerId) return;
+    const current = recovery.snapshot().scan;
+    if (!current || current.id !== scanOwnerId) return;
+    const form = $('form[data-form="scan-import"]', modal);
+    if (
+      scanDraft &&
+      form &&
+      !operationBusy &&
+      modal.open &&
+      modal.dataset.screen === "scan-review"
+    ) {
+      updateOwnedScan(current.id, {
+        stage: "review",
+        draft: structuredClone(scanDraft),
+        form: captureScanReview(form, scanWizard, scanDraft),
+      });
+    }
+    const crops = [...(scanPhotoDraft?.crops?.entries() || [])];
+    if (!scanPhotoDraft?.source) return;
+    const revision = ++scanCaptureRevision;
+    void Promise.all(
+      crops.map(async ([lineId, crop]) => ({
+        lineId,
+        assetId: await recoveryAsset(crop.blob),
+        region: crop.region || null,
+      })),
+    )
+      .then((saved) => {
+        if (revision === scanCaptureRevision)
+          updateOwnedScan(current.id, { crops: saved });
+      })
+      .catch(() => {
+        recoveryMediaError =
+          "Scan edits are kept, but a photo could not be saved. Keep this screen open or choose a new photo after reopening.";
+        refreshRecovery();
+      });
+  }
+  function captureRecovery() {
+    captureChatRecovery();
+    captureReviewRecovery();
+    captureScanRecovery();
+  }
+  function flushRecovery() {
+    captureRecovery();
+    void recovery.flush().catch(() => {});
+  }
+  function importedScan(draft) {
+    return Boolean(
+      draft &&
+        S.scanImports?.some(
+          (entry) =>
+            (typeof entry === "string" ? entry : entry.fingerprint) ===
+            draft.fingerprint,
+        ),
+    );
+  }
+  async function pruneRecoveryAssets() {
+    await Promise.allSettled([...recoveryAssetTasks]);
+    if (recovery.status().blocked || recovery.status().phase === "error")
+      return;
+    const scan = recovery.snapshot().scan;
+    const ids = [
+      scan?.sourceAssetId,
+      ...(scan?.crops || []).map((crop) => crop.assetId),
+    ].filter(Boolean);
+    await recoveryStore.pruneAssets([...new Set(ids)]);
+  }
+  async function forgetScanRecovery() {
+    scanOwnerId = null;
+    scanCaptureRevision++;
+    scanDraft = null;
+    recovery.update("scan", null);
+    recoveryMediaError = "";
+    recoveryCleaning = true;
+    try {
+      await recovery.flush();
+      await pruneRecoveryAssets();
+      return true;
+    } catch {
+      announce(
+        "Saved draft cleanup could not finish. Reopen Nomli before scanning again.",
+      );
+      return false;
+    } finally {
+      recoveryCleaning = false;
+      refreshRecovery();
+    }
+  }
+  async function forgetAllRecovery() {
+    cancelAssistant();
+    assistantRecoveryPending = false;
+    scanOwnerId = null;
+    scanCaptureRevision++;
+    scanDraft = null;
+    assistantDraft = "";
+    assistantRecoveryNotice = "";
+    recoveryCleaning = true;
+    const form = $('form[data-form="meal"]', view);
+    if (form) {
+      form.reset();
+      form.dataset.recoveryDirty = "0";
+    }
+    try {
+      await recovery.clear();
+      await pruneRecoveryAssets();
+      recoveryNotice = "";
+      recoveryMediaError = "";
+      return true;
+    } catch {
+      announce("Draft cleanup could not finish. Reopen Nomli to retry.");
+      return false;
+    } finally {
+      recoveryCleaning = false;
+      refreshRecovery();
+    }
+  }
+  async function resumeScanRecovery() {
+    if (recoveryCleaning || recovery.status().blocked) return;
+    const record = recovery.snapshot().scan;
+    if (!record) return;
+    scanOwnerId = record.id;
+    if (importedScan(record.draft)) {
+      await forgetScanRecovery();
+      return announce(
+        "This scan was already saved. Inventory was not changed again.",
+      );
+    }
+    let source = null;
+    try {
+      if (record.sourceAssetId)
+        source = await recoveryStore.loadAsset(record.sourceAssetId);
+    } catch {
+      /* Text can still be reviewed if the source is unavailable. */
+    }
+    releaseScanPhoto();
+    if (source)
+      recoveryAssets.set(source, Promise.resolve(record.sourceAssetId));
+    if (!record.draft) {
+      scanRetry = source
+        ? { source: record.source, payload: { file: source } }
+        : null;
+      openModal(
+        "Unfinished scan",
+        `<p>The previous scan was interrupted. Nothing was added. ${source ? "Your source is saved on this device. Retry only when ready." : "The source could not be recovered. Discard this draft and choose the source again."}</p>${source ? button("Retry scan", "recovery-retry-scan", record.source, "btn-primary") : ""}${button("Discard draft", "recovery-discard-scan", "", "btn-secondary")}`,
+        "scan-recovery",
+      );
+      scanRetry = source
+        ? { source: record.source, payload: { file: source } }
+        : null;
+      return;
+    }
+    scanDraft = structuredClone(record.draft);
+    if (record.source === "groceries" && source) {
+      try {
+        const preview = await itemPhotos.prepare(source);
+        scanPhotoDraft = {
+          source,
+          previewUrl: URL.createObjectURL(preview),
+          crops: new Map(),
+        };
+        for (const crop of record.crops) {
+          try {
+            const blob = await recoveryStore.loadAsset(crop.assetId);
+            if (!blob) throw new Error("Missing crop");
+            recoveryAssets.set(blob, Promise.resolve(crop.assetId));
+            scanPhotoDraft.crops.set(crop.lineId, {
+              blob,
+              previewUrl: URL.createObjectURL(blob),
+              photoId: null,
+              region: crop.region,
+            });
+          } catch {
+            recoveryMediaError =
+              "Some saved photos are unavailable. Text edits are restored; choose a crop or use food artwork.";
+          }
+        }
+      } catch {
+        recoveryMediaError =
+          "Saved photo preview is unavailable. Text edits are restored.";
+      }
+    }
+    showScanReview(record.form);
+    announce(
+      "Unfinished scan restored. Review and confirm before adding anything.",
+    );
+  }
+  try {
+    const loaded = await recovery.load();
+    recoveryReady = true;
+    if (!loaded.notice) {
+      const recovered = loaded.snapshot;
+      if (recovered.scan) validateScanRecovery(recovered.scan);
+      if (recovered.review && !validateCookingReview(recovered.review))
+        throw new Error("Saved cooking review is invalid.");
+      if (recovered.chat) {
+        if (!validateAssistantDraft(recovered.chat))
+          throw new Error("Saved question is invalid.");
+        const chat = restoreAssistantDraft(recovered.chat, { chat: S.chat });
+        if (!chat.question && !recovered.chat.pending)
+          throw new Error("Saved question is invalid.");
+        assistantDraft = chat.question;
+        assistantRecoveryNotice = chat.notice;
+        assistantRecoveryPending = chat.interrupted;
+        if (!chat.question) recovery.update("chat", null);
+      }
+      if (recovered.scan && importedScan(recovered.scan.draft))
+        recovery.update("scan", null);
+      if (
+        recovered.review &&
+        (S.cooking?.phase !== "review" ||
+          cookingReviewKey(S.cooking) !== recovered.review.key ||
+          S.meals.some(
+            (meal) => meal.cookingSessionId === recovered.review.sessionId,
+          ))
+      )
+        recovery.update("review", null);
+      await recovery.flush();
+      await pruneRecoveryAssets();
+    }
+  } catch (error) {
+    recoveryReady = true;
+    recovery.block(
+      "Saved draft data could not be read safely. Your inventory is unchanged. Discard saved drafts to continue saving new drafts.",
+    );
+  }
+  refreshRecovery();
   const timerNotifications = createTimerNotifications(
     () => window.NomliNative,
     async () => {
@@ -679,6 +1022,12 @@ import packageInfo from "../package.json" with { type: "json" };
     }
   }
   function cancelScan() {
+    if (
+      recoveryReady &&
+      scanOwnerId &&
+      recovery.snapshot().scan?.stage === "scanning"
+    )
+      updateOwnedScan(scanOwnerId, { stage: "retry" });
     scanEpoch++;
     scanAbort?.abort();
     scanAbort = null;
@@ -686,6 +1035,8 @@ import packageInfo from "../package.json" with { type: "json" };
     scanTimers = [];
   }
   function openModal(title, body, screen = "") {
+    captureReviewRecovery();
+    captureScanRecovery();
     cookingMediaCleanup.suspend?.();
     void cookingSpeech.stop();
     scanWizard?.destroy();
@@ -713,9 +1064,11 @@ import packageInfo from "../package.json" with { type: "json" };
     }
     initMobileSelects(modal);
     hydratePhotos(modal);
+    refreshRecovery();
     $("[data-action='modal-close']", modal)?.focus();
   }
   function closeModal() {
+    captureScanRecovery();
     scanWizard?.destroy();
     scanWizard = null;
     cancelScan();
@@ -765,6 +1118,28 @@ import packageInfo from "../package.json" with { type: "json" };
     document.body.classList.toggle("zara-route", S.route === "assistant");
     const thread = $(".zara-thread", view);
     if (thread) thread.scrollTop = chatScroll ?? thread.scrollHeight;
+    const review = recovery.snapshot().review;
+    const form = $('form[data-form="meal"]', view);
+    if (form && review) {
+      const result = restoreCookingReview(form, review, {
+        session: S.cooking,
+        items: S.items,
+        meals: S.meals,
+      });
+      if (result.restored) {
+        form.dataset.recoveryDirty = "1";
+        const note = document.createElement("p");
+        note.className = "draft-recovery-note";
+        note.textContent = result.notice;
+        form.prepend(note);
+      } else recovery.update("review", null);
+    }
+    if (form)
+      form.insertAdjacentHTML(
+        "afterbegin",
+        '<p class="draft-recovery-note" data-recovery-status role="status"></p>',
+      );
+    refreshRecovery();
   }
   function navigate(route, { keepCalorieDate = false } = {}) {
     if (!routes.includes(route)) return;
@@ -1527,13 +1902,15 @@ import packageInfo from "../package.json" with { type: "json" };
             button,
           })
         : "";
-    return `<section class="zara-shell"><header class="zara-header"><img src="images/zara-96.webp" alt="" width="44" height="44"><div><h1 data-title tabindex="-1"${panel ? ' id="cooking-chat-title"' : ""}>Zara</h1><p>Your kitchen companion</p></div><button class="icononly" data-action="assistant-info" aria-label="Chat settings and privacy">${icon("dots-three")}</button></header>${context}<div class="zara-thread" role="log" aria-label="Conversation with Zara" aria-live="polite" aria-relevant="additions">${empty}${history}${live}${pending}</div><section class="zara-compose-area">${!connected ? `<div class="zara-connect"><p>Connect once to ask Zara.</p>${button("Connect Nomli", "scan-settings", "", "btn-secondary")}</div>` : ""}${voiceExpanded || voicePending() ? `<div class="zara-voice-drawer"><button class="icononly voice-drawer-close" data-action="voice-panel-close" aria-label="Close voice controls">${icon("x")}</button>${voiceView()}</div>` : ""}${assistantError ? `<p class="chat-error" role="alert">${esc(assistantError)}</p>` : ""}<form data-form="assistant" class="zara-composer" aria-busy="${Boolean(assistantAbort)}"><label class="sr-only" for="assistant-question">Question</label><textarea id="assistant-question" name="question" placeholder="${panel ? "Ask about this step…" : "Ask about your kitchen…"}" rows="1" maxlength="2000" dir="auto" required aria-describedby="assistant-status"${assistantAbort || voicePending() ? " readonly" : ""}>${esc(assistantDraft)}</textarea>${window.NomliNative?.isNative ? `<button type="button" class="composer-mic" data-action="voice-toggle" aria-label="Voice message" aria-expanded="${voiceExpanded || voicePending()}"${assistantAbort ? " disabled" : ""}>${icon("microphone")}</button>` : ""}<button class="composer-send" aria-label="${assistantError ? "Retry question" : "Send question"}"${assistantAbort || voicePending() || !connected ? " disabled" : ""}>${icon("arrow-right")}</button></form><p id="assistant-status" class="zara-send-note" role="status">${assistantAbort ? `Zara is thinking. ${button("Cancel", "assistant-cancel", "", "btn-quiet")}` : voicePending() ? "Use or discard your transcript before sending." : "Kitchen context included · review advice before acting"}</p></section></section>`;
+    return `<section class="zara-shell"><header class="zara-header"><img src="images/zara-96.webp" alt="" width="44" height="44"><div><h1 data-title tabindex="-1"${panel ? ' id="cooking-chat-title"' : ""}>Zara</h1><p>Your kitchen companion</p></div><button class="icononly" data-action="assistant-info" aria-label="Chat settings and privacy">${icon("dots-three")}</button></header>${context}<div class="zara-thread" role="log" aria-label="Conversation with Zara" aria-live="polite" aria-relevant="additions">${empty}${history}${live}${pending}</div><section class="zara-compose-area">${!connected ? `<div class="zara-connect"><p>Connect once to ask Zara.</p>${button("Connect Nomli", "scan-settings", "", "btn-secondary")}</div>` : ""}${voiceExpanded || voicePending() ? `<div class="zara-voice-drawer"><button class="icononly voice-drawer-close" data-action="voice-panel-close" aria-label="Close voice controls">${icon("x")}</button>${voiceView()}</div>` : ""}${assistantError ? `<p class="chat-error" role="alert">${esc(assistantError)}</p>` : ""}${assistantRecoveryNotice ? `<p class="draft-recovery-note" role="status">${esc(assistantRecoveryNotice)}</p>` : ""}<p class="draft-recovery-note" data-recovery-status role="status"></p><form data-form="assistant" class="zara-composer" aria-busy="${Boolean(assistantAbort)}"><label class="sr-only" for="assistant-question">Question</label><textarea id="assistant-question" name="question" placeholder="${panel ? "Ask about this step…" : "Ask about your kitchen…"}" rows="1" maxlength="2000" dir="auto" required aria-describedby="assistant-status"${assistantAbort || voicePending() ? " readonly" : ""}>${esc(assistantDraft)}</textarea>${window.NomliNative?.isNative ? `<button type="button" class="composer-mic" data-action="voice-toggle" aria-label="Voice message" aria-expanded="${voiceExpanded || voicePending()}"${assistantAbort ? " disabled" : ""}>${icon("microphone")}</button>` : ""}<button class="composer-send" aria-label="${assistantError ? "Retry question" : "Send question"}"${assistantAbort || voicePending() || !connected ? " disabled" : ""}>${icon("arrow-right")}</button></form><p id="assistant-status" class="zara-send-note" role="status">${assistantAbort ? `Zara is thinking. ${button("Cancel", "assistant-cancel", "", "btn-quiet")}` : voicePending() ? "Use or discard your transcript before sending." : "Kitchen context included · review advice before acting"}</p></section></section>`;
   }
   async function sendAssistant(question) {
     if (operationBusy || assistantAbort || voicePending()) return;
     assistantDraft = question.trim();
     const sentQuestion = assistantDraft;
     assistantSentQuestion = sentQuestion;
+    assistantRecoveryPending = true;
+    assistantRecoveryNotice = "";
     voiceExpanded = false;
     assistantError = "";
     assistantReply = null;
@@ -1551,6 +1928,7 @@ import packageInfo from "../package.json" with { type: "json" };
       epoch = ++assistantEpoch,
       controller = new AbortController();
     assistantAbort = controller;
+    captureChatRecovery();
     render();
     try {
       const reply = await requestAssistantReply({
@@ -1578,6 +1956,8 @@ import packageInfo from "../package.json" with { type: "json" };
       ) {
         liveChats.add(entry);
         assistantDraft = "";
+        assistantRecoveryPending = false;
+        recovery.update("chat", null);
         assistantReply = reply;
         assistantContext = context;
       } else {
@@ -1618,6 +1998,7 @@ import packageInfo from "../package.json" with { type: "json" };
     return `${storageError ? `<section class="notice notice-warning recovery-notice" role="alert"><b>Storage error</b><p>${esc(storageError)}</p></section>` : ""}${recoveryRequired ? `<section class="notice notice-warning recovery-notice" role="alert"><b>Stored data needs recovery.</b><p>${esc(loadResult.notice || "Import a valid backup or explicitly clear local data. Current data will not be overwritten automatically.")}</p></section>` : ""}${(screens[S.route] || kitchenView)()}`;
   }
   function render() {
+    captureReviewRecovery();
     if (cookingChatPanel.open) {
       renderCookingChatPanel();
       return;
@@ -1846,6 +2227,10 @@ import packageInfo from "../package.json" with { type: "json" };
       );
   }
   async function runScan(source, payload) {
+    if (recoveryCleaning || recovery.status().blocked)
+      return announce("Resolve saved drafts before starting another scan.");
+    scanOwnerId = null;
+    scanDraft = null;
     scanRetry = null;
     const kind =
       source === "expiry"
@@ -1863,6 +2248,39 @@ import packageInfo from "../package.json" with { type: "json" };
     const controller = new AbortController();
     const ownerEpoch = ++scanEpoch;
     scanAbort = controller;
+    const draftId = `r_${crypto.randomUUID().replaceAll("-", "")}`;
+    scanOwnerId = draftId;
+    scanCaptureRevision++;
+    recoveryMediaError = "";
+    recovery.update("scan", {
+      id: draftId,
+      source,
+      stage: "scanning",
+      draft: null,
+      form: null,
+      sourceAssetId: null,
+      crops: [],
+    });
+    const sourceTask = (async () => {
+      const input = payload.file || payload.nativePhoto;
+      const blob =
+        input instanceof Blob ? input : await loadItemPhotoSource(input);
+      const assetId = await recoveryAsset(blob);
+      updateOwnedScan(draftId, { sourceAssetId: assetId });
+    })();
+    recoveryAssetTasks.add(sourceTask);
+    void sourceTask
+      .catch(() => {
+        if (scanOwnerId === draftId) {
+          recoveryMediaError =
+            "Scan source could not be saved locally. Keep this screen open until you finish reviewing.";
+          refreshRecovery();
+        }
+      })
+      .finally(() => {
+        recoveryAssetTasks.delete(sourceTask);
+        refreshRecovery();
+      });
     for (const [delay, message] of [
       [
         15000,
@@ -1916,6 +2334,10 @@ import packageInfo from "../package.json" with { type: "json" };
       scanDraft = reviewScanDraft(raw, {
         catalog: Object.entries(S.items).map(([id, item]) => ({ id, ...item })),
       });
+      updateOwnedScan(draftId, {
+        stage: "review",
+        draft: structuredClone(scanDraft),
+      });
       if (kind === "groceries" && scanPhotoDraft?.source) {
         const owner = scanPhotoDraft;
         for (const line of scanDraft.lines) {
@@ -1968,6 +2390,7 @@ import packageInfo from "../package.json" with { type: "json" };
         `<section class="notice notice-warning" role="alert"><b>Nothing was changed</b><p>${esc(error?.message || "Scanner request failed.")}</p></section><div class="form-actions">${button("Retry same scan", "scan-retry", "", "btn-primary")}${button("Try another source", "go", "scan", "btn-secondary")}${button("Connection", "scan-settings", "", "btn-quiet")}</div>`,
       );
       scanRetry = { source, payload };
+      updateOwnedScan(draftId, { stage: "retry" });
     } finally {
       if (scanAbort === controller) scanAbort = null;
     }
@@ -2038,9 +2461,20 @@ import packageInfo from "../package.json" with { type: "json" };
           : `Receipt total · ${formatMoneyMinor(total, String(fd.get("scanCurrency")))}`;
     }
   }
-  function showScanReview() {
+  function showScanReview(savedForm = null) {
     if (!scanDraft) return;
-    if (scanDraft.kind === "expiry") return showLegacyScanReview();
+    if (scanDraft.kind === "expiry") {
+      showLegacyScanReview();
+      const form = $('[data-form="scan-import"]', modal);
+      if (savedForm) restoreScanReview(form, null, savedForm, scanDraft);
+      form.insertAdjacentHTML(
+        "afterbegin",
+        '<p class="draft-recovery-note" data-recovery-status role="status"></p>',
+      );
+      captureScanRecovery();
+      refreshRecovery();
+      return;
+    }
     openModal(
       "Review items",
       renderScanReview({
@@ -2058,7 +2492,23 @@ import packageInfo from "../package.json" with { type: "json" };
     scanWizard = initScanReviewWizard(form, {
       onInvalid: (field, message) => formError(form, message, field),
       onSummary: () => updateScanSummary(form),
+      onChange: () => queueMicrotask(captureScanRecovery),
     });
+    if (savedForm) {
+      const result = restoreScanReview(form, scanWizard, savedForm, scanDraft);
+      if (result.warnings.length)
+        announce(
+          "Saved scan restored. Some choices changed; review affected items again.",
+        );
+      updateScanSummary(form);
+      initMobileSelects(form);
+    }
+    form.insertAdjacentHTML(
+      "afterbegin",
+      '<p class="draft-recovery-note" data-recovery-status role="status"></p>',
+    );
+    captureScanRecovery();
+    refreshRecovery();
   }
   function showLegacyScanReview() {
     const draft = scanDraft;
@@ -2266,6 +2716,9 @@ import packageInfo from "../package.json" with { type: "json" };
     }
     if (event.target.id === "assistant-question") {
       assistantDraft = event.target.value;
+      assistantRecoveryPending = false;
+      assistantRecoveryNotice = "";
+      captureChatRecovery();
       clearVoiceUseError();
       event.target.style.height = "auto";
       event.target.style.height =
@@ -2416,10 +2869,17 @@ import packageInfo from "../package.json" with { type: "json" };
       if (!S.cooking)
         return formError(form, "Cooking session is no longer active.");
       const completedCooking = S.cooking;
-      const used = completedCooking.allocations.map((x) => ({
-        id: x.id,
-        qty: fd.has(`used-${x.id}`) ? Number(fd.get(`used-${x.id}`)) : NaN,
-      }));
+      let used;
+      try {
+        used = completedCooking.allocations.map((x) => ({
+          id: x.id,
+          qty: Number(
+            parseLocalizedDecimal(String(fd.get(`used-${x.id}`) ?? "")),
+          ),
+        }));
+      } catch (error) {
+        return formError(form, error.message);
+      }
       const input = {
         sessionId: completedCooking.id,
         used,
@@ -2440,6 +2900,7 @@ import packageInfo from "../package.json" with { type: "json" };
         S = syncCookingInventory(result.state).state;
       }, "Meal saved. Inventory updated.");
       if (saved) {
+        recovery.update("review", null);
         navigate("cook");
       }
     },
@@ -2453,6 +2914,46 @@ import packageInfo from "../package.json" with { type: "json" };
     if (el.dataset.route) return navigate(el.dataset.route);
     const a = el.dataset.action,
       id = el.dataset.id || "";
+    if (a === "recovery-resume-scan") return resumeScanRecovery();
+    if (a === "recovery-retry-scan") {
+      const retry = scanRetry;
+      if (retry) return runScan(retry.source, retry.payload);
+      return announce("Choose the scan source again.");
+    }
+    if (a === "recovery-retry-save") {
+      try {
+        await recovery.flush();
+      } catch {
+        announce(
+          "Draft could not be saved. Keep Nomli open or reopen to retry.",
+        );
+      }
+      return;
+    }
+    if (a === "recovery-discard-scan") {
+      return openModal(
+        "Discard unfinished scan?",
+        `<p>Remove saved scan edits and source photos from this device? Inventory and receipt spending stay unchanged.</p>${button("Discard scan draft", "recovery-discard-scan-confirm", "", "btn-primary")}${button("Keep draft", "modal-close", "", "btn-secondary")}`,
+        "scan-recovery",
+      );
+    }
+    if (a === "recovery-discard-scan-confirm") {
+      if (await forgetScanRecovery()) closeModal();
+      return;
+    }
+    if (a === "recovery-discard-all") {
+      return openModal(
+        "Discard saved drafts?",
+        `<p>Remove unfinished scan, question and cooking review drafts? Saved inventory, meals and conversation history stay unchanged.</p>${button("Discard saved drafts", "recovery-discard-all-confirm", "", "btn-primary")}${button("Keep drafts", "modal-close", "", "btn-secondary")}`,
+      );
+    }
+    if (a === "recovery-discard-all-confirm") {
+      if (await forgetAllRecovery()) {
+        closeModal();
+        render();
+      }
+      return;
+    }
     if (a === "calorie-add") return calorieAddMenu();
     if (a === "calorie-manual") {
       if (id && S.route !== "calories") calorieDate = localDateKey();
@@ -2612,6 +3113,7 @@ import packageInfo from "../package.json" with { type: "json" };
           ?.querySelector("button")
           ?.focus({ preventScroll: true });
       }
+      captureScanRecovery();
       return;
     }
     if (a === "item-photo") {
@@ -2688,6 +3190,9 @@ import packageInfo from "../package.json" with { type: "json" };
         assistantDraft = voice.useTranscript(assistantDraft, {
           mode: a === "voice-replace" ? "replace" : "append",
         });
+        assistantRecoveryPending = false;
+        assistantRecoveryNotice = "";
+        captureChatRecovery();
         voiceExpanded = false;
         if (cookingChatPanel.open) renderCookingChatPanel();
         else {
@@ -2721,6 +3226,9 @@ import packageInfo from "../package.json" with { type: "json" };
       ];
       assistantDraft =
         el.dataset.question || suggestions[Number(id)] || el.textContent.trim();
+      assistantRecoveryPending = false;
+      assistantRecoveryNotice = "";
+      captureChatRecovery();
       const input = $("#assistant-question");
       if (input && !assistantAbort) {
         input.value = assistantDraft;
@@ -2735,6 +3243,9 @@ import packageInfo from "../package.json" with { type: "json" };
         }, "Conversation cleared.")
       ) {
         assistantDraft = "";
+        assistantRecoveryPending = false;
+        assistantRecoveryNotice = "";
+        recovery.update("chat", null);
         closeModal();
         render();
       }
@@ -2862,6 +3373,7 @@ import packageInfo from "../package.json" with { type: "json" };
         `<p>Clear inventory, meals, receipts, shopping, calorie diary and assistant history on this device?</p>${button("Clear local data", "reset-confirm", "", "btn-primary")}`,
       );
     if (a === "reset-confirm") {
+      if (!(await forgetAllRecovery())) return;
       if (
         await commit(
           () => {
@@ -2998,6 +3510,19 @@ import packageInfo from "../package.json" with { type: "json" };
       return scanConnectionForm();
     }
     if (a === "scan-choose") {
+      if (recoveryCleaning)
+        return announce("Finishing local draft cleanup. Try again shortly.");
+      if (recovery.status().blocked)
+        return announce(
+          "Discard unreadable saved drafts before starting a new scan. Inventory is unchanged.",
+        );
+      if (recovery.snapshot().scan) {
+        return openModal(
+          "Unfinished scan saved",
+          `<p>Resume your saved review, or discard it before choosing a new source.</p>${button("Resume saved scan", "recovery-resume-scan", "", "btn-primary")}${button("Discard draft", "recovery-discard-scan", "", "btn-secondary")}`,
+          "scan-recovery",
+        );
+      }
       if (!scanConfig.apiUrl || !scanConfig.deviceToken) {
         pendingScanSource = id;
         return scanConnectionForm();
@@ -3261,6 +3786,7 @@ import packageInfo from "../package.json" with { type: "json" };
           S = syncCookingInventory(S).state;
         }, "Session cancelled. Inventory unchanged.")
       ) {
+        recovery.update("review", null);
         closeModal();
         navigate("cook");
       }
@@ -4001,7 +4527,7 @@ import packageInfo from "../package.json" with { type: "json" };
                 ? "Reviewed scan saved. Inventory and spending updated once."
                 : "Reviewed scan saved. Inventory updated once.",
         );
-        scanDraft = null;
+        await forgetScanRecovery();
         closeModal();
         recentImportCount = result.replayed
           ? 0
@@ -4021,6 +4547,7 @@ import packageInfo from "../package.json" with { type: "json" };
           form,
           "Import preview expired. Choose the file again.",
         );
+      if (!(await forgetAllRecovery())) return;
       if (
         await commit(
           () => {
@@ -4263,15 +4790,19 @@ import packageInfo from "../package.json" with { type: "json" };
   }
   modal.addEventListener("cancel", (event) => {
     if (operationBusy) return event.preventDefault();
+    captureScanRecovery();
     cancelScan();
   });
   modal.addEventListener("close", () => {
+    // `close` fires after dialog.open becomes false; capture happened at the
+    // close/cancel entry points or on every edit before releasing its media.
     calorieDraft = null;
     if (!cookingChatPanel.open) cookingMediaCleanup.resume?.();
     cancelScan();
     if (modal.dataset.screen === "item-edit") releaseItemPhoto();
     if (["scan-review", "scan-reading"].includes(modal.dataset.screen))
       releaseScanPhoto();
+    refreshRecovery();
     if (lastFocus?.isConnected) lastFocus.focus();
     else if (cookingChatPanel.open)
       $(".cooking-chat-panel-close", cookingChatPanel)?.focus({
@@ -4320,8 +4851,23 @@ import packageInfo from "../package.json" with { type: "json" };
   });
   document.addEventListener("visibilitychange", () => {
     void voice.handleVisibility(document.hidden);
+    if (document.hidden) flushRecovery();
   });
-  window.addEventListener("pagehide", cancelVoice);
+  window.addEventListener("pagehide", () => {
+    cancelVoice();
+    flushRecovery();
+  });
+  for (const type of ["input", "change"])
+    document.addEventListener(type, (event) => {
+      if (event.target.closest('form[data-form="meal"]')) {
+        event.target.form.dataset.recoveryDirty = "1";
+        if (event.target.name?.startsWith("used-"))
+          event.target.setCustomValidity("");
+        captureReviewRecovery();
+      }
+      if (event.target.closest('form[data-form="scan-import"]'))
+        queueMicrotask(captureScanRecovery);
+    });
   window.addEventListener("popstate", syncHash);
   window.addEventListener("hashchange", syncHash);
   render();

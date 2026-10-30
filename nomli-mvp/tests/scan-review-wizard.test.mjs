@@ -48,3 +48,15 @@ test("summary index does not imply every card was reviewed", () => {
   assert.equal(state.index, 3);
   assert.equal(state.reviewed.every(Boolean), true);
 });
+
+test("restored card-count mismatch clears review completion", () => {
+  const saved = { index: 3, reviewed: [true, true, true] };
+  const current = createScanReviewState(2);
+  // Reducer remains honest when caller clamps navigation separately: summary is
+  // navigation only, never evidence that current cards were reviewed.
+  const shown = reduceScanReviewState(current, {
+    type: "show",
+    index: saved.index,
+  });
+  assert.deepEqual(shown, { index: 2, reviewed: [false, false] });
+});
