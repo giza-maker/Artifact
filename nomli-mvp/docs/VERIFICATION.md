@@ -1,4 +1,20 @@
-# M12 kitchen-to-cooking experience — verified
+# M13 interruption recovery: verified
+
+[Download Nomli-M13.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m13-v0.14.0/Nomli-M13.apk). Package com.nomli.mvp.validation; version 0.14.0-m13, code 22; minimum API 26, target API 36. Install over Nomli Test.
+
+Unfinished scan reviews recover edited fields, card position, source files and individual grocery crops from local private storage. Zara restores unsent or interrupted questions and waits for Send. Cooking review restores the entered amounts for the same session and requires fresh confirmation before deducting stock. Recovery never sends a question, imports items or deducts stock automatically. Scan fingerprints and cooking-session IDs prevent duplicate imports and deductions. Android saves drafts with atomic file writes; recovery excludes connection credentials and stays outside inventory backups. Bilingual receipt titles have room beside ingredient artwork, with Keep item below the title.
+
+Removed crops stay removed after restart, and completed drafts clear. Failed snapshot writes leave the app responsive. Reset and backup replacement require a saved draft-clear record first. An eight-second timeout stops subsequent recovery writes until reopen. Unreadable drafts stay untouched until explicit discard; inventory remains available. Existing content is unchanged: 88 ingredients, 20 recipes, 272 food-art entries across 32 categories, 60 steps and 120 cooking-media files.
+
+Source 9f5de2e6ca9260d6ce6f0830de4c9791eb2812ed; CI 41002753592 (4m 00s). 474 JavaScript tests, content/art/media validation, Vite build, Capacitor sync and Android compilation passed. APK 95,868,080 bytes; SHA-256 dee26cfea54e376ad11116e11ab93f04f25fbacdd09c3fcd49896b4ed7dc2657. Certificate SHA-256 8c02c3045c97327f5415451feb9ccb0db326322b90d460dde9f28a7c0b559ef0; v2/v3 signatures, 16 KB alignment, ZIP CRC and all 231 production assets verified. Configured secrets and QA harness absent. Published size/digest match local APK.
+
+Browser QA covered the production build and actual Capacitor wrappers with controlled native transport at 390×844 and 320×568. Receipt quantity ٢٤ and wizard position restored after reload, confirmation reset, then 6 items and EGP 243.62 spending committed exactly once. A crop restored, and its later removal stayed removed. A pending Zara question restored with request count 1 and no resend; explicit retry produced a reply and cleared the draft. Arabic actual-use amount ٣ restored unchecked from its session allocation while egg stock stayed 30, then explicit confirmation deducted 3 to 27 and remained 27 after reload. A failed snapshot write left the UI responsive and blocked reset; an 8-second stalled write entered quarantine. A corrupt draft was discarded while stock remained intact. Protected deployed health passed in 544 ms; content responses were controlled fixtures, not live-model accuracy tests. Physical Android camera, microphone, keyboard, hardware Back and process-kill acceptance remain pending.
+
+Recovery regression tests are included in the 474-test suite.
+
+![Recovered receipt, Zara question and cooking review](../artifacts/m13-draft-recovery.jpg)
+
+## Historical M12 kitchen-to-cooking experience — verified
 
 [Download Nomli-M12.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m12-v0.13.0/Nomli-M12.apk). Package com.nomli.mvp.validation; version 0.13.0-m12, code 21; minimum API 26, target API 36. Install over Nomli Test.
 
