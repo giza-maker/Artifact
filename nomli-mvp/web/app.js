@@ -1203,7 +1203,7 @@ import packageInfo from "../package.json" with { type: "json" };
     topAction.innerHTML = icon(stockedKitchen ? "magnifying-glass" : "list");
     const active = ["recipe", "cooking", "review"].includes(S.route)
       ? "cook"
-      : ["shopping", "expenses", "calories", "profile"].includes(S.route)
+      : ["scan", "shopping", "expenses", "calories", "profile"].includes(S.route)
         ? "kitchen"
         : S.route;
     $("#bottom-nav").innerHTML = nav

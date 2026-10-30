@@ -517,7 +517,7 @@ dialog *::-webkit-scrollbar-track {
 }
 .meal-completion-photo {
   position: relative;
-  margin: -18px -20px 26px;
+  margin: -4px -20px 26px;
 }
 .meal-completion-photo img {
   width: 100%;
