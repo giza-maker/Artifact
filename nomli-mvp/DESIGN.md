@@ -1,5 +1,12 @@
 # Nomli MVP design contract
 
+## M14.1 Zara shell correction
+
+- Full standalone Zara is a vertical flex chain: app header, app content, route view and Zara shell must share available height without becoming row siblings or forcing horizontal shrinkage.
+- The conversation thread and composer own separate height and scrolling behavior. The thread may shrink and scroll; the composer remains reachable above app navigation and the keyboard.
+- At compact keyboard heights of 520px or less, reduce nonessential chrome and preserve the question, composer controls and conversation access. Keep cooking chat overlay sizing independent from the standalone route.
+- Native system bars use explicit `SystemBars` style `LIGHT`, producing dark glyphs on the light editorial surface. Do not delegate glyph contrast to device `DEFAULT` appearance.
+
 ## M14 warm editorial system
 
 - The active interface uses a warm editorial direction: cream canvas, dark ink, restrained orange action color, large serif headings and food-led imagery. The exact tokens are `#f8f3e9` background, `#fffdf8` surface, `#f1eadf` raised surface, `#e8dfd2` tertiary surface, `#211d17` text, `#70685e` muted text, `#766e64` faint text, `#ff7108` accent and `#a83e00` accessible accent text. Semantic success, warning and danger colors remain reserved for status.

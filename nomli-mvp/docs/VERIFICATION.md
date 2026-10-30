@@ -1,4 +1,20 @@
-# M14 warm editorial redesign: verified
+# M14.1 Zara correction: verified scope
+
+[Download Nomli-M14.1.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m14.1-v0.15.1/Nomli-M14.1.apk). Install over **Nomli Test** to retain inventory and connection settings. Version **0.15.1-m14.1**, code **24**; same application ID and retained signing certificate.
+
+Fixes the standalone Zara layout reported from the phone. The moved app header was sharing a default flex row with the conversation, leaving only 221px for chat on a 390px viewport. The full route now uses a vertical layout, a readable title and a separately scrolling thread with a reachable composer. Compact layouts handle long English/Arabic drafts. Cooking chat retains its overlay and returns to the same step.
+
+Android uses explicit light system bars with dark glyphs, plus matching cream launch/window/WebView surfaces. The actual APK's native configuration was verified; physical phone appearance and IME behavior still need device acceptance.
+
+486 tests and content/art/media validation passed. Vite build, Capacitor sync and [Android CI](https://github.com/giza-maker/Artifact/actions/runs/41114064947) passed from source `5665ceae55c0e2a2a4e360382e8f50b4c9605b4f`. Local browser checks covered standalone Zara at normal/narrow sizes, long Arabic drafts and voice drawer at short heights, cooking chat at normal/short heights, the return to the same cooking step, inventory scrolling, menu bounds, and an unpaired ordinary browser. [Corrective design QA](../design-qa.md) records the missed M14 standalone-chat coverage; these checks do not claim every app feature was retested.
+
+Signed APK: **95,876,272 bytes**; SHA-256 `b5da6efd34356caf2dae62b2e774405e501cd11d87371c90f4316c4cf9268a2b`. Retained certificate SHA-256 `8c02c3045c97327f5415451feb9ccb0db326322b90d460dde9f28a7c0b559ef0`. v2/v3 signatures, 16 KB alignment, ZIP CRC, all **231 bundled web assets** against the local production build, configured-secret exclusion and QA-harness exclusion verified. Published APK size and SHA-256 match the local verified file.
+
+Evidence: [layout measurements](../artifacts/m14-1-zara-fix/layout-verification.json), [build verification](../artifacts/m14-1-zara-fix/build-verification.json). Screenshots use synthetic inventory and controlled native/assistant transport; live OCR/model accuracy and physical Android camera, speech, keyboard, Back and process-kill behavior are not established by these browser checks.
+
+![Corrected full-width Zara route in controlled browser](../artifacts/m14-1-zara-fix/corrected-zara.jpg)
+
+## Historical M14 warm editorial redesign: verified
 
 [Download Nomli-M14.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m14-v0.15.0/Nomli-M14.apk). Install over **Nomli Test** to retain inventory and connection settings. Version **0.15.0-m14**, code **23**; package `com.nomli.mvp.validation`; minimum Android API 26, target API 36.
 

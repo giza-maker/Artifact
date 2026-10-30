@@ -1,0 +1,165 @@
+{
+  "sourceCommit": "5665ceae55c0e2a2a4e360382e8f50b4c9605b4f",
+  "method": "Live read-only DOM geometry assertions through CUA, with native transport fixtures and a separate ordinary browser. Screenshots captured directly from app.",
+  "physicalAndroid": "pending",
+  "cases": [
+    {
+      "file": "browser-empty.json",
+      "viewport": {
+        "h": 844,
+        "w": 390
+      },
+      "checks": {
+        "composerFits": true,
+        "fullWidth": true,
+        "noHorizontalOverflow": true,
+        "stacked": true,
+        "threadAboveComposer": true,
+        "threadVisible": true
+      },
+      "expectedFailure": false
+    },
+    {
+      "file": "browser-short-unpaired.json",
+      "viewport": {
+        "h": 360,
+        "w": 320
+      },
+      "checks": {
+        "composerFits": true,
+        "fullWidth": true,
+        "noHorizontalOverflow": true,
+        "stacked": true,
+        "threadAboveComposer": true,
+        "threadVisible": true
+      },
+      "expectedFailure": false
+    },
+    {
+      "file": "narrow-320.json",
+      "viewport": {
+        "h": 568,
+        "w": 320
+      },
+      "checks": {
+        "composerFits": true,
+        "fullWidth": true,
+        "noHorizontalOverflow": true,
+        "stacked": true,
+        "threadAboveComposer": true,
+        "threadVisible": true
+      },
+      "expectedFailure": false
+    },
+    {
+      "file": "normal-390.json",
+      "viewport": {
+        "h": 844,
+        "w": 390
+      },
+      "checks": {
+        "composerFits": true,
+        "fullWidth": true,
+        "noHorizontalOverflow": true,
+        "stacked": true,
+        "threadAboveComposer": true,
+        "threadVisible": true
+      },
+      "expectedFailure": false
+    },
+    {
+      "file": "overlay-390.json",
+      "viewport": {
+        "h": 844,
+        "w": 390
+      },
+      "checks": {
+        "composerFits": true,
+        "fullWidth": true,
+        "noHorizontalOverflow": true,
+        "threadVisible": true,
+        "withinViewport": true
+      },
+      "expectedFailure": false
+    },
+    {
+      "file": "overlay-keyboard.json",
+      "viewport": {
+        "h": 400,
+        "w": 390
+      },
+      "checks": {
+        "composerFits": true,
+        "fullWidth": true,
+        "noHorizontalOverflow": true,
+        "threadVisible": true,
+        "withinViewport": true
+      },
+      "expectedFailure": false
+    },
+    {
+      "file": "roundtrip.json",
+      "viewport": {
+        "h": 844,
+        "w": 390
+      },
+      "checks": {
+        "composerFits": true,
+        "fullWidth": true,
+        "noHorizontalOverflow": true,
+        "stacked": true,
+        "threadAboveComposer": true,
+        "threadVisible": true
+      },
+      "expectedFailure": false
+    },
+    {
+      "file": "short-390.json",
+      "viewport": {
+        "h": 400,
+        "w": 390
+      },
+      "checks": {
+        "composerFits": true,
+        "fullWidth": true,
+        "noHorizontalOverflow": true,
+        "stacked": true,
+        "threadAboveComposer": true,
+        "threadVisible": true
+      },
+      "expectedFailure": false
+    },
+    {
+      "file": "short-before.json",
+      "viewport": {
+        "h": 400,
+        "w": 390
+      },
+      "checks": {
+        "composerFits": false,
+        "fullWidth": true,
+        "noHorizontalOverflow": true,
+        "stacked": true,
+        "threadAboveComposer": true,
+        "threadVisible": true
+      },
+      "expectedFailure": true
+    },
+    {
+      "file": "voice-320.json",
+      "viewport": {
+        "h": 360,
+        "w": 320
+      },
+      "checks": {
+        "composerFits": true,
+        "fullWidth": true,
+        "noHorizontalOverflow": true,
+        "stacked": true,
+        "threadAboveComposer": true,
+        "threadVisible": true
+      },
+      "expectedFailure": false
+    }
+  ]
+}

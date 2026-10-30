@@ -1,0 +1,43 @@
+{
+  "version": "0.15.1-m14.1",
+  "versionCode": 24,
+  "package": "com.nomli.mvp.validation",
+  "minSdk": 26,
+  "targetSdk": 36,
+  "sourceCommit": "5665ceae55c0e2a2a4e360382e8f50b4c9605b4f",
+  "ci": {
+    "runId": 41114064947,
+    "url": "https://github.com/giza-maker/Artifact/actions/runs/41114064947",
+    "conclusion": "success",
+    "jobElapsedSeconds": 248
+  },
+  "tests": 486,
+  "apk": "Nomli-M14.1.apk",
+  "bytes": 95876272,
+  "sha256": "b5da6efd34356caf2dae62b2e774405e501cd11d87371c90f4316c4cf9268a2b",
+  "webAssetsMatched": 231,
+  "crc": "passed",
+  "secretScan": "passed",
+  "certificateSha256": "8c02c3045c97327f5415451feb9ccb0db326322b90d460dde9f28a7c0b559ef0",
+  "signatures": {
+    "v2": true,
+    "v3": true
+  },
+  "alignment16KB": "passed",
+  "bundledNativeTheme": {
+    "systemBars": "LIGHT",
+    "androidBackground": "#f8f3e9",
+    "verified": true
+  },
+  "qaHarnessExclusion": "passed",
+  "published": {
+    "url": "https://github.com/giza-maker/Artifact/releases/download/nomli-m14.1-v0.15.1/Nomli-M14.1.apk",
+    "bytes": 95876272,
+    "digest": "sha256:b5da6efd34356caf2dae62b2e774405e501cd11d87371c90f4316c4cf9268a2b",
+    "matched": true,
+    "publicChecksumMatched": true
+  },
+  "designQA": "Zara corrective browser regression checks passed; broad M14 claim superseded",
+  "browserTransport": "controlled fixtures through real Capacitor wrappers; separate unpaired ordinary browser checked",
+  "physicalPhoneAcceptance": "pending"
+}

@@ -1,0 +1,77 @@
+{
+  "checks": {
+    "composerFits": true,
+    "fullWidth": true,
+    "noHorizontalOverflow": true,
+    "stacked": true,
+    "threadAboveComposer": true,
+    "threadVisible": true
+  },
+  "composer": {
+    "bottom": 360,
+    "client": 231,
+    "h": 232,
+    "scroll": 231,
+    "w": 320,
+    "x": 0,
+    "y": 128
+  },
+  "content": {
+    "bottom": 360,
+    "client": 360,
+    "h": 360,
+    "scroll": 360,
+    "w": 320,
+    "x": 0,
+    "y": 0
+  },
+  "header": {
+    "bottom": 0,
+    "client": 0,
+    "h": 0,
+    "scroll": 0,
+    "w": 0,
+    "x": 0,
+    "y": 0
+  },
+  "main": {
+    "bottom": 360,
+    "client": 360,
+    "h": 360,
+    "scroll": 360,
+    "w": 320,
+    "x": 0,
+    "y": 0
+  },
+  "shell": {
+    "bottom": 360,
+    "client": 360,
+    "h": 360,
+    "scroll": 360,
+    "w": 320,
+    "x": 0,
+    "y": 0
+  },
+  "thread": {
+    "bottom": 128,
+    "client": 72,
+    "h": 72,
+    "scroll": 387,
+    "w": 320,
+    "x": 0,
+    "y": 56
+  },
+  "title": {
+    "bottom": 41.71250057220459,
+    "client": 27,
+    "h": 27.4375,
+    "scroll": 30,
+    "w": 190,
+    "x": 59,
+    "y": 14.27500057220459
+  },
+  "viewport": {
+    "h": 360,
+    "w": 320
+  }
+}

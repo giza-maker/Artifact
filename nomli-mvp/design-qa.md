@@ -1,6 +1,18 @@
 # Nomli M14 design QA
 
-final result: passed
+## M14.1 corrective review
+
+A user phone screenshot exposed a gap in the M14 review: the full standalone Zara route had not been checked. Moving the app header into `.app-scroll` left that container on the default flex row, which squeezed the chat beside the header. This invalidates the broad M14 claims below that no P1 remained and that the final pass was complete. Those statements are retained as review history, but M14.1 supersedes them.
+
+Fixed in `5665cea` with an explicit vertical flex chain through the header, content, view and Zara shell, plus minimum-width constraints and a compact layout at viewport heights of 520px or less. Before the fix, the 390 × 844 check measured a 169px-wide header and 221px-wide chat. Afterward, all six geometry gates passed at 390 × 844, 320 × 568, 390 × 400 and 320 × 360, including a long Arabic draft and the voice drawer. The cooking overlay also passed its five gates at 390 × 844 and 390 × 400 with the long draft, while retaining the same cooking step. Browser-only empty Zara passed at 390 × 844 and 320 × 568. Inventory header, full-width scrolling and menu checks passed at 390px.
+
+Evidence: `artifacts/m14-1-zara-fix/*.json`, `artifacts/m14-1-zara-fix/before.jpg` and `artifacts/m14-1-zara-fix/after-390.jpg`.
+
+The native light theme and explicit system-bar configuration were checked in source. Physical Android acceptance for keyboard behavior and system-bar glyph contrast is still pending. The automated suite passes 486 tests, but that does not prove UI geometry or device behavior. M14.1 retested the surfaces listed above, not every feature covered by the earlier M14 pass.
+
+## Historical M14 review (superseded where noted)
+
+Historical result: passed at the time; standalone Zara coverage was missing.
 
 Source visual truth: `artifacts/m14-editorial/selected-reference.png`, first displayed ImageGen option selected by the owner on 30 October 2026. Implementation source: `1a5f43f351452a739f07b446203470ece0849aef`.
 
