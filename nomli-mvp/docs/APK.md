@@ -1,4 +1,18 @@
-# Nomli M11.2 cooking chat APK
+# Nomli M12 kitchen-to-cooking APK
+
+[Download Nomli-M12.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m12-v0.13.0/Nomli-M12.apk). Package com.nomli.mvp.validation; version 0.13.0-m12, code 21; minimum API 26, target API 36. Install over Nomli Test.
+
+Kitchen now gives empty inventory one Scan action and a secondary manual-add action; utilities sit under Kitchen tools. Ingredient entry starts with name, amount, unit and location, with expiry, photos, category and cooking details under More details. Inventory shows canonical food names while retaining original retail names. Arabic, Persian and English decimal quantities use the shared localized parser.
+
+Cook has recipe search, All/Ready/Nearly-ready filters and readable photo cards. Items needing a measured weight are distinguished from missing ingredients. Recipe readiness and preparation come before calorie logging; all 60 steps can be previewed without changing stock. Successful scans return to Kitchen with a Find a meal action, while receipt spending remains recorded. Scan and Zara share one Connect Nomli setup; service address is advanced, a 10-second health check validates saves, and the selected Scan source type continues after setup. Zara offers local contextual next actions; prompts fill the question and still require explicit Send. Cooking chat remains an overlay over the unchanged cooking screen.
+
+Source dd0ba48ee5c92372d3f2a7faea680f6c797fb413; CI 40988710065 (4m 39s). 441 JavaScript tests, content/art/media validation, Vite build, Capacitor sync and Android compilation passed. APK 95,855,875 bytes; SHA-256 895c89f0ce1dd1b16655b1e9146ce7694e2a22ef14b1dba413aa0338595efa6d. Certificate SHA-256 8c02c3045c97327f5415451feb9ccb0db326322b90d460dde9f28a7c0b559ef0; v2/v3 signatures, 16 KB alignment, ZIP CRC and all 232 production assets verified. Configured secrets and QA harness absent. Published size/digest match local APK.
+
+Browser QA covered the production build and actual Capacitor wrappers with controlled native transport at 390×844, 320×568 and 320×360. Verified Arabic manual add and automatic identity matching; recipe search focus and availability filters; read-only step previews; preparation and cooking; delayed Zara reply across sheet dismissal with no abort; actual-use edit 4→3 preserved through chat; exact 3-egg deduction and guarded undo preserving the independently added apple. Reviewed six bilingual receipt cards, saved EGP 243.62, returned to Kitchen, and followed Find a meal. Unknown herb weights appeared as two amount checks; explicit test measurements entered with Arabic and English digits unlocked preparation without changing stock. Also verified shared setup and source continuation, advanced category Arabic search and return focus, scrolling/visible Save at 320×360, reachable chat composer, and calorie-entry access. Protected deployed health endpoint passed in 471 ms; scan/assistant content responses were controlled fixtures, not new live-model accuracy tests. Physical Android update, microphone, camera/QR, keyboard and hardware Back remain pending.
+
+441 checks include 20-recipe/60-step preview coverage. The calorie diary, reviewed stock deduction/undo, local food art/media and deployed scanner/assistant Worker remain available.
+
+## Historical Nomli M11.2 cooking chat APK
 
 [Download Nomli-M11.2.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m11.2-v0.12.2/Nomli-M11.2.apk). Package com.nomli.mvp.validation; version 0.12.2-m11.2, code 20; minimum API 26, target API 36. Install over Nomli Test.
 

@@ -1,12 +1,14 @@
-# Nomli kitchen MVP, M11.2 cooking chat sheet
+# Nomli kitchen MVP, M12 kitchen-to-cooking flow
 
-Single-user local kitchen inventory with reviewed scanning, visual cooking, Zara assistance and an offline calorie diary. Zara now opens over the current cooking screen, preserving the step, timer and unsaved form edits while chatting. Recipe calorie estimates cover 17 of 20 recipes; manual food logging covers other meals.
+Single-user local kitchen inventory with reviewed scanning, visual cooking, contextual Zara assistance and an offline calorie diary. Scan results lead back to Kitchen and meal selection. Short ingredient forms and clear readiness checks reduce setup work; cooking stays ahead of calorie logging. Existing stock, receipt, cooking and chat safeguards remain in place.
 
-Validation package: `com.nomli.mvp.validation`, app label **Nomli Test**, version **0.12.2-m11.2** (`versionCode` 20). It uses the M1/M2 validation update channel and remains separate from the earlier demo package. Published milestone APKs use the retained local validation signing key; GitHub Actions does not receive that key.
+Validation package: `com.nomli.mvp.validation`, app label **Nomli Test**, version **0.13.0-m12** (`versionCode` 21). It uses the M1/M2 validation update channel and remains separate from the earlier demo package. Published milestone APKs use the retained local validation signing key; GitHub Actions does not receive that key.
 
 Inventory works offline. Receipt recognition and live Zara need internet access. Current recognition service is `https://nomli-scan-proxy.ahmed-aljazayeerly.workers.dev`, with Gemini 3.1 Flash-Lite for receipts and Gemini 3.5 Flash-Lite for grocery/expiry scans, receipt fallback and Zara. Provider credentials are encrypted server-side and never bundled in the app.
 
-Verified M11.2: [Nomli-M11.2.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m11.2-v0.12.2/Nomli-M11.2.apk). Install over Nomli Test. No reset, rescan or new API key. 412 automated tests and Android build passed; physical phone acceptance remains pending.
+Verified M12: [Nomli-M12.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m12-v0.13.0/Nomli-M12.apk). Install over Nomli Test. No reset, rescan or new API key. 441 automated tests and Android build passed; physical phone acceptance remains pending.
+
+Historical M11.2: [Nomli-M11.2.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m11.2-v0.12.2/Nomli-M11.2.apk). Install over Nomli Test. No reset, rescan or new API key. 412 automated tests and Android build passed; physical phone acceptance remains pending.
 
 Historical M11.1: [Nomli-M11.1.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m11.1-v0.12.1/Nomli-M11.1.apk). Install over Nomli Test. No reset, rescan or new API key. 408 automated tests and Android build passed; physical phone acceptance remains pending.
 
@@ -14,7 +16,7 @@ Historical M11: [Nomli-M11.apk](https://github.com/giza-maker/Artifact/releases/
 
 Historical M10: [Nomli-M10.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m10-v0.11.0/Nomli-M10.apk). Update Nomli Test; no reset, rescan or new key required. All 60 steps have offline visual demonstrations; bilingual receipt and measured-weight fixes remain included.
 
-Historical M7 APK has the plugin-loading defect. Use M11.2 above; archived evidence remains in docs/APK.md.
+Historical M7 APK has the plugin-loading defect. Use M12 above; archived evidence remains in docs/APK.md.
 
 Historical verified M6 APK: [Nomli-M6.apk](https://github.com/giza-maker/Artifact/releases/download/nomli-m6-v0.7.0/Nomli-M6.apk). See the [phone acceptance checklist](docs/TESTING.md).
 
