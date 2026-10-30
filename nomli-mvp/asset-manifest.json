@@ -79,8 +79,8 @@
     },
     {
       "path": "web/public/ASSETS.md",
-      "bytes": 2049,
-      "sha256": "20194e8df7dd32d7f8ce1c11ce6ebd65c4a946cc2d1f5043aa4b82ec04c6f183"
+      "bytes": 2395,
+      "sha256": "c61349ebf9994a7bc89e364cc8df04187658da77f1a8fcd8afea47a06e3a8521"
     },
     {
       "path": "web/public/favicon.svg",
@@ -114,8 +114,8 @@
     },
     {
       "path": "web/public/icons.svg",
-      "bytes": 20981,
-      "sha256": "fde0c9852b86624a8fe829425b707436b1747777ed8e499914843bb76ad35749"
+      "bytes": 21573,
+      "sha256": "735e3bacb2c2ee6d9621166b19c1fb3351fbe74e9bbe1aea520737b2379fb696"
     },
     {
       "path": "web/public/images/basil-128.webp",

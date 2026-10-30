@@ -52,6 +52,7 @@ function render({
   session = baseSession,
   items = {},
   chat = {},
+  canRead = false,
 } = {}) {
   return renderCookingExperience({
     recipe,
@@ -59,7 +60,7 @@ function render({
     items,
     seconds: session.seconds ?? 120,
     speech: { phase: "idle", error: "" },
-    canRead: false,
+    canRead,
     chat,
     esc,
     num: (value) => String(value),
@@ -77,7 +78,7 @@ function ids(markup) {
   return [...markup.matchAll(/\sid="([^"]+)"/g)].map((match) => match[1]);
 }
 
-test("Zara stays reachable in every cooking phase and existing exchanges reopen without a new prompt", () => {
+test("one Zara shortcut stays reachable in every cooking phase", () => {
   for (const phase of ["prep", "cooking", "review"]) {
     const html = render({
       session: { ...baseSession, phase },
@@ -85,10 +86,8 @@ test("Zara stays reachable in every cooking phase and existing exchanges reopen 
     });
     assert.match(html, /data-cooking-chat-shortcut/);
     assert.match(html, /data-action="cook-chat"/);
-    if (phase === "cooking") {
-      assert.match(html, /Keep cooking while Zara replies/);
-      assert.doesNotMatch(html, /data-action="cook-ask"/);
-    }
+    assert.equal((html.match(/data-cooking-chat-shortcut/g) ?? []).length, 1);
+    assert.doesNotMatch(html, /Keep cooking while Zara replies/);
   }
 });
 
@@ -116,6 +115,21 @@ test("prep renders frozen canonical quantity, allocated lot photo, and required 
     html,
     /input type="checkbox" name="toolsConfirmed"[^>]* required/,
   );
+  assert.match(html, /0 of 1 ingredients · tools needed/);
+  assert.match(html, /data-cook-prep-submit disabled/);
+});
+
+test("prep start is enabled only when every requirement and tools are ready", () => {
+  const html = render({
+    session: {
+      ...baseSession,
+      prepared: ["tomato"],
+      toolsConfirmed: true,
+    },
+  });
+  assert.match(html, /1 of 1 ingredients · tools ready/);
+  assert.match(html, /data-cook-prep-submit>Start cooking/);
+  assert.doesNotMatch(html, /data-cook-prep-submit disabled/);
 });
 
 test("active step escapes bilingual labels and source instructions", () => {
@@ -134,6 +148,20 @@ test("active step escapes bilingual labels and source instructions", () => {
     /حرّك &amp; stir &lt;script&gt;alert\(&quot;x&quot;\)&lt;\/script&gt;\./,
   );
   assert.doesNotMatch(html, /<script>/);
+  assert.doesNotMatch(html, /data-action="cook-read"/);
+  assert.doesNotMatch(html, /id="cook-speech-status"/);
+});
+
+test("native speech control keeps an associated live status", () => {
+  const html = render({
+    session: { ...baseSession, phase: "cooking" },
+    canRead: true,
+  });
+  assert.match(
+    html,
+    /data-action="cook-read" aria-describedby="cook-speech-status"/,
+  );
+  assert.match(html, /id="cook-speech-status"[^>]*role="status"/);
 });
 
 test("review creates one required actual-use input per lot against current stock", () => {
@@ -166,6 +194,7 @@ test("review creates one required actual-use input per lot against current stock
   assert.equal((html.match(/name="used-lot-[12]"/g) ?? []).length, 2);
   assert.match(html, /name="confirmed" required/);
   assert.match(html, /actual use against current stock/);
+  assert.match(html, /data-cook-meal-submit disabled/);
 });
 
 test("each phase emits unique element IDs and deduction submit exists only in review", () => {

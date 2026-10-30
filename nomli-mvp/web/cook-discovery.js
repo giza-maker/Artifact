@@ -137,7 +137,7 @@ export function renderCookDiscoveryResults({
         : "No recipes match these choices. Try a longer recipe time or adjust cooking preferences.";
 
   return `<div data-cook-discovery-results>
-    <p class="cook-discovery-summary">${visible.length} of ${allEntries.length} recipes <span aria-hidden="true">·</span> Check product labels for allergens.</p>
+    <p class="cook-discovery-summary">${countLabel(visible.length, "recipe")}<span class="sr-only"> shown out of ${countLabel(allEntries.length, "recipe")}. Check product labels for allergens.</span></p>
     ${sections || `<p class="empty cook-discovery-empty">${emptyMessage}</p>`}
   </div>`;
 }
@@ -187,8 +187,8 @@ export function renderCookDiscovery({
     ${emptyInventory ? `<div class="cook-discovery-onboarding" role="note">${icon("camera")}<p><b>Scan or add groceries</b> to see what is ready. You can still browse recipes below.</p></div>` : ""}
     <div class="cook-discovery-controls">
       <label class="cook-discovery-search"><span>Search recipes</span><span class="cook-discovery-search-field"><input type="search" value="${e(query)}" data-change="cook-search" placeholder="Recipe or cuisine" autocomplete="off"></span></label>
-      <label class="field cook-discovery-time">Recipe time<select data-change="cook-time">${timeOptions}</select></label>
       <div class="cook-discovery-filters" role="group" aria-label="Recipe availability">${filterButton("All", "all")}${filterButton("Ready now", "ready")}${filterButton("Nearly ready", "near")}</div>
+      <details class="discovery-extra-filters"><summary>More filters</summary><label class="field cook-discovery-time">Recipe time<select data-change="cook-time">${timeOptions}</select></label></details>
     </div>
     ${renderCookDiscoveryResults({ entries, inventoryCount, mode: safeMode, query, esc, icon, servingsFor, recipeAction })}
   </section>`;

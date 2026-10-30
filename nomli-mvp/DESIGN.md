@@ -1,5 +1,16 @@
 # Nomli MVP design contract
 
+## M14 warm editorial system
+
+- The active interface uses a warm editorial direction: cream canvas, dark ink, restrained orange action color, large serif headings and food-led imagery. The exact tokens are `#f8f3e9` background, `#fffdf8` surface, `#f1eadf` raised surface, `#e8dfd2` tertiary surface, `#211d17` text, `#70685e` muted text, `#766e64` faint text, `#ff7108` accent and `#a83e00` accessible accent text. Semantic success, warning and danger colors remain reserved for status.
+- Fraunces is the display face. DM Sans is the body and control face. Both load locally. Section headings may be large and tightly set; operational copy stays compact and readable.
+- Primary navigation has three destinations: Kitchen, Cook and Zara. Scan remains a full workflow, reached from the sticky **Add groceries** action in Kitchen and relevant utility/menu actions. Manual add stays secondary. Removing Scan from bottom navigation does not change scan privacy, review or recovery behavior.
+- The app header sits inside the main scrolling region. Bottom navigation remains outside that region and visible during ordinary Kitchen, Cook and Zara routes. Focused cooking phases may retain their own action dock and exit controls.
+- Kitchen presents eight visual market groups in this order: Produce, Dairy & eggs, Proteins, Grains, Pantry, Drinks & treats, Prepared & special, Other food. These groups organize the inventory and image rail only. The underlying 32 supermarket category IDs, item editor choices, category inference and stored data remain unchanged.
+- Kitchen uses an open three-column ingredient grid at the 390px reference width. Local user photos take priority; transparent food artwork is the default. Search, storage, sorting, Use soon and category filters remain reachable without surrounding every item in a card.
+- Meal completion appears only after an explicitly confirmed actual-use save. It may link back to Kitchen, dismiss into meal discovery or open guarded undo. The completion surface cannot deduct stock again, infer consumption or add a calorie-diary entry.
+- M14 changes presentation and navigation hierarchy. Existing local-first storage, connection disclosure, scan review, recovery quarantine, frozen cooking allocations, confirmed actual-use deduction, replay protection and guarded undo contracts remain authoritative.
+
 ## M12 kitchen, cooking and connection refinement
 
 - An empty Kitchen leads with one Scan action and a quieter manual-add action. Inventory utilities stay inside a collapsed native details section so the first view remains focused on stock.
@@ -49,21 +60,22 @@
 
 ## Product focus
 
-Nomli is a lean mobile kitchen companion. Four primary destinations have equal weight:
+Nomli is a lean mobile kitchen companion. Three primary destinations define the active shell:
 
 - **Kitchen** — current inventory, quantities, freshness and corrections.
-- **Scan** — protected image/PDF recognition, editable review and optional explicit cooking links.
 - **Cook** — 20 recipes, linked-stock readiness, preparation, guided cooking and reviewed deduction with undo.
 - **Zara** — live kitchen assistance with explicit Send, visible data disclosure and reviewed proposals.
+
+Scan remains available from Kitchen through **Add groceries** and utility/menu actions. It keeps protected image/PDF recognition, editable review and optional explicit cooking links.
 
 Do not add school, XP, quests, community, investor-tour or social-product language to this MVP surface.
 
 ## Visual system
 
-- Preserve original orange N-and-spoon identity, local photography and Phosphor sprite icons.
-- Palette: `#100f0e` background, `#1c1a17` and `#25211c` surfaces, `#faf6ef` text, `#a89f94` secondary text, `#ff7a18` primary accent.
+- Preserve the orange N-and-spoon identity, local photography and Phosphor sprite icons.
+- Use the M14 warm editorial palette defined above. Dark colors remain appropriate over photography and in modal backdrops, not as the default page canvas.
 - Use semantic colors only for success, warning and error states.
-- Typography: locally hosted DM Sans. Screen titles 22–25px, body 14px, compact metadata 10–12px.
+- Typography: locally hosted Fraunces for display headings and DM Sans for body, controls and metadata. Body text remains around 14px; compact metadata remains 10–12px.
 - Cards use 16–24px concentric radii. Primary touch controls are at least 44px; compact secondary controls at least 36px.
 - Photography remains ingredient- and food-led. Zara uses existing portrait assets. Navigation never uses emoji. All 20 curated recipes have local food artwork; 17 new generated WebP images include provenance. Device verification remains separate.
 
@@ -71,7 +83,7 @@ Do not add school, XP, quests, community, investor-tour or social-product langua
 
 - Desktop: centered phone, maximum width 430px and maximum height 900px.
 - Phone or embedded browser: edge-to-edge `100dvh` shell with safe-area padding.
-- Status bar and header frame one independently scrolling main region. Bottom navigation stays visible in a four-column grid outside active cooking. Preparation, guided steps and actual-use review use a focused shell with Recipes exit and a sticky action dock.
+- Header content belongs inside the independently scrolling main region. Bottom navigation stays visible in a three-column grid outside active cooking. Preparation, guided steps and actual-use review use a focused shell with Recipes exit and a sticky action dock.
 - Default route and Nomli brand link are `#kitchen`.
 - App chrome carries product navigation without visible milestone labels. Zara and scanning reuse the protected connection; connection and data disclosures remain available in their relevant flows.
 - Panels and dialog bodies scroll within viewport bounds. Camera simulation may fill device; other dialogs present as bottom sheets.

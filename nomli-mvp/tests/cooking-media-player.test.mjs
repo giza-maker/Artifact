@@ -29,7 +29,11 @@ test("step media renders local video, accessible copy, and stable dimensions", (
   assert.match(html, /muted playsinline loop preload="none"/);
   assert.match(html, /aria-label="Onions turning translucent in a pan"/);
   assert.match(html, /width="390" height="220"/);
-  assert.match(html, /Visual demonstration/);
+  assert.doesNotMatch(html, /Visual demonstration|cook-step-media__title/);
+  assert.match(
+    html,
+    /aria-describedby="cook-step-media-description-lentil-soup-1 cook-step-media-status-lentil-soup-1"/,
+  );
   assert.match(html, /Look for:<\/b> soft edges with no browning/);
   assert.match(html, /Play demo/);
   assert.match(html, /data-cook-media-key="session-a:recipe:1"/);
@@ -67,7 +71,7 @@ test("sequence media renders four matched cells with specific accessible guidanc
   );
 
   assert.match(html, /has-sequence/);
-  assert.match(html, /Illustrated steps/);
+  assert.doesNotMatch(html, /cook-step-media__eyebrow|cook-step-media__title/);
   assert.match(
     html,
     /aria-label="Four stages showing dough folded from left edge to center"/,

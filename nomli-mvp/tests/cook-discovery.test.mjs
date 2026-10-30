@@ -123,6 +123,10 @@ test("renderer includes search, availability actions, time picker, and large rec
     /data-action="cook-browse" data-id="ready" aria-pressed="true"/,
   );
   assert.match(html, /data-action="cook-browse" data-id="near"/);
+  assert.match(
+    html,
+    /<details class="discovery-extra-filters"><summary>More filters<\/summary>/,
+  );
   assert.match(html, /data-change="cook-time"/);
   assert.match(html, /value="45" selected/);
   assert.match(html, /class="meal-choice-card"/);
@@ -130,6 +134,11 @@ test("renderer includes search, availability actions, time picker, and large rec
   assert.doesNotMatch(html, /cook-discovery-badge/);
   assert.match(html, /data-action="recipe"/);
   assert.match(html, /data-cook-discovery-results/);
+  assert.match(
+    html,
+    />1 recipe<span class="sr-only"> shown out of 1 recipe\. Check product labels for allergens\.<\/span>/,
+  );
+  assert.doesNotMatch(html, /1 of 1 recipes/);
 });
 
 test("measurement statuses never claim readiness and include true missing ingredients", () => {

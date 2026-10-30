@@ -1,22 +1,21 @@
 .cook-step-media {
   --cook-media-accent: var(--accent, #f08a48);
-  --cook-media-ink: #fff8ef;
-  --cook-media-surface: #211b18;
+  --cook-media-ink: var(--text, #241f1a);
+  --cook-media-surface: var(--surface-2, #f3eadc);
   width: min(100%, 390px);
-  margin: 0 auto 1.25rem;
+  margin: 0 auto;
   color: var(--cook-media-ink);
 }
 
 .cook-step-media__frame {
   position: relative;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 4 / 3;
   min-height: 210px;
   overflow: hidden;
-  border: 1px solid
-    color-mix(in srgb, var(--cook-media-accent) 35%, transparent);
-  border-radius: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 1.5rem;
   background: var(--cook-media-surface);
-  box-shadow: 0 0.8rem 2rem rgb(22 13 9 / 22%);
+  box-shadow: 0 0.8rem 2rem color-mix(in srgb, var(--text) 12%, transparent);
 }
 
 .cook-step-media__poster,
@@ -94,18 +93,7 @@
 }
 
 .cook-step-media__eyebrow {
-  position: absolute;
-  z-index: 2;
-  top: 0.75rem;
-  left: 0.75rem;
-  padding: 0.35rem 0.65rem;
-  border-radius: 999px;
-  background: rgb(25 18 15 / 82%);
-  color: #fff;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  display: none;
 }
 
 .cook-step-media__control,
@@ -147,7 +135,7 @@
 .cook-step-media figcaption {
   display: grid;
   gap: 0.2rem;
-  padding: 0.7rem 0.25rem 0;
+  padding: 0.7rem 0 0;
   color: inherit;
 }
 

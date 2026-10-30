@@ -25,19 +25,19 @@ export function renderCookingStepMedia(media, { esc, icon }) {
   const playbackKey = media.playbackKey
     ? ` data-cook-media-key="${esc(media.playbackKey)}"`
     : "";
-  const title = esc(media.title || "Step demonstration");
   const alt = esc(
     media.alt || `${media.title || "Cooking step"} demonstration`,
   );
   const lookFor = media.lookFor
     ? `<span class="cook-step-media__cue"><b>Look for:</b> ${esc(media.lookFor)}</span>`
     : "";
+  const describedBy = `${media.lookFor ? `${descriptionId} ` : ""}${statusId}`;
   const videoMarkup =
     video && !sequence
-      ? `<video class="cook-step-media__video" muted playsinline loop preload="none" poster="${poster}" aria-label="${alt}" aria-describedby="${descriptionId} ${statusId}" data-cook-media-video><source src="${video}"></video>`
+      ? `<video class="cook-step-media__video" muted playsinline loop preload="none" poster="${poster}" aria-label="${alt}" aria-describedby="${describedBy}" data-cook-media-video><source src="${video}"></video>`
       : "";
   const sequenceMarkup = sequence
-    ? `<div class="cook-step-media__sequence" role="img" aria-label="${alt}" aria-describedby="${descriptionId} ${statusId}" data-cook-media-sequence>${[0, 1, 2, 3].map((index) => `<span class="cook-step-media__sequence-stage cook-step-media__sequence-stage--${index + 1}" style="background-image:url('${sequence}')" aria-hidden="true"></span>`).join("")}<img class="cook-step-media__sequence-source" src="${sequence}" alt="" data-cook-media-sequence-source></div>`
+    ? `<div class="cook-step-media__sequence" role="img" aria-label="${alt}" aria-describedby="${describedBy}" data-cook-media-sequence>${[0, 1, 2, 3].map((index) => `<span class="cook-step-media__sequence-stage cook-step-media__sequence-stage--${index + 1}" style="background-image:url('${sequence}')" aria-hidden="true"></span>`).join("")}<img class="cook-step-media__sequence-source" src="${sequence}" alt="" data-cook-media-sequence-source></div>`
     : "";
   const hasMotion = Boolean(video || sequence);
   const playLabel = sequence ? "Play steps" : "Play demo";
@@ -52,10 +52,9 @@ export function renderCookingStepMedia(media, { esc, icon }) {
     <div class="cook-step-media__frame">
       <img class="cook-step-media__poster" src="${poster}" alt="${hasMotion ? "" : alt}"${hasMotion ? ' aria-hidden="true"' : ""} width="390" height="220">
       ${videoMarkup}${sequenceMarkup}
-      <span class="cook-step-media__eyebrow">${sequence ? "Illustrated steps" : "Visual demonstration"}</span>
       ${control}${retry}
     </div>
-    <figcaption id="${descriptionId}"><span class="cook-step-media__title">${title}</span>${lookFor}</figcaption>
+    ${lookFor ? `<figcaption id="${descriptionId}">${lookFor}</figcaption>` : ""}
     <p class="sr-only" id="${statusId}" data-cook-media-status aria-live="polite">${sequence ? "Illustrated steps paused." : video ? "Video paused." : "Still image demonstration."}</p>
   </figure>`;
 }

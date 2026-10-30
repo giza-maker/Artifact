@@ -145,6 +145,14 @@ import {
   renderRecipePreview,
 } from "./flow-polish.js";
 import "./flow-polish.css";
+import {
+  categoryRailItems,
+  deriveInventoryPresentation,
+  renderCompactInventoryTile,
+} from "./inventory-presentation.js";
+import { renderMealCompletion } from "./meal-completion.js";
+import "./editorial-theme.css";
+import "./editorial-integration.css";
 import packageInfo from "../package.json" with { type: "json" };
 (async function leanNomli() {
   const D = { ...window.NOMLI_DATA, recipes: COOK_RECIPES, tools: COOK_TOOLS };
@@ -188,9 +196,8 @@ import packageInfo from "../package.json" with { type: "json" };
   const recipe = (id) => D.recipes.find((r) => r.id === id) || D.recipes[0];
   const nav = [
     ["kitchen", "refrigerator", "Kitchen"],
-    ["scan", "scan", "Scan"],
     ["cook", "chef-hat", "Cook"],
-    ["assistant", "sparkle", "Zara"],
+    ["assistant", "chat-circle", "Zara"],
   ];
   const routes = [
     "kitchen",
@@ -215,6 +222,9 @@ import packageInfo from "../package.json" with { type: "json" };
   let calorieDate = localDateKey();
   let calorieFollowToday = true;
   let calorieDraft = null;
+  let inventoryCategory = "all";
+  let inventoryUseSoon = false;
+  let lastCompletedMealId = null;
   let toastTimer,
     timerHandle,
     lastFocus,
@@ -557,7 +567,10 @@ import packageInfo from "../package.json" with { type: "json" };
       ["scan-review", "scan-reading"].includes(modal.dataset.screen);
     const html = renderRecoveryShelf({
       status,
-      scan: activeScan ? null : snapshot.scan,
+      scan:
+        activeScan || !["kitchen", "scan"].includes(S.route)
+          ? null
+          : snapshot.scan,
       notice: recoveryNotice || recoveryMediaError,
       chatNotice: "",
     });
@@ -565,6 +578,8 @@ import packageInfo from "../package.json" with { type: "json" };
     if (shelf.innerHTML !== html) shelf.innerHTML = html;
     shelf.hidden = !html;
     document.querySelectorAll("[data-recovery-status]").forEach((node) => {
+      node.hidden =
+        !status.blocked && status.phase !== "error" && !recoveryAssetTasks.size;
       const ownDraft = node.closest('form[data-form="meal"]')
         ? snapshot.review
         : node.closest(".zara-compose-area")
@@ -958,15 +973,17 @@ import packageInfo from "../package.json" with { type: "json" };
     toastTimer = setTimeout(() => ($("#toast").hidden = true), 3500);
   }
   function heading(kicker, title, text = "", actions = "") {
-    return `<header class="page-heading"><div><p class="eyebrow">${esc(kicker)}</p><h1 data-title tabindex="-1">${esc(title)}</h1>${text ? `<p class="muted">${esc(text)}</p>` : ""}</div><div class="actions">${actions}</div></header>`;
+    return `<header class="page-heading"><div><h1 data-title tabindex="-1">${esc(title)}</h1>${text ? `<p class="muted">${esc(text)}</p>` : ""}</div>${actions ? `<div class="actions">${actions}</div>` : ""}</header>`;
   }
   function button(label, action, id = "", cls = "btn-secondary") {
     const glyph =
       action === "go"
-        ? nav.find((x) => x[0] === id)?.[1]
+        ? id === "scan"
+          ? "plus"
+          : nav.find((x) => x[0] === id)?.[1]
         : {
             "scan-mode": "camera",
-            "item-edit": "pencil",
+            "item-edit": id === "new" ? "plus" : "pencil",
             "shopping-add": "plus",
             "cook-start": "play",
             "cook-next": "arrow-right",
@@ -1143,6 +1160,7 @@ import packageInfo from "../package.json" with { type: "json" };
   }
   function navigate(route, { keepCalorieDate = false } = {}) {
     if (!routes.includes(route)) return;
+    if (route !== "cook") lastCompletedMealId = null;
     if (route !== "kitchen") recentImportCount = 0;
     const replaceChatHistory = Boolean(chatHistoryState().nomliCookingChat);
     if (replaceChatHistory)
@@ -1173,6 +1191,16 @@ import packageInfo from "../package.json" with { type: "json" };
     $(".app-scroll")?.scrollTo(0, 0);
   }
   function renderNav() {
+    const stockedKitchen =
+      S.route === "kitchen" && Object.keys(S.items).length > 0;
+    $("#kitchen-intake-dock").hidden = !stockedKitchen;
+    const topAction = $(".app-topbar .icononly");
+    topAction.dataset.action = stockedKitchen ? "inventory-controls" : "menu";
+    topAction.setAttribute(
+      "aria-label",
+      stockedKitchen ? "Search and filter kitchen" : "Open app menu",
+    );
+    topAction.innerHTML = icon(stockedKitchen ? "magnifying-glass" : "list");
     const active = ["recipe", "cooking", "review"].includes(S.route)
       ? "cook"
       : ["shopping", "expenses", "calories", "profile"].includes(S.route)
@@ -1206,7 +1234,7 @@ import packageInfo from "../package.json" with { type: "json" };
       : null;
   }
   function itemThumbnail(id, item) {
-    const fallback = photo(id, item);
+    const fallback = item.photo ? photo(id, item) : null;
     return `<span class="ingredient-thumb${fallback ? " has-photo" : ""}">${fallback ? `<img src="${esc(fallback)}" alt="" loading="lazy" decoding="async">` : categoryArtwork(inferFoodCategory(item).category, item)}${item.photoId ? `<img data-photo-id="${esc(item.photoId)}" alt="" hidden decoding="async">` : ""}</span>`;
   }
   function categoryArtwork(category, item) {
@@ -1291,26 +1319,89 @@ import packageInfo from "../package.json" with { type: "json" };
     return `<div class="inventory-row">${itemThumbnail(id, item)}<div class="inventory-copy"><b dir="auto" title="${esc(item.name)}">${esc(title)}</b>${linked && item.name !== title ? `<small class="inventory-retail-name" dir="auto" title="${esc(item.name)}">${esc(item.name)}</small>` : ""}<span>${num(item.qty)} ${esc(unit)} <small>· ${esc(item.storage)}</small></span>${freshness ? `<small class="${urgent ? "use-soon" : "muted"}">${esc(freshness)}</small>` : ""}${!linked && !item.cookingLinkDisabled ? '<small class="cook-link-label">Recipe match needs review</small>' : ""}</div><button class="icononly" data-action="item-edit" data-id="${esc(id)}" aria-label="Edit ${esc(item.name)}">${icon("pencil")}</button></div>`;
   }
   function inventoryRowsMarkup() {
-    let rows = Object.entries(S.items).filter(
-      ([, x]) =>
-        (S.storage === "All" || x.storage === S.storage) &&
-        (!S.search || x.name.toLowerCase().includes(S.search.toLowerCase())),
-    );
-    rows.sort((a, b) =>
-      S.sort === "name"
-        ? a[1].name.localeCompare(b[1].name)
-        : S.sort === "quantity"
-          ? a[1].qty - b[1].qty
-          : (daysLeft(a[1]) ?? Infinity) - (daysLeft(b[1]) ?? Infinity),
-    );
-    return rows.length
-      ? rows.map(([id, x]) => itemRow(id, x)).join("")
-      : `<div class="inventory-empty">${icon("refrigerator")}<h3>${Object.keys(S.items).length ? "No ingredients match" : "Your inventory is empty"}</h3><p>${Object.keys(S.items).length ? "Clear search or filters." : "Add first ingredient. Expiry stays optional and never gets invented."}</p>${Object.keys(S.items).length ? "" : button("Add first ingredient", "item-edit", "new", "btn-primary")}</div>`;
+    const presentation = deriveInventoryPresentation({
+      items: S.items,
+      search: S.search,
+      storage: S.storage,
+      sort: S.sort,
+      category: inventoryCategory,
+      useSoon: inventoryUseSoon,
+      daysLeft,
+    });
+    if (!presentation.entries.length)
+      return (
+        '<div class="inventory-empty"><h2>No ingredients here</h2><p>Try another category or clear your filters.</p>' +
+        button("Show everything", "inventory-clear", "", "btn-secondary") +
+        "</div>"
+      );
+    return presentation.groups
+      .map(
+        (group) =>
+          '<section class="inventory-group" data-inventory-group="' +
+          esc(group.id) +
+          '"><h2 class="inventory-group-heading">' +
+          esc(group.en) +
+          '</h2><div class="inventory-grid">' +
+          group.items
+            .map(({ id, item }) =>
+              renderCompactInventoryTile({
+                id,
+                item,
+                thumbnail: itemThumbnail,
+                esc,
+                num,
+                daysLeft,
+                getIngredient,
+              }),
+            )
+            .join("") +
+          "</div></section>",
+      )
+      .join("");
+  }
+  function refreshInventoryList() {
+    const list = $("[data-inventory-list]", view);
+    if (!list) return;
+    list.innerHTML = inventoryRowsMarkup();
+    hydratePhotos(list);
+    view
+      .querySelectorAll('[data-action="inventory-category"]')
+      .forEach((el) =>
+        el.setAttribute(
+          "aria-pressed",
+          String(el.dataset.id === inventoryCategory),
+        ),
+      );
+    const soon = $('[data-action="inventory-use-soon"]', view);
+    soon?.setAttribute("aria-pressed", String(inventoryUseSoon));
+    soon?.classList.toggle("is-active", inventoryUseSoon);
+    $("#announcer").textContent =
+      list.querySelectorAll(".inventory-tile").length + " ingredients shown";
   }
   function kitchenView() {
     const soon = Object.values(S.items).filter(
       (x) => x.qty > 0 && daysLeft(x) !== null && daysLeft(x) <= 2,
     ).length;
+    const rail =
+      categoryRailItems()
+        .map(
+          (group) =>
+            '<button type="button" data-action="inventory-category" data-id="' +
+            esc(group.id) +
+            '" aria-pressed="' +
+            (inventoryCategory === group.id) +
+            '">' +
+            categoryArtwork(getFoodCategory(group.representativeCategoryId)) +
+            "<span>" +
+            esc(group.en) +
+            "</span></button>",
+        )
+        .join("") +
+      '<button type="button" data-action="inventory-category" data-id="all" aria-pressed="' +
+      (inventoryCategory === "all") +
+      '">' +
+      categoryArtwork(getFoodCategory("other")) +
+      "<span>All food</span></button>";
     return renderKitchenOverview({
       items: S.items,
       recentImportCount,
@@ -1318,12 +1409,15 @@ import packageInfo from "../package.json" with { type: "json" };
       search: S.search,
       storage: S.storage,
       sort: S.sort,
-      rowsHtml: inventoryRowsMarkup(),
+      category: inventoryCategory,
+      useSoon: inventoryUseSoon,
+      categoryRailHtml: rail,
+      groupedRowsHtml: inventoryRowsMarkup(),
       esc,
       icon,
       button,
       options,
-    });
+    }).replace('data-change="use-soon"', 'data-action="inventory-use-soon"');
   }
   function scanView() {
     return renderScanHome({
@@ -1400,6 +1494,17 @@ import packageInfo from "../package.json" with { type: "json" };
     };
   }
   function cookView() {
+    const completed = S.meals.find(
+      (meal) => meal.id === lastCompletedMealId && meal.status === "completed",
+    );
+    if (completed)
+      return renderMealCompletion({
+        meal: completed,
+        recipe: recipe(completed.rid),
+        esc,
+        icon,
+        button,
+      });
     const unlinked = Object.entries(S.items).filter(
       ([, x]) =>
         x.qty > 0 && !getIngredient(x.ingredientId) && !x.cookingLinkDisabled,
@@ -1407,8 +1512,8 @@ import packageInfo from "../package.json" with { type: "json" };
     return (
       heading(
         "COOK",
-        "What can I cook?",
-        "Choose a meal from your kitchen.",
+        "Let’s cook.",
+        "Find something good in your kitchen.",
         `<button class="icononly" data-action="go" data-id="profile" aria-label="Cooking preferences">${icon("gear")}</button>`,
       ) +
       (S.cooking
@@ -2900,6 +3005,7 @@ import packageInfo from "../package.json" with { type: "json" };
         S = syncCookingInventory(result.state).state;
       }, "Meal saved. Inventory updated.");
       if (saved) {
+        lastCompletedMealId = result.meal.id;
         recovery.update("review", null);
         navigate("cook");
       }
@@ -2911,9 +3017,44 @@ import packageInfo from "../package.json" with { type: "json" };
     const el = e.target.closest("[data-action],[data-route]");
     if (!el) return;
     if (operationBusy) return;
-    if (el.dataset.route) return navigate(el.dataset.route);
+    if (el.dataset.route) {
+      lastCompletedMealId = null;
+      return navigate(el.dataset.route);
+    }
     const a = el.dataset.action,
       id = el.dataset.id || "";
+    if (a === "meal-complete-dismiss") {
+      lastCompletedMealId = null;
+      render();
+      $(".app-scroll")?.scrollTo(0, 0);
+      return;
+    }
+    if (a === "inventory-category") {
+      inventoryCategory = id;
+      refreshInventoryList();
+      return;
+    }
+    if (a === "inventory-use-soon") {
+      inventoryUseSoon = !inventoryUseSoon;
+      refreshInventoryList();
+      return;
+    }
+    if (a === "inventory-clear") {
+      inventoryCategory = "all";
+      inventoryUseSoon = false;
+      S.search = "";
+      S.storage = "All";
+      render();
+      return;
+    }
+    if (a === "inventory-controls") {
+      const controls = $(".inventory-controls", view);
+      if (controls) {
+        controls.open = true;
+        $("input", controls)?.focus();
+      } else if (S.route === "kitchen") navigate("scan");
+      return;
+    }
     if (a === "recovery-resume-scan") return resumeScanRecovery();
     if (a === "recovery-retry-scan") {
       const retry = scanRetry;
@@ -3275,6 +3416,7 @@ import packageInfo from "../package.json" with { type: "json" };
       return;
     }
     if (a === "go") {
+      lastCompletedMealId = null;
       closeModal();
       return navigate(id);
     }
@@ -3355,8 +3497,9 @@ import packageInfo from "../package.json" with { type: "json" };
     if (a === "modal-close") return closeModal();
     if (a === "menu")
       return openModal(
-        "Kitchen utilities",
-        button("Shopping list", "go", "shopping") +
+        "Your Nomli",
+        button("Scan groceries", "go", "scan") +
+          button("Shopping list", "go", "shopping") +
           button("Spending", "go", "expenses") +
           button("Calories", "go", "calories") +
           button("Preferences & tools", "go", "profile") +
@@ -3938,6 +4081,11 @@ import packageInfo from "../package.json" with { type: "json" };
     }
     if (scanForm && e.target.matches('select[name^="storage-"]'))
       e.target.dataset.userTouched = "1";
+    const mealForm = e.target.closest('form[data-form="meal"]');
+    if (mealForm && e.target.name === "confirmed") {
+      const saveMeal = $("[data-cook-meal-submit]", mealForm);
+      if (saveMeal) saveMeal.disabled = !e.target.checked;
+    }
     const prepForm = e.target.closest('form[data-form="cook-prep"]');
     if (prepForm && S.cooking?.phase === "prep") {
       S.cooking.prepared = [
@@ -3951,7 +4099,17 @@ import packageInfo from "../package.json" with { type: "json" };
           S.cooking.prepared.length +
           " of " +
           S.cooking.requirements.length +
-          " ready";
+          (S.cooking.toolsConfirmed
+            ? " ingredients · tools ready"
+            : " ingredients · tools needed");
+      const start = $("[data-cook-prep-submit]", prepForm);
+      if (start)
+        start.disabled = !(
+          S.cooking.toolsConfirmed &&
+          S.cooking.requirements.every((x) =>
+            S.cooking.prepared.includes(x.ingredientId),
+          )
+        );
       if (progress) progress.value = S.cooking.prepared.length;
       backgroundSave();
       return;
@@ -4529,6 +4687,10 @@ import packageInfo from "../package.json" with { type: "json" };
         );
         await forgetScanRecovery();
         closeModal();
+        inventoryCategory = "all";
+        inventoryUseSoon = false;
+        S.search = "";
+        S.storage = "All";
         recentImportCount = result.replayed
           ? 0
           : editedDraft.lines.filter(

@@ -1,5 +1,7 @@
 # Nomli visual assets
 
+M14 adds the Phosphor regular `magnifying-glass` and `sliders-horizontal` symbols from https://github.com/phosphor-icons/core/tree/main/assets/regular. Original library paths are retained inside the local sprite; `ICONS_LICENSE.txt` covers their MIT license. Fraunces, food atlases, recipe images and step media reuse the existing local assets.
+
 The product uses local images and fonts so a demonstration does not depend on third-party requests.
 
 - Existing kitchen, ingredient, bruschetta and Zara images preserve the original Nomli art direction.

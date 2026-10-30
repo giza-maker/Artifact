@@ -88,7 +88,7 @@ export function renderCookingChatShortcut({ chat = {}, esc, icon } = {}) {
     esc,
     `${state.label} with Zara${state.detail === "Replying" ? ", replying" : state.detail === "Reply ready" ? ", reply ready" : ""}`,
   );
-  return `<button type="button" class="cook-chat-shortcut" data-action="cook-chat" aria-label="${accessible}">${glyph(icon, "chat-circle")}<span><strong>${label}</strong><small>${detail}</small></span>${state.active ? '<i class="cook-chat-shortcut__badge" aria-hidden="true"></i>' : ""}</button>`;
+  return `<button type="button" class="cook-chat-shortcut" data-action="cook-chat" aria-label="${accessible}">${glyph(icon, "chat-circle")}<span><strong>Zara</strong><small>${detail}</small></span>${state.active ? '<i class="cook-chat-shortcut__badge" aria-hidden="true"></i>' : ""}</button>`;
 }
 
 export function renderCookingChatCoach({ chat = {}, esc, icon } = {}) {

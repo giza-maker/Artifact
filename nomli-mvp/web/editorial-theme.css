@@ -1,0 +1,752 @@
+/* Nomli warm editorial theme. Loaded after all feature styles. */
+
+:root {
+  color-scheme: light;
+  --bg: #f8f3e9;
+  --surface: #fffdf8;
+  --surface-2: #f1eadf;
+  --surface-3: #e8dfd2;
+  --text: #211d17;
+  --muted: #70685e;
+  --faint: #766e64;
+  --accent: #ff7108;
+  --accent-text: #a83e00;
+  --accent-ink: #211d17;
+  --border: rgba(33, 29, 23, 0.12);
+  --border-strong: rgba(33, 29, 23, 0.22);
+  --success: #3e7141;
+  --warning: #8a5800;
+  --danger: #a8322a;
+  --error: #a8322a;
+  --radius-sm: 12px;
+  --radius: 18px;
+  --radius-lg: 24px;
+  --radius-concentric: 18px;
+  --control-height: 44px;
+  --shadow: 0 18px 50px rgba(55, 42, 25, 0.12);
+  --sans: "DM Sans", system-ui, sans-serif;
+  --serif: "Fraunces", Georgia, serif;
+}
+
+html,
+body {
+  color-scheme: light;
+  background: #ede5d8;
+}
+
+body {
+  color: var(--text);
+  font-family: var(--sans);
+  background: #ede5d8;
+}
+
+h1,
+h2,
+h3,
+.section-title,
+.metric-value,
+.spend-total,
+.calorie-total strong {
+  color: var(--text);
+  font-family: var(--serif);
+  font-optical-sizing: auto;
+  letter-spacing: -0.035em;
+}
+
+h1,
+.page-heading h1,
+.home-greeting h1,
+.kitchen-overview .kitchen-overview-heading h1,
+.zara-header h1,
+.calorie-heading h1 {
+  font-size: clamp(2.45rem, 11vw, 3.8rem);
+  font-weight: 650;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
+h2,
+.section-heading h2,
+.cook-discovery-group > header h2 {
+  font-size: clamp(1.65rem, 7vw, 2.4rem);
+  font-weight: 620;
+  line-height: 1.05;
+  text-wrap: balance;
+}
+
+h3 {
+  font-weight: 620;
+}
+
+:focus-visible {
+  outline: 3px solid #bf4d00;
+  outline-offset: 3px;
+}
+
+.app-device,
+.app-shell,
+.embedded .app-shell {
+  grid-template-rows: minmax(0, 1fr) auto;
+  width: min(100%, 390px);
+  height: min(844px, calc(100dvh - 48px));
+  background: var(--bg);
+  border-color: rgba(33, 29, 23, 0.12);
+  box-shadow: var(--shadow);
+}
+
+.native-app .app-device,
+.native-app .app-shell {
+  grid-template-rows: minmax(0, 1fr) auto;
+  width: 100%;
+  max-width: none;
+  height: 100dvh;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.app-scroll,
+.app-main {
+  scrollbar-color: #cfc2b2 transparent;
+}
+
+.app-topbar,
+.app-header,
+.embedded .app-header {
+  position: static;
+  min-height: 64px;
+  color: var(--text);
+  background: var(--bg);
+  border-bottom-color: transparent;
+}
+
+.brand-word,
+.header-brand {
+  color: var(--text);
+}
+
+.prototype-chip,
+.icononly,
+.icon-button {
+  color: var(--text);
+  background: var(--surface-2);
+  border-color: transparent;
+  box-shadow: none;
+}
+
+.app-content,
+.embedded .app-content {
+  padding-bottom: 32px;
+}
+
+/* Frame width, not browser viewport, owns Kitchen density. */
+.app-device .inventory-grid,
+.app-shell .inventory-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.app-footer,
+.screen-footer {
+  color: var(--muted);
+}
+
+.bottom-nav {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  min-height: 72px;
+  color: var(--muted);
+  background: rgba(248, 243, 233, 0.98);
+  border-top-color: var(--border);
+  box-shadow: none;
+}
+
+.nav-item {
+  min-height: 56px;
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.nav-item[aria-current="page"],
+.bottom-nav .nav-item[aria-current="page"] {
+  color: var(--accent-text);
+  background: transparent;
+}
+
+.eyebrow,
+.calorie-kicker,
+.nutrition-label,
+.scan-card-kicker,
+.cook-step-kicker {
+  color: var(--accent-text);
+}
+
+.card,
+.post,
+.inventory-card,
+.recipe-card,
+.meal-choice-card,
+.scan-review-card,
+.scan-review-summary,
+.calorie-diary-item,
+.nutrition-recipe,
+.draft-recovery,
+.cook-step-card,
+.cook-timer-panel,
+.cook-review-lot,
+.zara-context-summary,
+.zara-proposal,
+.cook-link-notice,
+.nomli-connection-note,
+.scan-source-option,
+.scan-review-promise,
+.recipe-ingredients-section {
+  color: var(--text);
+  background: var(--surface);
+  border-color: var(--border);
+  box-shadow: none;
+}
+
+.card,
+.post,
+.inventory-card,
+.scan-review-card,
+.scan-review-summary,
+.draft-recovery {
+  border-radius: var(--radius-concentric);
+}
+
+.btn,
+button,
+input,
+select,
+textarea,
+.mobile-select-trigger {
+  min-height: var(--control-height);
+}
+
+.btn {
+  color: var(--text);
+  background: var(--surface-2);
+  border-color: var(--border);
+  box-shadow: none;
+}
+
+.btn-primary,
+.kitchen-add,
+.draft-recovery__button--primary,
+.composer-send {
+  color: #211d17;
+  background: var(--accent);
+  border-color: var(--accent);
+  box-shadow: none;
+}
+
+.btn-secondary,
+.draft-recovery__button,
+.mobile-select-trigger {
+  background: var(--surface-2);
+}
+
+.btn-quiet {
+  color: var(--muted);
+  background: transparent;
+  border-color: transparent;
+}
+
+.btn:disabled,
+button:disabled {
+  color: #756e65;
+  opacity: 0.58;
+}
+
+input,
+select,
+textarea,
+.mobile-select-trigger {
+  color: var(--text);
+  background: #fffdf8;
+  border-color: var(--border-strong);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #847b70;
+  opacity: 1;
+}
+
+input[type="date"] {
+  color-scheme: light;
+}
+
+.notice,
+.calorie-form-estimate,
+.photo-editor,
+.scan-photo-preview,
+.scan-line-photo,
+form.item-editor-form .item-editor-details {
+  color: var(--text);
+  background: var(--surface-2);
+  border-color: var(--border);
+}
+
+.badge,
+.pill,
+.xp-mini,
+.scan-result-meta span,
+.meal-choice-meta span {
+  color: var(--accent-text);
+  background: rgba(255, 113, 8, 0.08);
+  border-color: rgba(168, 62, 0, 0.18);
+}
+
+/* Horizontal editorial rails must remain reachable at narrow widths. */
+.cook-discovery-filters,
+.cook-discovery-list,
+.pill-row,
+.receipt-shortcuts,
+.cook-progress,
+.habit-strip,
+.zara-suggestions {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  overscroll-behavior-inline: contain;
+}
+
+.cook-discovery-filters::-webkit-scrollbar,
+.cook-discovery-list::-webkit-scrollbar,
+.pill-row::-webkit-scrollbar,
+.receipt-shortcuts::-webkit-scrollbar,
+.cook-progress::-webkit-scrollbar,
+.habit-strip::-webkit-scrollbar,
+.zara-suggestions::-webkit-scrollbar {
+  display: none;
+}
+
+/* Kitchen, inventory, shopping, spending, profile. Preserve feature layouts. */
+.kitchen-overview .kitchen-soon-cue,
+.kitchen-overview .kitchen-import-success,
+.milestone-banner {
+  color: var(--accent-text);
+  background: rgba(255, 113, 8, 0.07);
+  border-color: rgba(168, 62, 0, 0.18);
+}
+
+.ingredient-thumb,
+.inventory-icon,
+.scan-source-icon,
+.level-emblem,
+.achievement > span,
+.reward-summary > .reward-icon {
+  background: var(--surface-2);
+  border-color: var(--border);
+}
+
+.inventory-row,
+.item-row,
+.category-row,
+.skill-row,
+.consumption-row {
+  border-color: var(--border);
+}
+
+.kitchen-overview .kitchen-tools,
+.kitchen-overview .kitchen-tools-list,
+.purchase-history,
+.spend-hero,
+.level-hero,
+.learning-quest,
+.achievement,
+.habit-strip,
+.reward-summary {
+  color: var(--text);
+  background: var(--surface);
+  border-color: var(--border);
+  box-shadow: none;
+}
+
+.spend-hero {
+  background: var(--surface);
+}
+
+/* Scan entry, capture, review, forms and pickers. */
+.scan-home,
+.scan-review-wizard {
+  color: var(--text);
+}
+
+.scan-banner,
+.scan-guardrail,
+.scan-review-warning,
+.scan-draft-warnings p {
+  color: var(--accent-text);
+  background: rgba(255, 113, 8, 0.07);
+  border-color: rgba(168, 62, 0, 0.18);
+}
+
+.scan-review-nav,
+form.item-editor-form .item-editor-actions {
+  color: var(--text);
+  background: rgba(248, 243, 233, 0.98);
+  border-color: var(--border);
+  box-shadow: 0 -10px 28px rgba(55, 42, 25, 0.08);
+}
+
+.scan-jump,
+.scan-summary-item,
+.scan-confirm,
+.scan-line {
+  color: var(--text);
+  background: var(--surface-2);
+  border-color: var(--border);
+}
+
+dialog,
+.mobile-select-sheet,
+.item-photo-crop-dialog,
+#cooking-chat-panel {
+  color: var(--text);
+  background: var(--surface);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow);
+}
+
+dialog::backdrop,
+.mobile-select-sheet::backdrop,
+.item-photo-crop-dialog::backdrop,
+#cooking-chat-panel::backdrop {
+  background: rgba(33, 29, 23, 0.55);
+}
+
+.mobile-select-header,
+.mobile-select-option,
+.mobile-select-search,
+.cooking-chat-panel-topbar,
+.cooking-chat-panel-compose {
+  color: var(--text);
+  background: var(--surface);
+  border-color: var(--border);
+}
+
+.mobile-select-option[aria-selected="true"] {
+  color: var(--accent-text);
+  background: rgba(255, 113, 8, 0.08);
+}
+
+.mobile-select-option[aria-pressed="true"] {
+  color: var(--accent-text);
+  background: rgba(255, 113, 8, 0.08);
+  border-color: var(--accent);
+}
+
+.mobile-select-close {
+  color: var(--accent-text);
+  background: var(--surface-2);
+  border-color: var(--border);
+}
+
+.photo-crop-dialog {
+  --crop-accent: var(--accent);
+  color: var(--text);
+  background: var(--surface);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow);
+}
+
+.photo-crop-dialog::backdrop {
+  background: rgba(33, 29, 23, 0.55);
+}
+
+.photo-crop-dialog button {
+  color: var(--text);
+  border-color: var(--border);
+}
+
+.photo-crop-dialog button[data-crop="save"] {
+  color: var(--accent-ink);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+/* Cook discovery and recipe detail: photos lead, text stays quiet. */
+.cook-discovery-search-field,
+.cook-discovery-filter.btn,
+.cook-discovery-onboarding,
+.meal-choice-card {
+  color: var(--text);
+  background: var(--surface);
+  border-color: var(--border);
+  box-shadow: none;
+}
+
+.cook-discovery-filter[aria-pressed="true"] {
+  color: var(--accent-ink);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.recipe-card > img,
+.meal-choice-card > img,
+.featured-meal > img,
+.recipe-overview-photo,
+.recipe-cover > img {
+  background: var(--surface-2);
+}
+
+.recipe-cover::after,
+.imageoverlay,
+.meal-overlay {
+  background: linear-gradient(180deg, transparent 42%, rgba(33, 29, 23, 0.82));
+}
+
+.recipe-cover .icononly {
+  color: #fffdf8;
+  background: rgba(33, 29, 23, 0.72);
+  border-color: rgba(255, 253, 248, 0.34);
+}
+
+.recipe-facts,
+.recipe-servings,
+.ingredients-list,
+.recipe-preview,
+.recipe-plan-start {
+  border-color: var(--border);
+}
+
+.cook-cta {
+  background: rgba(248, 243, 233, 0.98);
+  border-color: var(--border);
+}
+
+/* Zara full chat, welcome, composer, overlay and voice. */
+body.zara-route,
+body.zara-route .app-scroll,
+body.zara-route .app-content,
+.zara-shell,
+.zara-thread {
+  background: var(--bg);
+}
+
+.zara-header,
+.zara-compose-area {
+  color: var(--text);
+  background: var(--bg);
+  border-color: var(--border);
+}
+
+.zara-welcome,
+.zara-welcome-context,
+.zara-connect,
+.zara-voice-drawer,
+.voice-panel {
+  color: var(--text);
+  background: var(--surface);
+  border-color: var(--border);
+  box-shadow: none;
+}
+
+.message-user {
+  color: var(--text);
+  background: var(--surface-2);
+}
+
+.message-zara {
+  color: var(--text);
+  background: transparent;
+}
+
+.zara-composer #assistant-question {
+  color: var(--text);
+  background: var(--surface);
+  border-color: var(--border-strong);
+}
+
+.composer-mic {
+  color: var(--muted);
+  background: transparent;
+}
+
+.zara-typing {
+  background: var(--surface-2);
+}
+.zara-typing > span {
+  background: var(--muted);
+}
+
+.assistant-answer,
+.assistant-proposal,
+.chat-bubble,
+.chat-message,
+.cook-chat-shortcut,
+.zara-cooking-return {
+  color: var(--text);
+  background: var(--surface);
+  border-color: var(--border);
+  box-shadow: none;
+}
+
+/* Cooking colors only: feature-owned layout remains untouched. */
+.cooking-experience {
+  --cook-card: var(--surface);
+  --cook-raised: var(--surface-2);
+  color: var(--text);
+  background: var(--bg);
+}
+
+.cook-session-top,
+.cook-step-card,
+.cook-instruction-card,
+.cook-timer-panel,
+.cook-coach,
+.cook-next-preview,
+.cook-prep-item,
+.cook-review-summary,
+.cook-review-lot,
+.cook-review-confirm {
+  color: var(--text);
+  background: var(--surface);
+  border-color: var(--border);
+  box-shadow: none;
+}
+
+.cook-step-instructions p,
+.cook-tools-list li {
+  color: var(--text);
+}
+
+.cook-heat,
+.cook-amount-note {
+  color: var(--accent-text);
+  background: rgba(255, 113, 8, 0.07);
+  border-color: rgba(168, 62, 0, 0.18);
+}
+
+.cook-progress li.is-current {
+  color: var(--text);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(255, 113, 8, 0.12);
+}
+
+.cook-action-dock {
+  color: var(--text);
+  background: rgba(248, 243, 233, 0.98);
+  border-color: var(--border);
+  box-shadow: 0 -10px 28px rgba(55, 42, 25, 0.08);
+}
+
+.cook-action-dock .btn-primary {
+  background: var(--accent);
+}
+
+/* Calories and nutrition. */
+.calorie-dashboard {
+  color: var(--text);
+}
+
+.calorie-date-controls input {
+  color-scheme: light;
+  background: var(--surface);
+}
+
+.calorie-summary {
+  background: var(--surface);
+  border-color: rgba(168, 62, 0, 0.2);
+}
+
+.calorie-estimate-tag {
+  color: var(--accent-text);
+  background: var(--surface-2);
+}
+
+/* Only controls stay dark over imagery; captions inherit warm-page ink. */
+.cook-step-media__control,
+.cook-step-media__retry {
+  color: #fffdf8;
+  background: rgba(33, 29, 23, 0.88);
+  border-color: rgba(255, 253, 248, 0.3);
+}
+
+/* Remove inherited neon/gradient decoration from non-image surfaces. */
+.level-hero,
+.reward-celebration,
+.calorie-summary,
+.spend-hero {
+  background-image: none;
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 0;
+    background: var(--bg);
+  }
+
+  .app-device,
+  .app-shell,
+  .embedded .app-shell {
+    width: 100%;
+    min-height: 100dvh;
+    height: 100dvh;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .app-content,
+  .embedded .app-content {
+    padding-inline: 16px;
+  }
+}
+
+@media (max-width: 340px) {
+  .app-content,
+  .embedded .app-content {
+    padding-inline: 12px;
+  }
+
+  h1,
+  .page-heading h1,
+  .home-greeting h1,
+  .kitchen-overview .kitchen-overview-heading h1,
+  .zara-header h1,
+  .calorie-heading h1 {
+    font-size: 2.3rem;
+  }
+
+  .bottom-nav {
+    min-height: 64px;
+  }
+}
+
+@media (max-height: 620px) {
+  .device-status {
+    display: none;
+  }
+  .app-topbar,
+  .app-header,
+  .embedded .app-header {
+    min-height: 54px;
+    padding-block: 5px;
+  }
+  .bottom-nav {
+    min-height: 60px;
+  }
+}
+
+[dir="rtl"] .section-heading,
+[dir="rtl"] .card-header,
+[dir="rtl"] .calorie-heading,
+[dir="rtl"] .calorie-section-heading {
+  text-align: start;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto;
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+    transition-duration: 0.01ms;
+  }
+}

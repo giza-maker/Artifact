@@ -18,7 +18,7 @@ export function renderScanHome({ connected, heading, button, icon }) {
     ],
     ["expiry", "calendar-blank", "Expiry date", "Read a date from the package"],
   ];
-  return `<section class="scan-home">${heading("SCAN", "Bring groceries home", "Photograph groceries or a receipt. Review the results, then add them to your kitchen.")}
+  return `<section class="scan-home">${heading("", "Add groceries", "Scan groceries, a receipt or an expiry date, then review each item before saving.")}
     ${!connected ? `<div class="nomli-connection-note">${icon("sparkle")}<div><b>Connect once, scan anytime</b><p>One connection enables scanning and Zara on this device.</p></div>${button("Connect Nomli", "scan-settings", "", "btn-secondary")}</div>` : ""}
     <div class="scan-source-list" aria-label="Choose what to scan">${sources.map(([id, glyph, title, copy]) => `<button type="button" data-action="scan-choose" data-id="${id}" class="scan-source-option"><span class="scan-source-icon">${icon(glyph)}</span><span><b>${title}</b><small>${copy}</small></span>${icon("arrow-right")}</button>`).join("")}</div>
     <p class="scan-review-promise">${icon("check-circle")} You review every item before anything is saved.</p>
@@ -62,7 +62,7 @@ export function renderZaraWelcome({
   if (panel)
     return `<section class="zara-welcome zara-welcome-context"><h2>Need a hand?</h2><p>Ask about this step, timing or ingredients.</p><div class="zara-suggestions">${["Explain this step", "What should I look for?", "Help with timing", "What can I substitute?"].map((q, i) => prompt(q, q, i)).join("")}</div></section>`;
   if (!inventoryCount && !session)
-    return `<section class="zara-welcome zara-welcome-context"><span class="zara-entry-kicker">LET’S GET STARTED</span><h2>Good meals start with your kitchen</h2><p>Scan your groceries or add an ingredient. I can help you choose a meal from what is available.</p><div class="zara-local-actions">${button("Scan groceries", "go", "scan", "btn-primary")}${button("Add an ingredient", "item-edit", "new", "btn-secondary")}${button("Explore recipes", "go", "cook", "btn-quiet")}</div><p class="zara-entry-footnote">You can also ask a cooking question below.</p></section>`;
+    return `<section class="zara-welcome zara-welcome-context"><h2>What can I help you cook?</h2><p>Add what is in your kitchen, browse recipes or ask a question.</p><div class="zara-local-actions">${button("Scan groceries", "go", "scan", "btn-primary")}${button("Add an ingredient", "item-edit", "new", "btn-secondary")}${button("Explore recipes", "go", "cook", "btn-quiet")}</div></section>`;
   const title = session
     ? "Let’s keep cooking"
     : readyRecipe
@@ -73,7 +73,7 @@ export function renderZaraWelcome({
     : readyRecipe
       ? `Your recorded ingredients cover ${readyRecipe.name}.`
       : "Find a meal, work around a missing ingredient, or plan your next shop.";
-  return `<section class="zara-welcome zara-welcome-context"><span class="zara-entry-kicker">YOUR NEXT MOVE</span><h2>${title}</h2><p>${esc(description)}</p><div class="zara-local-actions">${session ? button("Resume cooking", "cook-resume", "", "btn-primary") : readyRecipe ? button(`View ${readyRecipe.name}`, "recipe", readyRecipe.id, "btn-secondary") : button("Find a meal", "go", "cook", "btn-secondary")}</div>${soonNames.length ? `<p class="zara-use-soon">${icon("clock")} Use soon: <span dir="auto">${esc(soonNames.slice(0, 3).join(", "))}</span></p>` : ""}<div class="zara-suggestions">${prompt(session ? "Help with this step" : "Plan dinner", session ? "Explain the current cooking step and what I should look for." : "Suggest a dinner using my available kitchen ingredients and explain anything missing.", 0)}${prompt(soonNames.length ? "Use these first" : "Find a substitution", soonNames.length ? `How can I use ${soonNames.slice(0, 3).join(", ")} in a meal?` : "Help me find a substitution for a missing recipe ingredient.", 1)}</div></section>`;
+  return `<section class="zara-welcome zara-welcome-context"><h2>${title}</h2><p>${esc(description)}</p><div class="zara-local-actions">${session ? button("Resume cooking", "cook-resume", "", "btn-primary") : readyRecipe ? button(`View ${readyRecipe.name}`, "recipe", readyRecipe.id, "btn-secondary") : button("Find a meal", "go", "cook", "btn-secondary")}</div>${soonNames.length ? `<p class="zara-use-soon">${icon("clock")} Use soon: <span dir="auto">${esc(soonNames.slice(0, 3).join(", "))}</span></p>` : ""}<div class="zara-suggestions">${prompt(session ? "Help with this step" : "Plan dinner", session ? "Explain the current cooking step and what I should look for." : "Suggest a dinner using my available kitchen ingredients and explain anything missing.", 0)}${prompt(soonNames.length ? "Use these first" : "Find a substitution", soonNames.length ? `How can I use ${soonNames.slice(0, 3).join(", ")} in a meal?` : "Help me find a substitution for a missing recipe ingredient.", 1)}</div></section>`;
 }
 
 export function renderRecipeIntro({
@@ -85,13 +85,13 @@ export function renderRecipeIntro({
   icon,
 }) {
   return `<section class="recipe-overview">${recipe.image ? `<img class="recipe-overview-photo" src="${esc(recipe.image)}" alt="${esc(recipe.name)}" width="960" height="540">` : ""}
-    <div class="recipe-plan-start"><div><p class="eyebrow">YOUR COOKING PLAN</p><h2>${esc(readiness.title)}</h2><p>${esc(readiness.description)}</p></div><div class="recipe-plan-actions">${primaryHtml}${button(`Preview ${recipe.steps.length} steps`, "recipe-preview", recipe.id, "btn-secondary")}</div></div>
+    <div class="recipe-plan-start"><div><h2>${esc(readiness.title)}</h2><p>${esc(readiness.description)}</p></div><div class="recipe-plan-actions">${primaryHtml}${button(`Preview ${recipe.steps.length} steps`, "recipe-preview", recipe.id, "btn-secondary")}</div></div>
     <p class="recipe-prep-facts">${icon("clock")} ${recipe.prepMinutes} min prep <span aria-hidden="true">·</span> ${recipe.cookMinutes} min cooking</p>
   </section>`;
 }
 
 export function renderRecipePreview({ recipe, esc }) {
-  return `<section class="recipe-preview"><p class="recipe-preview-note">Preview only. Starting a cooking session and saving actual use are separate actions; no stock is changed here.</p><ol>${recipe.steps
+  return `<section class="recipe-preview"><p class="recipe-preview-note">Preview only. Your kitchen stock won’t change.</p><ol>${recipe.steps
     .map((_, index) => {
       const guide = getCookingStepGuide(recipe, index),
         media = getCookingStepMedia(recipe, index);

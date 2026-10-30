@@ -49,6 +49,8 @@ test("scan sources stay enabled while exposing connection and manual alternative
   assert.doesNotMatch(html, /data-action="scan-choose"[^>]*disabled/);
   assert.match(html, /data-action="scan-settings"/);
   assert.match(html, /data-action="item-edit" data-id="new"/);
+  assert.match(html, /<h1>Add groceries<\/h1>/);
+  assert.match(html, /review each item before saving/);
 });
 
 test("shared connection setup preserves field names, QR/manual actions, and escaped values", () => {
@@ -58,7 +60,7 @@ test("shared connection setup preserves field names, QR/manual actions, and esca
     config: { apiUrl: unsafeUrl, deviceToken: unsafeToken },
     native: true,
     esc,
-    errorsHtml: '<p data-error hidden></p>',
+    errorsHtml: "<p data-error hidden></p>",
     field,
   });
 
@@ -103,6 +105,7 @@ test("Zara empty state offers local actions without sending a request", () => {
   assert.match(html, /data-action="item-edit" data-id="new"/);
   assert.match(html, /data-action="go" data-id="cook"/);
   assert.doesNotMatch(html, /data-action="assistant-(?:send|suggestion)"/);
+  assert.doesNotMatch(html, /zara-entry-kicker/);
 });
 
 test("Zara ready, session, and use-soon states only prefill explicit-send prompts", () => {
@@ -131,25 +134,31 @@ test("Zara ready, session, and use-soon states only prefill explicit-send prompt
   assert.match(ready, /data-action="recipe" data-id="safe-recipe"/);
   assert.match(ready, /data-action="assistant-prompt"/);
   assert.ok(ready.includes(esc(retail)));
-  assert.doesNotMatch(ready, /<script>|data-action="assistant-(?:send|suggestion)"/);
+  assert.doesNotMatch(
+    ready,
+    /<script>|data-action="assistant-(?:send|suggestion)"/,
+  );
   assert.match(session, /data-action="cook-resume"/);
   assert.match(session, /data-action="assistant-prompt"/);
   assert.doesNotMatch(session, /data-action="assistant-(?:send|suggestion)"/);
+  assert.doesNotMatch(ready, /zara-entry-kicker/);
+  assert.doesNotMatch(session, /zara-entry-kicker/);
 });
 
 test("recipe intro preserves supplied primary action and readiness copy", () => {
-  const primaryHtml = '<button data-action="cook-start" data-primary>Prepare</button>';
+  const primaryHtml =
+    '<button data-action="cook-start" data-primary>Prepare</button>';
   const html = renderRecipeIntro({
     recipe: {
       id: "dish",
-      name: 'Dish <unsafe>',
+      name: "Dish <unsafe>",
       image: 'image\" onerror=bad()',
       prepMinutes: 8,
       cookMinutes: 15,
       steps: ["One", "Two", "Three"],
     },
     readiness: {
-      title: 'Ready <now>',
+      title: "Ready <now>",
       description: 'Everything & "available"',
     },
     primaryHtml,
@@ -161,8 +170,9 @@ test("recipe intro preserves supplied primary action and readiness copy", () => 
   assert.ok(html.includes(primaryHtml));
   assert.match(html, /data-action="recipe-preview" data-id="dish"/);
   assert.match(html, /Preview 3 steps/);
-  assert.ok(html.includes(esc('Ready <now>')));
+  assert.ok(html.includes(esc("Ready <now>")));
   assert.ok(html.includes(esc('Everything & "available"')));
+  assert.doesNotMatch(html, /YOUR COOKING PLAN|class="eyebrow"/);
   assert.doesNotMatch(html, /<unsafe>|src="image" onerror=/);
   assert.ok(html.includes(esc('image" onerror=bad()')));
 });
@@ -189,15 +199,22 @@ test("all 20 recipe previews render 60 authored, non-mutating visual steps", () 
       assert.ok(media?.alt, `${recipe.id} step ${index + 1} alt`);
       assert.ok(guide.title.trim(), `${recipe.id} step ${index + 1} title`);
       assert.ok(
-        guide.instructions.length && guide.instructions.every((text) => text.trim()),
+        guide.instructions.length &&
+          guide.instructions.every((text) => text.trim()),
         `${recipe.id} step ${index + 1} instructions`,
       );
       assert.ok(!posters.has(media.poster), `duplicate poster ${media.poster}`);
       posters.add(media.poster);
-      assert.ok(html.includes(esc(media.poster)), `${recipe.id} poster rendered`);
+      assert.ok(
+        html.includes(esc(media.poster)),
+        `${recipe.id} poster rendered`,
+      );
       assert.ok(html.includes(esc(guide.title)), `${recipe.id} title rendered`);
       for (const instruction of guide.instructions)
-        assert.ok(html.includes(esc(instruction)), `${recipe.id} instruction rendered`);
+        assert.ok(
+          html.includes(esc(instruction)),
+          `${recipe.id} instruction rendered`,
+        );
       stepCount += 1;
     });
   }
@@ -210,7 +227,7 @@ test("recipe preview escapes authored text and media attributes", () => {
   const original = COOK_RECIPES[0];
   const recipe = {
     ...original,
-    steps: ['Mix <script>bad()</script> & serve.'],
+    steps: ["Mix <script>bad()</script> & serve."],
   };
   const html = renderRecipePreview({ recipe, esc });
 
