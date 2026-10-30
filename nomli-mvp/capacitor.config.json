@@ -3,5 +3,8 @@
   "appName": "Nomli Test",
   "webDir": "dist",
   "server": { "androidScheme": "https" },
-  "android": { "backgroundColor": "#100f0e" }
+  "android": { "backgroundColor": "#f8f3e9" },
+  "plugins": {
+    "SystemBars": { "style": "LIGHT" }
+  }
 }
