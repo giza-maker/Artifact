@@ -5,7 +5,7 @@
  <title>يُسر | نصنع خطوتك القادمة</title><meta name="description" content="هوية وتجارب رقمية ونمو وأتمتة، وروابط تساعد مشروعك يتقدّم.">
  <meta property="og:title" content="Yusr | Make what’s next."><meta property="og:description" content="Brand, digital, growth and the right connections. Built around your next move."><meta property="og:type" content="website"><meta property="og:image" content="https://giza-maker.github.io/Artifact/yusr/landing/assets/v3/hero.webp">
  <link rel="icon" href="assets/v3/symbol.webp" type="image/webp"><link rel="preload" href="fonts/font-3.woff2" as="font" type="font/ttf" crossorigin><link rel="preload" href="fonts/ArchivoBlack-Regular.ttf" as="font" type="font/ttf" crossorigin><link rel="preload" href="fonts/BarlowCondensed-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
- <link rel="stylesheet" href="studio.css?v=a03e2bacf874"><link rel="stylesheet" href="flow.css?v=349d08cee113"><script src="content.js?v=5e73ed8d8c74" defer></script><script src="rebuild-content.js?v=2ab0162727ec" defer></script><script src="film.js?v=15af129580aa" defer></script><script src="app.js?v=a1eb5af5c415" defer></script>
+ <link rel="stylesheet" href="studio.css?v=a03e2bacf874"><link rel="stylesheet" href="flow.css?v=d5ab2cc71c60"><link rel="stylesheet" href="scroll-motion.css?v=c4b593e0a062"><script src="content.js?v=5e73ed8d8c74" defer></script><script src="rebuild-content.js?v=2ab0162727ec" defer></script><script src="film.js?v=15af129580aa" defer></script><script src="vendor/gsap-3.15.1/gsap.min.js" defer></script><script src="vendor/gsap-3.15.1/ScrollTrigger.min.js" defer></script><script src="app.js?v=ae8fc5c049d4" defer></script><script src="scroll-motion.js?v=e0c678c008ed" defer></script>
 </head>
 <body>
  <a href="#main" class="skip" data-i18n="skip">انتقل للمحتوى</a>
@@ -13,10 +13,11 @@
   <a class="brand" href="#" aria-label="يُسر، البداية" dir="ltr"><img class="wordmark" src="assets/v4/wordmark.webp" width="245" height="45" alt=""></a>
   <nav id="navigation" aria-label="التنقل الرئيسي"><a href="#capabilities" data-i18n="navServices">الإمكانات</a><a href="#connections" data-i18n="navEnablement">الروابط</a><a href="#approach" data-i18n="navApproach">المسار</a></nav>
   <div class="header-controls"><button class="language" type="button" lang="en" aria-label="Switch to English">EN</button><a class="header-talk" href="#start"><span data-i18n="talk">خلّينا نتكلم</span><img src="icons/arrow-up-right.svg" width="19" height="19" alt=""></a><button class="menu-toggle" type="button" aria-label="افتح القائمة" aria-controls="navigation" aria-expanded="false"><img src="icons/menu-2.svg" width="26" height="26" alt=""></button></div>
+  <div class="scroll-progress" aria-hidden="true"></div>
  </header>
  <main id="main" tabindex="-1">
   <section class="hero" aria-labelledby="hero-title">
-   <div id="hero-scene" class="hero-scene" aria-hidden="true"><picture><source media="(max-width:767px)" srcset="assets/v4/hero-poster-small.webp"><img id="hero-image" src="assets/v4/hero-poster.webp" width="1920" height="1080" alt="" fetchpriority="high"></picture><video id="hero-film" muted loop playsinline preload="none" disablepictureinpicture tabindex="-1" data-src="assets/v4/hero-loop.mp4" data-mobile-src="assets/v4/hero-loop-small.mp4"></video></div>
+   <div id="hero-scene" class="hero-scene" aria-hidden="true"><div class="hero-depth"><picture><source media="(max-width:767px)" srcset="assets/v4/hero-poster-small.webp"><img id="hero-image" src="assets/v4/hero-poster.webp" width="1920" height="1080" alt="" fetchpriority="high"></picture><video id="hero-film" muted loop playsinline preload="none" disablepictureinpicture tabindex="-1" data-src="assets/v4/hero-loop.mp4" data-mobile-src="assets/v4/hero-loop-small.mp4"></video></div></div>
    <div class="hero-copy"><h1 id="hero-title" data-i18n="heroTitle">نصنع<br>خطوتك<br>القادمة<span>.</span></h1><p data-i18n="heroDescription">هوية، تجارب رقمية، نمو، وروابط مناسبة. نبني حول خطوتك القادمة.</p><a class="action-link" href="#start"><span data-i18n="cta">مكالمة تعارف</span><span class="action-icon"><img src="icons/arrow-up-right.svg" width="28" height="28" alt=""></span></a></div>
    <button class="motion-control" type="button" aria-pressed="true"><img src="icons/check.svg" width="15" height="15" alt=""><span data-i18n="pause">إيقاف الحركة</span></button>
   </section>
@@ -31,12 +32,12 @@
   </section>
 
   <section id="connections" class="connections" aria-labelledby="connections-title">
-   <img class="connection-image" src="assets/v3/junction.webp" width="1984" height="793" alt="" loading="lazy">
+   <div class="connection-visual"><img class="connection-image" src="assets/v3/junction.webp" width="1984" height="793" alt="" loading="lazy"></div>
    <div class="connection-copy reveal"><h2 id="connections-title" data-i18n="connectionTitle">الربط الصح،<br>يفتح فرص.</h2><div id="connection-choices" class="connection-choices" role="group" aria-label="مجالات تمكين المشروع"></div><div id="connection-detail" class="connection-detail" aria-live="polite"></div><p class="scope-note" data-i18n="enablementScope">نحدد نطاق التمكين والوصلات المتاحة حسب كل مشروع، قبل الاتفاق.</p></div>
   </section>
 
   <section id="approach" class="approach" aria-labelledby="approach-title">
-   <div class="approach-copy reveal"><h2 id="approach-title" data-i18n="processTitle">طريق واضح<br>للخطوة القادمة.</h2><p class="approach-intro" data-i18n="processIntro">نفهم الاحتياج، نرتّب المسار، ونبني ما يخدم المشروع فعلًا.</p><ol id="process-steps" class="process-steps"></ol><div id="process-detail" class="process-detail" aria-live="polite"></div><a class="action-link" href="#start"><span data-i18n="cta">مكالمة تعارف</span><span class="action-icon"><img src="icons/arrow-up-right.svg" width="28" height="28" alt=""></span></a></div>
+   <div class="approach-copy reveal"><h2 id="approach-title" data-i18n="processTitle">طريق واضح<br>للخطوة القادمة.</h2><p class="approach-intro" data-i18n="processIntro">نفهم الاحتياج، نرتّب المسار، ونبني ما يخدم المشروع فعلًا.</p><div class="process-nav"><ol id="process-steps" class="process-steps"></ol><div class="process-rail" aria-hidden="true"></div></div><div id="process-detail" class="process-detail" aria-live="polite"></div><a class="action-link" href="#start"><span data-i18n="cta">مكالمة تعارف</span><span class="action-icon"><img src="icons/arrow-up-right.svg" width="28" height="28" alt=""></span></a></div>
    <figure class="portal-study reveal"><picture><source media="(max-width:767px)" srcset="assets/v3/portal-small.webp"><img id="portal-image" src="assets/v3/portal.webp" width="1122" height="1402" alt="" loading="lazy"></picture><figcaption data-i18n="portalCaption">تصوّر بصري ليُسر</figcaption></figure>
   </section>
 

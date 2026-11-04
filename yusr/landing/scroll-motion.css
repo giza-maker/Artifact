@@ -1,0 +1,21 @@
+.hero-depth{position:absolute;inset:0;transform-origin:center}
+.scroll-progress{position:absolute;inset-inline:0;bottom:0;height:2px;background:var(--red);transform:scaleX(0);transform-origin:left center;pointer-events:none}
+.connection-visual{width:calc(100% + var(--gutter));margin-inline-start:calc(var(--gutter) * -1);aspect-ratio:1.35;overflow:clip}
+.connection-visual .connection-image{width:100%;height:100%;max-width:none;aspect-ratio:auto;margin:0;object-fit:cover}
+.identity-study picture,.portal-study picture{overflow:clip}
+.motion-line{display:block;overflow:clip;padding-block:.08em;margin-block:-.08em}
+.motion-line-inner{display:block;transform-origin:center bottom}
+.flow-word{display:inline-block;white-space:pre;transform-origin:center bottom}
+.flow-word:nth-child(-n+2){font-weight:600}
+.scroll-motion-ready .hero-copy,.scroll-motion-ready .hero-depth,.scroll-motion-ready .cap-cell,.scroll-motion-ready .identity-study img,.scroll-motion-ready .connection-visual,.scroll-motion-ready .portal-study,.scroll-motion-ready #portal-image,.scroll-motion-ready .motion-line-inner{transition:none!important}
+.capability-cross{perspective:1400px}.cap-cell{transform-origin:center bottom}
+.process-nav{position:relative}.process-rail{position:absolute;bottom:0;inset-inline:0;height:2px;background:var(--red);pointer-events:none;transform:scaleX(0)}
+.footer-brand{overflow:clip}
+.scroll-motion-ready .cap-cell:focus-within,.scroll-motion-ready .call-planner:focus-within,.scroll-motion-ready .faq details:focus-within{opacity:1!important}
+.scroll-motion-ready .cap-cell:has(:focus-visible),.scroll-motion-ready .call-planner:has(:focus-visible),.scroll-motion-ready .faq details:has(:focus-visible){transform:none!important}
+.scroll-motion-ready .start-title:focus-within .motion-line-inner{transform:none!important;opacity:1!important}
+.scroll-motion-ready .hero-copy:focus-within{opacity:1!important}
+.scroll-motion-ready .hero-copy:has(:focus-visible){transform:none!important}
+@media(max-width:767px){.connection-visual{aspect-ratio:1.7}}
+.motion-paused .scroll-progress,.motion-paused .process-rail{display:none}
+@media(prefers-reduced-motion:reduce){.scroll-progress,.process-rail{display:none}}
