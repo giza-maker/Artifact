@@ -13,9 +13,10 @@
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="preload" href="fonts/font-3.woff2" as="font" type="font/ttf" crossorigin>
   <link rel="preload" href="fonts/font-8.woff2" as="font" type="font/ttf" crossorigin>
-  <link rel="stylesheet" href="styles.css">
-  <script src="content.js" defer></script>
-  <script src="app.js" defer></script>
+  <link rel="stylesheet" href="styles.css?v=f4ad3fac7307">
+  <link rel="stylesheet" href="motion.css?v=b55eabd957d0">
+  <script src="content.js?v=5e73ed8d8c74" defer></script>
+  <script src="app.js?v=61ffc40c8aaa" defer></script>
 </head>
 <body>
   <a class="skip" href="#main" data-i18n="skip">انتقل للمحتوى</a>
@@ -28,7 +29,7 @@
     </nav>
     <div class="header-actions">
       <button class="language" type="button" aria-label="Switch to English" lang="en">EN</button>
-      <a class="button compact header-cta" href="#start"><span data-i18n="cta">ابدأ مشروعك</span><span class="arrow" aria-hidden="true">↗</span></a>
+      <a class="button compact header-cta" href="#start"><span data-i18n="cta">نبدأ بمكالمة</span><span class="arrow" aria-hidden="true">↗</span></a>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="navigation" aria-label="افتح القائمة"><span></span><span></span></button>
     </div>
   </header>
@@ -38,10 +39,11 @@
         <p class="eyebrow" data-i18n="heroEyebrow">استوديو للهوية والنمو وتمكين المشاريع</p>
         <h1 id="hero-title"><span data-i18n="heroLine1">لمشروعك،</span><span class="accent" data-i18n="heroLine2">بُعد آخر.</span></h1>
         <p class="hero-description" data-i18n="heroDescription">نبني هويتك وحضورك الرقمي، ونوصلك بالأدوات والأشخاص اللي يساعدون مشروعك يكبر.</p>
-        <div class="hero-actions"><a class="button" href="#start"><span data-i18n="cta">ابدأ مشروعك</span><span class="arrow" aria-hidden="true">↗</span></a><a class="text-link" href="#services"><span data-i18n="explore">اكتشف الإمكانيات</span><span aria-hidden="true">↓</span></a></div>
+        <div class="hero-actions"><a class="button" href="#start"><span data-i18n="cta">نبدأ بمكالمة</span><span class="arrow" aria-hidden="true">↗</span></a><a class="text-link" href="#services"><span data-i18n="explore">اكتشف الإمكانيات</span><span aria-hidden="true">↓</span></a></div>
       </div>
       <div class="hero-art" aria-hidden="true">
-        <div class="art-frame"><picture><source media="(max-width:767px)" srcset="assets/sculpture-small.webp"><img class="sculpture" src="assets/sculpture.webp" width="1536" height="1024" alt="" fetchpriority="high"></picture></div>
+        <div class="sculpture-shadow"></div>
+        <div class="sculpture-entry"><div class="art-frame"><div class="sculpture-tilt"><picture><source media="(max-width:767px)" srcset="assets/sculpture-small.webp"><img class="sculpture" src="assets/sculpture.webp" width="1536" height="1024" alt="" fetchpriority="high"></picture></div></div></div>
       </div>
       <button class="motion-control" type="button" aria-pressed="true"><span class="motion-bars" aria-hidden="true"><i></i><i></i><i></i></span><span data-i18n="pause">إيقاف الحركة</span></button>
     </section>
@@ -57,16 +59,16 @@
       <div class="service-layout">
         <div class="service-list" id="service-list"></div>
         <div class="service-canvas">
-          <div class="service-scene" aria-hidden="true"><img id="service-image" src="assets/architecture.webp" width="1400" height="788" alt="" loading="lazy"></div>
+          <div class="service-scene" aria-hidden="true"><img id="service-image" class="service-image-layer" src="assets/architecture.webp" width="1400" height="788" alt="" loading="lazy"></div>
           <div id="service-panel" class="service-panel" role="region" aria-labelledby="service-name" aria-live="polite"></div>
         </div>
       </div>
     </section>
 
     <section id="enablement" class="enablement section" aria-labelledby="enablement-title">
-      <div class="enablement-heading"><p class="eyebrow" data-i18n="enablementEyebrow">أكثر من تنفيذ</p><h2 id="enablement-title" data-i18n="enablementTitle">نربط مشروعك<br><span class="accent">باللي ينقصه.</span></h2><p data-i18n="enablementDescription">يمكن مشروعك يحتاج تموضع أوضح، شريك تنفيذ، أو باب تجاري جديد. نساعدك ترتّب العرض وتوصل للخطوة المناسبة.</p></div>
+      <div class="enablement-heading"><p class="eyebrow" data-i18n="enablementEyebrow">أكثر من تنفيذ</p><h2 id="enablement-title" data-i18n="enablementTitle">نربط مشروعك<br><span class="accent">باللي ينقصه.</span></h2><p data-i18n="enablementDescription">هوية توضّح قيمتك، وتسويق يوصّل رسالتك، ووصلات لشركاء وعملاء مناسبين. نجهّز مشروعك للفرصة التجارية التالية.</p></div>
       <figure class="enablement-art"><picture><source media="(max-width:767px)" srcset="assets/enablement-small.webp"><img src="assets/enablement.webp" width="1400" height="933" alt="" loading="lazy"></picture></figure>
-      <div class="enablement-points"><article><span aria-hidden="true">↗</span><h3 data-i18n="enablePoint1">مشروع يعرف يقدّم نفسه</h3><p data-i18n="enablePoint1Body">تموضع، هوية، وعرض تجاري مفهوم ومقنع.</p></article><article><span aria-hidden="true">↗</span><h3 data-i18n="enablePoint2">علاقات في مكانها</h3><p data-i18n="enablePoint2Body">استكشاف وصلات مناسبة مع شركاء ومزوّدي خدمات وفرص تعاون.</p></article><article><span aria-hidden="true">↗</span><h3 data-i18n="enablePoint3">خطوة قابلة للتنفيذ</h3><p data-i18n="enablePoint3Body">تحديد الأولويات وتجهيز ما يحتاجه المشروع للتحرّك.</p></article></div>
+      <div class="enablement-points"><article><span aria-hidden="true">↗</span><h3 data-i18n="enablePoint1">مشروع يعرف يقدّم نفسه</h3><p data-i18n="enablePoint1Body">تموضع، هوية، وعرض تجاري مفهوم ومقنع.</p></article><article><span aria-hidden="true">↗</span><h3 data-i18n="enablePoint2">علاقات في مكانها</h3><p data-i18n="enablePoint2Body">استكشاف وصلات مناسبة مع شركاء وعملاء محتملين وفرص تعاون.</p></article><article><span aria-hidden="true">↗</span><h3 data-i18n="enablePoint3">تسويق يفتح الحديث</h3><p data-i18n="enablePoint3Body">رسالة ومحتوى وأدوات بيع تدعم الخطوة التجارية التالية.</p></article></div>
       <p class="scope-note" data-i18n="enablementScope">نحدد نطاق التمكين والوصلات المتاحة حسب كل مشروع، قبل الاتفاق.</p>
     </section>
 
@@ -76,7 +78,7 @@
     </section>
 
     <section id="start" class="start section" aria-labelledby="start-title">
-      <div class="start-heading"><h2 id="start-title" data-i18n="startTitle">خطوتك القادمة،<br><span class="accent">تبدأ من هنا.</span></h2><p data-i18n="startDescription">اختار الأقرب لوضعك. نرتّب لك نقطة بداية للنقاش.</p></div>
+      <div class="start-heading"><h2 id="start-title" data-i18n="startTitle">خطوتك القادمة،<br><span class="accent">تبدأ بمكالمة.</span></h2><p data-i18n="startDescription">اختار الأقرب لوضعك، ونجهّز نقطة بداية واضحة لمكالمة التعارف.</p></div>
       <div class="journey"><div class="journey-choices" id="journey-choices" role="group" aria-label="مرحلة المشروع"></div><div id="journey-result" class="journey-result" aria-live="polite"></div></div>
     </section>
 

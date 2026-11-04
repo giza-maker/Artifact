@@ -1,0 +1,61 @@
+/* ATELIER motion: three independent transform layers keep entrance, orbit and
+   pointer response from overwriting one another. Palette and layout unchanged. */
+:root{--motion-ease:cubic-bezier(.16,1,.3,1)}
+.sculpture-entry{position:relative;width:124%;flex-shrink:0;transform-style:preserve-3d}
+.hero-art .art-frame{width:100%;max-width:none;transform-style:preserve-3d;animation:sculpture-orbit 12s ease-in-out infinite;animation-play-state:paused;will-change:auto}
+.sculpture-tilt{transform:rotateX(0) rotateY(0);transform-style:preserve-3d;transition:transform 1s var(--motion-ease)}
+.sculpture-tilt picture{display:block}
+.sculpture-shadow{position:absolute;width:78%;height:8%;inset-inline-start:11%;bottom:18%;background:radial-gradient(ellipse,rgba(55,40,29,.22),rgba(55,40,29,.07) 40%,transparent 71%);opacity:.55;transform:scale(.95);animation:sculpture-ground 12s ease-in-out infinite;animation-play-state:paused;pointer-events:none}
+.hero.in-view .art-frame,.hero.in-view .sculpture-shadow{animation-play-state:running;will-change:transform}
+.hero.in-view .sculpture-shadow{will-change:transform,opacity}
+.hero:not(.in-view) .sculpture-tilt{transform:none!important}
+@keyframes sculpture-orbit{
+ 0%,100%{transform:translate3d(-10px,10px,0) rotateZ(-7deg) rotateY(-10deg) rotateX(4deg)}
+ 25%{transform:translate3d(12px,-20px,20px) rotateZ(-1deg) rotateY(10deg) rotateX(-4deg)}
+ 50%{transform:translate3d(4px,-34px,0) rotateZ(6deg) rotateY(14deg) rotateX(2deg)}
+ 75%{transform:translate3d(-12px,-8px,-10px) rotateZ(-1deg) rotateY(-6deg) rotateX(5deg)}
+}
+@keyframes sculpture-ground{
+ 0%,100%{transform:translateX(-5px) scale(.98);opacity:.55}
+ 25%{transform:translateX(6px) scale(.91);opacity:.4}
+ 50%{transform:translateX(2px) scale(.84);opacity:.28}
+ 75%{transform:translateX(-6px) scale(.94);opacity:.46}
+}
+.reveal{opacity:1;transform:none;transition:none}
+.motion-ready .reveal{transition:opacity .9s var(--motion-ease),transform .9s var(--motion-ease);transition-delay:var(--reveal-delay,0ms)}
+.motion-ready .reveal:not(.shown){opacity:0;transform:translateY(28px)}
+.motion-ready .reveal.shown{opacity:1;transform:none}
+.service-image-layer{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.button .arrow,.text-link>span:last-child,.back-top{transition:transform .45s var(--motion-ease)}
+.button:hover .arrow{transform:translate(3px,-3px)}
+.text-link:hover>span:last-child{transform:translateY(3px)}
+.service-symbol{transition:transform .5s var(--motion-ease),background .3s,border-color .3s}
+.journey-choice .arrow{transition:transform .5s var(--motion-ease)}
+.journey-choice:hover .arrow,.journey-choice[aria-pressed=true] .arrow{transform:translate(3px,-3px)}
+.faq summary:after,.faq details[open] summary:after{content:'+';transition:transform .4s var(--motion-ease)}
+.faq details[open] summary:after{transform:rotate(45deg)}
+dialog::backdrop{animation:backdrop-arrive .3s ease-out}
+@keyframes backdrop-arrive{from{opacity:0}to{opacity:1}}
+.motion-paused .art-frame,.motion-paused .sculpture-shadow,.document-hidden .art-frame,.document-hidden .sculpture-shadow{animation-play-state:paused!important;will-change:auto}
+.motion-paused .sculpture-tilt,.document-hidden .sculpture-tilt{transform:none!important;transition:none}
+.motion-ready.motion-paused .reveal{opacity:1;transform:none;transition:none}
+.motion-paused .arrow,.motion-paused .text-link>span:last-child,.motion-paused .service-symbol,.motion-paused .faq summary:after,.motion-paused dialog::backdrop{transition:none;animation:none}
+@media(max-width:1100px){.sculpture-entry{width:135%}}
+@media(max-width:767px){
+ .sculpture-entry{width:118%;max-width:680px}
+ .hero-art .art-frame{animation-name:sculpture-orbit-mobile;animation-duration:10s}
+ .sculpture-shadow{bottom:10%;height:9%;animation-duration:10s}
+ @keyframes sculpture-orbit-mobile{
+  0%,100%{transform:translate3d(-4px,6px,0) rotateZ(-5deg) rotateY(-6deg)}
+  25%{transform:translate3d(7px,-12px,8px) rotateZ(0) rotateY(6deg)}
+  50%{transform:translate3d(3px,-19px,0) rotateZ(4deg) rotateY(8deg)}
+  75%{transform:translate3d(-6px,-5px,-5px) rotateZ(-1deg) rotateY(-4deg)}
+ }
+ .motion-ready .reveal{transition-duration:.7s}
+}
+@media(prefers-reduced-motion:reduce){
+ .hero-art .art-frame{animation:none!important;transform:rotate(-2deg);will-change:auto}
+ .sculpture-shadow{animation:none!important;transform:scale(.95);opacity:.4;will-change:auto}
+ .sculpture-tilt{transform:none!important;transition:none!important}
+ .motion-ready .reveal{opacity:1;transform:none;transition:none}
+}
