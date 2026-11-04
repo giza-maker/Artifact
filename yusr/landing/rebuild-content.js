@@ -1,6 +1,7 @@
 (()=>{
  const content=window.YusrContent;
  Object.assign(content.ar,{
+  talk:'خلّينا نتكلم',flowStatement:'<strong>نحن يُسر.</strong> نجمع الهوية والتقنية والنمو حول مشروعك. نبني ما تحتاجه، ونساعدك تتواصل مع الأشخاص المناسبين للخطوة القادمة.',
   navServices:'الإمكانات',navEnablement:'الروابط',navApproach:'المسار',cta:'مكالمة تعارف',
   title:'يُسر | نصنع خطوتك القادمة',heroTitle:'نصنع<br>خطوتك<br>القادمة<span>.</span>',heroDescription:'هوية، تجارب رقمية، نمو، وروابط مناسبة. نبني حول خطوتك القادمة.',
   capabilitiesTitle:'إمكانات مترابطة لمشروعك',capabilitiesIntro:'خدمة محددة، أو مسار متكامل. اختار ما يحتاجه مشروعك.',identityCaption:'دراسة هوية يُسر',
@@ -14,6 +15,7 @@
   journeyGroup:'مرحلة المشروع',briefHeading:'بداية مكالمة تعارف مع يُسر',briefIntro:'ملخص مبدئي يساعدنا نبدأ النقاش بوضوح. انسخه أو نزّله وأضف تفاصيل مشروعك بالطريقة اللي تناسبك.'
  });
  Object.assign(content.en,{
+  talk:'Let’s talk',flowStatement:'<strong>We’re Yusr.</strong> Brand, digital and growth, connected around your business. We build what you need and help you find the right people for what comes next.',
   navServices:'Capabilities',navEnablement:'Connections',navApproach:'Approach',cta:'DISCOVERY CALL',
   title:'Yusr | Make what’s next.',heroTitle:'MAKE<br>WHAT’S<br>NEXT<span>.</span>',heroDescription:'Brand, digital, growth and the right connections. Built around your next move.',
   capabilitiesTitle:'Connected capabilities for your business',capabilitiesIntro:'A focused service, or a connected path. Start with what your business needs.',identityCaption:'Yusr identity studies',
