@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="تجربة مقترحة لمحلات الحلاقة الرجالية في الرياض لتنظيم حجوزات واتساب ودور المحل.">
+  <meta name="theme-color" content="#f5f9f3">
+  <title>موالف للحلاقين</title>
+  <link rel="icon" href="./assets/muwalif-symbol.png" type="image/png">
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">تخطَّ إلى المحتوى</a>
+  <header class="top" id="top">
+    <div class="shell top-inner">
+      <a class="brand" href="#top" aria-label="موالف، أعلى الصفحة">
+        <img src="./assets/muwalif-wordmark.webp" alt="" width="108" height="54">
+      </a>
+      <nav aria-label="أقسام الصفحة">
+        <a href="#demo">جرّب ترتيب الدور</a>
+        <a href="#calculator">احسبها</a>
+        <a href="#pilot">خطة التجربة</a>
+      </nav>
+      <a class="button primary top-cta" href="#pilot">نزّل خطة التجربة</a>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="shell hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow"><span class="signal" aria-hidden="true"></span>موالف للحلاقين · تجربة مقترحة في الرياض</p>
+          <h1 id="hero-title">كرسي فاضي وعليه حجز بعد عشرين دقيقة؟</h1>
+          <p class="intro">شوف كيف ترتّب دور اللي دخل الحين وتحافظ على موعد اللي حاجز. موالف يقترح جمع طلبات واتساب ودور المحل في جدول واحد يراجعه فريقك.</p>
+          <div class="actions">
+            <a class="button primary" href="#pilot">نزّل خطة التجربة <img src="./assets/icons/download.svg" alt=""></a>
+            <a class="button text-action" href="#demo">جرّب ترتيب الدور <img src="./assets/icons/arrow-down.svg" alt=""></a>
+          </div>
+        </div>
+        <figure class="hero-media">
+          <div class="hero-frame">
+            <img class="hero-photo" src="./assets/barbershop.webp" alt="زبون عند باب محل حلاقة وإلى جانبه كرسي أخضر شاغر" width="766" height="510" fetchpriority="high">
+            <div class="hero-slot">
+              <div class="slot-icon"><img src="./assets/icons/calendar.svg" alt=""></div>
+              <div><strong>موعد أحمد</strong><small>قص شعر · حجز مؤكد</small></div>
+              <bdi class="digits" dir="ltr">٧:٣٠</bdi>
+            </div>
+          </div>
+          <figcaption>صورة تمثيلية مولّدة</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section" id="demo" aria-labelledby="demo-title">
+      <div class="shell">
+        <div class="section-heading">
+          <div>
+            <span class="tag">تصوّر مقترح</span>
+            <h2 id="demo-title">مين يجلس على الكرسي الحين؟</h2>
+          </div>
+          <p>الساعة <bdi dir="ltr" class="digits">٧:١٠</bdi>، وعند أحمد حجز بعد عشرين دقيقة. جرّب كيف يتصرف الفريق.</p>
+        </div>
+        <div class="demo-grid">
+          <div class="schedule panel" aria-labelledby="schedule-title">
+            <div class="panel-heading">
+              <div class="panel-title">
+                <span class="slot-icon"><img src="./assets/icons/calendar.svg" alt=""></span>
+                <div><h3 id="schedule-title">جدول المحل</h3><p>أحمد وسعد</p></div>
+              </div>
+              <span class="time-now"><span class="signal" aria-hidden="true"></span><bdi dir="ltr" class="digits">٧:١٠</bdi></span>
+            </div>
+            <dl class="schedule-list">
+              <div class="schedule-row active" id="old-slot">
+                <dt><bdi dir="ltr" class="digits">٧:٣٠</bdi></dt>
+                <dd><strong>أحمد</strong><span id="old-status">حجز مؤكد · قص شعر</span></dd>
+              </div>
+              <div class="schedule-row" id="walk-slot">
+                <dt>الآن</dt>
+                <dd><strong>سعد</strong><span id="walk-status">متاح لقص الشعر</span></dd>
+              </div>
+              <div class="schedule-row" id="new-slot" hidden>
+                <dt><bdi dir="ltr" class="digits">٨:٣٠</bdi></dt>
+                <dd><strong>أحمد</strong><span id="new-status"></span></dd>
+              </div>
+            </dl>
+            <p class="schedule-note" id="schedule-note">قص الشعر ٣٠ دقيقة. خانة أحمد قبل الحجز تكفي لعشرين دقيقة.</p>
+          </div>
+
+          <div class="conversation panel" aria-labelledby="conversation-title">
+            <div class="panel-heading conversation-head">
+              <div class="panel-title">
+                <span class="slot-icon"><img src="./assets/icons/message-circle.svg" alt=""></span>
+                <h3 id="conversation-title">محادثة المحل</h3>
+              </div>
+            </div>
+            <div class="chat-content">
+              <div class="segmented" role="group" aria-label="حالة وصول الزبون">
+                <button type="button" data-mode="walk" aria-pressed="true" aria-controls="walk-panel">دخل بدون موعد</button>
+                <button type="button" data-mode="booking" aria-pressed="false" aria-controls="booking-panel">عنده حجز</button>
+              </div>
+              <div id="walk-panel">
+                <div class="chat-thread">
+                  <p class="bubble guest">أبي أحمد.</p>
+                  <p class="bubble shop">أحمد عنده حجز بعد شوي. تبي سعد الحين، أو تفضّل تنتظر أحمد؟</p>
+                </div>
+                <div class="chat-actions">
+                  <button type="button" class="button outline" data-walk="wait" aria-pressed="false">أنتظر أحمد</button>
+                  <button type="button" class="button outline" data-walk="saad" aria-pressed="false">أختار سعد</button>
+                </div>
+              </div>
+              <div id="booking-panel" hidden>
+                <div class="chat-thread">
+                  <p class="bubble guest">قص شعر مع أحمد · <bdi dir="ltr" class="digits" id="confirmed-time">٧:٣٠</bdi></p>
+                  <p class="bubble shop" id="booking-message">تم تأكيد موعدك.</p>
+                </div>
+                <div class="chat-actions">
+                  <button type="button" class="button outline" id="request-change" aria-controls="change-options" aria-expanded="false">طلب تغيير</button>
+                </div>
+                <div class="change-options" id="change-options" hidden>
+                  <p id="options-label">اختر وقتًا جديدًا مع أحمد.</p>
+                  <div class="chat-actions" role="group" aria-labelledby="options-label">
+                    <button type="button" class="button outline digits" data-slot="unavailable" aria-label="الساعة ٨:٠٠" aria-pressed="false"><bdi dir="ltr">٨:٠٠</bdi></button>
+                    <button type="button" class="button outline digits" data-slot="available" aria-label="الساعة ٨:٣٠" aria-pressed="false"><bdi dir="ltr">٨:٣٠</bdi></button>
+                  </div>
+                  <button type="button" class="button primary" id="approve-change" hidden>اعتماد التغيير</button>
+                </div>
+              </div>
+              <p class="chat-status" role="status" id="demo-status" aria-atomic="true"></p>
+            </div>
+          </div>
+        </div>
+        <details class="visit">
+          <summary><span>بعد الخدمة</span><span class="tag">زيارة مكتملة</span><img class="chevron" src="./assets/icons/chevron-down.svg" alt=""></summary>
+          <div class="visit-content">
+            <p>أكّد الفريق اكتمال قص الشعر مع أحمد. الزبون يختار إذا يبي تذكيرًا للزيارة الجاية.</p>
+            <div class="chat-actions" role="group" aria-label="اختيار تذكير الزيارة">
+              <button type="button" class="button outline" data-reminder="yes" aria-pressed="false">ذكّرني بعد ٣ أسابيع</button>
+              <button type="button" class="button outline" data-reminder="skip" aria-pressed="false">تخطي</button>
+            </div>
+            <p role="status" class="chat-status" id="reminder-status"></p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <section class="film-section" aria-labelledby="film-title">
+      <div class="shell film-grid">
+        <div class="film-copy">
+          <span class="film-kicker">فيلم موالف للحلاقين</span>
+          <h2 id="film-title">من أول حجز إلى آخر حلاقة.</h2>
+          <p>شوف كيف يتغيّر الدور لما يتأجل موعد، وكيف يسجّل الفريق الزيارة بعد ما تخلص.</p>
+          <p class="film-meta"><span class="signal" aria-hidden="true"></span>٦٢ ثانية · تعليق سعودي وترجمة عربية</p>
+        </div>
+        <div class="film-wrap">
+          <div class="film-frame" id="film-frame">
+            <button class="film-start" type="button" id="film-start" aria-label="شغّل فيلم موالف للحلاقين">
+              <picture>
+                <source media="(max-width: 767px), (max-width: 960px) and (hover: none) and (pointer: coarse)" srcset="./assets/video/portrait.webp">
+                <img src="./assets/video/landscape.webp" alt="" width="1280" height="720" loading="lazy">
+              </picture>
+              <span class="play-icon" aria-hidden="true"></span>
+            </button>
+            <video id="film" controls playsinline preload="none" hidden aria-label="فيلم موالف للحلاقين"></video>
+          </div>
+          <p id="film-help" class="film-help" role="status"></p>
+          <div class="film-fallback">
+            <a href="./assets/video/landscape.mp4" id="film-wide-link">افتح الفيديو الأفقي</a>
+            <a href="./assets/video/portrait.mp4" id="film-tall-link">افتح الفيديو العمودي</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section calc-section" id="calculator" aria-labelledby="calc-title">
+      <div class="shell">
+        <div class="section-heading">
+          <div><span class="tag">سيناريو افتراضي</span><h2 id="calc-title">احسبها على يوم محلك</h2></div>
+          <p>جرّب أرقام محلك وشوف كم وقت ممكن تستعيد، وكم خدمة إضافية تحتاج حتى تغطي التكلفة.</p>
+        </div>
+        <div class="calc-grid">
+          <form class="calculator panel" id="calc-form" aria-label="مدخلات الحسبة" novalidate>
+            <div class="calc-scenarios" role="group" aria-label="سيناريوهات الحسبة">
+              <button type="button" data-scenario="conservative" aria-pressed="false">محافظ</button>
+              <button type="button" data-scenario="base" aria-pressed="true">أساسي</button>
+              <button type="button" data-scenario="upside" aria-pressed="false">صاعد</button>
+            </div>
+            <fieldset>
+              <legend>الحجوزات والوقت</legend>
+              <div class="fields" id="calc-operating"></div>
+            </fieldset>
+            <details class="calc-more" id="calc-cost-details">
+              <summary>تفاصيل السعر والتكاليف<img class="chevron" src="./assets/icons/chevron-down.svg" alt=""></summary>
+              <div class="fields" id="calc-cost"></div>
+            </details>
+          </form>
+
+          <div class="result panel" id="calc-result" role="status" aria-label="نتيجة الحسبة" aria-atomic="true">
+            <div class="result-head"><span>نتيجة الفترة</span><span id="result-period">٢٦ يوم تشغيل</span></div>
+            <div class="metrics" id="metrics">
+              <div class="metric">
+                <h3>مساهمة بعد الاشتراك والرسائل</h3>
+                <p class="metric-value" id="result-cash">٥٢٠ ر.س</p>
+                <p class="metric-note" id="result-services">٢٦ خدمة إضافية محتملة</p>
+              </div>
+              <div class="metric">
+                <h3>كم خدمة تحتاج للتعادل</h3>
+                <p class="metric-value" id="result-break-even">١١ خدمة</p>
+                <p class="metric-note" id="result-limit"></p>
+              </div>
+              <div class="metric">
+                <h3>وقت متابعة مستعاد</h3>
+                <p class="metric-value" id="result-time">٤ ساعات و٢٠ دقيقة</p>
+                <p class="metric-note" id="result-hourly"></p>
+              </div>
+            </div>
+            <p class="result-invalid" id="calc-invalid" hidden>راجع المدخلات المعلَّمة لعرض نتيجة الفترة.</p>
+            <p class="result-disclosure">تقدير افتراضي قبل الضريبة. قيمة الوقت تُعرض منفصلة عن المساهمة.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section pilot-section" id="pilot" aria-labelledby="pilot-title">
+      <div class="shell pilot-grid">
+        <div class="pilot-copy">
+          <h2 id="pilot-title">ابدأ بفرع واحد</h2>
+          <p class="intro">أسبوعان على طريقتك الحالية، ثم أربعة أسابيع تجرب فيها قاعدة واحدة لترتيب الدور. قارن وقت الردود، انتظار الزبائن والخدمات المكتملة.</p>
+          <ol class="pilot-steps">
+            <li><strong>أسبوعان لقياس الوضع الحالي</strong><span>سجّل طريقة الوصول، الانتظار ونتيجة كل موعد.</span></li>
+            <li><strong>أربعة أسابيع لتجربة التغيير</strong><span>قارن أيام عمل متشابهة واحسب تكلفة الرسائل.</span></li>
+          </ol>
+        </div>
+
+        <form class="pilot-form panel" id="pilot-form" aria-labelledby="pilot-form-title" novalidate>
+          <h3 id="pilot-form-title">خطة التجربة</h3>
+          <p>الحقول اختيارية. تقدر تنزّل الخطة الجاهزة وتبدأ التسجيل اليوم.</p>
+          <div class="fields">
+            <label class="field" for="shop-name">اسم المحل<input id="shop-name" name="shop" type="text" maxlength="100" dir="auto"></label>
+            <div class="field">
+              <label for="shop-chairs">عدد الكراسي</label>
+              <input id="shop-chairs" name="chairs" type="text" inputmode="numeric" maxlength="3" dir="ltr" aria-describedby="chairs-error">
+              <p id="chairs-error" class="field-error" hidden>أدخل عددًا صحيحًا من ١ إلى ٩٩ كرسيًا.</p>
+            </div>
+            <label class="field" for="shop-arrivals">طريقة الوصول الغالبة
+              <select id="shop-arrivals" name="arrivals">
+                <option value="">اختر الطريقة</option>
+                <option>بدون موعد</option>
+                <option>حجز مسبق</option>
+                <option>الطريقتان</option>
+              </select>
+            </label>
+            <label class="field" for="shop-priority">أول مشكلة تبي تختبرها
+              <select id="shop-priority" name="priority">
+                <option value="">اختر المشكلة</option>
+                <option>ترتيب دور الدخول المباشر</option>
+                <option>تغيير الموعد</option>
+                <option>اختيار الحلاق</option>
+                <option>تذكير الزيارة</option>
+              </select>
+            </label>
+          </div>
+          <button class="button primary" type="submit" disabled>نزّل خطة التجربة <img src="./assets/icons/download.svg" alt=""></button>
+          <p class="privacy">ملف ينزل على جهازك. البيانات تبقى في المتصفح.</p>
+          <p role="status" id="download-status" class="download-status"></p>
+        </form>
+      </div>
+    </section>
+
+    <section class="section faq" aria-labelledby="faq-title">
+      <div class="shell faq-grid">
+        <h2 id="faq-title">أسئلة عن التجربة</h2>
+        <div class="faq-list">
+          <details><summary>هل أقدر أبدأ والخصائص قيد التطوير؟<img class="chevron" src="./assets/icons/chevron-down.svg" alt=""></summary><p>نعم، استخدم الخطة لتسجيل خط الأساس واختبار طريقة العمل يدويًا.</p></details>
+          <details><summary>هل أقدر أختار حلاق معيّن؟<img class="chevron" src="./assets/icons/chevron-down.svg" alt=""></summary><p>نسجل تفضيل الزبون. فريقك يؤكد الحلاق حسب الدوام والتوفّر.</p></details>
+          <details><summary>كم تكلف الرسائل؟<img class="chevron" src="./assets/icons/chevron-down.svg" alt=""></summary><p>تتحدد بعد مراجعة نوع الرسائل وتسعيرة القناة قبل التفعيل.</p></details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="shell footer-inner">
+      <img src="./assets/muwalif-wordmark.webp" alt="موالف" width="92" height="46">
+      <p>تجربة مقترحة لمحلات الحلاقة الرجالية في الرياض.</p>
+      <a href="#top">أعلى الصفحة</a>
+    </div>
+  </footer>
+  <noscript><p class="noscript">فعّل جافاسكربت لتجربة الدور والحاسبة وتنزيل الخطة من هذه الصفحة.</p></noscript>
+</body>
+</html>
