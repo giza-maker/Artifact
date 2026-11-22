@@ -15,8 +15,8 @@
     frame.dataset.layout = name;
     video.width = portrait ? 1080 : 1920;
     video.height = portrait ? 1920 : 1080;
-    video.poster = `assets/video/muwalif-${name}-poster.webp`;
-    video.src = `assets/video/muwalif-${name}.mp4`;
+    video.poster = `assets/car-wash/${name}-poster.webp`;
+    video.src = `assets/car-wash/${name}.mp4`;
     direct.href = video.src;
   }
 

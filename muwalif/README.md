@@ -1,15 +1,18 @@
-# Muwalif landing page
+# Muwalif for car washes
 
-Static Arabic-first landing page, with an English view and the approved 58-second promotional film.
+Arabic-first car-wash landing page with complete English view and approved 54-second Saudi Ali film.
 
-Published through `giza-maker/Artifact`, branch `gh-pages`, directory `muwalif/`:
+Publication: https://giza-maker.github.io/Artifact/muwalif/
+Repository: giza-maker/Artifact, gh-pages branch, muwalif directory.
 
-https://giza-maker.github.io/Artifact/muwalif/
+No build required. Serve this directory with a static HTTP server. All image, font, icon, MP4 and caption paths are relative.
 
-No build required. Serve the repository root with a static HTTP server; open `/muwalif/`.
+Car-wash narrative: repeated readiness inquiries, missing service/payment records and customers who do not return. Interactive arrival/ready/return examples, proposed WhatsApp owner assistant and editable time/potential-revenue calculator.
 
-The video uses self-hosted H.264/AAC MP4s. Mobile widths up to 600px select the separately composed portrait film; larger widths select landscape. Format stays fixed after playback starts so fullscreen/orientation changes do not restart the film. Native video controls provide pause, seeking, volume, fullscreen and captions. Arabic speech and burned-in Arabic captions are part of the approved film; English WebVTT captions activate when switching the page to English. Arabic WebVTT is also available in the native caption menu.
+CTA downloads a proposed pilot plan as JSON in the browser. It does not submit a lead, book an appointment or activate a subscription. No confirmed pilot pricing. Proposed modules and hypothetical financial examples remain labeled.
 
-No video autoplay. `preload="none"` avoids an initial video download; only the poster loads before playback. All assets use relative paths for project-page hosting. No analytics or external media embed.
+Player selects assets/car-wash/portrait.mp4 at up to 600px, otherwise landscape.mp4. It retains that format after playback starts. No autoplay, preload=none, native controls, English subtitles and a direct-file error fallback. Both movies are 54sec H.264/AAC, 1080p30, with identical approved Saudi Ali audio.
 
-Player source: `video.js` and `video.css`. Page interactions/translations: `app.js`. Approved film masters remain in the production workspace, separate from this public website. The published media is illustrative; no live integration or results claim.
+Current page: index.html, carwash.css, carwash.js, video.css and video.js. Existing legacy generic files remain for history and are not referenced by the current page.
+
+No tracking, external fonts or third-party embeds. Generated photography, illustrative chats and proposed interfaces are not real customer results.
