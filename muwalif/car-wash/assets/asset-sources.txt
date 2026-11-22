@@ -1,0 +1,17 @@
+Fonts (SIL Open Font License 1.1)
+- Alexandria Arabic variable: fonts/alexandria-arabic-variable.woff2
+  Source: https://fonts.gstatic.com/s/alexandria/v6/UMBXrPdDqW66y0Y2usFeaijdA4M5.woff2
+  License: fonts/Alexandria-OFL.txt; https://github.com/google/fonts/blob/main/ofl/alexandria/OFL.txt
+- Alexandria Latin variable: fonts/alexandria-latin-variable.woff2
+  Source: https://fonts.gstatic.com/s/alexandria/v6/UMBXrPdDqW66y0Y2usFeai3dAw.woff2
+  License: fonts/Alexandria-OFL.txt
+- Manrope Latin variable: fonts/manrope-latin-variable.woff2
+  Source: https://fonts.gstatic.com/s/manrope/v23/xn7gYHE41ni1AdIRggexSg.woff2
+  License: fonts/Manrope-OFL.txt; https://github.com/google/fonts/blob/main/ofl/manrope/OFL.txt
+
+Icons (MIT License)
+- icons/{arrow-up-right,arrow-right,arrow-left,arrow-down,check,x,shield-check,message-circle,qrcode,repeat,chevron-down,star,calendar,chart-bar,users,download}.svg
+  Source: https://github.com/tabler/tabler-icons/tree/main/icons/outline
+  License: icons/Tabler-LICENSE.txt; https://github.com/tabler/tabler-icons/blob/main/LICENSE
+
+Verified all font files have wOF2 signature; all icon files parse as SVG XML.
