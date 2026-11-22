@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="جرّب إشعار جاهزية الغسيل على واتساب برقم إيصال المغسلة، وقِس استفسارات الحالة ووقت الاستلام.">
+  <meta name="description" content="شوف كيف تبلّغ زبونك بجاهزية غسيله على واتساب مغسلتك، بنفس رقم الإيصال.">
   <meta name="theme-color" content="#f5f9f3">
   <link rel="canonical" href="https://giza-maker.github.io/Artifact/muwalif/laundries/">
   <link rel="icon" href="./assets/muwalif-symbol.png" type="image/png">
   <link rel="stylesheet" href="./styles.css">
-  <script src="./app.js" defer></script>
+  <script src="./app.js?v=shop" defer></script>
   <title>موالف لمغاسل الملابس</title>
 </head>
 <body>
@@ -19,21 +19,20 @@
       <nav aria-label="أقسام الصفحة">
         <a href="#demo">رحلة الطلب</a>
         <a href="#calculator">احسبها</a>
-        <a href="#pilot">خطة التجربة</a>
       </nav>
-      <a class="button primary top-cta" href="#pilot">نزّل خطة التجربة</a>
+      <a class="button primary top-cta" href="#demo">جرّب رحلة الطلب</a>
     </div>
   </header>
   <main id="main" tabindex="-1">
     <section class="hero" aria-labelledby="hero-title">
       <div class="shell hero-grid">
         <div class="hero-copy">
-          <p class="eyebrow"><span class="signal" aria-hidden="true"></span>موالف لمغاسل الملابس · تجربة مقترحة في الرياض</p>
+          <p class="eyebrow"><span class="signal" aria-hidden="true"></span>موالف لمغاسل الملابس</p>
           <h1 id="hero-title">«خلص غسيلي؟»<br>علّمه أول ما يجهز.</h1>
-          <p class="intro">جرّب إشعار جاهزية واحد من واتساب مغسلتك، برقم الإيصال اللي تستخدمه اليوم. قِس كم سؤال وصلك، وكم جلس الطلب على الرف.</p>
+          <p class="intro">إذا جهز الغسيل، بلّغ زبونك من واتساب مغسلتك بنفس رقم الإيصال اللي تستخدمه اليوم. وفريقك يعرف وش باقي على الرف ووش استلمه الزبون.</p>
           <div class="actions">
-            <a class="button primary" href="#pilot">نزّل خطة التجربة <img src="./assets/icons/download.svg" alt=""></a>
-            <a class="button text-action" href="#demo">جرّب رحلة الطلب <img src="./assets/icons/arrow-down.svg" alt=""></a>
+            <a class="button primary" href="#demo">جرّب رحلة الطلب <img src="./assets/icons/arrow-down.svg" alt=""></a>
+            <a class="button text-action" href="#calculator">احسبها على شغلك <img src="./assets/icons/arrow-down.svg" alt=""></a>
           </div>
         </div>
         <figure class="hero-media">
@@ -107,7 +106,7 @@
             <video id="film" controls playsinline preload="none" hidden aria-label="فيلم موالف لمغاسل الملابس"></video>
           </div>
           <p id="film-help" class="film-help" role="status"></p>
-          <div class="film-fallback"><a id="film-wide-link" href="./assets/video/landscape.mp4">افتح الفيديو الأفقي</a><a id="film-tall-link" href="./assets/video/portrait.mp4">افتح الفيديو العمودي</a></div>
+          <div class="film-fallback"><a id="film-wide-link" href="./assets/video/landscape.mp4?v=shop">افتح الفيديو الأفقي</a><a id="film-tall-link" href="./assets/video/portrait.mp4?v=shop">افتح الفيديو العمودي</a></div>
         </div>
       </div>
     </section>
@@ -136,52 +135,32 @@
             <div id="metrics">
               <div class="metric"><h3>فرق استفسارات الجاهزية</h3><p class="metric-value" id="inquiry-result"></p></div>
               <div class="metric"><h3>صافي وقت الفريق</h3><p class="metric-value" id="time-result"></p><p class="metric-note" id="time-detail"></p></div>
-              <div class="metric"><h3>قيمة وقت العمل التحليلية</h3><p class="metric-value" id="value-result"></p><p class="metric-note" id="budget-result"></p></div>
+              <div class="metric"><h3>قيمة وقت فريقك</h3><p class="metric-value" id="value-result"></p><p class="metric-note" id="budget-result"></p></div>
             </div>
             <p id="calc-invalid" class="result-invalid" hidden>راجع الحقول المعلّمة لعرض النتيجة.</p>
-            <p class="result-disclosure">أرقام تعليمية قبل الضريبة. قيمة الوقت تقدير مستقل عن النقد، وأثر الاستلام يُقاس في الفرع.</p>
+            <p class="result-disclosure">الحسبة تقديرية وقبل الضريبة. قيمة وقت الفريق تختلف عن المبلغ اللي تدفعه للرسائل والاشتراك.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section pilot-section" id="pilot" aria-labelledby="pilot-title">
-      <div class="shell pilot-grid">
-        <div class="pilot-copy">
-          <h2 id="pilot-title">ابدأ بفرع واحد</h2>
-          <p class="intro">أسبوع لتجربة التسجيل، ثم أسبوعان تقارن فيهما إشعار الجاهزية بالإجراء المعتاد.</p>
-          <ol class="pilot-steps">
-            <li><strong>ثبّت أوقات الطلب</strong><span>سجّل الجاهزية، الاستفسارات ووقت الاستلام بإيصال المحل.</span></li>
-            <li><strong>قارن المجموعتين</strong><span>استفسارات لكل ١٠٠ طلب، ونسبة الاستلام خلال ٢٤ ساعة.</span></li>
-          </ol>
-        </div>
-        <form class="pilot-form panel" id="pilot-form" aria-labelledby="pilot-form-title">
-          <h3 id="pilot-form-title">خطة التجربة</h3>
-          <p>الملف فيه خطوات توزيع الطلبات والحقول اللي يحتاجها الفريق.</p>
-          <div class="fields"><label class="field" for="shop">اسم المغسلة · اختياري<input id="shop" type="text" maxlength="100" dir="auto"></label><label class="field" for="district">الحي · اختياري<input id="district" type="text" value="قرطبة" maxlength="80" dir="auto"></label></div>
-          <button class="button primary" type="submit" disabled>نزّل خطة التجربة <img src="./assets/icons/download.svg" alt=""></button>
-          <p class="privacy">الملف ينزل على جهازك. الحقول تبقى في المتصفح.</p>
-          <p id="download-status" class="download-status" role="status"></p>
-        </form>
-      </div>
-    </section>
-
     <section class="section faq" aria-labelledby="faq-title">
       <div class="shell faq-grid">
-        <h2 id="faq-title">أسئلة عن التجربة</h2>
+        <h2 id="faq-title">أسئلة أصحاب المغاسل</h2>
         <div class="faq-list">
-          <details><summary>هل أقدر أستخدم إيصالاتي الحالية؟<img class="chevron" src="./assets/icons/chevron-down.svg" alt=""></summary><p>نعم، نسجّل الجاهزية والاستلام على نفس رقم الإيصال. التجربة تبدأ بتحديث يدوي من الفريق.</p></details>
+          <details><summary>هل أقدر أستخدم إيصالاتي الحالية؟<img class="chevron" src="./assets/icons/chevron-down.svg" alt=""></summary><p>في المثال، فريقك يسجّل الجاهزية والاستلام على نفس رقم الإيصال اللي تستخدمه اليوم.</p></details>
           <details><summary>متى يوصل الإشعار؟<img class="chevron" src="./assets/icons/chevron-down.svg" alt=""></summary><p>بعد موافقة الزبون وتأكيد الموظف أن كل القطع جاهزة على رف التسليم.</p></details>
-          <details><summary>كم تكلف الرسائل؟<img class="chevron" src="./assets/icons/chevron-down.svg" alt=""></summary><p>نراجع قناة الإرسال وتكاليفها مع الفرع قبل التجربة. مبالغ الحاسبة افتراضية.</p></details>
+          <details><summary>كم تكلف الرسائل؟<img class="chevron" src="./assets/icons/chevron-down.svg" alt=""></summary><p>التكلفة تعتمد على قناة الإرسال. حط تقديرك لتكلفة الرسائل في الحاسبة وشوف أثره.</p></details>
+          <details><summary>هل إشعار الجاهزية متاح الآن؟<img class="chevron" src="./assets/icons/chevron-down.svg" alt=""></summary><p>الطلب والرسالة في الصفحة مثال لطريقة عمل موالف. ميزة الإرسال قيد التطوير.</p></details>
         </div>
       </div>
     </section>
   </main>
   <footer class="footer"><div class="shell footer-inner">
     <img src="./assets/muwalif-wordmark.webp" alt="موالف" width="92" height="46">
-    <p>تجربة مقترحة لمغاسل الملابس في الرياض.</p>
+    <p>موالف لمغاسل الملابس في الرياض.</p>
     <a href="../">كل القطاعات</a>
   </div></footer>
-  <noscript><p class="noscript">فعّل جافاسكربت لتجربة الطلب والحاسبة وتنزيل الخطة.</p></noscript>
+  <noscript><p class="noscript">فعّل جافاسكربت لتجربة رحلة الطلب واستخدام الحاسبة.</p></noscript>
 </body>
 </html>

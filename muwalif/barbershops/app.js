@@ -141,7 +141,7 @@ function setupFilm() {
   launch.addEventListener("click", () => {
     const format = phone.matches ? "portrait" : "landscape";
     film.poster = "./assets/video/" + format + ".webp";
-    film.src = "./assets/video/" + format + ".mp4";
+    film.src = "./assets/video/" + format + ".mp4?v=shop";
     frame.dataset.format = format;
     launch.hidden = true;
     film.hidden = false;
@@ -161,7 +161,7 @@ const fields = [
   { key: "days", label: "أيام التشغيل في الفترة", min: 1, max: 366, whole: true },
   { key: "bookings", label: "الحجوزات المؤهلة يوميًا", min: 0, max: 500, help: "متوسط الحجوزات المؤكدة في يوم عمل." },
   { key: "baseline", label: "الإكمال قبل التجربة ٪", min: 0, max: 100 },
-  { key: "pilot", label: "الإكمال أثناء التجربة ٪", min: 0, max: 100 },
+  { key: "pilot", label: "نسبة الإكمال المتوقعة ٪", min: 0, max: 100 },
   { key: "spare", label: "الخانات الشاغرة فعلاً يوميًا", min: 0, max: 500, help: "خانات يستطيع الحلاق بيعها مع مراعاة الدور والراحة." },
   { key: "timeBefore", label: "دقائق المتابعة قبل التجربة يوميًا", min: 0, max: 1440 },
   { key: "timeAfter", label: "دقائق المتابعة أثناء التجربة يوميًا", min: 0, max: 1440 },
@@ -303,60 +303,6 @@ function setupCalculator() {
   applyScenario("base");
 }
 
-function setupPilot() {
-  const form = byId("pilot-form");
-  const chairs = byId("shop-chairs");
-  const message = byId("download-status");
-  const error = byId("chairs-error");
-  const submit = form.querySelector("button[type=submit]");
-
-  chairs.addEventListener("input", () => {
-    chairs.removeAttribute("aria-invalid");
-    error.hidden = true;
-    message.textContent = "";
-  });
-
-  form.addEventListener("submit", (event) => {
-    event.preventDefault();
-    message.textContent = "";
-    const count = chairs.value.trim() ? parseNumber(chairs.value) : null;
-    const valid = count === null || (Number.isInteger(count) && count >= 1 && count <= 99);
-    chairs.setAttribute("aria-invalid", String(!valid));
-    error.hidden = valid;
-    if (!valid) {
-      chairs.focus();
-      return;
-    }
-
-    const data = new FormData(form);
-    const plan = {
-      title: "خطة تجربة موالف للحلاقين",
-      created_at: new Date().toISOString(),
-      city: "الرياض",
-      branches: 1,
-      shop_name: String(data.get("shop")).trim() || null,
-      chairs: count,
-      main_arrival_method: data.get("arrivals") || null,
-      first_priority: data.get("priority") || null,
-      baseline_weeks: 2,
-      trial_weeks: 4,
-      daily_log: ["تاريخ وفترة العمل", "طريقة الوصول", "حالة الموعد", "وقت الانتظار بالدقائق", "الخدمات المكتملة", "دقائق الردود والمتابعة", "تكلفة الرسائل"],
-      booking_rule: "احتفظ بالحجز الأصلي مؤكدًا حتى يعتمد الفريق الموعد البديل، ثم حرّر الخانة الأولى.",
-    };
-    const url = URL.createObjectURL(new Blob([JSON.stringify(plan, null, 2) + "\n"], { type: "application/json" }));
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "muwalif-barbershop-pilot.json";
-    document.body.append(link);
-    link.click();
-    link.remove();
-    window.setTimeout(() => URL.revokeObjectURL(url), 1000);
-    message.textContent = "تم تجهيز ملف خطة التجربة للتنزيل.";
-  });
-  submit.disabled = false;
-}
-
 setupDemo();
 setupFilm();
 setupCalculator();
-setupPilot();

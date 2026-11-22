@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="تجربة مقترحة لمحلات الحلاقة الرجالية في الرياض لتنظيم حجوزات واتساب ودور المحل.">
+  <meta name="description" content="شوف كيف ترتّب حجوزات واتساب ودور الزباين في محل الحلاقة مع موالف.">
   <meta name="theme-color" content="#f5f9f3">
   <title>موالف للحلاقين</title>
   <link rel="icon" href="./assets/muwalif-symbol.png" type="image/png">
   <link rel="stylesheet" href="./styles.css">
-  <script src="./app.js" defer></script>
+  <script src="./app.js?v=shop" defer></script>
 </head>
 <body>
   <a class="skip" href="#main">تخطَّ إلى المحتوى</a>
@@ -20,9 +20,8 @@
       <nav aria-label="أقسام الصفحة">
         <a href="#demo">جرّب ترتيب الدور</a>
         <a href="#calculator">احسبها</a>
-        <a href="#pilot">خطة التجربة</a>
       </nav>
-      <a class="button primary top-cta" href="#pilot">نزّل خطة التجربة</a>
+      <a class="button primary top-cta" href="#demo">جرّب ترتيب الدور</a>
     </div>
   </header>
 
@@ -30,12 +29,12 @@
     <section class="hero" aria-labelledby="hero-title">
       <div class="shell hero-grid">
         <div class="hero-copy">
-          <p class="eyebrow"><span class="signal" aria-hidden="true"></span>موالف للحلاقين · تجربة مقترحة في الرياض</p>
+          <p class="eyebrow"><span class="signal" aria-hidden="true"></span>موالف للحلاقين</p>
           <h1 id="hero-title">كرسي فاضي وعليه حجز بعد عشرين دقيقة؟</h1>
-          <p class="intro">شوف كيف ترتّب دور اللي دخل الحين وتحافظ على موعد اللي حاجز. موالف يقترح جمع طلبات واتساب ودور المحل في جدول واحد يراجعه فريقك.</p>
+          <p class="intro">شوف حجوزات واتساب ودور اللي دخل بدون موعد في جدول واحد. فريقك يعرف مين يقدر يبدأ الحين، ومين عنده حجز بعد شوي.</p>
           <div class="actions">
-            <a class="button primary" href="#pilot">نزّل خطة التجربة <img src="./assets/icons/download.svg" alt=""></a>
-            <a class="button text-action" href="#demo">جرّب ترتيب الدور <img src="./assets/icons/arrow-down.svg" alt=""></a>
+            <a class="button primary" href="#demo">جرّب ترتيب الدور <img src="./assets/icons/arrow-down.svg" alt=""></a>
+            <a class="button text-action" href="#calculator">احسبها على شغلك <img src="./assets/icons/arrow-down.svg" alt=""></a>
           </div>
         </div>
         <figure class="hero-media">
@@ -165,8 +164,8 @@
           </div>
           <p id="film-help" class="film-help" role="status"></p>
           <div class="film-fallback">
-            <a href="./assets/video/landscape.mp4" id="film-wide-link">افتح الفيديو الأفقي</a>
-            <a href="./assets/video/portrait.mp4" id="film-tall-link">افتح الفيديو العمودي</a>
+            <a href="./assets/video/landscape.mp4?v=shop" id="film-wide-link">افتح الفيديو الأفقي</a>
+            <a href="./assets/video/portrait.mp4?v=shop" id="film-tall-link">افتح الفيديو العمودي</a>
           </div>
         </div>
       </div>
@@ -221,59 +220,13 @@
       </div>
     </section>
 
-    <section class="section pilot-section" id="pilot" aria-labelledby="pilot-title">
-      <div class="shell pilot-grid">
-        <div class="pilot-copy">
-          <h2 id="pilot-title">ابدأ بفرع واحد</h2>
-          <p class="intro">أسبوعان على طريقتك الحالية، ثم أربعة أسابيع تجرب فيها قاعدة واحدة لترتيب الدور. قارن وقت الردود، انتظار الزبائن والخدمات المكتملة.</p>
-          <ol class="pilot-steps">
-            <li><strong>أسبوعان لقياس الوضع الحالي</strong><span>سجّل طريقة الوصول، الانتظار ونتيجة كل موعد.</span></li>
-            <li><strong>أربعة أسابيع لتجربة التغيير</strong><span>قارن أيام عمل متشابهة واحسب تكلفة الرسائل.</span></li>
-          </ol>
-        </div>
-
-        <form class="pilot-form panel" id="pilot-form" aria-labelledby="pilot-form-title" novalidate>
-          <h3 id="pilot-form-title">خطة التجربة</h3>
-          <p>الحقول اختيارية. تقدر تنزّل الخطة الجاهزة وتبدأ التسجيل اليوم.</p>
-          <div class="fields">
-            <label class="field" for="shop-name">اسم المحل<input id="shop-name" name="shop" type="text" maxlength="100" dir="auto"></label>
-            <div class="field">
-              <label for="shop-chairs">عدد الكراسي</label>
-              <input id="shop-chairs" name="chairs" type="text" inputmode="numeric" maxlength="3" dir="ltr" aria-describedby="chairs-error">
-              <p id="chairs-error" class="field-error" hidden>أدخل عددًا صحيحًا من ١ إلى ٩٩ كرسيًا.</p>
-            </div>
-            <label class="field" for="shop-arrivals">طريقة الوصول الغالبة
-              <select id="shop-arrivals" name="arrivals">
-                <option value="">اختر الطريقة</option>
-                <option>بدون موعد</option>
-                <option>حجز مسبق</option>
-                <option>الطريقتان</option>
-              </select>
-            </label>
-            <label class="field" for="shop-priority">أول مشكلة تبي تختبرها
-              <select id="shop-priority" name="priority">
-                <option value="">اختر المشكلة</option>
-                <option>ترتيب دور الدخول المباشر</option>
-                <option>تغيير الموعد</option>
-                <option>اختيار الحلاق</option>
-                <option>تذكير الزيارة</option>
-              </select>
-            </label>
-          </div>
-          <button class="button primary" type="submit" disabled>نزّل خطة التجربة <img src="./assets/icons/download.svg" alt=""></button>
-          <p class="privacy">ملف ينزل على جهازك. البيانات تبقى في المتصفح.</p>
-          <p role="status" id="download-status" class="download-status"></p>
-        </form>
-      </div>
-    </section>
-
     <section class="section faq" aria-labelledby="faq-title">
       <div class="shell faq-grid">
-        <h2 id="faq-title">أسئلة عن التجربة</h2>
+        <h2 id="faq-title">أسئلة أصحاب المحلات</h2>
         <div class="faq-list">
-          <details><summary>هل أقدر أبدأ والخصائص قيد التطوير؟<img class="chevron" src="./assets/icons/chevron-down.svg" alt=""></summary><p>نعم، استخدم الخطة لتسجيل خط الأساس واختبار طريقة العمل يدويًا.</p></details>
+          <details><summary>هل أقدر أستخدم الحجز والدور الآن؟<img class="chevron" src="./assets/icons/chevron-down.svg" alt=""></summary><p>جدول الحجوزات والدور المعروض هنا مثال لطريقة عمل موالف. الميزات المعروضة قيد التطوير.</p></details>
           <details><summary>هل أقدر أختار حلاق معيّن؟<img class="chevron" src="./assets/icons/chevron-down.svg" alt=""></summary><p>نسجل تفضيل الزبون. فريقك يؤكد الحلاق حسب الدوام والتوفّر.</p></details>
-          <details><summary>كم تكلف الرسائل؟<img class="chevron" src="./assets/icons/chevron-down.svg" alt=""></summary><p>تتحدد بعد مراجعة نوع الرسائل وتسعيرة القناة قبل التفعيل.</p></details>
+          <details><summary>كم تكلف الرسائل؟<img class="chevron" src="./assets/icons/chevron-down.svg" alt=""></summary><p>التكلفة تعتمد على نوع الرسائل وقناة الإرسال. الحاسبة تعطيك تقديرًا بناءً على الأرقام اللي تدخلها.</p></details>
         </div>
       </div>
     </section>
@@ -282,10 +235,10 @@
   <footer class="footer">
     <div class="shell footer-inner">
       <img src="./assets/muwalif-wordmark.webp" alt="موالف" width="92" height="46">
-      <p>تجربة مقترحة لمحلات الحلاقة الرجالية في الرياض.</p>
+      <p>موالف لمحلات الحلاقة الرجالية في الرياض.</p>
       <a href="../">كل القطاعات</a>
     </div>
   </footer>
-  <noscript><p class="noscript">فعّل جافاسكربت لتجربة الدور والحاسبة وتنزيل الخطة من هذه الصفحة.</p></noscript>
+  <noscript><p class="noscript">فعّل جافاسكربت لتجربة ترتيب الدور واستخدام الحاسبة.</p></noscript>
 </body>
 </html>

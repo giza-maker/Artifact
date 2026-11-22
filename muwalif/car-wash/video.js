@@ -16,7 +16,7 @@
     video.width = portrait ? 1080 : 1920;
     video.height = portrait ? 1920 : 1080;
     video.poster = `assets/car-wash/${name}-poster.webp`;
-    video.src = `assets/car-wash/${name}-research.mp4`;
+    video.src = `assets/car-wash/${name}-research.mp4?v=shop`;
     direct.href = video.src;
   }
 

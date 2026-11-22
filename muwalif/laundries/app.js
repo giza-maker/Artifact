@@ -29,7 +29,7 @@ function setupFilm() {
   launch.addEventListener("click", () => {
     const format = phone.matches ? "portrait" : "landscape";
     film.poster = "./assets/video/" + format + ".webp";
-    film.src = "./assets/video/" + format + ".mp4";
+    film.src = "./assets/video/" + format + ".mp4?v=shop";
     frame.dataset.format = format;
     launch.hidden = true;
     film.hidden = false;
@@ -173,49 +173,5 @@ function setupCalculator() {
   apply("base");
 }
 
-function setupPlan() {
-  const form = byId("pilot-form");
-  form.addEventListener("submit", event => {
-    event.preventDefault();
-    const plan = {
-      title: "تجربة موالف لمغاسل الملابس",
-      created_at: new Date().toISOString(),
-      city: "الرياض",
-      timezone: "Asia/Riyadh",
-      district: byId("district").value.trim() || null,
-      shop: byId("shop").value.trim() || null,
-      branches: 1,
-      setup_days: 7,
-      comparison_days: 14,
-      follow_up_hours: 72,
-      target_eligible_orders: 40,
-      workflow: [
-        "سجل أول طلب جاهز لكل زبون وافق على تحديثات واتساب.",
-        "عند الجاهزية وزع الطلبات عشوائيًا بالتساوي داخل الفرع.",
-        "مجموعة الإشعار: رسالة واحدة من رقم الفرع خلال ١٥ دقيقة في الدوام.",
-        "مجموعة المقارنة: الإجراء المعتاد. أجب عن الاستفسارات في الحالتين.",
-      ],
-      fields: ["معرّف بديل", "المجموعة الأصلية", "نوع الخدمة", "وقت الجاهزية", "وقت الإرسال أو سبب التعذر", "استفسارات الحالة وأوقاتها", "وقت الاستلام", "ثواني التنفيذ الإضافية"],
-      measurement: [
-        "استفسارات الجاهزية لكل ١٠٠ طلب من الجاهزية إلى الاستلام أو ٤٨ ساعة، أيهما أسبق.",
-        "نسبة الاستلام خلال ٢٤ ساعة. متوسط الساعات إلى الاستلام محسوبًا حتى سقف ٧٢ ساعة.",
-        "صف المجموعتين كما وُزّعتا حتى لو تعذّر الإرسال. أبقِ أرقام العملاء لدى الفرع.",
-      ],
-      ready_message: "هلا، طلبك رقم [رقم الإيصال] جاهز للاستلام من [اسم المغسلة]. تقدر تستلمه خلال أوقات الدوام [الساعات].",
-    };
-    const url = URL.createObjectURL(new Blob([JSON.stringify(plan, null, 2) + "\n"], { type: "application/json" }));
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "muwalif-laundry-pilot.json";
-    document.body.append(link);
-    link.click();
-    link.remove();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
-    byId("download-status").textContent = "تم تجهيز ملف خطة التجربة للتنزيل.";
-  });
-  form.querySelector("button[type=submit]").disabled = false;
-}
-
 setupFilm();
 setupCalculator();
-setupPlan();
