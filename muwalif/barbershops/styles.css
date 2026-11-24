@@ -285,6 +285,9 @@ legend { font-weight: 690; font-size: .92rem; margin-block-end: 11px; }
 .pilot-steps span { font-size: .81rem; color: var(--muted); margin-block-start: 3px; }
 .pilot-form > p:not(.download-status) { color: var(--muted); font-size: .8rem; margin-block-start: 7px; }
 .pilot-form .fields { margin-block: 17px; }
+.consent { display: flex; align-items: flex-start; gap: 9px; margin-block: 14px; font-size: .8rem; font-weight: 560; }
+.consent input { inline-size: 19px; block-size: 19px; flex: 0 0 auto; margin-block-start: 2px; }
+.download-status { min-block-size: 1.8em; margin-block-start: 10px; font-size: .82rem; font-weight: 650; }
 .faq-grid { display: grid; grid-template-columns: .7fr 1.3fr; align-items: start; gap: 25px; }
 .faq-list { border-block-start: 1px solid var(--line); }
 .faq-list details { border-block-end: 1px solid var(--line); }

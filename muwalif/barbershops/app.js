@@ -20,115 +20,56 @@ function setPressed(buttons, selected) {
 }
 
 function setupDemo() {
-  const modes = selectAll("[data-mode]");
-  const walkButtons = selectAll("[data-walk]");
-  const slotButtons = selectAll("[data-slot]");
-  const reminderButtons = selectAll("[data-reminder]");
+  const buttons = selectAll("[data-queue]");
   const status = byId("demo-status");
-  const request = byId("request-change");
-  const options = byId("change-options");
-  const approval = byId("approve-change");
-  const originalNote = byId("schedule-note").textContent;
-  let pending = false;
-
-  function announce(message, error = false) {
-    status.dataset.error = String(error);
-    status.textContent = message;
-  }
-
-  function showNewSlot(slotState) {
-    const row = byId("new-slot");
-    row.hidden = slotState === null;
-    row.classList.toggle("active", slotState === "confirmed");
-    byId("new-status").textContent = slotState === "confirmed" ? "حجز مؤكد · قص شعر" : "بانتظار الاعتماد";
-  }
-
-  function resetChoice() {
-    pending = false;
-    setPressed(slotButtons, null);
-    approval.hidden = true;
-    showNewSlot(null);
-  }
-
-  for (const button of modes) {
+  const messages = {
+    waiting: ["سجلنا دورك مع أحمد. قدامك شخصان، والوقت تقديري. ننبّهك إذا قرب دورك.", "الدور: ينتظر · التنبيه لم يُرسل"],
+    called: ["قرب دورك مع أحمد. ارجع للمحل خلال ١٠ دقائق. الوقت تقديري.", "الدور: تم النداء · رسالة التنبيه مثال يدوي ما لم يُفعّل الربط"],
+    service: ["وصل الزبون وبدأت خدمة قص الشعر مع أحمد.", "الدور: في الخدمة · الحلاق: أحمد"],
+    completed: ["اكتملت الخدمة وسجلها الفريق بقيمة ٥٠ ر.س.", "الدور: مكتمل · القيمة مسجلة وليست إثبات دفع آلي"],
+  };
+  for (const button of buttons) {
     button.addEventListener("click", () => {
-      setPressed(modes, button);
-      setPressed(walkButtons, null);
-      resetChoice();
-      const booking = button.dataset.mode === "booking";
-      byId("walk-panel").hidden = booking;
-      byId("booking-panel").hidden = !booking;
-      byId("old-slot").classList.add("active");
-      byId("old-status").textContent = "حجز مؤكد · قص شعر";
-      byId("walk-status").textContent = "متاح لقص الشعر";
-      byId("schedule-note").textContent = originalNote;
-      byId("confirmed-time").textContent = "٧:٣٠";
-      byId("booking-message").textContent = "تم تأكيد موعدك.";
-      request.hidden = false;
-      request.setAttribute("aria-expanded", "false");
-      options.hidden = true;
-      announce(booking ? "حجز أحمد مؤكد الساعة ٧:٣٠." : "دخول بدون موعد. سعد متاح الآن.");
+      setPressed(buttons, button);
+      const [message, note] = messages[button.dataset.queue];
+      byId("queue-message").textContent = message;
+      status.textContent = note;
     });
   }
+}
 
-  for (const button of walkButtons) {
-    button.addEventListener("click", () => {
-      setPressed(walkButtons, button);
-      const wait = button.dataset.walk === "wait";
-      byId("walk-status").textContent = wait ? "متاح لقص الشعر" : "قص شعر · أُسند لسعد";
-      byId("schedule-note").textContent = wait ? "دور أحمد · زبون في الانتظار. الحجز الساعة ٧:٣٠ مؤكد." : "سعد يبدأ قص الشعر الآن. حجز أحمد الساعة ٧:٣٠ مؤكد.";
-      announce(wait ? "سجّلنا دورك مع أحمد. نعلّمك إذا قرب دورك." : "سجّلنا لك قص شعر مع سعد.");
-    });
-  }
-
-  request.addEventListener("click", () => {
-    const open = options.hidden;
-    options.hidden = !open;
-    request.setAttribute("aria-expanded", String(open));
-    if (!open) {
-      resetChoice();
-      announce("حجزك الأصلي مؤكد الساعة ٧:٣٠.");
-    }
+function setupTrial() {
+  const form = byId("trial-form");
+  const status = byId("trial-status");
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!form.reportValidity()) return;
+    const submit = form.querySelector('[type="submit"]');
+    submit.disabled = true;
+    status.textContent = "جارٍ إرسال الطلب…";
+    const savedKey = sessionStorage.getItem("muwalif-barbershop-trial-key");
+    const idempotencyKey = savedKey || crypto.randomUUID();
+    sessionStorage.setItem("muwalif-barbershop-trial-key", idempotencyKey);
+    const data = new FormData(form);
+    const payload = {
+      businessName: data.get("shopName").trim(), sector: "barbershop", contactName: data.get("contactName").trim(),
+      district: data.get("district").trim(), phone: data.get("phone").trim(),
+      dailyCustomers: Number(data.get("dailyCustomers")), consent: data.get("consent") === "on", idempotencyKey,
+    };
+    try {
+      const response = await fetch("https://muwalif.ahmed-aljazayeerly.workers.dev/api/public/trial-requests", {
+        method: "POST", headers: { "content-type": "application/json", "X-Muwalif-Request": "1" }, body: JSON.stringify(payload),
+      });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || !result.data) throw new Error(result.error?.message || "تعذّر حفظ الطلب.");
+      const labels = { pending: "قيد المراجعة", waitlist: "قائمة الانتظار", accepted: "مقبول", active: "مفعّل" };
+      status.textContent = `حُفظ طلبك. المرجع: ${result.data.id}. الحالة: ${labels[result.data.status] || result.data.status}.`;
+      form.reset();
+      sessionStorage.removeItem("muwalif-barbershop-trial-key");
+    } catch (error) {
+      status.textContent = `${error.message || "تعذّر حفظ الطلب."} مدخلاتك محفوظة. حاول مرة أخرى.`;
+    } finally { submit.disabled = false; }
   });
-
-  for (const button of slotButtons) {
-    button.addEventListener("click", () => {
-      pending = button.dataset.slot === "available";
-      setPressed(slotButtons, pending ? button : null);
-      showNewSlot(pending ? "pending" : null);
-      approval.hidden = !pending;
-      announce(
-        pending ? "٨:٣٠ بانتظار الاعتماد. حجزك الأصلي ٧:٣٠ ما زال مؤكدًا." : "الوقت ما عاد متاح. اختر وقت ثاني. حجزك الأصلي ٧:٣٠ مؤكد.",
-        !pending,
-      );
-    });
-  }
-
-  approval.addEventListener("click", () => {
-    if (!pending) return;
-    pending = false;
-    showNewSlot("confirmed");
-    byId("old-slot").classList.remove("active");
-    byId("old-status").textContent = "الوقت متاح";
-    byId("confirmed-time").textContent = "٨:٣٠";
-    byId("booking-message").textContent = "تم اعتماد الموعد الجديد.";
-    byId("schedule-note").textContent = "انتقل حجز أحمد إلى ٨:٣٠. خانة ٧:٣٠ صارت متاحة.";
-    announce("تم اعتماد موعدك مع أحمد الساعة ٨:٣٠.");
-    options.hidden = true;
-    request.hidden = true;
-    request.setAttribute("aria-expanded", "false");
-    status.setAttribute("tabindex", "-1");
-    status.focus();
-  });
-
-  for (const button of reminderButtons) {
-    button.addEventListener("click", () => {
-      setPressed(reminderButtons, button);
-      byId("reminder-status").textContent = button.dataset.reminder === "yes"
-        ? "هلا، حان التذكير اللي طلبته. إذا ودك بموعد مع أحمد، رد علينا. لإيقاف التذكير اكتب «إيقاف»."
-        : "تم حفظ الزيارة في المثال. التذكير متوقف.";
-    });
-  }
 }
 
 function setupFilm() {
@@ -137,12 +78,27 @@ function setupFilm() {
   const frame = byId("film-frame");
   const help = byId("film-help");
   const phone = window.matchMedia("(max-width: 767px), (max-width: 960px) and (hover: none) and (pointer: coarse)");
+  const lengthButtons = selectAll("[data-film-length]");
+  let selectedLength = "90";
+
+  function setSources() {
+    const format = phone.matches ? "portrait" : "landscape";
+    film.poster = `./assets/video/${format}.webp`;
+    film.src = `./assets/video/${format}-${selectedLength}.mp4?v=shop`;
+    frame.dataset.format = format;
+    byId("film-wide-link").href = `./assets/video/landscape-${selectedLength}.mp4?v=shop`;
+    byId("film-tall-link").href = `./assets/video/portrait-${selectedLength}.mp4?v=shop`;
+  }
+
+  for (const button of lengthButtons) button.addEventListener("click", () => {
+    selectedLength = button.dataset.filmLength;
+    setPressed(lengthButtons, button);
+    setSources();
+    if (!film.hidden) film.play().catch(() => {});
+  });
 
   launch.addEventListener("click", () => {
-    const format = phone.matches ? "portrait" : "landscape";
-    film.poster = "./assets/video/" + format + ".webp";
-    film.src = "./assets/video/" + format + ".mp4?v=shop";
-    frame.dataset.format = format;
+    setSources();
     launch.hidden = true;
     film.hidden = false;
     film.focus({ preventScroll: true });
@@ -306,3 +262,4 @@ function setupCalculator() {
 setupDemo();
 setupFilm();
 setupCalculator();
+setupTrial();
