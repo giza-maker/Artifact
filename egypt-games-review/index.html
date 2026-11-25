@@ -1,14 +1,14 @@
-<!-- STUDIO AUDIT EDITION III | SUNLIT DAYLIGHT PALETTE, EDTECH STUDIO HEADER & FRIENDLY VOICE -->
+<!-- STUDIO AUDIT EDITION IV | FULL BILINGUAL ENGLISH & NATIVE RTL ARABIC -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" dir="ltr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Product, Brand &amp; Quality Studio Review — Prepared for Mohamed Shoukry</title>
-    <meta name="description" content="A candid, thorough product, brand, UX, content &amp; security studio review across Egypt Games for Technology's website, Google Play apps, and 189 presentation slides." />
+  <title>Product, Brand &amp; Quality Studio Review — Egypt Games for Technology</title>
+    <meta name="description" content="Bilingual (English &amp; Arabic) product, brand, UX, content &amp; security studio review across Egypt Games for Technology's website, Google Play apps, and 189 presentation slides." />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Product, Brand &amp; Quality Studio Review — Egypt Games for Technology" />
-  <meta property="og:description" content="Real apps shipped, real grit proven — a friendly, thorough 7-pillar studio audit &amp; 90-day gameplan prepared for Mohamed Shoukry." />
+  <meta property="og:description" content="مراجعة شاملة باللغتين العربية والإنجليزية للمنتجات والهوية والجودة وخطة تطوير 90 يوماً — Egypt Games for Technology" />
   <meta property="og:url" content="https://giza-maker.github.io/Artifact/egypt-games-review/" />
   <meta property="og:image" content="https://giza-maker.github.io/Artifact/egypt-games-review/assets/hero-studio.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
@@ -17,10 +17,10 @@
   <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="./styles.css" />
   <style>
-    /* Warm Daylight Studio Palette — Explicit Light, Airy, Sunlit Aesthetic */
+    /* Warm Daylight Studio Palette */
     .studio-canvas {
       --s-bg: #FAF7F2;
       --s-surface: #FFFFFF;
@@ -40,19 +40,37 @@
       --s-slate: #356685;
       --s-slate-soft: #EDF4F8;
 
-      background-color: var(--s-bg); font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+      background-color: var(--s-bg);
       color: var(--s-ink);
+      font-family: "Plus Jakarta Sans", "IBM Plex Sans Arabic", "Segoe UI", Tahoma, system-ui, -apple-system, sans-serif;
+    }
+
+    html[dir="rtl"] .studio-canvas {
+      font-family: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, system-ui, sans-serif;
     }
 
     .font-editorial {
       font-family: "Newsreader", "Palatino Linotype", "Book Antiqua", Palatino, Georgia, serif;
       letter-spacing: -0.018em;
     }
+    html[dir="rtl"] .font-editorial {
+      font-family: "Amiri", "IBM Plex Sans Arabic", Georgia, serif;
+      letter-spacing: 0;
+      line-height: 1.32;
+    }
 
+    /* Logical directional borders so LTR & RTL mirror automatically */
     .line-t { border-top: 1px solid var(--s-border); }
     .line-b { border-bottom: 1px solid var(--s-border); }
-    .line-l { border-left: 1px solid var(--s-border); }
-    .line-r { border-right: 1px solid var(--s-border); }
+    .line-is { border-inline-start: 1px solid var(--s-border); }
+    .line-ie { border-inline-end: 1px solid var(--s-border); }
+    @media (min-width: 640px) {
+      .sm-line-ie { border-inline-end: 1px solid var(--s-border); }
+    }
+    @media (min-width: 1024px) {
+      .lg-line-ie { border-inline-end: 1px solid var(--s-border); }
+    }
+
     .card-warm {
       background-color: var(--s-surface);
       border: 1px solid var(--s-border);
@@ -63,15 +81,28 @@
       border: 1px solid var(--s-border);
     }
 
-    /* Reading progress hairline */
+    /* Reading progress hairline — mirrors origin in RTL */
     #scrollProgress {
       transform-origin: left center;
       transform: scaleX(0);
       transition: transform 80ms linear;
       background: linear-gradient(90deg, var(--s-teal), var(--s-ochre), var(--s-terra));
     }
+    html[dir="rtl"] #scrollProgress {
+      transform-origin: right center;
+      background: linear-gradient(270deg, var(--s-teal), var(--s-ochre), var(--s-terra));
+    }
 
-    /* Sunlit photographic frames — ZERO black overlays */
+    /* Language crossfade */
+    #pageRoot {
+      transition: opacity 200ms ease, transform 200ms ease;
+    }
+    #pageRoot.lang-switching {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+
+    /* Sunlit photographic frames */
     .photo-frame {
       overflow: hidden;
       border-radius: 8px;
@@ -106,19 +137,19 @@
     .delay-1 { transition-delay: 85ms; }
     .delay-2 { transition-delay: 170ms; }
 
-    /* Gliding chapter nav indicator */
+    /* Gliding indicators explicitly anchored left:0 for pixel-accurate LTR & RTL positioning */
     #navIndicator {
       position: absolute;
+      left: 0;
       bottom: -1px;
       height: 2px;
       background-color: var(--s-teal);
-      transition: transform 400ms cubic-bezier(0.22, 1, 0.36, 1), width 400ms cubic-bezier(0.22, 1, 0.36, 1);
+      transition: transform 380ms cubic-bezier(0.22, 1, 0.36, 1), width 380ms cubic-bezier(0.22, 1, 0.36, 1);
       pointer-events: none;
     }
-
-    /* Gliding product selector indicator */
     #dossierIndicator {
       position: absolute;
+      left: 0;
       bottom: -1px;
       height: 2.5px;
       background-color: var(--s-teal);
@@ -128,7 +159,7 @@
 
     /* Product dossier crossfade + gentle blur transition */
     .dossier-stage {
-      transition: opacity 260ms cubic-bezier(0.22, 1, 0.36, 1), transform 260ms cubic-bezier(0.22, 1, 0.36, 1), filter 260ms ease;
+      transition: opacity 250ms cubic-bezier(0.22, 1, 0.36, 1), transform 250ms cubic-bezier(0.22, 1, 0.36, 1), filter 250ms ease;
     }
     .dossier-stage.switching {
       opacity: 0;
@@ -138,7 +169,7 @@
 
     /* Forensic exhibit crossfade */
     .exhibit-fade {
-      transition: opacity 320ms cubic-bezier(0.22, 1, 0.36, 1), transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+      transition: opacity 300ms cubic-bezier(0.22, 1, 0.36, 1), transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
     }
     .exhibit-fade.fade-out {
       opacity: 0;
@@ -170,7 +201,7 @@
       transform: rotate(180deg);
     }
 
-    /* Warm Accent Pills & Left Rules */
+    /* Warm Accent Pills & Logical Inline-Start Rules */
     .pill-terra {
       color: var(--s-terra);
       background-color: var(--s-terra-soft);
@@ -192,9 +223,10 @@
       border: 1px solid #C4D9E6;
     }
 
-    .accent-l-terra { border-left: 3px solid var(--s-terra); }
-    .accent-l-ochre { border-left: 3px solid var(--s-ochre); }
-    .accent-l-teal  { border-left: 3px solid var(--s-teal); }
+    .accent-is-terra { border-inline-start: 3px solid var(--s-terra); }
+    .accent-is-ochre { border-inline-start: 3px solid var(--s-ochre); }
+    .accent-is-teal  { border-inline-start: 3px solid var(--s-teal); }
+    .ps-inline-3 { padding-inline-start: 0.75rem; }
 
     .btn-studio-active {
       background-color: var(--s-teal);
@@ -211,13 +243,29 @@
       color: var(--s-ink);
     }
 
+    .lang-pill-active {
+      background-color: var(--s-teal);
+      color: #FFFFFF;
+    }
+    .lang-pill-idle {
+      color: var(--s-muted);
+    }
+    .lang-pill-idle:hover {
+      color: var(--s-ink);
+    }
+
+    .ltr-token {
+      direction: ltr;
+      unicode-bidi: isolate;
+      display: inline-block;
+    }
     .rtl-specimen {
       direction: rtl;
       unicode-bidi: isolate;
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .reveal, .photo-img, .dossier-stage, .exhibit-fade, .score-fill, .audit-drawer, #navIndicator, #dossierIndicator {
+      .reveal, .photo-img, .dossier-stage, .exhibit-fade, .score-fill, .audit-drawer, #navIndicator, #dossierIndicator, #pageRoot {
         transition: none !important;
         transform: none !important;
         opacity: 1 !important;
@@ -241,107 +289,95 @@
   <!-- STICKY WARM ALABASTER HEADER BAR -->
   <header class="sticky top-0 z-40 line-b no-print" style="background-color: rgba(250, 247, 242, 0.93); backdrop-filter: blur(12px);">
     <div class="max-w-6xl mx-auto px-5 sm:px-8">
-      <div class="flex items-center justify-between py-3 line-b">
-        <div class="flex items-center gap-3">
-          <span class="w-2.5 h-2.5 rounded-full inline-block" style="background-color: var(--s-teal);"></span>
-          <span class="font-mono text-xs uppercase tracking-[0.14em] font-semibold" style="color: var(--s-ink);">PRODUCT, BRAND &amp; QUALITY STUDIO REVIEW</span>
-          <span class="hidden sm:inline-block text-xs" style="color: var(--s-subtle);">&middot;</span>
-          <span class="hidden sm:inline-block text-xs" style="color: var(--s-muted);">Prepared for Mohamed Shoukry</span>
+      <div class="flex flex-wrap items-center justify-between gap-3 py-3 line-b">
+        <div class="flex items-center gap-2.5">
+          <span class="w-2.5 h-2.5 rounded-full inline-block flex-shrink-0" style="background-color: var(--s-teal);"></span>
+          <span id="hdrBrandTitle" class="text-xs uppercase tracking-[0.1em] font-semibold" style="color: var(--s-ink);">PRODUCT, BRAND &amp; QUALITY STUDIO REVIEW</span>
+          <span class="hidden md:inline-block text-xs" style="color: var(--s-subtle);">&middot;</span>
+          <span id="hdrPreparedFor" class="hidden md:inline-block text-xs" style="color: var(--s-muted);">Prepared for Mohamed Shoukry</span>
         </div>
-        <button onclick="window.print()" class="text-xs font-medium px-3.5 py-1.5 rounded-md btn-studio-idle transition cursor-pointer">
-          Print / Save as PDF
-        </button>
+
+        <div class="flex items-center gap-2.5">
+          <!-- BILINGUAL SWITCHER -->
+          <div class="inline-flex items-center rounded-md p-0.5 border border-[#D5CCB8] bg-white" role="group" aria-label="Language switcher">
+            <button id="langBtnEn" onclick="setLanguage('en')" class="px-2.5 py-1 rounded text-xs font-semibold transition cursor-pointer lang-pill-active">
+              EN
+            </button>
+            <button id="langBtnAr" onclick="setLanguage('ar')" class="px-2.5 py-1 rounded text-xs font-semibold transition cursor-pointer lang-pill-idle">
+              العربية
+            </button>
+          </div>
+
+          <button id="hdrPrintBtn" onclick="window.print()" class="text-xs font-medium px-3 py-1.5 rounded-md btn-studio-idle transition cursor-pointer">
+            Print / Save PDF
+          </button>
+        </div>
       </div>
 
       <nav id="chapterNav" class="relative flex items-center gap-6 overflow-x-auto py-2.5 text-xs">
-        <button onclick="scrollToSection('sec-note', this)" data-target="sec-note" class="chapter-link whitespace-nowrap py-1 font-semibold transition cursor-pointer" style="color: var(--s-ink);">
-          01. Partner Note
-        </button>
-        <button onclick="scrollToSection('sec-scorecard', this)" data-target="sec-scorecard" class="chapter-link whitespace-nowrap py-1 transition cursor-pointer" style="color: var(--s-muted);">
-          02. 7-Pillar Health
-        </button>
-        <button onclick="scrollToSection('sec-brand', this)" data-target="sec-brand" class="chapter-link whitespace-nowrap py-1 transition cursor-pointer" style="color: var(--s-muted);">
-          03. Brand &amp; Website
-        </button>
-        <button onclick="scrollToSection('sec-products', this)" data-target="sec-products" class="chapter-link whitespace-nowrap py-1 transition cursor-pointer" style="color: var(--s-muted);">
-          04. App Deep-Dives
-        </button>
-        <button onclick="scrollToSection('sec-ledger', this)" data-target="sec-ledger" class="chapter-link whitespace-nowrap py-1 transition cursor-pointer" style="color: var(--s-muted);">
-          05. All 36 Fixes
-        </button>
-        <button onclick="scrollToSection('sec-roadmap', this)" data-target="sec-roadmap" class="chapter-link whitespace-nowrap py-1 transition cursor-pointer" style="color: var(--s-muted);">
-          06. 90-Day Gameplan
-        </button>
-        <div id="navIndicator" style="width: 95px; transform: translateX(0px);"></div>
+        <button onclick="scrollToSection('sec-note', this)" data-target="sec-note" id="nav01" class="chapter-link whitespace-nowrap py-1 font-semibold transition cursor-pointer" style="color: var(--s-ink);"></button>
+        <button onclick="scrollToSection('sec-scorecard', this)" data-target="sec-scorecard" id="nav02" class="chapter-link whitespace-nowrap py-1 transition cursor-pointer" style="color: var(--s-muted);"></button>
+        <button onclick="scrollToSection('sec-brand', this)" data-target="sec-brand" id="nav03" class="chapter-link whitespace-nowrap py-1 transition cursor-pointer" style="color: var(--s-muted);"></button>
+        <button onclick="scrollToSection('sec-products', this)" data-target="sec-products" id="nav04" class="chapter-link whitespace-nowrap py-1 transition cursor-pointer" style="color: var(--s-muted);"></button>
+        <button onclick="scrollToSection('sec-ledger', this)" data-target="sec-ledger" id="nav05" class="chapter-link whitespace-nowrap py-1 transition cursor-pointer" style="color: var(--s-muted);"></button>
+        <button onclick="scrollToSection('sec-roadmap', this)" data-target="sec-roadmap" id="nav06" class="chapter-link whitespace-nowrap py-1 transition cursor-pointer" style="color: var(--s-muted);"></button>
+        <div id="navIndicator" style="width: 90px; transform: translateX(0px);"></div>
       </nav>
     </div>
   </header>
 
-  <main class="max-w-6xl mx-auto px-5 sm:px-8 pb-20">
+  <main id="pageRoot" class="max-w-6xl mx-auto px-5 sm:px-8 pb-20">
 
     <!-- =================================================================== -->
-    <!-- BRIGHT SUNLIT EDITORIAL HERO TAILORED TO EDTECH & MOBILE APPS       -->
+    <!-- BRIGHT SUNLIT EDITORIAL HERO                                        -->
     <!-- =================================================================== -->
     <section class="pt-8 sm:pt-10 pb-12 line-b space-y-7">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
         <div class="lg:col-span-6 space-y-4 reveal">
-          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium pill-teal">
-            <span>Candid Portfolio &amp; Product Audit</span>
-            <span>&middot;</span>
-            <span>Egypt Games for Technology</span>
-          </div>
+          <div id="heroBadge" class="inline-flex flex-wrap items-center gap-2 px-3 py-1 rounded-full text-xs font-medium pill-teal"></div>
 
-          <h1 class="font-editorial text-3xl sm:text-4xl lg:text-[2.65rem] leading-[1.15] font-normal" style="color: var(--s-ink);">
-            Real apps shipped, real grit proven — now let’s polish what matters so it truly wins.
-          </h1>
+          <h1 id="heroTitle" class="font-editorial text-3xl sm:text-4xl lg:text-[2.6rem] leading-[1.18] font-normal" style="color: var(--s-ink);"></h1>
 
-          <p class="text-sm leading-relaxed" style="color: var(--s-muted);">
-            A friendly, thorough studio review across your bilingual website, your five live Google Play apps, and all <strong>189 presentation slides</strong> — pinpointing every brand, UX, content, security, and commercial gap standing in your way, and mapping how to turn your two strongest products into trusted businesses.
-          </p>
+          <p id="heroDesc" class="text-sm leading-relaxed" style="color: var(--s-muted);"></p>
 
           <div class="flex flex-wrap gap-3 pt-1 no-print">
-            <button onclick="scrollToSection('sec-products', document.querySelector('[data-target=sec-products]'))" class="px-4 py-2 rounded-md text-xs font-semibold btn-studio-active transition cursor-pointer">
-              Explore Product Reviews &rarr;
-            </button>
-            <button onclick="scrollToSection('sec-roadmap', document.querySelector('[data-target=sec-roadmap]'))" class="px-4 py-2 rounded-md text-xs font-semibold btn-studio-idle transition cursor-pointer">
-              See What’s Worth Scaling
-            </button>
+            <button id="heroBtnPrimary" onclick="scrollToSection('sec-products', document.querySelector('[data-target=sec-products]'))" class="px-4 py-2 rounded-md text-xs font-semibold btn-studio-active transition cursor-pointer"></button>
+            <button id="heroBtnSecondary" onclick="scrollToSection('sec-roadmap', document.querySelector('[data-target=sec-roadmap]'))" class="px-4 py-2 rounded-md text-xs font-semibold btn-studio-idle transition cursor-pointer"></button>
           </div>
         </div>
 
-        <!-- FULL-BRIGHTNESS TAILORED EDTECH & MOBILE STUDIO HERO PHOTO -->
         <div class="lg:col-span-6 reveal delay-1">
           <div class="photo-frame aspect-[16/10] shadow-sm">
-            <img src="./assets/hero-studio.jpg" alt="Sunlit EdTech and mobile app design desk with phones, tablet, and wooden learning blocks" class="photo-img" />
+            <img src="./assets/hero-studio.jpg" alt="Sunlit EdTech and mobile app design desk" class="photo-img" />
           </div>
           <div class="flex items-center justify-between pt-2 px-1 text-xs" style="color: var(--s-subtle);">
-            <span>Interactive Learning, Mobile Craft &amp; Studio Identity</span>
-            <span class="font-mono">7 Decks + Web + Play Store</span>
+            <span id="heroCaptionLeft"></span>
+            <span id="heroCaptionRight" class="font-mono"></span>
           </div>
         </div>
       </div>
 
-      <!-- WARM IVORY SUMMARY METRICS -->
+      <!-- SUMMARY METRICS -->
       <div class="grid grid-cols-2 sm:grid-cols-4 rounded-lg overflow-hidden card-warm reveal delay-2">
-        <div class="p-4 sm:p-5 line-r line-b sm:border-b-0">
-          <div class="text-xs font-medium" style="color: var(--s-muted);">Total Scope Reviewed</div>
-          <div class="font-editorial text-2xl sm:text-3xl mt-1" style="color: var(--s-ink);"><span class="counter" data-target="189">0</span> Slides</div>
-          <div class="text-xs mt-1" style="color: var(--s-subtle);">Across 7 Canva decks &amp; web</div>
+        <div class="p-4 sm:p-5 line-ie line-b sm:border-b-0">
+          <div id="kpi1Label" class="text-xs font-medium" style="color: var(--s-muted);"></div>
+          <div class="font-editorial text-2xl sm:text-3xl mt-1" style="color: var(--s-ink);"><span class="counter" data-target="189">189</span> <span id="kpi1Unit"></span></div>
+          <div id="kpi1Sub" class="text-xs mt-1" style="color: var(--s-subtle);"></div>
         </div>
-        <div class="p-4 sm:p-5 sm:line-r line-b sm:border-b-0">
-          <div class="text-xs font-medium" style="color: var(--s-muted);">Live Shipped Apps</div>
-          <div class="font-editorial text-2xl sm:text-3xl mt-1" style="color: var(--s-teal);"><span class="counter" data-target="5">0</span> Titles</div>
-          <div class="text-xs mt-1" style="color: var(--s-subtle);">Published on Google Play</div>
+        <div class="p-4 sm:p-5 sm-line-ie line-b sm:border-b-0">
+          <div id="kpi2Label" class="text-xs font-medium" style="color: var(--s-muted);"></div>
+          <div class="font-editorial text-2xl sm:text-3xl mt-1" style="color: var(--s-teal);"><span class="counter" data-target="5">5</span> <span id="kpi2Unit"></span></div>
+          <div id="kpi2Sub" class="text-xs mt-1" style="color: var(--s-subtle);"></div>
         </div>
-        <div class="p-4 sm:p-5 line-r">
-          <div class="text-xs font-medium" style="color: var(--s-muted);">Urgent Trust Blockers</div>
-          <div class="font-editorial text-2xl sm:text-3xl mt-1" style="color: var(--s-terra);"><span class="counter" data-target="11">0</span> Fixes</div>
-          <div class="text-xs mt-1" style="color: var(--s-subtle);">Out of 36 specific items</div>
+        <div class="p-4 sm:p-5 line-ie">
+          <div id="kpi3Label" class="text-xs font-medium" style="color: var(--s-muted);"></div>
+          <div class="font-editorial text-2xl sm:text-3xl mt-1" style="color: var(--s-terra);"><span class="counter" data-target="11">11</span> <span id="kpi3Unit"></span></div>
+          <div id="kpi3Sub" class="text-xs mt-1" style="color: var(--s-subtle);"></div>
         </div>
         <div class="p-4 sm:p-5">
-          <div class="text-xs font-medium" style="color: var(--s-muted);">Recommended Focus</div>
-          <div class="font-editorial text-2xl sm:text-3xl mt-1" style="color: var(--s-ochre);"><span class="counter" data-target="2">0</span> Flagships</div>
-          <div class="text-xs mt-1" style="color: var(--s-subtle);">Highest commercial return</div>
+          <div id="kpi4Label" class="text-xs font-medium" style="color: var(--s-muted);"></div>
+          <div class="font-editorial text-2xl sm:text-3xl mt-1" style="color: var(--s-ochre);"><span class="counter" data-target="2">2</span> <span id="kpi4Unit"></span></div>
+          <div id="kpi4Sub" class="text-xs mt-1" style="color: var(--s-subtle);"></div>
         </div>
       </div>
     </section>
@@ -352,35 +388,12 @@
     <section id="sec-note" class="py-12 sm:py-14 line-b">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
         <div class="lg:col-span-4 space-y-2.5 reveal">
-          <div class="font-mono text-xs uppercase tracking-wider font-semibold" style="color: var(--s-teal);">01 &middot; Studio Perspective</div>
-          <h2 class="font-editorial text-2xl sm:text-3xl leading-snug">A Candid Note from Friends Who Audit Products</h2>
-          <p class="text-xs leading-relaxed" style="color: var(--s-muted);">
-            Why we went through every single screen and slide — without sugarcoating and with full respect for your work.
-          </p>
+          <div id="sec01Kicker" class="font-mono text-xs uppercase tracking-wider font-semibold" style="color: var(--s-teal);"></div>
+          <h2 id="sec01Title" class="font-editorial text-2xl sm:text-3xl leading-snug"></h2>
+          <p id="sec01Sub" class="text-xs leading-relaxed" style="color: var(--s-muted);"></p>
         </div>
 
-        <div class="lg:col-span-8 card-warm rounded-lg p-6 sm:p-8 space-y-4 reveal delay-1">
-          <p class="font-editorial text-xl" style="color: var(--s-ink);">
-            Hey Mohamed,
-          </p>
-          <p class="text-sm leading-relaxed" style="color: var(--s-muted);">
-            First, credit where it is genuinely due: <strong style="color: var(--s-ink);">you actually build and ship.</strong> Most people spend years talking about app ideas without ever putting a single build into users' hands. You have five live Android apps on Google Play, an encouraging 4.8-star early response from parents on <em>Muslims School</em>, and a working multi-tenant microlearning and quiz engine behind <em>Retailo Bites</em>. That builder persistence is the hardest part to teach.
-          </p>
-          <p class="text-sm leading-relaxed" style="color: var(--s-muted);">
-            Because we want to see your hard work turn into real commercial success, we audited your entire portfolio the exact way an outside investor, school principal, retail chain director, or app-store reviewer looks at it. And the honest truth is clear: <strong style="color: var(--s-ink);">your bottleneck right now isn't coding — it's focus, brand presentation, content proofreading, and last-mile quality control.</strong>
-          </p>
-          <p class="text-sm leading-relaxed" style="color: var(--s-muted);">
-            Right now, someone opening your links runs into things that unfairly undersell your effort: draft notes left live on your homepage, plaintext user passwords visible in admin screenshots, unproofread religious text in children's lessons, Disney and Marvel characters that block legal store approval, and pharmacy data still sitting inside school presentations. None of these happen because you can't build — they happen when one builder tries to juggle six different products at once without a dedicated Brand, UX, QA, and Commercialization layer beside him.
-          </p>
-          <p class="text-sm leading-relaxed" style="color: var(--s-muted);">
-            Every single issue in this review is fixable. Even better, you don't need to fix all six apps at once — <strong style="color: var(--s-ink);">doubling down on your two strongest winners (<em>Muslims School</em> and <em>Retailo Bites</em>)</strong> gives you a clean, realistic 90-day path forward.
-          </p>
-
-          <div class="pt-4 line-t flex flex-wrap items-center justify-between gap-3 text-xs" style="color: var(--s-subtle);">
-            <span class="font-medium" style="color: var(--s-ink);">Our 7-Lens Audit Practice</span>
-            <span>Brand &middot; Strategy &middot; UI/UX &amp; RTL &middot; Security &amp; QA &middot; Content Accuracy &middot; Store/IP Compliance &middot; Monetization</span>
-          </div>
-        </div>
+        <div id="partnerLetterBody" class="lg:col-span-8 card-warm rounded-lg p-6 sm:p-8 space-y-4 reveal delay-1"></div>
       </div>
     </section>
 
@@ -390,32 +403,30 @@
     <section id="sec-scorecard" class="py-12 sm:py-14 line-b">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
         <div class="lg:col-span-5 space-y-4 reveal">
-          <div class="font-mono text-xs uppercase tracking-wider font-semibold" style="color: var(--s-teal);">02 &middot; 7-Pillar Health Check</div>
-          <h2 class="font-editorial text-2xl sm:text-3xl leading-snug">Where You Stand Today vs. 90-Day Potential</h2>
-          <p class="text-xs leading-relaxed" style="color: var(--s-muted);">
-            When schools, companies, or parents decide whether to trust a software product, they judge all seven areas below together. Notice how every low score today comes from polish, positioning, and QA — things we can systematically upgrade.
-          </p>
+          <div id="sec02Kicker" class="font-mono text-xs uppercase tracking-wider font-semibold" style="color: var(--s-teal);"></div>
+          <h2 id="sec02Title" class="font-editorial text-2xl sm:text-3xl leading-snug"></h2>
+          <p id="sec02Sub" class="text-xs leading-relaxed" style="color: var(--s-muted);"></p>
 
           <div class="card-warm rounded-lg p-5">
             <div class="flex items-center justify-between text-xs font-medium pb-3 line-b" style="color: var(--s-muted);">
-              <span>7-Discipline Balance</span>
-              <span class="font-mono">Today vs. Target</span>
+              <span id="radarHeaderLeft"></span>
+              <span id="radarHeaderRight" class="font-mono"></span>
             </div>
             <svg id="warmRadar" viewBox="0 0 320 295" class="w-full h-auto mt-2 overflow-visible"></svg>
-            <div class="flex items-center justify-between pt-3 line-t text-xs">
+            <div class="flex flex-wrap items-center justify-between gap-2 pt-3 line-t text-xs">
               <span class="inline-flex items-center gap-1.5" style="color: var(--s-ochre);">
-                <span class="w-2.5 h-2.5 rounded-full inline-block" style="background-color: var(--s-ochre);"></span> Current Baseline (2.3 / 10)
+                <span class="w-2.5 h-2.5 rounded-full inline-block" style="background-color: var(--s-ochre);"></span>
+                <span id="radarLegendCurrent"></span>
               </span>
               <span class="inline-flex items-center gap-1.5" style="color: var(--s-teal);">
-                <span class="w-2.5 h-2.5 rounded-full inline-block" style="background-color: var(--s-teal);"></span> 90-Day Target (9.1 / 10)
+                <span class="w-2.5 h-2.5 rounded-full inline-block" style="background-color: var(--s-teal);"></span>
+                <span id="radarLegendTarget"></span>
               </span>
             </div>
           </div>
         </div>
 
-        <div id="scorecardRows" class="lg:col-span-7 card-warm rounded-lg p-6 divide-y divide-[#E5DECF] reveal delay-1">
-          <!-- Populated dynamically -->
-        </div>
+        <div id="scorecardRows" class="lg:col-span-7 card-warm rounded-lg p-6 divide-y divide-[#E5DECF] reveal delay-1"></div>
       </div>
     </section>
 
@@ -425,11 +436,9 @@
     <section id="sec-brand" class="py-12 sm:py-14 line-b space-y-8">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
         <div class="lg:col-span-6 space-y-3 reveal">
-          <div class="font-mono text-xs uppercase tracking-wider font-semibold" style="color: var(--s-teal);">03 &middot; Brand &amp; Digital Storefront</div>
-          <h2 class="font-editorial text-2xl sm:text-3xl leading-snug">First Impressions on <code class="text-xl font-mono" style="color: var(--s-slate);">egyptgames2022.online</code></h2>
-          <p class="text-xs leading-relaxed" style="color: var(--s-muted);">
-            Your website is your digital handshake. Right now, mixing a 2022 <code class="font-mono">.online</code> domain and personal Gmail with PlayStation stock photos, unfinished draft pages, and a half-translated Arabic site makes a real studio look like an unfinished student project.
-          </p>
+          <div id="sec03Kicker" class="font-mono text-xs uppercase tracking-wider font-semibold" style="color: var(--s-teal);"></div>
+          <h2 id="sec03Title" class="font-editorial text-2xl sm:text-3xl leading-snug"></h2>
+          <p id="sec03Sub" class="text-xs leading-relaxed" style="color: var(--s-muted);"></p>
         </div>
 
         <div class="lg:col-span-6 reveal delay-1">
@@ -442,64 +451,33 @@
       <!-- INTERACTIVE LIVE SCREENSHOT COMPARISON -->
       <div class="card-warm rounded-lg overflow-hidden reveal">
         <div class="flex flex-wrap items-center justify-between gap-3 px-5 py-3.5 line-b card-sand">
-          <div class="text-xs font-semibold" style="color: var(--s-ink);">
-            Live Portfolio Evidence &mdash; Switch Captures to Inspect
-          </div>
-          <div class="flex items-center gap-2">
-            <button onclick="switchExhibit(0)" id="exBtn0" class="px-3 py-1.5 rounded-md text-xs font-medium btn-studio-active transition cursor-pointer">
-              1. Homepage Hero (<code class="font-mono">egyptgames2022.online</code>)
-            </button>
-            <button onclick="switchExhibit(1)" id="exBtn1" class="px-3 py-1.5 rounded-md text-xs font-medium btn-studio-idle transition cursor-pointer">
-              2. Shared App UI (<em>Retailo Bites / Trainova</em>)
-            </button>
+          <div id="exhibitBarTitle" class="text-xs font-semibold" style="color: var(--s-ink);"></div>
+          <div class="flex flex-wrap items-center gap-2">
+            <button onclick="switchExhibit(0)" id="exBtn0" class="px-3 py-1.5 rounded-md text-xs font-medium btn-studio-active transition cursor-pointer"></button>
+            <button onclick="switchExhibit(1)" id="exBtn1" class="px-3 py-1.5 rounded-md text-xs font-medium btn-studio-idle transition cursor-pointer"></button>
           </div>
         </div>
 
         <div id="exhibitStage" class="exhibit-fade grid grid-cols-1 lg:grid-cols-12">
-          <div class="lg:col-span-7 p-5 line-b lg:border-b-0 lg:line-r flex items-center justify-center" style="background-color: var(--s-sand);">
+          <div class="lg:col-span-7 p-5 line-b lg:border-b-0 lg-line-ie flex items-center justify-center" style="background-color: var(--s-sand);">
             <img id="exhibitImg" src="./assets/evidence-site.jpg" alt="Portfolio capture" class="w-full h-auto max-h-[330px] object-contain rounded border border-[#D5CCB8] bg-white p-1.5 shadow-sm" />
           </div>
           <div class="lg:col-span-5 p-6 flex flex-col justify-between space-y-4">
             <div class="space-y-2.5">
-              <span id="exhibitTag" class="inline-block px-2.5 py-0.5 rounded text-xs font-medium pill-terra">Website First Impression</span>
-              <h3 id="exhibitTitle" class="font-editorial text-xl leading-snug">Game Icon Stretched Behind English Studio Copy</h3>
-              <p id="exhibitDesc" class="text-xs leading-relaxed" style="color: var(--s-muted);">
-                The homepage stretches the square 3D Arabic icon for <em>10 Tawla</em> across the entire hero background behind white English text. Combined with PlayStation 4 and Nintendo Switch Mario Kart stock photos further down the page — and mixing a 2.3&#9733; backgammon game, a prayer app, and a baby-shopping app alongside children's EdTech — visitors aren't sure what your core specialty actually is.
-              </p>
+              <span id="exhibitTag" class="inline-block px-2.5 py-0.5 rounded text-xs font-medium pill-terra"></span>
+              <h3 id="exhibitTitle" class="font-editorial text-xl leading-snug"></h3>
+              <p id="exhibitDesc" class="text-xs leading-relaxed" style="color: var(--s-muted);"></p>
             </div>
             <div class="pt-4 line-t space-y-1">
-              <div class="text-xs font-semibold" style="color: var(--s-teal);">How We Upgrade This</div>
-              <p id="exhibitFix" class="text-xs leading-relaxed" style="color: var(--s-muted);">
-                Move to a clean, timeless <code class="font-mono">.com</code> or <code class="font-mono">.eg</code> domain with workspace email, showcase crisp mockups of your actual apps, and keep consumer casual games separate from B2B &amp; educational software.
-              </p>
+              <div id="exhibitFixLabel" class="text-xs font-semibold" style="color: var(--s-teal);"></div>
+              <p id="exhibitFix" class="text-xs leading-relaxed" style="color: var(--s-muted);"></p>
             </div>
           </div>
         </div>
       </div>
 
       <!-- WEBSITE QUICK CARDS -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 reveal">
-        <div class="card-warm rounded-lg p-5 accent-l-terra space-y-2">
-          <div class="text-xs font-semibold" style="color: var(--s-terra);">Live Editor Placeholders &amp; Dead Links</div>
-          <p class="text-xs leading-relaxed" style="color: var(--s-muted);">
-            <em>Elkeetab Alnateek</em> still shows your internal note <code class="font-mono">(Placeholder until the game is ready — you can update the details later)</code> on both English and Arabic pages with an empty button that reloads the page. Meanwhile, <code class="font-mono">Services</code> in the top menu does nothing (<code class="font-mono">#services</code> is missing), and live game <em>Domino Square</em> isn't listed at all.
-          </p>
-        </div>
-
-        <div class="card-warm rounded-lg p-5 accent-l-ochre space-y-2">
-          <div class="text-xs font-semibold" style="color: var(--s-ochre);">Unfinished Arabic Page (<code class="font-mono">/ar/</code>)</div>
-          <p class="text-xs leading-relaxed" style="color: var(--s-muted);">
-            On the Arabic homepage, the top menu, hero title/text, app names, and <code class="font-mono">&raquo; Read more</code> buttons are still in English inside an RTL layout (pushing periods to the start of lines like <code class="font-mono">.of all ages</code>). Clicking <code class="font-mono">Contact Us</code> scrolls to a completely empty blue band with no form, and navbar links send users back to English.
-          </p>
-        </div>
-
-        <div class="card-warm rounded-lg p-5 accent-l-terra space-y-2">
-          <div class="text-xs font-semibold" style="color: var(--s-terra);">404 Privacy Policy &amp; Draft Sitemap</div>
-          <p class="text-xs leading-relaxed" style="color: var(--s-muted);">
-            <code class="font-mono">/privacy-policy/</code> returns a <strong>404 error</strong> — a serious Google Play Families risk when publishing a 3+ kids' app with ads. Also, <code class="font-mono">/wp-sitemap.xml</code> publicly exposes 9 blank or half-built WordPress draft pages (<code class="font-mono">/contact/</code>, <code class="font-mono">/coverage/</code>, <code class="font-mono">/blog/</code>, <code class="font-mono">/landing-page/</code>).
-          </p>
-        </div>
-      </div>
+      <div id="webCardsGrid" class="grid grid-cols-1 md:grid-cols-3 gap-5 reveal"></div>
     </section>
 
     <!-- =================================================================== -->
@@ -508,11 +486,9 @@
     <section id="sec-products" class="py-12 sm:py-14 line-b space-y-7">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
         <div class="lg:col-span-6 space-y-3 reveal">
-          <div class="font-mono text-xs uppercase tracking-wider font-semibold" style="color: var(--s-teal);">04 &middot; Product &amp; Deck Reviews</div>
-          <h2 class="font-editorial text-2xl sm:text-3xl leading-snug">Inside All Seven Presentations (189 Slides)</h2>
-          <p class="text-xs leading-relaxed" style="color: var(--s-muted);">
-            Click through each product group below to see what works, what caught our eye on specific slides, and interactive <strong>Current vs. Clean Fix</strong> previews for the most important items.
-          </p>
+          <div id="sec04Kicker" class="font-mono text-xs uppercase tracking-wider font-semibold" style="color: var(--s-teal);"></div>
+          <h2 id="sec04Title" class="font-editorial text-2xl sm:text-3xl leading-snug"></h2>
+          <p id="sec04Sub" class="text-xs leading-relaxed" style="color: var(--s-muted);"></p>
         </div>
         <div class="lg:col-span-6 reveal delay-1">
           <div class="photo-frame aspect-[16/8]">
@@ -524,30 +500,13 @@
       <!-- GLIDING PRODUCT SELECTOR -->
       <div class="card-warm rounded-lg overflow-hidden">
         <div id="dossierTabs" class="relative grid grid-cols-2 lg:grid-cols-4 line-b card-sand">
-          <button onclick="selectDossier('ms', this)" class="dossier-btn p-4 text-left line-r transition cursor-pointer bg-white">
-            <div class="text-xs font-semibold" style="color: var(--s-teal);">Scale First &middot; Consumer &amp; Schools</div>
-            <div class="font-editorial text-lg mt-0.5" style="color: var(--s-ink);">Muslims School</div>
-            <div class="text-xs mt-0.5" style="color: var(--s-subtle);">14 Slides AR + Google Play</div>
-          </button>
-          <button onclick="selectDossier('rb', this)" class="dossier-btn p-4 text-left lg:line-r transition cursor-pointer opacity-75 hover:opacity-100">
-            <div class="text-xs font-semibold" style="color: var(--s-slate);">Best B2B Engine &middot; SaaS</div>
-            <div class="font-editorial text-lg mt-0.5" style="color: var(--s-ink);">Retailo &amp; Trainova</div>
-            <div class="text-xs mt-0.5" style="color: var(--s-subtle);">113 Slides (3 Decks)</div>
-          </button>
-          <button onclick="selectDossier('ak', this)" class="dossier-btn p-4 text-left line-r line-t lg:border-t-0 transition cursor-pointer opacity-75 hover:opacity-100">
-            <div class="text-xs font-semibold" style="color: var(--s-ochre);">Pause &amp; Re-Illustrate</div>
-            <div class="font-editorial text-lg mt-0.5" style="color: var(--s-ink);">Alkitab Alnaatiq</div>
-            <div class="text-xs mt-0.5" style="color: var(--s-subtle);">22 Slides (EN &amp; AR)</div>
-          </button>
-          <button onclick="selectDossier('bd', this)" class="dossier-btn p-4 text-left line-t lg:border-t-0 transition cursor-pointer opacity-75 hover:opacity-100">
-            <div class="text-xs font-semibold" style="color: var(--s-terra);">Retire Combined Pitch</div>
-            <div class="font-editorial text-lg mt-0.5" style="color: var(--s-ink);">3-Apps Bundle Deck</div>
-            <div class="text-xs mt-0.5" style="color: var(--s-subtle);">25 Slides Institutional AR</div>
-          </button>
-          <div id="dossierIndicator" class="hidden lg:block" style="width: 25%; transform: translateX(0%);"></div>
+          <button onclick="selectDossier('ms', this)" data-key="ms" class="dossier-btn p-4 text-start line-ie transition cursor-pointer bg-white"></button>
+          <button onclick="selectDossier('rb', this)" data-key="rb" class="dossier-btn p-4 text-start lg-line-ie transition cursor-pointer opacity-75 hover:opacity-100"></button>
+          <button onclick="selectDossier('ak', this)" data-key="ak" class="dossier-btn p-4 text-start line-ie line-t lg:border-t-0 transition cursor-pointer opacity-75 hover:opacity-100"></button>
+          <button onclick="selectDossier('bd', this)" data-key="bd" class="dossier-btn p-4 text-start line-t lg:border-t-0 transition cursor-pointer opacity-75 hover:opacity-100"></button>
+          <div id="dossierIndicator" class="hidden lg:block" style="width: 0px; transform: translateX(0px);"></div>
         </div>
 
-        <!-- DYNAMIC PRODUCT STAGE -->
         <div id="dossierStage" class="dossier-stage p-6 sm:p-8"></div>
       </div>
     </section>
@@ -558,41 +517,23 @@
     <section id="sec-ledger" class="py-12 sm:py-14 line-b space-y-5">
       <div class="flex flex-wrap items-end justify-between gap-4 reveal">
         <div class="max-w-2xl space-y-2">
-          <div class="font-mono text-xs uppercase tracking-wider font-semibold" style="color: var(--s-teal);">05 &middot; Complete Fix Directory</div>
-          <h2 class="font-editorial text-2xl sm:text-3xl leading-snug">All 36 Specific Findings &amp; How to Fix Them</h2>
-          <p class="text-xs leading-relaxed" style="color: var(--s-muted);">
-            Click any item below to open the exact slide or page location and our recommended fix. You can filter by area or priority when planning sprints.
-          </p>
+          <div id="sec05Kicker" class="font-mono text-xs uppercase tracking-wider font-semibold" style="color: var(--s-teal);"></div>
+          <h2 id="sec05Title" class="font-editorial text-2xl sm:text-3xl leading-snug"></h2>
+          <p id="sec05Sub" class="text-xs leading-relaxed" style="color: var(--s-muted);"></p>
         </div>
-        <div id="registerCounter" class="font-mono text-xs" style="color: var(--s-subtle);">
-          Showing 36 of 36 items
-        </div>
+        <div id="registerCounter" class="font-mono text-xs" style="color: var(--s-subtle);"></div>
       </div>
 
       <!-- SEARCH & FILTER CONTROLS -->
       <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 card-sand rounded-lg p-3 no-print reveal">
         <div class="sm:col-span-5">
-          <input id="regSearch" oninput="renderRegister()" type="text" placeholder="Search by app, slide number, or keyword..." class="w-full px-3.5 py-2 rounded-md text-xs bg-white border border-[#D5CCB8] focus:outline-none focus:border-[#2A6B5E]" style="color: var(--s-ink);" />
+          <input id="regSearch" oninput="renderRegister()" type="text" class="w-full px-3.5 py-2 rounded-md text-xs bg-white border border-[#D5CCB8] focus:outline-none focus:border-[#2A6B5E]" style="color: var(--s-ink);" />
         </div>
         <div class="sm:col-span-4">
-          <select id="regPractice" onchange="renderRegister()" class="w-full px-3 py-2 rounded-md text-xs bg-white border border-[#D5CCB8] focus:outline-none focus:border-[#2A6B5E]" style="color: var(--s-ink);">
-            <option value="ALL">All 7 Audit Areas</option>
-            <option value="Brand & Website">Brand &amp; Website</option>
-            <option value="Product Strategy">Product Strategy</option>
-            <option value="UI/UX & Arabic RTL">UI/UX &amp; Arabic RTL</option>
-            <option value="Security & Engineering">Security &amp; Engineering</option>
-            <option value="Religious & Educational Text">Religious &amp; Educational Text</option>
-            <option value="IP & Store Policy">IP &amp; Store Policy</option>
-            <option value="Pitch Decks & Data">Pitch Decks &amp; Data</option>
-          </select>
+          <select id="regPractice" onchange="renderRegister()" class="w-full px-3 py-2 rounded-md text-xs bg-white border border-[#D5CCB8] focus:outline-none focus:border-[#2A6B5E]" style="color: var(--s-ink);"></select>
         </div>
         <div class="sm:col-span-3">
-          <select id="regClass" onchange="renderRegister()" class="w-full px-3 py-2 rounded-md text-xs bg-white border border-[#D5CCB8] focus:outline-none focus:border-[#2A6B5E]" style="color: var(--s-ink);">
-            <option value="ALL">All Priorities</option>
-            <option value="Blocker">Priority 1 &middot; Trust Blocker</option>
-            <option value="Upgrade">Priority 2 &middot; High-Impact Upgrade</option>
-            <option value="Polish">Priority 3 &middot; Studio Polish</option>
-          </select>
+          <select id="regClass" onchange="renderRegister()" class="w-full px-3 py-2 rounded-md text-xs bg-white border border-[#D5CCB8] focus:outline-none focus:border-[#2A6B5E]" style="color: var(--s-ink);"></select>
         </div>
       </div>
 
@@ -605,366 +546,1136 @@
     <section id="sec-roadmap" class="pt-12 sm:pt-14 space-y-9">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         <div class="lg:col-span-4 space-y-3 reveal">
-          <div class="font-mono text-xs uppercase tracking-wider font-semibold" style="color: var(--s-teal);">06 &middot; Where to Focus</div>
-          <h2 class="font-editorial text-2xl sm:text-3xl leading-snug">What Is Truly Worth Improving First?</h2>
-          <p class="text-xs leading-relaxed" style="color: var(--s-muted);">
-            Pushing six half-finished products at the same time burns huge energy for very little return. Putting all of our focus behind your <strong>top two engines</strong> changes the entire picture within 90 days.
-          </p>
+          <div id="sec06Kicker" class="font-mono text-xs uppercase tracking-wider font-semibold" style="color: var(--s-teal);"></div>
+          <h2 id="sec06Title" class="font-editorial text-2xl sm:text-3xl leading-snug"></h2>
+          <p id="sec06Sub" class="text-xs leading-relaxed" style="color: var(--s-muted);"></p>
         </div>
 
-        <div class="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-4 reveal delay-1">
-          <div class="card-warm rounded-lg p-5 accent-l-teal space-y-2.5">
-            <span class="px-2.5 py-0.5 rounded text-xs font-semibold pill-teal">Winner #1 &middot; B2C + Preschools</span>
+        <div id="triageCards" class="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-4 reveal delay-1"></div>
+      </div>
+
+      <div id="timelineGrid" class="grid grid-cols-1 md:grid-cols-3 gap-5 reveal"></div>
+
+      <footer id="closingBanner" class="card-sand rounded-lg p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4"></footer>
+    </section>
+
+  </main>
+
+  <script>
+    const IMG_SITE = "./assets/evidence-site.jpg";
+    const IMG_APP  = "./assets/evidence-app.jpg";
+
+    const I18N = {
+      en: {
+        pageTitle: "Product, Brand & Quality Studio Review — Egypt Games for Technology",
+        hdrBrandTitle: "PRODUCT, BRAND & QUALITY STUDIO REVIEW",
+        hdrPreparedFor: "Prepared for Mohamed Shoukry",
+        hdrPrintBtn: "Print / Save PDF",
+        nav: ["01. Partner Note", "02. 7-Pillar Health", "03. Brand & Website", "04. App Deep-Dives", "05. All 36 Fixes", "06. 90-Day Gameplan"],
+        heroBadge: `<span>Candid Portfolio &amp; Product Audit</span><span>&middot;</span><span>Egypt Games for Technology</span>`,
+        heroTitle: "Real apps shipped, real grit proven — now let’s polish what matters so it truly wins.",
+        heroDesc: `A friendly, thorough studio review across your bilingual website, your five live Google Play apps, and all <strong>189 presentation slides</strong> — pinpointing every brand, UX, content, security, and commercial gap standing in your way, and mapping how to turn your two strongest products into trusted businesses.`,
+        heroBtnPrimary: "Explore Product Reviews →",
+        heroBtnSecondary: "See What’s Worth Scaling",
+        heroCaptionLeft: "Interactive Learning, Mobile Craft & Studio Identity",
+        heroCaptionRight: "7 Decks + Web + Play Store",
+        kpis: [
+          { label: "Total Scope Reviewed", unit: "Slides", sub: "Across 7 Canva decks & web" },
+          { label: "Live Shipped Apps", unit: "Titles", sub: "Published on Google Play" },
+          { label: "Urgent Trust Blockers", unit: "Fixes", sub: "Out of 36 specific items" },
+          { label: "Recommended Focus", unit: "Flagships", sub: "Highest commercial return" }
+        ],
+        sec01Kicker: "01 · Studio Perspective",
+        sec01Title: "A Candid Note from Friends Who Audit Products",
+        sec01Sub: "Why we went through every single screen and slide — without sugarcoating and with full respect for your work.",
+        partnerLetterHtml: `
+          <p class="font-editorial text-xl" style="color: var(--s-ink);">Hey Mohamed,</p>
+          <p class="text-sm leading-relaxed" style="color: var(--s-muted);">
+            First, credit where it is genuinely due: <strong style="color: var(--s-ink);">you actually build and ship.</strong> Most people spend years talking about app ideas without ever putting a single build into users' hands. You have five live Android apps on Google Play, an encouraging 4.8-star early response from parents on <em>Muslims School</em>, and a working multi-tenant microlearning and quiz engine behind <em>Retailo Bites</em>. That builder persistence is the hardest part to teach.
+          </p>
+          <p class="text-sm leading-relaxed" style="color: var(--s-muted);">
+            Because we want to see your hard work turn into real commercial success, we audited your entire portfolio the exact way an outside investor, school principal, retail chain director, or app-store reviewer looks at it. And the honest truth is clear: <strong style="color: var(--s-ink);">your bottleneck right now isn't coding — it's focus, brand presentation, content proofreading, and last-mile quality control.</strong>
+          </p>
+          <p class="text-sm leading-relaxed" style="color: var(--s-muted);">
+            Right now, someone opening your links runs into things that unfairly undersell your effort: draft notes left live on your homepage, plaintext user passwords visible in admin screenshots, unproofread religious text in children's lessons, Disney and Marvel characters that block legal store approval, and pharmacy data still sitting inside school presentations. None of these happen because you can't build — they happen when one builder tries to juggle six different products at once without a dedicated Brand, UX, QA, and Commercialization layer beside him.
+          </p>
+          <p class="text-sm leading-relaxed" style="color: var(--s-muted);">
+            Every single issue in this review is fixable. Even better, you don't need to fix all six apps at once — <strong style="color: var(--s-ink);">doubling down on your two strongest winners (<em>Muslims School</em> and <em>Retailo Bites</em>)</strong> gives you a clean, realistic 90-day path forward.
+          </p>
+          <div class="pt-4 line-t flex flex-wrap items-center justify-between gap-3 text-xs" style="color: var(--s-subtle);">
+            <span class="font-medium" style="color: var(--s-ink);">Our 7-Lens Audit Practice</span>
+            <span>Brand · Strategy · UI/UX &amp; RTL · Security &amp; QA · Content Accuracy · Store/IP Compliance · Monetization</span>
+          </div>
+        `,
+        sec02Kicker: "02 · 7-Pillar Health Check",
+        sec02Title: "Where You Stand Today vs. 90-Day Potential",
+        sec02Sub: "When schools, companies, or parents decide whether to trust a software product, they judge all seven areas below together. Notice how every low score today comes from polish, positioning, and QA — things we can systematically upgrade.",
+        radarHeaderLeft: "7-Discipline Balance",
+        radarHeaderRight: "Today vs. Target",
+        radarLegendCurrent: "Current Baseline (2.3 / 10)",
+        radarLegendTarget: "90-Day Target (9.1 / 10)",
+        targetWord: "Target",
+        practices: [
+          { code: "01", name: "Brand Identity & Website", short: "Brand", score: 2.0, target: 9.0, summary: "2022.online domain, Gmail contact, console stock photos, broken /ar/ page, and live draft notes." },
+          { code: "02", name: "Product Focus & Positioning", short: "Focus", score: 3.0, target: 9.0, summary: "Juggling 6+ unrelated app types at once; Retailo Bites partially relabeled as Trainova." },
+          { code: "03", name: "UI/UX Polish & Arabic RTL", short: "UI / RTL", score: 3.0, target: 8.8, summary: "In-app typos (Catout, Aletrs, Avarage Score), inverted RTL periods, and dated web admin UI." },
+          { code: "04", name: "Security & Data Hygiene", short: "Security", score: 2.0, target: 9.5, summary: "Plaintext user passwords visible in admin tables, unrounded floats (733.3333), and 'aaassa' test rows." },
+          { code: "05", name: "Religious & Educational Text QA", short: "Content", score: 2.0, target: 10.0, summary: "Needs urgent proofreading on Shahada ('وأنا'), Seerah lineage ('ابن المطلب'), and 'مدرسة المسلمون'." },
+          { code: "06", name: "IP Rights & Store Compliance", short: "IP / Policy", score: 1.0, target: 9.5, summary: "Disney/Marvel/Sega characters in Alkitab; ads in a 3+ kids' app with a 404 Privacy Policy." },
+          { code: "07", name: "Pitch Decks & Monetization", short: "Sales", score: 2.5, target: 8.8, summary: "No pricing tiers shown, math mix-ups on market slides, and 45-slide CRUD manuals instead of ROI pitches." }
+        ],
+        sec03Kicker: "03 · Brand & Digital Storefront",
+        sec03TitleHtml: `First Impressions on <code class="text-xl font-mono ltr-token" style="color: var(--s-slate);">egyptgames2022.online</code>`,
+        sec03Sub: "Your website is your digital handshake. Right now, mixing a 2022 .online domain and personal Gmail with PlayStation stock photos, unfinished draft pages, and a half-translated Arabic site makes a real studio look like an unfinished student project.",
+        exhibitBarTitle: "Live Portfolio Evidence — Switch Captures to Inspect",
+        exBtn0Html: `1. Homepage Hero (<code class="font-mono ltr-token">egyptgames2022.online</code>)`,
+        exBtn1Html: `2. Shared App UI (<em>Retailo Bites / Trainova</em>)`,
+        exhibitFixLabel: "How We Upgrade This",
+        exhibits: [
+          {
+            img: IMG_SITE,
+            tag: "Website First Impression · egyptgames2022.online",
+            tagClass: "pill-terra",
+            title: "Game Icon Stretched Behind English Studio Copy",
+            desc: "The homepage stretches the square 3D Arabic icon for 10 Tawla across the entire hero background behind white English text. Combined with PlayStation 4 and Nintendo Switch Mario Kart stock photos further down the page — and mixing a 2.3★ backgammon game, a prayer app, and a baby-shopping app alongside children's EdTech — visitors aren't sure what your core specialty actually is.",
+            fix: "Move to a clean, timeless .com or .eg domain with workspace email, showcase crisp mockups of your actual apps, and keep consumer casual games separate from B2B & educational software."
+          },
+          {
+            img: IMG_APP,
+            tag: "Shared App UI · Retailo Bites & Trainova Decks",
+            tagClass: "pill-ochre",
+            title: "Clipped Banners, UI Typos & 2022 Test Strings Left Visible",
+            desc: "On the mobile collage, the home banner clips 'Retailo Academ' mid-word, the secondary screen header reads 'Catout' above raw test strings ('test 300', 'tag one', 'tag two'), and these exact same Retailo Bites screens and database tables reappear inside the Trainova school presentations.",
+            fix: "Clean up UI text labels and responsive containers, seed a dedicated clean demo account with realistic courses, and keep retail vs. education environments strictly separate."
+          }
+        ],
+        webCards: [
+          {
+            cls: "accent-is-terra", color: "var(--s-terra)",
+            title: "Live Editor Placeholders & Dead Links",
+            body: `<em>Elkeetab Alnateek</em> still shows your internal note <code class="font-mono ltr-token">(Placeholder until the game is ready — you can update the details later)</code> on both English and Arabic pages with an empty button that reloads the page. Meanwhile, <code class="font-mono ltr-token">Services</code> in the top menu does nothing (<code class="font-mono ltr-token">#services</code> is missing), and live game <em>Domino Square</em> isn't listed at all.`
+          },
+          {
+            cls: "accent-is-ochre", color: "var(--s-ochre)",
+            title: "Unfinished Arabic Page (/ar/)",
+            body: `On the Arabic homepage, the top menu, hero title/text, app names, and <code class="font-mono ltr-token">&raquo; Read more</code> buttons are still in English inside an RTL layout (pushing periods to the start of lines like <code class="font-mono ltr-token">.of all ages</code>). Clicking <code class="font-mono ltr-token">Contact Us</code> scrolls to a completely empty blue band with no form, and navbar links send users back to English.`
+          },
+          {
+            cls: "accent-is-terra", color: "var(--s-terra)",
+            title: "404 Privacy Policy & Draft Sitemap",
+            body: `<code class="font-mono ltr-token">/privacy-policy/</code> returns a <strong>404 error</strong> — a serious Google Play Families risk when publishing a 3+ kids' app with ads. Also, <code class="font-mono ltr-token">/wp-sitemap.xml</code> publicly exposes 9 blank or half-built WordPress draft pages (<code class="font-mono ltr-token">/contact/</code>, <code class="font-mono ltr-token">/coverage/</code>, <code class="font-mono ltr-token">/blog/</code>, <code class="font-mono ltr-token">/landing-page/</code>).`
+          }
+        ],
+        sec04Kicker: "04 · Product & Deck Reviews",
+        sec04Title: "Inside All Seven Presentations (189 Slides)",
+        sec04Sub: "Click through each product group below to see what works, what caught our eye on specific slides, and interactive Current vs. Clean Fix previews for the most important items.",
+        dossierTabs: {
+          ms: { kicker: "Scale First · Consumer & Schools", color: "var(--s-teal)", name: "Muslims School", sub: "14 Slides AR + Google Play" },
+          rb: { kicker: "Best B2B Engine · SaaS", color: "var(--s-slate)", name: "Retailo & Trainova", sub: "113 Slides (3 Decks)" },
+          ak: { kicker: "Pause & Re-Illustrate", color: "var(--s-ochre)", name: "Alkitab Alnaatiq", sub: "22 Slides (EN & AR)" },
+          bd: { kicker: "Retire Combined Pitch", color: "var(--s-terra)", name: "3-Apps Bundle Deck", sub: "25 Slides Institutional AR" }
+        },
+        specimenBtnSeeClean: "See Clean Fix",
+        specimenBtnSeeCurrent: "See Current",
+        specimenStateClean: "Recommended Clean Version",
+        specimenStateCurrent: "Currently Shown on Screen / Slide",
+        dossiers: {
+          ms: {
+            badge: "Scale First · Strongest B2C & Preschool Product",
+            badgeClass: "pill-teal",
+            title: "Muslims School (مدرسة المسلمين)",
+            meta: "14-Slide Arabic Presentation + Live on Google Play (4.8★, 100+ Downloads)",
+            opinion: "This is the gem of your consumer portfolio — a warm, structured 8-part Islamic app for kids ages 3+ covering Juz Amma, Illustrated Hadiths, Seerah, Athkar, Aqeedah, Stories, Manners, and Quizzes. Because parents and Islamic schools care deeply about accuracy when teaching faith to young children, fixing three text mistakes inside the app screens and cleaning up the deck will unlock its real potential immediately.",
+            specimensTitle: "Interactive Text Check — Click to Toggle Current Screen vs. Clean Fix",
+            specimens: [
+              {
+                label: "Slide 9 · Aqeedah Screen (Shahada)",
+                defect: "«شهادة أن لا إله إلا الله وأنا محمد رسول الله»",
+                standard: "«شهادة أن لا إله إلا الله وأنَّ محمداً رسول الله»",
+                note: "Writing 'وأنا' changes the meaning to 'and I am Muhammad' instead of 'and that Muhammad is...'. Easy to patch in text & audio, and essential for parent trust."
+              },
+              {
+                label: "Slide 7 · Seerah Classroom Whiteboard",
+                defect: "«هو محمد بن عبد الله ابن المطلب ابن هاشم»",
+                standard: "«هو محمد بن عبد الله بن عبد المطلب بن هاشم ﷺ»",
+                note: "The whiteboard illustration drops 'عبد' from 'عبد المطلب' (the Prophet's grandfather), uses 'ابن' instead of 'بن', and writes 'صلي' without alif maqsura."
+              },
+              {
+                label: "App Logo & All Deck Titles",
+                defect: "«مدرسة المسلمون»",
+                standard: "«مدرسة المسلمين»",
+                note: "Arabic idafa grammar requires 'مدرسة المسلمين'. Updating the logo and store title makes an immediate great impression on Arabic teachers and parents."
+              }
+            ],
+            columns: [
+              {
+                heading: "Deck & Screen Polish Needed",
+                items: [
+                  "Slide 5 (Juz Amma / Quran): Currently shows a sideways-rotated screenshot of Trainova Academy ('Company Bites / My Bites') instead of the Quran screen.",
+                  "Slides 4 & 6 (Illustrated Hadiths): Three landscape phone frames were left empty with Canva's default cloud-and-green-hill placeholder.",
+                  "Small UX touches: Translate 'ENTER YOUR NAME' on the Arabic home screen, unclip the right edge of the bathroom dua scene, and put your web domain (not Gmail twice) on Slide 13."
+                ]
+              },
+              {
+                heading: "How to Grow & Monetize It",
+                items: [
+                  "Go 100% Ad-Free for Kids: Remove third-party ads ('Contains ads' on Play Store) and add a live Privacy Policy so your Play Store account stays completely safe.",
+                  "Family Freemium + Preschool Bundles: Keep 3 surahs and sample stories free, and offer a simple annual family unlock plus bulk classroom codes for private Islamic kindergartens.",
+                  "Launch on iOS: Gulf and Western diaspora families use iPads and iPhones heavily — an App Store build doubles your market."
+                ]
+              }
+            ]
+          },
+          rb: {
+            badge: "Best B2B SaaS Bet · Focus on Retail & Pharma First",
+            badgeClass: "pill-slate",
+            title: "Retailo Bites (23 Slides) & Trainova Academy (90 Slides EN/AR)",
+            meta: "Shared Mobile App + Web Manager Platform (113 Total Slides Reviewed)",
+            opinion: "You already built a real working multi-tenant microlearning and field-task platform in Retailo Bites. The catch is that both Trainova school decks were cloned directly from Retailo Bites while leaving Bites logos, Saudi pharmacy chains, cleanser-invoice missions, and plaintext user passwords visible in the screenshots. Cleaning up security and focusing on frontline corporate training first is a much faster path to B2B revenue than K–12 schools.",
+            specimensTitle: "Interactive Security & UI Check — Click to Toggle Current vs. Clean Fix",
+            specimens: [
+              {
+                label: "Web Admin Users Table (Slide 18 / 40)",
+                defect: "Password Column Shown: '123456789' | 'yousef999' | 'salah@ahmed'",
+                standard: "Hashed Auth (Firebase / bcrypt) · Passwords Never Visible to Admins",
+                note: "Showing raw user passwords next to external emails (@united.sa) is an instant blocker for any company IT or school admin — and a straightforward backend fix."
+              },
+              {
+                label: "Trainova School Slides (Slides 1, 10, 14–36)",
+                defect: "CompanyName: Bites · Nahdi / AL Dawaa · 'Upload Cleansers invoice'",
+                standard: "Clean, Separate Demo Environment with Realistic Industry Courses",
+                note: "School slides still mention 'pharmacy branches' and 'school interns' alongside 2022 test rows ('TestSO', 'aaassa', 'Maaa')."
+              },
+              {
+                label: "Mobile & Web UI Labels",
+                defect: "'Catout' · 'Aletrs' · 'Avarage Score: 733.3333' · 'Diffculty' · 'Passwrod'",
+                standard: "'Categories' · 'Alerts' · 'Average Score: 73%' · 'Difficulty' · 'Password'",
+                note: "A quick string-cleanup pass across mobile and web instantly makes the product feel 10x more trustworthy."
+              }
+            ],
+            columns: [
+              {
+                heading: "Deck Cleanup Notes (EN & AR)",
+                items: [
+                  "45 Slides Is Too Long for Sales: 30+ slides walk through every database form ('Create A Tag', 'Create A Study') without showing pricing, outcomes, or a live demo.",
+                  "Slide Mix-Ups: Duplicate slides (EN 4/5, 6/7, 12/13, 23/24, 35/36); missing screenshots where red arrows point at empty space (EN 16, AR 25); wrong screenshots on EN 18–19 & 39; swapped 'Drafts/Copy To' arrows.",
+                  "Arabic Deck Gaps: AR Slide 2 overwrote Advantages 01–05 (so Slide 4 starts at 06–10), drifts between teachers and students, and leaves English callouts ('Create A Qustion') untranslated."
+                ]
+              },
+              {
+                heading: "Smartest Commercial Angle",
+                items: [
+                  "Pitch Retailo Bites to Pharmacies, Clinics, Retail & Cafés: High-turnover retail teams pay $3–$6/user/month for 2-minute product quizzes and store photo missions.",
+                  "Save Trainova for Private Tutoring Centers Later: Public schools have slow procurement and free LMS tools; only spin out Trainova once it has a 100% separate, RTL-ready build.",
+                  "Turn 45 Slides into 10 Sharp Slides: Problem -> 2-Min Mobile Flow -> Manager Dashboard -> Per-Seat Pricing -> 14-Day Pilot."
+                ]
+              }
+            ]
+          },
+          ak: {
+            badge: "Pause & Re-Illustrate · IP Clearance Needed First",
+            badgeClass: "pill-ochre",
+            title: "Alkitab Alnaatiq / Elketaab (11 Slides EN + 11 Slides AR)",
+            meta: "Early-Childhood Trilingual (AR / EN / FR) Talking Vocabulary Prototype (Flutter)",
+            opinion: "Helping toddlers ages 2+ learn words across Arabic, English, and French with friendly characters is a sweet concept. However, building the character wheel around famous Disney, Marvel, and Sega characters means Apple, Google, and schools cannot legally approve it. We recommend pausing this app until the art is swapped for your own original characters so your time goes into Muslims School and Retailo Bites first.",
+            specimensTitle: "Interactive IP & Deck Check — Click to Toggle Current vs. Clean Fix",
+            specimens: [
+              {
+                label: "Character Wheel & Category Headers",
+                defect: "Stitch & Angel (Disney) · Elsa · Spider-Man · Sonic · Masha",
+                standard: "2–3 Original Studio Characters You Own 100%",
+                note: "Bundle Slide 18 says 'all images are custom-drawn specifically for the program' right above Stitch and Sonic — swapping to original mascots protects your developer account."
+              },
+              {
+                label: "Product Name Across Links & Screens",
+                defect: "Alkitab Alnaatiq / ALKITAAB / Al ketab Al nateq / Elkeetab / elketaab",
+                standard: "One Consistent English Name + One Clean Arabic Logo",
+                note: "Right now the name is spelled five different ways across the website, app screens, and slide titles."
+              },
+              {
+                label: "English Slide Punctuation (Slides 3–7)",
+                defect: "'.images' · '.specialized teachers' · '.connection while running'",
+                standard: "Left-to-Right (LTR) Text Boxes in Canva for English Slides",
+                note: "English text was typed inside RTL boxes, causing periods and commas to jump to the left start of lines."
+              }
+            ],
+            columns: [
+              {
+                heading: "Slide & App Details to Note",
+                items: [
+                  "Blank Slide 8 in English: Has the vertical 'SCREENSHOTS' title on the left, but the slide itself was left completely empty.",
+                  "Demo & Icon Mismatches: Demo clip shows loading spinners and 'From: English -> To: English'; 'الحمام' (Bathroom) uses a boy's face icon and 'الآلات الموسيقية' uses a boy holding a shirt.",
+                  "Arabic Deck Polish: Leaves 'SCREENSHOTS / DEMO / Our Contact / THANK YOU' in English, uses server-rack stock photos, and drops hamzas/dots ('علي، المحتوي، القادمه، العائله')."
+                ]
+              },
+              {
+                heading: "When It Becomes Worth Revisiting",
+                items: [
+                  "Commission cohesive custom art built around an original mascot (like a polished version of the yellow glasses-wearing book character on Slide 1!).",
+                  "Upgrade beyond simple word-tapping (which has thousands of free apps) by adding phonics, letter tracing, or fun pronunciation games."
+                ]
+              }
+            ]
+          },
+          bd: {
+            badge: "Retire Combined Deck · Pitch Each Product Separately",
+            badgeClass: "pill-terra",
+            title: "Combined '3 Arabic Apps' Deck (Egypt games Presentation)",
+            meta: "25-Slide Arabic Institutional Pitch (Trainova 1 & 2, Alkitab Alnaatiq, Muslims School)",
+            opinion: "This deck aims high — pitching a 3-year Egyptian K–12 education solution. The challenge is that bundling a retail/school quiz app, a toddler vocab prototype, and a kids' Islamic app into one government/institutional pitch doesn't match how school groups buy software — and a few math and tech-stack mix-ups on Slides 2, 3, and 6 hurt credibility right at the start.",
+            specimensTitle: "Interactive Slide Check — Click to Toggle Current vs. Clean Fix",
+            specimens: [
+              {
+                label: "Slide 2 · Egypt Education Statistics",
+                defect: "Total Students: [Blank] · Teachers: 922,628 vs. 958,753 subtotal sum",
+                standard: "Complete Official CAPMAS Totals Where Subtotals Match 100%",
+                note: "'Total pre-university students:' was left blank after the colon, and Public (843,490) + Private (115,263) adds up to 958,753 rather than 922,628."
+              },
+              {
+                label: "Slide 3 · Global Knowledge Index",
+                defect: "'Egypt's rank out of 73 countries: 79th in 2023 and 83rd in 2020'",
+                standard: "'Ranked 79th out of 133 countries in 2023 (73rd in 2021)'",
+                note: "Ranking 79th out of 73 countries happened by mixing up Egypt's 2021 rank (73rd) with the total number of countries (~133)."
+              },
+              {
+                label: "Slide 6 · Tech Stack Labels",
+                defect: "All 4 Apps Labeled '(UNITY GAME APP)' · 'QUIZIES' · 'اسبوعبة'",
+                standard: "Accurate Tech Stack per App (Flutter / Web-Firebase / Unity)",
+                note: "Calling Alkitab a Unity app contradicts the Flutter logo on every slide of the standalone Alkitab decks."
+              }
+            ],
+            columns: [
+              {
+                heading: "Other Details Spotted in This Deck",
+                items: [
+                  "Slide 16 Callout Mismatch: Adds Arabic notes ('Student Omar Hassan — Algebra Worksheet 1') pointing at 2022 Retailo Bites rows named 'haujhu' and 'ghghjhjh' (Due: 999999).",
+                  "Tone & Layout: Slide 5 slips into casual spoken Arabic, Slide 6 changes Alkitab's age range from 2+ to 'up to 10', and the bottom line overlaps a white divider bar."
+                ]
+              },
+              {
+                heading: "Why Separate Decks Work Much Better",
+                items: [
+                  "Large school groups look for one unified K–12 platform with one login and gradebook, rather than three separate apps for different ages.",
+                  "Retiring this combined link and pitching Muslims School (to parents/kindergartens) and Retailo Bites (to companies) with dedicated 10-slide decks will get far better responses."
+                ]
+              }
+            ]
+          }
+        },
+        sec05Kicker: "05 · Complete Fix Directory",
+        sec05Title: "All 36 Specific Findings & How to Fix Them",
+        sec05Sub: "Click any item below to open the exact slide or page location and our recommended fix. You can filter by area or priority when planning sprints.",
+        searchPlaceholder: "Search by app, slide number, or keyword...",
+        practiceOptions: [
+          { val: "ALL", label: "All 7 Audit Areas" },
+          { val: "Brand", label: "Brand & Website" },
+          { val: "Strategy", label: "Product Strategy" },
+          { val: "UX", label: "UI/UX & Arabic RTL" },
+          { val: "Security", label: "Security & Engineering" },
+          { val: "Content", label: "Religious & Educational Text" },
+          { val: "IP", label: "IP & Store Policy" },
+          { val: "Pitch", label: "Pitch Decks & Data" }
+        ],
+        practiceLabels: {
+          Brand: "Brand & Website", Strategy: "Product Strategy", UX: "UI/UX & Arabic RTL",
+          Security: "Security & Engineering", Content: "Religious & Educational Text", IP: "IP & Store Policy", Pitch: "Pitch Decks & Data"
+        },
+        classOptions: [
+          { val: "ALL", label: "All Priorities" },
+          { val: "Blocker", label: "Priority 1 · Trust Blocker" },
+          { val: "Upgrade", label: "Priority 2 · High-Impact Upgrade" },
+          { val: "Polish", label: "Priority 3 · Studio Polish" }
+        ],
+        pillLabels: { Blocker: "Trust Blocker", Upgrade: "High-Impact", Polish: "Polish" },
+        showingCounter: (shown, total) => `Showing ${shown} of ${total} items`,
+        emptyFilterMsg: "No items match your current filter.",
+        recFixPrefix: "Recommended Fix: ",
+        sec06Kicker: "06 · Where to Focus",
+        sec06Title: "What Is Truly Worth Improving First?",
+        sec06Sub: "Pushing six half-finished products at the same time burns huge energy for very little return. Putting all of our focus behind your top two engines changes the entire picture within 90 days.",
+        triageHtml: `
+          <div class="card-warm rounded-lg p-5 accent-is-teal space-y-2.5">
+            <span class="px-2.5 py-0.5 rounded text-xs font-semibold pill-teal">Winner #1 · B2C + Preschools</span>
             <h3 class="font-editorial text-xl">Muslims School 2.0</h3>
             <p class="text-xs leading-relaxed" style="color: var(--s-muted);">
-              Already live with 4.8&#9733; love from early users and a rich 8-part curriculum. Fix the <em>Shahada</em>, <em>Seerah</em>, and <code class="font-mono">مدرسة المسلمين</code> grammar, remove ads for a safe Freemium family + Islamic preschool license model, publish your Privacy Policy, and ship an iOS build for Gulf &amp; diaspora families.
+              Already live with 4.8★ love from early users and a rich 8-part curriculum. Fix the <em>Shahada</em>, <em>Seerah</em>, and <code class="font-mono">مدرسة المسلمين</code> grammar, remove ads for a safe Freemium family + Islamic preschool license model, publish your Privacy Policy, and ship an iOS build for Gulf &amp; diaspora families.
             </p>
           </div>
-
-          <div class="card-warm rounded-lg p-5 accent-l-ochre space-y-2.5">
-            <span class="px-2.5 py-0.5 rounded text-xs font-semibold pill-slate">Winner #2 &middot; B2B SaaS</span>
+          <div class="card-warm rounded-lg p-5 accent-is-ochre space-y-2.5">
+            <span class="px-2.5 py-0.5 rounded text-xs font-semibold pill-slate">Winner #2 · B2B SaaS</span>
             <h3 class="font-editorial text-xl">Retailo Bites (Over Trainova)</h3>
             <p class="text-xs leading-relaxed" style="color: var(--s-muted);">
               Pharmacy, clinic, retail, and F&amp;B chains in Egypt &amp; KSA actually pay <strong>$3–$6/employee/month</strong> for 2-minute training bites and shelf/invoice photo missions — whereas schools already have free LMS tools. Hash all passwords, clean up the UI typos &amp; 2022 test data, and pitch a crisp 10-slide ROI deck.
             </p>
           </div>
-
           <div class="card-sand rounded-lg p-4 space-y-1.5">
             <div class="text-xs font-semibold" style="color: var(--s-ink);">Keep Separate: Casual Board Games</div>
             <p class="text-xs leading-relaxed" style="color: var(--s-muted);">
               Keep <em>10 Tawla</em> and <em>Domino Square</em> under a fun casual gaming label, separate from your EdTech and corporate training brand so each audience sees a focused specialist.
             </p>
           </div>
-
           <div class="card-sand rounded-lg p-4 space-y-1.5">
             <div class="text-xs font-semibold" style="color: var(--s-terra);">Pause for Now: Alkitab &amp; 3-App Bundle</div>
             <p class="text-xs leading-relaxed" style="color: var(--s-muted);">
               Retire the 25-slide 3-App national bundle deck, and hold <em>Alkitab Alnaatiq</em> until every Disney/Marvel/Sega character is replaced with original studio art.
             </p>
           </div>
-        </div>
-      </div>
-
-      <!-- 3-STEP 90-DAY TIMELINE -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 reveal">
-        <div class="card-warm rounded-lg p-6 space-y-3.5">
-          <div class="flex items-center justify-between line-b pb-3">
-            <span class="font-mono text-xs font-semibold" style="color: var(--s-terra);">Step 1 &middot; Days 1–20</span>
-            <span class="text-xs" style="color: var(--s-subtle);">Quick Reset</span>
+        `,
+        timelineHtml: `
+          <div class="card-warm rounded-lg p-6 space-y-3.5">
+            <div class="flex items-center justify-between line-b pb-3">
+              <span class="font-mono text-xs font-semibold" style="color: var(--s-terra);">Step 1 · Days 1–20</span>
+              <span class="text-xs" style="color: var(--s-subtle);">Quick Reset</span>
+            </div>
+            <h3 class="font-editorial text-xl">Clean Up Trust Blockers</h3>
+            <ul class="space-y-2 text-xs leading-relaxed" style="color: var(--s-muted);">
+              <li>&bull; Pause sharing the 45-slide <em>Trainova</em> decks, blank-slide <em>Alkitab</em> deck, and <em>3-Apps</em> bundle link.</li>
+              <li>&bull; Publish a live bilingual Privacy Policy page to protect your Google Play account.</li>
+              <li>&bull; Hash user passwords (bcrypt / Firebase Auth) and remove plaintext password columns in <em>Retailo/Trainova</em>.</li>
+              <li>&bull; Pick up a clean <code class="font-mono ltr-token">.com</code> or <code class="font-mono ltr-token">.eg</code> domain + workspace email to replace <code class="font-mono ltr-token">2022.online</code> and Gmail.</li>
+            </ul>
           </div>
-          <h3 class="font-editorial text-xl">Clean Up Trust Blockers</h3>
-          <ul class="space-y-2 text-xs leading-relaxed" style="color: var(--s-muted);">
-            <li>&bull; Pause sharing the 45-slide <em>Trainova</em> decks, blank-slide <em>Alkitab</em> deck, and <em>3-Apps</em> bundle link.</li>
-            <li>&bull; Publish a live bilingual Privacy Policy page to protect your Google Play account.</li>
-            <li>&bull; Hash user passwords (bcrypt / Firebase Auth) and remove plaintext password columns in <em>Retailo/Trainova</em>.</li>
-            <li>&bull; Pick up a clean <code class="font-mono">.com</code> or <code class="font-mono">.eg</code> domain + workspace email to replace <code class="font-mono">2022.online</code> and Gmail.</li>
-          </ul>
-        </div>
-
-        <div class="card-warm rounded-lg p-6 space-y-3.5">
-          <div class="flex items-center justify-between line-b pb-3">
-            <span class="font-mono text-xs font-semibold" style="color: var(--s-teal);">Step 2 &middot; Days 21–55</span>
-            <span class="text-xs" style="color: var(--s-subtle);">Flagship #1</span>
+          <div class="card-warm rounded-lg p-6 space-y-3.5">
+            <div class="flex items-center justify-between line-b pb-3">
+              <span class="font-mono text-xs font-semibold" style="color: var(--s-teal);">Step 2 · Days 21–55</span>
+              <span class="text-xs" style="color: var(--s-subtle);">Flagship #1</span>
+            </div>
+            <h3 class="font-editorial text-xl">Relaunch Muslims School 2.0</h3>
+            <ul class="space-y-2 text-xs leading-relaxed" style="color: var(--s-muted);">
+              <li>&bull; Proofread every religious &amp; Arabic string: fix the <em>Shahada</em> (<code class="font-mono">وأنَّ محمداً</code>), <em>Seerah</em> (<code class="font-mono">بن عبد المطلب</code>), and <code class="font-mono">مدرسة المسلمين</code> logo.</li>
+              <li>&bull; Go 100% Ad-Free with a family subscription + annual Islamic kindergarten classroom bundle.</li>
+              <li>&bull; Ship an iOS App Store version for iPad/iPhone families in the Gulf &amp; abroad.</li>
+              <li>&bull; Replace the old deck with a sharp 8-slide showcase + 60-second video clip.</li>
+            </ul>
           </div>
-          <h3 class="font-editorial text-xl">Relaunch Muslims School 2.0</h3>
-          <ul class="space-y-2 text-xs leading-relaxed" style="color: var(--s-muted);">
-            <li>&bull; Proofread every religious &amp; Arabic string: fix the <em>Shahada</em> (<code class="font-mono">وأنَّ محمداً</code>), <em>Seerah</em> (<code class="font-mono">بن عبد المطلب</code>), and <code class="font-mono">مدرسة المسلمين</code> logo.</li>
-            <li>&bull; Go 100% Ad-Free with a family subscription + annual Islamic kindergarten classroom bundle.</li>
-            <li>&bull; Ship an iOS App Store version for iPad/iPhone families in the Gulf &amp; abroad.</li>
-            <li>&bull; Replace the old deck with a sharp 8-slide showcase + 60-second video clip.</li>
-          </ul>
-        </div>
-
-        <div class="card-warm rounded-lg p-6 space-y-3.5">
-          <div class="flex items-center justify-between line-b pb-3">
-            <span class="font-mono text-xs font-semibold" style="color: var(--s-slate);">Step 3 &middot; Days 56–90</span>
-            <span class="text-xs" style="color: var(--s-subtle);">Flagship #2</span>
+          <div class="card-warm rounded-lg p-6 space-y-3.5">
+            <div class="flex items-center justify-between line-b pb-3">
+              <span class="font-mono text-xs font-semibold" style="color: var(--s-slate);">Step 3 · Days 56–90</span>
+              <span class="text-xs" style="color: var(--s-subtle);">Flagship #2</span>
+            </div>
+            <h3 class="font-editorial text-xl">Launch Retailo B2B &amp; New Site</h3>
+            <ul class="space-y-2 text-xs leading-relaxed" style="color: var(--s-muted);">
+              <li>&bull; Fix UI typos (<code class="font-mono ltr-token">Catout</code>, <code class="font-mono ltr-token">Aletrs</code>, <code class="font-mono ltr-token">Avarage Score</code>, <code class="font-mono ltr-token">Diffculty</code>), round score decimals, and refresh the web manager UI.</li>
+              <li>&bull; Wipe <code class="font-mono ltr-token">aaassa / TestSO</code> dev rows and set up a clean pharmacy/retail demo account.</li>
+              <li>&bull; Build a 10-slide B2B ROI &amp; per-seat pricing deck with a 14-day paid pilot offer.</li>
+              <li>&bull; Launch a fast, bilingual (EN + native RTL AR) studio website showcasing real app previews.</li>
+            </ul>
           </div>
-          <h3 class="font-editorial text-xl">Launch Retailo B2B &amp; New Site</h3>
-          <ul class="space-y-2 text-xs leading-relaxed" style="color: var(--s-muted);">
-            <li>&bull; Fix UI typos (<code class="font-mono">Catout</code>, <code class="font-mono">Aletrs</code>, <code class="font-mono">Avarage Score</code>, <code class="font-mono">Diffculty</code>), round score decimals, and refresh the web manager UI.</li>
-            <li>&bull; Wipe <code class="font-mono">aaassa / TestSO</code> dev rows and set up a clean pharmacy/retail demo account.</li>
-            <li>&bull; Build a 10-slide B2B ROI &amp; per-seat pricing deck with a 14-day paid pilot offer.</li>
-            <li>&bull; Launch a fast, bilingual (EN + native RTL AR) studio website showcasing real app previews.</li>
-          </ul>
-        </div>
-      </div>
+        `,
+        closingHtml: `
+          <div class="space-y-1">
+            <div class="font-editorial text-lg" style="color: var(--s-ink);">You have the engineering engine — let’s build the wrapper it deserves.</div>
+            <p class="text-xs" style="color: var(--s-muted);">
+              Happy to sit down together, pick the first sprint, and tackle the brand, UX, content QA, and commercial decks side by side.
+            </p>
+          </div>
+          <div class="font-mono text-xs font-semibold whitespace-nowrap" style="color: var(--s-teal);">
+            Prepared with care &amp; candor
+          </div>
+        `
+      },
 
-      <!-- WARM CLOSING BANNER -->
-      <footer class="card-sand rounded-lg p-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div class="space-y-1">
-          <div class="font-editorial text-lg" style="color: var(--s-ink);">You have the engineering engine — let’s build the wrapper it deserves.</div>
-          <p class="text-xs" style="color: var(--s-muted);">
-            Happy to sit down together, pick the first sprint, and tackle the brand, UX, content QA, and commercial decks side by side.
+      ar: {
+        pageTitle: "مراجعة المنتجات والهوية والجودة — شركة Egypt Games for Technology",
+        hdrBrandTitle: "مراجعة استوديو للمنتجات والهوية والجودة",
+        hdrPreparedFor: "إعداد خاص للصديق م. محمد شكري",
+        hdrPrintBtn: "طباعة / حفظ PDF",
+        nav: ["01. رسالة ودّية", "02. مؤشر الـ 7 محاور", "03. الهوية والموقع", "04. فحص التطبيقات", "05. سجل الـ 36 ملاحظة", "06. خطة الـ 90 يوماً"],
+        heroBadge: `<span>مراجعة صريحة وشاملة للأعمال</span><span>&middot;</span><span class="ltr-token">Egypt Games for Technology</span>`,
+        heroTitle: "تطبيقات حقيقية ومجهود يُحترم — والآن حان وقت الصقل الذي يجعلها تنجح تجارياً.",
+        heroDesc: `مراجعة ودّية ودقيقة لموقعك باللغتين، وخمسة تطبيقات منشورة على Google Play، و<strong>189 شريحة عرض</strong> عبر سبعة ملفات تقديمية — لنضع يدنا بوضوح على كل الثغرات في الهوية وتجربة المستخدم والمحتوى والأمان، ونرسم معاً طريق تحويل أقوى منتجين لديك إلى مشروع ينال ثقة العملاء.`,
+        heroBtnPrimary: "استعرض مراجعة التطبيقات ←",
+        heroBtnSecondary: "ما الذي يستحق التركيز عليه؟",
+        heroCaptionLeft: "التعلّم التفاعلي، صناعة التطبيقات، وهوية الاستوديو",
+        heroCaptionRight: "7 عروض + الموقع + متجر Play",
+        kpis: [
+          { label: "إجمالي ما تمت مراجعته", unit: "شريحة", sub: "عبر 7 عروض Canva والموقع" },
+          { label: "تطبيقات منشورة فعلياً", unit: "تطبيقات", sub: "متاحة الآن على Google Play" },
+          { label: "أولويات عاجلة لبناء الثقة", unit: "إصلاحاً", sub: "من أصل 36 ملاحظة تفصيلية" },
+          { label: "التركيز التجاري المقترح", unit: "منتجان", sub: "الأعلى عائداً وقابلية للنمو" }
+        ],
+        sec01Kicker: "01 · رؤية صديق وشريك عمل",
+        sec01Title: "كلمة صريحة من أصدقاء يراجعون المنتجات بعين السوق",
+        sec01Sub: "لماذا فحصنا كل شاشة وكل شريحة عرض سطراً بسطر — بمحبة حقيقية واحترام كامل لمجهودك ودون مجاملة مضللة.",
+        partnerLetterHtml: `
+          <p class="font-editorial text-2xl" style="color: var(--s-ink);">أهلاً يا محمد،</p>
+          <p class="text-sm leading-relaxed" style="color: var(--s-muted);">
+            نبدأ أولاً بما يستحق التقدير فعلاً: <strong style="color: var(--s-ink);">أنت شخص يبني ويُطلق منتجات حقيقية على أرض الواقع.</strong> كثيرون يقضون سنوات في الحديث عن أفكار تطبيقات دون أن يخرج لهم منتج واحد للنور، بينما أنت نشرت خمسة تطبيقات تعمل فعلياً على Google Play، وحققت تقييماً أولياً مشجعاً (<span class="ltr-token">4.8★</span>) من أولياء الأمور في تطبيق <em>مدرسة المسلمين</em>، وبنيت محرك تدريب واختبارات متعدد المؤسسات في <em>Retailo Bites</em>. هذه المثابرة الهندسية هي الجزء الأصعب دائماً.
           </p>
-        </div>
-        <div class="font-mono text-xs font-semibold whitespace-nowrap" style="color: var(--s-teal);">
-          Prepared with care &amp; candor
-        </div>
-      </footer>
-    </section>
-
-  </main>
-
-  <script>
-    const exhibits = [
-      {
-        img: "./assets/evidence-site.jpg",
-        tag: "Website First Impression · egyptgames2022.online",
-        tagClass: "pill-terra",
-        title: "Game Icon Stretched Behind English Studio Copy",
-        desc: "The homepage stretches the square 3D Arabic icon for 10 Tawla across the entire hero background behind white English text. Combined with PlayStation 4 and Nintendo Switch Mario Kart stock photos further down the page — and mixing a 2.3★ backgammon game, a prayer app, and a baby-shopping app alongside children's EdTech — visitors aren't sure what your core specialty actually is.",
-        fix: "Move to a clean, timeless .com or .eg domain with workspace email, showcase crisp mockups of your actual apps, and keep consumer casual games separate from B2B & educational software."
-      },
-      {
-        img: "./assets/evidence-app.jpg",
-        tag: "Shared App UI · Retailo Bites & Trainova Decks",
-        tagClass: "pill-ochre",
-        title: "Clipped Banners, UI Typos & 2022 Test Strings Left Visible",
-        desc: "On the mobile collage, the home banner clips 'Retailo Academ' mid-word, the secondary screen header reads 'Catout' above raw test strings ('test 300', 'tag one', 'tag two'), and these exact same Retailo Bites screens and database tables reappear inside the Trainova school presentations.",
-        fix: "Clean up UI text labels and responsive containers, seed a dedicated clean demo account with realistic courses, and keep retail vs. education environments strictly separate."
-      }
-    ];
-
-    const practices = [
-      { code: "01", name: "Brand Identity & Website", short: "Brand", score: 2.0, target: 9.0, summary: "2022.online domain, Gmail contact, console stock photos, broken /ar/ page, and live draft notes." },
-      { code: "02", name: "Product Focus & Positioning", short: "Focus", score: 3.0, target: 9.0, summary: "Juggling 6+ unrelated app types at once; Retailo Bites partially relabeled as Trainova." },
-      { code: "03", name: "UI/UX Polish & Arabic RTL", short: "UI / RTL", score: 3.0, target: 8.8, summary: "In-app typos (Catout, Aletrs, Avarage Score), inverted RTL periods, and dated web admin UI." },
-      { code: "04", name: "Security & Data Hygiene", short: "Security", score: 2.0, target: 9.5, summary: "Plaintext user passwords visible in admin tables, unrounded floats (733.3333), and 'aaassa' test rows." },
-      { code: "05", name: "Religious & Educational Text QA", short: "Content", score: 2.0, target: 10.0, summary: "Needs urgent proofreading on Shahada ('وأنا'), Seerah lineage ('ابن المطلب'), and 'مدرسة المسلمون'." },
-      { code: "06", name: "IP Rights & Store Compliance", short: "IP / Policy", score: 1.0, target: 9.5, summary: "Disney/Marvel/Sega characters in Alkitab; ads in a 3+ kids' app with a 404 Privacy Policy." },
-      { code: "07", name: "Pitch Decks & Monetization", short: "Sales", score: 2.5, target: 8.8, summary: "No pricing tiers shown, math mix-ups on market slides, and 45-slide CRUD manuals instead of ROI pitches." }
-    ];
-
-    const dossiers = {
-      ms: {
-        badge: "Scale First · Strongest B2C & Preschool Product",
-        badgeClass: "pill-teal",
-        title: "Muslims School (مدرسة المسلمين)",
-        meta: "14-Slide Arabic Presentation + Live on Google Play (4.8★, 100+ Downloads)",
-        opinion: "This is the gem of your consumer portfolio — a warm, structured 8-part Islamic app for kids ages 3+ covering Juz Amma, Illustrated Hadiths, Seerah, Athkar, Aqeedah, Stories, Manners, and Quizzes. Because parents and Islamic schools care deeply about accuracy when teaching faith to young children, fixing three text mistakes inside the app screens and cleaning up the deck will unlock its real potential immediately.",
-        specimensTitle: "Interactive Text Check — Click to Toggle Current Screen vs. Clean Fix",
-        specimens: [
+          <p class="text-sm leading-relaxed" style="color: var(--s-muted);">
+            ولأننا نتمنى أن يتحول هذا التعب إلى نجاح تجاري ملموس، فحصنا محفظة أعمالك بنفس العين التي ينظر بها المستثمر أو مدير المدرسة أو مسؤول التدريب في الشركات أو مراجع متاجر التطبيقات. والحقيقة الواضحة هي: <strong style="color: var(--s-ink);">عنق الزجاجة لديك اليوم ليس البرمجة، بل التركيز، وتقديم الهوية، والتدقيق اللغوي والشرعي، وضبط الجودة في اللمسات الأخيرة.</strong>
+          </p>
+          <p class="text-sm leading-relaxed" style="color: var(--s-muted);">
+            أي عميل يفتح الروابط الحالية يصطدم بتفاصيل تظلم مجهودك الهندسي: ملاحظات مسودة منشورة كما هي على الصفحة الرئيسية، كلمات مرور مستخدمين ظاهرة كنص صريح في شاشات الإدارة، أخطاء غير مقصودة في نص الشهادة ونسب النبي ﷺ داخل تطبيق الأطفال، شخصيات ديزني ومارفل تمنع القبول القانوني في المتاجر، وبيانات صيدليات لا تزال ظاهرة داخل عروض المدارس. كل هذا لا يحدث لضعف فني، بل لأن مطوراً واحداً يحاول دفع ستة منتجات مختلفة في وقت واحد دون فريق مخصص للهوية وتجربة المستخدم ومراقبة الجودة والتسعير.
+          </p>
+          <p class="text-sm leading-relaxed" style="color: var(--s-muted);">
+            الخبر الممتاز أن كل نقطة في هذا التقرير قابلة للحل تماماً، والأهم أنك لست مضطراً لإصلاح كل التطبيقات الستة معاً — <strong style="color: var(--s-ink);">التركيز الكامل على أقوى حصانين رابحين لديك (<em>مدرسة المسلمين</em> و<em>Retailo Bites</em>)</strong> يمنحك خارطة طريق واضحة وعملية خلال 90 يوماً.
+          </p>
+          <div class="pt-4 line-t flex flex-wrap items-center justify-between gap-3 text-xs" style="color: var(--s-subtle);">
+            <span class="font-semibold" style="color: var(--s-ink);">محاور الفحص السبعة</span>
+            <span>الهوية · استراتيجية المنتج · تجربة المستخدم والعربية · الأمان والجودة · دقة المحتوى · حقوق الملكية والمتاجر · التسعير والنمو</span>
+          </div>
+        `,
+        sec02Kicker: "02 · فحص الجاهزية عبر 7 محاور",
+        sec02Title: "أين تقف المحفظة اليوم مقابل إمكاناتها خلال 90 يوماً",
+        sec02Sub: "عندما تقرر مدرسة أو شركة أو أسرة الوثوق بمنتج رقمي، فإنها تحكم على هذه المحاور السبعة معاً. لاحظ أن كل الدرجات المنخفضة حالياً سببها التشتت وغياب المراجعة النهائية — وهي أمور يمكننا رفعها منهجياً.",
+        radarHeaderLeft: "توازن المحاور السبعة",
+        radarHeaderRight: "اليوم مقابل المستهدف",
+        radarLegendCurrent: "الوضع الحالي (2.3 / 10)",
+        radarLegendTarget: "مستهدف 90 يوماً (9.1 / 10)",
+        targetWord: "المستهدف",
+        practices: [
+          { code: "01", name: "الهوية المؤسسية والموقع الإلكتروني", short: "الهوية", score: 2.0, target: 9.0, summary: "نطاق 2022.online وبريد Gmail، صور ألعاب بلايستيشن جاهزة، تعطل النسخة العربية، ونصوص مسودة منشورة." },
+          { code: "02", name: "التركيز واستراتيجية المحفظة", short: "التركيز", score: 3.0, target: 9.0, summary: "تشتيت الجهد بين 6 منتجات متباينة، وإعادة تسمية جزئية لتطبيق Retailo Bites ليصبح Trainova." },
+          { code: "03", name: "تجربة المستخدم ودعم العربية (RTL)", short: "الواجهة/RTL", score: 3.0, target: 8.8, summary: "أخطاء إملائية مدمجة في الواجهات (Catout، Aletrs)، انقلاب علامات الترقيم، وقدم تصميم لوحة الويب." },
+          { code: "04", name: "أمن البيانات وجودة الهندسة", short: "الأمان", score: 2.0, target: 9.5, summary: "إظهار كلمات مرور المستخدمين كنص صريح في لوحة التحكم، كسور غير مقربة (733.3333)، وبيانات تجريبية (aaassa)." },
+          { code: "05", name: "التدقيق الشرعي والتربوي واللغوي", short: "المحتوى", score: 2.0, target: 10.0, summary: "حاجة عاجلة لتصحيح لفظ الشهادة («وأنا»)، ونسب النبي ﷺ («ابن المطلب»)، واسم «مدرسة المسلمون»." },
+          { code: "06", name: "حقوق الملكية وسياسات المتاجر", short: "الملكية", score: 1.0, target: 9.5, summary: "استخدام شخصيات ديزني ومارفل وسيجا في الكتاب الناطق، وإعلانات لتطبيق أطفال +3 مع رابط خصوصية معطل 404." },
+          { code: "07", name: "العروض البيعية ونموذج الربح", short: "المبيعات", score: 2.5, target: 8.8, summary: "غياب باقات التسعير، تضارب أرقام الإحصاءات التعليمية، وعروض من 45 شريحة تشرح الجداول بدل القيمة." }
+        ],
+        sec03Kicker: "03 · الهوية والواجهة الرقمية",
+        sec03TitleHtml: `الانطباع الأول عند زيارة <code class="text-xl font-mono ltr-token" style="color: var(--s-slate);">egyptgames2022.online</code>`,
+        sec03Sub: "موقعك الإلكتروني هو مصافحتك الأولى مع أي عميل أو شريك. الجمع بين نطاق يحمل سنة 2022 وبريد Gmail شخصي وصور ذراع بلايستيشن وصفحات مسودة فارغة يجعل استوديو حقيقياً يبدو كأنه مشروع تجريبي غير مكتمل.",
+        exhibitBarTitle: "لقطات حيّة من المحفظة — بدّل بين اللقطتين للمعاينة",
+        exBtn0Html: `1. واجهة الموقع (<code class="font-mono ltr-token">egyptgames2022.online</code>)`,
+        exBtn1Html: `2. واجهة التطبيق المشتركة (<em>Retailo / Trainova</em>)`,
+        exhibitFixLabel: "كيف نرتقي بهذا الجانب؟",
+        exhibits: [
           {
-            label: "Slide 9 · Aqeedah Screen (Shahada)",
-            defect: "«شهادة أن لا إله إلا الله وأنا محمد رسول الله»",
-            standard: "«شهادة أن لا إله إلا الله وأنَّ محمداً رسول الله»",
-            note: "Writing 'وأنا' changes the meaning to 'and I am Muhammad' instead of 'and that Muhammad is...'. Easy to patch in text & audio, and essential for parent trust."
+            img: IMG_SITE,
+            tag: "الانطباع الأول للموقع · egyptgames2022.online",
+            tagClass: "pill-terra",
+            title: "تمديد أيقونة لعبة طاولة مربعة خلف نص تعريفي بالإنجليزية",
+            desc: "الصفحة الرئيسية تقوم بتمديد شعار لعبة «عشرة طاولة» المربع على كامل الخلفية خلف نص تعريفي أبيض بالإنجليزية. ومع وجود صور جاهزة لذراع PlayStation 4 وجهاز Nintendo Switch في الأسفل — ودمج لعبة طاولة بتقييم 2.3★ مع تطبيق أذان وتطبيق مستلزمات رُضّع وتطبيقات تعليمية — يحتار الزائر في معرفة تخصص الشركة الفعلي.",
+            fix: "الانتقال إلى نطاق احترافي دائم (.com أو .eg) مع بريد رسمي باسم الشركة، وعرض شاشات حقيقية لتطبيقاتك، وفصل الألعاب الترفيهية عن حلول التعليم وتدريب الشركات."
           },
           {
-            label: "Slide 7 · Seerah Classroom Whiteboard",
-            defect: "«هو محمد بن عبد الله ابن المطلب ابن هاشم»",
-            standard: "«هو محمد بن عبد الله بن عبد المطلب بن هاشم ﷺ»",
-            note: "The whiteboard illustration drops 'عبد' from 'عبد المطلب' (the Prophet's grandfather), uses 'ابن' instead of 'بن', and writes 'صلي' without alif maqsura."
-          },
-          {
-            label: "App Logo & All Deck Titles",
-            defect: "«مدرسة المسلمون»",
-            standard: "«مدرسة المسلمين»",
-            note: "Arabic idafa grammar requires 'مدرسة المسلمين'. Updating the logo and store title makes an immediate great impression on Arabic teachers and parents."
+            img: IMG_APP,
+            tag: "واجهة التطبيق المشتركة · عروض Retailo و Trainova",
+            tagClass: "pill-ochre",
+            title: "قصّ في العناوين، أخطاء إملائية، وبيانات اختبار من 2022",
+            desc: "تُظهر اللقطات قصّ عنوان «Retailo Academ» في الشاشة الرئيسية، وخطأ إملائياً «Catout» أعلى بيانات تجريبية («test 300»، «tag one»)، ثم تتكرر نفس شاشات وجداول Retailo Bites داخل عروض تطبيق Trainova الموجّه للمدارس.",
+            fix: "مراجعة جميع النصوص وتنسيق الحاويات، وتجهيز حساب عرض توضيحي (Demo) نظيف بمحتوى واقعي، مع فصل بيئة تدريب الشركات تماماً عن بيئة التعليم."
           }
         ],
-        columns: [
+        webCards: [
           {
-            heading: "Deck & Screen Polish Needed",
-            items: [
-              "Slide 5 (Juz Amma / Quran): Currently shows a sideways-rotated screenshot of Trainova Academy ('Company Bites / My Bites') instead of the Quran screen.",
-              "Slides 4 & 6 (Illustrated Hadiths): Three landscape phone frames were left empty with Canva's default cloud-and-green-hill placeholder.",
-              "Small UX touches: Translate 'ENTER YOUR NAME' on the Arabic home screen, unclip the right edge of the bathroom dua scene, and put your web domain (not Gmail twice) on Slide 13."
-            ]
+            cls: "accent-is-terra", color: "var(--s-terra)",
+            title: "ملاحظات مسودة منشورة وروابط معطلة",
+            body: `بطاقة <em>Elkeetab Alnateek</em> تعرض للجمهور ملاحظة داخلية: <code class="font-mono">(نص مؤقت حتى تصبح اللعبة جاهزة – يمكنك تحديث التفاصيل لاحقًا)</code> مع زر فارغ يعيد تحميل الصفحة. كما أن رابط <code class="font-mono ltr-token">Services</code> في القائمة لا يعمل، ولعبة <em>Domino Square</em> المنشورة على المتجر غير مذكورة في الموقع.`
           },
           {
-            heading: "How to Grow & Monetize It",
-            items: [
-              "Go 100% Ad-Free for Kids: Remove third-party ads ('Contains ads' on Play Store) and add a live Privacy Policy so your Play Store account stays completely safe.",
-              "Family Freemium + Preschool Bundles: Keep 3 surahs and sample stories free, and offer a simple annual family unlock plus bulk classroom codes for private Islamic kindergartens.",
-              "Launch on iOS: Gulf and Western diaspora families use iPads and iPhones heavily — an App Store build doubles your market."
-            ]
-          }
-        ]
-      },
-      rb: {
-        badge: "Best B2B SaaS Bet · Focus on Retail & Pharma First",
-        badgeClass: "pill-slate",
-        title: "Retailo Bites (23 Slides) & Trainova Academy (90 Slides EN/AR)",
-        meta: "Shared Mobile App + Web Manager Platform (113 Total Slides Reviewed)",
-        opinion: "You already built a real working multi-tenant microlearning and field-task platform in Retailo Bites. The catch is that both Trainova school decks were cloned directly from Retailo Bites while leaving Bites logos, Saudi pharmacy chains, cleanser-invoice missions, and plaintext user passwords visible in the screenshots. Cleaning up security and focusing on frontline corporate training first is a much faster path to B2B revenue than K–12 schools.",
-        specimensTitle: "Interactive Security & UI Check — Click to Toggle Current vs. Clean Fix",
-        specimens: [
-          {
-            label: "Web Admin Users Table (Slide 18 / 40)",
-            defect: "Password Column Shown: '123456789' | 'yousef999' | 'salah@ahmed'",
-            standard: "Hashed Auth (Firebase / bcrypt) · Passwords Never Visible to Admins",
-            note: "Showing raw user passwords next to external emails (@united.sa) is an instant blocker for any company IT or school admin — and a straightforward backend fix."
+            cls: "accent-is-ochre", color: "var(--s-ochre)",
+            title: "تعطل النسخة العربية للموقع (/ar/)",
+            body: `في الصفحة العربية، تظل القائمة العلوية وعنوان البانر وأسماء التطبيقات وأزرار <code class="font-mono ltr-token">&raquo; Read more</code> باللغة الإنجليزية داخل تخطيط عربي (مما يقلب النقطة لأول السطر <code class="font-mono ltr-token">.of all ages</code>)، كما أن زر التواصل ينزل إلى شريط أزرق فارغ تماماً بلا نموذج أو أرقام.`
           },
           {
-            label: "Trainova School Slides (Slides 1, 10, 14–36)",
-            defect: "CompanyName: Bites · Nahdi / AL Dawaa · 'Upload Cleansers invoice'",
-            standard: "Clean, Separate Demo Environment with Realistic Industry Courses",
-            note: "School slides still mention 'pharmacy branches' and 'school interns' alongside 2022 test rows ('TestSO', 'aaassa', 'Maaa')."
-          },
-          {
-            label: "Mobile & Web UI Labels",
-            defect: "'Catout' · 'Aletrs' · 'Avarage Score: 733.3333' · 'Diffculty' · 'Passwrod'",
-            standard: "'Categories' · 'Alerts' · 'Average Score: 73%' · 'Difficulty' · 'Password'",
-            note: "A quick string-cleanup pass across mobile and web instantly makes the product feel 10x more trustworthy."
+            cls: "accent-is-terra", color: "var(--s-terra)",
+            title: "رابط الخصوصية 404 وصفحات مسودة مكشوفة",
+            body: `صفحة <code class="font-mono ltr-token">/privacy-policy/</code> تعطي خطأ <strong>404</strong> — وهو خطر مباشر على حسابك في Google Play عند نشر تطبيق أطفال (+3) يحتوي على إعلانات. كما يكشف ملف <code class="font-mono ltr-token">/wp-sitemap.xml</code> عن 9 صفحات ووردبريس فارغة أو غير مكتملة.`
           }
         ],
-        columns: [
-          {
-            heading: "Deck Cleanup Notes (EN & AR)",
-            items: [
-              "45 Slides Is Too Long for Sales: 30+ slides walk through every database form ('Create A Tag', 'Create A Study') without showing pricing, outcomes, or a live demo.",
-              "Slide Mix-Ups: Duplicate slides (EN 4/5, 6/7, 12/13, 23/24, 35/36); missing screenshots where red arrows point at empty space (EN 16, AR 25); wrong screenshots on EN 18–19 & 39; swapped 'Drafts/Copy To' arrows.",
-              "Arabic Deck Gaps: AR Slide 2 overwrote Advantages 01–05 (so Slide 4 starts at 06–10), drifts between teachers and students, and leaves English callouts ('Create A Qustion') untranslated."
+        sec04Kicker: "04 · مراجعة التطبيقات والعروض التقديمية",
+        sec04Title: "قراءة تفصيلية داخل العروض السبعة (189 شريحة)",
+        sec04Sub: "تنقّل بين المجموعات الأربع أدناه لمعرفة نقاط القوة، والملاحظات المرصودة في الشرائح، مع بطاقات تفاعلية تقارن بين النص/الوضع الحالي والتصحيح النظيف المقترح.",
+        dossierTabs: {
+          ms: { kicker: "الأولوية الأولى · للأسر والروضات", color: "var(--s-teal)", name: "مدرسة المسلمين", sub: "14 شريحة عربي + متجر Play" },
+          rb: { kicker: "أفضل محرك للشركات · B2B SaaS", color: "var(--s-slate)", name: "Retailo و Trainova", sub: "113 شريحة (3 عروض)" },
+          ak: { kicker: "تجميد لحين تغيير الرسوم", color: "var(--s-ochre)", name: "الكتاب الناطق", sub: "22 شريحة (إنجليزي وعربي)" },
+          bd: { kicker: "إلغاء العرض المجمّع", color: "var(--s-terra)", name: "عرض الـ 3 تطبيقات", sub: "25 شريحة مؤسسية بالعربية" }
+        },
+        specimenBtnSeeClean: "اعرض التصحيح",
+        specimenBtnSeeCurrent: "اعرض الوضع الحالي",
+        specimenStateClean: "الصياغة / المعيار الصحيح المقترح",
+        specimenStateCurrent: "المعروض حالياً داخل الشاشة أو الشريحة",
+        dossiers: {
+          ms: {
+            badge: "الأولوية الأولى للتوسع · أقوى منتج للأسر ورياض الأطفال",
+            badgeClass: "pill-teal",
+            title: "مدرسة المسلمين (Muslims School)",
+            meta: "عرض تقديمي من 14 شريحة بالعربية + تطبيق منشور على Google Play (تقييم 4.8★، +100 تحميل)",
+            opinion: "هذا التطبيق هو جوهرة منتجاتك الموجهة للأسر: منهج إسلامي مبسط وجذاب للأطفال من سن 3 سنوات يغطي جزء عمّ، الأحاديث المصورة، السيرة، الأذكار، العقيدة، القصص السلوكية، والاختبارات التفاعلية. ولأن أولياء الأمور والمدارس الإسلامية يدققون بشدة في سلامة النصوص الدينية واللغوية، فإن تصحيح ثلاث ملاحظات نصية داخل شاشات التطبيق وتحديث لقطات العرض التقديمي سيفتح له باب الانتشار فوراً.",
+            specimensTitle: "مقارنة نصية تفاعلية — اضغط للتبديل بين الشاشة الحالية والتصحيح",
+            specimens: [
+              {
+                label: "شريحة 9 · شاشة التوحيد والعقيدة (نص الشهادة)",
+                defect: "«شهادة أن لا إله إلا الله وأنا محمد رسول الله»",
+                standard: "«شهادة أن لا إله إلا الله وأنَّ محمداً رسول الله»",
+                note: "كتابة «وأنا» تغيّر المعنى تماماً بدلاً من «وأنَّ محمداً رسول الله». تعديلها في النص والصوت سهل وسريع وضروري جداً لثقة الأهل."
+              },
+              {
+                label: "شريحة 7 · سبورة الفصل في قسم السيرة النبوية",
+                defect: "«هو محمد بن عبد الله ابن المطلب ابن هاشم»",
+                standard: "«هو محمد بن عبد الله بن عبد المطلب بن هاشم ﷺ»",
+                note: "السبورة المرسومة أسقطت كلمة «عبد» من اسم جده «عبد المطلب»، واستخدمت «ابن» بالألف بدل «بن»، وكتبت «صلي» بالياء بدل «صلى»."
+              },
+              {
+                label: "شعار التطبيق وعناوين جميع الشرائح",
+                defect: "«مدرسة المسلمون»",
+                standard: "«مدرسة المسلمين»",
+                note: "قواعد الإضافة في اللغة العربية توجب جرّ المضاف إليه («مدرسة المسلمين»). تصحيح الشعار والاسم في المتجر يعكس احترافية تربوية فورية."
+              }
+            ],
+            columns: [
+              {
+                heading: "ملاحظات العرض التقديمي وتجربة الطفل",
+                items: [
+                  "شريحة 5 (جزء عمّ - القرآن): تعرض بالخطأ لقطة شاشة مقلوبة بالعرض لتطبيق Trainova Academy (Company Bites) بدلاً من شاشة القرآن الكريم.",
+                  "الشريحتان 4 و6 (أحاديث نبوية مصورة): ثلاث إطارات هواتف تُركت فارغة بصورة السحاب والتل الأخضر الافتراضية في Canva.",
+                  "لمسات واجهة بسيطة: تعريب عبارة ENTER YOUR NAME في الشاشة الرئيسية، معالجة قصّ حافة رسمة دعاء الخلاء، ووضع رابط الموقع بدلاً من تكرار بريد Gmail مرتين في شريحة 13."
+                ]
+              },
+              {
+                heading: "كيف نضاعف انتشاره وعائده المادي؟",
+                items: [
+                  "تطبيق آمن 100% بلا إعلانات: إزالة شبكات الإعلانات الخارجية ونشر سياسة الخصوصية لحماية الحساب وتسويق التطبيق للأهل كبيئة نقية وآمنة.",
+                  "نموذج Freemium عائلي + باقات للروضات: إتاحة 3 سور وقصص مجانية، مع اشتراك عائلي سنوي ميسّر وأكواد تفعيل جماعية للحضانات والمدارس الإسلامية.",
+                  "إطلاق نسخة iOS: الأسر في الخليج والمغتربون يعتمدون بشكل كبير على أجهزة iPad وiPhone — وجود التطبيق على App Store يضاعف سوقك."
+                ]
+              }
             ]
           },
-          {
-            heading: "Smartest Commercial Angle",
-            items: [
-              "Pitch Retailo Bites to Pharmacies, Clinics, Retail & Cafés: High-turnover retail teams pay $3–$6/user/month for 2-minute product quizzes and store photo missions.",
-              "Save Trainova for Private Tutoring Centers Later: Public schools have slow procurement and free LMS tools; only spin out Trainova once it has a 100% separate, RTL-ready build.",
-              "Turn 45 Slides into 10 Sharp Slides: Problem -> 2-Min Mobile Flow -> Manager Dashboard -> Per-Seat Pricing -> 14-Day Pilot."
+          rb: {
+            badge: "أقوى فرصة لشركات B2B · ركّز على الصيدليات والتجزئة أولاً",
+            badgeClass: "pill-slate",
+            title: "Retailo Bites (23 شريحة) و Trainova Academy (90 شريحة EN/AR)",
+            meta: "منصة موحدة لتطبيق الهاتف ولوحة تحكم الويب (تم فحص 113 شريحة بالكامل)",
+            opinion: "لديك بالفعل محرك تدريب مصغر (Microlearning) ومهام ميدانية يعمل فعلياً في Retailo Bites. الإشكالية الحالية هي أن عرضَي Trainova الموجهين للمدارس نُسخا مباشرة من Retailo Bites مع بقاء شعارات Bites وسلاسل الصيدليات السعودية ومهمة رفع فاتورة المنظفات وكلمات مرور المستخدمين المكشوفة داخل اللقطات! تأمين الحسابات والتركيز أولاً على تدريب موظفي الفروع والشركات هو الطريق الأسرع والأربح من المدارس الحكومية.",
+            specimensTitle: "فحص تفاعلي للأمان والواجهة — اضغط للتبديل بين الوضع الحالي والتصحيح",
+            specimens: [
+              {
+                label: "جدول المستخدمين في لوحة الويب (شريحة 18 / 40)",
+                defect: "Password Column: '123456789' | 'yousef999' | 'salah@ahmed'",
+                standard: "تشفير كامل (Firebase Auth / bcrypt) · عدم إظهار أي كلمة مرور",
+                note: "ظهور كلمات المرور كنص صريح بجوار إيميلات خارجية (@united.sa) يوقف أي عملية بيع لقسم الـ IT في أي شركة أو مدرسة — وحلّه البرمجي مباشر."
+              },
+              {
+                label: "شرائح Trainova للمدارس (الشرائح 1، 10، 14–36)",
+                defect: "CompanyName: Bites · Nahdi / AL Dawaa · 'Upload Cleansers invoice'",
+                standard: "بيئة عرض مستقلة ونظيفة بمحتوى تدريبي واقعي لكل قطاع",
+                note: "شرائح المدارس لا تزال تذكر 'pharmacy branches' و'school interns' مع بيانات تجريبية قديمة ('TestSO'، 'aaassa'، 'Maaa')."
+              },
+              {
+                label: "عناوين الواجهة في الهاتف والويب",
+                defect: "'Catout' · 'Aletrs' · 'Avarage Score: 733.3333' · 'Diffculty' · 'Passwrod'",
+                standard: "'Categories' · 'Alerts' · 'Average Score: 73%' · 'Difficulty' · 'Password'",
+                note: "مراجعة سريعة للنصوص الإنجليزية وتقريب الأرقام العشرية ترفع انطباع الجودة الاحترافية عشرة أضعاف."
+              }
+            ],
+            columns: [
+              {
+                heading: "ملاحظات تنظيم العروض التقديمية (الإنجليزي والعربي)",
+                items: [
+                  "45 شريحة طويلة جداً كعرض بيعي: أكثر من 30 شريحة تشرح نماذج الإدخال ('إنشاء وسم'، 'إنشاء دراسة') دون ذكر الأسعار أو العائد التدريبي أو رابط تجربة حي.",
+                  "تداخل اللقطات وتكرار الشرائح: شرائح مكررة بالكامل (4/5، 6/7، 12/13، 23/24، 35/36)، وشرائح بلا لقطات تشير فيها الأسهم إلى فراغ (EN 16 و AR 25)، وأسهم معكوسة بين Drafts و Copy To.",
+                  "فجوات النسخة العربية: الشريحة 2 استبدلت المميزات 01–05 فبدأت الشريحة 4 فجأة من 06–10، مع تذبذب الخطاب بين تدريب المعلمين وتدريب الطلاب، وبقاء التعليقات الإنجليزية ('Create A Qustion') دون ترجمة."
+                ]
+              },
+              {
+                heading: "أذكى زاوية تجارية للتسويق",
+                items: [
+                  "ابدأ بـ Retailo Bites لسلاسل الصيدليات والعيادات والمتاجر والمطاعم: هذه القطاعات تعاني من دوران الموظفين وتدفع 3 إلى 6 دولار شهرياً للموظف مقابل كبسولات تدريب سريعة ومهام تصوير الرفوف والفواتير.",
+                  "أجّل Trainova للمراكز التعليمية الخاصة لاحقاً: المدارس تعتمد على منصات مجانية أو دورات شراء بطيئة؛ لا تطلق Trainova إلا بنسخة مستقلة تماماً تدعم العربية RTL في لوحة الويب.",
+                  "اختصر الـ 45 شريحة إلى 10 شرائح تنفيذية مركزة: المشكلة ← تجربة الموظف في دقيقتين ← تقارير المدير ← باقات الاشتراك ← تجربة 14 يوماً."
+                ]
+              }
+            ]
+          },
+          ak: {
+            badge: "إيقاف مؤقت لحين استبدال الرسوم · مخاطر حقوق ملكية",
+            badgeClass: "pill-ochre",
+            title: "الكتاب الناطق — Alkitab Alnaatiq (11 شريحة EN + 11 شريحة AR)",
+            meta: "نموذج أولي لتعليم المفردات بثلاث لغات (عربي / إنجليزي / فرنسي) للأطفال من سن سنتين (Flutter)",
+            opinion: "فكرة تعليم الأطفال الصغار المفردات بالصوت والصورة عبر شخصيات محببة فكرة جميلة، لكن بناء عجلة اختيار الشخصيات حول شخصيات مملوكة لشركات عالمية (ديزني، مارفل، سيجا) يمنع قبول التطبيق قانونياً في متاجر Apple وGoogle أو لدى المدارس. ننصح بتجميد العمل عليه مؤقتاً وتوجيه وقتك لـ «مدرسة المسلمين» و«Retailo Bites» أولاً.",
+            specimensTitle: "فحص حقوق الملكية والعرض — اضغط للتبديل بين الوضع الحالي والتصحيح",
+            specimens: [
+              {
+                label: "عجلة الشخصيات ولافتات الأقسام",
+                defect: "Stitch & Angel (Disney) · Elsa · Spider-Man · Sonic · Masha",
+                standard: "2 إلى 3 شخصيات كرتونية أصلية مملوكة للاستوديو بالكامل",
+                note: "الشريحة 18 في العرض المجمّع تقول «جميع الصور مصممة ومرسومة خصيصاً للبرنامج» مباشرة فوق صور Stitch وSonic — استبدالها يحمي حسابك من الإغلاق."
+              },
+              {
+                label: "اسم التطبيق عبر الروابط والشاشات",
+                defect: "Alkitab Alnaatiq / ALKITAAB / Al ketab Al nateq / Elkeetab / elketaab",
+                standard: "اسم إنجليزي واحد معتمد + شعار عربي موحد في كل مكان",
+                note: "يظهر اسم التطبيق حالياً بخمس تهجئات إنجليزية مختلفة بين الموقع والشاشات وعناوين العروض."
+              },
+              {
+                label: "علامات الترقيم في العرض الإنجليزي (الشرائح 3–7)",
+                defect: "'.images' · '.specialized teachers' · '.connection while running'",
+                standard: "ضبط صناديق النص الإنجليزي في Canva من اليسار لليمين (LTR)",
+                note: "كتابة النص الإنجليزي داخل صندوق عربي (RTL) أدت لقفز النقاط والفواصل إلى بداية السطر الأيسر."
+              }
+            ],
+            columns: [
+              {
+                heading: "تفاصيل إضافية في الشرائح والواجهة",
+                items: [
+                  "شريحة 8 فارغة تماماً في النسخة الإنجليزية: تحمل عنوان SCREENSHOTS طولياً على اليسار بينما بقية الشريحة سوداء فارغة.",
+                  "لقطات الفيديو والأيقونات: الفيديو يظهر دوائر تحميل وإعداد ترجمة 'From: English -> To: English'، كما أن قسم «الحمام» يستخدم أيقونة وجه ولد وقسم «الآلات الموسيقية» يستخدم صورة ولد يحمل قميصاً!",
+                  "تدقيق العرض العربي: ترك عناوين (SCREENSHOTS / DEMO / THANK YOU) بالإنجليزية، واستخدام صور خوادم (Servers) لا تناسب تطبيق طفولة مبكرة، وإسقاط الهمزات والنقاط (علي، المحتوي، القادمه، العائله)."
+                ]
+              },
+              {
+                heading: "متى يصبح الاستثمار فيه مجدياً؟",
+                items: [
+                  "تصميم حزمة رسومات أصلية متناسقة تدور حول شخصية مبتكرة خاصة بك (مثل تطوير شخصية الكتاب الأصفر ذي النظارة في الشريحة الأولى!).",
+                  "تطوير التجربة من مجرد ضغط على صور الكلمات (وهي فئة مزدحمة بالتطبيقات المجانية) إلى تمارين نطق الحروف (Phonics) وتتبّع الكتابة وتقييم نطق الطفل."
+                ]
+              }
+            ]
+          },
+          bd: {
+            badge: "إيقاف هذا العرض المجمّع · تسويق كل منتج لعميله المناسب",
+            badgeClass: "pill-terra",
+            title: "عرض الـ 3 تطبيقات المجمّع (Egypt games Presentation)",
+            meta: "عرض مؤسسي من 25 شريحة بالعربية يجمع (ترينوفا 1 و2، الكتاب الناطق، مدرسة المسلمون)",
+            opinion: "يطمح هذا العرض لتقديم خطة تطوير للتعليم قبل الجامعي في مصر خلال 3 سنوات. غير أن جمع أداة اختبارات شركات/مدارس مع نموذج أولي لمفردات سن سنتين وتطبيق ديني للأطفال في صفقة مؤسسية واحدة لا يتوافق مع طريقة شراء المدارس أو الوزارات للأنظمة الرقمية — فضلاً عن وجود تضارب حسابي وتقني في الشرائح الافتتاحية (2 و3 و6) يضعف الموثوقية منذ البداية.",
+            specimensTitle: "فحص البيانات والمواصفات — اضغط للتبديل بين الوضع الحالي والتصحيح",
+            specimens: [
+              {
+                label: "شريحة 2 · إحصاءات التعليم في مصر (2023/2024)",
+                defect: "إجمالي الطلاب: [فارغ] · المعلمون: 922,628 معلن مقابل 958,753 مجموع الفرعي",
+                standard: "أرقام رسمية مكتملة ومتطابقة حسابياً (843,490 + 115,263 = 958,753)",
+                note: "تُرك سطر «إجمالي الطلاب في التعليم قبل الجامعي:» بلا رقم، ومجموع معلمي الحكومي والخاص لا يطابق الإجمالي المكتوب أعلى الفقرة."
+              },
+              {
+                label: "شريحة 3 · مؤشر المعرفة العالمي",
+                defect: "«ترتيب مصر من أصل 73 دولة: المرتبة 79 في 2023 والمرتبة 83 في 2020»",
+                standard: "«المرتبة 79 عالمياً من أصل 133 دولة في 2023 (وكانت 73 في 2021)»",
+                note: "من المستحيل حسابياً أن تحتل دولة المركز 79 والمركز 83 من أصل 73 دولة — حدث الخلط بسبب وضع ترتيب مصر عام 2021 (73) مكان عدد الدول الكلي."
+              },
+              {
+                label: "شريحة 6 · التوصيف التقني للحلول",
+                defect: "وصف التطبيقات الأربعة كـ '(UNITY GAME APP)' · 'QUIZIES' · 'اسبوعبة'",
+                standard: "توصيف تقني دقيق لكل منتج (Flutter / Web-Firebase / Unity) وتدقيق إملائي",
+                note: "وصف «الكتاب الناطق» بأنه تطبيق Unity يناقض شعار Flutter الموضوع على جميع شرائح عرضه المستقل."
+              }
+            ],
+            columns: [
+              {
+                heading: "ملاحظات أخرى في العرض المجمّع",
+                items: [
+                  "تعارض الشروحات مع اللقطات (شريحة 16): إضافة أسهم عربية («إجابة الطالب عمر حسن على ورقة عمل الجبر 1») تشير إلى صفوف اختبار من عام 2022 في Retailo Bites مكتوب فيها 'haujhu' و'ghghjhjh'.",
+                  "تفاوت الأسلوب والتنسيق: استخدام عبارات عامية في شريحة 5، وتغيير سن «الكتاب الناطق» إلى 10 سنوات في شريحة 6، وتداخل السطر الأخير مع الخط الأبيض السفلي."
+                ]
+              },
+              {
+                heading: "لماذا تنجح العروض المستقلة أكثر؟",
+                items: [
+                  "المؤسسات التعليمية الكبرى تشتري نظاماً موحداً بحساب دخول واحد (SSO) وسجل درجات متصل، لا ثلاثة تطبيقات منفصلة لأعمار وتقنيات متباينة.",
+                  "إيقاف هذا الرابط المجمّع وتقديم عرض مستقل مخصص لـ «مدرسة المسلمين» وعرض B2B مستقل لـ «Retailo Bites» سيحقق استجابة أقوى بكثير."
+                ]
+              }
             ]
           }
-        ]
-      },
-      ak: {
-        badge: "Pause & Re-Illustrate · IP Clearance Needed First",
-        badgeClass: "pill-ochre",
-        title: "Alkitab Alnaatiq / Elketaab (11 Slides EN + 11 Slides AR)",
-        meta: "Early-Childhood Trilingual (AR / EN / FR) Talking Vocabulary Prototype (Flutter)",
-        opinion: "Helping toddlers ages 2+ learn words across Arabic, English, and French with friendly characters is a sweet concept. However, building the character wheel around famous Disney, Marvel, and Sega characters means Apple, Google, and schools cannot legally approve it. We recommend pausing this app until the art is swapped for your own original characters so your time goes into Muslims School and Retailo Bites first.",
-        specimensTitle: "Interactive IP & Deck Check — Click to Toggle Current vs. Clean Fix",
-        specimens: [
-          {
-            label: "Character Wheel & Category Headers",
-            defect: "Stitch & Angel (Disney) · Elsa · Spider-Man · Sonic · Masha",
-            standard: "2–3 Original Studio Characters You Own 100%",
-            note: "Bundle Slide 18 says 'all images are custom-drawn specifically for the program' right above Stitch and Sonic — swapping to original mascots protects your developer account."
-          },
-          {
-            label: "Product Name Across Links & Screens",
-            defect: "Alkitab Alnaatiq / ALKITAAB / Al ketab Al nateq / Elkeetab / elketaab",
-            standard: "One Consistent English Name + One Clean Arabic Logo",
-            note: "Right now the name is spelled five different ways across the website, app screens, and slide titles."
-          },
-          {
-            label: "English Slide Punctuation (Slides 3–7)",
-            defect: "'.images' · '.specialized teachers' · '.connection while running'",
-            standard: "Left-to-Right (LTR) Text Boxes in Canva for English Slides",
-            note: "English text was typed inside RTL boxes, causing periods and commas to jump to the left start of lines."
-          }
+        },
+        sec05Kicker: "05 · الدليل الكامل للإصلاحات",
+        sec05Title: "جميع الملاحظات الـ 36 وطريقة معالجتها خطوة بخطوة",
+        sec05Sub: "اضغط على أي بند لفتح موقعه الدقيق في الشرائح أو الموقع مع الحل المقترح. يمكنك التصفية حسب التخصص أو الأولوية أثناء التنفيذ.",
+        searchPlaceholder: "ابحث باسم التطبيق، رقم الشريحة، أو الكلمة المفتاحية...",
+        practiceOptions: [
+          { val: "ALL", label: "جميع محاور الفحص (7)" },
+          { val: "Brand", label: "الهوية والموقع الإلكتروني" },
+          { val: "Strategy", label: "استراتيجية المنتج" },
+          { val: "UX", label: "تجربة المستخدم والعربية RTL" },
+          { val: "Security", label: "الأمان وجودة الهندسة" },
+          { val: "Content", label: "التدقيق الشرعي واللغوي" },
+          { val: "IP", label: "حقوق الملكية وسياسات المتاجر" },
+          { val: "Pitch", label: "العروض التقديمية والبيانات" }
         ],
-        columns: [
-          {
-            heading: "Slide & App Details to Note",
-            items: [
-              "Blank Slide 8 in English: Has the vertical 'SCREENSHOTS' title on the left, but the slide itself was left completely empty.",
-              "Demo & Icon Mismatches: Demo clip shows loading spinners and 'From: English -> To: English'; 'الحمام' (Bathroom) uses a boy's face icon and 'الآلات الموسيقية' uses a boy holding a shirt.",
-              "Arabic Deck Polish: Leaves 'SCREENSHOTS / DEMO / Our Contact / THANK YOU' in English, uses server-rack stock photos, and drops hamzas/dots ('علي، المحتوي، القادمه، العائله')."
-            ]
-          },
-          {
-            heading: "When It Becomes Worth Revisiting",
-            items: [
-              "Commission cohesive custom art built around an original mascot (like a polished version of the yellow glasses-wearing book character on Slide 1!).",
-              "Upgrade beyond simple word-tapping (which has thousands of free apps) by adding phonics, letter tracing, or fun pronunciation games."
-            ]
-          }
-        ]
-      },
-      bd: {
-        badge: "Retire Combined Deck · Pitch Each Product Separately",
-        badgeClass: "pill-terra",
-        title: "Combined '3 Arabic Apps' Deck (Egypt games Presentation)",
-        meta: "25-Slide Arabic Institutional Pitch (Trainova 1 & 2, Alkitab Alnaatiq, Muslims School)",
-        opinion: "This deck aims high — pitching a 3-year Egyptian K–12 education solution. The challenge is that bundling a retail/school quiz app, a toddler vocab prototype, and a kids' Islamic app into one government/institutional pitch doesn't match how school groups buy software — and a few math and tech-stack mix-ups on Slides 2, 3, and 6 hurt credibility right at the start.",
-        specimensTitle: "Interactive Slide Check — Click to Toggle Current vs. Clean Fix",
-        specimens: [
-          {
-            label: "Slide 2 · Egypt Education Statistics",
-            defect: "Total Students: [Blank] · Teachers: 922,628 vs. 958,753 subtotal sum",
-            standard: "Complete Official CAPMAS Totals Where Subtotals Match 100%",
-            note: "'Total pre-university students:' was left blank after the colon, and Public (843,490) + Private (115,263) adds up to 958,753 rather than 922,628."
-          },
-          {
-            label: "Slide 3 · Global Knowledge Index",
-            defect: "'Egypt's rank out of 73 countries: 79th in 2023 and 83rd in 2020'",
-            standard: "'Ranked 79th out of 133 countries in 2023 (73rd in 2021)'",
-            note: "Ranking 79th out of 73 countries happened by mixing up Egypt's 2021 rank (73rd) with the total number of countries (~133)."
-          },
-          {
-            label: "Slide 6 · Tech Stack Labels",
-            defect: "All 4 Apps Labeled '(UNITY GAME APP)' · 'QUIZIES' · 'اسبوعبة'",
-            standard: "Accurate Tech Stack per App (Flutter / Web-Firebase / Unity)",
-            note: "Calling Alkitab a Unity app contradicts the Flutter logo on every slide of the standalone Alkitab decks."
-          }
+        practiceLabels: {
+          Brand: "الهوية والموقع الإلكتروني", Strategy: "استراتيجية المنتج", UX: "تجربة المستخدم والعربية RTL",
+          Security: "الأمان وجودة الهندسة", Content: "التدقيق الشرعي واللغوي", IP: "حقوق الملكية وسياسات المتاجر", Pitch: "العروض التقديمية والبيانات"
+        },
+        classOptions: [
+          { val: "ALL", label: "جميع الأولويات" },
+          { val: "Blocker", label: "أولوية 1 · عائق ثقة عاجل" },
+          { val: "Upgrade", label: "أولوية 2 · تحسين عالي الأثر" },
+          { val: "Polish", label: "أولوية 3 · صقل وجودة" }
         ],
-        columns: [
-          {
-            heading: "Other Details Spotted in This Deck",
-            items: [
-              "Slide 16 Callout Mismatch: Adds Arabic notes ('Student Omar Hassan — Algebra Worksheet 1') pointing at 2022 Retailo Bites rows named 'haujhu' and 'ghghjhjh' (Due: 999999).",
-              "Tone & Layout: Slide 5 slips into casual spoken Arabic, Slide 6 changes Alkitab's age range from 2+ to 'up to 10', and the bottom line overlaps a white divider bar."
-            ]
-          },
-          {
-            heading: "Why Separate Decks Work Much Better",
-            items: [
-              "Large school groups look for one unified K–12 platform with one login and gradebook, rather than three separate apps for different ages.",
-              "Retiring this combined link and pitching Muslims School (to parents/kindergartens) and Retailo Bites (to companies) with dedicated 10-slide decks will get far better responses."
-            ]
-          }
-        ]
+        pillLabels: { Blocker: "عائق ثقة عاجل", Upgrade: "عالي الأثر", Polish: "صقل وجودة" },
+        showingCounter: (shown, total) => `عرض ${shown} من أصل ${total} ملاحظة`,
+        emptyFilterMsg: "لا توجد بنود تطابق خيارات البحث الحالية.",
+        recFixPrefix: "الحل المقترح: ",
+        sec06Kicker: "06 · بوصلة التركيز",
+        sec06Title: "ما الذي يستحق التطوير فعلاً في المرحلة الأولى؟",
+        sec06Sub: "توزيع الجهد على ستة منتجات غير مكتملة يستنزف الوقت دون عائد. وضع كامل التركيز خلف أقوى منتجين لديك يغيّر المعادلة التجارية خلال 90 يوماً.",
+        triageHtml: `
+          <div class="card-warm rounded-lg p-5 accent-is-teal space-y-2.5">
+            <span class="px-2.5 py-0.5 rounded text-xs font-semibold pill-teal">الرابح الأول · للأسر والروضات</span>
+            <h3 class="font-editorial text-xl">مدرسة المسلمين 2.0</h3>
+            <p class="text-xs leading-relaxed" style="color: var(--s-muted);">
+              منشور فعلياً بتقييم <span class="ltr-token">4.8★</span> ومحتوى غني من 8 أقسام. بتصحيح نص الشهادة والسيرة واسم «مدرسة المسلمين»، وإزالة الإعلانات لصالح اشتراك عائلي وترخيص سنوي للروضات الإسلامية، مع نشر سياسة الخصوصية وإصدار نسخة iOS، يصبح جاهزاً للنمو فوراً.
+            </p>
+          </div>
+          <div class="card-warm rounded-lg p-5 accent-is-ochre space-y-2.5">
+            <span class="px-2.5 py-0.5 rounded text-xs font-semibold pill-slate">الرابح الثاني · اشتراكات الشركات B2B</span>
+            <h3 class="font-editorial text-xl">Retailo Bites (قبل Trainova)</h3>
+            <p class="text-xs leading-relaxed" style="color: var(--s-muted);">
+              سلاسل الصيدليات والعيادات والمتاجر والمطاعم في مصر والسعودية تدفع فعلياً <strong><span class="ltr-token">$3–$6</span> شهرياً للموظف</strong> مقابل تدريب سريع ومهام تصوير الفروع، بينما المدارس لديها بدائل مجانية. شفّر كلمات المرور، نظّف النصوص والبيانات التجريبية، وقدّم عرضاً من 10 شرائح مركزة.
+            </p>
+          </div>
+          <div class="card-sand rounded-lg p-4 space-y-1.5">
+            <div class="text-xs font-semibold" style="color: var(--s-ink);">فصل الهوية: الألعاب الترفيهية</div>
+            <p class="text-xs leading-relaxed" style="color: var(--s-muted);">
+              أبقِ لعبتَي <em>10 Tawla</em> و<em>Domino Square</em> تحت مظلة ألعاب ترفيهية مستقلة بعيداً عن موقع وعروض التعليم وتدريب الشركات حتى يرى كل عميل تخصصاً واضحاً.
+            </p>
+          </div>
+          <div class="card-sand rounded-lg p-4 space-y-1.5">
+            <div class="text-xs font-semibold" style="color: var(--s-terra);">إيقاف مؤقت: الكتاب الناطق والعرض المجمّع</div>
+            <p class="text-xs leading-relaxed" style="color: var(--s-muted);">
+              أوقف تداول عرض الـ 25 شريحة المجمّع، وجمّد «الكتاب الناطق» لحين استبدال جميع شخصيات ديزني ومارفل وسيجا برسوم أصلية مملوكة لك.
+            </p>
+          </div>
+        `,
+        timelineHtml: `
+          <div class="card-warm rounded-lg p-6 space-y-3.5">
+            <div class="flex items-center justify-between line-b pb-3">
+              <span class="font-mono text-xs font-semibold" style="color: var(--s-terra);">المرحلة 1 · الأيام 1–20</span>
+              <span class="text-xs" style="color: var(--s-subtle);">تأسيس الثقة</span>
+            </div>
+            <h3 class="font-editorial text-xl">إغلاق الثغرات العاجلة</h3>
+            <ul class="space-y-2 text-xs leading-relaxed" style="color: var(--s-muted);">
+              <li>&bull; إيقاف إرسال روابط عروض <em>Trainova</em> الطويلة وعرض <em>الكتاب الناطق</em> الناقص والعرض المجمّع مؤقتاً.</li>
+              <li>&bull; نشر صفحة سياسة خصوصية ثنائية اللغة لحماية حساب المطور على Google Play.</li>
+              <li>&bull; تشفير كلمات المرور (<span class="ltr-token">bcrypt / Firebase Auth</span>) وحذف عمود كلمة المرور الظاهر من لوحة <em>Retailo/Trainova</em>.</li>
+              <li>&bull; حجز نطاق رسمي نظيف (<span class="ltr-token">.com</span> أو <span class="ltr-token">.eg</span>) وبريد مؤسسي بدلاً من <span class="ltr-token">2022.online</span> وGmail.</li>
+            </ul>
+          </div>
+          <div class="card-warm rounded-lg p-6 space-y-3.5">
+            <div class="flex items-center justify-between line-b pb-3">
+              <span class="font-mono text-xs font-semibold" style="color: var(--s-teal);">المرحلة 2 · الأيام 21–55</span>
+              <span class="text-xs" style="color: var(--s-subtle);">المنتج الأول</span>
+            </div>
+            <h3 class="font-editorial text-xl">إطلاق مدرسة المسلمين 2.0</h3>
+            <ul class="space-y-2 text-xs leading-relaxed" style="color: var(--s-muted);">
+              <li>&bull; مراجعة شرعية ولغوية شاملة: تصحيح نص الشهادة («وأنَّ محمداً»)، ونسب السيرة («بن عبد المطلب»)، وشعار «مدرسة المسلمين».</li>
+              <li>&bull; إلغاء الإعلانات تماماً وتفعيل باقة عائلية سنوية + تراخيص فصول للروضات الإسلامية.</li>
+              <li>&bull; بناء ونشر نسخة iOS على متجر Apple لاستهداف أسر الخليج والمغتربين.</li>
+              <li>&bull; إعداد عرض تقديمي أنيق من 8 شرائح مع فيديو استعراضي مدته 60 ثانية.</li>
+            </ul>
+          </div>
+          <div class="card-warm rounded-lg p-6 space-y-3.5">
+            <div class="flex items-center justify-between line-b pb-3">
+              <span class="font-mono text-xs font-semibold" style="color: var(--s-slate);">المرحلة 3 · الأيام 56–90</span>
+              <span class="text-xs" style="color: var(--s-subtle);">المنتج الثاني</span>
+            </div>
+            <h3 class="font-editorial text-xl">إطلاق Retailo للشركات والموقع الجديد</h3>
+            <ul class="space-y-2 text-xs leading-relaxed" style="color: var(--s-muted);">
+              <li>&bull; تصحيح أخطاء الواجهة (<span class="ltr-token">Catout, Aletrs, Avarage Score, Diffculty</span>) وتقريب الكسور وتحديث تصميم لوحة المدير.</li>
+              <li>&bull; مسح بيانات الاختبار القديمة (<span class="ltr-token">aaassa / TestSO</span>) وتجهيز حساب تجريبي واقعي للصيدليات والتجزئة.</li>
+              <li>&bull; تصميم عرض مبيعات B2B من 10 شرائح يوضح العائد والتسعير لكل موظف مع تجربة مدفوعة لمدة 14 يوماً.</li>
+              <li>&bull; إطلاق موقع إلكتروني سريع ومتقن بالعربية (RTL) والإنجليزية يعرض لقطات حقيقية لمنتجاتك.</li>
+            </ul>
+          </div>
+        `,
+        closingHtml: `
+          <div class="space-y-1">
+            <div class="font-editorial text-xl" style="color: var(--s-ink);">لديك المحرك الهندسي بالفعل — فلنصنع له الواجهة والتركيز اللذين يستحقهما.</div>
+            <p class="text-xs" style="color: var(--s-muted);">
+              يسعدنا الجلوس معاً لاختيار نقطة البداية، والعمل جنباً إلى جنب على الهوية وتجربة المستخدم وتدقيق المحتوى وعروض المبيعات.
+            </p>
+          </div>
+          <div class="text-xs font-semibold whitespace-nowrap" style="color: var(--s-teal);">
+            أُعدّ بكل محبة وصراحة
+          </div>
+        `
       }
     };
 
-    const registerData = [
-      { code: "#01", cls: "Blocker", practice: "Security & Engineering", asset: "Retailo Bites & Trainova", loc: "RB Slide 18; TR Slides 26–27, 40", title: "Plaintext user passwords visible in Web Admin Users table", detail: "Admin screenshots display raw user passwords ('123456789', 'yousef999', 'salah@ahmed') alongside external emails (@united.sa). Switch to Firebase Auth / bcrypt hashing and remove the Password column from all admin views and exports." },
-      { code: "#02", cls: "Blocker", practice: "Religious & Educational Text", asset: "Muslims School", loc: "Slide 9 (Aqeedah App Screen)", title: "Shahada typo ('وأنا محمد رسول الله') inside Aqeedah screen", detail: "The screen currently reads 'وأنا' ('and I am Muhammad') instead of 'وأنَّ محمداً رسول الله' ('and that Muhammad is the Messenger of Allah'). Update both screen text and voiceover check immediately." },
-      { code: "#03", cls: "Blocker", practice: "Religious & Educational Text", asset: "Muslims School", loc: "Slide 7 (Seerah App Screen)", title: "Prophetic lineage drops 'عبد' from 'عبد المطلب' on whiteboard", detail: "The classroom whiteboard reads 'هو محمد بن عبد الله ابن المطلب ابن هاشم' and 'صلي'. Update to 'هو محمد بن عبد الله بن عبد المطلب بن هاشم ﷺ'." },
-      { code: "#04", cls: "Blocker", practice: "Religious & Educational Text", asset: "Muslims School", loc: "App Logo, Play Store & All Decks", title: "Arabic grammar error in app title ('مدرسة المسلمون')", detail: "Proper Arabic idafa requires 'مدرسة المسلمين'. Updating the logo, store listing, and slide headers immediately signals educational care." },
-      { code: "#05", cls: "Blocker", practice: "IP & Store Policy", asset: "Alkitab Alnaatiq", loc: "Character Wheel & Category Screens", title: "Unlicensed Disney, Marvel, Sega & Animaccord characters in UI", detail: "Stitch, Angel, Elsa, Spider-Man, Sonic, and Masha appear in the app while Bundle Slide 18 claims custom-drawn art. Swap all third-party characters for original studio mascots before publishing." },
-      { code: "#06", cls: "Blocker", practice: "IP & Store Policy", asset: "Website & Play Store", loc: "/privacy-policy/ & Muslims School", title: "404 Privacy Policy while running ads in an Ages 3+ kids' app", detail: "Google Play Families Policy requires a working Privacy Policy link and strict kid-safe ad rules. Publish a bilingual Privacy Policy right away and remove third-party ads from Muslims School." },
-      { code: "#07", cls: "Blocker", practice: "Brand & Website", asset: "egyptgames2022.online", loc: "EN & AR Homepages", title: "Editor placeholder note left live on homepage with empty button", detail: "Elkeetab Alnateek shows '(Placeholder until the game is ready — you can update the details later)' on EN and AR with an empty href='' link." },
-      { code: "#08", cls: "Blocker", practice: "UI/UX & Arabic RTL", asset: "egyptgames2022.online", loc: "/ar/الرئيسية/", title: "Half-untranslated Arabic site, '.of all ages' RTL bug & empty #contact", detail: "Navbar, hero text, app titles, and buttons stay in English on an RTL page, links jump back to English with no return toggle, and #contact is an empty blue strip." },
-      { code: "#09", cls: "Blocker", practice: "Product Strategy", asset: "Trainova (EN & AR)", loc: "Slides 1, 9, 10, 14–40", title: "Retailo Bites logos, Saudi pharmacies & cleanser task inside school deck", detail: "School slides still show 'CompanyName: Bites', Retailo Bites headers, Nahdi / AL Dawaa / United_Pharmacies under 'View All Schools', and 'Upload Cleansers invoice'." },
-      { code: "#10", cls: "Blocker", practice: "Pitch Decks & Data", asset: "3-Apps Bundle Deck", loc: "Slides 2 & 3", title: "Blank student total, teacher sum mismatch & '79th out of 73 countries'", detail: "Slide 2 leaves total students blank and states 922,628 teachers vs. 958,753 sum; Slide 3 claims Egypt ranked 79th and 83rd out of 73 countries." },
-      { code: "#11", cls: "Blocker", practice: "Pitch Decks & Data", asset: "Muslims School Deck", loc: "Slides 4, 5 & 6", title: "Quran slide shows sideways Trainova screen; Hadith slides have empty frames", detail: "Replace Slide 5's rotated Trainova mockup and Slide 4/6's empty Canva cloud-hill frames with real Juz Amma and Hadith screenshots." },
-      { code: "#12", cls: "Upgrade", practice: "Pitch Decks & Data", asset: "3-Apps Bundle Deck", loc: "Slide 6", title: "Labels all 4 apps 'UNITY GAME APP' despite Flutter logo on Alkitab", detail: "List each app's real stack accurately and fix 'QUIZIES', 'اسبوعبة', and the overlapping bottom line." },
-      { code: "#13", cls: "Upgrade", practice: "Brand & Website", asset: "egyptgames2022.online", loc: "Domain, Contact & Footer", title: "Dated '2022.online' domain, personal Gmail & Kubio builder footer", detail: "Move to a clean .com or .eg domain with workspace email and your own studio footer." },
-      { code: "#14", cls: "Upgrade", practice: "Product Strategy", asset: "Website & Play Store", loc: "Portfolio Grid", title: "Mixes 2.3★ backgammon, Azan app & baby shopping with EdTech; omits Domino Square", detail: "Separate casual games and utilities from your learning products so B2B and parent audiences see a focused brand." },
-      { code: "#15", cls: "Upgrade", practice: "Brand & Website", asset: "egyptgames2022.online", loc: "/wp-sitemap.xml", title: "9 unfinished/blank WordPress draft pages exposed in public sitemap", detail: "Unpublish blank draft pages (/contact/, /coverage/, /blog/, /landing-page/, /services/, /ar/تواصل-معنا/)." },
-      { code: "#16", cls: "Upgrade", practice: "Brand & Website", asset: "egyptgames2022.online", loc: "Header & Contact Info", title: "Dead '#services' menu link, 6 hidden empty links & unclickable phone/email", detail: "Connect #services properly, clean up empty social links, and make phone/email/WhatsApp clickable." },
-      { code: "#17", cls: "Upgrade", practice: "Brand & Website", asset: "egyptgames2022.online", loc: "Hero & About Sections", title: "Uses PS4 controller & Mario Kart stock photos instead of real app screens", detail: "Show crisp screenshots and short video clips of your actual apps without stretching square icons." },
-      { code: "#18", cls: "Upgrade", practice: "UI/UX & Arabic RTL", asset: "Retailo Bites & Trainova", loc: "Mobile App & Web Admin", title: "In-app English typos: 'Catout', 'Aletrs', 'Avarage Score', 'Diffculty', 'Passwrod'", detail: "Do a quick string search-and-replace across mobile and web repos before taking fresh screenshots." },
-      { code: "#19", cls: "Upgrade", practice: "Security & Engineering", asset: "Retailo Bites & Trainova", loc: "Dashboard & Tables", title: "Unrounded '733.3333' score, clipped 'Retailo Academ' banner & 2022 test rows", detail: "Round decimals cleanly, widen the home banner text box, and clear out 'aaassa / TestSO / Maaa' rows." },
-      { code: "#20", cls: "Upgrade", practice: "Pitch Decks & Data", asset: "Trainova (EN & AR)", loc: "Full 45-Slide Decks", title: "45-slide CRUD manual has no pricing model, pilot metrics, or live demo", detail: "Trim down to a punchy 10-slide B2B deck focused on learner experience, manager analytics, and per-seat pricing." },
-      { code: "#21", cls: "Upgrade", practice: "Pitch Decks & Data", asset: "Trainova & Retailo Decks", loc: "EN 16, 18–19, 39; AR 1, 5–6, 25, 38", title: "Duplicate slides, missing screenshots with floating arrows & crossed callouts", detail: "Delete duplicate slide pairs, fill blank screenshot slots, match Category/Quiz screens, and uncross Drafts/Copy To arrows." },
-      { code: "#22", cls: "Upgrade", practice: "UI/UX & Arabic RTL", asset: "Trainova Arabic Deck", loc: "Slides 1–4, 7–10, 13–14, 20–23", title: "Missing Advantages 01–05, Teacher/Student drift & untranslated English callouts", detail: "Restore points 01–05, stick to one clear audience, translate 'Create A Qustion' callouts, and fix 'ابدا' hamza." },
-      { code: "#23", cls: "Upgrade", practice: "Pitch Decks & Data", asset: "Alkitab Alnaatiq (EN)", loc: "Slide 8 & Feature Slides", title: "Empty 'SCREENSHOTS' slide & leading-period RTL bug ('.images') on English text", detail: "Fill Slide 8 and switch English text boxes in Canva from RTL to LTR." },
-      { code: "#24", cls: "Upgrade", practice: "UI/UX & Arabic RTL", asset: "Alkitab Alnaatiq (AR)", loc: "Slides 6–11 & App Grid", title: "Untranslated English headings, wrong category icons & missing Arabic hamzas/dots", detail: "Translate 'SCREENSHOTS / DEMO / THANK YOU', fix Bathroom & Musical Instrument icons, and proofread Arabic spelling." },
-      { code: "#25", cls: "Upgrade", practice: "Brand & Website", asset: "Alkitab Alnaatiq", loc: "Website, App & Decks", title: "Five different English spellings of the app name across links and screens", detail: "Pick one official English spelling and use it consistently everywhere." },
-      { code: "#26", cls: "Upgrade", practice: "Brand & Website", asset: "Arabic Contact Slides", loc: "TR AR 44, RB 22, MS 13, Bundle 24", title: "Gmail address pasted twice (next to the Website globe icon as well as Email)", detail: "Put your clean website domain next to the globe icon and workspace email next to the mail icon." },
-      { code: "#27", cls: "Upgrade", practice: "Product Strategy", asset: "3-Apps Bundle Deck", loc: "Slide 23 Strategy", title: "Bundling 3 separate apps for different ages into one K–12 reform pitch", detail: "Pitch Muslims School (parents/preschools) and Retailo Bites (corporate training) with dedicated decks instead." },
-      { code: "#28", cls: "Upgrade", practice: "Product Strategy", asset: "All Flagship Apps", loc: "App Store Availability", title: "Android-only footprint misses high-spending iOS families and B2B managers", detail: "Ship iOS App Store versions for Muslims School 2.0 and Retailo Bites." },
-      { code: "#29", cls: "Polish", practice: "Security & Engineering", asset: "Muslims School", loc: "Google Play URL", title: "Double-'y' typo in published Android package ID (com.egyyptgames2022...)", detail: "Keep clean reverse-domain naming on all new flagship releases." },
-      { code: "#30", cls: "Polish", practice: "UI/UX & Arabic RTL", asset: "Muslims School", loc: "Slides 2 & 3 Screens", title: "English 'ENTER YOUR NAME' on Arabic home screen & clipped bathroom dua art", detail: "Localize the name field into friendly Arabic and add safe-area margin on landscape illustrations." },
-      { code: "#31", cls: "Polish", practice: "UI/UX & Arabic RTL", asset: "Alkitab Alnaatiq", loc: "Slide 5 Demo Video", title: "Screen recording shows loading spinners and 'From: English -> To: English'", detail: "Record a smooth, pre-loaded clip showing Arabic <-> English/French switching." },
-      { code: "#32", cls: "Polish", practice: "Brand & Website", asset: "Alkitab Alnaatiq", loc: "Slides 3, 4 & 7", title: "Server-rack and sci-fi robot stock images paired with a toddler app", detail: "Swap for warm, child-friendly illustrations." },
-      { code: "#33", cls: "Polish", practice: "UI/UX & Arabic RTL", asset: "Retailo Bites & Trainova", loc: "Web Admin Sidebar", title: "Dated yellow/grey web admin with unlabelled sidebar icons", detail: "Refresh the web dashboard with clean modern components, text labels, and RTL support." },
-      { code: "#34", cls: "Polish", practice: "Brand & Website", asset: "egyptgames2022.online", loc: "Copy, Meta & Form", title: "Small typos ('fun.We', 'Naser city'), missing SEO/OG tags & blank form errors", detail: "Proofread copy, add social preview tags, and style form validation feedback." },
-      { code: "#35", cls: "Polish", practice: "Security & Engineering", asset: "egyptgames2022.online", loc: "Mobile Menu Drawer", title: "Mobile hamburger drawer stays stuck open if window widens to desktop", detail: "Close mobile drawer automatically on desktop breakpoint." },
-      { code: "#36", cls: "Polish", practice: "Product Strategy", asset: "10 Tawla", loc: "Google Play (2.3★)", title: "2.3★ store rating featured first on corporate homepage", detail: "Check player feedback on matchmaking/AI and move casual games to their own gaming page." }
+    const REGISTER_ITEMS = [
+      { code: "#01", cls: "Blocker", pKey: "Security",
+        en: { asset: "Retailo Bites & Trainova", loc: "RB Slide 18; TR Slides 26–27, 40", title: "Plaintext user passwords visible in Web Admin Users table", detail: "Admin screenshots display raw user passwords ('123456789', 'yousef999', 'salah@ahmed') alongside external emails (@united.sa). Switch to Firebase Auth / bcrypt hashing and remove the Password column from all admin views and exports." },
+        ar: { asset: "Retailo Bites و Trainova", loc: "شريحة 18 (RB)؛ الشرائح 26–27 و40 (TR)", title: "ظهور كلمات مرور المستخدمين كنص صريح في جدول الإدارة", detail: "لقطات لوحة التحكم تعرض كلمات مرور حقيقية غير مشفرة ('123456789'، 'yousef999'، 'salah@ahmed') بجوار إيميلات خارجية (@united.sa). يجب التحويل إلى تشفير Firebase Auth أو bcrypt وحذف عمود كلمة المرور من جميع الجداول." }
+      },
+      { code: "#02", cls: "Blocker", pKey: "Content",
+        en: { asset: "Muslims School", loc: "Slide 9 (Aqeedah App Screen)", title: "Shahada typo ('وأنا محمد رسول الله') inside Aqeedah screen", detail: "The screen currently reads 'وأنا' ('and I am Muhammad') instead of 'وأنَّ محمداً رسول الله' ('and that Muhammad is the Messenger of Allah'). Update both screen text and voiceover check immediately." },
+        ar: { asset: "مدرسة المسلمين", loc: "شريحة 9 (شاشة العقيدة والتوحيد)", title: "خطأ في لفظ الشهادة («وأنا محمد رسول الله») داخل شاشة العقيدة", detail: "النص الظاهر أسفل الشاشة يكتب «وأنا» بدلاً من «وأنَّ محمداً رسول الله». يجب تصحيحه فوراً في النص المكتوب ومراجعة التسجيل الصوتي المقابل." }
+      },
+      { code: "#03", cls: "Blocker", pKey: "Content",
+        en: { asset: "Muslims School", loc: "Slide 7 (Seerah App Screen)", title: "Prophetic lineage drops 'عبد' from 'عبد المطلب' on whiteboard", detail: "The classroom whiteboard reads 'هو محمد بن عبد الله ابن المطلب ابن هاشم' and 'صلي'. Update to 'هو محمد بن عبد الله بن عبد المطلب بن هاشم ﷺ'." },
+        ar: { asset: "مدرسة المسلمين", loc: "شريحة 7 (شاشة السيرة النبوية)", title: "سقوط كلمة «عبد» من اسم «عبد المطلب» في نسب النبي ﷺ على السبورة", detail: "السبورة داخل الدرس تكتب «هو محمد بن عبد الله ابن المطلب ابن هاشم» و«صلي». الصواب: «هو محمد بن عبد الله بن عبد المطلب بن هاشم ﷺ»." }
+      },
+      { code: "#04", cls: "Blocker", pKey: "Content",
+        en: { asset: "Muslims School", loc: "App Logo, Play Store & All Decks", title: "Arabic grammar error in app title ('مدرسة المسلمون')", detail: "Proper Arabic idafa requires 'مدرسة المسلمين'. Updating the logo, store listing, and slide headers immediately signals educational care." },
+        ar: { asset: "مدرسة المسلمين", loc: "شعار التطبيق والمتجر وجميع العروض", title: "خطأ نحوي في اسم التطبيق («مدرسة المسلمون» بدلاً من «مدرسة المسلمين»)", detail: "المضاف إليه مجرور بالياء في جمع المذكر السالم («مدرسة المسلمين»). تعديل الشعار واسم المتجر يعطي انطباعاً تربوياً متقناً منذ اللحظة الأولى." }
+      },
+      { code: "#05", cls: "Blocker", pKey: "IP",
+        en: { asset: "Alkitab Alnaatiq", loc: "Character Wheel & Category Screens", title: "Unlicensed Disney, Marvel, Sega & Animaccord characters in UI", detail: "Stitch, Angel, Elsa, Spider-Man, Sonic, and Masha appear in the app while Bundle Slide 18 claims custom-drawn art. Swap all third-party characters for original studio mascots before publishing." },
+        ar: { asset: "الكتاب الناطق", loc: "عجلة الشخصيات وشاشات الفئات", title: "استخدام شخصيات مملوكة لديزني ومارفل وسيجا دون ترخيص", detail: "تظهر شخصيات Stitch وAngel وElsa وSpider-Man وSonic وMasha داخل الواجهة، بينما تذكر شريحة 18 في العرض المجمّع أن جميع الصور مرسومة خصيصاً للبرنامج. يجب استبدالها بشخصيات أصلية لحماية الحساب." }
+      },
+      { code: "#06", cls: "Blocker", pKey: "IP",
+        en: { asset: "Website & Play Store", loc: "/privacy-policy/ & Muslims School", title: "404 Privacy Policy while running ads in an Ages 3+ kids' app", detail: "Google Play Families Policy requires a working Privacy Policy link and strict kid-safe ad rules. Publish a bilingual Privacy Policy right away and remove third-party ads from Muslims School." },
+        ar: { asset: "الموقع ومتجر Google Play", loc: "/privacy-policy/ وتطبيق مدرسة المسلمين", title: "صفحة سياسة الخصوصية تعطي خطأ 404 مع وجود إعلانات في تطبيق أطفال (+3)", detail: "سياسة العائلات في Google Play تشترط رابط خصوصية فعالاً وضوابط صارمة لإعلانات الأطفال. انشر صفحة الخصوصية فوراً وأزل الإعلانات من التطبيق." }
+      },
+      { code: "#07", cls: "Blocker", pKey: "Brand",
+        en: { asset: "egyptgames2022.online", loc: "EN & AR Homepages", title: "Editor placeholder note left live on homepage with empty button", detail: "Elkeetab Alnateek shows '(Placeholder until the game is ready — you can update the details later)' on EN and AR with an empty href='' link." },
+        ar: { asset: "egyptgames2022.online", loc: "الصفحة الرئيسية (إنجليزي وعربي)", title: "ملاحظة مسودة داخلية منشورة للجمهور مع زر فارغ", detail: "تظهر عبارة «(نص مؤقت حتى تصبح اللعبة جاهزة – يمكنك تحديث التفاصيل لاحقًا)» تحت الكتاب الناطق مع رابط فارغ يعيد تحميل الصفحة." }
+      },
+      { code: "#08", cls: "Blocker", pKey: "UX",
+        en: { asset: "egyptgames2022.online", loc: "/ar/الرئيسية/", title: "Half-untranslated Arabic site, '.of all ages' RTL bug & empty #contact", detail: "Navbar, hero text, app titles, and buttons stay in English on an RTL page, links jump back to English with no return toggle, and #contact is an empty blue strip." },
+        ar: { asset: "egyptgames2022.online", loc: "/ar/الرئيسية/", title: "النسخة العربية غير مترجمة في البانر والقائمة وقسم التواصل فارغ تماماً", detail: "القائمة العلوية ونص البانر وأزرار البطاقات بقيت بالإنجليزية داخل تخطيط عربي، والروابط تعيد الزائر للإنجليزية، وقسم #contact يظهر كشريط أزرق خالٍ من أي بيانات." }
+      },
+      { code: "#09", cls: "Blocker", pKey: "Strategy",
+        en: { asset: "Trainova (EN & AR)", loc: "Slides 1, 9, 10, 14–40", title: "Retailo Bites logos, Saudi pharmacies & cleanser task inside school deck", detail: "School slides still show 'CompanyName: Bites', Retailo Bites headers, Nahdi / AL Dawaa / United_Pharmacies under 'View All Schools', and 'Upload Cleansers invoice'." },
+        ar: { asset: "Trainova (إنجليزي وعربي)", loc: "الشرائح 1، 9، 10، 14–40", title: "بقاء شعارات Retailo Bites وأسماء صيدليات ومهمة فاتورة منظفات داخل عرض المدارس", detail: "تظهر في شرائح المدارس شعارات Retailo Bites وصيدليات النهدي والدواء والمتحدة تحت عنوان «عرض جميع المدارس»، ومهمة «Upload Cleansers invoice»." }
+      },
+      { code: "#10", cls: "Blocker", pKey: "Pitch",
+        en: { asset: "3-Apps Bundle Deck", loc: "Slides 2 & 3", title: "Blank student total, teacher sum mismatch & '79th out of 73 countries'", detail: "Slide 2 leaves total students blank and states 922,628 teachers vs. 958,753 sum; Slide 3 claims Egypt ranked 79th and 83rd out of 73 countries." },
+        ar: { asset: "عرض الـ 3 تطبيقات المجمّع", loc: "الشريحتان 2 و3", title: "ترك إجمالي الطلاب فارغاً، وتضارب مجموع المعلمين، و«المرتبة 79 من أصل 73 دولة»", detail: "الشريحة 2 تركت إجمالي الطلاب خالياً وأظهرت مجموعاً فرعياً للمعلمين (958,753) يخالف الإجمالي المذكور (922,628)، والشريحة 3 ذكرت المركز 79 من أصل 73 دولة." }
+      },
+      { code: "#11", cls: "Blocker", pKey: "Pitch",
+        en: { asset: "Muslims School Deck", loc: "Slides 4, 5 & 6", title: "Quran slide shows sideways Trainova screen; Hadith slides have empty frames", detail: "Replace Slide 5's rotated Trainova mockup and Slide 4/6's empty Canva cloud-hill frames with real Juz Amma and Hadith screenshots." },
+        ar: { asset: "عرض مدرسة المسلمين", loc: "الشرائح 4 و5 و6", title: "شريحة القرآن تعرض شاشة Trainova مقلوبة بالعرض، وشرائح الحديث بإطارات فارغة", detail: "استبدل صورة Trainova المقلوبة في شريحة 5 والإطارات الفارغة في الشريحتين 4 و6 بلقطات حقيقية لقسمَي جزء عمّ والأحاديث." }
+      },
+      { code: "#12", cls: "Upgrade", pKey: "Pitch",
+        en: { asset: "3-Apps Bundle Deck", loc: "Slide 6", title: "Labels all 4 apps 'UNITY GAME APP' despite Flutter logo on Alkitab", detail: "List each app's real stack accurately and fix 'QUIZIES', 'اسبوعبة', and the overlapping bottom line." },
+        ar: { asset: "عرض الـ 3 تطبيقات المجمّع", loc: "شريحة 6", title: "وصف التطبيقات الأربعة بأنها UNITY GAME APP رغم شعار Flutter على الكتاب الناطق", detail: "وضّح التقنية الحقيقية لكل تطبيق بدقة، مع تصحيح أخطاء «QUIZIES» و«اسبوعبة» وتداخل السطر السفلي." }
+      },
+      { code: "#13", cls: "Upgrade", pKey: "Brand",
+        en: { asset: "egyptgames2022.online", loc: "Domain, Contact & Footer", title: "Dated '2022.online' domain, personal Gmail & Kubio builder footer", detail: "Move to a clean .com or .eg domain with workspace email and your own studio footer." },
+        ar: { asset: "egyptgames2022.online", loc: "النطاق والتواصل والتذييل", title: "نطاق 2022.online المرتبط بسنة قديمة وبريد Gmail وتذييل أداة Kubio", detail: "انتقل إلى نطاق احترافي (.com أو .eg) وبريد رسمي باسم النطاق مع إزالة شعار أداة بناء المواقع من التذييل." }
+      },
+      { code: "#14", cls: "Upgrade", pKey: "Strategy",
+        en: { asset: "Website & Play Store", loc: "Portfolio Grid", title: "Mixes 2.3★ backgammon, Azan app & baby shopping with EdTech; omits Domino Square", detail: "Separate casual games and utilities from your learning products so B2B and parent audiences see a focused brand." },
+        ar: { asset: "الموقع ومتجر Play", loc: "شبكة عرض الأعمال", title: "خلط لعبة طاولة (2.3★) وتطبيق أذان وتطبيق رُضّع مع التعليم، وإغفال Domino Square", detail: "افصل الألعاب الترفيهية والتطبيقات الخدمية عن منصات التعليم والتدريب حتى تبدو الهوية متخصصة وواضحة." }
+      },
+      { code: "#15", cls: "Upgrade", pKey: "Brand",
+        en: { asset: "egyptgames2022.online", loc: "/wp-sitemap.xml", title: "9 unfinished/blank WordPress draft pages exposed in public sitemap", detail: "Unpublish blank draft pages (/contact/, /coverage/, /blog/, /landing-page/, /services/, /ar/تواصل-معنا/)." },
+        ar: { asset: "egyptgames2022.online", loc: "/wp-sitemap.xml", title: "9 صفحات ووردبريس فارغة أو غير مكتملة منشورة في خريطة الموقع العامة", detail: "ألغِ نشر الصفحات الفارغة (/contact/، /coverage/، /blog/، /landing-page/، /services/، /ar/تواصل-معنا/)." }
+      },
+      { code: "#16", cls: "Upgrade", pKey: "Brand",
+        en: { asset: "egyptgames2022.online", loc: "Header & Contact Info", title: "Dead '#services' menu link, 6 hidden empty links & unclickable phone/email", detail: "Connect #services properly, clean up empty social links, and make phone/email/WhatsApp clickable." },
+        ar: { asset: "egyptgames2022.online", loc: "القائمة العلوية وبيانات الاتصال", title: "تعطل رابط Services، و6 روابط مخفية فارغة، وأرقام تواصل غير قابلة للنقر", detail: "اربط قسم الخدمات بشكل صحيح، واحذف الروابط الفارغة، وفعّل النقر المباشر للهاتف والبريد وواتساب." }
+      },
+      { code: "#17", cls: "Upgrade", pKey: "Brand",
+        en: { asset: "egyptgames2022.online", loc: "Hero & About Sections", title: "Uses PS4 controller & Mario Kart stock photos instead of real app screens", detail: "Show crisp screenshots and short video clips of your actual apps without stretching square icons." },
+        ar: { asset: "egyptgames2022.online", loc: "البانر الرئيسي وقسم من نحن", title: "استخدام صور جاهزة لذراع PS4 ولعبة Mario Kart بدلاً من شاشات منتجاتك", detail: "استبدل الصور الجاهزة بلقطات حقيقية عالية الدقة لتطبيقاتك دون تمديد الأيقونات المربعة." }
+      },
+      { code: "#18", cls: "Upgrade", pKey: "UX",
+        en: { asset: "Retailo Bites & Trainova", loc: "Mobile App & Web Admin", title: "In-app English typos: 'Catout', 'Aletrs', 'Avarage Score', 'Diffculty', 'Passwrod'", detail: "Do a quick string search-and-replace across mobile and web repos before taking fresh screenshots." },
+        ar: { asset: "Retailo Bites و Trainova", loc: "تطبيق الهاتف ولوحة الويب", title: "أخطاء إملائية إنجليزية داخل الواجهة: Catout وAletrs وAvarage Score وDiffculty وPasswrod", detail: "نفّذ مراجعة شاملة لملفات النصوص في التطبيق ولوحة الويب قبل التقاط صور العروض الجديدة." }
+      },
+      { code: "#19", cls: "Upgrade", pKey: "Security",
+        en: { asset: "Retailo Bites & Trainova", loc: "Dashboard & Tables", title: "Unrounded '733.3333' score, clipped 'Retailo Academ' banner & 2022 test rows", detail: "Round decimals cleanly, widen the home banner text box, and clear out 'aaassa / TestSO / Maaa' rows." },
+        ar: { asset: "Retailo Bites و Trainova", loc: "لوحة النتائج والجداول", title: "ظهور كسر عشري غير مقرب (733.3333)، وقصّ عنوان البانر، وبيانات تجريبية عشوائية", detail: "قرّب الأرقام والنتائج، وعالج عرض صندوق العنوان الرئيسي، وامسح سجلات الاختبار القديمة (aaassa / TestSO)." }
+      },
+      { code: "#20", cls: "Upgrade", pKey: "Pitch",
+        en: { asset: "Trainova (EN & AR)", loc: "Full 45-Slide Decks", title: "45-slide CRUD manual has no pricing model, pilot metrics, or live demo", detail: "Trim down to a punchy 10-slide B2B deck focused on learner experience, manager analytics, and per-seat pricing." },
+        ar: { asset: "Trainova (إنجليزي وعربي)", loc: "العرض الكامل (45 شريحة)", title: "عرض من 45 شريحة يشرح نوافذ الإدخال دون أي تسعير أو مؤشرات أثر أو تجربة حية", detail: "اختصر العرض إلى 10 شرائح بيعية تركز على رحلة المتدرب، تقارير المدير، باقات الاشتراك، وطلب تجربة." }
+      },
+      { code: "#21", cls: "Upgrade", pKey: "Pitch",
+        en: { asset: "Trainova & Retailo Decks", loc: "EN 16, 18–19, 39; AR 1, 5–6, 25, 38", title: "Duplicate slides, missing screenshots with floating arrows & crossed callouts", detail: "Delete duplicate slide pairs, fill blank screenshot slots, match Category/Quiz screens, and uncross Drafts/Copy To arrows." },
+        ar: { asset: "عروض Trainova و Retailo", loc: "شرائح متعددة في الإنجليزي والعربي", title: "شرائح مكررة، ولقطات مفقودة تشير أسهمها للفراغ، وأسهم معكوسة", detail: "احذف الشرائح المكررة، وأضف اللقطات الناقصة، وطابق شاشات الفئات والاختبارات، وصحّح اتجاه أسهم Drafts وCopy To." }
+      },
+      { code: "#22", cls: "Upgrade", pKey: "UX",
+        en: { asset: "Trainova Arabic Deck", loc: "Slides 1–4, 7–10, 13–14, 20–23", title: "Missing Advantages 01–05, Teacher/Student drift & untranslated English callouts", detail: "Restore points 01–05, stick to one clear audience, translate 'Create A Qustion' callouts, and fix 'ابدا' hamza." },
+        ar: { asset: "عرض Trainova العربي", loc: "الشرائح 1–4، 7–10، 13–14، 20–23", title: "حذف المميزات 01–05 بالخطأ، وتذبذب الفئة بين المعلم والطالب، وبقاء شروحات بالإنجليزية", detail: "استعد النقاط 01–05، وثبّت الفئة المستهدفة، وترجم التعليقات الإنجليزية مع تصحيح همزة «ابدأ» وعلامات الترقيم." }
+      },
+      { code: "#23", cls: "Upgrade", pKey: "Pitch",
+        en: { asset: "Alkitab Alnaatiq (EN)", loc: "Slide 8 & Feature Slides", title: "Empty 'SCREENSHOTS' slide & leading-period RTL bug ('.images') on English text", detail: "Fill Slide 8 and switch English text boxes in Canva from RTL to LTR." },
+        ar: { asset: "الكتاب الناطق (الإنجليزي)", loc: "شريحة 8 وشرائح المميزات", title: "شريحة SCREENSHOTS فارغة تماماً، وانقلاب النقاط لبداية السطر في النصوص الإنجليزية", detail: "أضف لقطات التطبيق في شريحة 8، واضبط اتجاه صناديق النص الإنجليزي في Canva إلى LTR." }
+      },
+      { code: "#24", cls: "Upgrade", pKey: "UX",
+        en: { asset: "Alkitab Alnaatiq (AR)", loc: "Slides 6–11 & App Grid", title: "Untranslated English headings, wrong category icons & missing Arabic hamzas/dots", detail: "Translate 'SCREENSHOTS / DEMO / THANK YOU', fix Bathroom & Musical Instrument icons, and proofread Arabic spelling." },
+        ar: { asset: "الكتاب الناطق (العربي)", loc: "الشرائح 6–11 وشبكة الفئات", title: "عناوين شرائح غير مترجمة، وأيقونات فئات غير مطابقة، وأخطاء همزات وتاء مربوطة", detail: "عرّب عناوين الشرائح، واستبدل أيقونتي «الحمام» و«الآلات الموسيقية»، ودقّق إملاء الهمزات والتاء المربوطة." }
+      },
+      { code: "#25", cls: "Upgrade", pKey: "Brand",
+        en: { asset: "Alkitab Alnaatiq", loc: "Website, App & Decks", title: "Five different English spellings of the app name across links and screens", detail: "Pick one official English spelling and use it consistently everywhere." },
+        ar: { asset: "الكتاب الناطق", loc: "الموقع والتطبيق والعروض", title: "خمس طرق مختلفة لكتابة اسم التطبيق بالإنجليزية عبر المنصات", detail: "اعتمد كتابة إنجليزية رسمية واحدة وشعاراً عربياً موحداً في جميع المواد." }
+      },
+      { code: "#26", cls: "Upgrade", pKey: "Brand",
+        en: { asset: "Arabic Contact Slides", loc: "TR AR 44, RB 22, MS 13, Bundle 24", title: "Gmail address pasted twice (next to the Website globe icon as well as Email)", detail: "Put your clean website domain next to the globe icon and workspace email next to the mail icon." },
+        ar: { asset: "شرائح التواصل العربية", loc: "عروض Trainova وRetailo ومدرسة المسلمين والمجمّع", title: "تكرار بريد Gmail مرتين (بجوار أيقونة الموقع الإلكتروني وأيقونة البريد)", detail: "ضع رابط الموقع الرسمي بجوار أيقونة الكرة الأرضية والبريد المؤسسي بجوار أيقونة الرسالة." }
+      },
+      { code: "#27", cls: "Upgrade", pKey: "Strategy",
+        en: { asset: "3-Apps Bundle Deck", loc: "Slide 23 Strategy", title: "Bundling 3 separate apps for different ages into one K–12 reform pitch", detail: "Pitch Muslims School (parents/preschools) and Retailo Bites (corporate training) with dedicated decks instead." },
+        ar: { asset: "عرض الـ 3 تطبيقات المجمّع", loc: "شريحة 23 (النتيجة المتوقعة)", title: "دمج 3 تطبيقات منفصلة لأعمار وتقنيات متباينة في عرض إصلاح تعليمي واحد", detail: "قدّم كل منتج في مساره الطبيعي المستقل (مدرسة المسلمين للأسر والروضات، وRetailo Bites لتدريب الشركات)." }
+      },
+      { code: "#28", cls: "Upgrade", pKey: "Strategy",
+        en: { asset: "All Flagship Apps", loc: "App Store Availability", title: "Android-only footprint misses high-spending iOS families and B2B managers", detail: "Ship iOS App Store versions for Muslims School 2.0 and Retailo Bites." },
+        ar: { asset: "المنتجات الرئيسية", loc: "التوفر على المتاجر", title: "الاقتصار على أندرويد فقط يفوّت شريحة مستخدمي iOS في الخليج والشركات", detail: "أعطِ أولوية لإصدار نسخ iOS لتطبيقَي مدرسة المسلمين 2.0 وRetailo Bites." }
+      },
+      { code: "#29", cls: "Polish", pKey: "Security",
+        en: { asset: "Muslims School", loc: "Google Play URL", title: "Double-'y' typo in published Android package ID (com.egyyptgames2022...)", detail: "Keep clean reverse-domain naming on all new flagship releases." },
+        ar: { asset: "مدرسة المسلمين", loc: "رابط متجر Google Play", title: "تكرار حرف y بالخطأ في معرّف الحزمة البرمجي (com.egyyptgames2022...)", detail: "احرص على تسمية معيارية نظيفة لمعرّفات الحزم في جميع الإصدارات القادمة." }
+      },
+      { code: "#30", cls: "Polish", pKey: "UX",
+        en: { asset: "Muslims School", loc: "Slides 2 & 3 Screens", title: "English 'ENTER YOUR NAME' on Arabic home screen & clipped bathroom dua art", detail: "Localize the name field into friendly Arabic and add safe-area margin on landscape illustrations." },
+        ar: { asset: "مدرسة المسلمين", loc: "الشريحتان 2 و3", title: "عبارة ENTER YOUR NAME بالإنجليزية في واجهة عربية وقصّ في رسمة دعاء الخلاء", detail: "عرّب خانة إدخال اسم الطفل واضبط هوامش الأمان للرسوم العرضية." }
+      },
+      { code: "#31", cls: "Polish", pKey: "UX",
+        en: { asset: "Alkitab Alnaatiq", loc: "Slide 5 Demo Video", title: "Screen recording shows loading spinners and 'From: English -> To: English'", detail: "Record a smooth, pre-loaded clip showing Arabic <-> English/French switching." },
+        ar: { asset: "الكتاب الناطق", loc: "فيديو العرض في شريحة 5", title: "ظهور دوائر تحميل وإعداد ترجمة من الإنجليزية إلى الإنجليزية في الفيديو", detail: "سجّل مقطع فيديو سلساً بعد اكتمال التحميل يوضح التبديل الفعلي بين العربية والإنجليزية والفرنسية." }
+      },
+      { code: "#32", cls: "Polish", pKey: "Brand",
+        en: { asset: "Alkitab Alnaatiq", loc: "Slides 3, 4 & 7", title: "Server-rack and sci-fi robot stock images paired with a toddler app", detail: "Swap for warm, child-friendly illustrations." },
+        ar: { asset: "الكتاب الناطق", loc: "الشرائح 3 و4 و7", title: "صور خوادم بيانات وروبوتات خيال علمي لا تناسب تطبيق أطفال بعمر سنتين", detail: "استبدلها برسوم دافئة وملائمة لمرحلة الطفولة المبكرة." }
+      },
+      { code: "#33", cls: "Polish", pKey: "UX",
+        en: { asset: "Retailo Bites & Trainova", loc: "Web Admin Sidebar", title: "Dated yellow/grey web admin with unlabelled sidebar icons", detail: "Refresh the web dashboard with clean modern components, text labels, and RTL support." },
+        ar: { asset: "Retailo Bites و Trainova", loc: "الشريط الجانبي للوحة الويب", title: "تصميم قديم للوحة الويب بأيقونات جانبية بلا عناوين نصية", detail: "حدّث واجهة لوحة التحكم بمكونات عصرية وعناوين واضحة ودعم كامل للعربية RTL." }
+      },
+      { code: "#34", cls: "Polish", pKey: "Brand",
+        en: { asset: "egyptgames2022.online", loc: "Copy, Meta & Form", title: "Small typos ('fun.We', 'Naser city'), missing SEO/OG tags & blank form errors", detail: "Proofread copy, add social preview tags, and style form validation feedback." },
+        ar: { asset: "egyptgames2022.online", loc: "النصوص والوسوم ونموذج التواصل", title: "أخطاء كتابية (fun.We، Naser city)، وغياب وسوم المعاينة، ورسائل تحقق فارغة بالنموذج", detail: "دقّق النصوص، وأضف وسوم Open Graph للمشاركة، واضبط رسائل التنبيه في نموذج التواصل." }
+      },
+      { code: "#35", cls: "Polish", pKey: "Security",
+        en: { asset: "egyptgames2022.online", loc: "Mobile Menu Drawer", title: "Mobile hamburger drawer stays stuck open if window widens to desktop", detail: "Close mobile drawer automatically on desktop breakpoint." },
+        ar: { asset: "egyptgames2022.online", loc: "قائمة الهاتف الجانبية", title: "بقاء قائمة الهاتف مفتوحة فوق الصفحة عند تكبير الشاشة لسطح المكتب", detail: "أغلق القائمة الجانبية تلقائياً عند الانتقال لعرض الشاشات الكبيرة." }
+      },
+      { code: "#36", cls: "Polish", pKey: "Strategy",
+        en: { asset: "10 Tawla", loc: "Google Play (2.3★)", title: "2.3★ store rating featured first on corporate homepage", detail: "Check player feedback on matchmaking/AI and move casual games to their own gaming page." },
+        ar: { asset: "10 Tawla (عشرة طاولة)", loc: "متجر Google Play (2.3★)", title: "تصدر لعبة بتقييم 2.3★ لواجهة موقع الشركة", detail: "راجع شكاوى اللاعبين بخصوص اللعب الجماعي، وانقل الألعاب الترفيهية لصفحة مستقلة عن حلول التعليم والشركات." }
+      }
     ];
 
+    let currentLang = "en";
+    let currentExhibitIdx = 0;
     let activeDossierKey = "ms";
     const specimenModes = {};
 
-    function renderScorecard() {
+    function setLanguage(lang, skipAnim = false) {
+      if (lang !== "en" && lang !== "ar") lang = "en";
+      const root = document.getElementById("pageRoot");
+      const apply = () => {
+        currentLang = lang;
+        const htmlEl = document.documentElement;
+        htmlEl.setAttribute("lang", lang);
+        htmlEl.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
+
+        try {
+          const url = new URL(window.location.href);
+          if (lang === "ar") url.searchParams.set("lang", "ar");
+          else url.searchParams.delete("lang");
+          window.history.replaceState({}, "", url.toString());
+        } catch (_) {}
+
+        document.getElementById("langBtnEn").className = `px-2.5 py-1 rounded text-xs font-semibold transition cursor-pointer ${lang === "en" ? "lang-pill-active" : "lang-pill-idle"}`;
+        document.getElementById("langBtnAr").className = `px-2.5 py-1 rounded text-xs font-semibold transition cursor-pointer ${lang === "ar" ? "lang-pill-active" : "lang-pill-idle"}`;
+
+        renderAllLocaleContent();
+        requestAnimationFrame(() => {
+          const activeNav = document.querySelector(".chapter-link.font-semibold") || document.getElementById("nav01");
+          updateNavIndicator(activeNav);
+          const activeDosBtn = document.querySelector(`.dossier-btn[data-key="${activeDossierKey}"]`);
+          updateDossierIndicator(activeDosBtn);
+        });
+      };
+
+      if (skipAnim) {
+        apply();
+        return;
+      }
+      root.classList.add("lang-switching");
+      setTimeout(() => {
+        apply();
+        root.classList.remove("lang-switching");
+      }, 170);
+    }
+
+    function renderAllLocaleContent() {
+      const L = I18N[currentLang];
+      document.title = L.pageTitle;
+      document.getElementById("hdrBrandTitle").textContent = L.hdrBrandTitle;
+      document.getElementById("hdrPreparedFor").textContent = L.hdrPreparedFor;
+      document.getElementById("hdrPrintBtn").textContent = L.hdrPrintBtn;
+
+      L.nav.forEach((txt, idx) => {
+        document.getElementById(`nav0${idx + 1}`).textContent = txt;
+      });
+
+      document.getElementById("heroBadge").innerHTML = L.heroBadge;
+      document.getElementById("heroTitle").textContent = L.heroTitle;
+      document.getElementById("heroDesc").innerHTML = L.heroDesc;
+      document.getElementById("heroBtnPrimary").textContent = L.heroBtnPrimary;
+      document.getElementById("heroBtnSecondary").textContent = L.heroBtnSecondary;
+      document.getElementById("heroCaptionLeft").textContent = L.heroCaptionLeft;
+      document.getElementById("heroCaptionRight").textContent = L.heroCaptionRight;
+
+      L.kpis.forEach((k, i) => {
+        const n = i + 1;
+        document.getElementById(`kpi${n}Label`).textContent = k.label;
+        document.getElementById(`kpi${n}Unit`).textContent = k.unit;
+        document.getElementById(`kpi${n}Sub`).textContent = k.sub;
+      });
+
+      document.getElementById("sec01Kicker").textContent = L.sec01Kicker;
+      document.getElementById("sec01Title").textContent = L.sec01Title;
+      document.getElementById("sec01Sub").textContent = L.sec01Sub;
+      document.getElementById("partnerLetterBody").innerHTML = L.partnerLetterHtml;
+
+      document.getElementById("sec02Kicker").textContent = L.sec02Kicker;
+      document.getElementById("sec02Title").textContent = L.sec02Title;
+      document.getElementById("sec02Sub").textContent = L.sec02Sub;
+      document.getElementById("radarHeaderLeft").textContent = L.radarHeaderLeft;
+      document.getElementById("radarHeaderRight").textContent = L.radarHeaderRight;
+      document.getElementById("radarLegendCurrent").textContent = L.radarLegendCurrent;
+      document.getElementById("radarLegendTarget").textContent = L.radarLegendTarget;
+
+      renderScorecard(true);
+      renderRadar();
+
+      document.getElementById("sec03Kicker").textContent = L.sec03Kicker;
+      document.getElementById("sec03Title").innerHTML = L.sec03TitleHtml;
+      document.getElementById("sec03Sub").textContent = L.sec03Sub;
+      document.getElementById("exhibitBarTitle").textContent = L.exhibitBarTitle;
+      document.getElementById("exBtn0").innerHTML = L.exBtn0Html;
+      document.getElementById("exBtn1").innerHTML = L.exBtn1Html;
+      document.getElementById("exhibitFixLabel").textContent = L.exhibitFixLabel;
+      populateExhibitImmediate(currentExhibitIdx);
+
+      document.getElementById("webCardsGrid").innerHTML = L.webCards.map(c => `
+        <div class="card-warm rounded-lg p-5 ${c.cls} space-y-2">
+          <div class="text-xs font-semibold" style="color: ${c.color};">${c.title}</div>
+          <p class="text-xs leading-relaxed" style="color: var(--s-muted);">${c.body}</p>
+        </div>
+      `).join("");
+
+      document.getElementById("sec04Kicker").textContent = L.sec04Kicker;
+      document.getElementById("sec04Title").textContent = L.sec04Title;
+      document.getElementById("sec04Sub").textContent = L.sec04Sub;
+
+      ["ms", "rb", "ak", "bd"].forEach(k => {
+        const btn = document.querySelector(`.dossier-btn[data-key="${k}"]`);
+        const t = L.dossierTabs[k];
+        btn.innerHTML = `
+          <div class="text-xs font-semibold" style="color: ${t.color};">${t.kicker}</div>
+          <div class="font-editorial text-lg mt-0.5" style="color: var(--s-ink);">${t.name}</div>
+          <div class="text-xs mt-0.5" style="color: var(--s-subtle);">${t.sub}</div>
+        `;
+      });
+      renderDossierContent(activeDossierKey);
+
+      document.getElementById("sec05Kicker").textContent = L.sec05Kicker;
+      document.getElementById("sec05Title").textContent = L.sec05Title;
+      document.getElementById("sec05Sub").textContent = L.sec05Sub;
+      document.getElementById("regSearch").placeholder = L.searchPlaceholder;
+
+      const prevP = document.getElementById("regPractice").value || "ALL";
+      const prevC = document.getElementById("regClass").value || "ALL";
+      document.getElementById("regPractice").innerHTML = L.practiceOptions.map(o => `<option value="${o.val}">${o.label}</option>`).join("");
+      document.getElementById("regClass").innerHTML = L.classOptions.map(o => `<option value="${o.val}">${o.label}</option>`).join("");
+      document.getElementById("regPractice").value = prevP;
+      document.getElementById("regClass").value = prevC;
+      renderRegister();
+
+      document.getElementById("sec06Kicker").textContent = L.sec06Kicker;
+      document.getElementById("sec06Title").textContent = L.sec06Title;
+      document.getElementById("sec06Sub").textContent = L.sec06Sub;
+      document.getElementById("triageCards").innerHTML = L.triageHtml;
+      document.getElementById("timelineGrid").innerHTML = L.timelineHtml;
+      document.getElementById("closingBanner").innerHTML = L.closingHtml;
+    }
+
+    function renderScorecard(immediate = false) {
+      const L = I18N[currentLang];
+      const arrow = currentLang === "ar" ? "←" : "→";
       const container = document.getElementById("scorecardRows");
-      container.innerHTML = practices.map(p => {
+      const alreadyVisible = container.classList.contains("in-view") || immediate;
+      container.innerHTML = L.practices.map(p => {
         const pct = Math.round((p.score / 10) * 100);
         const targetPct = Math.round((p.target / 10) * 100);
         const barColor = p.score <= 2.0 ? "var(--s-terra)" : "var(--s-ochre)";
@@ -977,12 +1688,12 @@
               </div>
               <div class="font-mono text-xs tabular-nums">
                 <span class="font-bold" style="color:${barColor}">${p.score.toFixed(1)}</span>
-                <span style="color: var(--s-subtle);"> / 10 &rarr; Target ${p.target.toFixed(1)}</span>
+                <span style="color: var(--s-subtle);"> / 10 ${arrow} ${L.targetWord} ${p.target.toFixed(1)}</span>
               </div>
             </div>
             <div class="relative h-2 w-full rounded-full overflow-hidden" style="background-color: var(--s-sand);">
-              <div class="absolute inset-y-0 left-0 rounded-full opacity-25" style="width:${targetPct}%; background:var(--s-teal)"></div>
-              <div class="score-fill relative h-full rounded-full" data-width="${pct}%" style="background:${barColor}"></div>
+              <div class="absolute inset-y-0 start-0 rounded-full opacity-25" style="width:${targetPct}%; background:var(--s-teal)"></div>
+              <div class="score-fill relative h-full rounded-full" data-width="${pct}%" style="width:${alreadyVisible ? pct + '%' : '0%'}; background:${barColor}"></div>
             </div>
             <p class="text-xs leading-relaxed" style="color: var(--s-muted);">${p.summary}</p>
           </div>
@@ -991,9 +1702,10 @@
     }
 
     function renderRadar() {
+      const L = I18N[currentLang];
       const svg = document.getElementById("warmRadar");
-      const cx = 160, cy = 148, maxR = 96;
-      const n = practices.length;
+      const cx = 160, cy = 148, maxR = 94;
+      const n = L.practices.length;
       const angle = i => (-Math.PI / 2) + (i * 2 * Math.PI / n);
       const point = (i, val) => {
         const r = (val / 10) * maxR;
@@ -1003,23 +1715,23 @@
 
       let rings = "";
       [2.5, 5, 7.5, 10].forEach(lvl => {
-        const pts = practices.map((_, i) => point(i, lvl).join(",")).join(" ");
+        const pts = L.practices.map((_, i) => point(i, lvl).join(",")).join(" ");
         rings += `<polygon points="${pts}" fill="none" stroke="#E2DACB" stroke-width="1" />`;
       });
 
       let spokes = "";
       let labels = "";
-      practices.forEach((p, i) => {
+      L.practices.forEach((p, i) => {
         const [x, y] = point(i, 10);
         spokes += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#E2DACB" stroke-width="1" />`;
-        const [lx, ly] = point(i, 12.2);
-        const anchor = Math.abs(lx - cx) < 12 ? "middle" : (lx > cx ? "start" : "end");
+        const [lx, ly] = point(i, 12.3);
+        const anchor = Math.abs(lx - cx) < 14 ? "middle" : (lx > cx ? "start" : "end");
         labels += `<text x="${lx}" y="${ly + 3}" text-anchor="${anchor}" fill="#625D55" font-size="11" font-weight="600">${p.short}</text>`;
       });
 
-      const targetPoly = practices.map((p, i) => point(i, p.target).join(",")).join(" ");
-      const currentPoly = practices.map((p, i) => point(i, p.score).join(",")).join(" ");
-      const vertices = practices.map((p, i) => {
+      const targetPoly = L.practices.map((p, i) => point(i, p.target).join(",")).join(" ");
+      const currentPoly = L.practices.map((p, i) => point(i, p.score).join(",")).join(" ");
+      const vertices = L.practices.map((p, i) => {
         const [x, y] = point(i, p.score);
         return `<circle cx="${x}" cy="${y}" r="3.5" fill="#BA7725" />`;
       }).join("");
@@ -1034,9 +1746,8 @@
       `;
     }
 
-    function switchExhibit(idx) {
-      const stage = document.getElementById("exhibitStage");
-      stage.classList.add("fade-out");
+    function populateExhibitImmediate(idx) {
+      const ex = I18N[currentLang].exhibits[idx];
       document.getElementById("exBtn0").className = idx === 0
         ? "px-3 py-1.5 rounded-md text-xs font-medium btn-studio-active transition cursor-pointer"
         : "px-3 py-1.5 rounded-md text-xs font-medium btn-studio-idle transition cursor-pointer";
@@ -1044,41 +1755,56 @@
         ? "px-3 py-1.5 rounded-md text-xs font-medium btn-studio-active transition cursor-pointer"
         : "px-3 py-1.5 rounded-md text-xs font-medium btn-studio-idle transition cursor-pointer";
 
+      document.getElementById("exhibitImg").src = ex.img;
+      const tagEl = document.getElementById("exhibitTag");
+      tagEl.textContent = ex.tag;
+      tagEl.className = `inline-block px-2.5 py-0.5 rounded text-xs font-medium ${ex.tagClass}`;
+      document.getElementById("exhibitTitle").textContent = ex.title;
+      document.getElementById("exhibitDesc").textContent = ex.desc;
+      document.getElementById("exhibitFix").textContent = ex.fix;
+    }
+
+    function switchExhibit(idx) {
+      currentExhibitIdx = idx;
+      const stage = document.getElementById("exhibitStage");
+      stage.classList.add("fade-out");
       setTimeout(() => {
-        const ex = exhibits[idx];
-        document.getElementById("exhibitImg").src = ex.img;
-        const tagEl = document.getElementById("exhibitTag");
-        tagEl.textContent = ex.tag;
-        tagEl.className = `inline-block px-2.5 py-0.5 rounded text-xs font-medium ${ex.tagClass}`;
-        document.getElementById("exhibitTitle").textContent = ex.title;
-        document.getElementById("exhibitDesc").textContent = ex.desc;
-        document.getElementById("exhibitFix").textContent = ex.fix;
+        populateExhibitImmediate(idx);
         stage.classList.remove("fade-out");
-      }, 210);
+      }, 200);
+    }
+
+    function updateDossierIndicator(btn) {
+      const ind = document.getElementById("dossierIndicator");
+      if (!ind || !btn) return;
+      ind.style.width = `${btn.offsetWidth}px`;
+      ind.style.transform = `translateX(${btn.offsetLeft}px)`;
     }
 
     function renderDossierContent(key) {
-      const d = dossiers[key];
+      const L = I18N[currentLang];
+      const d = L.dossiers[key];
       const stage = document.getElementById("dossierStage");
 
       const specsHtml = d.specimens.map((s, idx) => {
         const stateKey = `${key}-${idx}`;
         const showClean = !!specimenModes[stateKey];
-        const isArabic = /[\u0600-\u06FF]/.test(showClean ? s.standard : s.defect);
+        const valText = showClean ? s.standard : s.defect;
+        const hasArabic = /[\u0600-\u06FF]/.test(valText);
         return `
           <div class="card-sand rounded-lg p-4 flex flex-col justify-between space-y-3">
             <div class="flex items-center justify-between gap-2 line-b pb-2">
               <span class="text-xs font-semibold" style="color: var(--s-ink);">${s.label}</span>
-              <button onclick="toggleSpecimen('${stateKey}')" class="px-2.5 py-1 rounded text-xs font-medium bg-white border border-[#D5CCB8] hover:bg-[#FAF7F2] transition cursor-pointer" style="color: var(--s-teal);">
-                ${showClean ? "See Current" : "See Clean Fix"}
+              <button onclick="toggleSpecimen('${stateKey}')" class="px-2.5 py-1 rounded text-xs font-medium bg-white border border-[#D5CCB8] hover:bg-[#FAF7F2] transition cursor-pointer whitespace-nowrap" style="color: var(--s-teal);">
+                ${showClean ? L.specimenBtnSeeCurrent : L.specimenBtnSeeClean}
               </button>
             </div>
-            <div class="p-3 rounded bg-white border border-[#E5DECF] ${showClean ? 'accent-l-teal' : 'accent-l-terra'} transition-all">
+            <div class="p-3 rounded bg-white border border-[#E5DECF] ${showClean ? 'accent-is-teal' : 'accent-is-terra'} transition-all">
               <div class="text-xs font-semibold mb-1" style="color: ${showClean ? 'var(--s-teal)' : 'var(--s-terra)'};">
-                ${showClean ? "Recommended Clean Version" : "Currently Shown on Screen / Slide"}
+                ${showClean ? L.specimenStateClean : L.specimenStateCurrent}
               </div>
-              <div class="text-xs font-semibold leading-relaxed ${isArabic ? 'rtl-specimen text-sm' : 'font-mono'}" style="color: var(--s-ink);">
-                ${showClean ? s.standard : s.defect}
+              <div class="text-xs font-semibold leading-relaxed ${hasArabic ? 'rtl-specimen text-sm' : 'font-mono ltr-token'}" style="color: var(--s-ink);">
+                ${valText}
               </div>
             </div>
             <p class="text-xs leading-relaxed" style="color: var(--s-muted);">${s.note}</p>
@@ -1090,7 +1816,7 @@
         <div class="space-y-2.5">
           <h4 class="text-xs font-semibold uppercase tracking-wider line-b pb-2" style="color: var(--s-ink);">${c.heading}</h4>
           <ul class="space-y-2 text-xs leading-relaxed" style="color: var(--s-muted);">
-            ${c.items.map(it => `<li class="pl-3 line-l">${it}</li>`).join("")}
+            ${c.items.map(it => `<li class="ps-inline-3 line-is">${it}</li>`).join("")}
           </ul>
         </div>
       `).join("");
@@ -1117,23 +1843,19 @@
 
     function selectDossier(key, btnEl) {
       activeDossierKey = key;
-      const buttons = Array.from(document.querySelectorAll(".dossier-btn"));
-      const idx = buttons.indexOf(btnEl);
-      buttons.forEach((b, i) => {
-        b.classList.toggle("bg-white", i === idx);
-        b.classList.toggle("opacity-75", i !== idx);
+      document.querySelectorAll(".dossier-btn").forEach(b => {
+        const active = b === btnEl;
+        b.classList.toggle("bg-white", active);
+        b.classList.toggle("opacity-75", !active);
       });
-      const ind = document.getElementById("dossierIndicator");
-      if (ind && idx >= 0) {
-        ind.style.transform = `translateX(${idx * 100}%)`;
-      }
+      updateDossierIndicator(btnEl);
 
       const stage = document.getElementById("dossierStage");
       stage.classList.add("switching");
       setTimeout(() => {
         renderDossierContent(key);
         stage.classList.remove("switching");
-      }, 200);
+      }, 190);
     }
 
     function toggleSpecimen(stateKey) {
@@ -1142,43 +1864,42 @@
     }
 
     function renderRegister() {
+      const L = I18N[currentLang];
       const q = (document.getElementById("regSearch").value || "").toLowerCase().trim();
       const prac = document.getElementById("regPractice").value;
       const cls = document.getElementById("regClass").value;
 
-      const filtered = registerData.filter(r => {
-        const okP = prac === "ALL" || r.practice === prac;
-        const okC = cls === "ALL" || r.cls === cls;
-        const okQ = !q || [r.code, r.practice, r.asset, r.loc, r.title, r.detail].join(" ").toLowerCase().includes(q);
+      const filtered = REGISTER_ITEMS.filter(item => {
+        const t = item[currentLang];
+        const okP = prac === "ALL" || item.pKey === prac;
+        const okC = cls === "ALL" || item.cls === cls;
+        const okQ = !q || [item.code, L.practiceLabels[item.pKey], t.asset, t.loc, t.title, t.detail, item.en.title, item.en.asset].join(" ").toLowerCase().includes(q);
         return okP && okC && okQ;
       });
 
-      document.getElementById("registerCounter").textContent = `Showing ${filtered.length} of ${registerData.length} items`;
+      document.getElementById("registerCounter").textContent = L.showingCounter(filtered.length, REGISTER_ITEMS.length);
 
       const list = document.getElementById("registerList");
       if (!filtered.length) {
-        list.innerHTML = `<div class="p-8 text-center text-xs" style="color: var(--s-muted);">No items match your current filter.</div>`;
+        list.innerHTML = `<div class="p-8 text-center text-xs" style="color: var(--s-muted);">${L.emptyFilterMsg}</div>`;
         return;
       }
 
-      list.innerHTML = filtered.map(r => {
-        const pill = r.cls === "Blocker"
-          ? `<span class="px-2.5 py-0.5 rounded text-xs font-semibold pill-terra">Trust Blocker</span>`
-          : (r.cls === "Upgrade"
-              ? `<span class="px-2.5 py-0.5 rounded text-xs font-semibold pill-ochre">High-Impact</span>`
-              : `<span class="px-2.5 py-0.5 rounded text-xs font-semibold pill-slate">Polish</span>`);
-
+      list.innerHTML = filtered.map(item => {
+        const t = item[currentLang];
+        const pillText = L.pillLabels[item.cls];
+        const pillCls = item.cls === "Blocker" ? "pill-terra" : (item.cls === "Upgrade" ? "pill-ochre" : "pill-slate");
         return `
           <div class="audit-row transition-colors hover:bg-[#FAF7F2]">
-            <button onclick="this.parentElement.classList.toggle('open')" class="w-full text-left px-5 py-3.5 flex items-start sm:items-center justify-between gap-4 cursor-pointer">
+            <button onclick="this.parentElement.classList.toggle('open')" class="w-full text-start px-5 py-3.5 flex items-start sm:items-center justify-between gap-4 cursor-pointer">
               <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3.5 min-w-0">
                 <div class="flex items-center gap-2 flex-shrink-0">
-                  <span class="font-mono text-xs" style="color: var(--s-subtle);">${r.code}</span>
-                  ${pill}
+                  <span class="font-mono text-xs ltr-token" style="color: var(--s-subtle);">${item.code}</span>
+                  <span class="px-2.5 py-0.5 rounded text-xs font-semibold ${pillCls}">${pillText}</span>
                 </div>
                 <div class="min-w-0">
-                  <div class="text-xs sm:text-sm font-semibold leading-snug" style="color: var(--s-ink);">${r.title}</div>
-                  <div class="text-xs mt-0.5" style="color: var(--s-subtle);">${r.asset} &middot; ${r.loc} &middot; ${r.practice}</div>
+                  <div class="text-xs sm:text-sm font-semibold leading-snug" style="color: var(--s-ink);">${t.title}</div>
+                  <div class="text-xs mt-0.5" style="color: var(--s-subtle);">${t.asset} &middot; ${t.loc} &middot; ${L.practiceLabels[item.pKey]}</div>
                 </div>
               </div>
               <svg class="audit-chevron w-4 h-4 flex-shrink-0 mt-1 sm:mt-0" style="color: var(--s-subtle);" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -1188,7 +1909,7 @@
             <div class="audit-drawer">
               <div class="audit-drawer-inner">
                 <div class="px-5 py-3.5 text-xs leading-relaxed line-t" style="background-color: var(--s-sand); color: var(--s-muted);">
-                  <strong style="color: var(--s-teal);">Recommended Fix: </strong>${r.detail}
+                  <strong style="color: var(--s-teal);">${L.recFixPrefix}</strong>${t.detail}
                 </div>
               </div>
             </div>
@@ -1198,13 +1919,10 @@
     }
 
     function updateNavIndicator(btn) {
-      const nav = document.getElementById("chapterNav");
       const ind = document.getElementById("navIndicator");
-      if (!nav || !ind || !btn) return;
-      const navRect = nav.getBoundingClientRect();
-      const btnRect = btn.getBoundingClientRect();
-      ind.style.width = `${btnRect.width}px`;
-      ind.style.transform = `translateX(${btnRect.left - navRect.left + nav.scrollLeft}px)`;
+      if (!ind || !btn) return;
+      ind.style.width = `${btn.offsetWidth}px`;
+      ind.style.transform = `translateX(${btn.offsetLeft}px)`;
       document.querySelectorAll(".chapter-link").forEach(el => {
         const active = el === btn;
         el.style.color = active ? "var(--s-ink)" : "var(--s-muted)";
@@ -1222,7 +1940,7 @@
       document.querySelectorAll(".counter").forEach(el => {
         const target = parseInt(el.getAttribute("data-target"), 10);
         const start = performance.now();
-        const dur = 1000;
+        const dur = 950;
         const step = now => {
           const t = Math.min(1, (now - start) / dur);
           const ease = 1 - Math.pow(1 - t, 3);
@@ -1270,14 +1988,25 @@
         const bar = document.getElementById("scrollProgress");
         if (bar) bar.style.transform = `scaleX(${pct})`;
       }, { passive: true });
+
+      window.addEventListener("resize", () => {
+        const activeNav = document.querySelector(".chapter-link.font-semibold") || document.getElementById("nav01");
+        updateNavIndicator(activeNav);
+        const activeDosBtn = document.querySelector(`.dossier-btn[data-key="${activeDossierKey}"]`);
+        updateDossierIndicator(activeDosBtn);
+      });
     }
 
-    renderScorecard();
-    renderRadar();
-    renderDossierContent("ms");
-    renderRegister();
-    initObservers();
-    animateCounters();
+    (function init() {
+      let initialLang = "en";
+      try {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("lang") === "ar" || window.location.hash === "#ar") initialLang = "ar";
+      } catch (_) {}
+      setLanguage(initialLang, true);
+      initObservers();
+      animateCounters();
+    })();
   </script>
 </body>
 </html>
