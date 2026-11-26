@@ -371,7 +371,7 @@
         </div>
         <div class="p-4 sm:p-5 line-ie">
           <div id="kpi3Label" class="text-xs font-medium" style="color: var(--s-muted);"></div>
-          <div class="font-editorial text-2xl sm:text-3xl mt-1" style="color: var(--s-terra);"><span class="counter" data-target="11">11</span> <span id="kpi3Unit"></span></div>
+          <div class="font-editorial text-2xl sm:text-3xl mt-1" style="color: var(--s-terra);"><span class="counter" data-target="12">12</span> <span id="kpi3Unit"></span></div>
           <div id="kpi3Sub" class="text-xs mt-1" style="color: var(--s-subtle);"></div>
         </div>
         <div class="p-4 sm:p-5">
@@ -571,10 +571,10 @@
         hdrBrandTitle: "PRODUCT, BRAND & QUALITY STUDIO REVIEW",
         hdrPreparedFor: "Prepared for Mohamed Shoukry",
         hdrPrintBtn: "Print / Save PDF",
-        nav: ["01. Partner Note", "02. 7-Pillar Health", "03. Brand & Website", "04. App Deep-Dives", "05. All 36 Fixes", "06. 90-Day Gameplan"],
+        nav: ["01. Partner Note", "02. 7-Pillar Health", "03. Brand & Website", "04. App Deep-Dives", "05. All 38 Fixes", "06. 90-Day Gameplan"],
         heroBadge: `<span>Candid Portfolio &amp; Product Audit</span><span>&middot;</span><span>Egypt Games for Technology</span>`,
         heroTitle: "Real apps shipped, real grit proven — now let’s polish what matters so it truly wins.",
-        heroDesc: `A friendly, thorough studio review across your bilingual website, your five live Google Play apps, and all <strong>189 presentation slides</strong> — pinpointing every brand, UX, content, security, and commercial gap standing in your way, and mapping how to turn your two strongest products into trusted businesses.`,
+        heroDesc: `A friendly, thorough studio review across your bilingual website, your five live Google Play apps, and all <strong>189 presentation slides</strong> — pinpointing every brand, UX, pedagogy, content, security, and commercial gap standing in your way, and mapping how to turn your strongest products into trusted businesses.`,
         heroBtnPrimary: "Explore Product Reviews →",
         heroBtnSecondary: "See What’s Worth Scaling",
         heroCaptionLeft: "Interactive Learning, Mobile Craft & Studio Identity",
@@ -582,7 +582,7 @@
         kpis: [
           { label: "Total Scope Reviewed", unit: "Slides", sub: "Across 7 Canva decks & web" },
           { label: "Live Shipped Apps", unit: "Titles", sub: "Published on Google Play" },
-          { label: "Urgent Trust Blockers", unit: "Fixes", sub: "Out of 36 specific items" },
+          { label: "Urgent Trust Blockers", unit: "Fixes", sub: "Out of 38 specific items" },
           { label: "Recommended Focus", unit: "Flagships", sub: "Highest commercial return" }
         ],
         sec01Kicker: "01 · Studio Perspective",
@@ -672,7 +672,7 @@
         dossierTabs: {
           ms: { kicker: "Scale First · Consumer & Schools", color: "var(--s-teal)", name: "Muslims School", sub: "14 Slides AR + Google Play" },
           rb: { kicker: "Best B2B Engine · SaaS", color: "var(--s-slate)", name: "Retailo & Trainova", sub: "113 Slides (3 Decks)" },
-          ak: { kicker: "Pause & Re-Illustrate", color: "var(--s-ochre)", name: "Alkitab Alnaatiq", sub: "22 Slides (EN & AR)" },
+          ak: { kicker: "Pre-APK Learning Prototype", color: "var(--s-ochre)", name: "Alkitab Alnaatiq", sub: "22 Slides (EN & AR) · Learning Loop" },
           bd: { kicker: "Retire Combined Pitch", color: "var(--s-terra)", name: "3-Apps Bundle Deck", sub: "25 Slides Institutional AR" }
         },
         specimenBtnSeeClean: "See Clean Fix",
@@ -773,46 +773,63 @@
             ]
           },
           ak: {
-            badge: "Pause & Re-Illustrate · IP Clearance Needed First",
+            badge: "Pre-APK Prototype Deep-Dive · Learning Experience, Code Bug & IP Audit",
             badgeClass: "pill-ochre",
-            title: "Alkitab Alnaatiq / Elketaab (11 Slides EN + 11 Slides AR)",
-            meta: "Early-Childhood Trilingual (AR / EN / FR) Talking Vocabulary Prototype (Flutter)",
-            opinion: "Helping toddlers ages 2+ learn words across Arabic, English, and French with friendly characters is a sweet concept. However, building the character wheel around famous Disney, Marvel, and Sega characters means Apple, Google, and schools cannot legally approve it. We recommend pausing this app until the art is swapped for your own original characters so your time goes into Muslims School and Retailo Bites first.",
-            specimensTitle: "Interactive IP & Deck Check — Click to Toggle Current vs. Clean Fix",
+            title: "Alkitab Alnaatiq — The Learning Experience (11 EN + 11 AR Slides)",
+            meta: "Unreleased Trilingual (AR / EN / FR) Early-Childhood Prototype · Flutter + AR Toggle (canva.link/endvt605632fqps & p6bg2zg4vo0emff)",
+            opinion: "Because this app does not have a released APK yet (currently marked 'Upcoming Game' on your website), we audited both 11-slide decks thoroughly across its educational design (التجربة التعليمية), in-app Flutter screens, embedded demo videos, and IP readiness. The core vision — teaching 1,000+ words across 20+ kindergarten categories (Preschool, KG1, KG2, Prim 1) in Arabic, English, and French with offline playback and an AR mode — is genuinely appealing. Catching the four pre-release issues below before shipping your first APK will save major rework: an off-by-one-row array bug in your category GridView, missing screens for the actual child learning/quiz/AR loop, unlicensed Disney/Marvel/Sega mascots, and bilingual deck polish.",
+            specimensTitle: "Interactive Pre-APK Code, Pedagogy & IP Check — Click to Toggle Current vs. Clean Fix",
             specimens: [
               {
-                label: "Character Wheel & Category Headers",
+                label: "Slide 8 (AR) · Flutter GridView +3 Row-Shift Bug",
+                defect: "غرفة النوم → Cactus | المنزل → Sink | المطبخ → @ | الحمام → Man's Face",
+                standard: "1:1 Synced Image & Label Arrays (Fix +3 Index Offset in Flutter GridView)",
+                note: "On Slide 8's rightmost screen (Angel), every icon is shifted one full row (+3 items) away from its Arabic label: 'حركات' shows a bedroom, 'المنزل' shows a bathroom sink, 'رياضات' shows a frying pan, 'غرفة النوم' shows a cactus, 'الحمام' shows a man's face (for 'تعبيرات الوجه' one row below, misspelled 'تغبيرات الوجه'), 'المطبخ' shows '@' (for 'علامات الترقيم'), and 'النباتات' shows gardening tools (for 'أدوات العمل'). For toddlers learning by image + sound, fixing this array offset pre-APK is critical."
+              },
+              {
+                label: "Slides 3, 6 & 7 · The Learning Loop (التجربة التعليمية)",
+                defect: "Passive Tap-to-Hear Grid ('التلقين') · Unshown Quiz & AR Screens",
+                standard: "4-Step Active Loop: Hear/See → Find It → Speak/Phonics → Smart Review + Live AR",
+                note: "Slides 6 & 7 promise adaptive weakness testing ('اختباره بأمثلة ترفيهية للوقوف على نقاط الضعف') and show an orange 'AR' button on category screens, yet neither deck shows a single word-learning card, child quiz screen, or AR camera interaction — only menus and Settings ('From: English -> To: English')."
+              },
+              {
+                label: "Slides 5, 6, 8 & 9 · Character Wheel & IP Rights",
                 defect: "Stitch & Angel (Disney) · Elsa · Spider-Man · Sonic · Masha",
-                standard: "2–3 Original Studio Characters You Own 100%",
-                note: "Bundle Slide 18 says 'all images are custom-drawn specifically for the program' right above Stitch and Sonic — swapping to original mascots protects your developer account."
-              },
-              {
-                label: "Product Name Across Links & Screens",
-                defect: "Alkitab Alnaatiq / ALKITAAB / Al ketab Al nateq / Elkeetab / elketaab",
-                standard: "One Consistent English Name + One Clean Arabic Logo",
-                note: "Right now the name is spelled five different ways across the website, app screens, and slide titles."
-              },
-              {
-                label: "English Slide Punctuation (Slides 3–7)",
-                defect: "'.images' · '.specialized teachers' · '.connection while running'",
-                standard: "Left-to-Right (LTR) Text Boxes in Canva for English Slides",
-                note: "English text was typed inside RTL boxes, causing periods and commas to jump to the left start of lines."
+                standard: "2–3 Original Studio Mascots (Evolving Slide 1's Yellow Book Character)",
+                note: "Arabic Slide 6 (point 07) claims 'all images are custom-designed and drawn specifically for the program' right beside Sega's Sonic. Swapping third-party IP for original characters protects your Google Play & App Store accounts when you release the APK."
               }
             ],
             columns: [
               {
-                heading: "Slide & App Details to Note",
+                heading: "1. Pre-APK Engineering & In-App UI Audit",
                 items: [
-                  "Blank Slide 8 in English: Has the vertical 'SCREENSHOTS' title on the left, but the slide itself was left completely empty.",
-                  "Demo & Icon Mismatches: Demo clip shows loading spinners and 'From: English -> To: English'; 'الحمام' (Bathroom) uses a boy's face icon and 'الآلات الموسيقية' uses a boy holding a shirt.",
-                  "Arabic Deck Polish: Leaves 'SCREENSHOTS / DEMO / Our Contact / THANK YOU' in English, uses server-rack stock photos, and drops hamzas/dots ('علي، المحتوي، القادمه، العائله')."
+                  "Category GridView Index Offset (AR Slide 8): The 4th phone screen binds icons[i] to labels[i-3], mislabeling 9 consecutive categories — a classic pre-release data-binding bug worth fixing before building the APK.",
+                  "Embedded Video & Dropdown State (Slides 5, 6 & 9): Screen recordings capture mid-frame loading spinners over category tiles and a Settings modal set to 'From: English -> To: English'.",
+                  "In-App Arabic Orthography: Category labels inside the Flutter build miss ta marbuta dots and hamzas ('العائله', 'الفاكهه', 'ادوات مدرسية', 'الاجهزة') plus typo 'تغبيرات الوجه' instead of 'تعبيرات الوجه'."
                 ]
               },
               {
-                heading: "When It Becomes Worth Revisiting",
+                heading: "2. Pedagogical & Learning Experience Design (التجربة التعليمية)",
                 items: [
-                  "Commission cohesive custom art built around an original mascot (like a polished version of the yellow glasses-wearing book character on Slide 1!).",
-                  "Upgrade beyond simple word-tapping (which has thousands of free apps) by adding phonics, letter tracing, or fun pronunciation games."
+                  "Beyond Passive 'التلقين': Tapping static category grids teaches recognition, not retention. Adding a playful 30-second 'Find the Object' and 'Repeat Out Loud' mini-game makes the learning experience stick for 2–6 year olds.",
+                  "Showcase the Promised Differentiators: Your text highlights weakness-tracking quizzes (point 04) and an 'AR' toggle in the top bar — make those two interactive moments the centerpiece of your demo video!",
+                  "Zero-Text Navigation for Ages 2–4: Ensure toddlers who cannot read Arabic or English labels yet hear spoken category prompts on tap and get gentle visual guidance."
+                ]
+              },
+              {
+                heading: "3. Slide-by-Slide Comparison (AR endvt605632fqps vs. EN)",
+                items: [
+                  "Missing Screens in English (EN Slide 8): Has the vertical cyan 'SCREENSHOTS' title on the far left, while the entire rest of the slide is completely blank (missing the 4 phones shown on AR Slide 8).",
+                  "Broken Numbering & RTL Punctuation (EN Slides 3–7): EN Slide 4 starts at badge '04', then Slide 5 restarts at '01–03' and Slide 6 repeats '04–07', while RTL text boxes push periods to the left start of English lines ('.images', '.specialized teachers').",
+                  "Visual & Language Mix-Ups (AR Slides 1–11): AR Slide 1 drops the yellow book mascot & Flutter icon; Slides 3 & 7 use data-center server racks and sci-fi humanoid robots for a toddler app; Slides 3–9 have a stray cropped cyan rectangle in the top-right corner; Slides 8–11 leave 'SCREENSHOTS / DEMO / Our Contact / THANK YOU FOR WATCHING' in English; and 5 spellings appear across assets (Alkitab Alnaatiq / ALKITAAB / Al ketab Al nateq / Elkeetab Alnateek / elketaab)."
+                ]
+              },
+              {
+                heading: "4. Pre-Release Checklist Before Shipping the First APK",
+                items: [
+                  "Step 1 — Fix Data Binding & Vocalized Arabic: Align the category image/title arrays 1:1 and add clean Arabic spelling/harakat reviewed by an early-childhood teacher.",
+                  "Step 2 — Commission Original Mascots: Evolve the cute yellow glasses-wearing book character from EN Slide 1 into 2–3 original heroes with voice packs (AR/EN/FR) so it clears Apple & Google review smoothly.",
+                  "Step 3 — Sequence Smartly: Ship Muslims School 2.0 and Retailo Bites first for immediate revenue, then bring Alkitab Alnaatiq to market with clean art and a full interactive AR + quiz demo."
                 ]
               }
             ]
@@ -821,8 +838,8 @@
             badge: "Retire Combined Deck · Pitch Each Product Separately",
             badgeClass: "pill-terra",
             title: "Combined '3 Arabic Apps' Deck (Egypt games Presentation)",
-            meta: "25-Slide Arabic Institutional Pitch (Trainova 1 & 2, Alkitab Alnaatiq, Muslims School)",
-            opinion: "This deck aims high — pitching a 3-year Egyptian K–12 education solution. The challenge is that bundling a retail/school quiz app, a toddler vocab prototype, and a kids' Islamic app into one government/institutional pitch doesn't match how school groups buy software — and a few math and tech-stack mix-ups on Slides 2, 3, and 6 hurt credibility right at the start.",
+            meta: "25-Slide Arabic Institutional Pitch (Actually Lists 4 Apps on Slide 6: Trainova 1, Trainova 2, Alkitab, Muslims School)",
+            opinion: "This deck aims high — pitching a 3-year Egyptian K–12 education solution. Notice that Slide 6 actually introduces four apps — splitting Trainova into Trainova 1 (teacher training) and an unreleased Trainova 2 (interactive student videos with mandatory mid-video questions + game-like periodic quizzes), yet provides zero screenshots of Trainova 2 anywhere in the 25 slides. Combined with bundling disparate age groups and a few math/tech-stack mix-ups on Slides 2, 3, and 6, pitching each flagship separately is much stronger.",
             specimensTitle: "Interactive Slide Check — Click to Toggle Current vs. Clean Fix",
             specimens: [
               {
@@ -863,7 +880,7 @@
           }
         },
         sec05Kicker: "05 · Complete Fix Directory",
-        sec05Title: "All 36 Specific Findings & How to Fix Them",
+        sec05Title: "All 38 Specific Findings & How to Fix Them",
         sec05Sub: "Click any item below to open the exact slide or page location and our recommended fix. You can filter by area or priority when planning sprints.",
         searchPlaceholder: "Search by app, slide number, or keyword...",
         practiceOptions: [
@@ -980,10 +997,10 @@
         hdrBrandTitle: "مراجعة استوديو للمنتجات والهوية والجودة",
         hdrPreparedFor: "إعداد خاص للصديق م. محمد شكري",
         hdrPrintBtn: "طباعة / حفظ PDF",
-        nav: ["01. رسالة ودّية", "02. مؤشر الـ 7 محاور", "03. الهوية والموقع", "04. فحص التطبيقات", "05. سجل الـ 36 ملاحظة", "06. خطة الـ 90 يوماً"],
+        nav: ["01. رسالة ودّية", "02. مؤشر الـ 7 محاور", "03. الهوية والموقع", "04. فحص التطبيقات", "05. سجل الـ 38 ملاحظة", "06. خطة الـ 90 يوماً"],
         heroBadge: `<span>مراجعة صريحة وشاملة للأعمال</span><span>&middot;</span><span class="ltr-token">Egypt Games for Technology</span>`,
         heroTitle: "تطبيقات حقيقية ومجهود يُحترم — والآن حان وقت الصقل الذي يجعلها تنجح تجارياً.",
-        heroDesc: `مراجعة ودّية ودقيقة لموقعك باللغتين، وخمسة تطبيقات منشورة على Google Play، و<strong>189 شريحة عرض</strong> عبر سبعة ملفات تقديمية — لنضع يدنا بوضوح على كل الثغرات في الهوية وتجربة المستخدم والمحتوى والأمان، ونرسم معاً طريق تحويل أقوى منتجين لديك إلى مشروع ينال ثقة العملاء.`,
+        heroDesc: `مراجعة ودّية ودقيقة لموقعك باللغتين، وخمسة تطبيقات منشورة على Google Play، و<strong>189 شريحة عرض</strong> عبر سبعة ملفات تقديمية — لنضع يدنا بوضوح على كل الثغرات في الهوية والتجربة التعليمية وتجربة المستخدم والمحتوى والأمان، ونرسم معاً طريق تحويل أقوى منتجاتك إلى مشروع ينال ثقة العملاء.`,
         heroBtnPrimary: "استعرض مراجعة التطبيقات ←",
         heroBtnSecondary: "ما الذي يستحق التركيز عليه؟",
         heroCaptionLeft: "التعلّم التفاعلي، صناعة التطبيقات، وهوية الاستوديو",
@@ -991,7 +1008,7 @@
         kpis: [
           { label: "إجمالي ما تمت مراجعته", unit: "شريحة", sub: "عبر 7 عروض Canva والموقع" },
           { label: "تطبيقات منشورة فعلياً", unit: "تطبيقات", sub: "متاحة الآن على Google Play" },
-          { label: "أولويات عاجلة لبناء الثقة", unit: "إصلاحاً", sub: "من أصل 36 ملاحظة تفصيلية" },
+          { label: "أولويات عاجلة لبناء الثقة", unit: "إصلاحاً", sub: "من أصل 38 ملاحظة تفصيلية" },
           { label: "التركيز التجاري المقترح", unit: "منتجان", sub: "الأعلى عائداً وقابلية للنمو" }
         ],
         sec01Kicker: "01 · رؤية صديق وشريك عمل",
@@ -1081,7 +1098,7 @@
         dossierTabs: {
           ms: { kicker: "الأولوية الأولى · للأسر والروضات", color: "var(--s-teal)", name: "مدرسة المسلمين", sub: "14 شريحة عربي + متجر Play" },
           rb: { kicker: "أفضل محرك للشركات · B2B SaaS", color: "var(--s-slate)", name: "Retailo و Trainova", sub: "113 شريحة (3 عروض)" },
-          ak: { kicker: "تجميد لحين تغيير الرسوم", color: "var(--s-ochre)", name: "الكتاب الناطق", sub: "22 شريحة (إنجليزي وعربي)" },
+          ak: { kicker: "التجربة التعليمية · قبل إصدار APK", color: "var(--s-ochre)", name: "الكتاب الناطق", sub: "22 شريحة (عربي وإنجليزي)" },
           bd: { kicker: "إلغاء العرض المجمّع", color: "var(--s-terra)", name: "عرض الـ 3 تطبيقات", sub: "25 شريحة مؤسسية بالعربية" }
         },
         specimenBtnSeeClean: "اعرض التصحيح",
@@ -1182,46 +1199,63 @@
             ]
           },
           ak: {
-            badge: "إيقاف مؤقت لحين استبدال الرسوم · مخاطر حقوق ملكية",
+            badge: "فحص معمّق لنموذج ما قبل الـ APK · التجربة التعليمية والخلل البرمجي وحقوق الملكية",
             badgeClass: "pill-ochre",
-            title: "الكتاب الناطق — Alkitab Alnaatiq (11 شريحة EN + 11 شريحة AR)",
-            meta: "نموذج أولي لتعليم المفردات بثلاث لغات (عربي / إنجليزي / فرنسي) للأطفال من سن سنتين (Flutter)",
-            opinion: "فكرة تعليم الأطفال الصغار المفردات بالصوت والصورة عبر شخصيات محببة فكرة جميلة، لكن بناء عجلة اختيار الشخصيات حول شخصيات مملوكة لشركات عالمية (ديزني، مارفل، سيجا) يمنع قبول التطبيق قانونياً في متاجر Apple وGoogle أو لدى المدارس. ننصح بتجميد العمل عليه مؤقتاً وتوجيه وقتك لـ «مدرسة المسلمين» و«Retailo Bites» أولاً.",
-            specimensTitle: "فحص حقوق الملكية والعرض — اضغط للتبديل بين الوضع الحالي والتصحيح",
+            title: "الكتاب الناطق — التجربة التعليمية (11 شريحة عربي + 11 إنجليزي)",
+            meta: "نموذج أولي غير منشور كـ APK بعد لتعليم مفردات رياض الأطفال بثلاث لغات (عربي / إنجليزي / فرنسي) بتقنية Flutter + زر واقع معزز AR (canva.link/endvt605632fqps)",
+            opinion: "بما أن هذا المشروع لم يصدر له ملف APK عام بعد (ومدرج في موقعك كمشروع قيد التطوير)، فقد فحصنا عرضَيه العربي والإنجليزي (22 شريحة) بدقة من أربع زوايا: جودة التجربة التعليمية للطفل، سلامة الكود وربط البيانات في الواجهة، حقوق الملكية الفكرية، وتناسق الشرائح. الفكرة الأساسية — تعليم أكثر من 1000 كلمة عبر +20 قسماً لمناهج (Preschool, KG1, KG2, Prim 1) بدون إنترنت ومع خاصية الواقع المعزز AR — فكرة واعدة جداً؛ واكتشاف الملاحظات الأربع الجوهرية أدناه الآن قبل إصدار أول نسخة APK سيوفر عليك إعادة عمل كبيرة.",
+            specimensTitle: "فحص تفاعلي للكود والتجربة التعليمية وحقوق الملكية — اضغط للتبديل بين الوضع الحالي والتصحيح",
             specimens: [
               {
-                label: "عجلة الشخصيات ولافتات الأقسام",
+                label: "شريحة 8 (العربي) · خلل إزاحة مصفوفة الفئات (+3) في Flutter",
+                defect: "غرفة النوم ← صبار | المنزل ← حوض حمام | المطبخ ← @ | الحمام ← وجه رجل",
+                standard: "مطابقة مصفوفة الصور والعناوين 1:1 (إصلاح إزاحة صف كامل في GridView)",
+                note: "في الهاتف الرابع يمين الشريحة 8 (شاشة Angel)، كل أيقونة مزاحة بصف كامل (+3 عناصر) عن عنوانها العربي: «حركات» تعرض غرفة نوم، «المنزل» يعرض حوض حمام، «رياضات» تعرض مقلاة مطبخ، «غرفة النوم» تعرض نبات صبار، «الحمام» يعرض وجه رجل (الخاص بـ «تعبيرات الوجه» في الصف التالي والمكتوبة خطأً «تغبيرات الوجه»)، «المطبخ» يعرض علامة «@» (الخاصة بـ «علامات الترقيم»)، و«النباتات» تعرض عربة أدوات! طفل السنتين يتعلم بالربط البصري، لذا إصلاح هذا الـ Index قبل إصدار الـ APK جوهري."
+              },
+              {
+                label: "الشرائح 3 و6 و7 · تصميم التجربة التعليمية (التلقين مقابل التفاعل)",
+                defect: "شبكة ضغط سمعي وبصري ثابتة («التلقين») · غياب شاشات الاختبار والـ AR",
+                standard: "حلقة تعلّم نشطة من 4 خطوات: استمع وشاهد ← ابحث واختر ← انطق ← مراجعة نقاط الضعف + عرض AR",
+                note: "تعد الشرائح (نقطة 04 ونقطة 10) بـ «اختبار التلميذ بأمثلة ترفيهية للوقوف على نقاط الضعف والتركيز عليها» ويظهر زر برتقالي مكتوب عليه AR أعلى الشاشة، لكن العرض لا يُظهر أي شاشة درس فعلي أو اختبار للطفل أو تجربة واقع معزز — بل يكتفي بعجلة الشخصيات وقوائم الفئات ونافذة الإعدادات."
+              },
+              {
+                label: "الشرائح 5 و6 و8 و9 · عجلة الشخصيات وحقوق الملكية الفكرية",
                 defect: "Stitch & Angel (Disney) · Elsa · Spider-Man · Sonic · Masha",
-                standard: "2 إلى 3 شخصيات كرتونية أصلية مملوكة للاستوديو بالكامل",
-                note: "الشريحة 18 في العرض المجمّع تقول «جميع الصور مصممة ومرسومة خصيصاً للبرنامج» مباشرة فوق صور Stitch وSonic — استبدالها يحمي حسابك من الإغلاق."
-              },
-              {
-                label: "اسم التطبيق عبر الروابط والشاشات",
-                defect: "Alkitab Alnaatiq / ALKITAAB / Al ketab Al nateq / Elkeetab / elketaab",
-                standard: "اسم إنجليزي واحد معتمد + شعار عربي موحد في كل مكان",
-                note: "يظهر اسم التطبيق حالياً بخمس تهجئات إنجليزية مختلفة بين الموقع والشاشات وعناوين العروض."
-              },
-              {
-                label: "علامات الترقيم في العرض الإنجليزي (الشرائح 3–7)",
-                defect: "'.images' · '.specialized teachers' · '.connection while running'",
-                standard: "ضبط صناديق النص الإنجليزي في Canva من اليسار لليمين (LTR)",
-                note: "كتابة النص الإنجليزي داخل صندوق عربي (RTL) أدت لقفز النقاط والفواصل إلى بداية السطر الأيسر."
+                standard: "2 إلى 3 شخصيات كرتونية أصلية مملوكة للاستوديو (تطوير شخصية الكتاب الأصفر)",
+                note: "تذكر الشريحة 6 (نقطة 07) أن «جميع الصور المستخدمة مصممة ومرسومة خصيصاً للبرنامج» مباشرة بجوار صورة Sonic الشهيرة! استبدال هذه الشخصيات برسوم أصلية يحمي حسابك في Google Play وApp Store عند طرح الـ APK."
               }
             ],
             columns: [
               {
-                heading: "تفاصيل إضافية في الشرائح والواجهة",
+                heading: "1. الفحص الهندسي والبرمجي قبل إصدار الـ APK",
                 items: [
-                  "شريحة 8 فارغة تماماً في النسخة الإنجليزية: تحمل عنوان SCREENSHOTS طولياً على اليسار بينما بقية الشريحة سوداء فارغة.",
-                  "لقطات الفيديو والأيقونات: الفيديو يظهر دوائر تحميل وإعداد ترجمة 'From: English -> To: English'، كما أن قسم «الحمام» يستخدم أيقونة وجه ولد وقسم «الآلات الموسيقية» يستخدم صورة ولد يحمل قميصاً!",
-                  "تدقيق العرض العربي: ترك عناوين (SCREENSHOTS / DEMO / THANK YOU) بالإنجليزية، واستخدام صور خوادم (Servers) لا تناسب تطبيق طفولة مبكرة، وإسقاط الهمزات والنقاط (علي، المحتوي، القادمه، العائله)."
+                  "خلل ربط البيانات (Off-by-3 Array Shift): في شاشة Angel (شريحة 8)، ترتبط الصورة رقم [i] بالعنوان رقم [i-3] عبر 9 فئات متتالية — وهو خطأ برمجي كلاسيكي يسهل إصلاحه في الكود قبل بناء النسخة النهائية.",
+                  "حالة الفيديوهات المدمجة (الشرائح 5 و6 و9): مقاطع تسجيل الشاشة تُظهر دوائر تحميل (Loading Spinners) وسط الأيقونات، وقائمة إعدادات مضبوطة على الترجمة من الإنجليزية إلى الإنجليزية (From: English -> To: English).",
+                  "التدقيق الإملائي داخل واجهة التطبيق: عناوين الفئات داخل شاشات Flutter نفسها تفتقد نقاط التاء المربوطة والهمزات («العائله»، «الفاكهه»، «ادوات مدرسية»، «الاجهزة») مع خطأ مطبعي «تغبيرات الوجه» بدلاً من «تعبيرات الوجه»."
                 ]
               },
               {
-                heading: "متى يصبح الاستثمار فيه مجدياً؟",
+                heading: "2. تقييم التجربة التعليمية والتصميم التربوي (سن 2 إلى 6 سنوات)",
                 items: [
-                  "تصميم حزمة رسومات أصلية متناسقة تدور حول شخصية مبتكرة خاصة بك (مثل تطوير شخصية الكتاب الأصفر ذي النظارة في الشريحة الأولى!).",
-                  "تطوير التجربة من مجرد ضغط على صور الكلمات (وهي فئة مزدحمة بالتطبيقات المجانية) إلى تمارين نطق الحروف (Phonics) وتتبّع الكتابة وتقييم نطق الطفل."
+                  "الانتقال من «التلقين» السلبي إلى التعلّم النشط: الاكتفاء بالضغط على الصورة لسماع اسمها لا يرسّخ المفردة طويلاً؛ إضافة لعبة سريعة بعد كل 4 كلمات («أين التفاحة؟» + «انطق معي») يحوّل التطبيق إلى تجربة تعليمية حقيقية.",
+                  "إبراز الميزتين الأقوى في العرض: النص يتحدث عن تتبّع نقاط ضعف الطفل (نقطة 04) وعن زر الواقع المعزز (AR)؛ تصوير فيديو قصير يوضح كيف يرى الطفل المجسم بالـ AR وكيف يختبره التطبيق سيرفع قيمة المشروع فوراً.",
+                  "مراعاة طفل السنتين غير القارئ: طفل سن 2–4 سنوات لا يقرأ عناوين الفئات المكتوبة؛ يحتاج إلى نطق صوتي لاسم القسم بمجرد لمسه وإرشاد بصري بسيط دون نصوص مزدحمة."
+                ]
+              },
+              {
+                heading: "3. مقارنة شرائح العرض العربي (endvt605632fqps) والإنجليزي",
+                items: [
+                  "شريحة مفقودة بالكامل في الإنجليزي (شريحة 8): تحمل عنوان SCREENSHOTS طولياً باللون السماوي على اليسار بينما بقية الشريحة فارغة تماماً (بعكس الشريحة 8 العربية التي تعرض 4 هواتف).",
+                  "اضطراب الترقيم واتجاه النص الإنجليزي: في العرض الإنجليزي تبدأ الشريحة 4 برقم 04 ثم تعود الشريحة 5 للأرقام 01–03 وتكرر الشريحة 6 رقم 04–07، مع وضع النص الإنجليزي داخل صندوق RTL فقفزت النقاط لأول السطر ('.images').",
+                  "تناسق الصور واللغة في العرض العربي: الشريحة 1 العربية أسقطت شخصية الكتاب الأصفر وشعار Flutter، والشريحتان 3 و7 تستخدمان صور خوادم بيانات (Servers) وروبوتات خيال علمي لا تناسب تطبيق روضة، مع وجود مستطيل سماوي مقصوص أعلى اليمين في الشرائح 3–9، وترك عناوين (SCREENSHOTS / DEMO / Our Contact / THANK YOU FOR WATCHING) بالإنجليزية، وكتابة اسم التطبيق بـ 5 طرق مختلفة."
+                ]
+              },
+              {
+                heading: "4. خارطة تجهيز المشروع قبل طرح أول نسخة APK",
+                items: [
+                  "الخطوة 1 — ضبط الكود واللغة: إصلاح مطابقة مصفوفة الفئات والصور 1:1، وتشكيل ومراجعة الكلمات العربية تربوياً لمرحلة رياض الأطفال.",
+                  "الخطوة 2 — بناء شخصيات أصلية: تطوير شخصية الكتاب الأصفر المبتسم (من شريحة 1 الإنجليزية) إلى 2–3 أبطال أصليين مملوكين لك بالكامل لتفادي أي حظر على المتاجر.",
+                  "الخطوة 3 — ترتيب الأولويات بذكاء: أطلق «مدرسة المسلمين 2.0» و«Retailo Bites» أولاً لتحقيق عائد سريع، ثم اطرح «الكتاب الناطق» بنسخة APK مصقولة وفيديو يبرز تجربة الـ AR والاختبارات التفاعلية."
                 ]
               }
             ]
@@ -1230,8 +1264,8 @@
             badge: "إيقاف هذا العرض المجمّع · تسويق كل منتج لعميله المناسب",
             badgeClass: "pill-terra",
             title: "عرض الـ 3 تطبيقات المجمّع (Egypt games Presentation)",
-            meta: "عرض مؤسسي من 25 شريحة بالعربية يجمع (ترينوفا 1 و2، الكتاب الناطق، مدرسة المسلمون)",
-            opinion: "يطمح هذا العرض لتقديم خطة تطوير للتعليم قبل الجامعي في مصر خلال 3 سنوات. غير أن جمع أداة اختبارات شركات/مدارس مع نموذج أولي لمفردات سن سنتين وتطبيق ديني للأطفال في صفقة مؤسسية واحدة لا يتوافق مع طريقة شراء المدارس أو الوزارات للأنظمة الرقمية — فضلاً عن وجود تضارب حسابي وتقني في الشرائح الافتتاحية (2 و3 و6) يضعف الموثوقية منذ البداية.",
+            meta: "عرض مؤسسي من 25 شريحة بالعربية (يطرح فعلياً 4 تطبيقات في شريحة 6: ترينوفا 1، ترينوفا 2، الكتاب الناطق، مدرسة المسلمون)",
+            opinion: "يطمح هذا العرض لتقديم خطة تطوير للتعليم قبل الجامعي في مصر خلال 3 سنوات. اللافت في الشريحة 6 أنه يطرح فعلياً أربعة تطبيقات لا ثلاثة — حيث يقسم ترينوفا إلى «ترينوفا 1» لتدريب المعلمين و«ترينوفا 2» غير المنشور لتدريب الطلاب عبر فيديوهات تفاعلية تتوقف بأسئلة إجبارية واختبارات دورية على شكل لعبة، دون إرفاق شاشة واحدة لـ «ترينوفا 2» في كامل الشرائح الـ 25! ومع تضارب الإحصاءات في الشرائح الافتتاحية، يظل تسويق كل منتج منفرداً أقوى بكثير.",
             specimensTitle: "فحص البيانات والمواصفات — اضغط للتبديل بين الوضع الحالي والتصحيح",
             specimens: [
               {
@@ -1272,7 +1306,7 @@
           }
         },
         sec05Kicker: "05 · الدليل الكامل للإصلاحات",
-        sec05Title: "جميع الملاحظات الـ 36 وطريقة معالجتها خطوة بخطوة",
+        sec05Title: "جميع الملاحظات الـ 38 وطريقة معالجتها خطوة بخطوة",
         sec05Sub: "اضغط على أي بند لفتح موقعه الدقيق في الشرائح أو الموقع مع الحل المقترح. يمكنك التصفية حسب التخصص أو الأولوية أثناء التنفيذ.",
         searchPlaceholder: "ابحث باسم التطبيق، رقم الشريحة، أو الكلمة المفتاحية...",
         practiceOptions: [
@@ -1430,103 +1464,111 @@
         en: { asset: "Muslims School Deck", loc: "Slides 4, 5 & 6", title: "Quran slide shows sideways Trainova screen; Hadith slides have empty frames", detail: "Replace Slide 5's rotated Trainova mockup and Slide 4/6's empty Canva cloud-hill frames with real Juz Amma and Hadith screenshots." },
         ar: { asset: "عرض مدرسة المسلمين", loc: "الشرائح 4 و5 و6", title: "شريحة القرآن تعرض شاشة Trainova مقلوبة بالعرض، وشرائح الحديث بإطارات فارغة", detail: "استبدل صورة Trainova المقلوبة في شريحة 5 والإطارات الفارغة في الشريحتين 4 و6 بلقطات حقيقية لقسمَي جزء عمّ والأحاديث." }
       },
-      { code: "#12", cls: "Upgrade", pKey: "Pitch",
+      { code: "#12", cls: "Blocker", pKey: "Security",
+        en: { asset: "Alkitab Alnaatiq (Pre-APK)", loc: "AR Slide 8 (Angel Screen)", title: "Flutter GridView +3 row-shift bug mismatches 9 category icons and labels", detail: "On Slide 8's rightmost screen, icons[i] binds to labels[i-3]: 'حركات' shows a bedroom, 'المنزل' shows a bathroom sink, 'رياضات' shows a frying pan, 'غرفة النوم' shows a cactus, 'الحمام' shows a man's face, 'المطبخ' shows '@', and 'النباتات' shows tools. Sync the icon and label arrays 1:1 before building the APK." },
+        ar: { asset: "الكتاب الناطق (قبل الـ APK)", loc: "شريحة 8 بالعربي (شاشة Angel)", title: "خلل إزاحة مصفوفة الفئات (+3) يربط 9 أيقونات بعناوين خاطئة في Flutter", detail: "في الهاتف الرابع يمين شريحة 8، كل صورة مزاحة بصف كامل عن عنوانها: «المنزل» يعرض حوض حمام، «غرفة النوم» تعرض صباراً، «المطبخ» يعرض علامة @، و«الحمام» يعرض وجه رجل (بينما «تعبيرات الوجه» مكتوبة خطأً «تغبيرات الوجه» في الصف التالي). يجب مطابقة المصفوفتين 1:1 في الكود قبل إصدار الـ APK." }
+      },
+      { code: "#13", cls: "Upgrade", pKey: "Content",
+        en: { asset: "Alkitab & Trainova 2", loc: "Alkitab Slides 3–9 & Bundle Slide 6", title: "Promised interactive learning loop ('التجربة التعليمية'), AR mode & Trainova 2 have zero screens shown", detail: "Alkitab promises adaptive weakness testing (point 04) and displays an 'AR' camera toggle yet shows zero lesson, quiz, or AR screens; similarly, Bundle Slide 6 introduces an unreleased 'Trainova 2' (interactive videos with mandatory mid-video questions) with zero screenshots across all 25 slides. Showcase the actual active learning loop on screen." },
+        ar: { asset: "الكتاب الناطق و ترينوفا 2", loc: "شرائح الكتاب الناطق 3–9 وشريحة 6 بالمجمّع", title: "غياب عرض شاشات التجربة التعليمية الفعلية (الواقع المعزز AR، اختبار نقاط الضعف، وترينوفا 2)", detail: "يعد عرض الكتاب الناطق باختبار نقاط ضعف الطفل ويُظهر زر AR دون عرض شاشة درس أو اختبار أو واقع معزز واحدة؛ كما يذكر العرض المجمّع (شريحة 6) تطبيق «ترينوفا 2» للفيديوهات التفاعلية للطلاب دون أي لقطة شاشة له في الشرائح الـ 25. إبراز حلقة التعلّم النشطة بصرياً يرفع قيمة العرض فوراً." }
+      },
+      { code: "#14", cls: "Upgrade", pKey: "Pitch",
         en: { asset: "3-Apps Bundle Deck", loc: "Slide 6", title: "Labels all 4 apps 'UNITY GAME APP' despite Flutter logo on Alkitab", detail: "List each app's real stack accurately and fix 'QUIZIES', 'اسبوعبة', and the overlapping bottom line." },
         ar: { asset: "عرض الـ 3 تطبيقات المجمّع", loc: "شريحة 6", title: "وصف التطبيقات الأربعة بأنها UNITY GAME APP رغم شعار Flutter على الكتاب الناطق", detail: "وضّح التقنية الحقيقية لكل تطبيق بدقة، مع تصحيح أخطاء «QUIZIES» و«اسبوعبة» وتداخل السطر السفلي." }
       },
-      { code: "#13", cls: "Upgrade", pKey: "Brand",
+      { code: "#15", cls: "Upgrade", pKey: "Brand",
         en: { asset: "egyptgames2022.online", loc: "Domain, Contact & Footer", title: "Dated '2022.online' domain, personal Gmail & Kubio builder footer", detail: "Move to a clean .com or .eg domain with workspace email and your own studio footer." },
         ar: { asset: "egyptgames2022.online", loc: "النطاق والتواصل والتذييل", title: "نطاق 2022.online المرتبط بسنة قديمة وبريد Gmail وتذييل أداة Kubio", detail: "انتقل إلى نطاق احترافي (.com أو .eg) وبريد رسمي باسم النطاق مع إزالة شعار أداة بناء المواقع من التذييل." }
       },
-      { code: "#14", cls: "Upgrade", pKey: "Strategy",
+      { code: "#16", cls: "Upgrade", pKey: "Strategy",
         en: { asset: "Website & Play Store", loc: "Portfolio Grid", title: "Mixes 2.3★ backgammon, Azan app & baby shopping with EdTech; omits Domino Square", detail: "Separate casual games and utilities from your learning products so B2B and parent audiences see a focused brand." },
         ar: { asset: "الموقع ومتجر Play", loc: "شبكة عرض الأعمال", title: "خلط لعبة طاولة (2.3★) وتطبيق أذان وتطبيق رُضّع مع التعليم، وإغفال Domino Square", detail: "افصل الألعاب الترفيهية والتطبيقات الخدمية عن منصات التعليم والتدريب حتى تبدو الهوية متخصصة وواضحة." }
       },
-      { code: "#15", cls: "Upgrade", pKey: "Brand",
+      { code: "#17", cls: "Upgrade", pKey: "Brand",
         en: { asset: "egyptgames2022.online", loc: "/wp-sitemap.xml", title: "9 unfinished/blank WordPress draft pages exposed in public sitemap", detail: "Unpublish blank draft pages (/contact/, /coverage/, /blog/, /landing-page/, /services/, /ar/تواصل-معنا/)." },
         ar: { asset: "egyptgames2022.online", loc: "/wp-sitemap.xml", title: "9 صفحات ووردبريس فارغة أو غير مكتملة منشورة في خريطة الموقع العامة", detail: "ألغِ نشر الصفحات الفارغة (/contact/، /coverage/، /blog/، /landing-page/، /services/، /ar/تواصل-معنا/)." }
       },
-      { code: "#16", cls: "Upgrade", pKey: "Brand",
+      { code: "#18", cls: "Upgrade", pKey: "Brand",
         en: { asset: "egyptgames2022.online", loc: "Header & Contact Info", title: "Dead '#services' menu link, 6 hidden empty links & unclickable phone/email", detail: "Connect #services properly, clean up empty social links, and make phone/email/WhatsApp clickable." },
         ar: { asset: "egyptgames2022.online", loc: "القائمة العلوية وبيانات الاتصال", title: "تعطل رابط Services، و6 روابط مخفية فارغة، وأرقام تواصل غير قابلة للنقر", detail: "اربط قسم الخدمات بشكل صحيح، واحذف الروابط الفارغة، وفعّل النقر المباشر للهاتف والبريد وواتساب." }
       },
-      { code: "#17", cls: "Upgrade", pKey: "Brand",
+      { code: "#19", cls: "Upgrade", pKey: "Brand",
         en: { asset: "egyptgames2022.online", loc: "Hero & About Sections", title: "Uses PS4 controller & Mario Kart stock photos instead of real app screens", detail: "Show crisp screenshots and short video clips of your actual apps without stretching square icons." },
         ar: { asset: "egyptgames2022.online", loc: "البانر الرئيسي وقسم من نحن", title: "استخدام صور جاهزة لذراع PS4 ولعبة Mario Kart بدلاً من شاشات منتجاتك", detail: "استبدل الصور الجاهزة بلقطات حقيقية عالية الدقة لتطبيقاتك دون تمديد الأيقونات المربعة." }
       },
-      { code: "#18", cls: "Upgrade", pKey: "UX",
+      { code: "#20", cls: "Upgrade", pKey: "UX",
         en: { asset: "Retailo Bites & Trainova", loc: "Mobile App & Web Admin", title: "In-app English typos: 'Catout', 'Aletrs', 'Avarage Score', 'Diffculty', 'Passwrod'", detail: "Do a quick string search-and-replace across mobile and web repos before taking fresh screenshots." },
         ar: { asset: "Retailo Bites و Trainova", loc: "تطبيق الهاتف ولوحة الويب", title: "أخطاء إملائية إنجليزية داخل الواجهة: Catout وAletrs وAvarage Score وDiffculty وPasswrod", detail: "نفّذ مراجعة شاملة لملفات النصوص في التطبيق ولوحة الويب قبل التقاط صور العروض الجديدة." }
       },
-      { code: "#19", cls: "Upgrade", pKey: "Security",
+      { code: "#21", cls: "Upgrade", pKey: "Security",
         en: { asset: "Retailo Bites & Trainova", loc: "Dashboard & Tables", title: "Unrounded '733.3333' score, clipped 'Retailo Academ' banner & 2022 test rows", detail: "Round decimals cleanly, widen the home banner text box, and clear out 'aaassa / TestSO / Maaa' rows." },
         ar: { asset: "Retailo Bites و Trainova", loc: "لوحة النتائج والجداول", title: "ظهور كسر عشري غير مقرب (733.3333)، وقصّ عنوان البانر، وبيانات تجريبية عشوائية", detail: "قرّب الأرقام والنتائج، وعالج عرض صندوق العنوان الرئيسي، وامسح سجلات الاختبار القديمة (aaassa / TestSO)." }
       },
-      { code: "#20", cls: "Upgrade", pKey: "Pitch",
+      { code: "#22", cls: "Upgrade", pKey: "Pitch",
         en: { asset: "Trainova (EN & AR)", loc: "Full 45-Slide Decks", title: "45-slide CRUD manual has no pricing model, pilot metrics, or live demo", detail: "Trim down to a punchy 10-slide B2B deck focused on learner experience, manager analytics, and per-seat pricing." },
         ar: { asset: "Trainova (إنجليزي وعربي)", loc: "العرض الكامل (45 شريحة)", title: "عرض من 45 شريحة يشرح نوافذ الإدخال دون أي تسعير أو مؤشرات أثر أو تجربة حية", detail: "اختصر العرض إلى 10 شرائح بيعية تركز على رحلة المتدرب، تقارير المدير، باقات الاشتراك، وطلب تجربة." }
       },
-      { code: "#21", cls: "Upgrade", pKey: "Pitch",
+      { code: "#23", cls: "Upgrade", pKey: "Pitch",
         en: { asset: "Trainova & Retailo Decks", loc: "EN 16, 18–19, 39; AR 1, 5–6, 25, 38", title: "Duplicate slides, missing screenshots with floating arrows & crossed callouts", detail: "Delete duplicate slide pairs, fill blank screenshot slots, match Category/Quiz screens, and uncross Drafts/Copy To arrows." },
         ar: { asset: "عروض Trainova و Retailo", loc: "شرائح متعددة في الإنجليزي والعربي", title: "شرائح مكررة، ولقطات مفقودة تشير أسهمها للفراغ، وأسهم معكوسة", detail: "احذف الشرائح المكررة، وأضف اللقطات الناقصة، وطابق شاشات الفئات والاختبارات، وصحّح اتجاه أسهم Drafts وCopy To." }
       },
-      { code: "#22", cls: "Upgrade", pKey: "UX",
+      { code: "#24", cls: "Upgrade", pKey: "UX",
         en: { asset: "Trainova Arabic Deck", loc: "Slides 1–4, 7–10, 13–14, 20–23", title: "Missing Advantages 01–05, Teacher/Student drift & untranslated English callouts", detail: "Restore points 01–05, stick to one clear audience, translate 'Create A Qustion' callouts, and fix 'ابدا' hamza." },
         ar: { asset: "عرض Trainova العربي", loc: "الشرائح 1–4، 7–10، 13–14، 20–23", title: "حذف المميزات 01–05 بالخطأ، وتذبذب الفئة بين المعلم والطالب، وبقاء شروحات بالإنجليزية", detail: "استعد النقاط 01–05، وثبّت الفئة المستهدفة، وترجم التعليقات الإنجليزية مع تصحيح همزة «ابدأ» وعلامات الترقيم." }
       },
-      { code: "#23", cls: "Upgrade", pKey: "Pitch",
+      { code: "#25", cls: "Upgrade", pKey: "Pitch",
         en: { asset: "Alkitab Alnaatiq (EN)", loc: "Slide 8 & Feature Slides", title: "Empty 'SCREENSHOTS' slide & leading-period RTL bug ('.images') on English text", detail: "Fill Slide 8 and switch English text boxes in Canva from RTL to LTR." },
         ar: { asset: "الكتاب الناطق (الإنجليزي)", loc: "شريحة 8 وشرائح المميزات", title: "شريحة SCREENSHOTS فارغة تماماً، وانقلاب النقاط لبداية السطر في النصوص الإنجليزية", detail: "أضف لقطات التطبيق في شريحة 8، واضبط اتجاه صناديق النص الإنجليزي في Canva إلى LTR." }
       },
-      { code: "#24", cls: "Upgrade", pKey: "UX",
-        en: { asset: "Alkitab Alnaatiq (AR)", loc: "Slides 6–11 & App Grid", title: "Untranslated English headings, wrong category icons & missing Arabic hamzas/dots", detail: "Translate 'SCREENSHOTS / DEMO / THANK YOU', fix Bathroom & Musical Instrument icons, and proofread Arabic spelling." },
-        ar: { asset: "الكتاب الناطق (العربي)", loc: "الشرائح 6–11 وشبكة الفئات", title: "عناوين شرائح غير مترجمة، وأيقونات فئات غير مطابقة، وأخطاء همزات وتاء مربوطة", detail: "عرّب عناوين الشرائح، واستبدل أيقونتي «الحمام» و«الآلات الموسيقية»، ودقّق إملاء الهمزات والتاء المربوطة." }
+      { code: "#26", cls: "Upgrade", pKey: "UX",
+        en: { asset: "Alkitab Alnaatiq (AR)", loc: "Slides 6–11 & App Grid", title: "Untranslated English headings, floating cyan artifact & missing Arabic hamzas/dots", detail: "Translate 'SCREENSHOTS / DEMO / Our Contact / THANK YOU FOR WATCHING', remove the stray cropped cyan rectangle in the top-right corner, and proofread Arabic spelling ('العائله، الفاكهه، تغبيرات الوجه')." },
+        ar: { asset: "الكتاب الناطق (العربي)", loc: "الشرائح 6–11 وشبكة الفئات", title: "عناوين شرائح غير مترجمة، مستطيل سماوي مقصوص أعلى الشرائح، وأخطاء همزات وتاء مربوطة", detail: "عرّب عناوين الشرائح (SCREENSHOTS / DEMO / THANK YOU)، وأزل المستطيل السماوي الزائد أعلى اليمين، ودقّق إملاء («العائله، الفاكهه، تغبيرات الوجه»)." }
       },
-      { code: "#25", cls: "Upgrade", pKey: "Brand",
+      { code: "#27", cls: "Upgrade", pKey: "Brand",
         en: { asset: "Alkitab Alnaatiq", loc: "Website, App & Decks", title: "Five different English spellings of the app name across links and screens", detail: "Pick one official English spelling and use it consistently everywhere." },
         ar: { asset: "الكتاب الناطق", loc: "الموقع والتطبيق والعروض", title: "خمس طرق مختلفة لكتابة اسم التطبيق بالإنجليزية عبر المنصات", detail: "اعتمد كتابة إنجليزية رسمية واحدة وشعاراً عربياً موحداً في جميع المواد." }
       },
-      { code: "#26", cls: "Upgrade", pKey: "Brand",
+      { code: "#28", cls: "Upgrade", pKey: "Brand",
         en: { asset: "Arabic Contact Slides", loc: "TR AR 44, RB 22, MS 13, Bundle 24", title: "Gmail address pasted twice (next to the Website globe icon as well as Email)", detail: "Put your clean website domain next to the globe icon and workspace email next to the mail icon." },
         ar: { asset: "شرائح التواصل العربية", loc: "عروض Trainova وRetailo ومدرسة المسلمين والمجمّع", title: "تكرار بريد Gmail مرتين (بجوار أيقونة الموقع الإلكتروني وأيقونة البريد)", detail: "ضع رابط الموقع الرسمي بجوار أيقونة الكرة الأرضية والبريد المؤسسي بجوار أيقونة الرسالة." }
       },
-      { code: "#27", cls: "Upgrade", pKey: "Strategy",
+      { code: "#29", cls: "Upgrade", pKey: "Strategy",
         en: { asset: "3-Apps Bundle Deck", loc: "Slide 23 Strategy", title: "Bundling 3 separate apps for different ages into one K–12 reform pitch", detail: "Pitch Muslims School (parents/preschools) and Retailo Bites (corporate training) with dedicated decks instead." },
         ar: { asset: "عرض الـ 3 تطبيقات المجمّع", loc: "شريحة 23 (النتيجة المتوقعة)", title: "دمج 3 تطبيقات منفصلة لأعمار وتقنيات متباينة في عرض إصلاح تعليمي واحد", detail: "قدّم كل منتج في مساره الطبيعي المستقل (مدرسة المسلمين للأسر والروضات، وRetailo Bites لتدريب الشركات)." }
       },
-      { code: "#28", cls: "Upgrade", pKey: "Strategy",
+      { code: "#30", cls: "Upgrade", pKey: "Strategy",
         en: { asset: "All Flagship Apps", loc: "App Store Availability", title: "Android-only footprint misses high-spending iOS families and B2B managers", detail: "Ship iOS App Store versions for Muslims School 2.0 and Retailo Bites." },
         ar: { asset: "المنتجات الرئيسية", loc: "التوفر على المتاجر", title: "الاقتصار على أندرويد فقط يفوّت شريحة مستخدمي iOS في الخليج والشركات", detail: "أعطِ أولوية لإصدار نسخ iOS لتطبيقَي مدرسة المسلمين 2.0 وRetailo Bites." }
       },
-      { code: "#29", cls: "Polish", pKey: "Security",
+      { code: "#31", cls: "Polish", pKey: "Security",
         en: { asset: "Muslims School", loc: "Google Play URL", title: "Double-'y' typo in published Android package ID (com.egyyptgames2022...)", detail: "Keep clean reverse-domain naming on all new flagship releases." },
         ar: { asset: "مدرسة المسلمين", loc: "رابط متجر Google Play", title: "تكرار حرف y بالخطأ في معرّف الحزمة البرمجي (com.egyyptgames2022...)", detail: "احرص على تسمية معيارية نظيفة لمعرّفات الحزم في جميع الإصدارات القادمة." }
       },
-      { code: "#30", cls: "Polish", pKey: "UX",
+      { code: "#32", cls: "Polish", pKey: "UX",
         en: { asset: "Muslims School", loc: "Slides 2 & 3 Screens", title: "English 'ENTER YOUR NAME' on Arabic home screen & clipped bathroom dua art", detail: "Localize the name field into friendly Arabic and add safe-area margin on landscape illustrations." },
         ar: { asset: "مدرسة المسلمين", loc: "الشريحتان 2 و3", title: "عبارة ENTER YOUR NAME بالإنجليزية في واجهة عربية وقصّ في رسمة دعاء الخلاء", detail: "عرّب خانة إدخال اسم الطفل واضبط هوامش الأمان للرسوم العرضية." }
       },
-      { code: "#31", cls: "Polish", pKey: "UX",
+      { code: "#33", cls: "Polish", pKey: "UX",
         en: { asset: "Alkitab Alnaatiq", loc: "Slide 5 Demo Video", title: "Screen recording shows loading spinners and 'From: English -> To: English'", detail: "Record a smooth, pre-loaded clip showing Arabic <-> English/French switching." },
         ar: { asset: "الكتاب الناطق", loc: "فيديو العرض في شريحة 5", title: "ظهور دوائر تحميل وإعداد ترجمة من الإنجليزية إلى الإنجليزية في الفيديو", detail: "سجّل مقطع فيديو سلساً بعد اكتمال التحميل يوضح التبديل الفعلي بين العربية والإنجليزية والفرنسية." }
       },
-      { code: "#32", cls: "Polish", pKey: "Brand",
+      { code: "#34", cls: "Polish", pKey: "Brand",
         en: { asset: "Alkitab Alnaatiq", loc: "Slides 3, 4 & 7", title: "Server-rack and sci-fi robot stock images paired with a toddler app", detail: "Swap for warm, child-friendly illustrations." },
         ar: { asset: "الكتاب الناطق", loc: "الشرائح 3 و4 و7", title: "صور خوادم بيانات وروبوتات خيال علمي لا تناسب تطبيق أطفال بعمر سنتين", detail: "استبدلها برسوم دافئة وملائمة لمرحلة الطفولة المبكرة." }
       },
-      { code: "#33", cls: "Polish", pKey: "UX",
+      { code: "#35", cls: "Polish", pKey: "UX",
         en: { asset: "Retailo Bites & Trainova", loc: "Web Admin Sidebar", title: "Dated yellow/grey web admin with unlabelled sidebar icons", detail: "Refresh the web dashboard with clean modern components, text labels, and RTL support." },
         ar: { asset: "Retailo Bites و Trainova", loc: "الشريط الجانبي للوحة الويب", title: "تصميم قديم للوحة الويب بأيقونات جانبية بلا عناوين نصية", detail: "حدّث واجهة لوحة التحكم بمكونات عصرية وعناوين واضحة ودعم كامل للعربية RTL." }
       },
-      { code: "#34", cls: "Polish", pKey: "Brand",
+      { code: "#36", cls: "Polish", pKey: "Brand",
         en: { asset: "egyptgames2022.online", loc: "Copy, Meta & Form", title: "Small typos ('fun.We', 'Naser city'), missing SEO/OG tags & blank form errors", detail: "Proofread copy, add social preview tags, and style form validation feedback." },
         ar: { asset: "egyptgames2022.online", loc: "النصوص والوسوم ونموذج التواصل", title: "أخطاء كتابية (fun.We، Naser city)، وغياب وسوم المعاينة، ورسائل تحقق فارغة بالنموذج", detail: "دقّق النصوص، وأضف وسوم Open Graph للمشاركة، واضبط رسائل التنبيه في نموذج التواصل." }
       },
-      { code: "#35", cls: "Polish", pKey: "Security",
+      { code: "#37", cls: "Polish", pKey: "Security",
         en: { asset: "egyptgames2022.online", loc: "Mobile Menu Drawer", title: "Mobile hamburger drawer stays stuck open if window widens to desktop", detail: "Close mobile drawer automatically on desktop breakpoint." },
         ar: { asset: "egyptgames2022.online", loc: "قائمة الهاتف الجانبية", title: "بقاء قائمة الهاتف مفتوحة فوق الصفحة عند تكبير الشاشة لسطح المكتب", detail: "أغلق القائمة الجانبية تلقائياً عند الانتقال لعرض الشاشات الكبيرة." }
       },
-      { code: "#36", cls: "Polish", pKey: "Strategy",
+      { code: "#38", cls: "Polish", pKey: "Strategy",
         en: { asset: "10 Tawla", loc: "Google Play (2.3★)", title: "2.3★ store rating featured first on corporate homepage", detail: "Check player feedback on matchmaking/AI and move casual games to their own gaming page." },
         ar: { asset: "10 Tawla (عشرة طاولة)", loc: "متجر Google Play (2.3★)", title: "تصدر لعبة بتقييم 2.3★ لواجهة موقع الشركة", detail: "راجع شكاوى اللاعبين بخصوص اللعب الجماعي، وانقل الألعاب الترفيهية لصفحة مستقلة عن حلول التعليم والشركات." }
       }
@@ -1850,6 +1892,13 @@
       });
       updateDossierIndicator(btnEl);
 
+      try {
+        const url = new URL(window.location.href);
+        if (key === "ms") url.searchParams.delete("tab");
+        else url.searchParams.set("tab", key);
+        window.history.replaceState({}, "", url.toString());
+      } catch (_) {}
+
       const stage = document.getElementById("dossierStage");
       stage.classList.add("switching");
       setTimeout(() => {
@@ -2002,6 +2051,15 @@
       try {
         const params = new URLSearchParams(window.location.search);
         if (params.get("lang") === "ar" || window.location.hash === "#ar") initialLang = "ar";
+        const tabParam = params.get("tab");
+        if (tabParam && ["ms", "rb", "ak", "bd"].includes(tabParam)) {
+          activeDossierKey = tabParam;
+          document.querySelectorAll(".dossier-btn").forEach(b => {
+            const active = b.getAttribute("data-key") === tabParam;
+            b.classList.toggle("bg-white", active);
+            b.classList.toggle("opacity-75", !active);
+          });
+        }
       } catch (_) {}
       setLanguage(initialLang, true);
       initObservers();
