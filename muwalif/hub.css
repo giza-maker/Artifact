@@ -64,3 +64,25 @@ footer { background: white; border-top: 1px solid var(--line); }
   .sectors { grid-template-columns: 1fr; }
   .sector { min-height: 139px; grid-template-columns: minmax(0,.65fr) minmax(0,1.35fr); }
 }
+
+.sector-spa {
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(0, .63fr) minmax(0, 1.37fr);
+}
+.sector-spa .scene {
+  aspect-ratio: 3 / 2;
+  height: auto;
+  align-self: center;
+  object-fit: contain;
+}
+.sector-spa .sector-text { justify-content: center; }
+@media (max-width: 720px) {
+  .sector-spa .scene {
+    width: calc(100% - 10px);
+    margin-inline-start: 10px;
+    border-radius: 8px;
+  }
+}
+@media (max-width: 420px) {
+  .sector-spa { grid-template-columns: minmax(0, .75fr) minmax(0, 1.25fr); }
+}
